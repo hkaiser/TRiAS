@@ -1,0 +1,48 @@
+# Makefile fuer TRATAS/386
+
+CC = wcl386
+CCXX = ccxx
+LINK = wlink
+YACC = pcyacc
+LEX = pclex
+
+DEFS = -Dmsdos
+
+CFLAGS = $(DEFS) -d2 -w3 -3r -p -Ic:\wc\h -I..\include.386
+CCXXFLAGS = $(DEFS) -D__WATCOMC__ -D__386__ -Ic:\wc\h -MW
+LEXFLAGS = -s -l
+YACCFLAGS = -Dytab.h -C$*.c -n -s
+
+LNKFILE = tratir.lnk
+
+OBJ1 =	iglaged.obj igppted.obj ginhed.obj igumoed.obj
+OBJ2 =	trat_asm.obj trat_asc.obj atlparsy.obj atlparsl.obj
+OBJ3 =  mtree.obj 
+
+OBJECTS =	$(OBJ1) $(OBJ2) $(OBJ3)
+
+tratir.exe:	$(OBJECTS)
+	$(LINK) @$(LNKFILE)
+
+atlparsl.obj:	atlpars.lx ytab.h atlpars.h
+	$(LEX) $(LEXFLAGS) atlpars.lx
+	@del atlparsl.c
+	@ren atlpars.c atlparsl.c
+	$(CC) -c $(CFLAGS) atlparsl.c
+
+ytab.h atlparsy.obj:	atlpars.y
+	@copy yacc.par c:\lib > nul
+	$(YACC) $(YACCFLAGS) atlpars.y
+	$(CC) -c $(CFLAGS) atlparsy.c
+
+atlparsy.obj atlparsc.obj:	atlpars.h atlerrs.h
+
+trat_asm.obj:	dbversio.h trat_asm.c
+
+mtree.obj:	mtree.cxx mtree.hxx
+	$(CCXX) !T $(CCXXFLAGS) mtree.cxx
+	$(CC) $(CFLAGS) -c mtree.c
+
+
+.c.obj:
+	$(CC) $(CFLAGS) -c $*.c

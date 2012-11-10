@@ -1,0 +1,58 @@
+// ObjMan.odl : type library source for ObjMan.dll
+//
+
+/////////////////////////////////////////////////////////////////////////
+// NOTE -- Make sure and edit the ObjMan.idl file as well when you make 
+// changes to this file
+/////////////////////////////////////////////////////////////////////////
+
+// This file will be processed by the Make Type Library (mktyplib) tool to
+// produce the type library (ObjMan.tlb).
+
+[  
+	uuid(0796384C-3123-101C-BB62-00AA0018497C),
+	version(1.0),
+	helpstring("ObjectManagement 1.0 Type Library")
+]
+library OBJMANLib
+{
+	importlib("stdole32.tlb");
+
+	[
+		uuid(0796384D-3123-101C-BB62-00AA0018497C),
+		dual,
+		helpstring("IObjectManagement Interface"),
+	]
+	interface IObjectManagement : IDispatch
+	{
+        [id(0), helpstring("Get an object from persistent memory."), helpcontext(0x0000)]
+            HRESULT GetObject([in] BSTR bstrName, [in, out] IUnknown **ppUnk);
+        [id(1), helpstring("Makes an object persistent."), helpcontext(0x0000)]
+            HRESULT SaveObject([in] BSTR bstrName);
+        [id(2), helpstring("Deletes an object."), helpcontext(0x0000)]
+            HRESULT DelObject([in] BSTR bstrName);
+        [id(3), helpstring("Get the enumerator of all objects of persistant memory."), helpcontext(0x0000)]
+            HRESULT EnumObjects([in] DWORD, [out] IEnumUnknown **ppenum);
+        [id(4), helpstring("Get the enumerator of all names of objects."), helpcontext(0x0000)]
+            HRESULT EnumStrings([in, out] IUnknown **ppUnk);
+        [id(5), helpstring("Get an new object."), helpcontext(0x0000)]
+            HRESULT CreateObject([in] REFGUID rClsID, [in] BSTR bstrName, [in] DWORD dwMode, [in, out] IUnknown **ppUnk, [in] VARIANT_BOOL fCreateTemp);
+        [id(6), helpstring("Release an object without deleting."), helpcontext(0x0000)]
+            HRESULT ReleaseObject([in] BSTR bstrName);
+        [id(7), helpstring("Rename an object."), helpcontext(0x0000)]
+            HRESULT RenameObject([in] BSTR bstrName, [in] BSTR bstrNew);
+        [id(8), helpstring("Set an allready created object."), helpcontext(0x0000)]
+            HRESULT SetObject([in] IUnknown *pUnk, [in] BSTR bstrName, [in] DWORD dwMode, [in] bool fCreateTemp);
+        [id(9), helpstring("Commit storage if transacted."), helpcontext(0x0000)]
+            HRESULT Commit();
+	};
+
+	[
+		uuid(0796384E-3123-101C-BB62-00AA0018497C),
+		helpstring("CObjectManagement Class")
+	]
+	coclass CObjectManagement
+	{
+		[default] interface IObjectManagement;
+	};
+};

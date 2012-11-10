@@ -1,0 +1,30 @@
+# Welcome to the mkid language mapper.
+#
+# The format of each line is:
+#
+#		<pattern> <language> [options]
+#
+# Filenames are matched top-to-bottom against the patterns, and the
+# first match is chosen.  The special language `IGNORE' means that
+# this file should be ignored by mkid.  The options are
+# language-specific command-line options to mkid.
+#
+# If a file name doesn't match any pattern, it is assigned the default
+# language.  The default language may be specified here with the
+# special pattern `**', or overridden from the mkid command-line with
+# the `--default-lang=LANG' option.
+#
+# The special pattern `***' means to include the named file that
+# immediately follows.  If no file is named, then the default system
+# language mapper file (i.e., this file) is included.
+
+# Default language
+**			IGNORE	# Although this is listed first,
+				# the default language pattern is
+				# logically matched last.
+*.h			C
+*.l			C
+*.y			C
+*.c			C
+*.cc			C
+*.cpp			C

@@ -1,0 +1,42 @@
+// $Header: $
+// Copyright© 2002 Hartmut Kaiser, All rights reserved
+// Created: 01.11.2002 21:27:11 
+//
+// @doc
+// @module TRiASDataObject.idl | IDL source for TRiASDataObject
+// @group In diesem Modul definierte Interfaces
+// @index | INTERFACE
+// @end
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declarations
+interface ITRiASDataObject;
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc	INTERFACE 
+// @interface ITRiASDataObject | Über das <i ITRiASDataObject> -Interface können
+// die Schnittstellenfunktionen einer Datenmenge angesprochen werden, die
+// den Informationstransfer innerhalb einer Sequenz von geokomponenten 
+// gewährleistet
+// @group Methoden und Eigenschaften von <i ITRiASDataObject> 
+// @index | ITRIASDATAOBJECT
+// @doc ITRIASDATAOBJECT
+cpp_quote("#ifndef _LPTRIASDATAOBJECT_DEFINED")
+cpp_quote("#define _LPTRIASDATAOBJECT_DEFINED")
+	[
+		object,
+		uuid(0D1B02AF-F578-4EAE-ACFF-4E083E018764),
+		dual,
+		helpstring("ITRiASDataObject Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASDataObject : IDispatch
+	{
+		[id(100), helpstring("Objektmenge im DataObject ablegen.")] HRESULT SetObjects([in] DGeoObjects *Objs);
+		[id(101), helpstring("Objektmenge aus DataObject auslesen.")] HRESULT GetObjects([out, retval] DGeoObjects **Objs);
+		[id(102), helpstring("Zusätzliche Daten im DataObject ablegen.")] HRESULT SetData([in] BSTR Name, [in]VARIANT Data);
+		[id(103), helpstring("Zusätzliche Daten im DataObject auslesen.")] HRESULT GetData([in] BSTR Name, [out, retval] VARIANT *Data);
+		[id(104), helpstring("Objektrecherchefenster aus DataObject auslesen.")] HRESULT GetObjectWin([out, retval] DGeoObjectWin **ObjWin);
+	};
+cpp_quote("#endif // _LPTRIASDATAOBJECT_DEFINED")
+

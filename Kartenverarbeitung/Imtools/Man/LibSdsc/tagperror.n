@@ -1,0 +1,88 @@
+'\"t
+.TH TAGPERROR 3TAG "July 1990" "SDSC" "TAG TABLE"
+.SH NAME
+TagPError, TagQError, TagErrNo  -  tag table package error messages
+.SH SYNOPSIS
+.if t \fB
+.nf
+#include "sdsc.h"
+
+extern int TagErrNo;
+extern int TagNErr;
+exter char *TagErrList[ ];
+
+void TagPError( leader )
+.in +0.5i
+char *leader;
+.in -0.5i
+
+char *TagQError( )
+.fi
+.if t \fR
+.SH DESCRIPTION
+\fITagPError\fR produces a short error message on \fIstderr\fR
+describing the last error encountered during a call to a tag table
+package function.
+.LP
+If \fIleader\fR is not a NULL pointer and does not point to an empty
+string, the string it points to is printed, followed by a colon and
+one space, the error message, then a NEWLINE.
+If \fIleader\fR is a NULL pointer or an empty string, just the error
+message and NEWLINE are printed.
+The leader string is typically the name of the program.
+.LP
+The error number is taken from the global variable \fITagErrNo\fR,
+which is set when errors occur in tag table package routines but
+not cleared when non-erroneous calls are made.
+.LP
+To allow programs to display error message texts in other ways, an
+array of error-message strings is provided in \fITagErrList\fR.
+\fITagErrNo\fR may be used as an index into this table to get the
+message string without the NEWLINE.
+.LP
+\fITagNErr\fR is the number of error messages provided for in the table.
+\fITagErrNo\fR should be checked against \fITagNErr\fR prior to
+indexing into \fITagErrList\fR because new error codes may be added
+to the system before they are available in the error message table.
+.LP
+\fITagQError\fR may be used to query the error-message list and return a
+pointer to the error text associated with the error value of \fITagErrNo\fR.
+.SH RETURNS
+\fITagPError\fR returns nothing.
+.LP
+\fITagQError\fR returns the character string message for the current value
+of \fITagErrNo\fR, or "Unknown error" if there is no message for the error
+number.
+.SH NOTES
+If \fITagErrNo\fR is \fITAGESYS\fR, indicating a system call error
+occurred, \fITagPError\fR calls \fIperror\fR(3) to print the
+system call's error message text instead of the text for \fITAGESYS\fR and
+\fIArgQError\fR returns the error text associated with \fIerrno\fR.
+.SH "SEE ALSO"
+TagEntryAlloc(3TAG),
+TagEntryFree(3TAG),
+TagEntryQNthEntry(3TAG),
+TagEntryQNthOccur(3TAG),
+TagEntryQTag(3TAG),
+TagEntryQValue(3TAG),
+TagEntryQValueType(3TAG),
+TagTableAlloc(3TAG),
+TagTableAppend(3TAG),
+TagTableCopy(3TAG),
+TagTableDelete(3TAG),
+TagTableFree(3TAG),
+TagTableInsert(3TAG),
+TagTableQDirect(3TAG),
+TagTableQLinear(3TAG),
+TagTableQNEntry(3TAG),
+TagTableReplace(3TAG),
+errno(2),
+perror(3)
+.br
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

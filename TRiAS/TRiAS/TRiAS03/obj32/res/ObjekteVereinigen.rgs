@@ -1,0 +1,43 @@
+HKCR
+{
+	TRiASEx.UnionObjectsEx.1 = s 'Vereinigen aller Eingabeobjekte (mit Konfiguration)'
+	{
+		CLSID = s '{C8A4681E-AC62-4B0D-9AB4-6B19BF927B31}'
+	}
+	TRiASEx.UnionObjects.1 = s 'Vereinigen aller Eingabeobjekte'
+	{
+		CLSID = s '{C8A4681E-AC62-4B0D-9AB4-6B19BF927B31}'
+	}
+	TRiASEx.UnionObjectsEx = s 'Vereinigen aller Eingabeobjekte (mit Konfiguration)'
+	{
+		CLSID = s '{C8A4681E-AC62-4B0D-9AB4-6B19BF927B31}'
+		CurVer = s 'TRiASEx.UnionObjectsEx.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {C8A4681E-AC62-4B0D-9AB4-6B19BF927B31} = s 'Vereinigen aller Eingabeobjekte (mit Konfiguration)'
+		{
+			ProgID = s 'TRiASEx.UnionObjectsEx.1'
+			VersionIndependentProgID = s 'TRiASEx.UnionObjectsEx'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				Delete TRiASEx.UnionObjects.1
+				ForceRemove TRiASEx.UnionObjectsEx.1 = s '{C8A4681E-AC62-4B0D-9AB4-6B19BF927B31}'
+			}
+		}
+	}
+}

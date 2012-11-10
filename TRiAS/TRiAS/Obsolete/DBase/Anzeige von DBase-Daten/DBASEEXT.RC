@@ -1,0 +1,196 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "dbaseext.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resstrg.h"
+#include "ver.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+ID_TOOLBARS72           BITMAP  MOVEABLE PURE   "DBPOS96.BMP"
+ID_TOOLBARS96           BITMAP  MOVEABLE PURE   "DBPOS72.BMP"
+ID_TOOLBARS120          BITMAP  MOVEABLE PURE   "DBPOS120.BMP"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDM_DBF MENU DISCARDABLE 
+BEGIN
+    POPUP "&Tabelle"
+    BEGIN
+        MENUITEM "&Erster Eintrag",             IDM_FIRSTENTRY
+        MENUITEM "&Letzter Eintrag",            IDM_LASTENTRY
+        MENUITEM SEPARATOR
+        MENUITEM "&Voriger Zeile",              IDM_ONELEFTSCROLL
+        MENUITEM "&Nächste Zeile",              IDM_ONERIGHTSCROLL
+        MENUITEM SEPARATOR
+        MENUITEM "&Voriges Feld",               IDM_PREVFIELD
+        MENUITEM "&Nächstes Feld",              IDM_NEXTFIELD
+    END
+    POPUP "&Bearbeiten"
+    BEGIN
+        MENUITEM "&Kopieren",                   IDM_COPY
+    END
+    POPUP "&Aliasdatei"
+    BEGIN
+        MENUITEM "&Erzeugen ...",               IDM_CREATE_ALIAS_FILE
+        MENUITEM "&Setzen ...",                 IDM_SET_ALIAS_FILE
+        MENUITEM "Än&dern ...",                 IDM_CHANGE_ALIAS_FILE
+    END
+    POPUP "E&xtras"
+    BEGIN
+        MENUITEM "&Zeile",                      IDM_ROWCOL
+        MENUITEM SEPARATOR
+        MENUITEM "&Index erzeugen",             IDM_CREATE_INDEX, GRAYED
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DBF DIALOG DISCARDABLE  10, 10, 156, 83
+STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+MENU IDM_DBF
+FONT 8, "System"
+BEGIN
+    LISTBOX         IDL_ROW,0,0,104,60,LBS_USETABSTOPS | 
+                    LBS_NOINTEGRALHEIGHT | NOT WS_VISIBLE | WS_VSCROLL | 
+                    WS_HSCROLL | WS_GROUP | WS_TABSTOP
+    LISTBOX         IDL_COLUMN,0,0,120,80,LBS_USETABSTOPS | 
+                    LBS_NOINTEGRALHEIGHT | NOT WS_VISIBLE | WS_VSCROLL | 
+                    WS_HSCROLL | WS_TABSTOP
+END
+
+IDD_MEMO DIALOG DISCARDABLE  0, 0, 96, 56
+STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+FONT 8, "System"
+BEGIN
+    EDITTEXT        IDE_MEMO,0,0,96,56,ES_MULTILINE | ES_READONLY | 
+                    WS_VSCROLL
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "dbaseext.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""resstrg.h""\r\n"
+    "#include ""ver.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""dbaseext.rcv""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DBASEMENUITEM       "&dBASE-Informationen ..."
+    IDS_INDEX_CAPTION       "Index erzeugen"
+    IDS_ONE_INDEX           "Ein weiterer Index kann nicht erzeugt werden !"
+    IDS_OTHER_INDEX         "Das Format der Index-Datei ist unbekannt !"
+    IDS_ALIAS_SPEC          "Alias-Datei (*.als)|*.als"
+    IDS_ALIAS_SEL_CAPTION   "Alias-Datei auswählen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_SPALTENTEXT         "&Zeile"
+    IDS_DBASEOPFHELP        "Liefert den Inhalt des Feldes '%s' aus der Tabelle '%s'."
+    IDS_CLIPOPTION          "-c"
+    IDS_LONGCLASSNAME       "Anzeige von dBASE-Daten"
+    IDS_DBF_EXT             ".dbf"
+    IDS_DBASEOPF            "%s\\%s"
+    IDS_DBASEKEY            "DBASE"
+    IDS_GROUP_NAME          "dBASE-Informationen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ZEILENTEXT          "&Spalte"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DBASERELATION       "Datenbank-&Relationen ..."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_EMPTYMEMO           "Das Memofeld ist leer."
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "dbaseext.rcv"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

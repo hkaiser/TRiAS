@@ -1,0 +1,163 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "rastera.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resstrg.h"
+#include "raster.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_RASTERERZEUGUNG DIALOG DISCARDABLE  103, 22, 240, 273
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Gittererzeugung"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " Bildausschnitt ",-1,6,6,227,69,WS_GROUP
+    LTEXT           "Koordinaten",-1,13,23,40,8,NOT WS_GROUP
+    LTEXT           "Rechtswert",-1,65,23,41,8,NOT WS_GROUP
+    LTEXT           "Hochwert",-1,131,23,36,8,NOT WS_GROUP
+    LTEXT           "Li&nks oben:",-1,13,39,41,8,NOT WS_GROUP
+    EDITTEXT        IDE_RECHTSWERTOBEN,65,37,51,12,ES_AUTOHSCROLL
+    LTEXT           ",",-1,122,41,8,8,NOT WS_GROUP
+    EDITTEXT        IDE_HOCHWERTOBEN,131,37,52,12,ES_AUTOHSCROLL
+    LTEXT           "R&echts unten:",-1,13,58,48,8,NOT WS_GROUP
+    EDITTEXT        IDE_RECHTSWERTUNTEN,65,55,51,12,ES_AUTOHSCROLL
+    LTEXT           ",",-1,122,57,8,8,NOT WS_GROUP
+    EDITTEXT        IDE_HOCHWERTUNTEN,131,55,52,12,ES_AUTOHSCROLL
+    GROUPBOX        "Gitterparameter ",-1,6,82,166,66,WS_GROUP
+    LTEXT           "Gitter &x (in Meter):",-1,14,97,68,8,NOT WS_GROUP
+    EDITTEXT        IDE_WAAGERECHT,103,95,36,12,ES_AUTOHSCROLL
+    LTEXT           "Gitter &y (in Meter):",-1,15,115,66,8,NOT WS_GROUP
+    EDITTEXT        IDE_SENKRECHT,103,113,36,12,ES_AUTOHSCROLL
+    LTEXT           "Dreh&winkel (in Gradmaß):",-1,14,132,86,8,NOT WS_GROUP
+    EDITTEXT        IDE_WINKEL,103,131,36,12,ES_AUTOHSCROLL
+    GROUPBOX        " Eigenschaften  des erzeugten Gitters ",-1,6,156,166,
+                    112,WS_GROUP
+    CONTROL         "  Gitter&netz",IDR_FLAECHE,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,14,169,89,10
+    CONTROL         "  Gitter&linien",IDR_LINIE,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,14,182,89,10
+    GROUPBOX        "",-1,14,195,149,9,WS_GROUP
+    CONTROL         "  &Temporäre Abspeicherung",IDR_TEMPORAER,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,14,204,101,10
+    CONTROL         "  &Permanente Abspeicherung",IDR_PERMANENT,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,14,217,102,10
+    LTEXT           "Objekt&klasse für Gitter:",-1,15,236,80,8
+    COMBOBOX        IDL_IDENTIFIKATOR,15,248,150,139,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "&OK",IDOK,183,87,51,14,WS_GROUP
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,183,112,51,14,WS_GROUP
+    PUSHBUTTON      "",IDC_BUTTON1,14,199,149,27,WS_DISABLED | NOT 
+                    WS_TABSTOP
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "rastera.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""resstrg.h""\r\n"
+    "#include ""raster.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""raster.rcv""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Gitterbildung"
+    IDS_RASTER              "&Gitter erzeugen ..."
+    IDS_LOESCHEN            "&Gitter löschen"
+    IDS_RASTERUIDENT        "GITTER_%ld"
+    IDS_GEOFEHL             "Das ausgewählte Objekt enthält einen Geometriefehler.\r\nDeshalb kann nicht getestet werden, ob die einzelnen\r\nGitterflächen dieses Objekt überdecken."
+    IDS_NORASTER            "Es wurde kein Gitter gebildet."
+    IDS_GITTER_CAPTION1     "Gitter für geometrische Objekte"
+    IDS_GITTER_CAPTION2     "Gitter für einen allgemeinen Bereich"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_STATUS_STAND        "Es wurden bereits %ld%% bearbeitet"
+    IDS_BEARB_OBJEKT        "Objekt: %ld"
+    IDS_DELOBJECTS          "Objekte löschen"
+    IDS_DELETE_STATUS       "Es wurden bereits %ld%% der Objekte gelöscht"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXEXTENSIONPROC    "DEXEXTENSIONPROC"
+    IDS_DEXXEXTENSIONPROC   "DEXXEXTENSIONPROC"
+    IDS_DEXNOTIFICATIONPROC "DEXNOTIFICATIONPROCEX"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "raster.rcv"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

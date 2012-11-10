@@ -1,0 +1,565 @@
+' **************************************************************************************
+' *                                                                                    *
+' *  Vereinigen aller Flächenobjekte der übergebenen Objektmenge                       *
+' *  Copyright© 1999 TRiAS GmbH, All rights reserved                                   *
+' *  File: ObjekteVereinigen.ebs                                                       *  
+' *  H. Kaiser, W. Mörtl   (10. 06. 99)                                                *
+' *                                                                                    *
+' **************************************************************************************
+
+
+Option Explicit
+
+
+' ======================================================================================
+' Programmkonstanten
+' Name der Objektklasse für die Zwischenergebnisse; eine sofortige Zuordnung zur
+' endgültigen Objektklasse ist nicht möglich, weil für den Fall, daß die Originalobjekte
+' und die Ergebnisobjekte zur GLEICHEN Objektklasse gehören, die Originalobjekte als
+' scheinbare Zwischenergebnisse in der Routine AreasUniting() gelöscht werden
+Const strProvClassName As String = "__ProvisionalClassName__"
+
+' ======================================================================================
+' globale Variable
+Private Status As StatusIndicator
+Private strResultClassName As String  ' default-Name für Objektklasse der Ergebnisobjekte
+Private clsProv As GeoClass		' Klasse für Zwischenergebnisse
+Private lGlobalCnt As Long
+Private bOrigDel As Boolean		' Originalobjekte, die zu einer Vereinigung beigetragen
+								' haben, sollen gelöscht werden (True) WM (17.12.98)
+Private bProvCl As Boolean		' es gab schon VOR Aufruf dieser Routine Objekte der
+								' Klasse clsProv in der aktuellen Datenbank (True)
+Private bProvObjs As Boolean	' es gibt noch Ergebnisobjekte, die nicht in die
+								' Zielklasse umklassifiziert wurden (True) 
+
+' ======================================================================================
+' Subroutine's-Deklarationen
+Declare Private Sub InitStatus (lCount As Long)
+Declare Private Sub FreeStatus()
+Declare Private Sub SetClassVisInfo (clsGC As GeoClass)
+
+' Function's-Deklarationen
+Declare Private Function AreasUniting (objsInAreas As GeoObjects, Cls As GeoClass, _
+										objsOrig As GeoObjects) As GeoObjects
+Declare Private Function IncrementStatus(Optional Cnt As Variant) As Boolean
+
+
+' ======================================================================================
+' "BeginAction2" wird gerufen, bevor die erste Objektmenge verarbeitet werden soll
+' strResClassName: default-Name für Objektklasse der Ergebnisobjekte
+Function BeginAction2 (strResClassName As String) As Boolean
+
+	' Hier notwendige Initialisierungen durchführen
+	strResultClassName = strResClassName
+
+	Set clsProv = GetActiveDocument().GetClass (strProvClassName)
+	If (clsProv Is Nothing) Then
+		Set clsProv = GetActiveDocument().AddClass(strProvClassName)
+		If (clsProv Is Nothing) Then
+			BeginAction2 = False
+			Exit Function
+		End If
+		SetClassVisInfo clsProv
+		bProvCl = False		' clsProv wurde neu angelegt
+	Else
+		bProvCl = True		' clsProv gab es schon
+	End If
+
+	Set Status = Nothing
+	BeginAction2 = True
+End Function
+
+
+' --------------------------------------------------------------------------------------
+' 2. Variante, wenn StatusIndicator von außen kommt
+Function BeginActionEx2 (strResClassName As String, Stat As StatusIndicator) As Boolean
+
+	strResultClassName = strResClassName
+
+	Set clsProv = GetActiveDocument().GetClass (strProvClassName)
+	If (clsProv Is Nothing) Then
+		Set clsProv = GetActiveDocument().AddClass(strProvClassName)
+		If (clsProv Is Nothing) Then
+			BeginActionEx2 = False
+			Exit Function
+		End If
+
+		SetClassVisInfo clsProv
+		bProvCl = False		' clsProv wurde neu angelegt
+	Else
+		bProvCl = True		' clsProv gab es schon
+	End If
+
+	Set Status = Stat
+	BeginActionEx2 = True
+
+End Function
+
+
+' --------------------------------------------------------------------------------------
+' "DoAction" wird für jede der zu verarbeitenden Objektmengen gerufen
+Function DoAction (objsInAreas As GeoObjects) As GeoObjects
+
+	If (objsInAreas Is Nothing) Then	' irgend ein blöder Fehler (snh)
+		Set DoAction = Nothing
+		Exit Function
+	End If
+
+'	If (objsInAreas.Count = 1) Then	' nur ein Objekt
+	If (objsInAreas.Count <= 1) Then	' höchstens ein Objekt   WM (17.12.98)
+'		Set DoAction = objsInAreas
+		Set DoAction = Nothing	' WM (17.12.98)
+		Exit Function
+	End If
+
+'	Dim ObjsOrg As New GeoObjects	wird nicht mehr gebraucht
+	Dim o As GeoObject
+'	For Each o In objsInAreas 
+'		ObjsOrg.Add o
+'	Next o
+			
+	' Objektmenge bearbeiten
+	Dim objsOutAreas As GeoObjects	' return-Flächenobjekte
+	Dim objsToDel As New GeoObjects	' Flächen, die zur Vereinigung beigetragen haben und
+									' deshalb evtl. gelöscht werden sollen (WM 17.12.98)
+	Set objsOutAreas = AreasUniting (objsInAreas, clsProv, objsToDel)
+	If (objsOutAreas Is Nothing) Then
+		Set DoAction = Nothing
+		Exit Function
+	End If
+
+	' XXXXXalle angefaßten Objekte wieder löschen, dazu zu löschende Objekte rauskriegen
+	' die Objekte löschen, die zu einer echten Vereinigung beigetragen haben (WM 17.12.98)
+'	Dim objsToDel As GeoObjects
+'	Set objsToDel = ObjsOrg.Difference (objsOutAreas)		WM (17.12.98)
+	If bOrigDel = True Then		' WM (17.12.98)
+		For Each o In objsToDel
+			GetActiveDocument().RemoveObject o
+		Next o
+	End If
+
+	' Neu gebildete Objekte weiterreichen
+	Set DoAction = objsOutAreas
+
+End Function
+
+
+' --------------------------------------------------------------------------------------
+' "DoAction2" wird für jede der zu verarbeitenden Objektmengen gerufen (WM 18.12.98)
+' objsInAreas: die zu vereinigenden Flächenobjekte
+' objsOrig:    die Flächenobjekte, die zur Vereinigung beigetragen haben
+Function DoAction2 (objsInAreas As GeoObjects, objsOrig As GeoObjects) As GeoObjects
+
+	Set objsOrig = Nothing				' für den erfolglosen Fall
+	Set DoAction2 = Nothing
+
+	If (objsInAreas Is Nothing) Then
+		Exit Function
+	End If
+
+	If (objsInAreas.Count <= 1) Then	' höchstens eine Eingabefläche
+		Exit Function
+	End If
+
+	Set objsOrig = GetActiveDocument().CreateGeoObjectsCollection()
+
+	Set DoAction2 = AreasUniting (objsInAreas, clsProv, objsOrig)
+
+End Function ' DoAction2
+
+
+' --------------------------------------------------------------------------------------
+' "EndAction" wird nach der Verarbeitung der letzten Objektmenge gerufen
+Sub EndAction()
+	' hier notwendige Aufräumarbeiten durchführen
+	If (bProvCl = False And bProvObjs = False) Then
+		GetActiveDocument().RemoveClass clsProv		
+		bProvCl = True
+	End If
+
+	Set clsProv = Nothing
+	Set Status = Nothing
+End Sub
+
+
+' --------------------------------------------------------------------------------------
+' "EndScript()" wird immer nach Beendigung der Script-Abarbeitung gerufen
+Sub EndScript()
+	' deshalb hier vorsichtshalber noch einmal Aufräumarbeiten durchführen
+	If (bProvCl = False And bProvObjs = False) Then
+		GetActiveDocument().RemoveClass clsProv		
+		bProvCl = True
+	End If
+
+	Set clsProv = Nothing
+	Set Status = Nothing
+
+	' jetzt wird der Script wirklich abgebrochen
+	SetBreakScript (True)
+End Sub
+
+
+' --------------------------------------------------------------------------------------
+' das Flag bOrigDel von außen setzen
+Sub SetDeleteFlag (bDelete As Boolean)
+	bOrigDel = bDelete
+End Sub
+
+
+' ======================================================================================
+' StatusAnzeige verwalten
+Private Sub InitStatus (lCount As Long)
+
+	' ggf. bereits existierenden StatusIndicator verwenden	
+	If (Status Is Nothing) Then
+		Set Status = New StatusIndicator
+		if (Status Is Nothing) Then
+			Exit Sub
+		End If
+	End If
+
+	Status.Restart 0, (lCount*(lCount-1))/2, STATUS_ShowAllFields
+	Status.Caption = "Vereinigen von Flächenobjekten"
+	Status.Field(1) = "Anzahl:"
+	Status.Field(2) = Str$(lCount) + " Objekte"
+	Status.Field(3) = "Es wurden bereits %d%% der Objekte bearbeitet ..."
+
+End Sub
+
+
+' --------------------------------------------------------------------------------------
+Private Sub FreeStatus()
+
+	If (Status Is Not Nothing) Then
+		Set Status = Nothing
+	End If
+End Sub
+
+
+' --------------------------------------------------------------------------------------
+' Visualisierung für eine gesamte Objektklasse
+Sub SetClassVisInfo (clsGC As GeoClass)
+	Dim aviFlVis As AreaVisInfo
+	Set aviFlVis = clsGC.GetAreaVisInfo()
+	If (aviFlVis Is Nothing) Then
+		Set aviFlVis = New AreaVisInfo
+	End If
+	If (aviFlVis Is Not Nothing) Then
+		aviFlVis.Style = 0					' 1 weniger als in TRiAS
+		aviFlVis.Priority = 1
+		aviFlVis.BkColor = RGB (0, 0, 0)	' Füllfarbe
+		aviFlVis.MainColor = RGB (0, 0, 0)	' Konturfarbe
+		aviFlVis.Width = 1
+		aviFlVis.Opaque = False				' Transparenz
+		aviFlVis.BkContour = False			' Konturfarbe wie Hintergrund
+	  	clsGC.SetVisInfo aviFlVis
+	End If
+End Sub ' SetClassVisInfo
+
+
+' ======================================================================================
+' Jedes Objekt mit jedem vereinigen
+' NEU (17.12.98):
+' - in die return-Flächenobjekte objsResult werden nur die VEREINIGTEN Flächen
+'   übernommen
+' - in der Menge objsOrig werden die Flächen zurückgegeben, die zu einer echten
+'   Vereinigung BEIGETRAGEN haben
+' - kein Blinken bei der Abarbeitung
+Private Function AreasUniting (objsInAreas As GeoObjects, Cls As GeoClass, _
+							   objsOrig As GeoObjects) As GeoObjects
+Dim fFound As Boolean
+
+' Variablen der Outer-Schleife
+Dim i As Long
+
+' Variablen der Inner-Schleife
+Dim Inner As Long
+Dim OuterObj As GeoObject
+Dim ObjsT As GeoObjects
+
+Dim InnerObj As GeoObject
+Dim NewObjs As GeoObjects
+Dim FakeObjs As GeoObjects
+Dim RechObjs As GeoObjects
+Dim ObjsNotDeleted As GeoObjects
+
+Dim lNewObjsCnt As Long
+
+Dim o As GeoObject
+Dim objsResult As New GeoObjects
+
+' umschließendes Rechteck des Bezugsobjektes
+Dim dXMin As Double
+Dim dXMax As Double
+Dim dYMin As Double
+Dim dYMax As Double
+
+' Statusanzeige initialisieren
+Dim IsCanceled As Boolean
+
+	lGlobalCnt = 0
+	InitStatus objsInAreas.Count
+
+#If DEBUG = 1 Then
+	Viewport.Open
+	Print "AreasUniting: Anzahl der zu vereinen Objekte: " + Str$(objsInAreas.Count)
+#End If
+
+' Äußere Schleife
+	Do
+#If DEBUG = 1 Then
+		Print "--------------------------------------------------------------"
+#End If
+
+	' Flag rücksetzen
+		fFound = False
+
+	' gelöschte Objekte aus Bezugsmenge entfernen
+'#If DEBUG = 1 Then
+'		Print "Gelöschte Objekte entfernen: " + Str$(objsInAreas.Count)
+'#End If
+'
+'		Set ObjsNotDeleted = New GeoObjects
+'		For Each o In objsInAreas
+'			If (o Is Not Nothing) Then
+'				ObjsNotDeleted.Add o		' neu gebildete Objekte hinzufügen
+'			End If
+'		Next o
+'		Set objsInAreas = ObjsNotDeleted
+'		Set ObjsNotDeleted = Nothing
+'
+'#If DEBUG = 1 Then
+'		Print "Gelöschte Objekte entfernt: " + Str$(objsInAreas.Count)
+'#End If
+		
+	' nächstes Bezugsobjekt setzen
+		If (OuterObj Is Not Nothing) Then
+			OuterObj.UnHilight
+			Set OuterObj = Nothing
+		End If
+
+		For i = 1 To objsInAreas.Count
+			Set OuterObj = objsInAreas(i)
+			If (OuterObj Is Not Nothing) Then
+				Exit For
+			End If
+		Next i
+		If (OuterObj Is Nothing) Then
+#If DEBUG = 1 Then
+			Print "Kein gültiges Bezugsobjekt gefunden"
+#End If
+			Exit Do
+		End If
+
+		OuterObj.Hilight &HFF0000		' Blau kennzeichnen
+#If DEBUG = 1 Then
+		Print "Bezugsobjekt: " + OuterObj.Name
+#End If
+
+	' Zur Optimierung werden lediglich die Objekte näher untersucht, die
+	' geometrisch etwas mit dem Bezugsobjekt zu tun haben
+		OuterObj.GetGeometryRect dXMin, dYMin, dXMax, dYMax
+#If DEBUG = 1 Then
+		Print "Objektcontainer: (" + Str$(dXMin) + ", " + Str$(dXMax) + "), (" _
+			+ Str$(dYMin) + ", " + Str$(dYMax) + ")"
+#End If
+		Set RechObjs = objsInAreas.GetObjectsInRect(dXMin, dYMin, dXMax, dYMax)
+
+	' Neue Objektmenge für nächsten Durchlauf (vorinitialisiert auf
+	' alle Objekte der Ausgangsmenge, die nicht gleichzeitig durch die
+	' vorhergehende Geometrierecherche geliefert wurden)			
+ 		Set ObjsT = objsInAreas.Difference (RechObjs)
+		If (ObjsT Is Nothing) Then
+			Set ObjsT = new GeoObjects		' Notanker für besondere Fälle
+		End If
+#If DEBUG = 1 Then
+		Print "Anzahl der beteiligten Objekte: " + Str$(RechObjs.Count)
+		Print "Anzahl der nicht beteiligten Objekte: " + Str$(ObjsT.Count)
+#End If
+
+	' Fortschrittsanzeige entsprechend weiterschalten
+		If (IncrementStatus (objsInAreas.Count - RechObjs.Count) = False) Then
+			FreeStatus
+#If DEBUG = 1 Then
+			Print "Abbruch durch Nutzer"
+#End If
+			Exit Function
+		End If
+
+	' Das Bezugsobjekt selbst darf auch nicht mit untersucht werden
+		RechObjs.Remove OuterObj
+
+	' Innere Schleife
+		For Inner = 1 To RechObjs.Count
+
+#If DEBUG = 1 Then
+			Print "+++ " + Str$(Inner)
+#End If
+		' Status weiterschalten
+			If (IncrementStatus() = False) Then
+				Set AreasUniting = Nothing
+				FreeStatus
+#If DEBUG = 1 Then
+				Print "Abbruch durch Nutzer"
+#End If
+				Exit Function
+			End If
+				
+		' nächstes Vergleichsobjekt
+			Set InnerObj = RechObjs(Inner)
+			InnerObj.Hilight &HFFFFFF		' Weiß kennzeichnen
+
+		' Versuchen, die beiden zu vereinigen
+			Set FakeObjs = New GeoObjects
+			FakeObjs.Add OuterObj
+			FakeObjs.Add InnerObj
+			Set NewObjs = FakeObjs.GeometryUnion (Cls)
+			Set FakeObjs = Nothing
+
+			If (NewObjs Is Not Nothing) Then
+				lNewObjsCnt = NewObjs.Count
+			Else
+				lNewObjsCnt = 0
+			End If
+
+		' Resultat der Vereinigung auswerten
+			If (NewObjs Is Not Nothing And lNewObjsCnt > 0) Then
+			' wirklich was vereinigt, restliche Objekte übernehmen
+#If DEBUG = 1 Then
+				Print "Restliche Objekte: " + Str$(RechObjs.Count - Inner -1)
+#End If
+				For i = Inner+1 To RechObjs.Count
+					ObjsT.Add RechObjs(i)
+					IsCanceled = IncrementStatus()	' Status weiterschalten
+				Next i
+
+			' neu gebildete Objekte übernehmen
+#If DEBUG = 1 Then
+				Print "Objekte vereinigt: " + Str$(NewObjs.Count) + " neue Objekte"
+#End If
+				For Each o In NewObjs
+					ObjsT.Add o
+				Next o
+
+			' Bezugsobjekt wird nicht mehr gebraucht
+				OuterObj.UnHilight
+				If (OuterObj.ObjClass.Name = strProvClassName) Then
+				' bereits vereinigtes Objekt aus GeoDB löschen
+					GetActiveDocument.RemoveObject OuterObj
+				Else
+					objsOrig.Add OuterObj		' WM (17.12.98)
+				End If
+				Set OuterObj = Nothing
+
+			' neue Objektmenge ist fertig
+				fFound = True
+				
+				InnerObj.UnHilight
+				If (InnerObj.ObjClass.Name = strProvClassName) Then
+				' auch hier bereits vereinigtes Objekt aus GeoDB löschen
+					GetActiveDocument.RemoveObject InnerObj
+				Else
+					objsOrig.Add InnerObj		' WM (17.12.98)
+				End If
+				Set InnerObj = Nothing
+
+				Exit For ' Inner
+			Else 
+			' es konnte nichts vereinigt werden
+#If DEBUG = 1 Then
+				Print "Objekte nicht vereinigt"
+#End If
+				ObjsT.Add InnerObj
+				InnerObj.UnHilight
+			End If
+		Next Inner
+
+	' Ergebnis dieser Runde setzen
+		Set RechObjs = Nothing			' wird nicht mehr benötigt
+		Set objsInAreas = ObjsT
+
+#If DEBUG = 1 Then
+		Print "Resultats-Objekte: " + Str$(objsInAreas.Count)
+#End If
+
+		If (fFound = False) Then
+			If OuterObj.ObjClass.Name = strProvClassName Then	' WM (17.12.98)
+				objsResult.Add OuterObj
+			End If
+			objsInAreas.Remove OuterObj
+
+		ElseIf (objsInAreas.Count = 1) Then
+		' evtl. ist das letzte Objekt auch noch ein vereinigtes
+			If (InnerObj Is Not Nothing) Then
+				If (InnerObj.ObjClass.Name = strProvClassName) Then
+				' bereits vereinigtes Objekt aus GeoDB löschen
+					GetActiveDocument.RemoveObject InnerObj
+				End If
+				Set InnerObj = Nothing
+			End If
+
+			If objsInAreas(1).ObjClass.Name = strProvClassName Then	' WM (17.12.98)
+				objsResult.Add objsInAreas(1)
+			End If
+			Exit Do
+		End If
+	Loop 
+
+#If DEBUG = 1 Then
+	Print "Loop Ende: " + Str$(objsResult.Count) + " Objekte erzeugt."
+#End If
+
+	FreeStatus
+
+' Ergebnisobjekte in die endgültige Objektklasse clsResult übernehmen
+	Dim clsResult As GeoClass
+	Set clsResult = GetActiveDocument().GetClass (strResultClassName)
+	If (clsResult Is Nothing) Then
+		Set clsResult = GetActiveDocument().AddClass(strResultClassName)
+		If (clsResult Is Nothing) Then
+			Set AreasUniting = objsResult
+			bProvObjs = True
+			Exit Function
+		End If
+		SetClassVisInfo clsResult
+	End If
+
+Dim objResult As GeoObject
+
+	For Each objResult In objsResult
+		clsResult.AddObject objResult
+	Next objResult
+
+	bProvObjs = False
+
+	Set AreasUniting = objsResult
+
+End Function ' AreasUniting
+
+
+' --------------------------------------------------------------------------------------
+Private Function IncrementStatus(Optional Cnt As Variant) As Boolean
+
+	IncrementStatus = False
+
+' weiterschalten der Fortschrittsanzeige
+Dim Steps As Long
+
+	If (IsMissing(Cnt)) Then
+		Steps = 1
+	Else 
+		Steps = CLng(Cnt)
+	End If
+
+	If (Status Is Not Nothing) Then
+		lGlobalCnt = lGlobalCnt + Steps
+		Status.SetPosition lGlobalCnt
+
+		If (Status.WasCanceled()) Then
+			Exit Function		' abgebrochen
+		End If
+	End If
+	IncrementStatus = True
+
+End Function
+    

@@ -1,0 +1,543 @@
+'\"et
+.if t .TH IMADJUST 1IM "June 27, 1995" "San Diego Supercomputer Center" "IMAGE TOOLS" 
+.if n .TH IMADJUST 1IM "June 27, 1995" "SDSC" "IMAGE TOOLS"
+.SH NAME
+imadjust  -  adjusts pixel values in an image 
+.SH SYNOPSIS
+\fBimadjust\fR [\fIoptions\fR] \fIinfilename\fR [\fIoutfilename\fR]
+.SH DESCRIPTION
+\fBimadjust\fR adjusts pixel values in images in \fIinfilename\fR and
+saves the adjusted images to \fIoutfilename\fR.  If no \fIoutfilename\fR is
+given, \fBimadjust\fR saves the adjusted images back into \fIinfilename\fR.
+.LP
+Adjustments can manipulate
+pixel color or alpha channel values in a wide variety of ways, depending upon
+the \fBimadjust\fR options that are chosen.
+.SH OPTIONS
+\fBimadjust\fR has numerous options in the following categories:
+.LP
+.RS +0.5i
+.TS
+l l.
+File Selection	What input and output files to use
+Format Selection	What image file format to use
+Format Control	What variant of a file format to generate
+Standard	Standard generic options on all SDSC tools
+Pixel Selection	How to select which pixels to adjust
+Adjustment Operation	How to adjust the pixels
+Change Selection	What aspect of pixels to adjust
+.TE
+.RE
+.LP
+\fIFile Selection\fR, \fIFormat Selection\fR, \fIFormat Control\fR, and
+\fIStandard\fR options are common to all SDSC image tools and are
+discussed in depth in the \fBman\fP page for \fBimconv\fR(1IM).
+.LP
+All options can be abbreviated to the first few unique characters.
+.LP
+In a typical operation, a user may select all pixels with
+a red component value greater than 100 and add 20 to their red component.
+This would have the affect of brightening the reds of an image.
+.LP
+As another example, a user may select all pixels with saturation values
+(in the HSI color space) greater than 0.8 (1.0 is maximum) and clamp them
+to 0.8.  This would, for instance, prevent highly saturated images from
+bleeding when they are recorded to video.
+.SS "Pixel Selection"
+.LP
+During adjustment, \fBimadjust\fR scans the input image looking for pixels
+that meet a user-defined selection criterion.  All pixels that match that
+criterion will be adjusted.
+All pixels that do not match the selection criterion are copied to the
+output image untouched.
+.LP
+Statements like the following are typical selection criteria:
+.RS 0.5i
+.LP
+.ta +1m
+\(bu	All pixels with a red component less than 100.
+.br
+\(bu	All pixels with a saturation component greater than 0.8.
+.br
+\(bu	All pixels with an alpha channel value of 255.
+.br
+\(bu	All pixels with an intensity component between 0.0 and 0.2.
+.RE
+.LP
+In all cases, the selection criterion gives a pixel component (such as
+red, green, hue, saturation, color index, alpha, etc.) and
+what value or range of values it must have in order to pass the test and
+be adjusted.  The following options define the selection criteria:
+.RS 0.5i
+.LP
+.ne 2.0i
+.TS
+l l.
+\fBOption	Select pixels based on\fR
+_
+\fB-red \fIrange	\fRred component
+\fB-green \fIrange	\fRgreen component
+\fB-blue \fIrange	\fRblue component
+_
+\fB-mono \fIrange	\fRmonochrome component
+\fB-index \fIrange	\fRcolor index component
+_
+\fB-hue \fIrange	\fRhue component
+\fB-saturation \fIrange	\fRsaturation component
+\fB-intensity \fIrange	\fRintensity component
+_
+\fB-alpha \fIrange	\fRalpha component
+.TE
+.RE
+.LP
+\fBimadjust\fR allows at most one selection criterion.  To adjust based
+upon multiple selection criteria, invoke \fBimadjust\fR multiple times
+on the same image, once for each criteria.
+.LP
+The \fB-red\fR, \fB-green\fR, and \fB-blue\fR
+options operate on pixels in the RGB color space.
+.LP
+The \fB-mono\fR option operates on pixels which store monochrome values
+per pixel.  Input images that are not monochrome images will be rejected
+with an error message from \fBimadjust\fR.
+.LP
+The \fB-index\fR option operates on pixels which store monochrome, grayscale,
+or color index values per pixel.  Input images that are not monochrome,
+grayscale, or color index images will be rejected with an error message from
+\fBimadjust\fR.
+.LP
+The \fB-hue\fR, \fB-saturation\fR, and \fB-intensity\fR options operate
+on pixels in the HSI color space.  To check the selected criteria 
+\fBimadjust\fR converts each pixel from a monochrome, grayscale, color index,
+or RGB value into the HSI color space.  The image's pixel
+value is not altered by this testing.  (See the \fBimintro\fR(3IM)
+\fBman\fR page for a description of RGB and HSI color spaces.)
+.LP
+The \fB-alpha\fR option operates on the pixel's alpha (coverage mask) component.
+Alpha values range from 0 (transpareant) to 255 (opaque).
+If this option is used with input images without alpha components, alpha
+components will be created for each pixel and initialized to 255 (opaque).
+.LP
+Each of the selection options accept an argument giving a single value, or
+a range of values that the pixel must have in order to match the selection
+criteria and be adjusted.  Value \fIrange\fR syntax takes any one of the
+following forms:
+.RS 0.5i
+.LP
+.TS
+l l.
+\fIrange\fR	\fBSelect on pixels with values of\fR
+_
+\fIn\fR	\fIn\fR only.
+\fIn-\fR	\fIn\fR through the maximum legal value for the component.
+\fIn-m\fR	\fIn\fR through \fIm\fR.
+.TE
+.RE
+.LP
+There is no space between \fIn\fR, the dash, and \fIm\fR.
+.LP
+The following would be typical selection criteria:
+.RS 0.5i
+.LP
+\fB-red 0-99
+.br
+-saturation 0.8-1.0
+.br
+-alpha 255
+.br
+-intensity 0.0-0.2\fR
+.RE
+.LP
+.SS "Adjustment Operation"
+.LP
+Pixels that match the selection criteria will be adjusted depending upon
+which adjustment operation is chosen.  The following operations are available:
+.RS 0.5i
+.LP
+.ne 2.0i
+.TS
+l l.
+\fBOption\fR	\fBAction\fR
+_
+\fB-add\fR	Add a value to each pixel that matches
+\fB-subtract\fR	Subtract a value from each pixel that matches
+\fB-multiply\fR	Multiply each matching pixel by a value
+\fB-divide\fR	Divide each matching pixel by a value
+\fB-set\fR	Set each matching pixel to a new value
+.TE
+.RE
+.LP
+\fBimadjust\fR allows at most one adjustment operation at a time.  To perform
+multiple operations, invoke \fBimadjust\fR multiple times, once for each 
+operation.
+.LP
+.SS "Change Selection"
+.LP
+Pixels that match the selection criterion will be adjusted using the
+adjustment operation.  Change options select what aspect of the pixel
+will be adjusted.  For instance, the following statements are
+typical examples of change options:
+.RS 0.5i
+.LP
+.ta +1m
+\(bu	Set red to 200.
+.br
+\(bu	Multiply intensity by 0.5.
+.br
+\(bu	Set alpha to 255.
+.br
+\(bu	Add 4 to the color index.
+.br
+\(bu	Set saturation values to the range 0.0 to 0.8.
+.RE
+.LP
+Each of these examples selects an operation, like "set", "multiply",
+"add", etc., and a pixel component to operate upon,
+like "red", "intensity", "alpha", "color index", "saturation", etc.
+The operation is selected using the operation options discussed in the
+previous section (\fB-add\fR, \fB-subtract\fR, etc).
+The component to operate upon is determined by the choice
+of any of the following options:
+.RS 0.5i
+.LP
+.TS
+l l.
+\fBOption	Which pixel component to change\fR
+_
+\fB-red \fIrange	\fRred component
+\fB-green \fIrange	\fRgreen component
+\fB-blue \fIrange	\fRblue component
+_
+\fB-mono \fIrange	\fRmonochrome component
+\fB-index \fIrange	\fRcolor index component
+_
+\fB-hue \fIrange	\fRhue component
+\fB-saturation \fIrange	\fRsaturation component
+\fB-intensity \fIrange	\fRintensity component
+_
+\fB-alpha \fIrange	\fRalpha compoent
+.TE
+.RE
+.LP
+The option format is the same as that used for the selection criteria.
+Command-line order determines whether a \fB-red\fR option, for instance,
+is a selection criteria, or a change option.  Selection criteria options
+precede the operation argument, while change options follow it.
+.LP
+The \fB-red\fR, \fB-green\fR, and \fB-blue\fR change options cause the
+red, green, or blue component of the pixel to be adjusted.  Input images
+must be RGB images in order to adjust their red, green, or blue components.
+.LP
+The \fB-mono\fR change option causes the monochrome value of a pixel to be
+adjusted.  Input images must be monochrome
+images in order to adjust their monochrome values.
+.LP
+The \fB-index\fR change option adjusts the color index of a pixel. 
+Input images must be monochrome, grayscale, or color index
+images to allow their color index values to be adjusted.
+.LP
+The \fB-hue\fR, \fB-saturation\fR, and \fB-intensity\fR change options
+cause the hue, saturation, or intensity aspects of a pixel to be adjusted.
+Input images
+must be RGB images to allow their red, green, or blue components to be
+adjusted.
+RGB pixel values are converted into the HSI color
+space; the hue, saturation, or intensity component is adjusted; and the result
+is converted back into the RGB color space.
+.LP
+The \fB-alpha\fR change option adjusts the alpha component of a pixel.
+If this option is used with input images without alpha components, the alpha
+components will be created for each pixel and initialized to 255 (opaque),
+prior to adjusting.
+.LP
+Each of the change options accept an argument giving a single value, or
+a range of values to be used by the adjustment operation.
+Value \fIrange\fR syntax takes any one of the following forms:
+.RS 0.5i
+.LP
+.TS
+l l.
+\fIrange\fR	\fBOperate using values of\fR
+_
+\fIn\fR	\fIn\fR only.
+\fIn-\fR	\fIn\fR through the maximum legal value for the component.
+\fIn-m\fR	\fIn\fR through \fIm\fR.
+.TE
+.RE
+.LP
+There is no space between \fIn\fR, the dash, and \fIm\fR.
+.LP
+The meaning of the change option's value or \fIrange\fR of values depends upon
+the adjustment operation:
+.RS 0.5i
+.LP
+.IP "\fB-add\fR\ \ \ \ \ \ \ \ \ "
+The value is added to each adjusted pixel.
+.IP \fB-subtract\fR
+The value is subtracted from each adjusted pixel.
+.IP \fB-multiply\fR
+The value is a multiplication factor by which the adjusted
+pixel's component should be multiplied.
+.IP "\fB-divide\fR\ \ \ \ \ \ \ \ \ "
+The value is a division factor by which the adjusted
+pixel's component should be divided.
+.IP "\fB-set\fR\ \ \ \ \ \ \ \ \ \ "
+The value is a new value for the adjusted pixel's component.  This is
+a set operation.
+.RE
+.LP
+In each case, if the resulting pixel value is greater than the maximum legal
+value for the pixel component (such as greater than 255 for red), or less
+than the minumum legal value for the component (such as -42 for red), the
+value is clamped to the maximum or minimum before it is written to the output
+image.
+.LP
+Selection criteria and change options may each specify a single value or
+a range of values.  The following are typical command lines:
+.RS 0.5i
+.LP
+.TS
+l l l l l.
+\fBimadjust	-intensity 0.0	-set	-alpha 0	infile.ras outfile.pix
+.br
+imadjust	-red 0-100	-add	-red 5	infile.ras outfile.pix
+.br
+imadjust	-index 10	-subtract	-alpha 5-40	infile.ras outfile.pix
+.br
+imadjust	-saturation 0.0-1.0	-set	-saturation 0.0-0.8	infile.ras outfile.pix\fR
+.TE
+.RE
+.LP
+The selection criterion and the change option may be a single value or a value
+range.  This leaves four possible
+combinations:
+.RS 0.5i
+.LP
+.IP "1. Both are single values."
+All pixels with the single value selected by the selection criterion will
+be modified using the single value in the change option.  For instance,
+.RS 1.0i
+.LP
+\fB-intensity 0.0 -set -alpha 0\fR
+.RE
+.RS 0.5i
+.LP
+changes all pixels with intensities of 0.0 to have alpha values of 0.
+.RE
+.IP "2. The selection criterion has a range but the change option is a single 
+value."
+All pixels within the range of selection criteria values
+will be modified using the single value in the change option.  For instance,
+.RS 1.0i
+.LP
+\fB-red 0-100 -add -red 5\fR
+.RE
+.RS 0.5i
+.LP
+adds 5 to all pixels with red values between 0 and 100.
+.RE
+.IP "3. The selection criterion has a single value but the change option has 
+a range."
+To have a change option of range, but no selection range doesn't make sense.
+This variation will be treated as if the change range is only the single
+starting value.
+.IP "4. Both have a value range."
+Pixels matching the first value of the selection criteria value range will be
+adjusted using the first value of the change option.  Likewise, pixels matching
+the second value of the selection criteria value range will be adjusted by the
+second value of the change option.  Pixels with values in between will be
+adjusted using change values in between.  For instance,
+.RS 1.0i
+.LP
+\fB-saturation 0.0-1.0 -set -saturation 0.0-0.8\fR
+.RE
+.RS 0.5i
+.LP
+sets all pixels with saturation values between 0.0 and
+1.0 to the new range 0.0 to 0.8.  Original pixels with values of 1.0 will
+be mapped to values of 0.8, and so on.
+.RE
+.LP
+.RE
+.LP
+Interesting settings may be done by using value ranges where the first
+value in the range is greater than the second value.  For instance,
+.RS 0.5i
+.LP
+\fB-intensity 0.0-1.0 -set -intensity 1.0-0.0\fR
+.RE
+.LP
+will set intensities from 0.0 to 1.0 to intensities from 1.0 to 0.0.
+In other words, the intensity values will be inverted, creating a
+pseudo-negative effect.
+.SH NOTES
+Error messages are reported to \fBstderr\fR.
+.LP
+Different pixel components have different types and different minimum
+and maximum values.  This affects how value ranges given for, say, \fB-red\fR
+versus \fB-intensity\fR, will be interpreted.
+.LP
+.RS 0.5i
+.TS
+l l l l.
+\fBValue	Type	Minimum	Maximum\fP
+_
+\fBred\fR	Integer	0	255
+\fBgreen\fR	Integer	0	255
+\fBblue\fR	Integer	0	255
+_
+\fBmonochrome\fR	Integer	0	1
+\fBindex\fR	Integer	0	255
+_
+\fBhue\fR	Float	0.0	360.0
+\fBsaturation\fR	Float	0.0	1.0
+\fBintensity\fR	Float	0.0	1.0
+_
+\fBalpha\fR	Integer	0	255
+.TE
+.RE
+.LP
+For those comfortable viewing pseudo-code, the following code illustrates
+the adjustment algorithm used by \fBimadjust\fR.  \fIcriteriaRange\fR is
+the value range given with the selection criterion (such as
+\fB-red 5-10\fR).  \fIchangeRange\fR is the value range given with the change
+selection (such as \fB-alpha 100-200\fR).  In the algorithm, both ranges have
+been normalized to values between 0.0 and 1.0.  Finally,
+pixel.\fIcriteriaComponent\fR is the pixel color component being tested in
+the selection criterion (such as \fB-red\fR), while pixel.\fIchangeComponent\fR
+is the pixel color component being changed (such as \fB-intensity\fR).
+.RS 0.5i
+.LP
+.nf
+.ta 2m,4m,6m,8m,10m,12m,14m,16m
+factor = (\fIchangeRange\fR.second - \fIchangeRange\fR.first) /
+	(\fIcriteriaRange\fR.second - \fIcriteriaRange\fR.first)
+for each pixel in the input image,
+	if pixel.\fIcriteriaComponent\fR is within \fIcriteriaRange\fR,
+		value = (pixel.\fIcriteriaComponent\fR - \fIcriteriaRange\fR.first) *
+			factor + \fIchangeRange\fR.first
+		switch on the \fIoperation\fR,
+			add:		pixel.\fIchangeComponent\fR += value
+			subtract:	pixel.\fIchangeComponent\fR -= value
+			multiply:	pixel.\fIchangeComponent\fR *= value
+			divide:	pixel.\fIchangeComponent\fR /= value
+			set:	pixel.\fIchangeComponent\fR = value
+		if pixel.\fIchangeComponent\fR > maximum,
+			pixel.\fIchangeComponent\fR = maximum
+		if pixel.\fIchangeComponent\fR < minimum,
+			pixel.\fIchangeComponent\fR = minimum
+.Ce
+.LP
+.SH EXAMPLES
+.SS "Example #1"
+Vivid, high-saturation images look beautiful on computer graphics screens.
+Unfortunately the color gamut supported by such screens is wider than that
+available on video devices, such as home VHS and S-VHS decks.  High-saturation
+images recorded to video produce undesirable color effects.
+To prevent this, \fBimadjust\fR may be used to uniformly desaturate an image
+by setting saturation values normally in the range 0.0 to 1.0 to the
+less-saturated range 0.0 to 0.8.
+.RS 0.5i
+.LP
+\fBimadjust vivid.rgb -saturation 0.0-1.0 -set -saturation 0.0-0.8 video.rgb\fR
+.LP
+.RE
+In this example, \fB-saturation 0.0-1.0\fR is the selection criterion.  All
+pixels with saturation values between 0.0 and 1.0 will be selected.  Since this
+is the full range possible for saturation, this effectively selects all pixels.
+.LP
+This example uses the \fB-set\fR operation to cause pixel values to be set,
+rather than added to, subtracted from, and so on.
+.LP
+Finally, \fB-saturation 0.0-0.8\fR indicates that the saturation component
+of the pixel's color will be changed to the new range 0.0 to 0.8.
+.SS "Example #2"
+In order to save image compute time, animators often compute a static
+background once, without any moving objects in front of it.  The background
+objects are then removed from the scene, speeding up scene computation, and
+the animation is computed with the moving objects moving about in front of a
+black background.  To finish the animation, the individual black background
+frames need to be pasted atop the static background, one frame at a time.
+This operation is known as compositing and can be done with \fBimcomp\fR(1IM).
+.LP
+When compositing, the compositing program
+needs to know what pixels of the "front"
+image are transparent and let pixels in the "back" image show through.  This
+is indicated by a coverage mask known as an "alpha" plane.  Alpha values
+of 0 are considered transparent, while values of 255 are opaque.
+.LP
+To composite the moving object frames atop the static background
+image, the black pixels of the moving object frames need to be marked as
+transparent:  their alpha components need to be set to 0.  This can be
+done using \fBimadjust\fR by selecting all pixels with intensities of 0
+(black) and setting their alpha values to 0 (transparent).
+.RS 0.5i
+.LP
+\fBimadjust moving.rgb -intensity 0.0 -set -alpha 0 moving_alpha.rgb\fR
+.LP
+.RE
+In this example, \fB-intensity 0.0\fR selects all black pixels and
+\fB-set\fR requests that pixel values be set to new values.
+\fB-alpha 0\fR indicates that the alpha component of these pixels should be
+set to 0.
+.LP
+The resulting file \fBmoving_alpha.rgb\fR is ready for use in a digital
+compositor, such as \fBimcomp\fR(1IM).
+.SS "Example #3"
+An image may be brightened by increasing the intensity value for all pixels.
+.RS 0.5i
+.LP
+\fBimadjust dim.hdf -red 0-255 -add -intensity 0.2 bright.rla\fR
+.RE
+.LP
+\fB-red 0-255\fR selects all pixels with red values between 0 and 255.  Since
+this is the full range of the red component, this effectively selects all
+pixels in the image.  We could have used \fB-green 0-255\fR or
+\fB-blue 0-255\fR or \fB-hue 0.0-360.0\fR or any of several other combinations.
+All of these would select all pixels.
+.LP
+\fB-add -intensity 0.2\fR adds 0.2 to the intensity component, in the HSI
+color space, of all pixels.  Remember that intensity is measured from 0.0
+to 1.0, not 0 to 255.
+.SS "Example #4"
+A pseudo-negative of an image can be created by inverting its intensity 
+values.  Dark values will become light, while light values will become dark.  
+The hue and saturation will remain the same.
+.RS 0.5i
+.LP
+\fBimadjust normal.iff -intensity 0.0-1.0 -set -intensity 1.0-0.0 invert.ras\fR
+.RE
+.LP
+.SS "Example #5"
+Interesting color effects can be created by tweaking individual color components
+of image pixels.  For instance:
+.RS 0.5i
+.LP
+.nf
+\fBimadjust normal.pix -hue 0.0-360.0 -add -hue 20.0 weird.pix\fR
+\fBimadjust normal.pix -red 0-100 -multiply -blue 0.5 weird.pix\fR
+\fBimadjust normal.pix -saturation 0.25-0.75 -set -hue 360.0-0.0 weird.pix\fR
+\fBimadjust normal.pix -blue 0-100 -subtract -intensity 0.5-0.7 weird.pix\fR
+.fi
+.RE
+.LP
+.SH "SEE ALSO"
+\fBimcomp\fR (1IM),
+\fBimdissolve\fR (1IM),
+\fBimfill\fR (1IM),
+\fBImVfbAdjust\fR (3IM)
+.sp 1
+For information on SDSC's image library, see \fBimintro\fR(3IM). 
+.SH AUTHOR
+Chris Groening and Dave Nadeau
+.br
+San Diego Supercomputer Center
+.LP
+See the individual file format \fBman\fR pages for the authors of the underlying
+format read and write code.  The names of these \fBman\fR pages begin
+with the letters "im", followed by the format name.
+For example, the name of the TIFF \fBman\fR page is \fBimtiff\fR.
+To display it, enter \fBman imtiff\fR.
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

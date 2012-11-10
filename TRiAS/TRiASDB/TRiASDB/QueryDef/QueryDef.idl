@@ -1,0 +1,132 @@
+// @doc
+// @module QueryDef.idl | IDL source for QueryDef.ext
+// @group In diesem Modul definierte Interfaces
+// @index | INTERFACE & TRIASQUERYDEF
+// @group In diesem Modul definierte Objekte (coclasses)
+// @index | OBJECT & TRIASQUERYDEF
+
+// This file will be processed by the MIDL tool to
+// produce the type library (QueryDef.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#if (501 >= __midl)
+#include <basetsd.h>
+#endif // (501 >= __midl)
+import "ProgInd2.idl";
+import "UndoRedo.idl";
+
+///////////////////////////////////////////////////////////////////////////////
+// Version dieser Typelib
+cpp_quote("#define TYPELIB_QUERYDEF_VERSION_MAJOR 1")
+cpp_quote("#define TYPELIB_QUERYDEF_VERSION_MINOR 0")
+cpp_quote("#define TYPELIB_QUERYDEF_VERSION \"1.0\"")
+cpp_quote("#define TYPELIB_QUERYDEF_LCID 0")
+
+#define TYPELIB_QUERYDEF_VERSION_MAJOR 1
+#define TYPELIB_QUERYDEF_VERSION_MINOR 0
+#define TYPELIB_QUERYDEF_VERSION 1.0
+#define TYPELIB_QUERYDEF_LCID 0
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc TYPELIB
+// Die eigentliche TypeLibrary
+[
+	uuid(1BF01AF0-33CF-11D3-94FA-0080C786297B),
+	version(TYPELIB_QUERYDEF_VERSION),
+	lcid(TYPELIB_QUERYDEF_LCID),
+	helpstring("QueryDef 1.0 Type Library")
+]
+library TRiASQueryDef
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	importlib("TRiASDB.tlb");
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIASQUERYDEF
+// @interface ITRiASCollectObjects | Initialisierungs-Interface für <o TRiASCollectObjects> Objekte
+// @supby <o TRiASCollectObjects>
+// @xref <o TRiASCollectObjects>
+// @group Methoden und Eigenschaften von <i ITRiASCollectObjects> 
+// @index | ICOLLECTOBJECTS
+// @doc ICOLLECTOBJECTS
+	[
+		object,
+		uuid(B1706E90-33D0-11D3-94FA-0080C786297B),
+		dual,
+		helpstring("ITRiASCollectObjects Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASCollectObjects : ITRiASObjectsEx
+	{
+	// @doc ICOLLECTOBJECTS
+
+	// @method HRESULT | ITRiASCollectObjects | GetMappedObjectHandle | Die <om .GetMappedObjectHandle>- Methode
+	// liefert die innerhalb dieser Zuordnungsobjektklasse vergebene Objekt-Zugriffsnummer.
+	// @parm INT_PTR | ObjOrig | Der Parameter <p ObjOrig> gibt die Zugriffsnummer des Objektes vor,
+	// für welches die lokale Zugriffnummer innerhalb dieser Zuordnungsobjektklasse geliefert werden soll.
+	// @parm INT_PTR * | ObjMapped | Der Parameter <p ObjMapped> enthält nach erfolgreicher Abarbeitung der
+	// Methode die gesuchte Zugriffsnummer.
+	// @supby <o TRiASCollectObjects> 
+	// @xref <i ITRiASCollectObjects>
+		[id(200), helpstring("Liefert die innerhalb dieser Zuordnungsobjektklasse vergebene Objekt-Zugriffsnummer")] HRESULT GetMappedObjectHandle ([in] INT_PTR ObjOrig, [out, retval] INT_PTR *ObjMapped);
+	};
+
+// @end
+// Helperinterface für UndoRedo
+	[
+		object,
+		uuid(E9819264-8001-44E4-8908-288B003C6DBF),
+		helpstring("IUndoRedoAddObjToClass Interface"),
+		pointer_default(unique)
+	]
+	interface IUndoRedoAddObjToClass : IUndoRedo
+	{
+		[helpstring("Initialisiert die Undo/Redo Aktion für das Hinzufügen eines Objektes zu einer Rechercheobjektmenge.")] HRESULT InitAddObjectToClass ([in] INT_PTR lONr, [in] INT_PTR lIdent, [in] INT_PTR lONrMapped);
+		[helpstring("Initialisiert die Undo/Redo Aktion für das Entfernen eines Objektes zu einer Rechercheobjektmenge.")] HRESULT InitDeleteObjectFromClass ([in] INT_PTR lONr, [in] INT_PTR lIdent);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASQUERYDEF
+// @object QueryDef | TRiAS-Zusatzmodule, welcher Objektmengen zur Verfügung stell, 
+// welche verschiedenen Recherchekriterien entsprechen.
+// @supint <i ITriasExtension> | Standard-Schnittstelle für TRiAS-zusatzmodule.
+// @xref <i ITriasExtension>
+	[
+		uuid(1BF01AF1-33CF-11D3-94FA-0080C786297B),
+		helpstring("QueryDef Class")
+	]
+	coclass QueryDefExt
+	{
+		[default] interface IUnknown;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASQUERYDEF
+// @object TRiASCollectObjects | Objektmenge, die eine Aufzählung beliebiger Objekte
+// repräsentiert.
+// @supint <i ITRiASCollectObjects> | Initialisierungs-Schnittstelle für dieses Objekt.
+// @xref <i ITRiASCollectObjects>
+	[
+		uuid(6BE4F280-33D1-11D3-94FA-0080C786297B),
+		helpstring("TRiASCollectObjects Class")
+	]
+	coclass TRiASCollectObjects
+	{
+		[default] interface ITRiASCollectObjects;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// Helperobjekte für UndoRedo
+	[
+		uuid(982D05EE-534B-4165-888D-1E0869636CD8),
+		helpstring("UndoRedoAddObjToClass Class")
+	]
+	coclass UndoRedoAddObjToClass
+	{
+		[default] interface IUndoRedoAddObjToClass;
+	};
+};

@@ -1,0 +1,69 @@
+@echo off
+call trbase.bat
+rem
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\trias31.dll
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\trias32.dll
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\trias33.dll
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\muscrl32.dll
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\containr.dll
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\tfrmwork.dll
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\lol.dll
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\trias32.exe
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\ospacer.exe
+rem
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\identsdb.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\visobj.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\fakemfc.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\ot51as.dll
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\georein.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\geoedit.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\oleauto.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\fakemfc.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\oleauto.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\georein.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\geometr.dll
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\bscript.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\objman.dll 
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\sumncm22.dll
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\sumndc22.dll
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\sumndd22.dll
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\sumndg22.dll
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\sumnol22.dll
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\sumnpb22.dll
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\sumnrn22.dll
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\visobj.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\identsdb.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\geoedit.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\objoper.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\toporel.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\gitter.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\abstand.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\buffer.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\geostat.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\maschblr.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\tproject.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\kompias.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\karten.vmd
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\linesig.vmd
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\lmfcx42.dll
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\lpict42.dll
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\torten.vmd
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\txtrotl.vmd
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\fillmode.vmd
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\dbaseext.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\dbasere.ext
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\bilder.ext
+rem
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\default.ctf
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\krgeod.ctf
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\begeod.ctf
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\krassgk.ctf
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\besselgk.ctf
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\etrsgeod.ctf
+rem
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\dirisasc.flt
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\dirismkl.flt
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\triasarc.flt
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\acaddxf.flt
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\atlasbna.flt
+c:\msdev\bin\bind -v -u -p .\trias200.rel;c:\winnt\system32 .\trias200.rel\caddyasc.flt

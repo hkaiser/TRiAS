@@ -1,0 +1,18 @@
+HKCR
+{
+	TRiASGM.LineVisInfo.1 = s 'Visualisierungsinformation für Linienobjekte'
+	{
+		CLSID = s '{429906A2-B83F-11D1-85B5-00600875138A}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {429906A2-B83F-11D1-85B5-00600875138A} = s 'Visualisierungsinformation für Linienobjekte'
+		{
+			ProgID = s 'TRiASGM.LineVisInfo.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+}

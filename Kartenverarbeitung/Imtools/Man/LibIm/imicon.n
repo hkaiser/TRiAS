@@ -1,0 +1,153 @@
+'\"et
+.if t .TH IMICON 3IM "August 19, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMICON 3IM "August 19, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+imicon \- Sun ICON file translation
+.SH SYNOPSIS
+.nf
+\fB
+#include <stdio.h>
+#include "sdsc.h"
+#include "im.h"
+.sp 1
+int ImFileRead( fd, "icon", flagsTable, dataTable )
+	int         fd;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileFRead( fp, "icon", flagsTable, dataTable )
+	FILE         *fp;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileWrite( fd, "icon", flagsTable, dataTable )
+	int         fd;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileFWrite( fp, "icon", flagsTable, dataTable )
+	FILE         *fp;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+\fR
+.fi
+.SH DESCRIPTION
+\fBicon\fR image files are used by Sun Microsystem's SunView window
+system, NeWS window system, OpenWindows NeWS tool set, and X11 XView tool set
+for the storage of icons, cursors, fill patterns, and
+pieces of widgets (like button check-marks).
+.LP
+Sun \fBicon\fR files can be most easily generated using Sun's \fBiconedit\fR(1)
+icon and cursor editor.  The Sun operating system release includes
+a directory of standard icons, cursors, background patterns, and widget pieces
+in \fBicon\fR format in the directory \fB/usr/include/images\fR.
+See the Sun documentation set for details on how to use the tools dealing with
+Sun \fBicon\fR files.
+.SH "FILE RECOGNITION"
+Sun \fBicon\fR files are recognized by these filename suffixes: .icon, .cursor, and .pr.  
+.SH NOTES
+SDSC image library support of the Sun \fBicon\fR format does not require
+use of Sun libraries and contains no proprietary code.  Sun \fBicon\fR
+format handling
+is available on any machine for which the SDSC image library is available.
+.LP
+\fBicon\fR files contain a C-language array initialization starting
+with a comment header giving the
+width and height of the icon, followed by ASCII hex data giving the icon's
+bitmap.  For example,
+.RS 0.5i
+.LP
+.nf
+\fB/* Format_version=1, Width=16, Height=16, Depth=1, Valid_bits_per_item=16
+ */
+        0x0000,0x0000,0x0000,0x0000,0x6200,0x920C,0x1392,0x7250,
+        0x9252,0x7B8C,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000\fR
+.fi
+.RE
+.LP
+\fBFormat_version\fR must be 1; there are no other versions at this time.
+.LP
+\fBWidth\fR and \fBHeight\fR are the width and height of the icon, in
+pixels.  Sun's \fBiconedit\fR(1) tool requires that the icon width be
+a multiple of 16.  The SDSC image library similarly constrains the
+icon width for consistency with Sun tools and common usage. 
+.LP
+\fBDepth\fR must be 1; there are no other depths in common use.
+.LP
+\fBValid_bits_per_item\fR must be 16; there are no other sizes in
+common use. 
+.LP
+Icon pixel data is given immediately following the comment header.
+Monochrome pixels are packed 16 to an integer and written out as a string of
+4 hex characters.  Image data is given from left to right, top to bottom.
+Values are comma-separated.
+.SS "Reading Sun ICON files"
+The SDSC image library reads Sun \fBicon\fR bitmaps
+and maps them to \fBIMVFBMONO\fR VFBs without color lookup tables (CLTs).
+.SS "Writing Sun ICON files"
+The SDSC image library writes \fBIMVFBMONO\fR VFBs as Sun
+\fBicon\fR bitmaps.
+.LP
+Other image library VFB types are converted to \fBIMVFBMONO\fR VFBs prior
+to being written out.  See the \fBImFileWrite\fR(3IM) \fBman\fP page for
+details.
+.LP
+Image width and height fields in the comment header are based on the VFB's
+width and height.  Image width is rounded up to the next multiple of 16 bits.
+If padding is necessary, pad bits are set to 0 (white).
+.LP
+\fIWarning:\fR  The Sun icon editor \fBiconedit\fR(1) was designed to
+edit small bitmaps, like icons and cursors.  Consequently, it tends to
+have severe difficulty with large bitmaps, such as those that can be
+generated using the SDSC image library. 
+.if t .in -0.5i
+.if n .in -5
+.LP
+.SH ERRORS
+In addition to those listed for \fBImFileRead\fR(3IM),
+Sun \fBicon\fR file reading returns the following error codes: 
+.ne 4
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEMALLOC	Cannot allocate enough memory
+IMESYNTAX	Syntax error in parsing \fBicon\fR file
+IMESYS	System call error in read operation
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+In addition to those listed for \fBImFileWrite\fR(3IM),
+Sun \fBicon\fR file writing returns the following error codes: 
+.ne 2
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEMALLOC	Cannot allocate enough memory
+IMESYS	System call error in write operation
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH DOCUMENTATION
+\fBiconedit\fR(1) from the Sun OpenWindows \fBman\fP page set.
+.LP
+\fIPixrect Reference Manual\fR, Sun Microsystems.
+.SH SEE ALSO
+\fBImIntro\fR(3IM),
+\fBImErrNo\fR(3IM),
+\fBimconv\fR(1IM),
+\fBimfile\fR(1IM),
+\fBimformats\fR(1IM),
+\fBimico\fR(3IM),
+\fBimxbm\fR(3IM)
+.SH AUTHOR
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

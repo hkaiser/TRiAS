@@ -1,0 +1,157 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "toporela.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "dlgs.h"
+#include "resstrg.h"
+#include "toporel.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialogue
+//
+
+IDD_LAGEBESTIMMUNG DIALOG DISCARDABLE  12, 23, 241, 241
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Topologic relations of the object: %ld"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "   Test all marked objects",IDR_OBJEKTE,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,5,7,
+                    126,10
+    CONTROL         "   Test all objects of the object classes",IDR_KLASSEN,
+                    "Button",BS_AUTORADIOBUTTON | WS_TABSTOP,5,19,153,10
+    LISTBOX         IDL_IDENTIFIKATOREN,14,33,157,96,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_GROUP | WS_TABSTOP
+    GROUPBOX        " Show amount of objects ",-1,5,141,231,55,WS_GROUP
+    CONTROL         "   Objects situated completely inside",
+                    IDC_INNERHALB,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,
+                    154,221,10
+    CONTROL         "   Objects situated completely outside",
+                    IDC_AUSSERHALB,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,
+                    168,222,10
+    CONTROL         "   &Other objects",IDC_INNAUS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,12,182,222,10
+    DEFPUSHBUTTON   "&OK",IDOK,179,7,55,14,WS_GROUP
+    PUSHBUTTON      "&Cancel",IDCANCEL,179,33,55,14
+    PUSHBUTTON      "All classes",IDB_ALLEKLASSEN,179,115,55,14
+    GROUPBOX        " Description ",-1,5,201,231,35,WS_GROUP
+    LTEXT           "",IDT_KOMMENTAR,10,210,223,25
+END
+
+IDD_STATUS DIALOG DISCARDABLE  55, 75, 175, 72
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Topologic relations for object: %ld"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "There have been edited:",-1,5,8,108,8
+    CONTROL         "%3d%%",IDG_RELSTATUS,"GaugeBox32",0x2,5,24,165,16
+    PUSHBUTTON      "&Cancel",102,62,51,55,14
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "toporela.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""dlgs.h""\r\n"
+    "#include ""resstrg.h""\r\n"
+    "#include ""toporel.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""toporel.rcv""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LAGEBEST            "&Topologic relations ..."
+    IDS_OBJINN              "Objects situated inside"
+    IDS_OBJAUSS             "Objects situated outside"
+    IDS_OBJINNAUSS          "Other objects"
+    IDS_KOMMINN             "The objects to be tested are situated completely inside of the selected reference object."
+    IDS_KOMMAUSS            "The objects to be tested are situated completely outside of the selected reference object. They may touch."
+    IDS_KOMMINNAUSS         "The objects to be tested are situated inside as well as outside of the selected reference object."
+    IDS_NOINN               "No object is situated completely inside of the reference object."
+    IDS_NOAUSS              "No object is situated completely outside of the reference object."
+    IDS_NOINNAUSS           "No object is situated inside as well as outside."
+    IDS_LONGCLASSNAME       "Topologic relations"
+    IDS_GEOFEHL1            "There is a geometric error in the blinking object (object no. %ld). It cannot be used as a reference object for topologic relations."
+    IDS_GEOFEHL2            "There is a geometric error in the %ld object. Unable to determine the topologic relations for this object."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXEXTENSIONPROC    "DEXEXTENSIONPROC"
+    IDS_DEXXEXTENSIONPROC   "DEXXEXTENSIONPROC"
+    IDS_DEXNOTIFICATIONPROC "DEXNOTIFICATIONPROCEX"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "toporel.rcv"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

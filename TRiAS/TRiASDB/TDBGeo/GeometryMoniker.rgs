@@ -1,0 +1,24 @@
+HKCR
+{
+	TRiAS.MkGeometry.1 = s 'TRiAS GeometryMoniker'
+	{
+		CLSID = s '{AB41EB68-6218-43FD-B29F-DDF8A96AEEA1}'
+	}
+	TRiAS.MkGeometry = s 'TRiAS GeometryMoniker'
+	{
+		CLSID = s '{AB41EB68-6218-43FD-B29F-DDF8A96AEEA1}'
+		CurVer = s 'TRiAS.MkGeometry.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {AB41EB68-6218-43FD-B29F-DDF8A96AEEA1} = s 'TRiAS GeometryMoniker'
+		{
+			ProgID = s 'TRiAS.MkGeometry.1'
+			VersionIndependentProgID = s 'TRiAS.MkGeometry'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Both'
+			}
+		}
+	}
+}

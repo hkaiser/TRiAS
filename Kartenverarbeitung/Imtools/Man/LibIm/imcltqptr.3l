@@ -1,0 +1,132 @@
+
+
+
+IMCLTQPTR(3IM)         SDSC IMAGE LIBRARY          IMCLTQPTR(3IM)
+
+
+
+NAME
+     ImCltQPtr - query the pointer to a  particular  entry  in  a
+     color lookup table
+     ImCltQFirst - query the pointer to  the  first  entry  in  a
+     color lookup table
+     ImCltQLast - query the pointer to the last entry in a  color
+     lookup table
+     ImCltQNext - query a pointer to the next entry  in  a  color
+     lookup table
+     ImCltQPrev - query a pointer to  the  previous  entry  in  a
+     color lookup table
+     ImCltSInc - increment a pointer to point to the  next  entry
+     in a color lookup table
+     ImCltSDec - decrement a pointer to  point  to  the  previous
+     entry in a color lookup table
+
+SYNOPSIS
+     #include "im.h"
+
+     ImCltPtr ImCltQPtr( srcClt, i )
+          ImClt *srcClt ;
+          int i ;
+
+     ImCltPtr ImCltQFirst( srcClt )
+          ImClt *srcClt ;
+
+     ImCltPtr ImCltQLast( srcClt )
+          ImClt *srcClt ;
+
+     ImCltPtr ImCltQNext( srcClt, p )
+          ImClt *srcClt ;
+          ImCltPtr p ;
+
+     ImCltPtr ImCltQPrev( srcClt, p )
+          ImClt *srcClt ;
+          ImCltPtr p ;
+
+     void ImCltSInc( srcClt, p )
+          ImClt *srcClt ;
+          ImCltPtr p ;
+
+     void ImCltSDec( srcClt, p )
+          ImClt *srcClt ;
+          ImCltPtr p ;
+
+
+DESCRIPTION
+     These macros query and set pointers to  color  lookup  table
+     entries.
+
+     ImCltQPtr returns a pointer to the  _i-th  entry  in  _s_r_c_C_l_t.
+     Entries are numbered from 0 for the first entry.
+
+
+
+SDSC              Last change: August 19, 1992                  1
+
+
+
+
+
+
+IMCLTQPTR(3IM)         SDSC IMAGE LIBRARY          IMCLTQPTR(3IM)
+
+
+
+     ImCltQFirst returns a pointer to the first entry  in  _s_r_c_C_l_t
+     and is a synonym for ImCltQPtr( srcClt, 0 ).
+
+     ImCltQLast returns a pointer to the last entry in _s_r_c_C_l_t and
+     is  a synonym for ImCltQPtr( srcClt, ImCltQNColors( srcClt )
+     - 1 ).
+
+     ImCltQNext returns a pointer to the _s_r_c_C_l_t  entry  following
+     _p.
+
+     ImCltQPrev returns a pointer to the _s_r_c_C_l_t  entry  preceding
+     _p.
+
+     ImCltSInc increments the pointer _p to advance it to the next
+     entry  in  _s_r_c_C_l_t.   This  is  the  same  as p = ImCltQNext(
+     srcClt, p ).
+
+     ImCltSDec decrements the pointer _p to advance it to the pre-
+     vious  entry in _s_r_c_C_l_t.  This is the same as p = ImCltQPrev(
+     srcClt, p ).
+
+NOTES
+     Each of these are C macros.
+
+RETURNS
+     ImCltQPtr,   ImCltQFirst,   ImCltQLast,   ImCltQNext,    and
+     ImCltQPrev return a pointer to a color lookup table entry.
+
+     ImCltSInc and ImCltSDec return nothing.
+
+SEE ALSO
+     ImIntro (3IM), ImErrNo (3IM), ImVfbQFirst (3IM),  ImVfbQLast
+     (3IM),  ImVfbQNext (3IM), ImVfbQPrev (3IM), ImVfbQPtr (3IM),
+     ImVfbSDec (3IM), ImVfbSInc (3IM)
+
+AUTHOR
+     Mike Bailey
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2                 Last change: August 19, 1992               SDSC
+
+
+

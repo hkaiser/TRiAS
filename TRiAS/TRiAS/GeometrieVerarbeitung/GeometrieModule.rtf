@@ -1,0 +1,692 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033\deftab708{\fonttbl{\f0\fscript\fcharset0 Comic Sans MS;}{\f1\froman\fcharset0 Times New Roman;}{\f2\fswiss\fcharset0 Arial;}}
+{\colortbl ;\red255\green0\blue255;\red127\green127\blue127;\red0\green0\blue0;}
+{\*\generator Msftedit 5.41.15.1507;}\viewkind4\uc1\pard\box\brdrdb\brdrw15\brsp20 \qc\lang1031\b\f0\fs32 Ach, ist das ein herrliches Gef\'fchl, einen \cf1 F\cf0 ehler bereinigt zu haben.\b0\fs18\par
+\b\fs32 Im Universum etwas v\'f6llig \cf1 N\cf0 eues zu schaffen, ist auch erhebend.\b0\f1\fs18\par
+\pard\fs16\par
+\fs20\par
+\ul\fs28 Geometrie-Basis-DLL\ulnone\par
+\fs20\par
+\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl\ul\fs24 Datum/\par
+\pard\intbl\sa80 Version\cell\pard\intbl Datei\cell Routine\cell Art\cell Beschreibung\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl\ulnone\fs20 08.09.98\par
+\b\f2 2/12/006\ul\b0\f1\fs24\cell\ulnone\fs20 datbank.cxx\ul\fs24\cell\ulnone\fs20 FehlerhaftesObjekt\ul\fs24\cell\ulnone\fs20 F\cell Bereinigung des Indexfehlers bei Abfrage des Merkmals "Geometriefehler" \ul\fs24\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl\ulnone\fs20 08.09.98\par
+\b\f2 2/12/006\ul\b0\f1\fs24\cell\ulnone\fs20 geo_obj4.cxx\ul\fs24\cell\ulnone\fs20 isOffen\ul\fs24\cell\ulnone\fs20 N\cell eine Kontur mit <= 2 Punkten wird als nicht schlie\'dfbar eingestuft\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 09.09.98\par
+\b\f2 2/12/006\b0\f1\cell geo_obj4.cxx\cell TauschKante\cell N\cell Au\'dfenkontur und eine Innenkontur werden getauscht\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 10.09.98\par
+\b\f2 2/12/006\b0\f1\cell geo_obj4.cxx\cell isAussen\cell F\cell detailliertere Auswertung ob eine Innenkontur au\'dferhalb der Au\'dfenkontur liegt\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 10.09.98\par
+\b\f2 2/12/006\b0\f1\cell geo_obj4.cxx\cell isInnen\cell F\cell detailliertere Auswertung ob eine Kontur innerhalb einer Innenkontur liegt\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 11.09.98\par
+\b\f2 2/12/007\b0\f1\cell Clipping.cxx\cell MesserinselInnerhalb\cell F\cell auch wenn die zu schneidende this-Fl\'e4che keine Inseln hat, ist die pSFl-Insel pKont in CL abzulegen\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 11.09.98\par
+\b\f2 2/12/007\b0\f1\cell Clipping.cxx\cell MesserAusserhalb\cell F\cell der Fall, da\'df die Schnittergebnisse bei posLage == INNAUSS "au\'dferhalb" liegen sollen, wurde bisher \'fcbersehen\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 11.09.98\par
+\b\f2 2/12/007\b0\f1\cell Clipping.cxx\cell MesserAusserhalb\cell F\cell am Ende \'84return true\ldblquote  statt \'84return false\ldblquote\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 11.09.98\par
+\b\f2 2/12/007\b0\f1\cell geo_obj3.cxx,\par
+geo_obj4.cxx,\par
+geo_obj4.cxx,\par
+Clipping.cxx\cell SpezAddPunkt2,\par
+FlaechenAufbau,\par
+ZweiteFlaeche,\par
+TeilFlaechen2\cell F\cell der Parameter bMax f\'fcr Routine \'84EckeMitBeruehrung\ldblquote  wird detaillierter eingestellt\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 14.09.98\par
+\b\f2 2/12/007\b0\f1\cell datbank.cxx\cell WriteFeatureText\cell F\cell zu l\'f6schende Merkmale sind jetzt auch richtig gel\'f6scht\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 21.09.98\par
+\b\f2 2/12/008\b0\f1\cell objgeom.cxx\cell CursorInObject\cell F\cell Beim Objektverschieben kann jetzt auch ein Textobjekt das \'84Anfa\'dfobjekt\ldblquote  sein.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 21.09.98\par
+\b\f2 2/12/008\b0\f1\cell objgeom.cxx\cell CursorInPoint\cell N\cell Beim Objektverschieben erfolgt die Cursorumschaltung bei Punktobjekten schon innerhalb des Rechtecks, das durch die Punktsymbolgr\'f6\'dfe gebildet wird.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 26.09.98\par
+\b\f2 2/12/008\b0\f1\cell geo_obj3.cxx\cell isDoppel\cell N\cell Test, ob ich damit die vermaledeiten Rundungseffekte endlich in den Griff bekomme: Doppelte Punkte werden gel\'f6scht, wenn ihr Abstand mit \ul Maximum-Norm\ulnone  <= 1 ist (\b auch dann\b0 , wenn als Abstand 0 m vorgegeben sind)\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 02.10.98\par
+\b\f2 2/12/008\b0\f1\cell geo_obj3.cxx\par
+geo_obj4.cxx\cell isSelbInz\par
+isKontInz\cell F\cell Der Test auf Selbstinzidenz bzw. Konturinzidenz wird jetzt mit Epsilon\~=\~0 durchgef\'fchrt.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 07.10.98\par
+\b\f2 2/12/008\b0\f1\cell geo_obj2.cxx\cell EpsGleich (Epunkt...)\par
+EpsGleich (DoublePair...)\par
+EpsUngleich\cell F\cell Die Bedingung f\'fcr Epsilongleichheit mit euklidischer Norm wurde fehlerhaft getestet.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 08.10.98\par
+\b\f2 2/12/008\b0\f1\cell geokonst.hxx\cell\cell N\cell Die zul\'e4ssige Abweichung bei EpsGleich() bzw. EpsUngleich() wurde von 0,71 auf 0,75 erh\'f6ht.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 08.10.98\par
+\b\f2 2/12/008\b0\f1\cell geo_obj3.cxx\cell Aufbereitung2\cell F\cell Der return-Wert wird f\'fcr 3 Situationen auf \'84false\ldblquote  gesetzt:\par
+1. Die umschlie\'dfenden Rechtecke der beiden mit Aufbereitung2() verglichenen Objekte sind durchschnittsleer.\par
+2. Die Operation wurde durch den Anwender abgebrochen.\par
+3. Die Routine Aufbereitung() liefert \'84false\ldblquote  als return-Wert.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 12.10.98\par
+\b\f2 2/12/008\b0\f1\cell mark_obj.cxx\cell Position\cell F\cell Das in der Routine GemeinsamePunkte() beim Test auf Gleichheit zul\'e4ssige \'84Rauschen\ldblquote  mu\'df auch hier verwendet werden, wenn es um die Frage geht, ob zwei Strecken aufeinander liegen oder nicht; jedoch nur, wenn von vornherein klar ist, da\'df das Ergebnis \'84aufeinander liegend\ldblquote  nicht auftreten darf.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 13.10.98\par
+\b\f2 2/12/008\b0\f1\cell geokonst.hxx\cell\cell N\cell Die zul\'e4ssige Abweichung dGlEps bei EpsGleich() bzw. EpsUngleich() wurde von 0,75 auf 1,52 erh\'f6ht.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 13.10.98\par
+\b\f2 2/12/008\b0\f1\cell clipping.cxx\par
+\par
+geo_obj4.cxx\cell TeilFlaechen1\par
+TeilFlaechen2\par
+ContourUnion\cell F\cell Beim Abbruch der do-while-Schleife, mit der eine Fl\'e4che aufgebaut wird, wurde ein Spezialfall nicht ber\'fccksichtigt.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 15.10.98\par
+\b\f2 2/12/008\b0\f1\cell geo_obj3.cxx\cell isDoppel\cell N\cell Doppelte Punkte werden gel\'f6scht, wenn ihr Abstand mit euklidischer Norm <= 2.*dGlEps ist (\b auch dann\b0 , wenn als Abstand 0 m vorgegeben wurde).\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 15.10.98\par
+\b\f2 2/12/008\b0\f1\cell mark_obj.cxx\cell MarkierungModify2\cell F\cell Beim Test, ob der Mittelpunkt einer Strecke der Fl\'e4che A innerhalb oder au\'dferhalb der Fl\'e4che B liegt, werden die m\'f6glichen Effekte beim Runden von double auf KoOrd exakter ber\'fccksichtigt.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 15.10.98\par
+\b\f2 2/12/008\b0\f1\cell mark_obj.cxx\cell Position\cell F\cell Dem Aufruf der Routine Position_real() wird noch ein Epsilon hinzugef\'fcgt, um auf die m\'f6glichen Effekte beim Runden von double auf KoOrd besser eingehen zu k\'f6nnen.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 19.10.98\par
+\b\f2 2/12/008\b0\f1\cell geo_obj4.cxx\cell EnthaltenIn\cell F\cell Der Fall \'84Au\'dfenkontur der Fl\'e4che A liegt innerhalb der Au\'dfenkontur der Fl\'e4che B und eine Insel der Fl\'e4che B liegt innerhalb der Au\'dfenkontur der Fl\'e4che A\ldblquote  wurde unvollst\'e4ndig und damit fehlerhaft bewertet.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 19.10.98\par
+\b\f2 2/12/008\b0\f1\cell clipping.cxx\cell TeilFlaechen2\cell F\cell Beim Test, ob die evtl. aufzubauende Teilfl\'e4che innerhalb oder au\'dferhalb der schneidenden Kontur liegt, werden die m\'f6glichen Effekte beim Runden von double auf KoOrd exakter ber\'fccksichtigt.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 20.10.98\par
+\b\f2 2/12/008\b0\f1\cell geo_obj3.cxx\par
+\cell InneliegenderPunkt\cell F\cell Algorithmus wurde neu geschrieben, da er nicht alle F\'e4lle erfa\'dfte\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 20.10.98\par
+\b\f2 2/12/008\b0\f1\cell mark_obj.cxx\cell Position_real\cell F\cell Beim Test, ob ein Punkt auf einer Fl\'e4chenkontur liegt, wird das Epsilon von dREps auf dEps erh\'f6ht, um den Effekten beim Runden von double auf KoOrd entgegenzutreten.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 22.10.98\par
+\b\f2 2/12/008\b0\f1\cell datbank.cxx\cell ParentsUniqueIdents\cell N\cell Die UniqueIdents's der "Eltern"-Objekte werden an die neu gebildeten Objekte abspeichert.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 22.10.98\par
+\b\f2 2/12/008\b0\f1\cell geo_obj4.cxx\cell EnthaltenIn\cell F\cell Die Lage zweier Fl\'e4chen mit identischen Au\'dfenkonturen und jede mit mindestens einer Innenkontur wird jetzt ausgewertet \cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 28.10.98\par
+\b\f2 2/12/008\b0\f1\cell geo_obj4.cxx\cell InselZweiteFlaeche\cell F\cell Der Index der \'fcbergebenen Kontur mu\'df ebenfalls an diese Routine \'fcbergeben und ausgewertet werden.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 29.10.98\par
+\b\f2 2/12/008\b0\f1\cell clipping.cxx\par
+ \par
+\par
+\par
+geo_obj4.cxx\cell MesserinselInnerhalb\par
+MesserAusserhalb\par
+MesserAusserhalbWeiter\par
+InselZweiteFlaeche\par
+EnthaltenInWeiter\par
+ContourUnion\par
+ZweiteFlaeche\cell F\cell Beim Schneiden von Fl\'e4che mit Fl\'e4che wurden bisher nicht alle F\'e4lle erfa\'dft.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 03.11.98\par
+\b\f2 2/12/009\b0\f1\cell geo_obj3.cxx\cell Aufbereitung0\par
+Aufbereitung1\cell F\cell Der return-Wert wird f\'fcr 3 Situationen auf \'84false\ldblquote  gesetzt:\par
+1. Die Operation wurde durch den Anwender abgebrochen.\par
+2. Die Routine Aufbereitung() liefert \'84false\ldblquote  als return-Wert.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 03.11.98\par
+\b\f2 2/12/009\b0\f1\cell mark_obj.cxx\cell MarkierungModify2\par
+Position\cell F\cell Beim Weiterz\'e4hlen der St\'fctzpunktindizes innerhalb einer Fl\'e4chenkontur gab es am \'84Konturschlo\'df\ldblquote  einen Fehler.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 05.11.98\par
+\b\f2 2/12/009\b0\f1\cell geo_obj3.cxx\cell KantenLage\cell F\cell Der Fall \'84Kante liegt vollst\'e4ndig auf der Bezugskante und ist kleiner als diese\ldblquote  wurde nicht richtig diagnostiziert.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 05.11.98\par
+\b\f2 2/12/009\b0\f1\cell datbank.cxx\cell FehlerhaftesObjekt\cell F\cell Im Merkmal \'84Geometriefehler\ldblquote  wird nicht nur nach dem ersten auftretenden \lquote F\rquote  gesucht.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 06.11.98\par
+\b\f2 2/12/010\b0\f1\cell geo_obj3.cxx\cell Seitenwechsel\cell F\cell Eine Randpunktber\'fchrung wurde manchmal wegen der bekannten Effekte beim Runden von double auf KoOrd als Innenber\'fchrung angesehen.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 11.11.98\par
+\b\f2 2/12/010\b0\f1\cell geo_obj3.cxx\par
+geo_obj4.cxx\par
+clipping.cxx\par
+\par
+\cell SchnittKonturMitKontur\par
+FlaechenVereinigung1\par
+MesserInselnINN\par
+MesserInselnAUSS\par
+\pard\intbl\qj MesserInselnKONT\cell\pard\intbl F\cell Bei der Fl\'e4chenvereinigung bzw. Fl\'e4chenschnitt wurden nicht in allen F\'e4llen die schon vorhandenen Innenkonturen ber\'fccksichtigt.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 12.11.98\par
+\b\f2 2/12/010\b0\f1\cell datbank.cxx\cell WriteFeatureText\cell N\cell Ein zu langer Merkmalstext wurde auf short-L\'e4nge beschnitten.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 13.11.98\par
+\b\f2 2/12/010\b0\f1\cell geo_obj3.cxx\cell isSpitz\cell N\cell Die Bedingung f\'fcr eine Spitze wurden erweitert. Au\'dfer der Einhaltung eines Mindestwinkels zwischen den 2 Schenkel-Strecken m\'fcssen die beiden Basispunkte von dem jeweiligen anderen Schenkel einen Mindestabstand ausweisen.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 17.11.98\par
+\b\f2 2/12/010\b0\f1\cell datbank.cxx\cell MerkmaleKopieren\cell F\cell Wenn f\'fcr \'fcberhaupt noch kein DB-Objekt der UniqueIdent belegt ist, wurde der neue UniqueIdent -Text bisher auch nicht an das neue Objekt weggeschrieben.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 17.11.98\par
+\b\f2 2/12/010\b0\f1\cell geo_obj3.cxx\par
+geo_obj4.cxx\cell isSelbInz\par
+isKontInz\cell F\cell Die Korrektur vom 02.10.98 wird \b r\'fcckg\'e4ngig\b0  gemacht, d.h. der Test auf Selbstinzidenz bzw. Konturinzidenz wird wieder mit Epsilon\~>\~0 durchgef\'fchrt.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 17.12.98\par
+\b\f2 2/12/011\b0\f1\cell geo_obj3.cxx\cell isSelbInz\cell F\cell Wenn keine Selbstinzidenz diagnostiziert wurde, war der return-Wert bisher (unerkl\'e4rlicherweise) \'84true\ldblquote .\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 06.01.99\par
+\b\f2 2/12/011\b0\f1\cell mark_obj.hxx\cell EPunkt SP (long lInd)\cell F\cell Referenz (&) entfernt\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 12.01.99\par
+\b\f2 2/12/012\b0\f1\cell geo_obj3.cxx\cell isDoppel\cell F\cell Der f\'fcr Datenbankverh\'e4ltnisse vorgesehene Epsilonwert dEps wurde mit dem in Meter berechneten Abstand verglichen.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 14.01.99\par
+\b\f2 2/12/013\b0\f1\cell identlst.cxx\cell IdentListEntry\cell F\cell F\'fcr das Ausnullen eines Speicherbereiches mit memset() war die L\'e4ngenangabe verkehrt (wird jetzt nur noch in der Debug-Version gemacht).\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 14.01.99\par
+\b\f2 2/12/013\b0\f1\cell identlst.cxx\cell ~IdentListEntry\cell F\cell jetzt DELETE_VEC statt DELETE_OBJ\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 01.02.99\par
+\b\f2 2/12/015\b0\f1\cell datbank.cxx\cell IdentErmitteln\cell F\cell F\'fcr die Ermittlung des in der ComboBox selektierten Objektklassen-schl\'fcssels wurde statt mit char* mit c_str() gearbeitet, was die Beschreibung eines nicht allocierten Speicherbereiches zur Folge haben kann. \cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 03.02.99\par
+\b\f2 2/12/015\b0\f1\cell mark_obj.cxx\cell MarkINNERHALB\par
+MarkBERUEHR\cell F\cell Die Behandlung des Falls, da\'df der Mittelpunkt einer Strecke inner- bzw. au\'dferhalb einer Fl\'e4che liegen m\'fc\'dfte, die Diagnose aber \'84auf der Kontur\ldblquote  ergibt, wurde verbessert.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 05.02.99\par
+\b\f2 2/12/017\b0\f1\cell objgext.cxx\cell RectangleToDraw\cell F\cell F\'fcr hexadezimale Identifikatoren, die dezimal einen negativen Wert ergeben, wurden keine Visualisierungsinformationen ermittelt.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 08.02.99\par
+\b\f2 2/12/017\b0\f1\cell geo_obj4.cxx\cell InselnInnerhalb\cell F\cell Statt \'84Anzahl der Konturen\ldblquote  wurde \'84Gesamtanzahl der St\'fctzpunkte\ldblquote  abgefragt.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 09.02.99\par
+\b\f2 2/12/017\b0\f1\cell geo_obj4.cxx\cell InselnAmRand\par
+InselnInnerhalb\cell F\cell Das aus einer Schnittoperation hervorgegangene Zwischenergebnis wird vor weiteren Operationen auf \'84doppelte Punkte\ldblquote , \'84Kollinearit\'e4ten\ldblquote  und \'84Spitzen\ldblquote  untersucht, welche dann auch bereinigt werden. W\'fcrde die Bereinigung erst beim Einspeichern in die TRiAS-Datenbank erfolgen, entstehen manchmal neue Fehler (z.B. Konturinzidenzen, wenn in der Au\'dfenkontur, die \'84ganz nahe\ldblquote  an einer Innenkontur vorbei geht, jetzt erst die genannten Punkte gel\'f6scht werden).\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 02.03.99\par
+\b\f2 2/12/018\b0\f1\cell mark_obj.cxx\cell MarkINNERHALB\par
+MarkBERUEHR\cell F\cell Die Behandlung des Falls, da\'df der Mittelpunkt einer Strecke inner- bzw. au\'dferhalb einer Fl\'e4che liegen m\'fc\'dfte, die Diagnose aber \'84auf der Kontur\ldblquote  ergibt, wurde noch einmal verbessert.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 03.03.99\par
+\b\f2 2/12/019\b0\f1\cell mark_obj.cxx\cell Position\cell F\cell Die Behandlung des Falls, da\'df der Mittelpunkt einer Strecke inner- bzw. au\'dferhalb einer Fl\'e4che liegen m\'fc\'dfte, die Diagnose aber \'84auf der Kontur\ldblquote  ergibt, erfolgt nun an zentraler Stelle und damit hoffentlich in allen F\'e4llen.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 10.03.99\par
+\b\f2 2/12/019\b0\f1\cell objgext.cxx\par
+zeichnen.cxx\cell RectangleToDraw2\par
+PointSymbolSize\cell F\cell Der Fall, da\'df DEX_GetActiveScaling() \'84false\ldblquote  zur\'fcck liefert, wird jetzt ausgewertet.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 16.03.99\par
+\b\f2 2/12/022\b0\f1\cell clipping.cxx\par
+geo_obj4.cxx\cell InselZweiteFlaeche\par
+ContourUnion\cell F\cell Beim Schnitt zweier Fl\'e4chen, wobei sich eine Insel der einen Fl\'e4che mit \b zwei\b0  Inseln der anderen Fl\'e4che \'fcberlappt, wurde die Ergebnisinsel nicht richtig aufgebaut.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 23.03.99\par
+\b\f2 2/12/022\b0\f1\cell ErrorCorrection.cxx\cell DblPointCorrection\cell F\cell Wurde am \'84Schlo\'df\ldblquote  einer geschlossenen Kante bzw. einer Kontur ein Doppelpunkt bereinigt, war die Kante/Kontur in manchen F\'e4llen danach offen.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 24.03.99\par
+\b\f2 2/12/022\b0\f1\cell geo_obj3.cxx\cell Aufbereitung\cell N\cell Test auf doppelte Punkte \b zwischen 2 Kanten\b0 : Punkte der einen Kante, die mit einem Punkt der anderen Kante eps-gleich sind, werden jetzt auf diesen \'84anderen\ldblquote  Punkt gesetzt.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 31.03.99\par
+\b\f2 2/12/025\b0\f1\cell mark_obj.cxx\cell EinfIndex\cell F\cell Die Ermittlung des St\'fctzpunktindex, vor dem ein neuer Punkt einzuf\'fcgen ist, wurde vereinfacht, da es bei exakt senkrechten Strecken zu Fehlern kam.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 31.03.99\par
+\b\f2 2/12/025\b0\f1\cell geo_obj3.cxx\cell InneliegenderPunkt\cell F\cell In einem Sonderfall (\'dcberlappung beim Schnitt-Test) ist die Schleife um 1 zu weit gelaufen, und der y-Wert wurde falsch zur\'fcckgegeben.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 01.04.99\par
+\b\f2 2/12/025\b0\f1\cell strecke.cxx\cell LotStrecke\cell F\cell Korrektur vom 31.03.99 zur Ermittlung des St\'fctzpunktindex wurde \b r\'fcckg\'e4ngig\b0  gemacht. Daf\'fcr wurde in LotStrecke() beim Vergleich zweier double-Werte \'84Rauschen\ldblquote  zugelassen.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 08.04.99\par
+\b\f2 2/12/028\b0\f1\cell TopicalObjects.cpp\cell CursorForIslandAdd\cell F\cell Der Cursor wurde bei der nachtr\'e4glichen Hinzunahme einer Insel in den St\'fctzpunktmarkierungen nicht sauber umgeschaltet.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 08.04.99\par
+\b\f2 2/12/028\b0\f1\cell IslandAdd.cpp\cell StoreAreaWithNewIsland\cell F\cell Entstand bei der nachtr\'e4glichen Hinzunahme einer Insel ein Geometriefehler, wurde die Insel trotzt der Verneinung der Speicherfrage bisher nicht richtig gel\'f6scht.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 16.04.99\par
+\b\f2 2/12/028\b0\f1\cell geo_obj3.cxx\cell EKante::EnthaltenIn\cell F\cell Der Fall, da\'df eine Kante vollst\'e4ndig auf einer Innenkontur liegt, wurde bisher als \'84innerhalb\ldblquote  ausgewiesen.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 26.04.99\par
+\b\f2 2/12/028\b0\f1\cell ErrorCorrection.cxx\cell SpecialAngleRemove\cell F\cell Durch die Bereinigung eines \'84doppelte Punkte\ldblquote  kann eine \'84Spitze\ldblquote  entstehen, die es vorher nicht gab. Diese wird nun auch noch bereinigt.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 21.05.99\par
+\b\f2 2/12/029\b0\f1\cell Clipping.cxx\cell TeilKanten1\cell F\cell Die Zerlegung einer Kante durch eine andere Kante war besonders bei teilweiser \'dcberlappung beider Kanten nicht exakt.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 28.05.99\par
+\b\f2 2/12/030\b0\f1\par
+\cell geo_obj4.cxx\cell ContourUnion\cell F\cell Durch eine Korrektur am 16.03.99 wurden bei der Fl\'e4chenvereinigung Innenkonturen nicht mehr gebildet, die durch konkave Stellen an den Au\'dfenkonturen der beteiligten Fl\'e4chen entstehen.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 02.06.99\par
+\b\f2 2/12/032\b0\f1\cell geo_obj4.cxx\cell isAussen\cell F\cell Beim Test, ob eine Insel innerhalb oder au\'dferhalb der Au\'dfenkontur liegt, wird jetzt mit einer Epsilon-Genauigkeit gearbeitet, da bei dem Fall, da\'df der 1. St\'fctzpunkt der Insel \b ohne\b0  Grabpunkt auf der Au\'dfenkontur liegt, zu Fehlinterpretation f\'fchrte.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 06.07.99\par
+\b\f2 2/12/034\b0\f1\cell geo_obj4.cxx\cell AddInseln4\cell F\cell In dieser Routine fehlte der L\'f6schbefehl f\'fcr die i-te Insel.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 20.07.99\par
+\b\f2 2/12/035\b0\f1\cell datbank.cxx\cell FehlerhaftesObjekt\cell N\cell Test auf Geometriefehler bei schreibgesch\'fctzten Datenquellen bzw. Objektklassen\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 21.09.99\par
+\b\f2 2/12/038\b0\f1\cell selidlst.cxx\cell AddTypeString\par
+FillIdentsMSLB\par
+Finit\par
+CreateInstance\cell N\cell Die Anzeige schreibgesch\'fctzter Objektklassen wird von einem bool-Parameter abh\'e4ngig gemacht.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl 22.11.99\par
+\b 2/12/041\cell\b0 Registry.cxx\cell Ctor\cell N\cell Neuer Parameter im Konstruktor f\'fcr Zugriffsrechte auf zu \'f6ffnenden Registrykey. Zweiter Konstruktor f\'fcr \'82nur \'f6ffnen\rquote  eines Registrykeys.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl\lang2057 8.6.00\par
+\b 2/12/51\cell\b0 ErrorCorrection.cxx\cell AcuteAngleCorrection\cell\lang1031 N\cell Eine Spitze in einer Fl\'e4che mit genau 4 St\'fctzpunkten wird nicht mehr durch Wegschneiden der Spitze selbst, sondern durch Entfernen einer der beiden Basispunkte des Spitzendreieckes bereinigt. Dabei entsteht zwar eine entartete Fl\'e4che (Linie), selbige entspricht der Ausgangsgeometrie jedoch besser als ein kleines Dreieck in der Gegend der Basisstrecke des Spitzendreieckes.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl\lang2057 21.12.00\par
+\pard\intbl\qj\b 2/12/59\cell\pard\intbl\b0 Datbank.cxx\cell\lang1031 GetKurzText\cell F\cell Bein 32 Zeichen langen Kurztexten wurde das letzte Zeichen abgeschnitten\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2608\cellx4914\cellx5393\cellx11255\pard\intbl\lang2057 12.12.02\par
+\b 2/12/98\b0\cell Geo_obj3.cxx\cell\cf2\lang1031 isSelbInz\cf0\cell F\cell Am Anfang einer offenen Kante wurde die Selbstinzidenz  im Objektmerkmal \'84Geometriefehler\ldblquote  doppelt ausgewiesen.\cell\row\pard\par
+\par
+\ul\fs28 Erweiterung \'84Abstandsmessung\ldblquote\ulnone\fs20\par
+\par
+\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl\ul\fs24 Datum/\par
+\pard\intbl\sa80 Version\cell\pard\intbl Datei\cell Routine\cell Art\cell Beschreibung\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl\ulnone\fs20 02.02.99\par
+\b\f2 2/12/015\b0\f1\cell abstand.cxx\cell AbstandExtension\cell F\cell F\'fcr die Ermittlung des Namens der aktuellen Sicht wurde mit c_str() statt mit char* gearbeitet, was die Beschreibung eines nicht allocierten Speicherbereiches zur Folge haben kann.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 15.03.99\par
+\b\f2 2/12/022\b0\f1\cell abstand.cxx\cell ReadCoordPrecision\cell F\cell Der Fall, da\'df der ProjektHeader-Eintrag f\'fcr die Anzahl der Nachkommastellen leer ist, wurde bisher nicht ber\'fccksichtigt.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 07.05.99\par
+\b\f2 2/12/029\b0\f1\cell kilometr.cxx\cell StandardWerte\par
+ButtonClick\cell F\cell In geod\'e4tischen Datenbanken wurde der 1. und letzte Kilometrierungspunkt falsch gesetzt.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 08.06.99\par
+\b\f2 2/12/032\b0\f1\cell kilometr.cxx\cell ButtonClick\cell F\cell Der Button \'84Anfangs-/Endpunkt tauschen\ldblquote  hatte sich bisher nur auf die Anzeige im Dialog ausgewirkt, auf die eigentliche Kilometrierung nicht.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 16.09.99\par
+\b\f2 2/12/037\b0\f1\cell abstext.cxx\cell TeilKante\cell F\cell Wenn bei der Kilometrierung nach Abarbeitung aller St\'fctzpunkte nicht die vorgegebene Distanz erreicht wurde, wurde der letzte Kilometrierungspunkt verkehrt beschriftet.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 17.11.2000\par
+\b 2/12/056\cell\b0 Abstand.cxx\par
+Abstand.hxx\cell Lizensierung\cell N\cell Lizensierung hinzugef\'fcgt\cell\row\pard\par
+\par
+\ul\fs28 Erweiterung \'84Objektpufferung\ldblquote\ulnone\fs20\par
+\par
+\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl\ul\fs24 Datum/\par
+\pard\intbl\sa80 Version\cell\pard\intbl Datei\cell Routine\cell Art\cell Beschreibung\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl\ulnone\fs20 01.09.98\par
+\b\f2 2/12/006\ul\b0\f1\fs24\cell\ulnone\fs20 buffer.rc\ul\fs24\cell\cell\ulnone\fs20 F\cell Dezimalpunkt l\'e4\'dft sich jetzt auch bei Pufferbreite und Genauigkeit eingeben\ul\fs24\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl\ulnone\fs20 01.09.98\par
+\b\f2 2/12/006\b0\f1\cell buffer.cxx\cell PunktPuffer\ul\fs24\cell\ulnone\fs20 F\cell St\'fctzpunktanzahl f\'fcr Puffer um Punktobjekt ist nicht mehr konstant 180, sondern wird aus der eingegebenen Genauigkeit abgeleitet\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 08.09.98\par
+\b\f2 2/12/006\b0\f1\cell Buffering.cxx\cell BufferElement2,\par
+BufferElement3\cell F\cell Koordinatenfeld des Pufferelementes wird vollst\'e4ndig initialisiert\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 09.09.98\par
+\b\f2 2/12/006\b0\f1\cell Buffering.cxx\cell PlainModePositive,\par
+PlainModeNegative\cell F\cell um Rundungsfehlern entgegenzutreten, wird in das Pufferelement noch ein weiterer St\'fctzpunkt eingef\'fcgt\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 09.09.98\par
+\b\f2 2/12/006\b0\f1\cell buff_ein.cxx\cell StandardWerte\cell F\cell f\'fcr Punktobjekte werden die Varianten f\'fcr die Ausformung der konvexen Ecken \'84spitz\ldblquote  bzw. \'84flache\ldblquote  deaktiviert\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 09.09.98\par
+\b\f2 2/12/006\b0\f1\cell buff_ein.cxx,\par
+buffer.cxx,\par
+buffer.cxx,\par
+buffer.cxx\cell Parameter,\par
+PunktPuffer,\par
+KantenPuffer,\par
+FlaechenPuffer\cell N\cell die Eingabem\'f6glichkeit f\'fcr den Objektklassenschl\'fcssel wird deaktiviert; der Objektklassenschl\'fcssel wird jetzt automatisch erzeugt\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 14.09.98\par
+\b\f2 2/12/007\b0\f1\cell bufferext.cxx\cell WorkingBuffer_ONr\cell F\cell wird die Pufferfunktion \'fcber Interface gerufen, werden die Merkmale kopiert und ein UniqueIdent vergeben\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 15.09.98\par
+\b\f2 2/12/007\b0\f1\cell buff_ein.cxx\cell ButtonClick,\par
+VorigeEinstellung\cell N\cell Kombination flach-ringf\'f6rmig wird f\'fcr Fl\'e4chen und geschlossenen Linien zugelassen\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 27.10.98\par
+\b\f2 2/12/008\b0\f1\cell Buffering.cxx\cell PointBuffering\tab\cell F\cell Der Puffer um ein Punktobjekt lie\'df sich nicht mehr bilden.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 02.03.99\par
+\b\f2 2/12/018\b0\f1\cell Buffering.cxx\cell BufferElement1\par
+ArcModePositive\par
+ArcModeNegative\par
+ArcModeStart\par
+ArcModeStop\par
+KiteModePositive\par
+KiteModeNegative\par
+KiteModeStart\par
+KiteModeStop\par
+TipModePositive\par
+TipModeNegative\par
+TipModeStart\par
+TipModeStop\par
+PlainModePositive\par
+PlainModeNegative\par
+PlainModeStop\cell F\cell Pufferelemente werden vor der Fl\'e4chenvereinigung auf \'84doppelte Punkte\ldblquote  untersucht, welche dann auch bereinigt werden, weil sonst die Bildung der Au\'dfenkontur der Vereinigungsfl\'e4che nicht gelingt.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 12.03.99\par
+\b\f2 2/12/020\b0\f1\cell buffer.cxx\cell PufferBilden\par
+PunktPuffer\par
+KantenPuffer\par
+FlaechenPuffer\par
+Pufferbildung_Onr\par
+Pufferbildung_Geom\cell N\cell Vor\'fcbergehend werden f\'fcr die Pufferfl\'e4chen mit dem Objektklassenschl\'fcssel und damit auch mit der Visualisierung des zu puffernden Objektes versehen.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 09.07.99\par
+\b\f2 2/12/034\b0\f1\cell buffer.cxx\cell Vorarbeit\cell N\cell Neue Objektklassen f\'fcr Pufferzonen werden jetzt nicht mehr f\'fcr jedes einzelne Objekt gebildet, sondern nur f\'fcr jede Objektklasse der zu puffernden Objekte.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 20.07.99\par
+\b\f2 2/12/035\b0\f1\cell buffer.cxx\cell PufferBilden\cell N\cell Test auf Geometriefehler bei schreibgesch\'fctzten Datenquellen bzw. Objektklassen\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 28.07.99\par
+\b\f2 2/12/035\b0\f1\cell Buffering.cxx\cell LineBuffering\par
+AreaBuffering\par
+PlainModePositive\par
+PlainModeNegative\cell F\cell Bei der Pufferbildung werden Fl\'e4chenvereinigungen mit Fl\'e4chen durchgef\'fchrt, die gerade Ergebnis einer Fl\'e4chenvereinigung waren, d.h. mit Fl\'e4chen, die nicht aus dem Speicher geholt wurden. Deshalb k\'f6nne sie eventuell doppelte Punkte, Spitzen und Kollinearit\'e4ten besitzen, die vor der n\'e4chsten Fl\'e4chenvereinigung bereinigt werden.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 17.11.2000\par
+\b 2/12/056\cell\b0 Buffer.cxx\par
+Buffer.hxx\cell Lizensierung\cell N\cell Lizensierung hinzugef\'fcgt\cell\row\pard\par
+\par
+\ul\fs28 Erweiterung \'84Geometrie-Editierung\ldblquote\ulnone\fs20\par
+\par
+\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl\ul\fs24 Datum/\par
+\pard\intbl\sa80 Version\cell\pard\intbl Datei\cell Routine\cell Art\cell Beschreibung\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl\ulnone\fs20 01.09.98\par
+\b\f2 2/12/006\b0\f1\cell EditBaseDlg.cpp\cell ControlsSetting\cell F\cell Button \'84Gemeinsame Linie\ldblquote  wird f\'fcr Punktobjekte deaktiviert\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 18.09.98\par
+\b\f2 2/12/008\b0\f1\cell NewLine.cpp\par
+NewArea.cpp\par
+LineElongation.cpp\par
+AreaPartition.cpp\par
+IslandAdd.cpp\par
+VertexMove.cpp\par
+VertexAdd.cpp\cell GeoViewEvent\cell F\cell Die von der Maus nachgezogenen Linien werden beim Scrollen sauber gel\'f6scht und neu gezeichnet.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 18.09.98\par
+\b\f2 2/12/008\b0\f1\cell ObjectModifyFunc.cpp\cell ObjectsCut\cell N\cell einfache Selbstinzidenzen k\'f6nnen men\'fc-gesteuert bereinigt werden\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 30.10.98\par
+\b\f2 2/12/008\b0\f1\cell ObjectModifyFunc.cpp\cell VertexDelete\cell N\cell Vor L\'f6schen des \ul letzten\ulnone  St\'fctzpunktes wird noch eine Abfrage angezeigt, ob jetzt das \ul gesamte\ulnone  Objekt gel\'f6scht werden soll.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 30.10.98\par
+\b\f2 2/12/008\b0\f1\cell ObjectModifyFunc.cpp\cell ObjectsDelete\cell F\cell Nach dem L\'f6schen eines Objektes \'fcber Men\'fc wurde der Cursor nicht aktualisiert.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 02.11.98\par
+\b\f2 2/12/008\b0\f1\cell ObjectModifyFunc.cpp\cell ActualVertexDelete\cell N\cell Genauere Auswertung, ob beim L\'f6schen von St\'fctzpunkten der Objekttyp ge\'e4ndert wird bzw. Innenkonturen verschwinden\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 05.11.98\par
+\b\f2 2/12/009\b0\f1\cell ObjectModifyFunc.cpp\cell ManualVertexAdd\cell F\cell Dialog wurde nicht immer geschlossen.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 05.11.98\par
+\b\f2 2/12/009\b0\f1\cell ObjectModifyFunc.cpp\cell ActualVertexDelete\cell F\cell Bei einer geschlossenen Linie, die ein Dreieck bildet, lie\'df sich kein St\'fctzpunkt l\'f6schen.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 12.11.98\par
+\b\f2 2/12/010\b0\f1\cell ObjectModifyFunc.cpp\cell ActualVertexDelete\cell F\cell Wurde bei einer geschlossenen Linie der 1. St\'fctzpunkt gel\'f6scht, war die Linie danach offen.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 12.11.98\par
+\b\f2 2/12/010\b0\f1\cell ObjectModify.cpp\cell SectorDefine\cell F\cell Wenn bei einer geschlossenen Linie der 1. St\'fctzpunkt gel\'f6scht wurde, erfolgte die Berechnung des neu zu zeichnenden Rechtecks f\'fcr Undo nicht exakt.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 12.11.98\par
+\b\f2 2/12/010\b0\f1\cell GeoEditLib.cpp\par
+NewLine.cpp\par
+EditBaseDlg.cpp\par
+NewArea.cpp\cell IsCommonBorderAllowable\par
+NeueKante\par
+CommonBorderAtLine\par
+NeueFlaeche\cell F\cell Bei \ul geschlossenen\ulnone  Linien m\'fcssen f\'fcr die Funktion \'84Gemeinsame Linie\ldblquote  auch 3 (nicht nur 2) St\'fctzpunkte ausgew\'e4hlt werden.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 06.01.99\par
+\b\f2 2/12/011\b0\f1\cell NewPoint.cpp\par
+NewLine.cpp\par
+NewArea.cpp\par
+LineElongation.cpp\par
+IslandAdd.cpp\cell LeftDoubleClick\cell N\cell Die Editierung kann jetzt mit einem Doppelklick der linken Maustaste beendet werden. Dabei kommt der Dialog nur dann hoch, wenn in der Projekt-INI kein Identifikator abgespeichert ist.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 12.01.99\par
+\b\f2 2/12/012\b0\f1\cell ObjectModifyFunc.cpp\cell LineSplitting\cell N\cell Linienobjekte k\'f6nnen jetzt auch geteilt werden\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 19.01.99\par
+\b\f2 2/12/015\b0\f1\cell GeoEditLib.cpp\cell DigitNumerator\cell F\cell Beim Test, ob die im EditierDialog eingegebenen Koordinaten die richtige Stellenanzahl haben, werden vorangestellte Leerzeichen nicht mehr ber\'fccksichtigt.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 02.02.99\par
+\b\f2 2/12/015\b0\f1\cell InitExtension\cell GeoEdit.cpp\cell F\cell F\'fcr die Ermittlung des Namens der aktuellen Sicht wurde mit c_str() statt mit char* gearbeitet, was die Beschreibung eines nicht allocierten Speicherbereiches zur Folge haben kann.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 18.02.99\par
+\b\f2 2/12/017\b0\f1\cell EditBaseDlg.cpp\cell ListBoxClk\par
+ListBoxSel\par
+ControlsSetting\cell F\cell Der Test auf einen g\'fcltigen Identifikator wurde von \'84 < 0 \'84 auf  \'84\~== -1 || == 0 \ldblquote  ge\'e4ndert\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 22.02.99\par
+\b\f2 2/12/017\b0\f1\cell GeoEditLib.cpp\cell DialogPosition\cell F\cell Dialoge werden so positioniert, da\'df sie nicht mehr \'fcber das TRiAS-Hauptfenster hinausragen.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 10.03.99\par
+\b\f2 2/12/020\b0\f1\cell ObjectModify.cpp\par
+TopicalObjects.cpp\cell SectorToDraw\par
+GetMarkerSizeBS\cell F\cell Der Fall, da\'df DEX_GetActiveScaling() \'84false\ldblquote  zur\'fcck liefert, wird jetzt ausgewertet.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 17.03.99\par
+\b\f2 2/12/022\b0\f1\cell EditBaseDlg.cpp\cell CommonBorderAtArea\cell F\cell Wenn der gemeinsame Abschnitt am Konturschlo\'df beginnen und im mathematisch negativen Sinn verlaufen soll, entstand ein negativer Index.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 23.03.99\par
+\b\f2 2/12/022\b0\f1\cell CrossObject\par
+DesignDlg\par
+Designing\par
+DragCrossObject\par
+EnumObjektGeometrie\par
+FixPointsDlg\par
+RestrictCursor\par
+RestrictLine\par
+SingleDesignDlg\cell\cell N\cell Editierung auf Konstruktionshilfslinien\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 23.03.99\par
+\b\f2 2/12/022\b0\f1\cell NewLine.cpp\par
+NewArea.cpp\cell GeoViewEvent\cell N\cell Auch bei Ver\'e4nderung des Bildausschnittes wird das an der Mausspitze h\'e4ngende \'84Gummiband\ldblquote  exakt nachgef\'fchrt.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 26.03.99\par
+\b\f2 2/12/023\b0\f1\cell AreaPartition.cpp\cell AreaSplitting\cell N\cell Wenn beim Fl\'e4chenteilen die Erweiterung \'84Objektoperationen\ldblquote  nicht geladen werden kann, wird die Schnittlinie auf dem Bildschirm gel\'f6scht.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 29.03.99\par
+\b\f2 2/12/023\b0\f1\cell VertexMove.cpp\cell LeftMouseDown\par
+LeftMouseUp\cell F\cell Bei mehreren St\'fctzpunkten, deren Marker sich \'fcberlappen, die aber nicht exakt gleich sind, werden nur die St\'fctzpunkte verschoben, die exakt mit dem gegrabten Mausklick-Punkt \'fcbereinstimmen.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 30.03.99\par
+\b\f2 2/12/025\b0\f1\cell ObjectModifyFunc.cpp\cell LineSplitting\cell N\cell Die Ergebnisse der Linienteilung werden in einem Recherchefenster angezeigt.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 08.04.99\par
+\b\f2 2/12/028\b0\f1\cell NewLine.cpp\cell Grabing\cell F\cell Wurde gleich der 1. Punkt einer neu editierten Linie angegrabt, kam es durch eine Korrektur vom 26.03.99 zu einem Programmabsturz.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 14.04.99\par
+\b\f2 2/12/028\b0\f1\cell GeoEdit\par
+EditBaseDlg\par
+EditCoordDlg\cell\cell N\cell Neugestaltung der Pages des Editierdialogs\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 16.04.99\par
+\b\f2 2/12/028\b0\f1\cell EditCoordDlg.cpp\cell DeleteButtonAction\cell F\cell Beim L\'f6schen des letzten St\'fctzpunktes \'fcber den EditierDialog wird nun auch die Anzeige der Koordinaten aktualisiert.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 26.04.99\par
+\b\f2 2/12/028\b0\f1\cell RestrictLine.cpp\cell CursorToCircleCircle\cell F\cell Der Fall zweier identischer Kreise bei der Editierung auf Konstruktionshilfslinien wurde bisher fehlerhaft behandelt.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 29.04.99\par
+\b\f2 2/12/028\b0\f1\cell IslandAdd.cpp\cell BuildAndArea\cell F\cell Wurde eine Innenkontur bei mehreren Fl\'e4chen gleichzeitig hinzu genommen, kam es zu einem Absturz.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 04.05.99\par
+\b\f2 2/12/029\b0\f1\cell IntersectLineDlg.cpp\cell DeleteButtonAction\cell F\cell Nach Dr\'fccken des L\'f6schen-Buttons im Fl\'e4chenteilen-Dialog wird der Teilen-Button jetzt deaktiviert.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 27.05.99\par
+\b\f2 2/12/030\b0\f1\cell ObjectModify.cpp\cell ObjectModifyMenu\cell F\cell Linienverl\'e4ngerung und InselHinzunahme klappte seit 04.05.99 nicht mehr.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 07.06.99\b\f2 2/12/032\b0\f1\cell RestrictCursor.cpp\cell SetPoint\par
+UnDraw\cell F\cell Beim Editieren im DesignMode blieb beim Verlassen des Modes der Cursor stehen.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 08.06.99\par
+\b\f2 2/12/032\b0\f1\cell GeoEdit.cpp\cell ReactivateParkedOperation\cell F\cell Die 1. Hilfslinie wurde bisher durch den Dialog f\'fcr die 2. Hilfslinie teilweise gel\'f6scht.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 08.06.99\par
+\b\f2 2/12/032\b0\f1\cell NewLine.cpp\par
+NewArea.cpp\cell RightMouseUp\cell F\cell Beim Editieren von Linien bzw. Fl\'e4chen im DesignMode wurde bei Bet\'e4tigung der rechten Maustaste nicht (wie bei der linken Maustaste) der DesignMode verlassen.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 17.06.99\par
+\b\f2 2/12/034\b0\f1\cell GeoEditLib.cpp\cell DialogPosition\cell F\cell Wenn das TRiAS-Hauptfenster so weit verkleinert wurde, da\'df die H\'f6he kleiner als die H\'f6he des Editierdialogs wurde, konnte der Dialog oben \'fcber das TRiAS-Fenster hinaus ragen und somit mit der Maus nicht mehr anfa\'dfbar sein.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 17.06.99\par
+\b\f2 2/12/034\b0\f1\cell ObjectMove.cpp\cell RefreshTopObjects\cell F\cell Nachdem mehrere selektierte Objekte verschoben wurden, lie\'df sich ohne weitere Aktion nur noch \b eins\b0  der (jetzt mit neuen Objektnummern versehenen) selektierten Objekte verschieben.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 28.06.99\par
+\b\f2 2/12/034\b0\f1\cell ObjectMove.cpp\par
+ObjectModifyFunc.cpp\cell BuildMovedObjects\par
+SelfTouchCleaning\cell N\cell Beim Verschieben/ Kopieren von Objekten bzw. beim Aufl\'f6sen von Selbstinzidenzen werden \b alle\b0  Merkmale (auch die systeminternen) mit kopiert.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 29.06.99\par
+\b\f2 2/12/034\b0\f1\cell ObjectModify.cpp\cell LeftMouseDown\cell F\cell Kam bei dem Versuch, einen St\'fctzpunkt nur mit der Maus zu l\'f6schen, eine Fehlerausschrift, wurde der zugeh\'f6rige LeftMouseUp ignoriert. Deshalb wurde jetzt ein Pseudo-LeftMouseUp eingef\'fcgt.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 29.06.99\par
+\b\f2 2/12/034\b0\f1\cell DragMultiLine.cpp\cell ModStartPoints\cell F\cell Beim Scrollen w\'e4hrend der Neuerfassung konnte es zu Zeichenungenauigkeiten kommen.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 01.07.99\par
+\b\f2 2/12/034\b0\f1\cell VertexModDlg.cpp\cell SetPosition\cell N\cell Der Dialog f\'fcr die Modifizierung von St\'fctzpunktkoordinaten konnte in ung\'fcnstigen F\'e4llen teilweise au\'dferhalb des Bildschirms positioniert werden.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 15.07.99\par
+\b\f2 2/12/035\b0\f1\cell IslandAdd.cpp\cell RightMouseUp\par
+BuildAndArea\cell F\cell Wenn zu mehreren Fl\'e4chen gleichzeitig eine Insel hinzugef\'fcgt werden soll, wird f\'fcr den Cursor eine Begrenzungsfl\'e4che erzeugt. Diese Fl\'e4che wurde nicht mehr gel\'f6scht.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 19.07.99\par
+\b\f2 2/12/035\b0\f1\cell EditBaseDlg.cpp\cell ControlsSetting\cell N\cell F\'fcr Neueditierung werden nur die Objektklassen angeboten, f\'fcr die kein Schreibschutz besteht. F\'fcr Linienverl\'e4ngerung und Inselerg\'e4nzung werden nur die Objektklassen der Datenquellen der Ursprungsobjekte angeboten.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 19.07.99\par
+\b\f2 2/12/035\b0\f1\cell\pard\intbl\qj ObjectModify.cpp\cell\pard\intbl RefreshCursorForm\par
+LeftMouseDown\par
+RightMouseUp\cell N\cell kein Men\'fc und keine Cursorumschaltung bei recherchierten Objekten, die zu schreibgesch\'fctzten Datenquellen bzw. Objektklassen geh\'f6ren\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 20.07.99\par
+\b\f2 2/12/035\b0\f1\cell ObjectModify.cpp\cell ModObjSpeicherung\par
+MenuSelfTouch\par
+ObjectsCut\cell N\cell Test auf Geometriefehler bei schreibgesch\'fctzten Datenquellen bzw. Objektklassen\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 30.07.99\par
+\b\f2 2/12/035\b0\f1\cell ObjectModifyFunc.cpp\cell SelfTouchCleaning\cell N\cell Jetzt k\'f6nnen auch (bestimmte) Selbstinzidenzen bei Linien und bei Fl\'e4chen mit Inseln interaktiv bereinigt werden.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl\cell MakeRectangular.cpp\cell AdjustInsideContours\cell F\cell F\'fcr das Rechtwinkligmachen von Innenkonturen war der Startindex nicht initialisiert, was zu unerlaubt gro\'dfen Indizes f\'fchren konnte.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 8.02.00\par
+\b 2/12/042\cell\b0 ObjectModify.cpp\par
+ObjectModifyFunc.cpp\cell LineToArea\par
+AreaToLine\cell N\cell Geschlossene Linien zu Fl\'e4chen konvertieren bzw. Fl\'e4chen zu Linienobjekten aufbrechen\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 17.11.00\par
+\pard\intbl\qj\b 2/12/056\cell\pard\intbl\b0\cell Lizensierung\cell N\cell Lizensierung f\'fcr Designmode hinzugef\'fcgt\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx1451\cellx3577\cellx5988\cellx6487\cellx11941\pard\intbl 18.02.02\par
+\b 2/12/108\cell\b0 CommonBorder\cell\cell N\cell CommonBorder f\'fcr schon existierende Objekte\cell\row\pard\par
+\par
+\ul\fs28 Erweiterung \'84Geometrie-Bereinigung\ldblquote\ulnone\fs20\par
+\par
+\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl\ul\fs24 Datum/\par
+\pard\intbl\sa80 Version\cell\pard\intbl Datei\cell Routine\cell Art\cell Beschreibung\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl\ulnone\fs20 09.09.98\par
+\b\f2 2/12/006\b0\f1\cell geomtest.cxx\cell KonturTausch\cell N\cell neuer bereinigter Fehler: Austausch von Konturen\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 09.09.98\par
+\b\f2 2/12/006\b0\f1\cell entartet.cxx\cell Remove\cell N\cell Innenkonturen mit h\'f6chstens 2 St\'fctzpunkten werden gel\'f6scht\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 15.09.98\par
+\b\f2 2/12/008\b0\f1\cell badpunkt.cxx\cell ErrorCorrection\cell N\cell ung\'fcltige Koordinaten werden nicht mehr gel\'f6scht, sondern auf 0 bzw. MAXKOORD gesetzt\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 16.09.98\par
+\b\f2 2/12/008\b0\f1\cell offen.cxx\cell ErrorCorrection\cell F\cell offene Konturen von Objekten, die schon mit long-Koordinaten an GeoRein \'fcbergeben werden, werden zugezogen, indem der 1. Konturpunkt auf den letzten Konturpunkt gesetzt wird (gilt nicht als Korrektur)\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 17.09.98\par
+\b\f2 2/12/008\b0\f1\cell geomtest.cxx\cell GeoAnalyse (f\'fcr Fl\'e4che)\cell F\cell Eine entartete Innenkontur mit h\'f6chstens 2 St\'fctzpunkten wird jetzt automatisch gel\'f6scht\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 26.09.98\par
+\b\f2 2/12/008\b0\f1\cell geomtest.cxx\cell KonturTausch\cell F\cell beim Tausch einer Au\'dfen- mit einer Innenkontur wurde bisher nicht der Umlaufsinn beider Konturen gedreht\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 01.10.98\par
+\b\f2 2/12/008\b0\f1\cell spitze.cxx\cell ErrorCorrection\cell F\cell Wenn am Anfangs/Endpunkt einer geschlossenen Kante bzw. Kontur eine Spitze vorliegt, wurde bei einer urspr\'fcnglichen Konturl\'e4nge von 5 bisher nur der St\'fctzpunkt mit dem Index 0 gel\'f6scht, \ul nicht\ulnone  aber der koordinatengleiche St\'fctzpunkt mit dem (urspr\'fcnglichen ) Index 4\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 02.10.98\par
+\b\f2 2/12/008\b0\f1\cell spitze.cxx\cell ErrorCorrection\cell N\cell Die Bereinigung einer Spitze erfolgt i. d. R. nicht mehr durch L\'f6schen sondern durch Modifizieren des entsprechenden St\'fctzpunktes. Dazu wird von dem vorherigen bzw. nachfolgenden St\'fctzpunkt das Lot auf die l\'e4ngere der beiden Strecken, die die Spitze bilden, gef\'e4llt. Dies wird dann der modifizierte St\'fctzpunkt an der Spitze.\par
+Sonderfall: Die Spitze hat 0\'b0, dann wird wie bisher schlicht und einfach gel\'f6scht.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 06.10.98\par
+\b\f2 2/12/008\b0\f1\cell spitze.cxx\par
+kollinea.cxx\par
+doppunkt.cxx\par
+geomtest.cxx\cell ErrorCorrection\par
+\par
+\par
+ExtraTestClosedLine\cell F\cell verschiedene Ver\'e4nderungen bei der Korrektur der Geometriefehler \'84Spitze\ldblquote , \'84Kollinearit\'e4t\ldblquote  und \'84doppelter Punkt\ldblquote  am Anfangs/Endpunkt einer geschlossenen Kante bzw. Kontur\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 06.10.98\par
+\b\f2 2/12/008\b0\f1\cell entartet.cxx\cell CopyKonstruktor\cell F\cell Der neue Objekttyp wurde bisher nicht kopiert.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 07.10.98\par
+\b\f2 2/12/008\b0\f1\cell spitze.cxx\cell ErrorCorrection\cell F\cell Wenn eine Spitze mit 0\'b0 sich am Anfangs/Endpunkt einer geschlossenen Kante bzw. Kontur befindet, wurde bisher nur einer der beiden koordinatengleichen Punkte gel\'f6scht.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 19.10.98\par
+\b\f2 2/12/008\b0\f1\cell spitze.cxx\par
+kollinea.cxx\par
+doppunkt.cxx\cell ErrorCorrection\par
+\cell F\cell Vor der Korrektur der Geometriefehler \'84Spitze\ldblquote , \'84Kollinearit\'e4t\ldblquote  und \'84doppelter Punkt\ldblquote  am Anfangs/Endpunkt einer geschlossenen Kante bzw. Kontur noch testen, da\'df mehr als 2 St\'fctzpunkte vorhanden sind.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 02.11.98\par
+\b\f2 2/12/008\b0\f1\cell geomtest.cxx\cell KurzAnalyse\tab\cell N\cell Auf Entartungen wird mit \'c4nderung des Objekttypes reagiert.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 05.11.98\par
+\b\f2 2/12/009\b0\f1\cell georein.cxx\cell GeometryErrorToFeature\cell F\cell Nach \lquote F\rquote  wird nicht nur an der 1. Position des Analysetextes gesucht.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 16.11.98\par
+\b\f2 2/12/010\b0\f1\cell geomtest.cxx\cell GeometriePutzen\cell F\cell Die Geometriedaten wurden fehlerhaft an GeometrieCheck() weitergereicht. Au\'dferdem fehlte piInterlockedDecrement().\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 03.12.98\par
+\b\f2 2/12/011\b0\f1\cell spitze.cxx\cell ErrorCorrection\cell F\cell Bei einer Spitze am Anfangs-/Endpunkt einer geschlossenen Kante wurde beim L\'f6schen des 2. Punktes ein zu gro\'dfer Index gew\'e4hlt.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 04.01.99\par
+\b\f2 2/12/011\b0\f1\cell geomtest.cxx\cell GeometriePutzen\cell F\cell Der Pointer f\'fcr die x-Koordinaten von pIOG wurde verkehrt (u.z. wie f\'fcr y-Koordinaten) gesetzt.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 21.01.99\par
+\b\f2 2/12/015\b0\f1\cell geomtest.cxx\cell ExtraTestClosedLine\cell F\cell Nach der Bereinigung einer Spitze am Anfangs/Endpunkt einer geschlossenen Kante bzw. Kontur wurde das angrenzende St\'fctzpunktpaar (0, letzter Index) statt das andere angrenzende St\'fctzpunktpaar (0, 1) auf \'84doppelter Punkt\ldblquote  getestet.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 28.07.99\par
+\b\f2 2/12/035\b0\f1\cell greinext.cxx\cell ReducedGeometryCleaning\cell N\cell Eine neue Interface-Funktion wird bereitgestellt, die eine eingeschr\'e4nkte Bereinigung von Geometriefehlern an Linien- bzw. Fl\'e4chenobjekten erm\'f6glicht.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 22.09.99\par
+\b\f2 2/12/039\b0\f1\cell geomtest.cxx\cell GeometrieAnalysieren\cell F\cell In der switch-Anweisung haben f\'fcr Linie bzw. Fl\'e4che die break-Befehle gefehlt.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 08.06.00\par
+\lang2057\b 2/12/51\cell\b0 Geomtest.cxx\cell ExtraTestClosedLine\cell\lang1031 F\cell Wenn nach Bereinigung einer Fl\'e4che selbige zu einer Linie entartet ist, dann wurde bisher nicht getestet, ob diese Linie evtl. zu einem Punkt entartet sein k\'f6nnte. Die entartete Linie wurde gespeichert.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 17.12.02\par
+\b 2/12/98\cell\lang2057\b0\cell\cf2\lang1031 EndLoopCorrection\par
+IsLoopLarge\cf0\lang2057\cell\lang1031 N\cell Beim Import werden unter bestimmten Bedingungen Schleifen, die sich am Anfang bzw. Ende von Kanten befinden, als separate Objekte abgetrennt.\cell\row\pard\par
+\par
+\ul\fs28 Erweiterung \'84Gitterbildung\ldblquote\ulnone\fs20\par
+\par
+\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl\ul\fs24 Datum/\par
+\pard\intbl\sa80 Version\cell\pard\intbl Datei\cell Routine\cell Art\cell Beschreibung\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl\ulnone\fs20 20.07.99\par
+\b\f2 2/12/035\b0\f1\cell Gitter.cxx\cell FlaechenRaster\cell N\cell Test auf Geometriefehler bei schreibgesch\'fctzten Datenquellen bzw. Objektklassen\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl\cell\cell\cell\cell\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl\cell\cell\cell\cell\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl\cell\cell\cell\cell\cell\row\pard\par
+\par
+\ul\fs28 Erweiterung \'84Objektoperationen\ldblquote\ulnone\fs20\par
+\par
+\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2958\cellx5188\cellx5651\cellx11407\pard\intbl\ul\fs24 Datum/\par
+\pard\intbl\sa80 Version\cell\pard\intbl Datei\cell Routine\cell Art\cell Beschreibung\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2958\cellx5188\cellx5651\cellx11407\pard\intbl\ulnone\fs20 30.09.98\par
+\b\f2 2/12/008\b0\f1\cell ObjOper.cxx\cell Notification\cell F\cell Wird ein Projekt geschlossen (die Erweiterung jedoch nicht), mu\'df der Laufindex f\'fcr das Feld, das die Objektnummern der neu erzeugten Objekte enth\'e4lt, r\'fcckgesetzt werden. \cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2958\cellx5188\cellx5651\cellx11407\pard\intbl 22.10.98\par
+\b\f2 2/12/008\b0\f1\cell ObjOper.cxx\cell CopyFeatures\cell N\cell Die UniqueIdents's der "Eltern"-Objekte werden an die neu gebildeten Objekte abspeichert.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2958\cellx5188\cellx5651\cellx11407\pard\intbl 28.10.98\par
+\b\f2 2/12/008\b0\f1\cell Operationen.cxx\cell EinzObjSchneiden\par
+EinzObjDurchschnitt\par
+EinzFlaeVereinigen\par
+EinzObjExklOder\cell N\cell Die Mitteilung, da\'df ein an der betreffenden Objektoperation beteiligtes Objekt einen Geometriefehler hat, wird bei Aufruf \'fcber Interface abgeschaltet.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2958\cellx5188\cellx5651\cellx11407\pard\intbl 28.10.98\par
+\b\f2 2/12/008\b0\f1\cell Operationen.cxx\par
+ObjOperI.cxx\cell AreaUnion\par
+VereinigungsFlaeche\cell F\cell Die Feststellung, da\'df eine Fl\'e4chenvereinigung erfolgt ist oder nicht, war bei Fl\'e4chen mit Geometriefehlern bisher nicht exakt.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2958\cellx5188\cellx5651\cellx11407\pard\intbl 17.11.98\par
+\b\f2 2/12/010\b0\f1\cell ObjOper.cxx\cell GiveAllMCodeOld\cell F\cell Wenn f\'fcr \'fcberhaupt noch kein DB-Objekt der UniqueIdent belegt ist, wurde der neue UniqueIdent -Text bisher auch nicht an das neue Objekt weggeschrieben.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2958\cellx5188\cellx5651\cellx11407\pard\intbl 16.04.99\par
+\b\f2 2/12/029\b0\f1\cell ObjOperI.cxx\cell SchnittObjObjekte_Geom\cell F\cell Beim L\'f6schen der Ursprungsobjekte nach dem Teilen von Linienobjekten kam es zu einem Programmabsturz.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2958\cellx5188\cellx5651\cellx11407\pard\intbl 31.05.99\par
+\b\f2 2/12/031\b0\f1\cell SetsOperatDlg.cpp\par
+SetsOperatPropAct.cpp\cell\cell N\cell Der Dialog f\'fcr die Auswahl der ObjektOperation wird neu gestaltet.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2958\cellx5188\cellx5651\cellx11407\pard\intbl 31.05.99\par
+\b\f2 2/12/031\b0\f1\cell Operationen.cxx\cell AreasUniting\cell N\cell Die Fl\'e4chenvereinigung ist nun auch f\'fcr \ul mehrere\ulnone  Fl\'e4chen m\'f6glich.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2958\cellx5188\cellx5651\cellx11407\pard\intbl 31.05.99\par
+\b\f2 2/12/031\b0\f1\cell ObjOperI.cxx\cell SchnittObjObjekte_ONr\cell N\cell Linienobjekte k\'f6nnen jetzt auch durch Punkte geteilt werden.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2958\cellx5188\cellx5651\cellx11407\pard\intbl 01.07.99\par
+\b\f2 2/12/034\b0\f1\cell Operationen.cxx\cell LinesUniting\cell F\cell Die Linienvereinigung  erfolgte nicht, wenn die Ergebnisobjekte nicht in der Datenquelle abgespeichert werden sollten, aus der das erste Ursprungsobjekt stammt\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2958\cellx5188\cellx5651\cellx11407\pard\intbl 01.07.99\par
+\b\f2 2/12/034\b0\f1\cell ObjOper.cxx\cell SetDefaultIdent\cell F\cell In dieser Routine wurde unn\'f6tigerweise auf das nicht initialisierte Feld f\'fcr die Objektnummern der neuen Objekte zugegriffen.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2958\cellx5188\cellx5651\cellx11407\pard\intbl 20.07.99\par
+\b\f2 2/12/035\b0\f1\cell ObjOperI.cxx\par
+Operationen.cxx\cell Verschnitt\par
+AcceptanceTestExclOr\par
+EinzObjSchneiden\par
+EinzObjDurchschnitt\par
+EinzFlaeVereinigen\par
+EinzObjExklOder\cell N\cell Test auf Geometriefehler bei schreibgesch\'fctzten Datenquellen bzw. Objektklassen\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2958\cellx5188\cellx5651\cellx11407\pard\intbl 23.09.99\par
+\cell RegOperatPropAct.cpp\cell EndAction\cell F\cell Parameter des catch-Blockes war noch ein HRESULT-Wert\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2958\cellx5188\cellx5651\cellx11407\pard\intbl 06.10.99\par
+\cell ObjOper.cxx\cell MenuCommand\par
+FensterAlteObjekte\cell F\cell F\'fcr das L\'f6schen der originalen und neu erzeugten Objekte bzw. die Anzeige der originalen Objekte hat sich eine Korrektur des Parameters notwendig gemacht, der die Anzahl der betreffenden Objekte beinhaltet.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx2958\cellx5188\cellx5573\cellx11329\pard\intbl 06.10.99\par
+\cell ObjOperI.cxx\cell Verschnitt\cell N\cell\pard\intbl\li89 Beim Verschnitt werden nicht mehr die Originalobjekte in die Ergebnismenge \'fcbernommen, die sich mit keinem anderen Objekt ber\'fchren, weil sonst beim L\'f6schen der neu erzeugten Objekte auch diese mit gel\'f6scht w\'fcrden; die Konsequenz ist: f\'fcr eine nachfolgende Fl\'e4chenvereinigung m\'fc\'dften erst die Objekte gel\'f6scht werden, die gesplittet wurden, damit jetzt nur noch die Splittergebnisse und diejenigen Objekte, die sich mit keinem anderen Objete ber\'fchren, \'fcbrig bleiben.\cell\row\trowd\trgaph71\trleft-71\trpaddl71\trpaddr71\trpaddfl3\trpaddfr3
+\cellx850\cellx3103\cellx5255\cellx5613\cellx11369\pard\intbl\cell\cell\cell N\cell\pard\intbl\li49 Die Pages \'84Liniensplitten\ldblquote  und \'84Fl\'e4chenbildung\ldblquote  wurden neu hinzugenommen.\cell\row\trowd\trgaph70\trleft-71\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx3040\cellx5255\cellx5753\cellx11849\pard\intbl 20.11.99\par
+\b 2/12/041\cell\b0 AreaBuildPropAct.cpp\par
+LineSplitPropAct.cpp\par
+SetsOperatPropAct.cpp\par
+RegOperatPropAct.cpp\cell FinalRelease\cell F\cell DEX_ExternalLoadExtensionEx durch DEX_ExternalUnLoadExtensionEx ersetzt\cell\row\trowd\trgaph70\trleft-71\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 8.02.00\par
+\b 2/12/042\cell\b0 ObjOper.cxx\cell AcceptanceTestObjOper\cell F\cell Menupunkt \lquote Objektoperationen ausw\'e4hlen war auch bei einer selektierten geschlossenen Linie grau, obwohl in diesem Fall eine Maschenbildung durchaus sinnvoll ist\cell\row\trowd\trgaph70\trleft-71\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 9.02.00\par
+\b 2/12/043\cell\b0 ObjOper.cxx\cell MenuInit\cell F\cell Menupunkte werden nur noch dann beachtet, wenn wirklich das Menu der Erweiterung aufgeklappt wird. Bei gro\'dfer Objektanzahl entsteht ansonsten merkliche Verz\'f6gerung\cell\row\trowd\trgaph70\trleft-71\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 1.08.00\par
+\b 2/12/053\cell\b0 ObjOper.cxx\cell ClipListeAnTRiAS\cell F\cell Wenn mehrere Objekte in verschiedenen Datenquellen erzeugt werden sollten, dann kamen nur die Objekte der Datenquelle des ersten erfolgreich erzeugten Objektes richtig an.\cell\row\trowd\trgaph70\trleft-71\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 17.11.2000\par
+\b 2/12/056\cell\b0\cell Lizensierung\cell N\cell Lizensierung hinzugef\'fcgt\cell\row\pard\par
+\par
+\par
+\ul\fs28 Erweiterung \'84Topologische Relationen\ldblquote\ulnone\par
+\fs20\par
+\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl\ul\fs24 Datum/\par
+\pard\intbl\sa80 Version\cell\pard\intbl Datei\cell Routine\cell Art\cell Beschreibung\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl\ulnone\fs20 23.09.98\par
+\b\f2 2/12/008\b0\f1\cell toporel.cxx\cell RelationObjObj_Geom\cell F\cell Die \'fcbergebenen ObjektGeometrien m\'fcssen keine echten DB-Objekte sein. In diesem Fall haben sie auch keine Objektnummer und der Test auf die Belegung des Merkmals \'84Geometriefehler\ldblquote  entf\'e4llt.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 25.09.98\par
+\b\f2 2/12/008\b0\f1\cell toporel.cxx\cell ObjekteInKlassen\cell F\cell Wenn mehrere Objektklassen im Dialog selektiert wurden, wurde nur die Objektanzahl der letzten Objektklasse zur\'fcckgegeben, nicht die Summe der Objektanzahlen aller selektierten Objektklassen.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 26.09.98\par
+\b\f2 2/12/008\b0\f1\cell toporel.cxx\cell EinzObjPruefen\cell F\cell Objekte mit Geometriefehler wurden (wenn es denn angefordert war) unabh\'e4ngig von ihrer Lage als \'84au\'dferhalb liegend\ldblquote  eingestuft\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 06.11.98\par
+\b\f2 2/12/010\b0\f1\cell toporel.cxx\cell Relationen\cell F\cell Der Fall \'84Ein linienf\'f6rmiges Bezugsobjekt liegt auf der Kontur einer Fl\'e4che\ldblquote  wurde nicht richtig ausgewertet.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 13.11.98\par
+\b\f2 2/12/010\b0\f1\cell toporel.cxx\cell RelationObjObj_Geom\cell N\cell Geometrieobjekte, die keine Objektnummer besitzen, werden einem gesonderten GeoRein-Test unterzogen.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 18.11.98\par
+\b\f2 2/12/010\b0\f1\cell toporel.cxx\cell ObjNrSpeichern\par
+EinzObjPruefen\cell N\cell F\'fcr Objekte mit unklarer Lage wurde noch ein separater Baum eingef\'fchrt, weil diese Objekte anderenfalls als \'84au\'dferhalb liegend\ldblquote  eingestuft werden.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 27.01.99\par
+\b\f2 2/12/015\b0\f1\cell toporel.cxx\cell ObjNrSpeichern\cell F\cell Durch eine Korrektur am 18.11.98 wurden alle \'84innerhalb\ldblquote  liegenden Objekte nicht mehr als solche erkannt.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 02.02.99\par
+\b\f2 2/12/015\b0\f1\cell toporel.cxx\cell AusserhalbObjNr\par
+ObjekteInSicht\cell F\cell F\'fcr die Ermittlung des Namens der aktuellen Sicht wurde mit c_str() statt mit char* gearbeitet, was zum Programmabsturz f\'fchrte (Beschreibung eines nicht allocierten Speicherbereiches).\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 28.04.99\par
+\b\f2 2/12/028\b0\f1\cell toporel.cxx\cell TRiAStoOGSRelations\cell N\cell Die 3 TRiAS-Relationen wurden durch die 8 OGS-Relationen ersetzt.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 20.05.99\par
+\b\f2 2/12/029\b0\f1\cell TopoRel.cxx\cell ObjNrSpeichern\cell F\cell Alle \'fcberdeckenden Objekte wurden gleichzeitig auch als \'fcberlappend ausgewiesen.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 09.06.99\par
+\b\f2 2/12/034\b0\f1\cell TopoRel.cxx\cell EinzObjPruefen\cell F\cell Bei Objekten, die au\'dferhalb des Bezugsobjektes aber innerhalb von dessen Container liegen, kam die Fortschrittsanzeige \'fcber 100%.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 20.07.99\par
+\b\f2 2/12/035\b0\f1\cell TopoRel.cxx\cell MenuCommand\par
+LageEinzObj\par
+EinzObjPruefen\par
+RelationObjObj_ONr\par
+RelationObjObj_Geom\cell N\cell Test auf Geometriefehler bei schreibgesch\'fctzten Datenquellen bzw. Objektklassen\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 21.09.99\par
+\b\f2 2/12/038\b0\f1\cell RelAusw.cxx\cell FInit\cell F\cell Schreibgesch\'fctzte Objektklassen wurden bisher nicht in der ListBox des Parameterdialoges angezeigt.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 22.09.99\par
+\b\f2 2/12/039\b0\f1\cell TopoRel.cxx\cell RelationObjObj_ONr\par
+RelationObjObj_Geom\cell F\cell Bei fehlerhafter Geometrie wurde nicht \'84REL_UNKLAR\ldblquote  zur\'fcck gegeben.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 22.09.99\par
+\b\f2 2/12/039\b0\f1\cell TopoExt.cxx\cell GetPointInsideArea_ONr\par
+GetPointInsideArea_Geom\cell N\cell Zwei neue Interface-Funktionen, die einen Punkt zur\'fcck liefern, der innerhalb einer Fl\'e4che liegt.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 23.01.03\par
+\b 2/12/101\cell\lang2057\b0 TopoRel\par
+TopoExt\par
+TopoRelFunctions\par
+TopoRelProptAct\par
+TopoRelDlg\par
+GeoComponentSequence\par
+TopologicalAnalysisMain\cell\cell\lang1031 N\cell Umstellen des Dialogs auf die Form der GeoKomponente\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 04.02.03\par
+\b 2/12/106\cell\lang2057\b0 TopoRelRefDlg\par
+NumTree\cell\cell\lang1031 N\cell Ber\'fccksichtigung mehrerer Bezugsobjekte\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 10.6.04\par
+\b 2/12/110\cell\lang2057\b0\cell\cell\lang1031 N\cell Objekte aus schreibgesch\'fctzten Datenquellen werden jetzt nicht mehr nur auf eventuelle Geometriefehler gepr\'fcft, sondern es wird zus\'e4tzlich versucht, diese Fehler im Speicher zu korrigieren, womit diese Objekte dann f\'fcr topologische Analysen verwendbar werden.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx851\cellx2349\cellx4747\cellx5245\cellx11340\pard\intbl 2.12.04\par
+\b 2/12/117\b0\cell\cell\cell F\cell Bei topologischeri relationen wurde teilweise ein internes Objekt nicht richtig erzeugt\cell\row\pard\par
+\par
+\ul\fs28 Erweiterung \'84Maschenbildung\ldblquote\ulnone\fs24   (nur f\'fcr TRiAS 3.0)\fs20\par
+\par
+\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl\ul\fs24 Datum/\par
+\pard\intbl\sa80 Version\cell\pard\intbl Datei\cell Routine\cell Art\cell Beschreibung\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl\ulnone\fs20 09.04.99\cell imaschen.cpp\cell LinesUnion\cell F\cell Der Fall, da\'df keine Objekte im Eingabestrom waren, wurde bisher nicht abgetestet und f\'fchrte zu einem Fehler.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 09.04.99\cell maschbil.cpp\cell CreateLines\cell N\cell Bei Abbruch der Abarbeitung durch den Anwender wird jetzt nicht mehr AfxThrowUserException() sondern FALSE zur\'fcckgegeben.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 13.04.99\cell progrsst.hpp\par
+progress.cpp\par
+maschbil.cpp\cell InitStatusDialog\par
+WasCanceled \par
+CreateLines\cell N\cell Im Progress-Indicator wird jetzt auch die Objektnummer angezeigt.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 16.06.99\cell tools.cpp\par
+maschbil.hpp\par
+maschbil.cpp\cell GetKurzText\par
+EnumMerkmaleProc\par
+OutputMerkmale\cell N\cell Sortierschl\'fcssel f\'fcr das Einsammeln der "Eltern"-Merkmale ist jetzt wegen der M\'f6glichkeit verschiedener Datenquellen \b nicht\b0  mehr der Merkmalscode, sondern der MerkmalsKurztext.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 17.06.99\cell maschbil.cpp\cell EnumMerkmaleProc\cell N\cell Der neu zu bildende Merkmalsinhalt wird am Anfang und am Ende mit dem Separator erg\'e4nzt, um beim Test, ob dieser Merkmalstext schon vorhanden ist, nicht durch "Untermengen"-Strings zu einer falschen Aussage zu kommen\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 18.06.99\cell maschbil.cpp\cell struct MerkmalInfos\cell N\cell Die Struktur MerkmalInfos wird um das ProjectHandle des neu erzeugten Objektes und einen bool-Wert (Vererbung aller "Eltern"-Merkmale oder nur des UniqueIdent) erweitert.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 18.06.99\cell maschbil.cpp\cell EnumMerkmaleProc\par
+CreateLines\par
+CreateMaschen\cell N\cell Auch wenn die "Eltern"-Merkmale an die neuen Objekte nicht vererbt werden sollen, werden die zumindestens die UniqueIdent\rquote s der \'84Eltern\ldblquote -Objekte in der CMerkmalsListe  gesammelt.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 22.06.99\cell maschbil.cpp\cell ImFangBereich\cell F\cell Durch die Konvertierungen long -> double, double -> long in TRiAS kann es zu kleinen Differenzen kommen. Deshalb werden auch dann, wenn als Toleranz 0 vorgegeben ist, Punkte noch als gleich angesehen, wenn sich deren x- bzw. y-Koordinaten h\'f6chstens um ein vorgegebenes Epsilon unterscheiden.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 22.06.99\cell maschbil.cpp\cell Community \par
+CanLinesUnion\cell N\cell Die \'dcberpr\'fcfung, ob sich 2 Kanten vereinigen lassen, wird versch\'e4rft, um den Test, ob die beiden Kanten im "Inneren" (d.h. ohne Beachtung der Endpunkte) eine Gemeinsamkeit haben; wenn ja, dann ist keine Vereinigung m\'f6glich.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 23.06.99\cell paramdlg.cpp maschbil.cpp\cell Init\par
+CreateLines \par
+CreateMaschen\cell N\cell Die Ermittlung des Merkmalskodes f\'fcr den UniqueIdent der ursp\'fcnglichen Objekte wird von Init() in paramdlg.cpp in die Routinen CreateLines() und CreateMaschen() in maschbil.cpp verlegt, weil erst dort das ben\'f6tigte ProjectHandle verf\'fcgbar ist.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 24.06.99\cell linvprp.cpp\cell EndAction\cell F\cell Der return-Wert der Routine GetEnumLONG() wurde bisher verkehrt ausgewertet.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 24.06.99\cell paramdlg.cpp\cell Init\cell N\cell Die default-Toleranz f\'fcr die Linienvereinigung wird auf 2 g\'fcltige Ziffern und h\'f6chstens 2 Kommastellen gerundet.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 25.06.99\cell paramdlg.cpp\cell SelectMarkObjects\cell F\cell Wenn keine neuen Objekte gebildet wurden, kam es bisher zu einem Fehler.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 01.07.99\cell maschbil.cpp\par
+objkante.cpp\par
+objkante.hpp\cell KantenDirectionOK\par
+CObjektKante Konstruktor\par
+ChangeDirection\cell F\cell Bisher wurden nicht immer alle m\'f6glichen Maschen gebildet, weil der Test der Durchlaufrichtung bei inneren Linien (die zweimal verbraucht werden k\'f6nnen) fehlerhaft war.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 21.09.99\par
+\cell maschbil.cpp\cell CanLinesUnion\cell F\cell Beim Test, ob sich zwei Kanten vereinigen lassen, fehlte bisher die Abfrage, ob mindestens eine der beiden Kanten geschlossen ist.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 23.09.99\cell maschbil.cpp\cell CreateLines\cell F\cell Die Abfrage, ob eine Vereinigung gelungen ist oder nicht, erfolgt jetzt \'fcber die Anzahl der Vereinigten Objekte, nicht mehr \'fcber die Objektnummer des (nicht vorhandenen) Ergebnisses. \cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 05.10.99\cell paramdlg.cpp\cell CalculateTolerances\cell F\cell Die Dangle-Toleranz wurde bisher zu etwas gro\'df berechnet.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 14.10.99\cell maschbil.cpp\cell Community\cell F\cell Beim Test, ob sich zwei Kanten vereinigen lassen, waren noch 2 bl\'f6de Indexfehler enthalten.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 14.10.99\cell Paramdlg.cpp\cell SetEnumLONG\cell F\cell Die Abfrage des R\'fcckkehrcodes der Routinen CreateMaschen() und CreateLines() war falsch; S_FALSE ist auch ein \'84guter\ldblquote  R\'fcckkehrcode.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 18.10.99\cell maschbil.cpp\cell Community\cell N\cell Beim Test, ob sich zwei Kanten vereinigen lassen, wird nicht auf absolute Gleichheit der Endpunkte, sondern nur auf eine eps-Gleichheit getestet.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 18.10.99\cell maschbil.cpp\cell UnionKanten\cell N\cell Der 1. Punkt der anzuh\'e4ngenden Kante wird nicht \'fcbernommen, da er im Normalfall gleich dem letzten der zu vergr\'f6\'dfernden Kante sein m\'fc\'dfte; sollten diese beiden Punkte nicht identisch sein, dann mu\'df ihr Abstand aber im Fangbereich liegen; wenn die beiden dazugeh\'f6rigen Strecken eine L\'fccke bilden, k\'f6nnte man beide Punkte \'fcbernehmen; um aber auch den Fall abzufangen, da\'df die beiden dazugeh\'f6rigen Strecken sich \'fcberschneiden, wird eben einer der beiden Punkte (n\'e4mlich der 1. Punkt der anzuh\'e4ngenden Kante) nicht \'fcbernommen.\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 17.11.00\par
+\b 2/12/056\cell\b0\cell Lizensierung\cell N\cell Lizensierung hinzugef\'fcgt\cell\row\trowd\trgaph70\trleft-70\trpaddl70\trpaddr70\trpaddfl3\trpaddfr3
+\cellx850\cellx2865\cellx5261\cellx5759\cellx11826\pard\intbl 19.12.02\par
+\b 2/12/99\cell\b0 GeoObj.cpp\cell\cf2 AdjustIslands\cf0\cell N\cell\cf3 Inseln sortieren nach dem Schlosspunkt der am weitesten links unten liegt\cf0\cell\row\pard\par
+}
+ 

@@ -1,0 +1,25 @@
+HKCR 
+{
+	TRiAS.CS_DatumTransformation.1 = s 'TRiAS® Koordinatensystem, Datumstransformation' 
+	{
+		CLSID = s '{E5AC8734-0769-11D2-8F5E-0060085FC1CE}'
+	}
+	TRiAS.CS_DatumTransformation = s 'TRiAS® Koordinatensystem, Datumstransformation' 
+	{
+		CurVer = s 'TRiAS.CS_DatumTransformation.1'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {E5AC8734-0769-11D2-8F5E-0060085FC1CE} = s 'TRiAS® Koordinatensystem, Datumstransformation' 
+		{
+			ProgID = s 'TRiAS.CS_DatumTransformation.1'
+			VersionIndependentProgID = s 'TRiAS.CS_DatumTransformation'
+			ForceRemove 'Programmable'
+			ToolboxBitmap32 = s '%MODULE%,1'
+			InprocServer32 = s '%MODULE%' 
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

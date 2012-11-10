@@ -1,0 +1,132 @@
+
+
+
+IMRLA(3IM)             SDSC IMAGE LIBRARY              IMRLA(3IM)
+
+
+
+NAME
+     imrla - Wavefront RLA and RLB file translation
+
+SYNOPSIS
+     #include <stdio.h>
+     #include "sdsc.h"
+     #include "im.h"
+
+     int ImFileRead( fd, "rla", flagsTable, dataTable )
+          int         fd;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileFRead( fp, "rla", flagsTable, dataTable )
+          FILE         *fp;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileWrite( fd, "rla", flagsTable, dataTable )
+          int         fd;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileFWrite( fp, "rla", flagsTable, dataTable )
+          FILE         *fp;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+
+DESCRIPTION
+     rla image files are  generated  by  Wavefront  Technologies,
+     Inc.,  software  such  as  image and tdv.  See the Wavefront
+     documentation for information on how to use these and  other
+     Wavefront programs.
+
+     rla is a subset of the newer  Wavefront  rlb  specification.
+     Programs that can read and write rlb files can also read and
+     write rla files.  The SDSC image  library  reader/writer  is
+     written to accommodate both types of files.
+
+FILE RECOGNITION
+     Wavefront rla files are recognized by the following filename
+     suffixes:  .rla and .rlb.
+
+NOTES
+     SDSC image library support of the Wavefront rla format  does
+     not  require  use  of  any  Wavefront  tools and contains no
+     proprietary code. Wavefront rla is available on any  machine
+     for which the SDSC image library is available.
+
+  Reading Wavefront RLA files
+     The  SDSC  image  library  reads  runlength-encoded   (RLE),
+
+
+
+SDSC              Last change: August 24, 1992                  1
+
+
+
+
+
+
+IMRLA(3IM)             SDSC IMAGE LIBRARY              IMRLA(3IM)
+
+
+
+     scanline-interlaced,  24-bit  RGB and 32-bit RGB-Alpha Wave-
+     front files and  maps  them  to  IMVFBRGB  and  (IMVFBRGB  |
+     IMVFBALPHA) VFBs without color lookup tables (CLTs).
+
+  Writing Wavefront RLA files
+     Image library IMVFBRGB VFBs with or without alpha planes are
+     written  to  runlength-encoded,  scanline-interlaced, 32-bit
+     RGB-Alpha Wavefront rla files.  If the incoming VFB does not
+     have  an  alpha  plane, outgoing image file alpha values are
+     all set to 255.  Noninterlaced  and  plane-interlaced  modes
+     are not supported by Wavefront rla files.
+
+     Other image library VFB types are converted to  (IMVFBRGB  |
+     IMVFBALPHA)   prior   to   being   written   out.   See  the
+     ImFileWrite(3IM) man page for details.
+
+     Note that the Wavefront rla specification requires the pres-
+     ence  of an alpha channel in an rla image file, yet at least
+     one of the Wavefront programs does not include  alpha  chan-
+     nels in the images that it writes to files.
+
+ERRORS
+     In addition to those listed for  ImFileRead(3IM),  Wavefront
+     rla file reading returns the following error codes:
+
+          IMEMALLOC   Cannot allocate enough memory
+          IMESYNTAX   Syntax error
+          IMESYS      System call error in read operation
+
+     In addition to those listed for ImFileWrite(3IM),  Wavefront
+     rla file writing returns the following error codes:
+
+          IMEMALLOC   Cannot allocate enough memory
+          IMESYS      System call error in write operation
+
+DOCUMENTATION
+     _W_a_v_e_f_r_o_n_t _R_L_A _S_p_e_c_i_f_i_c_a_t_i_o_n, Wavefront Technologies, Inc.
+
+SEE ALSO
+     ImIntro(3IM),   ImErrNo(3IM),   imconv(1IM),    imfile(1IM),
+     imformats(1IM)
+
+AUTHOR
+     T. Todd Elvins
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+2                 Last change: August 24, 1992               SDSC
+
+
+

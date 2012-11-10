@@ -1,0 +1,393 @@
+'\"t
+.TH BINREAD 3BIN "July 1990" "SDSC" "BINARY I/O"
+.SH NAME
+BinRead  -  read from a binary file
+.br
+BinFRead  -  read from a binary file
+.br
+BinSRead  -  read from a binary string
+.SH SYNOPSIS
+.if t \fB
+.nf
+#include "sdsc.h"
+
+extern int BinErrNo;
+
+int BinRead( fd, buf, type, nbytes, count )
+.in +0.5i
+int fd;
+? buf[ ];
+int type, nbytes, count;
+.in -0.5i
+
+int BinFRead( fp, buf, type, nbytes, count )
+.in +0.5i
+FILE *fp;
+? buf[ ];
+int type, nbytes, count;
+.in -0.5i
+
+int BinSRead( data, buf, type, nbytes, count )
+.in +0.5i
+char data[ ];
+? buf[ ];
+int type, nbytes, count;
+.in -0.5i
+.fi
+.if t \fR
+.SH DESCRIPTION
+\fIBinRead\fR, \fIBinFRead\fR, and
+\fIBinSRead\fR read binary data from a source,
+break it up into multiple \fInbyte\fR quantities, and return it in \fIbuf\fR.
+.LP
+\fIBinRead\fR reads from the open file or stream indicated by the UNIX
+file descriptor \fIfd\fR.
+.LP
+\fIBinFRead\fR reads from the open file or stream indicated by the UNIX
+buffered I/O \fIFILE\fR pointer \fIfp\fR.
+.LP
+\fIBinSRead\fR reads from the caller's character string
+\fIdata\fR.  \fIdata\fR is expected to contain raw binary data, possibly
+including NULLs, and other unprintable characters.
+.LP
+All calls read \fIcount\fR items, each of length
+\fInbytes\fR, into the caller's \fIbuf\fR array,
+declared as of type \fItype\fR.
+\fIbuf\fR is assumed to point to the first element of an array declared by
+the caller to be of sufficient length to hold all of the incoming data.
+.LP
+\fIcount\fR and \fInbytes\fR must both be greater than 0.
+.LP
+The known values of \fItype\fR may vary from site to site and may be found
+in the include file "bin.h" (automatically included by "sdsc.h").
+The following types are considered standard and should be available at
+all sites:
+.LP
+.in +0.5i
+.TS
+l l.
+\fItype\fR	\fBMeaning\fR
+BOOLEAN	boolean
+CHAR	signed character
+DOUBLE	double-precision floating-point
+FLOAT	single-precision floating-point
+INT	signed int
+INT16	signed 16-bit (or greater) integer
+INT32	signed 32-bit (or greater) integer
+INT64	signed 64-bit (or greater) integer
+INT8	signed 8-bit (or greater) integer
+LONG	signed long
+SHORT	signed short
+UCHAR	unsigned character
+UINT	unsigned int
+UINT16	unsigned 16-bit (or greater) integer
+UINT32	unsigned 32-bit (or greater) integer
+UINT64	unsigned 64-bit (or greater) integer
+UINT8	unsigned 8-bit (or greater) integer
+ULONG	unsigned long
+USHORT	unsigned short
+.TE
+.in -0.5i
+.LP
+INT64 and UINT64 are only available on systems supporting integer types of
+at least 64-bits in length, such as a CRAY.
+.ne 5
+.SH RETURNS
+\fIBinRead\fR, \fIBinFRead\fR, and \fIBinSRead\fR
+return the number of bytes read in.
+On an error, all calls return -1 and set the global \fIBinErrNo\fR to
+an error code indicating the cause of the error.
+The following error codes may be returned by the calls:
+.LP
+.IP "\fIBINECOUNT\fR = count cannot be <= 0"
+The \fIcount\fR argument was less than or equal to zero.
+.IP "\fIBINEFLOATUNSUPPORTED\fR = unsupported size for file float selection"
+The \fInbytes\fR argument selected a size of floating-point item to be read
+in that is undefined for the file floating-point format selected by
+\fIBinFloatFormat\fR(3BIN).
+.IP "\fIBINEMALLOC\fR = Cannot malloc more host memory"
+Dynamic allocation of host memory needed by the read call could not be
+completed.
+.IP "\fIBINENBYTES\fR = nbytes cannot be <= 0"
+The \fInbytes\fR argument was less than or equal to zero.
+.IP "\fIBINESYS\fR = System error:  see errno"
+A system call error occurred when a read was attempted on the file.
+The global \fIerrno\fR, set by UNIX system calls, contains an error code
+indicating the cause of the error (see \fIerrno\fR(2)).
+.IP "\fIBINETYPE\fR = Unknown type selection"
+The \fItype\fR argument did not indicate a type known by the binary I/O
+package.
+The include file "bin.h" includes a list of #defined constants for the names
+of the known types.
+.ne 5
+.SH NOTES
+Binary data files and streams are a compact and speedy
+way to store and transfer data.
+The binary format of a value can take fewer bytes to store than using the
+equivalent ASCII format.
+For instance, the number "32767" takes 16 bits to represent on a 2's complement
+integer machine.
+When written to a binary file or stream, the number can be stored in 2 bytes.
+The same number written to an ASCII file or stream requires 5
+bytes:  "3", "2", "7", "6", and "7".
+.LP
+While the UNIX \fIread\fR(2) and \fIwrite\fR(2) calls support reading and
+writing binary data, they do not create binary files that can be read in again
+on a machine with a different byte order or larger or smaller word size
+(without additional programing).
+The calls in the binary I/O package provide a portable means of reading and
+writing binary files and streams.
+Application code that calls \fIBinRead\fR to read in an array of 32-bit
+integers from a binary file remains unchanged whether being compiled for
+a SPARCstation, a VAX running VMS, or a CRAY X-MP.
+Differences in byte ordering, word sizes, floating-point formats,
+and structure field padding are handled by the binary I/O package.
+.LP
+The size (number of bytes) of an item in a binary file may differ from the
+size of the same item when in memory in a C variable.
+This is the case, for instance, when reading a 32-bit integer from
+a binary file into a CRAY's 64-bit \fIint\fR variable.
+.LP
+The \fItype\fR argument indicates the declared type of the caller's \fIbuf\fR
+array.
+From the type the read routines determine the number of bytes in \fIbuf\fR
+that are used for each data item read in.
+.LP
+The \fInbytes\fR argument indicates the number of bytes used \fBIN THE FILE\fR
+for the item being read in.
+This may be larger or smaller than the size of the item as stored in the
+\fIbuf\fR array.
+.LP
+.ne 5
+\fBInteger Types\fR
+.LP
+.RS 0.5i
+\fInbytes\fR need not be a multiple of 2 or of the word-size of the host.
+Reading in 3 byte or 11 byte integers is acceptable.
+.LP
+When \fInbytes\fR is smaller than the size of \fItype\fR, zero-padding and
+sign-extension (signed types only) occur as the data are placed into \fIbuf\fR.
+.LP
+When \fInbytes\fR is greater than the size of \fItype\fR, incoming data are
+truncated to the least-significant bits.
+If significant bits are lost due to the truncation, the error handling
+function nominated
+by \fIBinErrHandler\fR(3BIN) is called:
+.LP
+.RS 0.5i
+handler( fd, BINOPREAD, BINEINTEGERTRUNC, data, frombits, tobits )
+.RE
+.LP
+\fIfd\fR is the file's file descriptor.
+\fIdata\fR is \fIuchar\fR pointer to the array of bytes read from the
+file that represents the integer that is too large to be stored in the
+host's buffer.
+\fIfrombits\fR is the length in bits of the file integer, and
+\fItobits\fR is the length of an integer on the host.
+.RE
+.LP
+.ne 5
+\fBFloating-Point Types\fR
+.LP
+.RS 0.5i
+\fInbytes\fR is restricted to those sizes supported by the selected file
+floating-point format using \fIBinFloatFormat\fR(3BIN).
+For instance, IEEE floating-point supports only 4- and 8-byte lengths, so
+an \fInbytes\fR value of 5 would be illegal.
+When \fInbytes\fR is a legal size for the current floating-point
+format selection, the error \fIBINEFLOATUNSUPPORTED\fR is returned.
+.LP
+When the file's floating-point format selected by \fIBinFloatFormat\fR(3BIN)
+has a smaller exponent and mantissa than the host's floating-point format,
+zero padding of the exponent and mantissa occurs as the data is placed
+into \fIbuf\FR.
+.LP
+When the file's floating-point format has a larger mantissa than the host's
+format, the least-significant bits of the mantissa are silently truncated,
+causing a reduction in the accuracy of the number.
+.LP
+When the file's floating-point format has a larger exponent than the host's
+format, then the file's format may be able to represent floating-point
+numbers that are too large (overflow) or too small (underflow) for the host.
+The error handling function indicated by \fIBinErrHandler\fR(3BIN) is called
+.LP
+.RS 0.5i
+handler( fd, BINOPREAD, reason, data, frombits, tobits )
+.RE
+.LP
+where reason is \fIBINEFLOATOVERFLOW\fR or \fIBINEFLOATUNDERFLOW\fR.
+.LP
+\fIfd\fR is the file's file descriptor.
+\fIdata\fR is \fIuchar\fR pointer to the array of bytes read from the
+file that represents the float whose exponent is too large or small
+to be stored in the host's buffer.
+\fIfrombits\fR is the length in bits of the file float exponent,
+and \fItobits\fR is the length of a float's exponent on the host.
+.RE
+.LP
+If the programmer has not indicated an error handling function, the default
+handler prints a warning message to \fIstderr\fR.
+.LP
+To maintain portability of code written using the binary I/O package,
+\fBNEVER\fR use the C construct \fIsizeof()\fR to compute the \fInbytes\fR
+argument.
+If a 32-bit quantity is to be read in, pass a "4", not "sizeof(int)".
+The size of an \fIint\fR is only "4" on 32-bit machines.
+Such code does not work properly on a CRAY where integers are 64-bits long.
+.LP
+The byte order of data in the file may be selected by calling
+\fIBinByteOrder\fR(3BIN) prior to making read calls.
+If the file byte order differs from that expected by the program, then
+data read in will be incorrect.
+.LP
+Entire C structures may be read in using the \fIBinReadStruct\fR(3BIN)
+and \fIBinFReadStruct\fR(3BIN) calls.
+.ne 5
+.SH EXAMPLES
+.SS "Example 1"
+Read in an array of 6 32-bit integers from a binary file:
+.LP
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+int buf[6];
+int fd;
+
+BinRead( fd, buf, INT, 4, 6 );
+.in -0.5i
+.fi
+.LP
+The \fItype\fR argument is "INT" because the \fIbuf\fR array was declared
+as of type \fIint\fR.
+.LP
+The \fInbytes\fR argument is "4" to indicate that 4-byte quantities are to
+be read in from the file.
+.SS "Example 2"
+Read in an array of run-length-encoded pixel values where each encoded pixel
+is a 4-byte quantity consisting of a 1-byte count and one byte each of
+red (R), green (G), and blue (B).
+Expand each 4-byte pixel value into 4 integers.
+.LP
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+uint scanline[WIDTH][4];
+FILE *fp;
+
+BinFRead( fp, scanline, UINT, 1, WIDTH*4 );
+.in -0.5i
+.fi
+.LP
+The \fItype\fR is "INT", but \fInbytes\fR is only 1.
+Since \fInbytes\fR is less than the size of \fItype\fR (at least on non-8-bit
+machines), each byte read in will be zero-padded or sign-extended as it is
+stored into the next slot in the integer \fIscanline\fR array.
+.SS "Example 3"
+Read in an array of 64-bit integers and store them into an \fIint\fR array.
+.LP
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+int data[COUNT];
+int fd;
+
+BinRead( fd, data, INT, 8, COUNT );
+.in -0.5i
+.fi
+.LP
+The \fItype\fR is "INT" and \fInbytes\fR is 8 (64-bits).
+If the host represents \fIint\fRs in less than 64-bits, incoming data will
+be truncated to the least-significant bits.
+If significant bits are lost because of the truncation, the nominated
+error handler function will be called.
+.SS "Example 4"
+Read in a 2-byte magic number at the top of a file.
+If the magic number is "0xABCD", assume the file is in MBF (Most-significant
+Byte First) byte order.
+If the magic number is "0xDCBA", assume the file is in LBF (Least-significant
+Byte First) byte order.
+If the magic number is neither of these, issue an error.
+.LP
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+int magic;
+int fd;
+
+BinRead( fd, &magic, INT, 2, 1 );
+magic &= 0xFFFF;
+if ( magic == 0xABCD )
+	BinByteOrder( BINMBF );
+else if ( magic == 0xDCBA )
+	BinByteOrder( BINLBF );
+else
+	issue an error
+.in -0.5i
+.fi
+.LP
+Note that the byte order of the host is not an issue.
+The binary I/O package automatically converts from the file's byte
+order, as selected by the \fIBinByteOrder\fR(3BIN) calls, to the byte
+order of the host. 
+.SS "Example 5"
+Read in 3 IEEE single-precision (4-byte)
+floating-point numbers and save them into an array.
+.LP
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+float numbers[3];
+FILE *fp;
+
+BinFloatFormat( BINIEEE );
+BinFRead( fp, numbers, FLOAT, 4, 3 );
+.in -0.5i
+.fi
+.LP
+Note that the floating-point format of the host is not relevant.
+The IEEE single-precision values are converted to the host's format
+automatically.
+.ne 2
+.SS "Example 6"
+Use \fIread\fR(2) to read in an array of raw data.  Then use \fIBinSRead\fR
+to parse that raw data into 4 64-bit CRAY floating point values and store
+them into four double-precision floats in the current host's floating point
+format.
+.LP
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+double numbers[4];
+char   data[4*8];
+
+read( fd, data, 4 * 8 );
+BinFloatFormat( BINCRAY );
+BinSRead( data, numbers, DOUBLE, 8, 4 );
+.in -0.5i
+.fi
+.LP
+.SH "SEE ALSO"
+BinByteOrder(3BIN),
+BinErrorHandler(3BIN),
+BinFReadStruct(3BIN),
+BinFWrite(3BIN),
+BinFWriteStruct(3BIN),
+BinFloatFormat(3BIN),
+BinPError(3BIN),
+BinQByteOrder(3BIN),
+BinQFloatFormat(3BIN),
+BinQMachine(3BIN),
+BinReadStruct(3BIN),
+BinSWrite(3BIN),
+BinWrite(3BIN),
+BinWriteStruct(3BIN),
+errno(2),
+perror(3)
+.br
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

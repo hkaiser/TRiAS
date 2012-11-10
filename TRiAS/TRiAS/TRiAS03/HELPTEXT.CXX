@@ -1,0 +1,104 @@
+// Control, welches zur Anzeige eines Hilfetextes in Dialogfenstern 
+// eingesetzt werden kann
+// File: HELPTEXT.HXX
+
+#include "trias03p.hxx"
+
+#include <stdarg.h>
+
+#include "helptext.hxx"
+
+// Initialisierung, Konstruktor/Destruktor ------------------------------------
+EXPORT03 CHelpText :: CHelpText (pDialogWindow pW, ResID resID)
+		    : FixedText (pW, resID)
+{
+#if defined(_FORCE_LEGACY_CODE)
+	m_fFontChanged = false;
+	m_pFont = NULL;
+#endif // _FORCE_LEGACY_CODE
+	m_pBuff = NULL;
+}
+
+
+EXPORT03 CHelpText :: ~CHelpText (void)
+{
+	DELETE_OBJ (m_pBuff);
+#if defined(_FORCE_LEGACY_CODE)
+	if (m_fFontChanged) {
+		m_pFont = ChangeFont (m_pFont);
+		DELETE_OBJ (m_pFont);
+	}
+#endif // _FORCE_LEGACY_CODE
+}
+
+
+bool EXPORT03 CHelpText :: FInit (bool fChangeFont)
+{
+// Bufferbereich anlegen
+	m_pBuff = new char [_MAX_PATH];
+	if (m_pBuff == NULL)
+		return false;
+
+#if defined(_FORCE_LEGACY_CODE)
+	if (!fChangeFont) return true;
+
+// Font für BeschreibungsBox generieren
+ResString rsArial (IDS_ARIAL, 20);
+
+#if !defined(_TRIAS_OLDIMPLEMENTATION2)
+	m_pFont = new CVFont (Swiss, Dimension (0, -12), rsArial);
+#else
+	m_pFont = new Font (Swiss, Dimension (0, -12), rsArial);
+#endif //!defined(_TRIAS_OLDIMPLEMENTATION2)
+	if (m_pFont) {
+		m_pFont = ChangeFont (m_pFont);
+		m_fFontChanged = true;
+	}
+#endif // _FORCE_LEGACY_CODE
+
+	return true;
+}
+
+
+CHelpText * EXPORT03 CHelpText :: CreateInstance (pDialogWindow pW, ResID resID, 
+						  bool fChangeFont)
+{
+CHelpText *pHT = new CHelpText (pW, resID);
+
+	if (pHT == NULL || !pHT -> FInit (fChangeFont)) {
+		DELETE_OBJ (pHT);
+		return NULL;
+	}
+	
+return pHT;
+}
+
+
+// Eigentliche Funktionalität -------------------------------------------------
+// Setzt den BeschreibungsText entsprechend dem ResourceText ------------------
+void EXPORT03 CHelpText :: SetHelpText (ResID uiRes)
+{
+ResString rsT (uiRes, _MAX_PATH);
+
+	SetText (rsT.Addr());
+}
+
+
+void EXPORT03 CHelpText :: SetHelpTextV (ResID uiRes, ...)
+{
+	if (m_pBuff == NULL) {
+		SetHelpText (uiRes);
+		return;
+	}
+	
+ResString rsT (uiRes, _MAX_PATH);
+va_list vaArgs;
+
+	va_start (vaArgs, uiRes);
+	wvsprintf (m_pBuff, rsT.Addr(), vaArgs);	
+	va_end (vaArgs);
+	
+	SetText (m_pBuff);
+}
+
+

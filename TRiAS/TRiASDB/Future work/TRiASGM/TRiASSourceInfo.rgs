@@ -1,0 +1,24 @@
+HKCR
+{
+	TRiASGM.TRiASSourceInfo.1 = s 'TRiASSourceInfo Class'
+	{
+		CLSID = s '{2C9394B4-B038-11D1-859D-00600875138A}'
+	}
+	TRiASGM.TRiASSourceInfo = s 'TRiASSourceInfo Class'
+	{
+		CurVer = s 'TRiASGM.TRiASSourceInfo.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {2C9394B4-B038-11D1-859D-00600875138A} = s 'TRiASSourceInfo Class'
+		{
+			ProgID = s 'TRiASGM.TRiASSourceInfo.1'
+			VersionIndependentProgID = s 'TRiASGM.TRiASSourceInfo'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

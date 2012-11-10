@@ -1,0 +1,24 @@
+#!/bin/sh
+#
+#	Verify a single format
+#
+
+badfile=bad.ras
+
+tool=$1
+info=$2
+message=$3
+display=$4
+commandline=$5
+outfilename=$6
+tooldir=$7
+
+echo "		$tool : $info"
+
+$tooldir/$tool $commandline 
+if [ $? -ne 0 ] ; then echo "			Tool error."; 
+	cp $badfile $outfilename;
+	exit 1; fi
+
+exit 0
+

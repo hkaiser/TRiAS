@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiAS.ProgressIndicator.2 = s 'Allgemeine Statusanzeige'
+	{
+		CLSID = s '{07963819-3123-101C-BB62-00AA0018497C}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {07963819-3123-101C-BB62-00AA0018497C} = s 'Allgemeine Statusanzeige'
+		{
+			val AppID = s '{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}'
+			ProgID = s 'TRiAS.ProgressIndicator.2'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+}

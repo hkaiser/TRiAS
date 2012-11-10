@@ -1,0 +1,22 @@
+#define IDT_FACH01   1101
+#define IDT_FACH02   1102
+#define IDT_FACH03   1103
+#define IDT_FACH04   1104
+#define IDT_FACH05   1105
+#define IDT_FACH06   1106
+#define IDT_FACH07   1107
+#define IDT_FACH08   1108
+#define IDT_FACH09   1109
+#define IDT_FACH10   1110
+#define IDT_FACH11   1111
+#define IDT_FACH12   1112
+#define IDT_FACH13   1113
+#define IDT_FACH14   1114
+#define IDT_FACH15   1115
+#define IDT_FACH16   1116
+#define IDT_FACH17   1117
+#define IDT_FACH18   1118
+#define IDT_FACH19   1119
+#define IDT_FACH20   1120
+
+#define SCHRANK                     71

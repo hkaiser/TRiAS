@@ -1,0 +1,75 @@
+// $Header: $
+// Copyright© 1999-2002 Geopunkt GmbH & Co. KG, NL Potsdam, All rights reserved
+// Created: 03.06.2002 16:35:25
+//
+// @doc
+// @module VidCtrl.idl | IDL source for VidCtrl.ext
+
+// This file will be processed by the MIDL tool to
+// produce the type library (VidCtrl.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+///////////////////////////////////////////////////////////////////////////////
+// IHotSpot Interface
+[ 
+	object, 
+	uuid(9B5D5963-07BA-47CE-953B-AC390E414999), 
+	helpstring("IHotSpot Interface"),	
+	pointer_default(unique) 
+]
+interface IHotSpot : IUnknown
+{
+	[helpstring("method SetExtensionSite")] HRESULT SetExtensionSite(IUnknown *pIXtsn);
+	[helpstring("method DisconnectFromServer")] HRESULT DisconnectFromServer();
+	[helpstring("method RePaint")] HRESULT RePaint();
+	[helpstring("method SetPosition")] HRESULT SetPosition([in] double dX, [in] double dY);
+	[helpstring("method GetPosition")] HRESULT GetPosition([out] double *pdX, [out] double *pdY);
+};
+
+// IVideoControl Interface
+[ 
+	object, 
+	uuid(7CACF561-8EFA-45E3-9D14-82CE18C6E42C), 
+	helpstring("IVideoControl Interface"),	
+	pointer_default(unique) 
+]
+interface IVideoControl : IUnknown
+{
+		[helpstring("method TrackObject")] HRESULT TrackObject([in] INT_PTR hObject);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Typelibrary
+[
+	uuid(62A181BC-980E-41BC-8A49-3A1919EA7875),
+	version(1.0),
+	helpstring("VidCtrl 1.0 Type Library")
+]
+library VidCtrl
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+// der eigentliche TRiAS-Zusatzmodul
+	[
+		uuid(C5705659-D9BC-4687-8BCA-AE4D4153E6F1),
+		helpstring("VidCtrl Class")
+	]
+	coclass VidCtrl
+	{
+		[default] interface IUnknown;
+		interface IVideoControl;
+	};
+
+// HotSpot Class
+	[ 
+		uuid(E2FE47DC-85F7-473E-B8D4-9B6988DCA558), 
+		helpstring("HotSpot Object") 
+	]
+	coclass HotSpot
+	{
+		[default] interface IHotSpot;
+	};
+};

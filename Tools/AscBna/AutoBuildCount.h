@@ -1,0 +1,6 @@
+// 90
+#ifndef AUTOBUILDCOUNT_H
+#define AUTOBUILDCOUNT_H
+#define BUILDCOUNT_NUM 90
+#define BUILDCOUNT_STR "90"
+#endif

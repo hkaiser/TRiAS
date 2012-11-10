@@ -1,0 +1,60 @@
+REGEDIT
+
+; Registration information for the Trias application
+;
+; Type library:		trias.tlb		{8DE4E3C0-4D53-101B-AAE1-E7E7E7E7E7E7}
+; IDispatch*		Trias.Application	{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}
+; Interface:		_ITriasApp		{8DE4E3C3-4D53-101B-AAE1-E7E7E7E7E7E7}
+; DispInterface:	_DTriasApp		{8DE4E3C4-4D53-101B-AAE1-E7E7E7E7E7E7}
+;
+; DataTransferObject	CLSID_DataTransferObject	{CF883AF6-553F-101B-AAE1-E7E7E7E7E7E7}
+;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; registration info Trias.Application (defaults to Trias.Application.1)
+
+HKEY_CLASSES_ROOT\Trias.Application = OLE Automation TRiAS Application
+HKEY_CLASSES_ROOT\Trias.Application\CLSID = {8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; registration info Trias.Application.1
+
+HKEY_CLASSES_ROOT\Trias.Application.1 = OLE Automation TRiAS 1.30 Application
+HKEY_CLASSES_ROOT\Trias.Application.1\CLSID = {8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; registration info Trias 1.0
+
+HKEY_CLASSES_ROOT\CLSID\{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7} = IDispatch TriasApplication
+HKEY_CLASSES_ROOT\CLSID\{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}\ProgID = Trias.Application.1
+HKEY_CLASSES_ROOT\CLSID\{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}\VersionIndependentProgID = Trias.Application
+HKEY_CLASSES_ROOT\CLSID\{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}\LocalServer = c:\trias.mvc\trias\trias.exe /Automation
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; registration info CLSID_DataTransferObject
+HKEY_CLASSES_ROOT\TRiASDataTransferObject = TRiAS Data Transfer Object
+HKEY_CLASSES_ROOT\TRiASDataTransferObject\CLSID = {CF883AF6-553F-101B-AAE1-E7E7E7E7E7E7}
+HKEY_CLASSES_ROOT\CLSID\{CF883AF6-553F-101B-AAE1-E7E7E7E7E7E7} = TRiAS Data Transfer Object
+HKEY_CLASSES_ROOT\CLSID\{CF883AF6-553F-101B-AAE1-E7E7E7E7E7E7}\InprocServer = c:\trias.mvc\trias\trias03.dll
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; registration info Trias TypeLib
+
+HKEY_CLASSES_ROOT\TypeLib\{8DE4E3C0-4D53-101B-AAE1-E7E7E7E7E7E7}
+HKEY_CLASSES_ROOT\TypeLib\{8DE4E3C0-4D53-101B-AAE1-E7E7E7E7E7E7}\1.0 = OLE Automation Trias 1.0 Type Library
+HKEY_CLASSES_ROOT\TypeLib\{8DE4E3C0-4D53-101B-AAE1-E7E7E7E7E7E7}\1.0\HELPDIR =
+;Localized language is US english
+HKEY_CLASSES_ROOT\TypeLib\{8DE4E3C0-4D53-101B-AAE1-E7E7E7E7E7E7}\1.0\409\win16 = c:\trias.mvc\trias\triastlb.tlb
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; registration info TriasNotificationSink TypeLib
+
+HKEY_CLASSES_ROOT\TypeLib\{89C5F582-4E2B-101B-AAE1-E7E7E7E7E7E7}
+HKEY_CLASSES_ROOT\TypeLib\{89C5F582-4E2B-101B-AAE1-E7E7E7E7E7E7}\1.0 = OLE Automation Trias AdviseSink 1.0 Type Library
+HKEY_CLASSES_ROOT\TypeLib\{89C5F582-4E2B-101B-AAE1-E7E7E7E7E7E7}\1.0\HELPDIR =
+;Localized language is US english
+HKEY_CLASSES_ROOT\TypeLib\{89C5F582-4E2B-101B-AAE1-E7E7E7E7E7E7}\1.0\409\win16 = c:\trias.mvc\trias\triasnfy.tlb
+

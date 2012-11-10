@@ -1,0 +1,22 @@
+HKCR
+{
+	%PROGID% = s 'TRiAS GIS-Datenquelle'
+	{
+		CLSID = s '%CLSID%'
+		CurVer = s '%PROGID%.2'
+	}
+	%PROGID%.2 = s 'TRiAS 2.0 GIS-Datenquelle'
+	{
+		CLSID = s '%CLSID%'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove %CLSID% = s 'TRiAS 2.0 GIS-Datenquelle'
+		{
+			ProgID = s '%PROGID%.2'
+			VersionIndependentProgID = s '%PROGID%'
+			LocalServer32 = s '%TRIASMODULE%'
+			DefaultIcon = s '%TRIASMODULE%,4'
+		}
+	}
+}

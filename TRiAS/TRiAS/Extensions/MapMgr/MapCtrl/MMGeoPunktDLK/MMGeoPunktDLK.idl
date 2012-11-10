@@ -1,0 +1,39 @@
+// MMGeoPunktDLK.idl : IDL source for MMGeoPunktDLK.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (MMArcInf.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(DB6D3312-F001-44F0-924A-72BCC2C3CE72),
+	version(1.0),
+	helpstring("MMGeoPunktDLK 1.0 Type Library")
+]
+library MMGEOPUNKTDLKLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		object
+		, uuid(DB6D3311-F001-44F0-924A-72BCC2C3CE72)
+		, dual
+		, helpstring("IMapGeoPunktDLK Interface")
+		, pointer_default(unique)
+	]
+	interface IMapGeoPunktDLK : IDispatch
+	{
+	};
+
+	[
+		uuid(DB6D3310-F001-44F0-924A-72BCC2C3CE72),
+		helpstring("MapGeoPunktDLK Class")
+	]
+	coclass MapGeoPunktDLK
+	{
+		[default] interface IMapGeoPunktDLK;
+	};
+};

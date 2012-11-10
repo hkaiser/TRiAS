@@ -1,0 +1,920 @@
+' $Header: $
+' Copyright© 1999 TRiAS GmbH Potsdam, All rights reserved
+' Created: 16.06.99 10:45:32 
+'
+' @doc
+' @module CopyObj.Ebs | Kopieren von Objekten aus einem Dokument in ein anderes
+
+' -----------------------------------------------------------------------------
+' Funktionsdeklarationen
+Declare Function CopyGeoObjects (Doc As GeoDocument, DocX As GeoDocument, _
+	ViewX As GeoView, ObjsX As GeoObjects, DataSrc As String, fShowOR As Boolean) As Boolean
+Declare Function CopyGeoObject (Doc As GeoDocument, DocX As GeoDocument, _
+	ViewX As GeoView, ObjX As GeoObject, DataSrc As String, fShowOR As Boolean) As Boolean
+
+Declare Private Function CopyGeoObjectHelper (ActView As String, Doc As GeoDocument, _
+	ActViewX As String, DocX As GeoDocument, ViewX As GeoView, _
+	ObjX As GeoObject, DataSrc As String, ObjsResult As GeoObjects) As Boolean
+Declare Private Function CopyPointObject (Obj As GeoObject, ObjX As GeoObject, _
+	fCopyGuid As Boolean) As Boolean
+Declare Private Function CopyLineObject (Obj As GeoObject, ObjX As GeoObject, _
+	fCopyGuid As Boolean) As Boolean
+Declare Private Function CopyAreaObject (Obj As GeoObject, ObjX As GeoObject, _
+	fCopyGuid As Boolean) As Boolean
+Declare Private Function CopyTextObject (Obj As GeoObject, ObjX As GeoObject, _
+	fCopyGuid As Boolean) As Boolean
+
+Declare Private Function CopyObjectProperties (Obj As GeoObject, ObjX As GeoObject) As Boolean
+Declare Private Function CopyGeoClass (Doc As GeoDocument, ViewName As String, _
+	ObjNameX As String, ObjX As GeoObject, ViewNameX As String, DataSrc As String, _
+	ByRef fCopyGuid As Boolean) As GeoObject
+Declare Private Function CopyVisInfo (ViewName As String, iObjType As Integer, _
+	Cls As GeoClass, ClsX As GeoClass) As Boolean
+Declare Private Function ActivateView (Doc As GeoDocument, DocX As GeoDocument, _
+	ViewX As GeoView, ByRef fRebuild As Boolean, ByRef ActViewX As String) As String
+
+Declare Private Sub CopyBaseVisInfo (VI As VisInfo, VIX As VisInfo)
+Declare Private Sub CopyPointVisInfo (VI As PointVisInfo, VIX As PointVisInfo)
+Declare Private Sub CopyLineVisInfo (VI As LineVisInfo, VIX As LineVisInfo)
+Declare Private Sub CopyAreaVisInfo (VI As AreaVisInfo, VIX As AreaVisInfo)
+Declare Private Sub CopyTextVisInfo (VI As TextVisInfo, VIX As TextVisInfo)
+
+Declare Private Sub InitStatus (ObjsX As GeoObjects)
+Declare Private Sub FreeStatus ()
+
+' -----------------------------------------------------------------------------
+' Globale Variablen
+Private Status As StatusIndicator 
+Private ClipObj As Long
+
+' -----------------------------------------------------------------------------
+' Wird vor Beginn der Scripabarbeitung gerufen
+Sub BeginScript()
+	ClipObj = 0
+	Set Status = Nothing
+End Sub
+
+' -----------------------------------------------------------------------------
+' Sonstige Einsprungpunkte
+' Main wird lediglich zur Script-Initialisierung verwendet
+Sub Main()
+	SetBreakScript (False)		' Script weiterlaufen lassen
+End Sub
+
+' BreakScript wird zum Anhalten des Scriptes verwendet
+Sub BreakScript()
+	SetBreakScript (True)		' Script jetzt anhalten
+End Sub
+
+' -----------------------------------------------------------------------------
+' Wird nach Beenden des Scriptes gerufen
+Sub EndScript()
+	FreeStatus		' bei Runtime-Fehler hier freigeben
+End Sub
+
+' -----------------------------------------------------------------------------
+' Hier gehen die eigenlichen (funktionalen) Einsprungpunkte los
+' -----------------------------------------------------------------------------
+
+' -----------------------------------------------------------------------------
+' Kopieren einer ObjektMenge zwischen zwei Projekten
+Function CopyGeoObjects (Doc As GeoDocument, DocX As GeoDocument, _
+	ViewX As GeoView, ObjsX As GeoObjects, DataSrc As String, _
+	fShowOR As Boolean) As Boolean
+
+#If DEBUG = 1 Then
+	Viewport.Open
+#Else
+' in Releasevariante RTTI nicht ständig testen
+	Call SetDebug(DebugOff)		
+#End If
+
+' StatusAnzeige initialisieren
+	InitStatus ObjsX
+
+' evtl. neue Ansicht erzeugen und aktivieren
+Dim ActView As String
+Dim ActViewX As String
+Dim fReBuild As Boolean
+
+	ActView = ActivateView (Doc, DocX, ViewX, fReBuild, ActViewX)
+#If DEBUG = 1 Then
+	Print "CopyGeoObjects: Name der Zielansicht: " + ActView
+#End If
+
+' Einfach alle Objekte der Menge durchgehen
+Dim ObjCurr As GeoObject
+
+	CopyGeoObjects = True		' profilaktisch
+
+#If DEBUG = 1 Then
+	Print "CopyGeoObjects: Anzahl der zu kopierenden Objekte " + CStr(ObjsX.Count)
+#End If
+
+Dim ObjsResult As New GeoObjects
+
+	i% = 0
+	For Each ObjCurr In ObjsX 
+
+#If DEBUG = 1 Then
+		Print "CopyGeoObjects: Objekt: " + CStr(ObjCurr.Value)
+#End If
+		iRet% = CopyGeoObjectHelper(ActView, Doc, ActViewX, DocX, ViewX, ObjCurr, DataSrc, ObjsResult)
+		If (iRet% <> True) Then
+			iRet% = MsgBox("Soll die Operation aufgrund des Fehlers abgebrochen werden ?", _
+							ebYesNo+ebQuestion, _ 
+							"Fehler beim Kopieren eines Objektes")
+			If (iRet% = ebYes) Then
+				CopyGeoObjects = False
+				FreeStatus
+				Exit Function
+			End If
+		End If
+
+	' Status weiterschalten
+		i% = i% + 1
+		If (Status Is Not Nothing) Then
+			Status.SetPosition i%
+			If (Status.WasCanceled()) Then
+			' abgebrochen
+				CopyGeoObjects = False
+				FreeStatus
+				Exit Function
+			End If
+		End if
+
+	Next ObjCurr
+
+' jetzt nochmal Ansicht einstellen und alles neu generieren	
+	if (fReBuild = True) Then
+		Doc.ActiveViewName = ActView
+	End If
+
+Dim V As GeoView
+
+	Set V = Doc.GetView(ActView)
+	If (V Is Not Nothing) Then
+	Dim dXMin As Double
+	Dim dYMin As Double
+	Dim dXMax As Double
+	Dim dYMax As Double
+
+		V.GetActRect dXMin, dYMin, dXMax, dYMax
+		Doc.ReBuild True
+		V.SetActRect dXMin, dYMin, dXMax, dYMax
+	Else
+		Doc.ReBuild True
+	End If
+
+	FreeStatus
+
+' Ergebnismenge anzeigen
+	If (fShowOR And ObjsResult Is Not Nothing) Then
+	Dim ORWin As GeoObjectWin
+
+		Set ORWin = ObjsResult.CreateGeoObjectWin()
+		If (OrWin Is Not Nothing) Then
+			ORWin.Visible = True
+		End If
+	End If
+
+End Function
+
+' -----------------------------------------------------------------------------
+' Kopieren eines einzelnen Objektes zwischen zwei Projekten
+Function CopyGeoObject (Doc As GeoDocument, DocX As GeoDocument, _
+	ViewX As GeoView, ObjX As GeoObject, DataSrc As String, _
+	fShowOR As Boolean) As Boolean
+
+' evtl. neue Ansicht erzeugen und aktivieren
+Dim ActView As String
+Dim ActViewX As String
+Dim fReBuild As Boolean
+Dim ObjsResult As New GeoObjects
+
+	ActView = ActivateView (Doc, DocX, ViewX, fReBuild, ActViewX)
+	CopyGeoObject = CopyGeoObjectHelper(ActView, Doc, ActViewX, DocX, ViewX, ObjX, DataSrc, ObjsResult)
+
+	if (fReBuild = True) Then
+		Doc.ActiveViewName = ActView
+	End If
+	Doc.ReBuild
+
+End Function
+
+' -----------------------------------------------------------------------------
+' Kopieren eines einzelnen Objektes zwischen zwei Projekten (Helper)
+Private Function CopyGeoObjectHelper (ActView As String, Doc As GeoDocument, _
+	ActViewX As String, DocX As GeoDocument, ViewX As GeoView, _
+	ObjX As GeoObject, DataSrc As String, ObjsResult As GeoObjects) As Boolean
+
+' Überprüfen, ob dieses Objekt bereits existiert
+Dim Obj As GeoObject
+
+	Set Obj = Doc.GetObject (ObjX.Guid, DataSrc)
+	If (Obj Is Not Nothing) Then
+#If DEBUG = 1 Then
+		Print "CopyGeoObjectHelper: warning: object already exists !"
+#End If
+		CopyGeoObjectHelper = True
+		Exit Function
+	End If
+
+' Erzeugen des neuen Objektes
+Dim ObjNameX As String
+
+	ObjNameX = ObjX.Name$			' ObjektName
+
+' Objekt erzeugen und Objektklasse zuweisen
+Dim fCopyGuid As Boolean
+
+	fCopyGuid = True				' normalerweise Guid kopieren
+	Set Obj = CopyGeoClass (Doc, ActView, ObjNameX, ObjX, ActViewX, DataSrc, fCopyGuid)
+
+	If (Obj Is Nothing) Then
+#If DEBUG = 1 Then
+		Print "CopyGeoObjectHelper: CopyGeoClass fehlgeschlagen!"
+#End If
+		CopyGeoObjectHelper = False
+		Exit Function
+	End If
+
+' je nach ObjektTyp verfahren
+	iObjType% = ObjX.ObjType
+
+	If (iObjType% = OBJTYPE_Point) Then
+	' Punktobjekt kopieren
+		iRet = CopyPointObject(Obj, ObjX, fCopyGuid)
+		If (iRet <> True) Then
+#If DEBUG = 1 Then
+			Print "CopyGeoObjectHelper: CopyPointObject fehlgeschlagen!"
+#End If
+			Doc.RemoveObject Obj
+			CopyGeoObjectHelper = False
+			Exit Function
+		End If
+#If DEBUG = 1 Then
+		Print "CopyGeoObjectHelper: CopyPointObject " + CStr(Obj.Value)
+#End If
+		CopyGeoObjectHelper = True
+	ElseIf (iObjType% = OBJTYPE_Line) Then
+	' Linienobjekt kopieren
+		iRet = CopyLineObject(Obj, ObjX, fCopyGuid)
+		If (iRet <> True) Then
+#If DEBUG = 1 Then
+			Print "CopyGeoObjectHelper: CopyLineObject fehlgeschlagen!"
+#End If
+			Doc.RemoveObject Obj
+			CopyGeoObjectHelper = False
+			Exit Function
+		End If
+#If DEBUG = 1 Then
+		Print "CopyGeoObjectHelper: CopyLineObject " + CStr(Obj.Value)
+#End If
+		CopyGeoObjectHelper = True
+	ElseIf (iObjType% = OBJTYPE_Area) Then
+	' Flächenobjekt kopieren
+		iRet = CopyAreaObject(Obj, ObjX, fCopyGuid)
+		If (iRet <> True) Then
+#If DEBUG = 1 Then
+			Print "CopyGeoObjectHelper: CopyAreaObject fehlgeschlagen!"
+#End If
+			Doc.RemoveObject Obj
+			CopyGeoObjectHelper = False
+			Exit Function
+		End If
+#If DEBUG = 1 Then
+		Print "CopyGeoObjectHelper: CopyAreaObject " + CStr(Obj.Value)
+#End If
+		CopyGeoObjectHelper = True
+	ElseIf (iObjType% = OBJTYPE_Text) Then
+	' TextObjekt kopieren
+		iRet = CopyTextObject(Obj, ObjX, fCopyGuid)
+		If (iRet <> True) Then
+#If DEBUG = 1 Then
+			Print "CopyGeoObjectHelper: CopyTextObject fehlgeschlagen!"
+#End If
+			Doc.RemoveObject Obj
+			CopyGeoObjectHelper = False
+			Exit Function
+		End If
+#If DEBUG = 1 Then
+		Print "CopyGeoObjectHelper: CopyTextObject " + CStr(Obj.Value)
+#End If
+		CopyGeoObjectHelper = True
+	End If
+
+' Objekteigenschaften kopieren
+	iRet = CopyObjectProperties(Obj, ObjX)
+
+' evtl. ClippingObjekt setzen
+	If (ObjX.Value = ClipObj) Then
+	Dim View As GeoView
+
+		Set View = Doc.GetView (ActView)
+		If (View Is Not Nothing) Then
+#If DEBUG = 1 Then
+			Print "CopyGeoObjectHelper: set new clippingobject to " + CStr(Obj.Value)
+#End If
+			View.SetClipObject Obj
+			Set View = Nothing
+		End If
+	End If
+
+' zur AusgabeObjektmenge hinzufügen
+	ObjsResult.Add Obj
+
+End Function
+
+' -----------------------------------------------------------------------------
+' Kopieren der Geometrie einer Fläche
+Private Function CopyAreaObject (Obj As GeoObject, ObjX As GeoObject, _
+	fCopyGuid As Boolean) As Boolean
+
+Dim X() As Double
+Dim Y() As Double
+Dim lCnt As Long
+Dim iKCnt As Integer
+Dim Conts() As Long
+
+	ReDim X(0)
+	ReDim Y(0)
+	ReDim Conts(0)
+
+' Geometrie vom BezugsObjekt abfragen
+	iObjType% = ObjX.GetGeometry (lCnt, X, Y, iKCnt, Conts)
+	If (iObjType% <> OBJTYPE_Area) Then
+#If DEBUG = 1 Then
+		Print "CopyAreaObject: SNH: Objekttyp stimmt nicht überein!"
+#End If
+		CopyAreaObject = False
+		Exit Function
+	End If
+
+' Geometrie am neuen Objekt setzen, GeoRein nicht verwenden
+	CopyAreaObject = Obj.PutGeometry (iObjType%, X, Y, _
+			MODGEOMETRY_ModObject+MODGEOMETRY_ForceGeometry+ _
+			MODGEOMETRY_AddToView+MODGEOMETRY_GeometryIsTested, Conts)
+
+' ObjectGuid ersetzen
+	If (fCopyGuid) Then
+		Obj.Guid = ObjX.Guid
+	End If
+
+End Function
+
+' -----------------------------------------------------------------------------
+' Kopieren der Geometrie eines Punktes
+Private Function CopyPointObject (Obj As GeoObject, ObjX As GeoObject, _
+	fCopyGuid As Boolean) As Boolean
+
+Dim X As Double
+Dim Y As Double
+
+' Geometrie vom BezugsObjekt abfragen
+	iObjType% = ObjX.GetGeometry (X, Y)
+	If (iObjType% <> OBJTYPE_Point) Then
+#If DEBUG = 1 Then
+		Print "CopyPointObject: SNH: Objekttyp stimmt nicht überein!"
+#End If
+		CopyPointObject = False
+		Exit Function
+	End If
+
+' Geometrie am neuen Objekt setzen, GeoRein nicht verwenden
+	CopyPointObject = Obj.PutGeometry (iObjType%, X, Y, _
+			MODGEOMETRY_ModObject+MODGEOMETRY_ForceGeometry+ _
+			MODGEOMETRY_AddToView+MODGEOMETRY_GeometryIsTested)
+
+' ObjectGuid ersetzen
+	If (fCopyGuid) Then
+		Obj.Guid = ObjX.Guid
+	End If
+
+End Function
+
+' -----------------------------------------------------------------------------
+' Kopieren der Geometrie einer Linie
+Private Function CopyLineObject (Obj As GeoObject, ObjX As GeoObject, _
+	fCopyGuid As Boolean) As Boolean
+
+Dim X() As Double
+Dim Y() As Double
+Dim lCnt As Long
+
+	ReDim X(0)
+	ReDim Y(0)
+
+' Geometrie vom BezugsObjekt abfragen
+	iObjType% = ObjX.GetGeometry (lCnt, X, Y)
+	If (iObjType% <> OBJTYPE_Line) Then
+#If DEBUG = 1 Then
+		Print "CopyLineObject: SNH: Objekttyp stimmt nicht überein!"
+#End If
+		CopyLineObject = False
+		Exit Function
+	End If
+
+' Geometrie am neuen Objekt setzen, GeoRein nicht verwenden
+	CopyLineObject = Obj.PutGeometry (iObjType%, X, Y, _
+			MODGEOMETRY_ModObject+MODGEOMETRY_ForceGeometry+ _
+			MODGEOMETRY_AddToView+MODGEOMETRY_GeometryIsTested)
+
+' ObjectGuid ersetzen
+	If (fCopyGuid) Then
+		Obj.Guid = ObjX.Guid
+	End If
+
+End Function
+
+' -----------------------------------------------------------------------------
+' Kopieren der Geometrie eines Textes
+Private Function CopyTextObject (Obj As GeoObject, ObjX As GeoObject, _
+	fCopyGuid As Boolean) As Boolean
+
+Dim X As Double
+Dim Y As Double
+
+' Geometrie vom BezugsObjekt abfragen
+	iObjType% = ObjX.GetGeometry(X, Y)
+	If (iObjType% <> OBJTYPE_Text) Then
+#If DEBUG = 1 Then
+		Print "CopyTextObject: SNH: Objekttyp stimmt nicht überein!"
+#End If
+		CopyTextObject = False
+		Exit Function
+	End If
+
+' Geometrie am neuen Objekt setzen, GeoRein nicht verwenden
+	iRet% = Obj.PutGeometry (iObjType%, X, Y, _
+			MODGEOMETRY_ModObject+MODGEOMETRY_ForceGeometry+ _
+			MODGEOMETRY_AddToView+MODGEOMETRY_GeometryIsTested)
+	If (iRet% <> True) Then
+		CopyTextObject = False
+		Exit Function
+	End If
+
+' eigentlichen Text auch noch kopieren
+Dim Str As String
+
+	Str = ObjX.GetText()
+	Obj.PutText Str
+	
+' ObjectGuid ersetzen
+	If (fCopyGuid) Then
+		Obj.Guid = ObjX.Guid
+	End If
+
+	CopyTextObject = True
+
+End Function
+
+' -----------------------------------------------------------------------------
+' Kopieren aller Objekteigenschaften des Bezugsobjektes
+Private Function CopyObjectProperties (Obj As GeoObject, ObjX As GeoObject) As Boolean
+
+' Merkmale des Ursprungsobjektes kopieren
+Dim Fts As GeoFeatures
+Dim FtLoop As GeoFeature
+
+	Set Fts = ObjX.GetFeatures (Not FEATURETYPE_System)
+
+Dim FtsCount As Long
+
+	FtsCount = Fts.Count
+#If DEBUG = 1 Then
+	Print "CopyObjectProperties: Anzahl der Objekteigenschaften: ", CStr(FtsCount)
+#End If
+'	If (FtsCount = 0) Then		' keine Objekteigenschaften, also weiter
+'		CopyObjectProperties = True
+'		Exit Function
+'	End If
+
+	For Each FtLoop In Fts
+	' Neues Merkmal erzeugen ...
+	Dim Ft As GeoFeature
+	
+		Flags& = FtLoop.Flags
+#If DEBUG = 1 Then
+		Print "CopyObjectProperties: Feature " + FtLoop.Name + ", Flags: ", CStr(Flags&)
+#End If
+		If (Flags& And FEATURETYPE_System) Then
+		' Systeminterne Merkmale nicht kopieren
+#If DEBUG = 1 Then
+			Print "CopyObjectProperties: " + FtLoop.Name + _
+				  " not touched (system feature)"
+#End If
+		Else
+		' Merkmal erzeugen, erstmal beschreibbar machen
+			Set Ft = Obj.AddFeature (FtLoop.Name, Flags& Or FEATURETYPE_WriteAble, FtLoop.ConfigData)
+		
+		' ... und Wert kopieren
+			If (Ft Is Not Nothing) Then
+				Ft.Feature = FtLoop.Feature
+				Ft.Flags = Flags&	' Flags richten
+#If DEBUG = 1 Then
+				Print "CopyObjectProperties: " + FtLoop.Name + ": " _
+					  + FtLoop.Feature + " set"
+			Else
+				Print "CopyObjectProperties: " + FtLoop.Name + " not set"
+#End If
+			End If	' Ft Not Nothing
+		End If	' !FEATURETYPE_System
+	Next FtLoop
+
+	CopyObjectProperties = True
+
+End Function
+
+' -----------------------------------------------------------------------------
+' Kopieren der Objektklasse des Bezugsobjektes
+Private Function CopyGeoClass (Doc As GeoDocument, ViewName As String, _
+	ObjNameX As String, ObjX As GeoObject, ViewNameX As String, _
+	DataSrc As String, ByRef fCopyGuid As Boolean) As GeoObject
+
+	Set CopyGeoClass = Nothing
+
+Dim ClsX As GeoClass
+Dim Cls As GeoClass
+
+	Set ClsX = ObjX.ObjClass			' Objektklasse des Bezugsobjektes
+	If (ClsX Is Nothing) Then
+#If DEBUG = 1 Then
+		Print "CopyGeoClass: SNH, Quellobjekt hat keine Objektklasse!"
+#End If
+		Exit Function
+	Else
+#If DEBUG = 1 Then
+		Print "CopyGeoClass: Name: " + ClsX.Name + _
+			", Code: " + CStr(ClsX.Code) + _
+			", OKS: " + ClsX.Value
+#End If
+	End If
+
+Dim ClsNameX As String
+Dim ClsOKSX As String
+
+	ClsOKSX = ClsX.Value
+	Set Cls = Doc.GetClass (ClsOKSX, DataSrc)		' OKS schon vorhanden ?
+
+	ClsNameX = ClsX.Name
+	If (Cls Is Nothing) Then
+#If DEBUG = 1 Then
+		Print "CopyGeoClass: OKS existiert noch nicht!"
+#End If
+		Set Cls = Doc.GetClass (ClsNameX, DataSrc)	' Objektklasse schon vorhanden
+	End If
+
+	If (Cls Is Nothing) Then
+	' Objektklasse muß neu erzeugt werden
+		Set Cls = Doc.AddClass (ClsOKSX, DataSrc)	' _OKS_ verwenden
+		If (Cls Is Nothing) Then
+#If DEBUG = 1 Then
+			Print "CopyGeoClass: Konnte Objektklasse nicht erzeugen!"
+#End If
+			Exit Function
+		End If
+
+	' Kurztext und Langtext kopieren
+		Cls.Name = ClsNameX				' KurzText kopieren
+		Cls.FullName = ClsX.FullName	' Langtext kopieren
+
+#If DEBUG = 1 Then
+		Print "CopyGeoClass: Objektklasse " + Cls.Name + " (" + Cls.FullName + ") neu erzeugt."
+#End If
+	Else
+#If DEBUG = 1 Then
+		Print "CopyGeoClass: Objektklasse " + Cls.Name + " (" + Cls.FullName + ") existiert bereits."
+#End If
+	End If
+
+' Objekt erzeugen
+Dim Obj As GeoObject 
+
+	Set Obj = Doc.AddObject (ObjNameX, Cls)		' Objekt mit Objektklasse erzeugt
+	If (Obj Is Nothing) Then
+		Set Obj = Doc.GetObject (ObjNameX)
+		If (Obj Is Not Nothing) Then
+		' Objekt existiert bereits!?
+			If (Obj.Guid = ObjX.Guid) Then
+			' Objekt soll nur gedoppelt werden
+				Set Obj = Nothing
+				Set Obj = Doc.AddObject (ObjNameX + "_COPYOF_" + _
+					Str$(ObjX.Value), Cls)
+				If (Obj Is Nothing) Then
+				' Auch Kopie läßt sich nicht erzeugen
+#If DEBUG = 1 Then
+					Print "CopyGeoObjectHelper: failed: could not create new object (copy)!"
+#End If
+					Exit Function
+				End If
+#If DEBUG = 1 Then
+				Print "CopyGeoObjectHelper: Do not copy Guids!"
+#End If
+				fCopyGuid = False
+			Else
+#If DEBUG = 1 Then
+				Print "CopyGeoObjectHelper: failed: could not create new object (equal guids)!"
+#End If
+				Exit Function
+			End If
+		Else
+#If DEBUG = 1 Then
+			Print "CopyGeoObjectHelper: failed: could not create new object (no copy)!"
+#End If
+			Exit Function
+		End If
+	End If
+
+' Status richten
+	If (Status Is Not Nothing) Then
+	Dim Str As String
+
+		Str = "Objekt: " + CStr(Obj.Value)
+'		Status.Field(4) = "Objekt: " + CStr(Obj.Value)
+	End If
+
+Dim View As GeoView
+
+	Set View = Doc.GetView (ViewName)
+	If (View Is Nothing) Then
+#If DEBUG = 1 Then
+		Print "CopyGeoClass: SNH: Ansicht nicht wiederauffindbar!"
+#End If
+		Exit Function
+	End If
+
+Dim ClsView As GeoClass
+Dim ObjTypeX As Integer
+
+	ObjTypeX = ObjX.ObjType
+	Set ClsView = View.GetClass (Cls.Name, ObjTypeX)
+	If (ClsView Is Nothing) Then
+	' VisualisierungsInfo umkopieren, wenn noch keine gegeben ist
+		iRet% = CopyVisInfo (ViewNameX, ObjTypeX, Cls, ClsX)
+		if (iRet% <> True) Then
+#If DEBUG = 1 Then
+			Print "CopyGeoClass: Konnte VisInfo nicht umkopieren!"
+#End If
+			Set CopyGeoClass = Obj		' trotzdem weitermachen
+			Exit Function
+		End If
+#If DEBUG = 1 Then
+		Print "CopyGeoClass: Objektklasse " + Cls.Name + " zu Ansicht " + ViewName + " hinzugefügt."
+	Else
+		Print "CopyGeoClass: Objektklasse " + Cls.Name + " gehört zu Ansicht " + ViewName + "."
+#End If
+	End If
+
+' Resultat setzen
+	Set CopyGeoClass = Obj
+
+End Function
+
+' -----------------------------------------------------------------------------
+' VisualisierungsInfo für Objektklasse umkopieren
+Private Function CopyVisInfo (ViewName As String, iObjType As Integer, _
+	Cls As GeoClass, ClsX As GeoClass) As Boolean
+
+#If DEBUG = 1 Then
+	Print "CopyVisInfo: Quellansicht " + ViewName
+#End If
+	If (iObjType = OBJTYPE_Point) Then
+	' Punktobjekt bearbeiten
+	Dim PtVIX As PointVisInfo
+
+		Set PtVIX = ClsX.GetPointVisInfo (ViewName)
+		if (PtVIX Is Nothing) Then
+#If DEBUG = 1 Then
+			Print "CopyVisInfo: Keine PunktVI vorhanden!"
+#End If
+			CopyVisInfo = False
+			Exit Function
+		End If
+
+	Dim PtVI As New PointVisInfo
+
+		CopyPointVisInfo PtVI, PtVIX
+		Cls.SetVisInfo PtVI, ViewName
+		Set PtVI = Nothing
+		CopyVisInfo = True
+	ElseIf (iObjType = OBJTYPE_Line) Then
+	' Linienobjekt bearbeiten
+	Dim LineVIX As LineVisInfo
+
+		Set LineVIX = ClsX.GetLineVisInfo (ViewName)
+		if (LineVIX Is Nothing) Then
+#If DEBUG = 1 Then
+			Print "CopyVisInfo: Keine LineVI vorhanden!"
+#End If
+			CopyVisInfo = False
+			Exit Function
+		End If
+
+	Dim LineVI As New LineVisInfo
+
+		CopyLineVisInfo LineVI, LineVIX
+		Cls.SetVisInfo LineVI, ViewName
+		Set LineVI = Nothing
+		CopyVisInfo = True
+	ElseIf (iObjType = OBJTYPE_Area) Then
+	' Flächenobjekt bearbeiten
+	Dim AreaVIX As AreaVisInfo
+
+		Set AreaVIX = ClsX.GetAreaVisInfo (ViewName)
+		if (AreaVIX Is Nothing) Then
+#If DEBUG = 1 Then
+			Print "CopyVisInfo: Keine AreaVI vorhanden!"
+#End If
+			CopyVisInfo = False
+			Exit Function
+		End If
+
+	Dim AreaVI As New AreaVisInfo
+
+		CopyAreaVisInfo AreaVI, AreaVIX
+		Cls.SetVisInfo AreaVI, ViewName
+		Set AreaVI = Nothing
+		CopyVisInfo = True
+	ElseIf (iObjType = OBJTYPE_Text) Then
+	' Textobjekt bearbeiten
+	Dim TextVIX As TextVisInfo
+
+		Set TextVIX = ClsX.GetTextVisInfo (ViewName)
+		if (TextVIX Is Nothing) Then
+#If DEBUG = 1 Then
+			Print "CopyVisInfo: Keine TextVI vorhanden!"
+#End If
+			CopyVisInfo = False
+			Exit Function
+		End If
+
+	Dim TextVI As New TextVisInfo
+
+		CopyTextVisInfo TextVI, TextVIX
+		Cls.SetVisInfo TextVI, ViewName
+		Set TextVI = Nothing
+		CopyVisInfo = True
+	End If
+
+End Function
+
+' -----------------------------------------------------------------------------
+' Aktuelle Ansicht vom Bezugsprojekt holen und ggf. erzeugen und anzeigen
+' Liefert AnsichtsNamen, zu dem die neuen Objekte dazukommen sollen
+Private Function ActivateView (Doc As GeoDocument, DocX As GeoDocument, _
+	ViewX As GeoView, ByRef fRebuild As Boolean, ByRef RefActViewX As String) As String
+
+Dim ActView As String
+
+	ActView = Doc.ActiveViewName
+	fReBuild = False
+
+' evtl. ClipObject speichern
+	If (ViewX Is Not Nothing) Then
+	Dim ClippingObj As GeoObject
+
+		Set ClippingObj = ViewX.GetClipObject()
+		If (ClippingObj Is Not Nothing) Then
+			ClipObj = ClippingObj.Value			' Objektnummer merken
+#If DEBUG = 1 Then
+			Print "ActivateView: got clippingobject " + CStr(ClipObj)
+#End If
+		Else
+			ClipObj = 0		' Kein ClipObjekt
+#If DEBUG = 1 Then
+			Print "ActivateView: no clippingobject"
+#End If
+		End If
+
+		RefActViewX = ViewX.Name
+	Else
+		ClipObj = 0			' Kein ClipObjekt
+#If DEBUG = 1 Then
+		Print "ActivateView: no targetview --> no clippingobject"
+#End If
+		RefActViewX = DocX.ActiveViewName
+	End If
+
+	If (Len(ActView) = 0) Then		' keine aktuelle Ansicht
+	' Ansichtsnamen herausbekommen
+		If (ViewX Is Not Nothing) Then
+			ActView = ViewX.Name
+		Else
+		Dim ActViewX As String
+
+			ActViewX = DocX.ActiveViewName
+			If (Len(ActViewX) > 0) Then
+				ActView = ActViewX
+			End If
+		End If
+
+	' Ansicht neu erzeugen, wenn noch nicht vorhanden
+		If (Len(ActView) > 0) Then
+		Dim View As GeoView
+		
+			Set View = Doc.GetView (ActView)
+			if (View Is Nothing) Then
+				Set View = Doc.AddView (ActView)
+				If (View Is Nothing) Then
+#If DEBUG = 1 Then
+					Print "ActivateView: failed: could not create view " + ActView
+#End If
+					ActivateView = ""
+					RefActViewX = ""
+					Exit Function
+				End If
+			End If
+
+		' Ansicht neu einstellen
+			Doc.ActiveViewName = ActView
+			fReBuild = True		' später nochmal einstellen
+		End If
+	End If
+
+	ActivateView = ActView
+	If (Len(RefActViewX) = 0) Then
+		RefActViewX = ActView	' keine aktuelle QuellAnsicht
+	End If
+
+#If DEBUG = 1 Then
+	Print "ActivateView: targetview: " + RefActViewX + ", local view: " + ActView
+#End If
+
+End Function
+
+' -----------------------------------------------------------------------------
+' Kopieren einer VisInfo
+Private Sub CopyBaseVisInfo (VI As VisInfo, VIX As VisInfo)
+	VI.Style = VIX.Style
+	VI.Priority = VIX.Priority
+	VI.Name = VIX.Name
+	VI.MainColor = VIX.MainColor
+End Sub
+
+Private Sub CopyPointVisInfo (VI As PointVisInfo, VIX As PointVisInfo)
+	CopyBaseVisInfo VI, VIX
+	VI.SizeX = VIX.SizeX
+	VI.SizeY = VIX.SizeY
+	VI.Rotate = VIX.Rotate
+	VI.BkColor = VIX.BkColor
+End Sub
+
+Private Sub CopyLineVisInfo (VI As LineVisInfo, VIX As LineVisInfo)
+	CopyBaseVisInfo VI, VIX
+	VI.Width = VIX.Width
+End Sub
+
+Private Sub CopyAreaVisInfo (VI As AreaVisInfo, VIX As AreaVisInfo)
+	CopyBaseVisInfo VI, VIX
+	VI.Width = VIX.Width
+	VI.Opaque = VIX.Opaque
+	VI.BkContour = VIX.BkContour
+	VI.BkColor = VIX.BkColor
+End Sub
+
+Private Sub CopyTextVisInfo (VI As TextVisInfo, VIX As TextVisInfo)
+	CopyBaseVisInfo VI, VIX
+	VI.SizeX = VIX.SizeX
+	VI.SizeY = VIX.SizeY
+	VI.Bold = VIX.Bold
+	VI.Italic = VIX.Italic
+	VI.Underline = VIX.Underline
+	VI.StrikeThrough = VIX.StrikeThrough
+	VI.FrameStyle = VIX.FrameStyle
+	VI.AlignStyle = VIX.AlignStyle
+	VI.Rotate = VIX.Rotate
+	VI.Slant = VIX.Slant
+End Sub
+
+'------------------------------------------------------------------------------
+' StatusAnzeige verwalten
+Private Sub InitStatus (ObjsX As GeoObjects)
+
+	If (ObjsX Is Nothing) Then
+		Exit Sub
+	End If
+
+	Set Status = New StatusIndicator
+	if (Status Is Nothing) Then
+		Exit Sub
+	End If
+
+Dim lCnt As Long
+
+	lCnt = ObjsX.Count
+
+	Status.Restart 0, lCnt, STATUS_CopyAVI Or STATUS_ShowAllFields
+	Status.Caption = "Kopieren von Objekten aus anderen TRiAS®-Projekten"
+	Status.Field(1) = "Kopiert werden"
+	Status.Field(2) = CStr(lCnt) + " Objekte"
+	Status.Field(3) = "Es wurden bereits %d%% der Objekte kopiert"
+
+End Sub
+
+Private Sub FreeStatus()
+
+	If (Status Is Not Nothing) Then
+		Set Status = Nothing
+	End If
+End Sub

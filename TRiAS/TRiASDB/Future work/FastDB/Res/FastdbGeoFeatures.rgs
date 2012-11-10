@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASDB.FastdbGeoFeatures.1 = s 'FastdbGeoFeatures Class'
+	{
+		CLSID = s '{25D8B21C-C16A-4233-BEFA-69D2B02B04D5}'
+	}
+	TRiASDB.FastdbGeoFeatures = s 'FastdbGeoFeatures Class'
+	{
+		CLSID = s '{25D8B21C-C16A-4233-BEFA-69D2B02B04D5}'
+		CurVer = s 'TRiASDB.FastdbGeoFeatures.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {25D8B21C-C16A-4233-BEFA-69D2B02B04D5} = s 'FastdbGeoFeatures Class'
+		{
+			ProgID = s 'TRiASDB.FastdbGeoFeatures.1'
+			VersionIndependentProgID = s 'TRiASDB.FastdbGeoFeatures'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{AEF1A967-35C7-4E6E-8589-3869A8FA8598}'
+		}
+	}
+}

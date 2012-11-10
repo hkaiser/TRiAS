@@ -1,0 +1,24 @@
+HKCR
+{
+	TRiAS.MouseAction.1 = s 'MouseAction Class'
+	{
+		CLSID = s '{E2054A22-4327-11D2-9EBE-006008447800}'
+	}
+	TRiAS.MouseAction = s 'MouseAction Class'
+	{
+		CurVer = s 'TRiAS.MouseAction.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {E2054A22-4327-11D2-9EBE-006008447800} = s 'MouseAction Class'
+		{
+			ProgID = s 'TRiAS.MouseAction.1'
+			VersionIndependentProgID = s 'TRiAS.MouseAction'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

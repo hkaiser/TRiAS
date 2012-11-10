@@ -1,0 +1,29 @@
+HKCR {
+	TRiASUI.UpDownList.1 = s 'TRiAS® UserInterface - UpDownList' {
+		CLSID = s '{AAFA2AB7-D8B3-11D2-9924-00AA002A873B}'
+		'Insertable'
+	}
+	TRiASUI.UpDownList = s 'TRiAS® UserInterface - UpDownList' {
+		CLSID = s '{AAFA2AB7-D8B3-11D2-9924-00AA002A873B}'
+		CurVer = s 'TRiASUI.UpDownList.1'
+	}
+	NoRemove CLSID {
+		ForceRemove {AAFA2AB7-D8B3-11D2-9924-00AA002A873B} = s 'TRiAS® UserInterface - UpDownList' {
+			ProgID = s 'TRiASUI.UpDownList.1'
+			VersionIndependentProgID = s 'TRiASUI.UpDownList'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%' {
+				val ThreadingModel = s 'Apartment'
+			}
+			ForceRemove 'Control'
+			ForceRemove 'Programmable'
+			ForceRemove 'Insertable'
+			ForceRemove 'ToolboxBitmap32' = s '%MODULE%, 107'
+			'MiscStatus' = s '0' {
+			    '1' = s '131473'
+			}
+			'TypeLib' = s '{51BB3DD1-0C38-11D2-8F6B-0060085FC1CE}'
+			'Version' = s '1.0'
+		}
+	}
+}

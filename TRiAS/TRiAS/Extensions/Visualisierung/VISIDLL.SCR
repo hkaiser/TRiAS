@@ -1,0 +1,20 @@
+/# define LEXDEBUG/	d
+/yylval/		s/yylval/(*pyylval)/g
+/fprintf(yyout,/	s/fprintf(yyout,/yyerror(/
+/FILE \*/		{
+i\
+#if defined(__cplusplus)\
+extern "C" {\
+#endif\
+\	#include <stdio.h>\
+#if defined(__cplusplus)\
+#if defined(_MSC_VER)\
+#pragma warning (disable:4102)\
+#endif\
+}\
+#endif\
+FILE *yy2in = NULL;
+d
+}
+/# include <stdio.h>/ 	d
+			s/yy/yy2/g

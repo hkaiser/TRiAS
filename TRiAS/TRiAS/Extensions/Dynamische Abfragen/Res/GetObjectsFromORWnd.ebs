@@ -1,0 +1,28 @@
+' Die folgende Funktion liefert alle selektierten Objekte des gegebenen
+' Recherchefensters
+Function GetObjectsFromORWnd(ByVal hWnd As Long) As GeoObjects
+
+#If NDEBUG = 1 Then
+	Call SetDebug(DebugOff)		' in Releasevariante RTTI nicht ständig testen
+#End If
+
+Dim Seq As New PropertySequence
+Dim Objs As GeoObjects
+
+	Seq.Description = "GetObjectsFromORWnd"
+	Seq.AddAction "TRiASEx.SelectFromObjectWindow.1", hWnd
+
+	Set Objs = Seq.DoActions()
+	if (Objs Is Nothing) Then
+		Set GetObjectsFromORWnd = Nothing
+		Exit Function
+	End If
+
+#If DEBUG = 1 Then
+	MsgBox Str$(Objs.Count),, "Anzahl der selektierten Objekte"
+#End If
+
+	Set GetObjectsFromORWnd = Objs
+
+End Function
+

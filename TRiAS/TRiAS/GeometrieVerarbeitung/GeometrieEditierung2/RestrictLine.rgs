@@ -1,0 +1,23 @@
+HKCR
+{
+	TRiAS.RestrictLine.1 = s 'Konstruktionshilfslinie'
+	{
+		CLSID = s '{D08560D0-C57B-11d2-8837-00104BAF1F6B}'
+	}
+	TRiAS.RestrictLine = s 'Konstruktionshilfslinie'
+	{
+		CurVer = s 'TRiAS.RestrictLine.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {D08560D0-C57B-11d2-8837-00104BAF1F6B} = s 'Konstruktionshilfslinie'
+		{
+			ProgID = s 'TRiAS.RestrictLine.1'
+			VersionIndependentProgID = s 'TRiAS.RestrictLine'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

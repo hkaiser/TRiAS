@@ -1,0 +1,89 @@
+' ***********************************************************************
+' *									*
+' *	Filter Grundstuecke vergleichen					*
+' *	IdentKorrektur.ebf						*
+' ***********************************************************************
+
+Option Explicit
+
+' ======================================================================================
+'Programmkonstanten
+Const NL = Chr$(13) + Chr$(10)		'NewLine
+Const HT = Chr$(9)	   		' Tab		 
+
+' anwendungsspezifische Konstanten
+Const strBoxTitel = "Grundstücke analysieren"
+Const strNummer = "Identifikationsnummer"
+
+' ---------------------------------------------------
+
+' Globale Variablen
+Private lGlobalCnt As Long
+
+' ---------------------------------------------------
+' "BeginAction" wird gerufen, bevor die erste Objektmenge verarbeitet werden soll
+Function BeginAction() As Boolean
+
+' Hier notwendige Initialisierungen durchführen
+	
+' BeginAction für Abbruch auf 'False' setzen 
+	BeginAction = True
+	lGlobalCnt = 0
+
+End Function
+
+' ---------------------------------------------------
+' "DoAction" wird für jede der zu verarbeitenden Objektmengen gerufen
+Function DoAction (Objs As GeoObjects) As GeoObjects
+Dim o As GeoObject
+Dim ObjsOrg As New GeoObjects
+ 
+
+	If Objs.Count = 1 Then 
+		Set DoAction = ObjS
+		Exit Function
+	End If
+
+
+	lGlobalCnt = lGlobalCnt + 1
+	Dim Feat As GeoFeature
+	Dim MyFeat As String
+	MyFeat = " "
+
+	Set o = Objs(1)
+
+	Set Feat = o.GetFeature ( strNummer)
+
+	If Feat Is Not Nothing Then
+		MyFeat = Trim$(Feat.Feature$)
+	End If
+
+	For Each o in Objs
+
+		ObjsOrg.Add o
+	Next o
+
+' Ergebnisanzeige in Recherchefenstern
+
+	Dim RWin As GeoObjectWin
+	Set RWin = ObjsOrg.CreateGeoObjectWin()
+	RWin.Name = "ID : " + MyFeat
+	RWin.Visible = 1
+
+	Set DoAction = Objs
+
+End Function
+'=================================================================
+
+' -----------------------------------------------------------------------
+' "EndAction" wird nach der Verarbeitung der
+' letzten Objektmenge gerufen
+Sub EndAction()
+
+' Hier notwendige Aufräumarbeiten durchführen
+
+	MsgBox "Es wurden " + STR$(lGlobalCnt) + " mehrdeutige Identifikatornummern gefunden!", _
+	ebCritical, strBoxTitel
+
+End Sub
+'========================================================================

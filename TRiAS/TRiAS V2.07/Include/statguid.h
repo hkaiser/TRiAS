@@ -1,0 +1,9 @@
+// Interfacedeklaration für StatusAnzeige -------------------------------------
+// File: STATGUID.H
+
+// 07963818-3123-101C-BB62-00AA0018497C	
+DEFINE_GUID(IID_IProgressIndicator, 0x07963818L, 0x3123, 0x101C, 0xBB, 0x62, 0x00, 0xAA, 0x00, 0x18, 0x49, 0x7C);
+// 07963819-3123-101C-BB62-00AA0018497C	
+// DEFINE_GUID(CLSID_ProgressIndicator, 0x07963819L, 0x3123, 0x101C, 0xBB, 0x62, 0x00, 0xAA, 0x00, 0x18, 0x49, 0x7C);
+
+

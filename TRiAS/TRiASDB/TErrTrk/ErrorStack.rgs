@@ -1,0 +1,25 @@
+HKCR 
+{
+	TRiAS.ErrorStack.1 = s 'TRiAS® Fehlerverfolgung' 
+	{
+		CLSID = s '{82198CF2-436B-11D2-8FB3-0060085FC1CE}'
+	}
+	TRiAS.ErrorStack = s 'TRiAS® Fehlerverfolgung' 
+	{
+		CurVer = s 'ErrorStack.ErrorStack.1'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {82198CF2-436B-11D2-8FB3-0060085FC1CE} = s 'TRiAS® Fehlerverfolgung' 
+		{
+			ProgID = s 'TRiAS.ErrorStack.1'
+			VersionIndependentProgID = s 'TRiAS.ErrorStack'
+			ForceRemove 'Programmable'
+			ToolboxBitmap32 = s '%MODULE%,1'
+			InprocServer32 = s '%MODULE%' 
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

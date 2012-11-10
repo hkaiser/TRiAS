@@ -1,0 +1,27 @@
+HKCR
+{
+	TRiAS.SpatialRelationService.1 = s 'TRiASSpatialRelationService Object'
+	{
+		CLSID = s '{49EA68E0-C4F9-4392-A083-B1A0D5E6AFF6}'
+	}
+	TRiAS.SpatialRelationService = s 'TRiASSpatialRelationService Object'
+	{
+		CLSID = s '{49EA68E0-C4F9-4392-A083-B1A0D5E6AFF6}'
+		CurVer = s 'TRiAS.SpatialRelationService.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {49EA68E0-C4F9-4392-A083-B1A0D5E6AFF6} = s 'TRiASSpatialRelationService Object'
+		{
+			ProgID = s 'TRiAS.SpatialRelationService.1'
+			VersionIndependentProgID = s 'TRiAS.SpatialRelationService'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{6A0120C3-70C6-11D1-974B-00A024D6F582}'
+			'Version' = s '1.0'
+		}
+	}
+}

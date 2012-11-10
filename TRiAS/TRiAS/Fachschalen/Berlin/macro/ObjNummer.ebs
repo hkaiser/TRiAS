@@ -1,0 +1,787 @@
+' **************************************************************************************
+' *                                                                                    *
+' *  Automatische Vergabe von Objektnamen                                              *
+' *  an Dachteilflächen, versiegelte Flächen und allgemeine Straßen                    *
+' *  W. Mörtl  (17. 12. 97)                                                            *
+' *                                                                                    *
+' **************************************************************************************
+
+
+Option Explicit
+
+' ======================================================================================
+' anwendungsspezifische Konstanten
+Const strGrund = "Grundstück"		' Kurztexte von TRiAS-Objektklassen
+Const strDachteil = "Dachteilfläche"
+Const strVersFlaeche = "versiegelte Fläche"
+Const strStrasse = "Straße (allg.)"
+Const strObjektname = "Objektname"	' Kurztexte von TRiAS-Merkmalen
+Const strIdentNr = "Identifikationsnummer"
+Const strD = "D"					' Beginn des Objektnamens für Dachteil-
+Const strV = "V"					'  bzw. versiegelte Flächen
+Const strUnklar = "?"				' Objektname bei unklaren Verhältnissen
+Const dblFlAnteil = 0.95			' Prozentwert für Test auf anteilmäßiges
+									'  Enthaltensein in einer Fläche
+
+' ======================================================================================
+' Programmkonstanten
+Const NL = Chr$(13) + Chr$(10)				' NewLine
+Const strBoxTitel = "Objektnamenvergabe"	' Titel der Message-Boxen
+Const strErrTopRelation = "TopRelation"		' Fehlerausschrift
+
+' ======================================================================================
+' globale Variable
+Private docGD As GeoDocument		' Projekt
+Private clsDachteil As GeoClass		' Objektklasse (Dachteilflächen)
+Private clsVersFlaeche As GeoClass	' Objektklasse (versiegelte Flächen)
+Private clsStrasse As GeoClass		' Objektklasse (allgemeine Straßen)
+Private objsInOut As GeoObjects		' inner/außerhalb liegende Dachteil-, versiegelte
+									' Flächen bzw. allg. Straßen
+Private objsOmit As GeoObjects		' nicht bearbeitete Dachteil-, versiegelte Flächen
+									' bzw. allg. Straßen
+Private intLfdNr As Integer			' laufende Nummer, aus der der Objektname gebildet
+									' wird
+Private intMaxLfdNr As Integer		' die größte vergebene laufende Objektnummer
+
+' einzugebende Parameter
+Private bAlle As Boolean			' Abarbeitung aller (True) bzw. nur der
+									' recherchierten Grundstücke (False)
+
+' ======================================================================================
+' Subroutine's-Deklarationen
+Declare Sub RecherchierteObjekte (objsWorkObj As GeoObjects, strKText As String, _
+								  intObjTyp As Integer)
+Declare Sub BoundaryTest (objsGrund As GeoObjects)
+Declare Sub ObjectName (objsGrund As GeoObjects)
+Declare Sub SetObjName (Status As StatusIndicator, objGrund As GeoObject, _
+						xmin As Double, ymin As Double, xmax As Double, _
+						ymax As Double, strKennz As String)
+Declare Sub OmittingAreas
+Declare Sub AbbruchBeiFehler (lngFehlerNr As Long)
+Declare Sub TRiASFehler (strFehlerText As String, Optional lngONr1 As Variant, _
+						 Optional lngONr2 As Variant)
+Declare Sub StatistikFehler (Optional lngONr As Variant)
+
+' Function's-Deklarationen
+Declare Function SelectDlgFunc (ControlName$, Action%, SuppValue%) As Integer
+Declare Function ObjektAnteil (obj1 As GeoObject, obj2 As GeoObject) As Boolean
+Declare Function FlaechenInhalt (objGO As GeoObject) As Double
+Declare Function MasseinheitAbtrennen (MWert$, MZahl#) As String
+
+
+' ======================================================================================
+Sub ObjNummer()
+
+' Reaktion bei Runtime-Error
+	On Error GoTo CheckError
+
+' Eingangsdialog
+	Begin Dialog UserDialog ,,150,88,"Objektnamevergabe",.SelectDlgFunc
+		OptionGroup .Auswahl
+			OptionButton 12,20,128,8,"  für alle Grundstücke des Projektes",.Alle
+			OptionButton 12,36,128,8,"  nur für die recherchierten Grundstücke",.Einzel
+		OKButton 13,61,50,14
+		PushButton 86,61,50,14,"Abbrechen",.Cancel
+	End Dialog
+
+	Dim EingangsDialog As UserDialog
+	Dim intDialog As Integer
+	intDialog = Dialog(EingangsDialog)
+
+	If intDialog = 1 Then	' CancelButton "Abbrechen" (bei OKButton intDialog = -1)
+		MsgBox "Is' wohl schon Feierabend?", ebQuestion, strBoxTitel
+		End
+	End If
+
+' Eingangsbild
+	Msg.Open NL & "   Bitte etwas Geduld - die Abarbeitung wird vorbereitet!   " & _
+			 NL, , False, False
+
+' Initialisierungen
+  	Set docGD = GetActiveDocument
+
+	Dim clsGrund As GeoClass		' Objektklasse (Grundstück)
+	Set clsGrund = docGD.GetClass (strGrund)
+	Dim objsGrund As GeoObjects		' GeometrieObjekte (Grundstücke)
+	Set objsGrund = docGD.CreateGeoObjectsCollection()
+
+	If bAlle = True Then	' alle Grundstücke
+		Set objsGrund = clsGrund.GetObjects(OT_Area)'
+	Else					' nur die recherchierten Grundstücke
+		RecherchierteObjekte objsGrund, strGrund, OT_Area
+		If objsGrund.Count = 0 Then
+			MsgBox "Es wurden keine Grundstücke recherchiert.", ebQuestion, strBoxTitel
+			End
+		End If
+	End If
+
+' Test, ob Statistik-Erweiterung geladen ist, durch den Versuch, von einem beliebigen
+' Grundstück den Flächeninhalt zu ermitteln
+	Dim ft As GeoFeature
+	Set ft = objsGrund(1).GetFeature ("Flächeninhalt")
+	If (ft Is Nothing) Then StatistikFehler
+
+' weitere Initialisierungen
+	Set clsDachteil = docGD.GetClass (strDachteil)
+	If (clsDachteil Is Nothing) Then
+		MsgBox "Das Projekt enthält keine Dachteilflächen", ebQuestion, strBoxTitel
+	End If
+
+	Set clsVersFlaeche = docGD.GetClass (strVersFlaeche)
+	If (clsVersFlaeche Is Nothing) Then
+		MsgBox "Das Projekt enthält keine versiegelten Flächen", ebQuestion, strBoxTitel
+	End If
+
+	Set clsStrasse = docGD.GetClass (strStrasse)
+	If (clsStrasse Is Nothing) Then
+		MsgBox "Das Projekt enthält keine allgemeinen Straßen", ebQuestion, strBoxTitel
+	End If
+
+	Set objsInOut = docGD.CreateGeoObjectsCollection()
+	Set objsOmit = docGD.CreateGeoObjectsCollection()
+
+	intMaxLfdNr = 0
+
+	Msg.Close	' Eingangsbild schließen
+
+	BoundaryTest objsGrund
+	ObjectName objsGrund
+	If bAlle = True Then OmittingAreas
+
+	Beep
+	If objsInOut.Count = 0 And objsOmit.Count = 0 Then
+		MsgBox "Bloß gut, daß hier Objekt- und nicht Subjektnamen verteilt werden;" & NL & _
+			   "denn ich hatte einmal einen Lehrer, der bisweilen rief:" & NL & _
+			   "'Du bist ein stinkend faules Subjekt!'" & NL & _
+				"-  Das hat er aber nicht zu mir gesagt.", _
+				ebInformation, strBoxTitel
+	Else
+		If objsInOut.Count > 0 Then
+			Dim orwOverlap1 As GeoObjectWin
+			Set orwOverlap1 = objsInOut.CreateGeoObjectWin()
+			orwOverlap1.Name = "Überstehende Dachteile/Versiegelungen/Straßen"
+			orwOverlap1.Top = 1
+			orwOverlap1.Visible = 1
+		End If
+
+		If objsOmit.Count > 0 Then
+			Dim orwOverlap2 As GeoObjectWin
+			Set orwOverlap2 = objsOmit.CreateGeoObjectWin()
+			orwOverlap2.Name = "Die vergessenen Kinder"
+			orwOverlap2.Left = 1
+			orwOverlap2.Visible = 1
+		End If
+
+		MsgBox "Außer der Notwendigkeit, die Gehälter zu zahlen," & NL & _
+				"besteht hier noch anderweitig Handlungsbedarf !", _
+				ebExclamation, strBoxTitel
+	End If
+
+	Exit Sub
+
+
+' Abbruch bei Runtime-Error
+CheckError:
+	AbbruchBeiFehler Err.Number
+
+End Sub ' ObjNummer. 
+
+
+' ======================================================================================
+' Subroutine's
+' --------------------------------------------------------------------------------------
+' Routine, die nach dem Schließen des Projektes gerufen wird
+Sub OnDocumentToClose (Doc As GeoDocument)
+	docGD.PreventRepaint = 0	' Zeichnen wieder ermöglichen
+'	SetBreakScript (True)		' den laufenden Script anhalten
+End Sub
+
+
+' --------------------------------------------------------------------------------------
+' alle recherchierten Objekte objsWorkObj mit dem Kurztext strKText und Objekttyp
+' intObjTyp ermitteln
+Sub RecherchierteObjekte (objsWorkObj As GeoObjects, strKText As String, _
+						  intObjTyp As Integer)
+
+	Dim objsRWin As GeoObjectWins	' alle Recherchefenster
+	Set objsRWin = docGD.GetGeoObjectWins()
+
+	Dim objsRechObj As GeoObjects	' alle recherchierten Objekte
+	Dim objRO As GeoObject			' ein recherchiertes Objekt
+	Dim objRWin As GeoObjectWin		' ein Recherchefenster
+	Dim objDummy As GeoObject		' Rückgabewert von Add()
+
+	For Each objRWin In objsRWin	' alle geöffneten Recherchefenster abfragen
+		Set objsRechObj = objRWin.GetSelectedObjects()
+		For Each objRO In objsRechObj
+			If objRO.ObjClass.Name$ = strKText And _
+			   objRO.ObjType = intObjTyp Then
+				Set objDummy = objsWorkObj.Add(objRO.Value)
+			End If
+		Next objRO
+	Next objRWin
+
+End Sub ' RecherchierteObjekte
+
+
+' --------------------------------------------------------------------------------------
+' Test, ob es Dachteilflächen, versiegelte Flächen bzw. allgemeine Straßen gibt, die
+' innerhalb/außerhalb eines Grundstückes liegen
+Sub BoundaryTest (objsGrund As GeoObjects)
+
+	Dim intAnsw As Integer
+	intAnsw = MsgBox ("Test auf unerlaubten Grenzübertritt bei" & NL & _
+					  "Dachteil-, versiegelten Flächen bzw. allg. Straßen", _
+					  ebYesNoCancel Or ebDefaultButton1 Or ebQuestion, strBoxTitel)
+
+	If intAnsw = 2 Then	AbbruchBeiFehler 18	' Cancel
+	If intAnsw = 7 Then Exit Sub			' nein
+
+	Dim objGrund As GeoObject		' einzelnes Grundstück
+	Dim xmin As Double, ymin As Double, xmax As Double, ymax As Double
+
+	Dim objsInGrund As GeoObjects	' Dachteil-, versiegelte Flächen bzw. allg. Straßen,
+									' die im umschließenden Rechteck des
+									' objGrund-Grundstückes liegen
+	Dim objInGrund As GeoObject		' eine einzelne objsInGrund-Fläche
+	Dim objDummy As GeoObject		' Rückkehrwert von Add()
+
+	Dim lngAnzGrund As Long, j As Long
+	lngAnzGrund = objsGrund.Count	' Anzahl und
+	j = 0							' Zähler der abzuarbeitenden Grundstücke 
+
+	Dim Status As New StatusIndicator	' Geduldsanzeige 
+	If (Status Is Not Nothing) Then
+		Status.Restart 1, lngAnzGrund+1, STATUS_ShowAllFields
+		Status.Field(1) = Str$(lngAnzGrund)
+		Status.Field(3) = "Bearbeitungsstand:  %d %%"
+		Status.Caption = "Test auf unerlaubten Grenzübertritt"
+	End If
+
+' Abarbeitung aller Grundstücke
+	For Each objGrund In objsGrund
+
+		If (Status Is Not Nothing) Then	' Status weiterschalten
+			Status.Field(2) = "Grundstücke werden abgearbeitet"
+			Status.Field(4) = objGrund.Value
+			j = j + 1
+			Status.SetPosition j
+			If Status.WasCanceled() Then
+				Set Status = Nothing	' Geduldsanzeige abschalten
+				AbbruchBeiFehler 18		' Cancel
+			End If
+		End If
+
+		objGrund.GetGeometryRect xmin, ymin, xmax, ymax
+
+		If (Status Is Not Nothing) Then
+			Status.Field(2) = "Grundstücke: Dachteilflächen"
+			Status.Field(4) = objGrund.Value
+		End If
+		Set objsInGrund = clsDachteil.GetObjectsInRect (xmin, ymin, xmax, ymax)
+		If (objsInGrund Is Not Nothing) Then
+			For Each objInGrund In objsInGrund
+				If (Status Is Not Nothing) Then
+					Status.Field(4) = objGrund.Value & " mit " & objInGrund
+				End If
+				If objGrund.TopRelation (objInGrund) = 2 Then
+					Set objDummy = objsInOut.Add(objInGrund.Value)
+				End If
+			Next objInGrund
+		End If
+
+		If (Status Is Not Nothing) Then
+			Status.Field(2) = "Grundstücke: versiegelte Flächen"
+			Status.Field(4) = objGrund.Value
+		End If
+		Set objsInGrund = clsVersFlaeche.GetObjectsInRect (xmin, ymin, xmax, ymax)
+		If (objsInGrund Is Not Nothing) Then
+			For Each objInGrund In objsInGrund
+				If (Status Is Not Nothing) Then
+					Status.Field(4) = objGrund.Value & " mit " & objInGrund
+				End If
+				If objGrund.TopRelation (objInGrund) = 2 Then
+					Set objDummy = objsInOut.Add(objInGrund.Value)
+				End If
+			Next objInGrund
+		End If
+
+		If (Status Is Not Nothing) Then
+			Status.Field(2) = "Grundstücke: allgemeine Straßen"
+			Status.Field(4) = objGrund.Value
+		End If
+		Set objsInGrund = clsStrasse.GetObjectsInRect (xmin, ymin, xmax, ymax)
+		If (objsInGrund Is Not Nothing) Then
+			For Each objInGrund In objsInGrund
+				If (Status Is Not Nothing) Then
+					Status.Field(4) = objGrund.Value & " mit " & objInGrund
+				End If
+				If objGrund.TopRelation (objInGrund) = 2 Then
+					Set objDummy = objsInOut.Add(objInGrund.Value)
+				End If
+			Next objInGrund
+		End If
+
+	Next objGrund
+
+	Set Status = Nothing	' Geduldsanzeige abschalten
+
+	If objsInOut.Count > 0 Then
+		Dim orwOverlap As GeoObjectWin
+		Set orwOverlap = objsInOut.CreateGeoObjectWin()
+		orwOverlap.Name = "Überstehende Dachteile/Versiegelungen/Straßen"
+		orwOverlap.Visible = 1
+
+		Beep
+		MsgBox "Das Projekt enthält Dachteil-, versiegelte Flächen bzw." & NL & _
+				"allgemeine Straßen, die kühnerweise über Grenzen gehen." & NL & _
+				"Deshalb wird das Programm erst einmal abgebrochen." & NL & _
+				"Viel Spaß und eine ruhige Hand beim Korrigieren.", _
+				ebInformation, strBoxTitel
+		End
+	End If
+
+End Sub ' BoundaryTest
+
+
+' --------------------------------------------------------------------------------------
+' Objektnamevergabe
+Sub ObjectName (objsGrund As GeoObjects)
+
+	Dim objGrund As GeoObject		' einzelnes Grundstück
+	Dim xmin As Double, ymin As Double, xmax As Double, ymax As Double
+
+	Dim lngAnzGrund As Long, j As Long
+	lngAnzGrund = objsGrund.Count	' Anzahl und
+	j = 0							' Zähler der abzuarbeitenden Grundstücke 
+
+	Dim Status As New StatusIndicator	' Geduldsanzeige 
+	If (Status Is Not Nothing) Then
+		Status.Restart 1, lngAnzGrund+1, STATUS_ShowAllFields
+		Status.Field(1) = Str$(lngAnzGrund)
+		Status.Field(2) = "Grundstücke werden abgearbeitet"
+		Status.Field(3) = "Bearbeitungsstand:  %d %%"
+		Status.Caption = "Vergabe von Objektnamen"
+	End If
+
+' Abarbeitung aller Grundstücke
+	Dim intLfdIdent As Integer	' laufende Identifikationsnummer
+	intLfdIdent = 1
+
+	docGD.PreventRepaint = 1	' Zeichnen abschalten
+
+	For Each objGrund In objsGrund
+
+		If (Status Is Not Nothing) Then	' Status weiterschalten
+			j = j + 1
+			Status.SetPosition j
+			Status.Field(4) = objGrund.Value
+			If Status.WasCanceled() Then
+				Set Status = Nothing	' Geduldsanzeige abschalten
+				AbbruchBeiFehler 18		' Cancel
+			End If
+		End If
+
+		objGrund.GetGeometryRect xmin, ymin, xmax, ymax
+		SetObjName Status, objGrund, xmin, ymin, xmax, ymax, strD
+		SetObjName Status, objGrund, xmin, ymin, xmax, ymax, strV
+
+	Next objGrund
+
+	docGD.PreventRepaint = 0	' Zeichnen wieder ermöglichen
+	docGD.Repaint				' Veränderungen zeichnen
+
+	Set Status = Nothing	' Geduldsanzeige abschalten
+
+End Sub ' ObjectName
+
+
+' --------------------------------------------------------------------------------------
+' Objektnamen für Dachteil-, versiegelte Flächen bzw. allgemeine Straßen im Grundstück
+' objGrund vergeben
+Sub SetObjName (Status As StatusIndicator, objGrund As GeoObject, xmin As Double, _
+				ymin As Double, xmax As Double, ymax As Double, strKennz As String)
+
+	' im umschließenden Rechteck von objGrund liegende Dachteil-, versiegelte Flächen
+	' bzw. allgemeine Straßen
+	Dim objsRectObj As GeoObjects
+
+	If strKennz = strD Then
+		If (Status Is Not Nothing) Then
+			Status.Field(2) = "Grundstücke: Dachteilflächen"
+			Status.Field(4) = objGrund.Value
+		End If
+		If (clsDachteil Is Nothing) Then Exit Sub
+		Set objsRectObj = clsDachteil.GetObjectsInRect (xmin, ymin, xmax, ymax)
+	ElseIf strKennz = strV Then
+		Dim objsVers As GeoObjects, objsStr As GeoObjects
+		If (clsVersFlaeche Is Not Nothing) Then
+			If (Status Is Not Nothing) Then
+				Status.Field(2) = "Grundstücke: versiegelte Flächen"
+				Status.Field(4) = objGrund.Value
+			End If
+			Set objsVers = clsVersFlaeche.GetObjectsInRect (xmin, ymin, xmax, ymax)
+		End If
+		If (clsStrasse Is Not Nothing) Then
+			If (Status Is Not Nothing) Then
+				Status.Field(2) = "Grundstücke: allgemeine Straßen"
+				Status.Field(4) = objGrund.Value
+			End If
+			Set objsStr = clsStrasse.GetObjectsInRect (xmin, ymin, xmax, ymax)
+		End If
+
+		Set objsRectObj = docGD.CreateGeoObjectsCollection()
+
+		If (objsVers Is Not Nothing) Then
+			Set objsRectObj = objsRectObj.Union(objsVers)
+		End If
+		If (objsStr Is Not Nothing) Then
+			Set objsRectObj = objsRectObj.Union(objsStr)
+		End If
+		If (objsRectObj Is Nothing) Then Exit Sub
+	Else
+		MsgBox "Das Kennzeichen " & strKennz & " ist unbekannt!?", _
+				ebCritical, strBoxTitel
+		Exit Sub
+	End If
+
+	If objsRectObj.Count = 0 Then Exit Sub
+
+	Dim objsIn As GeoObjects	' vollständig innerhalb liegende Dachteil-, versiegelte
+								' Flächen bzw. allgemeine Straßen
+	Set objsIn = docGD.CreateGeoObjectsCollection()
+
+	Dim objSingle As GeoObject	' einzelnes Objekt für For-Each-Schleife
+	Dim intRel As Integer		' Rückkehrwert von TopRelation()
+	Dim objDummy As GeoObject	' Rückgabewert von Add()
+
+	For Each objSingle In objsRectObj
+		If objSingle.ObjType = OT_Area Then
+
+			If (Status Is Not Nothing) Then
+				Status.Field(4) = objGrund.Value & " mit " & objSingle
+			End If
+
+			' Relation des objSingle-Objektes zu dem objGrund-Grundstück
+			intRel = objGrund.TopRelation (objSingle)
+			Select Case intRel		' Relation
+				Case 0		' innerhalb
+					Set objDummy = objsIn.Add(objSingle.Value)
+				Case 2		' inner/außerhalb
+					Set objDummy = objsInOut.Add(objSingle.Value)
+					If ObjektAnteil (objGrund, objSingle) = True Then
+						Set objDummy = objsIn.Add(objSingle.Value)
+					End If
+				Case 3		' unklar
+					TRiASFehler strErrTopRelation, objGrund.Value, objSingle.Value
+			End Select
+		End If
+	Next objSingle
+
+	' Abarbeitung aller Objekte, die innerhalb des objGrund-Grundstücks liegen
+	If (Status Is Not Nothing) Then
+		Status.Field(2) = "Grundstücke: jetzt passiert's"
+		Status.Field(4) = objGrund.Value
+	End If
+
+'	Dim intLfdNr As Integer			' laufende Nummer, aus der der Objektname  --> Private
+	intLfdNr = 1					' gebildet wird
+	Dim ftObjektname As GeoFeature,  ftIdentNummer As GeoFeature
+	Set ftIdentNummer = objGrund.GetFeature (strIdentNr)
+
+	Dim strGrundIdent As String	' Text des Merkmals "Identifikationsnummer"
+	If (ftIdentNummer Is Not Nothing) Then
+		strGrundIdent = ftIdentNummer.Feature$
+	Else
+		strGrundIdent = ""
+	End If
+
+	For Each objSingle In objsIn
+
+		Set ftObjektname = objSingle.GetFeature (strObjektname)
+		' wenn Merkmal "Objektname" am Objekt objSingle noch nicht existiert, dann
+		' an dieses Objekt anhängen
+		If (ftObjektname Is Nothing) Then
+			Set ftObjektname = objSingle.AddFeature (strObjektname, FEATURETYPE_WriteAble)
+		End If
+
+		ftObjektname.Feature$ = strKennz & intLfdNr
+		intLfdNr = intLfdNr + 1
+
+		' Identifikationsnummer vererben
+		If strGrundIdent <> "" Then
+			Set ftIdentNummer = objSingle.GetFeature (strIdentNr)
+			If (ftIdentNummer Is Nothing) Then
+				Set ftIdentNummer = objSingle.AddFeature (strIdentNr, FEATURETYPE_WriteAble)
+			End If
+
+			If (ftIdentNummer Is Not Nothing) Then
+				ftIdentNummer.Feature$ = strGrundIdent
+			End If
+		End If
+
+	Next objSingle
+
+	If intMaxLfdNr < intLfdNr Then intMaxLfdNr = intLfdNr
+
+	objsIn.Refresh
+
+End Sub ' SetObjName
+
+
+' --------------------------------------------------------------------------------------
+' Dachteil-, versiegelte Flächen und allgemeine Straßen aufsammeln, die in keinem
+' Grundstück liegen und deshalb keinen Objektnamen erhalten haben
+Sub OmittingAreas
+
+	Msg.Open NL & "   Die Suche nach den vergessenen Kindern wird vorbereitet!   " & _
+			 NL, , False, False
+
+	Dim objsArea As GeoObjects ' alle Dachteil-, versiegelten Flächen bzw. allg. Straßen
+	Set objsArea = clsDachteil.GetObjects(OT_Area)'
+	Set objsArea = objsArea.Union(clsVersFlaeche.GetObjects(OT_Area))
+	Set objsArea = objsArea.Union(clsStrasse.GetObjects(OT_Area))
+
+	Dim objArea As GeoObject  ' einzelne Dachteil-, versiegelte Fläche bzw. allg. Straße
+	Dim strObjName As String		' Objektname
+	Dim strOName1 As String			' 1. Zeichen des Objektnamens
+	Dim lngONValue As Long			' numerischer Teil des Objektnamens
+	Dim ftObjektname As GeoFeature	' Merkmal eines TRiAS-Objektes
+	Dim objDummy As GeoObject		' Rückgabewert von Add()
+
+	Dim lngCntArea As Long, j As Long
+	lngCntArea = objsArea.Count	' Anzahl und
+	j = 0 ' Zähler der abzuarbeitenden Dachteil-, versiegelte Flächen bzw. allg. Straßen
+
+	Msg.Close
+
+	Dim Status As New StatusIndicator	' Geduldsanzeige 
+	If (Status Is Not Nothing) Then
+		Status.Restart 1, lngCntArea+1, STATUS_ShowAllFields
+		Status.Field(1) = Str$(lngCntArea)
+		Status.Field(2) = "Dachteile/Versiegelungen/Straßen"
+		Status.Field(3) = "Bearbeitungsstand:  %d %%"
+		Status.Caption = "Suche nach den vergessenen Kindern"
+	End If
+
+' Abarbeitung aller Dachteil-, versiegelte Flächen bzw. allgemeine Straßen
+	For Each objArea In objsArea
+
+		If (Status Is Not Nothing) Then	' Status weiterschalten
+			j = j + 1
+			Status.SetPosition j
+			Status.Field(4) = objArea.Value
+			If Status.WasCanceled() Then
+				Set Status = Nothing	' Geduldsanzeige abschalten
+				AbbruchBeiFehler 18		' Cancel
+			End If
+		End If
+
+		Set ftObjektname = objArea.GetFeature (strObjektname)
+		' wenn Merkmal "Objektname" am Objekt objArea noch nicht existiert, dann
+		' an dieses Objekt anhängen
+		If (ftObjektname Is Nothing) Then
+			Set ftObjektname = objArea.AddFeature (strObjektname, FEATURETYPE_WriteAble)
+		End If
+
+		strObjName = Trim$ (ftObjektname.Feature$)
+		strOName1 = Left$ (strObjName, 1)
+		lngONValue = Val (Mid$ (strObjName, 2))
+
+		If ((strOName1 <> strD And strOName1 <> strV) _		' Objektname falsch oder gar
+			Or lngONValue <= 0 Or lngONValue >= intMaxLfdNr) Then	'  nicht vorbelegt
+			Set objDummy = objsOmit.Add (objArea.Value)
+			ftObjektname.Feature$ = strUnklar
+		End If
+
+	Next objArea
+
+	Set Status = Nothing	' Geduldsanzeige abschalten
+
+End Sub ' OmittingAreas
+
+
+' --------------------------------------------------------------------------------------
+' ein Runtime-Error ist aufgetreten
+Sub AbbruchBeiFehler (lngFehlerNr As Long)
+	Msg.Close					' Eingangsbild beenden
+	docGD.PreventRepaint = 0	' Zeichnen wieder ermöglichen
+	docGD.Repaint				' Veränderungen zeichnen
+	Beep
+
+	If lngFehlerNr = 18 Then	' User interrupt (z.B. Cancel bei Geduldsanzeige)
+		MsgBox "Die Bearbeitung wurde durch den Anwender vorzeitig beendet", _
+				ebExclamation, strBoxTitel
+	Else
+		MsgBox "Das Programm wurde abgebrochen mit" & NL & _
+				"Fehler " & lngFehlerNr & " (" & Error(lngFehlerNr) & ")", _
+				ebCritical, strBoxTitel
+	End If
+	End
+End Sub ' AbbruchBeiFehler
+
+
+' --------------------------------------------------------------------------------------
+' Fehler bei Abarbeitung einer TRiAS-Routine aufgetreten
+Sub TRiASFehler (strFehlerText As String, Optional lngONr1 As Variant, _
+				 Optional lngONr2 As Variant)
+	Dim strZusatz As String
+	strZusatz = ""
+	If Not isMissing(lngONr1) Then
+		If Not isMissing(lngONr2) Then
+			strZusatz = NL & " (beteiligte Objekte: " & lngONr1 & ", " &  lngONr2 & ")"
+		Else
+			strZusatz = NL & " (beteiligtes Objekt: " & lngONr1 & ")"
+		End If
+	End If
+
+	Beep
+	MsgBox "In der Funktion '" & strFehlerText & "' ist ein Fehler aufgetreten!" & _
+			strZusatz, ebCritical, strBoxTitel
+
+End Sub ' TRiASFehler
+
+
+' --------------------------------------------------------------------------------------
+' Fehler bei Statistik aufgetreten
+Sub StatistikFehler (Optional lngONr As Variant)
+	Beep
+	Dim strZusatz As String
+	strZusatz = "."
+	If Not isMissing(lngONr) Then
+		strZusatz = NL & "(beteiligtes Objekt: " & lngONr & ")."
+	End If
+	MsgBox "Das Programm mußte vorzeitig beendet werden" & strZusatz & NL & _
+		   "Prüfen Sie bitte, ob das Zusatzmodul" & NL & "'Statistische Auswertungen' geladen ist !", _
+		   ebCritical, strBoxTitel
+	End
+End Sub ' StatistikFehler
+
+
+
+' ======================================================================================
+' Function's
+' --------------------------------------------------------------------------------------
+' Dialogfunktion des Eingangsdialogs (Call-Back-Function)
+Function SelectDlgFunc (ControlName$, Action%, SuppValue%) As Integer
+	If Action = 1 Then			' Aktionen bevor Dialog sichtbar wird
+		DlgValue "Auswahl",0
+		DlgFocus "Alle"
+		bAlle = True
+
+	ElseIf Action = 2 Then		' Aktionen bei Click
+		Select Case ControlName$
+			Case "Alle"
+				bAlle = True
+			Case "Einzel"
+				bAlle = False
+			Case "OK"			' auf OKButton
+				SelectDlgFunc = 0	' DialogBox schließen
+			Case "Cancel"
+				SelectDlgFunc = 0	' DialogBox schließen
+		End Select
+	End If
+End Function ' SelectDlgFunc
+
+
+' --------------------------------------------------------------------------------------
+' gute Idee von Klaus: Testen, ob obj2 bezogen auf den Flächeninhalt zu mindestens
+' dblFlAnteil-Prozent in obj1 liegt (True)
+Function ObjektAnteil (obj1 As GeoObject, obj2 As GeoObject) As Boolean
+
+	ObjektAnteil = False
+
+	If obj1.ObjType <> OT_Area Or obj2.ObjType <> OT_Area Then
+		Exit Function
+	End If
+
+	Dim objsTO As GeoObjects	' in obj1 liegende Teilobjekte von obj2
+	Set objsTO = obj1.GetIntersectObjects (obj2)
+
+	If (objsTO Is Nothing) Then
+		MsgBox "Also das kann nun wirklich nicht sein !?", ebQuestion, strBoxTitel
+		Exit Function
+	End If
+	If objsTO.Count = 0 Then
+		MsgBox "Also das kann nun wirklich nicht sein !?", ebQuestion, strBoxTitel
+		Exit Function
+	End If
+
+	Dim objTO As GeoObject	' einzelnes objsTO-Objekt
+	Dim FL As Double		' Flächeninhalt eines objTO-Objektes
+	Dim RefFL As Double		' größter Flächeninhalt von allen objTO-Objekten
+	RefFL = 0.0				' Startwert
+
+	For Each objTO In objsTO
+		If objTO.ObjType = OT_Area Then
+			FL = FlaechenInhalt (objTO)
+			If FL > RefFL Then RefFL = FL
+		End If
+		docGD.RemoveObject objTO
+	Next objTO
+
+	objsTO.Refresh
+	Set objsTO = Nothing
+
+	If RefFL = 0.0 Then Exit Function
+
+	Dim MyFl As Double
+	MyFl = FlaechenInhalt (obj2)
+	If MyFl = 0.0 Then Exit Function
+
+	If RefFL/MyFl > dblFlAnteil Then ObjektAnteil = True
+
+End Function ' ObjektAnteil
+
+
+' --------------------------------------------------------------------------------------
+' Flächeninhalt eines GeoObjetktes in m²; im Fehlerfall (unbekannte Maßeinheit) wird -1
+' zurückgegeben
+Function FlaechenInhalt (objGO As GeoObject) As Double
+	Dim ftFlInhalt As GeoFeature	
+	Set ftFlInhalt = objGO.GetFeature("Flächeninhalt")
+	If (ftFlInhalt Is Nothing) Then StatistikFehler objGO.Value
+
+	Dim strFl As String, strME As String
+	strFl = Trim$(ftFlInhalt.Feature$)	' Flächeninhalt und Maßeinheit
+	If strFl = "" Then	' kein Flächenobjekt
+		FlaechenInhalt = 0
+		Exit Function
+	End If
+
+	Dim Flaeche As Double				' Flächeninhalt ohne Maßeinheit
+	strME = MasseinheitAbtrennen (strFl, Flaeche)
+
+	Select Case LCase(Mid(strME,2,1))	' das 1. Zeichen von strME ist "["
+		Case "m"	' m²
+			FlaechenInhalt = Flaeche
+		Case "h"	' ha
+			FlaechenInhalt = 10000 * Flaeche
+		Case "k"	' km²
+			FlaechenInhalt = 1000000 * Flaeche
+		Case Else
+			MsgBox "Die ermittelte Maßeinheit des Flächeninhalts ist unbekannt!", _
+					ebCritical, strBoxTitel
+			FlaechenInhalt = -1
+	End Select
+End Function ' FlaechenInhalt
+
+
+' --------------------------------------------------------------------------------------
+' Maßeinheit aus dem übergebenen String MWert eliminieren und in der Form "[...]"
+' zurückgeben; dabei wird vorausgesetzt, daß die Maßeinheit in eckige Klammern '[]'
+' eingeschlossen ist
+Function MasseinheitAbtrennen (MWert$, MZahl#) As String
+	Dim intPos As Integer
+	intPos = InStr (MWert$,"[")		' Position der öffnenden Klammer "[" suchen
+	If intPos = 0 Then
+		MsgBox "Maßeinheit des Flächeninhalts beginnt nicht mit [", _
+				ebCritical, strBoxTitel
+		MasseinheitAbtrennen = "  "	' Rückgabe bei Fehler
+	End If
+
+	intPos = InStr (MWert$," ")			' Position zwischen Zahlenwert und Dimension
+	MZahl# = Val (Left(MWert$,intPos))	' Dimension abschneiden
+	MasseinheitAbtrennen = Right(MWert$,Len(MWert$)-intPos)	' Maßzahl ohne Maßeinheit als Rückgabewert
+End Function ' MasseinheitAbtrennen
+     

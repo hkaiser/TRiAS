@@ -1,0 +1,64 @@
+# Makefile fr GAK
+
+NAME = GAK
+
+# Generierungsdatum (yymmdd) und Version
+DATE=980608
+DATE1=08.06.1998
+VERSION = 2
+RELEASE = 02
+BUILD = 047
+COPYRIGHT = JB$(DATE)
+RC2 = res\$(NAME).rc2
+
+PNAME = "Version f\374r das Land Brandenburg"
+PADDRESS = "uve FEZ Potsdam GmbH"
+
+LINK = f:\c8\bin\link
+MASM = f:\c8\bin\masm
+STUB = rights
+RIGHTS = $(STUB).exe
+
+# Versionskontrolle -----------------------------------------------------------
+new:
+	@del $(STUB).asm > nul
+        @del $(RC2) > nul
+	@del defabout.dlg > nul
+
+formake: $(STUB).exe RC defabout.dlg
+
+$(STUB).exe:    $(STUB).asm
+	$(MASM) rights;
+        $(LINK) /KNOWEAS rights;
+
+$(STUB).asm: $(STUB).tpl
+	ersetz $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) $(STUB).tpl $(STUB).asm
+
+# Personalisierungsinformation
+RC: $(NAME)v.tpl
+        ersetz $(VERSION) $(RELEASE) $(BUILD) @A @B $(NAME)v.tpl $(RC2)
+
+defabout.dlg:   defabout.tpl
+	ersetz $(VERSION) $(RELEASE) $(BUILD) $(PADDRESS) $(DATE1) @A @B defabout.tpl defabout.dlg
+
+# archivieren ---------------------------------------------------------------
+store:  
+	@echo off
+	del *.bak
+	del *.dmp
+	del *.tmp
+	del *.zip
+	del *.map
+	del *.sym
+	del *.sts
+	del *.lst
+	del *.aps
+	del *.pch
+	del *.bnd
+	del *.pdb
+	del *.sbr
+	del *.bsc
+        del *.lib
+        zip $(NAME) -x*.ncb 
+
+

@@ -1,0 +1,37 @@
+HKCR
+{
+	TRiASEx.ClassifyByObjProp.1 = s 'Gruppieren von Objekten nach einer Objekteigenschaft'
+	{
+		CLSID = s '{0E54C9E1-20DE-11CF-BA55-00AA0018497C}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {0E54C9E1-20DE-11CF-BA55-00AA0018497C} = s 'Gruppieren von Objekten nach einer Objekteigenschaft'
+		{
+			val AppID = s '{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}'
+			ProgID = s 'TRiASEx.ClassifyByObjProp.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove TRiASEx.ClassifyByObjProp.1 = s '{0E54C9E1-20DE-11CF-BA55-00AA0018497C}'
+			}
+			NoRemove ClassifyEngines
+			{
+				ForceRemove TRiASEx.ClassifyByObjProp.1 = s '{0E54C9E1-20DE-11CF-BA55-00AA0018497C}'
+			}
+		}
+	}
+}

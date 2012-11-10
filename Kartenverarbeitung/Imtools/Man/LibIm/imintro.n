@@ -1,0 +1,581 @@
+'\"t
+.de Cb		\" Courier Begin
+.in +0.25i
+.ft CW
+\s-1
+.nf
+..
+.de Ce		\" Courier End
+.ft R
+.fi
+\s+1
+.in -0.25i
+..
+.if t .TH IMINTRO 3IM "June 27, 1995" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMINTRO 3IM "June 27, 1995" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+imintro - general information on the SDSC image library
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+.sp
+ cc \fIflags files\fB -lsdsc -lim
+.fi
+\fR
+.SH DESCRIPTION
+The SDSC Image Library \fIlibim.a\fR is a collection of portable
+C-language image manipulation tools. 
+These tools allow image files in a variety of formats to be
+read in and written out and images to be manipulated
+while in memory.
+Manipulations include rotating, scaling, filtering, converting
+to/from RGB and gray-scale, cutting out pieces of images,
+changing color lookup tables, rolling color lookup tables, and so on.
+.LP
+The SDSC Image Library is made up of three sets of routines:
+.LP
+.RS 0.5i
+.TS
+l l.
+ImVfb	Manipulates Virtual Frame Buffers (images) while in memory
+ImClt	Manipulates Color Lookup Tables while in memory
+ImFile	Reads and writes image files and streams
+.TE
+.RE
+.LP
+Each of these is discussed in sections that follow.
+.SH "VIRTUAL FRAME BUFFERS"
+Many visualization tools operate on frame buffers either to convert
+them from one metafile representation to another or to manipulate
+images, such as by clipping, filtering, or transformation.
+Each tool program requires some internal data
+structure.
+It is desirable for all such programs to use the
+same internal structure to allow sharing of techniques and code
+between applications.
+This shared data structure is called a
+\fBvirtual frame buffer\fR.
+.SS "Virtual Frame Buffer Design Goals"
+.IP \(bu 3
+The data structure must be able to store all necessary
+pieces of frame buffer information. This includes
+red, green, blue, color index, z-value, alpha-value,
+scalar data, as well as others.
+.IP \(bu 3
+The data structure must be extensible to be able to hold more
+information when new situations arise.
+.IP \(bu 3
+Programs must support multiple virtual frame buffers.
+.IP \(bu 3
+The data structure should be as compact as possible, avoiding paging
+through a virtual frame buffer as much as possible.
+.IP \(bu 3
+The data structure should only be visible inside
+of an application. Because we may
+want to change the internal format in the future, its
+structure should be hidden from the application
+with macros and procedure calls. It makes more sense
+for an application to query a red value from a pixel
+location in a virtual frame buffer with
+.Cb
+r = ImVfbQRed(v,p);
+.Ce
+instead of
+.Cb
+r = *( (unsigned char *) (p + v->v_roff ) );
+.Ce
+In the former case, a change to the definition of
+\fBImVfbQRed\fR would require only a recompilation of the
+tools that use the redefinition.
+.IP \(bu 3
+For efficiency, pointer arithmetic should be used to address pixels.  Thus,
+constructs like the following should be possible when setting pixel
+color values: 
+.Cb
+ImVfb *v;
+ImVfbPtr p, p1, p2;
+int x1, y1, x2, y2;
+ ...
+p1 = ImVfbQPtr( v, x1, y1 );
+p2 = ImVfbQPtr( v, x2, y2 );
+for( p = p1; p <= p2; ImVfbSInc(v,p) )
+{
+	ImVfbSRed( v, p, 64 );
+	ImVfbSGreen( v, p, 128 );
+	ImVfbSBlue( v, p, 255 );
+}
+.Ce
+.SS "Allocating a Virtual Frame Buffer"
+.LP
+A virtual frame buffer is allocated with a call to
+.Cb
+ImVfb *v;
+ ...
+v = ImVfbAlloc( width, height, fields );
+.Ce
+where \fIfields\fR defines what information each pixel will hold.
+This value is specified by or'ing together one or more
+of the following:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c
+l l.
+Constant	Meaning
+_
+IMVFBRGB	Stores red, green, blue values (0-255)
+IMVFBALPHA	Stores an alpha value (0-255)
+IMVFBWPROT	Stores a write protection (0 or non-zero)
+IMVFBINDEX8	Stores a color index (0-255)
+IMVFBINDEX16	Stores a color index (0-65534)
+IMVFBMONO	Stores a monochrome (on/off) value
+IMVFBZ	Stores a z-value (full integer)
+IMVFBGRAY	Stores a gray scale value (0-255)
+IMVFBGREY	Stores a gray scale value (0-255)
+IMVFBIDATA	Stores an integer data value
+IMVFBFDATA	Stores a floating-point data value
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+\fBImVfbAlloc\fR allocates enough memory to hold such a frame buffer
+and sets up some internal information.
+.LP
+Information about a particular virtual frame buffer can be
+\fBS\fRet with
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c
+l l.
+Call	Meaning
+_
+ImVfbSClt(v,c)	Attach (set) a pointer to a color lookup table
+.TE
+.if t .in -0.5i
+.if n .in -5
+.sp 1
+.LP
+Information about a particular virtual frame buffer can be
+\fBQ\fRueried with
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c
+l l.
+Call	Meaning
+_
+ImVfbQWidth(v)	Returns the number of columns
+ImVfbQHeight(v)	Returns the number of rows
+ImVfbQFields(v)	Returns the fields mask
+ImVfbQNBytes(v)	Returns the number of bytes per pixel
+ImVfbQClt(v)	Returns a pointer to the color lookup table
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SS "Freeing a Virtual Frame Buffer"
+.LP
+A virtual frame buffer's memory can be freed (deallocated) with a call to
+.Cb
+ImVfb *v;
+ ...
+ImVfbFree( v );
+.Ce
+.SS "Per-Pixel Storage"
+.LP
+The per-pixel storage is a packed array of values. The
+storage convention assumes that the top row is row #0 and
+the left column is column #0. Pixels are stored like C-language
+2D arrays: left-to-right across the row.
+Various
+values can be \fBS\fRet into a particular pixel (pointed to by a
+pixel pointer) within a particular virtual frame buffer by
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c
+l l.
+Call	Meaning
+_
+ImVfbSRed(v,p,r)	Red (byte)
+ImVfbSGreen(v,p,g)	Green (byte)
+ImVfbSBlue(v,p,b)	Blue (byte)
+ImVfbSAlpha(v,p,a)	Alpha-value (byte)
+ImVfbSIndex8(v,p,i8)	Color index (byte)
+ImVfbSIndex16(v,p,i32)	Color index (integer)
+ImVfbSMono(v,p,m)	Monochromatic value (zero or one)
+ImVfbSIndex(v,p,i)	ImVfbSIndex8 or ImVfbSIndex16
+ImVfbSZ(v,p,z)	Z-value (integer)
+ImVfbSGray(v,p,g)	Gray scale (byte)
+ImVfbSGrey(v,p,g)	Gray scale (byte)
+ImVfbSFData(v,p,f)	Floating-point data value
+ImVfbSIData(v,p,i)	Integer data value
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+Various pixel values can be \fBQ\fRueried
+within a particular virtual frame buffer by
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c
+l l.
+Call	Meaning
+_
+ImVfbQRed(v,p)	Red (byte)
+ImVfbQGreen(v,p)	Green (byte)
+ImVfbQBlue(v,p)	Blue (byte)
+ImVfbQAlpha(v,p)	Alpha-value (byte)
+ImVfbQIndex8(v,p)	Color index (byte)
+ImVfbQIndex16(v,p)	Color index (integer)
+ImVfbQMono(v,p,m)	Monochromatic value (zero or one)
+ImVfbQIndex(v,p)	ImVfbQIndex8 or ImVfbQIndex16
+ImVfbQZ(v,p)	Z-value (integer)
+ImVfbQGray(v,p)	Gray scale (byte)
+ImVfbQGrey(v,p)	Gray scale (byte)
+ImVfbQFData(v,p)	Floating-point data value
+ImVfbQIData(v,p)	Integer data value
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+Pixel pointers can be \fBQ\fRueried and \fBS\fRet by
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c
+l l.
+Call	Meaning
+_
+ImVfbQPtr(v,x,y)	Returns a pointer to a particular pixel
+ImVfbQFirst(v)	Returns a pointer to the first (UL) pixel
+ImVfbQLast(v)	Returns a pointer to the last (LR) pixel
+ImVfbQLeft(v,p)	Returns a pointer to a pixel one column left
+ImVfbQRight(v,p)	Returns a pointer to a pixel one column right
+ImVfbQUp(v,p)	Returns a pointer to a pixel one row up
+ImVfbQDown(v,p)	Returns a pointer to a pixel one row down
+ImVfbQNext(v,p)	Same as ImVfbQRight(v,p)
+ImVfbQPrev(v,p)	Same as ImVfbQLeft(v,p)
+ImVfbSInc(v,p)	Same as p = ImVfbQRight(v,p)
+ImVfbSDec(v,p)	Same as p = ImVfbQLeft(v,p)
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+The pixel just to the \fBImVfbQRight\fR of the right-most pixel in a
+scanline is the left-most pixel in the next scanline down. The
+pixel just to the \fBImVfbQLeft\fR of the left-most pixel in a scanline
+is the last pixel in the previous scanline. No automatic
+wraparound occurs between the last pixel and the first pixel
+in the frame buffer.
+.SH "COLOR LOOKUP TABLES"
+A color lookup table (CLT) is an ordered list of colors.
+Each color is represented by three 8-bit values.
+The first value gives the Red component, the second the Green, and
+the third the Blue component of the color.
+The triplet is often referred to as an "RGB" value.
+.LP
+Images generally come in two types:  pseudo-color and true-color.
+True-color images store the RGB triplet for each pixel in the image itself.
+Pseudo-color images store an index into a color table.
+The RGB triplet for the pixel's color is found at that indexed
+location in the associated color table. 
+.SS "Allocating a Color Lookup Table"
+A color lookup table is allocated with a call to
+.Cb
+ImClt *c;
+ ...
+c = ImCltAlloc( numColors );
+.Ce
+where \fInumColors\fR indicate how many color entries are to be
+allocated. Each color entry contains 8 bits of red, 8 bits
+of green, and 8 bits of blue.
+.SS "Freeing a Color Lookup Table"
+.LP
+A color lookup table's memory can be freed (deallocated) with a call to
+.Cb
+ImClt *c;
+ ...
+ImCltFree( c );
+.Ce
+.LP
+Freeing a virtual frame buffer with \fBImVfbFree\fR does not free its
+color lookup table, if it has one.
+.SS "Per-Color Storage"
+Information is \fBQ\fRueried from a color lookup table by
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c
+l l.
+Call	Meaning
+_
+ImCltQNColors(c)	Queries the number of colors in this \fBImClt\fR
+ImCltQRed(p)	Queries the Red component of a \fBImClt\fR entry
+ImCltQGreen(p)	Queries the Green component of a \fBImClt\fR entry
+ImCltQBlue(p)	Queries the Blue component of a \fBImClt\fR entry
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+where \fIc\fR is the specific color lookup table
+and \fIp\fR is the pointer to a \fBImClt\fR location.
+.LP
+Information is \fBS\fRet into a color lookup table by
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c
+l l.
+Call	Meaning
+_
+ImCltSRed(p,r)	Sets the Red component of a \fBImClt\fR entry
+ImCltSGreen(p,g)	Sets the Green component of a \fBImClt\fR entry
+ImCltSBlue(p,b)	Sets the Blue component of a \fBImClt\fR entry
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+A color lookup table can be attached to a particular virtual frame buffer by
+.Cb
+ImVfbSClt( v, c ) ;
+.Ce
+\fBImVfbQClt(v)\fR can later be used to \fBQ\fRuery the pointer to the \fBImClt\fR.
+.LP
+\fBImClt\fR pointer values can be \fBQ\fRueried and \fBS\fRet by
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c
+l l.
+Call	Meaning
+_
+ImCltQPtr(c,i)	Returns a pointer to a particular \fBImClt\fR location
+ImCltQFirst(c)	Returns a pointer to the first \fBImClt\fR location
+ImCltQLast(c)	Returns a pointer to the last \fBImClt\fR location
+ImCltQNext(c,p)	Returns a pointer to the next \fBImClt\fR location
+ImCltQPrev(c,p)	Returns a pointer to the previous \fBImClt\fR location
+ImCltSInc(c,p)	Same as p = ImCltQNext(c,p)
+ImCltSDec(c,p)	Same as p = ImCltQPrev(c,p)
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH "IMAGE FILE I/O"
+Image files are files that contain zero or more images, zero or more
+color lookup tables, and zero or more other pieces of data such as the
+image`s title, date of creation, and so on.
+Such image files are often the output of proprietary graphics packages,
+such as Alias or Wavefront,
+or are graphics vendor standard storage formats, such as Sun's Rasterfile or
+Pixar's PIC file.
+Many public domain graphics packages also support their own
+image file formats, such as the Utah Raster Toolkit's RLE format, or
+the X Window System's XWD format.
+.LP
+The \fBImFile\fR routines of the SDSC image library recognize many of these formats and may be used to read an image file into
+a tag table of
+virtual frame buffers, color lookup tables, and so on.
+.SS "Reading an Image File"
+An image file may be read into a tag table with a call to \fBImFileRead\fR
+or \fBImFileFRead\fR:
+.Cb
+ImFileRead( fd, format, flagsTable, dataTable );
+ImFileFRead( fp, format, flagsTable, dataTable );
+.Ce
+where \fIfd\fR is a UNIX file descriptor, \fIfp\fR is a UNIX \fBFILE\fR pointer,
+\fIformat\fR is the name of the
+recognized formats (see \fBImFileRead\fR(3IM) for a list), \fIflagsTable\fR
+is a table of input control flags, and \fIdataTable\fR is the
+table to fill with tag-value pairs of data read in from the file.
+.LP
+For both read calls, the input may be either a file or a pipe.
+.SS "Writing an Image File"
+An image file may be written out from a tag table with a call to
+\fBImFileWrite\fR or \fBImFileFWrite\fR:
+.Cb
+ImFileWrite( fd, format, flagsTable, dataTable );
+ImFileFWrite( fp, format, flagsTable, dataTable );
+.Ce
+where \fIfd\fR is a UNIX file descriptor, \fIfp\fR is a UNIX \fBFILE\fR pointer,
+\fIformat\fR is the name of the
+recognized format (Use the \fBimformats\fR command for a list), \fIflagsTable\fR
+is a table of output control flags,
+and \fIdataTable\fR is the
+table of tag-value pairs of data to be written out to the file.
+.LP
+For both write calls, the output may be either a file or a pipe.
+.SH NOTES
+.LP
+Frame buffer information can be allocated either on a
+per-pixel or on a per-plane basis. The per-pixel basis
+is better to reduce paging. The per-plane allocation
+is better to reduce overall storage. For a
+per-pixel allocation, one might call
+.Cb
+v = ImVfbAlloc( 1280, 1024, IMVFBRGB | IMVFBZ );
+.Ce
+For a per-plane allocation, one might call
+.Cb
+vc = ImVfbAlloc( 1280, 1024, IMVFBRGB );
+vz = ImVfbAlloc( 1280, 1024, IMVFBZ );
+.Ce
+Color wizards have invented a number of useful ways of describing color.
+Two of the most popular methods used in computer graphics are termed
+\fBRGB\fR and \fBHSI\fR.  In both cases,
+a three-dimensional \fIcolor space\fR is defined.
+Just as it takes 3 coordinates, such as X, Y, and Z, to uniquely
+locate a point in a 3D world, so does it take 3 coordinates to
+uniquely locate a color
+in a 3D color space.  For this reason, RGB and HSI each require three color
+coordinates, or \fIcomponents\fR, to uniquely identify a color in their 3D
+color spaces.
+.IP "\fBThe RGB Color Space\fR"
+In this color space, a color is described by a unique combination of three
+values, one each for \fBred\fR, \fBgreen\fR, and \fBblue\fR.  The color space
+is named after the first character in the names of each of these color
+components.
+.RS 0.5i
+.LP
+The RGB color space can be envisioned as a cubical volume with each edge
+measuring 256 units long.  The \fBred\fR, \fBgreen\fR, and \fBblue\fR color
+components locate a point in this volume and uniquely define a color.
+.LP
+A high value for a color component indicates there is a lot
+of that component in the RGB color.  Similarly,
+a low value for a color component indicates there is very little of that
+component in the RGB color.  Pure red, for instance, has a high red
+component, but zero green and blue components.  Pure blue has high blue
+values, but zero red and green.  And so on.  Black has zeroes for all three
+components, while white has 255's for all three.
+.LP
+The RGB color space is that typically used for the storage of high-quality
+images, such as those displayed on computer graphics workstations.  Most
+image file formats support the storage of RGB images.
+.RE
+.IP "\fBThe HSI Color Space\fR"
+In this color space, a color is described by a unique combination of three
+values, one each for \fBhue\fR, \fBsaturation\fR, and \fBintensity\fR.  The
+color space is, again, named after the first character in the names of each
+of these color components.
+.RS 0.5i
+.LP
+The HSI color space can be envisioned as two cones with their bases joined:
+one cone points upwards, while the other points downwards.  \fBHue\fR selects
+the basic color for the pixel, such as "red" or "purple" or "orange" 
+or "yellow".  Hue is measured as an angle, in degrees, around the
+color cones.  An angle of 0 degrees is red.  Larger angles cycle through
+orange, yellow, green, blue, purple, and back to red at 360 degrees.
+.LP
+\fBSaturation\fR controls how vivid the color is.  A high value makes the
+color very pure, while lower values add progressively more gray to create
+pastel shades.  Measured on the HSI color cones, saturation is the
+distance along a radius.
+.LP
+\fBIntensity\fR controls the brightness of the color and measures a distance
+along the axis connecting the tips of the two cones.  An intensity of 0
+creates black, and is the southernmost tip of the lower color cone.  An
+intensity of 1.0 creates white, and is the northernmost tip of the upper
+color cone.  To get a pure color use an intensity of 0.5, placing the color
+in the middle of the color space where the bases of the two color cones join.
+.LP
+Colors in the HSI color space are often easier
+to manipulate than in the RGB color
+space.  To make an image brighter, increase the intensity value
+of all pixels, but leave the hue and saturation components alone.  To make
+an image more pastel, and less vivid, decrease saturation values.  To change
+all yellow pixels to yellow-green, keeping their same saturation and
+intensity, adjust their hue components.  These operations would be more
+difficult in the RGB color space.
+.LP
+Unlike the RGB color space, the HSI color space is not typically used for
+image storage.  \fBimadjust\fR converts pixel colors from RGB to HSI and
+back again as necessary.  For this reason,
+adjusting images in the HSI color space is slower than adjusting them in other
+color spaces.
+.RE
+.LP
+Different pixel components have different types and different minimum
+and maximum values.
+.LP
+.RS 0.5i
+.TS
+l l l l.
+\fBValue	Type	Minimum	Maximum\fP
+_
+\fBred\fR	Integer	0	255
+\fBgreen\fR	Integer	0	255
+\fBblue\fR	Integer	0	255
+_
+\fBmonochrome\fR	Integer	0	1
+\fBindex 8\fR	Integer	0	255
+\fBindex 16\fR	Integer	0	65535
+_
+\fBhue\fR	Float	0.0	360.0
+\fBsaturation\fR	Float	0.0	1.0
+\fBintensity\fR	Float	0.0	1.0
+_
+\fBalpha\fR	Integer	0	255
+\fBwprot\fR	Integer	0	255
+\fBz-buffer\fR	Integer	0	maxint
+\fBidata\fR	Integer	any	any
+\fBfdata\fR	Float	any	any
+.TE
+.RE
+.SH "RETURNED VALUES"
+Many of the image library procedures return values that are pointers to a
+new \fBImVfb\fR or \fBImClt\fR.
+For Vfb routines,
+the source Vfb, \fIsourceVfb\fR, is used as an input frame buffer.
+If the value of \fIdestVfb\fR is equal to \fBIMVFBNEW\fR,
+then an entirely new Vfb will be created and returned.
+Otherwise, the Vfb indicated by \fIdestVfb\fR is modified and the
+value of \fIdestVfb\fR is returned.
+\fIsourceVfb\fR and \fIdestVfb\fR can be the same Vfb without negative
+side effects. 
+.LP
+For \fBImClt\fR routines,
+the source \fBImClt\fR, \fIsourceClt\fR, is used as an input lookup table.
+If the value of \fIdestClt\fR is equal to \fBIMCLTNEW\fR,
+then an entirely new \fBImClt\fR will be created and returned.
+Otherwise, the \fBImClt\fR indicated by \fIdestClt\fR is modified and the
+value of \fIdestClt\fR is returned.
+\fIsourceClt\fR, and \fIdestClt\fR can be the
+same \fBImClt\fR without negative side effects.
+.SH RETURNS
+On an error, calls returning pointers to \fBImVfb\fR structures return
+\fBIMVFBNULL\fR, calls returning \fBImClt\fR structures return \fBIMCLTNULL\fR,
+and character string functions return \fBNULL\fR.
+Non-pointer functions return a -1 on errors.
+.LP
+In all cases, on an error, the global \fBImErrNo\fR is set to an error
+code indicating the cause of the error.
+A description of the error can be printed with \fBImPError\fR (3IM).
+.SH SUMMARY OF IM ROUTINES
+.sp 1
+.TS
+r l.
+.so man-k
+.TE
+.SH AUTHORS
+Mike Bailey, T. Todd Elvins, and Dave Nadeau
+.br
+with Don Doering, Jesus Ferrer, Soraya Gonzalez, Chris Groening,
+Toan-Vinh Le, Jim McLeod, Phil Mercurio, John Moreland, and
+Brian Duggan
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

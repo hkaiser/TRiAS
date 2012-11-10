@@ -1,0 +1,91 @@
+// FunktionsTabelle (compilergeneriert), die Grundlage für Sprungverteiler 
+// bildet (DEXN_... Messages)
+// File: EXTFCNSN.TAB
+
+#if !defined(_EXTFCNSN_TAB)
+#define _EXTFCNSN_TAB
+
+extern "C" const DEXNOTIFY_ENTRY DexMessageEntriesNfy[] = 
+{
+///////////////////////////////////////////////////////////////////////////////
+// Application-Events
+	{ DEX_N_EXTENSIONSLOADED, ExtDirisWindow::doNfyExtensionsLoaded },
+	{ DEX_INITIALIZEDSERVER, ExtDirisWindow::doNfyInitialized },
+	{ DEX_SERVERISCLOSING, ExtDirisWindow::doNfyClosingApp },
+	{ DEX_SERVERCLOSED, ExtDirisWindow::doNfyAppClosed },
+	{ DEX_ERASEBKGND, ExtDirisWindow::doNfyPaintingView },
+	{ DEX_PAINTTOPLAYER, ExtDirisWindow::doNfyViewPainted },
+	{ DEX_SETNEWPALETTE, ExtDirisWindow::doNfySetNewPalette }, 
+	{ DEX_SETACTIVETOOL, ExtDirisWindow::doNfyHandleDeleteMenu },
+
+#if defined(WIN32)
+	{ DEX_N_ADDEDOBJECTPROPERTY, ExtDirisWindow::doNfyChangedObjectProperties },
+	{ DEX_N_REMOVEDOBJECTPROPERTY, ExtDirisWindow::doNfyChangedObjectProperties },
+#endif // WIN32
+
+///////////////////////////////////////////////////////////////////////////////
+// ProjektEvents
+	{ DEX_SETGEODBDIRTY, ExtDirisWindow::doNfySetDirty },
+	{ DEX_PROJECTOPEN, ExtDirisWindow::doNfyProjectOpened },
+	{ DEX_ISCLOSEDPROJECT, ExtDirisWindow::doNfyProjectClosed },
+	{ DEX_PROJECTCLOSE, ExtDirisWindow::doNfyClosingProject },
+	{ DEX_N_SCALINGCHANGED, ExtDirisWindow::doNfyScalingChanged },
+	{ DEX_N_PROJECTTOCLOSE, ExtDirisWindow::doNfyProjectToClose },
+	{ DEX_N_SHOWTOOLTIPS, ExtDirisWindow::doNfyShowToolTips },
+	{ DEX_MODIFYMERKMAL, ExtDirisWindow::doNfyFeatureModified },
+	{ DEX_RESCALE, ExtDirisWindow::doNfyReScale }, 
+	{ DEX_REREADIDENTS, ExtDirisWindow::doNfyReReadIdents }, 
+	{ DEX_REREADCONTAINER, ExtDirisWindow::doNfyReReadContainer }, 
+	{ DEX_REREADSIGHTS, ExtDirisWindow::doNfyReReadViews }, 
+	{ DEX_HEADERREREAD, ExtDirisWindow::doNfyReReadHeader },		// wie DEX_...
+	{ DEX_COORDFORMATWASCHANGED, ExtDirisWindow::doNfyUpdateCoordFormat },
+	{ DEX_TXICHANGED, ExtDirisWindow::doNfyTXIChanged },
+	{ DEX_TXMCHANGED, ExtDirisWindow::doNfyTXMChanged },
+	{ DEX_TXRCHANGED, ExtDirisWindow::doNfyTXRChanged },
+
+	{ DEX_N_RENAMINGFILE, ExtDirisWindow::doNfyRenamingFile },
+	{ DEX_N_FILERENAMED, ExtDirisWindow::doNfyFileRenamed },
+
+///////////////////////////////////////////////////////////////////////////////
+// AnsichtEvents
+	{ DEX_SIGHTTOSELECT, ExtDirisWindow::doNfySelectingView },
+	{ DEX_SIGHTSELECTED, ExtDirisWindow::doNfyViewSelected },
+	{ DEX_VIEWCREATED, ExtDirisWindow::doNfyViewCreated },
+	{ DEX_SIGHTDELETED, ExtDirisWindow::doNfyViewDeleted },
+	{ DEX_DELETEVIEW, ExtDirisWindow::doNfyDeleteView },
+	{ DEX_N_SCROLLING_VERT, ExtDirisWindow::doNfyScrollingVert },
+	{ DEX_N_SCROLLING_HORZ, ExtDirisWindow::doNfyScrollingHorz },
+
+///////////////////////////////////////////////////////////////////////////////
+// IdentEvents
+	{ DEX_IDENTWASMODIFIED, ExtDirisWindow::doNfyIdentModified },
+
+///////////////////////////////////////////////////////////////////////////////
+// ObjektEvents
+#if defined(WIN32)
+	{ DEX_N_OBJECTSPLITTED, ExtDirisWindow::doNfyObjectSplitted },
+#endif // WIN32
+	{ DEX_OBJECTTODELETE, ExtDirisWindow::doNfyHandleDeletingObject },	// Objekt soll gelöscht werden (Query)
+	{ DEX_DELOBJECT, ExtDirisWindow::doNfyHandleObjectDeleted },		// Objekt wurde gelöscht 
+	{ DEX_N_TODELETEOBJECT, ExtDirisWindow::doNfyHandleToDeleteObject },	// Objekt soll gelöscht werden (wirklich!)
+
+	{ DEX_QUERYRECHOBJECT, ExtDirisWindow::doNfyQueryRechObject },
+	{ DEX_CHANGINGOBJECT, ExtDirisWindow::doNfyChangingObject },
+	{ DEX_OBJECTCHANGED, ExtDirisWindow::doNfyObjectChanged },			// Geometrie eines Objektes wurde modifiziert
+	{ DEX_N_OBJECTCREATED, ExtDirisWindow::doNfyObjectCreated },		// Objekt wurde neu erzeugt (nach Merkmalsschreiben)
+
+///////////////////////////////////////////////////////////////////////////////
+// OR-FensterEvents
+#if defined(WIN32)
+	{ DEX_GOTOBJWNDFOCUS, ExtDirisWindow::doNfyORWndFocusChanged },
+	{ DEX_LOSTOBJWNDFOCUS, ExtDirisWindow::doNfyKillFocus },
+#endif // WIN32
+	{ DEX_OBJECTSELECTED, ExtDirisWindow::doNfyObjectSelected },
+	{ DEX_OBJECTUNSELECTED, ExtDirisWindow::doNfyObjectUnselected },
+	{ DEX_OBJECTACTIVATED, ExtDirisWindow::doNfyObjectActivated },
+	{ DEX_OBJECTDEACTIVATED, ExtDirisWindow::doNfyObjectDeactivated },
+	{ DEX_CREATEOBJEKTINFO, ExtDirisWindow::doNfyCreateORWnd },
+	{ DEX_OBJWNDCLOSED, ExtDirisWindow::doNfyCloseORWnd },
+};
+
+#endif // _EXTFCNSN_TAB

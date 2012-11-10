@@ -1,0 +1,215 @@
+/////////////////////////////////////////////////////////////////////////////
+// ServerEvents
+IDR_NOTIFCLOSINGSERVER NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Das Programm soll beendet werden\0"
+FUNCTIONDEF			"Boolean,OnClosingServer()\0"
+END
+
+IDR_NOTIFSERVERTOCLOSE NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Das Programm wird beendet\0"
+FUNCTIONDEF			"Void,OnServerToClose()\0"
+END
+
+IDR_NOTIFSHOWTOOLTIP NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Die Tooltips sollen im folgenden (nicht) mehr angezeigt werden\0"
+FUNCTIONDEF			"Void,OnShowToolTips(ShowToolTips As Boolean)\0"
+END
+
+/////////////////////////////////////////////////////////////////////////////
+// DocumentEvents
+IDR_NOTIFCLOSING NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Das Projekt soll geschlossen werden\0"
+FUNCTIONDEF			"Boolean,OnClosingDocument(Doc As GeoDocument)\0"
+END
+
+IDR_NOTIFDOCOPENED NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Das Projekt wurde eröffnet\0"
+FUNCTIONDEF			"Void,OnDocumentOpened(Doc As GeoDocument)\0"
+END
+
+IDR_NOTIFCLOSED NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Das Projekt wurde geschlossen\0"
+FUNCTIONDEF			"Void,OnDocumentClosed()\0"
+END
+
+IDR_NOTIFTOCLOSE NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Das Projekt wird jetzt geschlossen\0"
+FUNCTIONDEF			"Void,OnDocumentToClose (Doc As GeoDocument)\0"
+END
+
+IDR_NOTIFDOCDIRTY NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Das Projekt ist geändert worden (muß gespeichert werden)\0"
+FUNCTIONDEF			"Void,OnSetDocumentDirty(Doc As GeoDocument, Dirty As Boolean)\0"
+END
+
+IDR_NOTIFCHANGECOORDFORMAT NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Das Anzeigeformat der Koordinaten wurde modifiziert\0"
+FUNCTIONDEF			"Void,OnChangedCoordFormat()\0"
+END
+
+IDR_NOTIFCHANGEHEADER NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Eine Projekt-eigenschaft wurde modifiziert\0"
+FUNCTIONDEF			"Void,OnChangedHeader(Doc As GeoDocument, PropName As String)\0"
+END
+
+/////////////////////////////////////////////////////////////////////////////
+// ViewEvents
+IDR_NOTIFSELECTINGVIEW NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Eine Ansicht soll ausgewählt werden\0"
+FUNCTIONDEF			"Boolean,OnSelectingView(View As GeoView)\0"
+END
+
+IDR_NOTIFVIEWSELECTED NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Eine Ansicht wurde ausgewählt\0"
+FUNCTIONDEF			"Boolean,OnViewSelected(View As GeoView)\0"
+END
+
+IDR_NOTIFDELETINGVIEW NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Eine Ansicht soll gelöscht werden\0"
+FUNCTIONDEF			"Boolean,OnDeletingView(View As GeoView)\0"
+END
+
+IDR_NOTIFVIEWDELETED NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Eine Ansicht wurde gelöscht\0"
+FUNCTIONDEF			"Void,OnViewDeleted(Doc As GeoDocument, ViewName As String)\0"
+END
+
+IDR_NOTIFVIEWCREATED NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Eine Ansicht wurde erzeugt\0"
+FUNCTIONDEF			"Void,OnViewCreated(View As GeoView)\0"
+END
+
+IDR_NOTIFZOOMCHANGED NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Eine Ausschnitt wurde verändert\0"
+FUNCTIONDEF			"Void,OnZoomChanged(NewZoom As Long)\0"
+END
+
+IDR_NOTIFVIEWPAINTED NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Eine Ansicht wurde neu gezeichnet\0"
+FUNCTIONDEF			"Void,OnViewPainted()\0"
+END
+
+IDR_NOTIFPAINTINGVIEW NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Eine Ansicht soll neu gezeichnet werden\0"
+FUNCTIONDEF			"Void,OnPaintingView()\0"
+END
+
+/////////////////////////////////////////////////////////////////////////////
+// ObjectEvents
+IDR_NOTIFOBJECTSELECTED NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Eine Objekt wurde selektiert\0"
+FUNCTIONDEF			"Void,OnObjectSelected(Obj As GeoObject)\0"
+END
+
+IDR_NOTIFOBJECTUNSELECTED NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Ein Objekt wurde deselektiert\0"
+FUNCTIONDEF			"Void,OnObjectUnSelected(Obj As GeoObject)\0"
+END
+
+IDR_NOTIFOBJECTACTIVATED NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Ein Objekt wurde aktiviert\0"
+FUNCTIONDEF			"Void,OnObjectActivated(Obj As GeoObject)\0"
+END
+
+IDR_NOTIFOBJECTDEACTIVATED NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Ein Objekt wurde deaktiviert\0"
+FUNCTIONDEF			"Void,OnObjectDeActivated(Obj As GeoObject)\0"
+END
+
+IDR_NOTIFOBJECTCREATED NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Ein Objekt wurde neu erzeugt\0"
+FUNCTIONDEF			"Void,OnObjectCreated(Obj As GeoObject)\0"
+END
+
+IDR_NOTIFOBJECTCHANGINGGEOMETRY NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Ein Objektgeometrie soll modifiziert werden\0"
+FUNCTIONDEF			"Boolean,OnChangingGeometry(Obj As GeoObject)\0"
+END
+
+IDR_NOTIFOBJECTGEOMETRYCHANGED NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Ein Objektgeometrie wurde modifiziert\0"
+FUNCTIONDEF			"Void,OnGeometryChanged(Obj As GeoObject)\0"
+END
+
+IDR_NOTIFOBJECTFEATURECHANGED NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Eine Objekteigenschaft wurde modifiziert\0"
+FUNCTIONDEF			"Void,OnFeatureChanged(Obj As GeoObject, Feat As GeoFeature)\0"
+END
+
+IDR_NOTIFDELETINGOBJECT NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Ein Objekt soll gelöscht werden\0"
+FUNCTIONDEF			"Boolean,OnDeletingObject(Obj As GeoObject)\0"
+END
+
+IDR_NOTIFOBJECTTODELETE NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Ein Objekt wird gelöscht werden\0"
+FUNCTIONDEF			"Void,OnObjectToDelete(Obj As GeoObject)\0"
+END
+
+IDR_NOTIFOBJECTDELETED NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Ein Objekt wurde gelöscht\0"
+FUNCTIONDEF			"Void,OnObjectDeleted()\0"
+END
+
+/////////////////////////////////////////////////////////////////////////////
+// ObjWinEvents
+IDR_NOTIFOBJECTWINCREATED NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Ein Objektrecherchefensters wurde generiert\0"
+FUNCTIONDEF			"Void,OnObjectWinCreated(Obj As GeoObject)\0"
+END
+
+IDR_NOTIFOBJECTWINTODESTROY NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Ein Objektrecherchefensters wurde geschlossen\0"
+FUNCTIONDEF			"Boolean,OnObjectWinToDestroy(Doc As GeoObjectWin)\0"
+END
+
+IDR_NOTIFOBJECTWINGOTFOCUS NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Ein Objektrecherchefensters hat Focus erhalten\0"
+FUNCTIONDEF			"Void,OnObjectWinGotFocus(Doc As GeoObjectWin)\0"
+END
+
+IDR_NOTIFOBJECTWINLOSTFOCUS NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+COMMENT				"Ein Objektrecherchefensters hat Focus verloren\0"
+FUNCTIONDEF			"Void,OnObjectWinLostFocus(Doc As GeoObjectWin)\0"
+END
+
+/////////////////////////////////////////////////////////////////////////////
+// das wars
+IDR_NOTIFEND NOTIFICATION LOADONCALL DISCARDABLE
+BEGIN
+"\0"
+END
+

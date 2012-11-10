@@ -1,0 +1,198 @@
+
+
+
+     BBBBIIIINNNNBBBBYYYYTTTTEEEEOOOORRRRDDDDEEEERRRR((((3333BBBBIIIINNNN))))      SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))       BBBBIIIINNNNBBBBYYYYTTTTEEEEOOOORRRRDDDDEEEERRRR((((3333BBBBIIIINNNN))))
+
+
+
+     NNNNAAAAMMMMEEEE
+          BinByteOrder  -  select the byte order for reading/writing
+          binary files
+          BinQByteOrder  -  query the current byte order used for
+          binary files
+
+     SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+          #include "sdsc.h"
+
+          extern int BinErrNo;
+
+          int BinByteOrder( order )
+               int order;
+
+          int BinQByteOrder( )
+
+     DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+          _B_i_n_B_y_t_e_O_r_d_e_r selects the byte order to use when writing data
+          to or reading data from binary files managed by the binary
+          I/O package.  _o_r_d_e_r may be either of the following:
+
+               _o_r_d_e_r    MMMMeeeeaaaannnniiiinnnngggg
+               BINLBF   least-significant byte first
+               BINMBF   most-significant byte first
+
+          The default byte order is BINMBF.
+
+          _B_i_n_Q_B_y_t_e_O_r_d_e_r queries the current byte order selection.
+
+     RRRREEEETTTTUUUURRRRNNNNSSSS
+          _B_i_n_B_y_t_e_O_r_d_e_r returns 0.  If and error occurs, -1 is returned
+          and the global _B_i_n_E_r_r_N_o set to an error code indicating the
+          cause of the error.  The following error codes may be
+          returned:
+
+          _B_I_N_E_B_Y_T_E_O_R_D_E_R = Unknown file byte order selection
+               The _o_r_d_e_r argument was neither _B_I_N_L_B_F nor _B_I_N_M_B_F.
+
+          _B_i_n_Q_B_y_t_e_O_r_d_e_r returns the current byte order selection.
+
+     NNNNOOOOTTTTEEEESSSS
+          Binary data files and streams are a compact and speedy way
+          to store and transfer data.  The binary format of a value
+          can take fewer bytes to store than using the equivalent
+          ASCII format.  For instance, the number "32767" takes 16
+          bits to represent on a 2's complement integer machine.  When
+          written to a binary file or stream, the number can be stored
+          in 2 bytes.  The same number written to an ASCII file or
+          stream requires 5 bytes:  "3", "2", "7", "6", and "7".
+
+          While the UNIX _r_e_a_d(2) and _w_r_i_t_e(2) calls support reading
+          and writing binary data, they do not create binary files
+
+
+
+     Page 1                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNBBBBYYYYTTTTEEEEOOOORRRRDDDDEEEERRRR((((3333BBBBIIIINNNN))))      SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))       BBBBIIIINNNNBBBBYYYYTTTTEEEEOOOORRRRDDDDEEEERRRR((((3333BBBBIIIINNNN))))
+
+
+
+          that can be read in again on a machine with a different byte
+          order or larger or smaller word size (without additional
+          programming).  The calls in the binary I/O package provide a
+          portable means of reading and writing binary files and
+          streams.  Application code that calls _B_i_n_R_e_a_d to read in an
+          array of 32-bit integers from a binary file remains
+          unchanged whether being compiled for a SPARCstation, a VAX
+          running VMS, or a CRAY X-MP.  Differences in byte ordering,
+          word sizes, and structure field padding are handled by the
+          binary I/O package.
+
+          The byte order of a file may differ from that of the host
+          trying to read or write it.  Some standard file formats
+          document the byte order they use.  Other formats include
+          some flag near the top of the file (often the magic number
+          itself) that a program may read to determine the byte order
+          of data in the file.
+
+          Data may be read in using _B_i_n_R_e_a_d(3BIN) and
+          _B_i_n_R_e_a_d_S_t_r_u_c_t(3X), and written out using _B_i_n_W_r_i_t_e(3BIN) and
+          _B_i_n_W_r_i_t_e_S_t_r_u_c_t(3X).
+
+          The characteristics of the host CPU, including its byte
+          order, may be queried using _B_i_n_Q_M_a_c_h_i_n_e(3BIN).
+
+     EEEEXXXXAAAAMMMMPPPPLLLLEEEESSSS
+        EEEExxxxaaaammmmpppplllleeee 1111
+          Read in a 2-byte magic number at the top of a file.  If the
+          magic number is "0xABCD", assume the file is in MBF (Most-
+          significant Byte First) byte order.  If the magic number is
+          "0xDCBA", assume the file is in LBF (Least-significant Byte
+          First) byte order.  If the magic number is neither of these,
+          issue an error.
+
+               int magic;
+               int fd;
+
+               BinRead( fd, &magic, INT, 2, 1 );
+               magic &= 0xFFFF;
+               if ( magic == 0xABCD )
+                    BinByteOrder( BINMBF );
+               else if ( magic == 0xDCBA )
+                    BinByteOrder( BINLBF );
+               else
+                    issue an error
+
+          Note that the byte order of the host is not an issue.  The
+          binary I/O package automatically converts from the file's
+          byte order to the byte order of the host.
+
+        EEEExxxxaaaammmmpppplllleeee 2222
+          Query the current byte order selection.
+
+
+
+     Page 2                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNBBBBYYYYTTTTEEEEOOOORRRRDDDDEEEERRRR((((3333BBBBIIIINNNN))))      SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))       BBBBIIIINNNNBBBBYYYYTTTTEEEEOOOORRRRDDDDEEEERRRR((((3333BBBBIIIINNNN))))
+
+
+
+               int order;
+
+               order = BinQByteOrder( );
+
+     SSSSEEEEEEEE AAAALLLLSSSSOOOO
+          BinErrorHandler(3BIN), BinFRead(3BIN), BinFReadStruct(3BIN),
+          BinFWrite(3BIN), BinFWriteStruct(3BIN),
+          BinFloatFormat(3BIN), BinPError(3BIN),
+          BinQFloatFormat(3BIN), BinQMachine(3BIN), BinRead(3BIN),
+          BinReadStruct(3BIN), BinSRead(3BIN), BinSWrite(3BIN),
+          BinWrite(3BIN), BinWriteStruct(3BIN)
+
+     AAAAUUUUTTTTHHHHOOOORRRRSSSS
+          Dave Nadeau
+          San Diego Supercomputer Center
+
+     CCCCOOOONNNNTTTTAAAACCCCTTTT
+          SDSC consultants, (619)534-5100, ccccoooonnnnssssuuuulllltttt@@@@yyyy1111....ssssddddsssscccc....eeeedddduuuu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Page 3                                          (printed 6/30/95)
+
+
+

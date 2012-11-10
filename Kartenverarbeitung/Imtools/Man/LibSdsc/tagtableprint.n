@@ -1,0 +1,65 @@
+'\"t
+.TH TAGTABLEPRINT 3TAG "October 1990" "SDSC" "TAG TABLE"
+.SH NAME
+TagTablePrint, TagEntryPrint  -  print debug dump of tag table and/or entry
+.SH SYNOPSIS
+.if t \fB
+.nf
+#include "sdsc.h"
+
+int TagTablePrint( tagTable )
+.in +0.5i
+TagTable *tagTable;
+.in -0.5i
+
+int TagEntryPrint( tagEntry )
+.in +0.5i
+TagEntry *tagEntry;
+.in -0.5i
+.fi
+.if t \fR
+.SH DESCRIPTION
+\fITagTablePrint\fR prints to \fIstderr\fR a list of the table's entries
+in linear order (see \fITagTableQEntry\fR(3TAG)).
+\fITagEntryPrint\fR prints to \fIstderr\fR a single entry.
+.LP
+Table entries are numbered from 0.
+.LP
+Printed entry information includes the entry tag, entry number, occurrence
+number, value type, and the value as a string of 8-bit hex numbers.
+No attempt is made to assemble the separate bytes of the entry value into
+an integer, character string, floating-point number, pointer, or whatever.
+.SH RETURNS
+On success, \fITagTablePrint\fR returns a 0.
+On failure, -1 is returned and \fITagErrNo\fR set to:
+.sp
+.TS
+center;
+l l.
+TAGENULLTAGTABLE	The tag table argument is bad
+.TE
+.sp
+On success, \fITagEntryPrint\fR returns a 0.
+On failure, -1 is returned and \fITagErrNo\fR set to:
+.sp
+.TS
+center;
+l l.
+TAGENULLTAGENTRY	The tag entry argument is bad
+.TE
+.SH "SEE ALSO"
+TagEntryQNthEntry(3TAG),
+TagEntryQNthOccur(3TAG),
+TagEntryQTag(3TAG),
+TagEntryQValue(3TAG),
+TagEntryQValueType(3TAG),
+TagTableQLinear(3TAG),
+TagTableQNEntry(3TAG)
+.br
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

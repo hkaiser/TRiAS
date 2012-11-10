@@ -1,0 +1,27 @@
+HKCR 
+{
+	ForceRemove TRiAS.CS.1 = s 'TRiAS® Koordinatensystem' 
+	{
+		CLSID = s '{AC3B1897-E585-11D1-8F3E-0060085FC1CE}'
+	}
+	ForceRemove TRiAS.CS = s 'TRiAS® Koordinatensystem' 
+	{
+		CurVer = s 'TRiAS.CS.1'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {AC3B1897-E585-11D1-8F3E-0060085FC1CE} = s 'TRiAS® Koordinatensystem' 
+		{
+			ProgID = s 'TRiAS.CS.1'
+			VersionIndependentProgID = s 'TRiAS.CS'
+			ForceRemove 'Programmable'
+			ToolboxBitmap32 = s '%MODULE%,1'
+			InprocServer32 = s '%MODULE%' 
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+    ForceRemove .tcf = s tcffile
+    ForceRemove tcffile = s 'TRiAS® Koordinatensystem'
+}

@@ -1,0 +1,104 @@
+//KPR
+/*******************************************************************************
+*  $Workfile:: eb.ver       $ $Revision:: 1        $ $Author:: Syskpr     $
+*  $Date: 3/25/96 9:58a $     $Modtime: 3/22/96 11:29a $
+*
+* This header file all of the global version information.
+*
+* This head assumes prior definition of:
+*
+*		TARGET					name of the module
+*		VR_FILEEXTENSION		extension of the module (.DLL, EXE, ...)
+*
+*******************************************************************************/
+#ifdef EBWIN
+#include <ver.h>
+#endif	// EBWIN
+
+#ifdef EBWIN32
+#include <winver.h>
+#endif	// EBWIN32
+
+#include <eboem.h>
+#include <build.h>
+
+// --------------------------------------------------------------------------
+// stuff global to all DLLs for this product
+// --------------------------------------------------------------------------
+#define VR_MAJOR_VERSION	2	// major version number of the product
+#define VR_MINOR_VERSION   	1      	// minor version number of the product
+#define VR_BUILD_VERSION	0      	// build version
+
+// our company name
+#define VR_COMPANYNAME		"Summit Software Company"
+
+// our copyright
+#define VR_COPYRIGHT		"Copyright \251 Summit Software Company 1992-1996"
+
+// product name
+#define VR_PRODUCTNAME		"BasicScript"
+
+// product version number string
+#define VR_PRODUCTVERSION	"2.25." ebBUILD_NUMBER_STR
+
+#ifndef EBOS2
+
+// --------------------------------------------------------------------------
+// Set some defaults if these are not already defined
+// --------------------------------------------------------------------------
+
+// If the file version string is not defined, then simply use the product's version
+#ifndef VR_FILEVERSION
+#define VR_FILEVERSION		VR_PRODUCTVERSION
+#endif
+
+// Use the TARGET name for the internal module name
+#ifndef VR_INTERNALNAME
+#define VR_INTERNALNAME		TARGET	// name of this module, without the file extension
+#endif
+
+// If the original name is not defined, then use the TARGET.FILEEXTENSION
+#ifndef VR_ORIGINALFILENAME
+#if (VR_FILETYPE == VFT_DLL)
+#define VR_ORIGINALFILENAME	TARGET ".DLL"	// name.ext of the module
+#else
+#define VR_ORIGINALFILENAME	TARGET ".EXE"	// name.ext of the module
+#endif
+#endif
+
+// --------------------------------------------------------------------------
+// version information structure
+// --------------------------------------------------------------------------
+VS_VERSION_INFO VERSIONINFO
+	FILEVERSION	  	VR_MAJOR_VERSION,VR_MINOR_VERSION,0,VR_BUILD_VERSION
+	PRODUCTVERSION	  	VR_MAJOR_VERSION,VR_MINOR_VERSION,0,VR_BUILD_VERSION
+	FILEFLAGSMASK	  	0
+	FILEFLAGS	  	0
+	FILEOS		  	VOS_DOS_WINDOWS16
+	FILETYPE	  	VR_FILETYPE
+	FILESUBTYPE	  	VFT2_UNKNOWN
+
+BEGIN
+	BLOCK "StringFileInfo"
+	BEGIN
+		BLOCK "040904E4"                    // 0409 = U.S. English, 04e4 (1252) = Multilingual Windows
+		BEGIN
+			VALUE "CompanyName",      VR_COMPANYNAME,"\0"
+			VALUE "FileDescription",  VR_DESCRIPTION,"\0"
+			VALUE "FileVersion",      VR_FILEVERSION,"\0"
+			VALUE "InternalName",     VR_INTERNALNAME,"\0"
+			VALUE "LegalCopyright",   VR_COPYRIGHT,"\0"
+			VALUE "OriginalFilename", VR_ORIGINALFILENAME,"\0"
+			VALUE "ProductName",      VR_PRODUCTNAME,"\0"
+			VALUE "ProductVersion",   VR_PRODUCTVERSION,"\0"
+		END
+	END
+
+	BLOCK "VarFileInfo"
+	BEGIN 
+		VALUE "Translation", 0x409, 1252    // U.S. English, Multilingual Windows
+	END
+END
+
+
+#endif /* !EBOS2 */

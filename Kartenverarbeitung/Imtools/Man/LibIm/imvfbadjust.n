@@ -1,0 +1,486 @@
+'\"t
+.if t .TH IMVFBADJUST 3IM "August 31, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY" 
+.if n .TH IMVFBADJUST 3IM "August 31, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImVfbAdjust - adjusts pixel values
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+ImVfb *ImVfbAdjust( srcVfb, keyField, keyStart, keyEnd, operation, 
+	adjustField, adjustStart, adjustEnd, dstVfb )
+        ImVfb   *srcVfb;     
+        int     keyField;       
+        float   keyStart;       
+        float   keyEnd;         
+        int     operation;      
+        int     adjustField;   
+        float   adjustStart;   
+        float   adjustEnd;     
+        ImVfb   *dstVfb;        
+.fi
+\fR
+.SH DESCRIPTION
+\fBImVfbAdjust\fR adjusts pixel values in the \fIsrcVfb\fR image,
+saving the adjusted image to \fIdstVfb\fR.
+.LP
+\fBImVfbAdjust\fR can be used to alter VFB field values to brighten and
+darken images, adjust saturation before recording images to video, create
+alpha masks, alter image hues, and so on.
+.LP
+\fBImVfbAdjust\fR's arguments may be grouped into the following categories:
+.RS 0.5i
+.LP
+.TS
+l l.
+Source Image	the VFB to adjust
+Destination Image	the VFB to contain the adjusted image
+Pixel Key	which pixels to adjust
+Operation	how to adjust the pixels
+Pixel Adjust	what aspect of pixels to adjust
+.TE
+.RE
+.LP
+.SS "Source Image and Destination Image"
+.LP
+Pixels in \fIsrcVfb\fR will be adjusted and the results saved to \fIdstVfb\fR.
+\fIsrcVfb\fR is unaltered by \fBImVfbAdjust\fR.
+.LP
+If \fIdstVfb\fR is \fBIMVFBNEW\fR, a new VFB is created by \fBImVfbAdjust\fR.
+The new \fIdstVfb\fR will have the same fields, dimensions, and initial
+contents as \fIsrcVfb\fR.
+.LP
+\fIdstVfb\fR may be the same VFB as \fIsrcVfb\fR but without undesirable
+side-effects.
+.LP
+.SS "Pixel Key"
+.LP
+During adjustment, \fBImVfbAdjust\fR scans the \fIsrcVfb\fR looking for pixels
+that meet a user-defined selection criteria, or \fIkey\fR.
+All pixels that match that key will be adjusted.
+All pixels that do not match the key are copied to the
+\fIdstVfb\fR untouched.
+.LP
+Statements like the following are typical key statements:
+.RS 0.5i
+.LP
+.ta +1m
+\(bu	All pixels with a red component less than 100.
+.br
+\(bu	All pixels with a saturation component greater than 0.8.
+.br
+\(bu	All pixels with an alpha channel value of 255.
+.br
+\(bu	All pixels with an intensity component between 0.0 and 0.2.
+.RE
+.LP
+The \fIkey\fR is a pixel field given by \fIkeyField\fR,
+and a range of values, \fIkeyStart\fR to \fIkeyEnd\fR, that a pixel
+must have in order to match the criteria and be adjusted.
+.LP
+\fIkeyField\fR selects a single pixel field from one of the following:
+.RS 0.5i
+.LP
+.ne 2.0i
+.TS
+l l.
+\fIkeyField\fR	\fBSelect pixels based on\fR
+_
+\fBIMMONO\fR	1-bit monochrome field value
+_
+\fBIMGRAY\fR	8-bit grayscale index field value (same as IMINDEX8)
+\fBIMINDEX8\fR	8-bit color index field value
+\fBIMINDEX16\fR	16-bit color index field value
+_
+\fBIMRED\fR	red field value
+\fBIMGREEN\fR	green field value
+\fBIMBLUE\fR	blue field value
+_
+\fBIMALPHA\fR	alpha field value
+\fBIMWPROT\fR	write-protect field value
+\fBIMZ\fR	Z-buffer field value
+\fBIMIDATA\fR	integer data field value
+\fBIMFDATA\fR	floating point data field value
+_
+\fBIMHUE\fR	hue virtual field value
+\fBIMSATURATION\fR	saturation virtual field value
+\fBIMINTENSITY\fR	intensity virtual field value
+.TE
+.RE
+.LP
+In general, selection of a \fIkeyField\fR requires that that field be
+present in the \fIsrcVfb\fR.  A \fIkeyField\fR value of \fBIMINDEX8\fR,
+for instance, requires that
+the \fIsrcVfb\fR have an \fBIMVFBINDEX8\fR pixel field.
+Exceptions to this rule are the \fBIMRED\fR, \fBIMGREEN\fR, \fBIMBLUE\fR,
+\fBIMHUE\fR, \fBIMSATURATION\fR, and \fBIMINTENSITY\fR \fIkeyField\fR values
+as explained below.
+.LP
+.IP "\fIKeyField\fR = \fBIMRED, IMGREEN,\fR or \fBIMBLUE\fR"
+The red, green, or blue value for a pixel is determined differently for
+different types of VFBs:
+.RS 0.5i
+.LP
+.IP "\fBIMVFBRGB\fR"
+The red, green, or blue pixel component is used.
+.IP "\fBIMVFBINDEX8\fR or \fBIMVFBINDEX16\fR with a color lookup table"
+The pixel's color index (8-bit or 16-bit) is used to index into the VFB's
+color lookup table.  The table's red, green, or blue pixel component is used.
+.IP "\fBIMVFBINDEX8\fR or \fBIMVFBINDEX16\fR without a color lookup table"
+Color indexed images without color lookup tables are treated as grayscale
+images (also called \fBIMVFBGRAY\fR images).  The pixel's grayscale
+value (8-bit or 16-bit) is considered to have equal red, green, and blue
+components and is used as is (16-bit values are divided by 255 first).
+.IP "\fBIMVFBMONO\fR"
+Monochrome images are treated as 1-bit grayscale images.  The pixel's monochrome
+value is considered to have equal red, green, and blue components and is used
+as is (after first multiplying by 255).
+.RE
+.LP
+.IP "\fIKeyField\fR = \fBIMHUE, IMSATURATION\fR, or \fBIMINTENSITY\fR"
+Hue, saturation, and intensity have no equivalent storage fields in a VFB.
+These values are, instead, computed on a per-pixel basis using the red, green,
+and blue components of the pixel.  These RGB components
+are determined differently
+for different types of VFBs, as discussed in the paragraphs above about
+\fBIMRED, IMGREEN\fR, and \fBBLUE\fR \fIkeyField\fR values.
+.LP
+In each case, if the \fIkeyField\fR's pixel value is within the range
+\fIkeyStart\fR to \fIkeyEnd\fR, the pixel will be adjusted.  Pixels outside
+this range are copied across to the \fIdstVfb\fR untouched.
+.LP
+\fIkeyStart\fR and \fIkeyEnd\fR may have the same value.  \fIkeyStart\fR
+need not be less than \fIkeyEnd\fR.
+.LP
+The following are typical key values:
+.RS 0.5i
+.LP
+.TS
+l l l l.
+\fIkeyField	keyStart	keyEnd\fR	\fBAdjust all pixels with\fR
+_
+\fBIMRED\fR	0	99	red less than 100
+\fBIMSATURATION\fR	0.8	1.0	saturation between 0.8 and 1.0
+\fBIMALPHA\fR	255	255	alpha channel of 255 (opaque)
+\fBIMINTENSITY\fR	0.0	0.2	intensity between 0.0 and 2.0
+.TE
+.RE
+.LP
+.SS "Operation"
+.LP
+Pixels that match the key will be adjusted depending upon
+the choice of adjustment \fIoperation\fR.
+.RS 0.5i
+.LP
+.ne 2.0i
+.TS
+l l.
+\fIoperation\fR	\fBAction\fR
+_
+\fBIMADD\fR	Add a value to each matching pixel 
+\fBIMSUBTRACT\fR	Subtract a value from each matching pixel 
+\fBIMMULTIPLY\fR	Multiply each matching pixel by a value
+\fBIMDIVIDE\fR	Divide each matching pixel by a value
+\fBIMSET\fR	Set each matching pixel to a new value
+.TE
+.RE
+.LP
+.SS "Pixel Adjust"
+.LP
+Pixels that match the \fIkey\fR will have their \fIadjustField\fR pixel
+field value modified using \fIoperation\fR.
+For instance, statements like the following are
+typical adjustments:
+.RS 0.5i
+.LP
+.ta +1m
+\(bu	Set red to 200.
+.br
+\(bu	Multiply intensity by 0.5.
+.br
+\(bu	Set alpha to 255.
+.br
+\(bu	Add 4 to the color index.
+.br
+\(bu	Set saturation values to the range 0.0 to 0.8.
+.RE
+.LP
+\fIadjustField\fR selects a single pixel field to adjust:
+.RS 0.5i
+.LP
+.ne 2.0i
+.TS
+l l.
+\fIadjustField\fR	\fBAdjust pixels on\fR
+_
+\fBIMMONO\fR	\fBIMVFBMONO\fR 1-bit monochrome field
+_
+\fBIMGRAY\fR	\fBIMVFBINDEX8\fR 8-bit grayscale index field
+\fBIMINDEX8\fR	\fBIMVFBINDEX8\fR 8-bit color index field
+\fBIMINDEX16\fR	\fBIMVFBINDEX16\fR 16-bit color index field
+_
+\fBIMRED\fR	\fBIMVFBRGB\fR red field
+\fBIMGREEN\fR	\fBIMVFBRGB\fR green field
+\fBIMBLUE\fR	\fBIMVFBRGB\fR blue field
+_
+\fBIMALPHA\fR	\fBIMVFBALPHA\fR alpha field
+\fBIMWPROT\fR	\fBIMVFBWPROT\fR write-protect field
+\fBIMZ\fR	\fBIMVFBZ\fR Z-buffer field
+\fBIMIDATA\fR	\fBIMVFBIDATA\fR integer data field
+\fBIMFDATA\fR	\fBIMVFBFDATA\fR floating point data field
+_
+\fBIMHUE\fR	\fBIMVFBRGB\fR fields using hue virtual field
+\fBIMSATURATION\fR	\fBIMVFBRGB\fR fields using saturation virtual field
+\fBIMINTENSITY\fR	\fBIMVFBRGB\fR fields using intensity virtual field
+.TE
+.RE
+.LP
+The \fIadjustField\fR must be present in the \fIsrcVfb\fR, excepting
+\fBIMHUE\fR, \fBIMSATURATION\fR, and \fBIMINTENSITY\fR virtual fields
+which require the \fBIMVFBRGB\fR field in the \fIsrcVfb\fR.
+.LP
+Hue, saturation, and intensity have no equivalent storage fields in a VFB.
+When used in an \fIadjustField\fR, hue, saturation, and intensity values
+are, instead, computed on a per pixel basis using the red, green,
+or blue components of the pixel.  The hue, saturation, or intensity value is
+then adjusted, and the HSI triplet converted back to RGB and stored in the
+adjusted pixel.
+.LP
+\fIadjustStart\fR and \fIadjustEnd\fR define the range of values to be used
+to adjust pixels that matched the key range \fIkeyStart\fR to
+\fIkeyEnd\fR.  Pixels matching \fIkeyStart\fR will be adjusted using
+\fIadjustStart\fR.  Likewise, pixels matching \fIkeyEnd\fR will be adjusted
+using \fIadjustEnd\fR.  Pixels with values between \fIkeyStart\fR and
+\fIkeyEnd\fR will be adjusted using values interpolated between
+\fIadjustStart\fR and \fIadjustEnd\fR.  For instance,
+.RS 0.5i
+.LP
+.TS
+c c c
+l l l.
+\fBkey	operation	adjust\fR
+_
+\fBIMSATURATION\fR 0.0 to 1.0	\fBIMSET\fR	\fBIMSATURATION\fR 0.0 to 0.8
+.TE
+.RE
+.LP
+remaps all pixels with saturation values between 0.0 and 1.0 to the new
+range 0.0 to 0.8.  Original pixels with values of 1.0 will be mapped to
+values of 0.8, and so on.
+.LP
+As another example,
+.RS 0.5i
+.LP
+.TS
+c c c
+l l l.
+\fBkey	operation	adjust\fR
+_
+\fBIMRED\fR 0 to 100	\fBIMADD\fR	\fBIMGREEN\fR 25 to 25
+.TE
+.RE
+.LP
+adds 25 to the green component of all pixels whose red components fall
+between 0 and 100.
+.LP
+Interesting remappings may be done by using value ranges where the first
+value in the range is greater than the second value.  For instance,
+.RS 0.5i
+.LP
+.TS
+c c c
+l l l.
+\fBkey	operation	adjust\fR
+_
+\fBIMINTENSITY\fR 0 to 1.0	\fBIMSET\fR	\fBIMINTENSITY\fR 1.0 to 0.0
+.TE
+.RE
+.LP
+will set intensities from 0.0 to 1.0 to intensities from 1.0 to 0.0.
+In other words, the intensity values will be inverted, creating a
+pseudo-negative effect.
+.LP
+\fIadjustStart\fR and \fIadjustEnd\fR may have the same value.
+\fIadjustStart\fR need not be less than \fIadjustEnd\fR.
+.LP
+In all cases, if the resulting pixel field value is greater than the
+maximum or less than the minimum legal value for the field, the value
+is clamped to the maximum or minimum before being stored in the pixel field.
+.SH NOTES
+Different pixel components have different types and different minimum
+and maximum values.  This affects how \fIkey\fR and \fIadjust\fR value
+ranges will be interpreted.
+.LP
+.RS 0.5i
+.TS
+l l l l.
+\fBValue	Type	Minimum	Maximum\fP
+_
+\fBred\fR	Integer	0	255
+\fBgreen\fR	Integer	0	255
+\fBblue\fR	Integer	0	255
+_
+\fBmonochrome\fR	Integer	0	1
+\fBindex 8\fR	Integer	0	255
+\fBindex 16\fR	Integer	0	65535
+_
+\fBhue\fR	Float	0.0	360.0
+\fBsaturation\fR	Float	0.0	1.0
+\fBintensity\fR	Float	0.0	1.0
+_
+\fBalpha\fR	Integer	0	255
+\fBwprot\fR	Integer	0	255
+\fBz-buffer\fR	Integer	0	maxint
+\fBidata\fR	Integer	any	any
+\fBfdata\fR	Float	any	any
+.TE
+.RE
+.LP
+For those comfortable viewing pseudo-code, the following code illustrates
+the adjustment algorithm used by \fBImVfbAdjust\fR.
+In the algorithm, \fIkey\fR and \fIadjust\fR ranges have both
+been normalized to values between 0.0 and 1.0.
+.RS 0.5i
+.LP
+.nf
+.ta 2m,4m,6m,8m,10m,12m,14m,16m
+factor = (\fIadjustEnd\fR - \fIadjustStart\fR) / (\fIkeyEnd\fR - \fIkeyStart\fR)
+for each pixel in the input image,
+	if pixel.\fIkeyField\fR is between \fIkeyStart\fR and \fIkeyEnd\fR,
+		value = (pixel.\fIkeyField\fR - \fIkeyStart\fR) *
+			factor + \fIadjustStart\fR
+		switch on the \fIoperation\fR,
+			add:		pixel.\fIadjustField\fR += value
+			subtract:	pixel.\fIadjustField\fR -= value
+			multiply:	pixel.\fIadjustField\fR *= value
+			divide:	pixel.\fIadjustField\fR /= value
+			set:		pixel.\fIadjustField\fR = value
+		if pixel.\fIadjustField\fR > maximum,
+			pixel.\fIadjustField\fR = maximum
+		if pixel.\fIadjustField\fR < minimum,
+			pixel.\fIadjustField\fR = minimum
+.Ce
+.LP
+.SH EXAMPLES
+.SS "Example #1"
+Vivid, high-saturation images look beautiful on computer graphics screens.
+Unfortunately the color gamut supported by such screens is wider than that
+available on video devices, such as home VHS and S-VHS decks.  High-saturation
+images recorded to video produce undesirable color effects.
+To prevent this, \fBImVfbAdjust\fR may be used to uniformly desaturate an image
+by setting saturation values normally in the range 0.0 to 1.0 to the
+less-saturated range 0.0 to 0.8.
+.RS 0.5i
+.LP
+.TS
+c c c
+l l l.
+\fBkey	operation	adjust\fR
+_
+\fBIMSATURATION\fR 0.0 to 1.0	\fBIMSET\fR	\fBIMSATURATION\fR 0.0 to 0.8
+.TE
+.LP
+.RE
+.SS "Example #2"
+In order to save image compute time, animators often compute a static
+background once, without any moving objects in front of it.  The background
+objects are then removed from the scene, speeding up scene computation, and
+the animation computed with the moving objects moving about in front of a
+black background.  To finish the animation, the individual black background
+frames need to be pasted atop the static background, one frame at a time.
+This operation is known as compositing and can be done with \fBimcomp\fR(1IM)
+and \fBImVfbComp\fR(3IM).
+.LP
+When compositing, the compositing program
+needs to know what pixels of the "front"
+image are transparent and let pixels in the "back" image show through.  This
+is indicated by a coverage mask known as an "alpha" plane.  Alpha values
+of 0 are considered transparent, while values of 255 are opaque.
+.LP
+In order to composite the moving object frames atop the static background
+image, the black pixels of the moving object frames need to be marked as
+transparent:  their alpha components need to be set to 0.  This can be
+done using \fBImVfbAdjust\fR by selecting all pixels with intensities of 0
+(black) and setting their alpha values to 0 (transparent).
+.RS 0.5i
+.LP
+.TS
+c c c
+l l l.
+\fBkey	operation	adjust\fR
+_
+\fBIMINTENSITY\fR 0.0 to 0.0	\fBIMSET\fR	\fBIMALPHA\fR 0.0 to 0.0
+.TE
+.LP
+.RE
+.SS "Example #3"
+An image may be brightened by increasing the intensity value for all pixels.
+.RS 0.5i
+.LP
+.TS
+c c c
+l l l.
+\fBkey	operation	adjust\fR
+_
+\fBIMRED\fR 0.0 to 255.0	\fBIMADD\fR	\fBIMINTENSITY\fR 0.2 to 0.2
+.TE
+.RE
+.LP
+The key selects all pixels with red values between 0 and 255.  Since
+this is the full range of the red component, this effectively selects all
+pixels in the image.
+.SS "Example #4"
+Create a pseudo-negative of an image by inverting its intensity values.
+Dark values will become light, while light values will become dark.  The
+hue and saturation will remain the same.
+.RS 0.5i
+.LP
+.TS
+c c c
+l l l.
+\fBkey	operation	adjust\fR
+_
+\fBIMINTENSITY\fR 0.0 to 1.0	\fBIMSET\fR	\fBIMINTENSITY\fR 1.0 to 0.0
+.TE
+.RE
+.LP
+.SH RETURNS
+Upon success, \fBImVfbAdjust\fR returns a pointer to the destination VFB.
+Upon failure, \fBIMVFBNULL\fR is returned and \fBImErrNo\fR set
+to one of the following:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+\fBIMEADJUST\fR	Bad \fIadjustStart\fR or \fIadjustEnd\fR
+\fBIMEADJUSTFIELD\fR	Bad \fIadjustField\fR
+\fBIMEFIELD\fR	\fIdstVfs\fR or \fIsrcVfb\fR is lacking a needed field
+\fBIMEKEY\fR	Bad \fIkeyStart\fR or \fIkeyEnd\fR
+\fBIMEKEYFIELD\fR	Bad \fIkeyField\fR
+\fBIMEMALLOC\fR	Out of host memory; cannot allocate
+\fBIMENOVFB\fR	\fIsrcVFb\fR is \fBIMVFBNULL\fR
+\fBIMEOPERATION\fR	Bad \fIoperation\fR
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH SEE ALSO
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBimadjust\fR (1IM),
+\fBimcomp\fR (1IM),
+\fBimdissolve\fR (1IM),
+\fBimfill\fR (1IM),
+\fBimpaste\fR (1IM),
+\fBImVfbComp\fR (3IM),
+\fBImVfbFill\fR (3IM),
+\fBImVfbMix\fR (3IM)
+.SH AUTHOR
+Chris Groening and Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

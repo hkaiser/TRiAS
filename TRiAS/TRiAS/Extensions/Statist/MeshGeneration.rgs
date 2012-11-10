@@ -1,0 +1,39 @@
+HKCR
+{
+	TRiASEx.MeshGeneration.1 = s 'MeshGeneration Class'
+	{
+		CLSID = s '{BACFCBFF-5544-40BE-B43A-4A9C3C43DDE8}'
+	}
+	TRiASEx.MeshGeneration = s 'MeshGeneration Class'
+	{
+		CLSID = s '{BACFCBFF-5544-40BE-B43A-4A9C3C43DDE8}'
+		CurVer = s 'TRiASEx.MeshGeneration.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {BACFCBFF-5544-40BE-B43A-4A9C3C43DDE8} = s 'MeshGeneration Class'
+		{
+			ProgID = s 'TRiASEx.MeshGeneration.1'
+			VersionIndependentProgID = s 'TRiASEx.MeshGeneration'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{0DCA1098-4FFE-431F-8B4A-95A27928AD07}'
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiASEx.MeshGeneration.1' = s '{BACFCBFF-5544-40BE-B43A-4A9C3C43DDE8}'
+			}
+		}
+	}
+}

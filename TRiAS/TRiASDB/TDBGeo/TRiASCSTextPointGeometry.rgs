@@ -1,0 +1,24 @@
+HKCR
+{
+	TRiASCS.TRiASTextPointGeometry.1 = s 'TRiASTextPointGeometry Class'
+	{
+		CLSID = s '{ABEE61B0-B1B8-11D1-A074-0060975566B4}'
+	}
+	TRiASCS.TRiASTextPointGeometry = s 'TRiASTextPointGeometry Class'
+	{
+		CLSID = s '{ABEE61B0-B1B8-11D1-A074-0060975566B4}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {ABEE61B0-B1B8-11D1-A074-0060975566B4} = s 'TRiASTextPointGeometry Class'
+		{
+			ProgID = s 'TRiASCS.TRiASTextPointGeometry.1'
+			VersionindependendProgID = s 'TRiASCS.TRiASTextPointGeometry'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

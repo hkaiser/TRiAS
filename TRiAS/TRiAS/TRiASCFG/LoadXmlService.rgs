@@ -1,0 +1,28 @@
+HKCR
+{
+	TRiASCFG.LoadXmlService.1 = s 'LoadXmlService Class'
+	{
+		CLSID = s '{56CE2E72-6C9F-469D-93EA-C0D9FB51A019}'
+	}
+	TRiASCFG.LoadXmlService = s 'LoadXmlService Class'
+	{
+		CLSID = s '{56CE2E72-6C9F-469D-93EA-C0D9FB51A019}'
+		CurVer = s 'TRiASCFG.LoadXmlService.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {56CE2E72-6C9F-469D-93EA-C0D9FB51A019} = s 'LoadXmlService Class'
+		{
+			ProgID = s 'TRiASCFG.LoadXmlService.1'
+			VersionIndependentProgID = s 'TRiASCFG.LoadXmlService'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{327C14E1-B6B3-4014-B30E-B7850AD66CA2}'
+		}
+	}
+    ForceRemove .tlc = s tlcfile
+    ForceRemove tlcfile = s 'TRiAS® Ladbarer Befehl'
+}

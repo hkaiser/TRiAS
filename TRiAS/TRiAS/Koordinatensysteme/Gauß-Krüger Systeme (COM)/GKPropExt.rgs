@@ -1,0 +1,31 @@
+HKCR
+{
+	TRiASEx.GKPropExt.1 = s 'Koordinatentransformation (Gauß-Krüger) Property Page'
+	{
+		CLSID = s '{858FEED6-A8FF-11D1-A061-0060975566B4}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {858FEED6-A8FF-11D1-A061-0060975566B4} = s 'Koordinatentransformation (Gauß-Krüger) Property Page'
+		{
+			val AppID = s '{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}'
+			ProgID = s 'TRiASEx.GKPropExt.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+
+	NoRemove TRiAS.Application.4 { NoRemove TRiASEx { NoRemove PropertySheetHandlers 
+	{
+		NoRemove Coordinates
+		{
+			ForceRemove TRiASEx.GKPropExt.1 = s '{858FEED6-A8FF-11D1-A061-0060975566B4}'
+		}
+	} }	}
+	NoRemove TRiAS.Document.2 { NoRemove TRiASEx { NoRemove PropertySheetHandlers 
+	{
+		NoRemove Coordinates
+	} }	}
+}

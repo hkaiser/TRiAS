@@ -1,0 +1,264 @@
+
+
+
+IMHDF(3IM)             SDSC IMAGE LIBRARY              IMHDF(3IM)
+
+
+
+NAME
+     imhdf - NCSA HDF image file translation
+
+SYNOPSIS
+     #include <stdio.h>
+     #include "sdsc.h"
+     #include "im.h"
+
+     int ImFileRead( fd, "hdf", flagsTable, dataTable )
+          int         fd;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileFRead( fp, "hdf", flagsTable, dataTable )
+          FILE         *fp;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileWrite( fd, "hdf", flagsTable, dataTable )
+          int         fd;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileFWrite( fp, "hdf", flagsTable, dataTable )
+          FILE         *fp;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+
+DESCRIPTION
+     hdf is a  generic,  tagged  Hierarchical  Data  File  format
+     developed by the National Center for Supercomputing Applica-
+     tions (NCSA).  hdf files may contain images, scientific data
+     sets,  and  miscellaneous  data  items.   Such  files may be
+     created by several NCSA tools.  See the  NCSA  documentation
+     for details on how to use these tools.
+
+     hdf format handling within the SDSC image library is limited
+     to images of certain depths and storage methods.
+
+FILE RECOGNITION
+     hdf files are recognized by these filename  suffixes:  .hdf,
+     .df, and .ncsa.
+
+NOTES
+     SDSC image library  support  of  the  hdf  format  does  not
+     require  use  of  NCSA's HDF library libdf.a and contains no
+     proprietary code.  hdf is available on any machine for which
+     the SDSC image library is available.
+
+  Reading HDF image files
+     The SDSC image library can read hdf image files with one  or
+
+
+
+SDSC              Last change: August 24, 1992                  1
+
+
+
+
+
+
+IMHDF(3IM)             SDSC IMAGE LIBRARY              IMHDF(3IM)
+
+
+
+     more images and map them to VFBs as follows:
+
+          Depth/color          Type of compression      Mapped to VFB
+          8-bit color index    un- and RLE-compressed   IMVFBINDEX8
+          16-bit color index   uncompressed only        IMVFBINDEX16
+          24-bit color index   uncompressed only        IMVFBINDEX24
+          32-bit color index   uncompressed only        IMVFBINDEX32
+          24-bit RGB           un- and RLE-compressed   IMVFBRGB
+
+     All depths except 24-bit RGB may or may not contain a  color
+     lookup table (CLT).
+
+     RGB images may be  non-interlaced,  scanline-interlaced,  or
+     plane-interlaced.
+
+     Note that 24-bit and 32-bit color indexes are  truncated  to
+     the lower 16 bits when the file is read into an IMVFBINDEX16
+     VFB.
+
+     The HDF IMCOMP compression scheme is not  supported.   HDF's
+     byte-based RLE compression scheme is only supported on 8-bit
+     color index and 24-bit RGB images.
+
+     Administrative header information for hdf files is  required
+     in  MBF  (most-significant byte first) byte order by the HDF
+     specification. Images, color tables, and  other  information
+     in  the  file may be in either MBF or LBF (least-significant
+     byte first) byte order.  _N_o_t_e:  hdf documentation refers  to
+     MBF  as  DFNTI_MBO  (Motorola  byte order) and LBF as either
+     DFNTI_VBO (VAX byte order) or DFNTI_IBO (Intel byte order).
+
+     Floating-point  file  data  may  use  IEEE,  VAX,  or   CRAY
+     floating-point  formats.  Character-string file data must be
+     ASCII.  EBCDIC is not supported.
+
+     If the file's image has a color map, the image  library  VFB
+     includes a CLT.
+
+     If the file contains  multiple  images,  multiple  VFBs  are
+     appended to the _d_a_t_a_T_a_b_l_e.
+
+  Writing HDF image files
+     Images to be written out are mapped from image library  VFBs
+     as follows:
+
+          Mapped from VFB   Depth/color          Type of compression
+          IMVFBINDEX8       8-bit color index    un- or RLE-compressed
+          IMVFBINDEX16      16-bit color index   uncompressed only
+          IMVFBRGB          24-bit RGB           uncompressed only
+
+     If the incoming VFB has a CLT, the image written to the  hdf
+     file contains a CLT.
+
+
+
+2                 Last change: August 24, 1992               SDSC
+
+
+
+
+
+
+IMHDF(3IM)             SDSC IMAGE LIBRARY              IMHDF(3IM)
+
+
+
+     RGB  images  may  be  stored  in  non-interlaced,  scanline-
+     interlaced, and plane-interlaced modes.
+
+     _N_o_t_e:  Previous versions of this code supported  writing  of
+     compressed  RGB  images.   This feature has been temporarily
+     removed pending full support for such images by the NCSA and
+     SpyGlass  tools.  Macintosh-based HDF tools currently do not
+     support 24-bit RGB images.  The NCSA  UNIX-based  HDF  tools
+     reliably handle uncompressed RGB images only.
+
+     Other image library VFB types are converted to  one  of  the
+     above   types   prior   to   being  written  out.   See  the
+     ImFileWrite(3IM) man page for details.
+
+     Administrative header information for hdf files  is  written
+     in  MBF  byte  order  as  required by the HDF specification.
+     Images, color tables, and other information in the  file  is
+     written  in the same byte order as the host writing the file
+     (MBF or LBF), which ensures the quickest  possible  I/O  for
+     the  host.   _N_o_t_e:   hdf  documentation  refers  to  MBF  as
+     DFNTI_MBO (Motorola byte order) and LBF as either  DFNTI_VBO
+     (VAX byte order) or DFNTI_IBO (Intel byte order).
+
+     Floating-point  file  data  is  written   using   the   same
+     floating-point  format  as  the host writing the file (IEEE,
+     VAX, or CRAY).  Character-string file data is always  ASCII.
+     EBCDIC is not supported.
+
+     If the _d_a_t_a_T_a_b_l_e contains multiple images,  the  output  hdf
+     file also contains multiple images.
+
+ERRORS
+     In addition to those listed for  ImFileRead(3IM),  hdf  file
+     reading returns the following error codes:
+
+          IMEMAGIC    Bad Magic number in image file
+          IMEMALLOC   Cannot allocate enough memory
+          IMESYNTAX   Syntax error in HDF file
+          IMESYS      System call error in read operation
+
+     In addition to those listed for ImFileWrite(3IM),  hdf  file
+     writing returns the following error codes:
+
+          IMEMALLOC   Cannot allocate enough memory
+          IMESYS      System call error in write operation
+
+DOCUMENTATION
+     _N_C_S_A _H_D_F, National Center for Supercomputing Applications.
+
+     _N_C_S_A _H_D_F _C_a_l_l_i_n_g _I_n_t_e_r_f_a_c_e_s _a_n_d _U_t_i_l_i_t_i_e_s, Version 3.1, July
+     1990, National Center for Supercomputing Applications.
+
+
+
+
+SDSC              Last change: August 24, 1992                  3
+
+
+
+
+
+
+IMHDF(3IM)             SDSC IMAGE LIBRARY              IMHDF(3IM)
+
+
+
+     _N_C_S_A _H_D_F _S_p_e_c_i_f_i_c_a_t_i_o_n_s, March  1989,  National  Center  for
+     Supercomputing Applications.
+
+SEE ALSO
+     ImIntro(3IM),   ImErrNo(3IM),    imcat(1IM),    imconv(1IM),
+     imfile(1IM), imformats(1IM), imsplit(1IM)
+
+AUTHOR
+     Dave Nadeau
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4                 Last change: August 24, 1992               SDSC
+
+
+

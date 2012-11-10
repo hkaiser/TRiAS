@@ -1,0 +1,39 @@
+HKCR
+{
+	TRiASEx.SelectObjectsDatasource.1 = s 'Objekte aus Datenquellen selektieren'
+	{
+		CLSID = s '{C3CF0270-0190-11D3-94CB-0080C786297B}'
+	}
+	TRiASEx.SelectObjectsDatasource = s 'Objekte aus Datenquellen selektieren'
+	{
+		CLSID = s '{C3CF0270-0190-11D3-94CB-0080C786297B}'
+		CurVer = s 'TRiASEx.SelectObjectsDatasource.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {C3CF0270-0190-11D3-94CB-0080C786297B} = s 'Objekte aus Datenquellen selektieren'
+		{
+			ProgID = s 'TRiASEx.SelectObjectsDatasource.1'
+			VersionIndependentProgID = s 'TRiASEx.SelectObjectsDatasource'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{BD1B0ED0-FFAF-11D2-94C3-0080C786297B}'
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiASEx.SelectObjectsDatasource.1' = s '{C3CF0270-0190-11D3-94CB-0080C786297B}'
+			}
+		}
+	}
+}

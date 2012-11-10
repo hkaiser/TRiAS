@@ -1,0 +1,20 @@
+HKCR
+{
+	TRiASDB.TRiASSimpleObjectsCollection.1 = s 'TRiASSimpleObjectsCollection Class'
+	{
+		CLSID = s '{5F20C607-B87C-11D2-95A8-006008447800}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {5F20C607-B87C-11D2-95A8-006008447800} = s 'TRiASSimpleObjectsCollection Class'
+		{
+			ProgID = s 'TRiASDB.TRiASSimpleObjectsCollection.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{1CB3AB53-2E87-11D1-969D-00A024D6F582}'
+		}
+	}
+}

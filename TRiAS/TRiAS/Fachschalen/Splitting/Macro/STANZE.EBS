@@ -1,0 +1,948 @@
+' -----------------------------------------------------------------------------
+' $DESCRIPTION: Alle Objekte einer Selektionsmenge vereinigen
+' -----------------------------------------------------------------------------
+'	Spezielle Makroerweiterung für das Berlin (GBM)-Projekt.
+' -----------------------------------------------------------------------------
+'	29.03.99/26.04.99
+'------------------------------------------------------------------------------
+
+Option Explicit
+Const strBoxTitel = "Stanze bilden"
+Const strGrund = "Grundstück"
+Const strALKKarte = "ALK-Karte"
+Const strKarte = "Kartennummer"
+Const strStanze = "Stanze"
+
+' -----------------------------------------------------------------------------
+' Globale Variablen
+Private docGD As GeoDocument		' aktuelles Projekt
+
+Private Status As StatusIndicator 
+Private ClsGrund As GeoClass
+Private ClsKarte As GeoClass
+Private ClsStanze As GeoClass
+
+
+Public strLogFileName As String
+
+Private bErrFile As Boolean			' Fehlerdatei angelegt (True)
+Private bWork As Boolean			' Gesamte Klasse ist zu verarbeiten (True)
+
+Private dZahl As Double
+' -----------------------------------------------------------------------------
+' Beschreibungs-Strings
+Const NL = Chr$(13) + Chr$(10)		' Zeilenwechsel
+Const strToolSearch As String = "Stanze bilden"
+
+' -----------------------------------------------------------------------------
+
+' Deklaration aller verwendeten Routinen
+Declare Private Function GrundSchnitt ( ObjsUnion As GeoObjects, ObjsDel As GeoObjects) As GeoObjects
+Declare Private Function GrundRecherche ( MyObj As GeoObject, ObjsRect As GeoObjects, ObjsDel As GeoObjects) As GeoObjects
+Declare Private Sub ErrFile (strErrText As String)
+Declare Private Sub Stanzen
+Declare Function FlaechenInhalt (objGO As GeoObject) As Double
+Declare Private Function ObjektAnteil ( Obj1 As GeoObject, Obj2 As GeoObject ) As Boolean
+Declare Function MasseinheitAbtrennen (MWert As String, MZahl As Double) As String
+Declare Private Function GrundStContainer (ObjK As GeoObject,ObjG As GeoObject)  As Boolean
+Declare Private Sub UmOrdnen (Obj As GeoObject,Objs As GeoObjects,NewObjs As GeoObjects)
+Declare Private Sub StanzenLoeschen (Objs As GeoObjects)
+Declare Private Sub FuelleInseln (Obj As GeoObject)
+
+' -----------------------------------------------------------------------------
+
+' -----------------------------------------------------------------------------
+
+' "Main()" ist der eigentliche Startpunkt des Makroscriptes 
+Sub Main()
+	Stanzen
+End Sub 
+
+' -----------------------------------------------------------------------------
+
+' -----------------------------------------------------------------------------
+' Hier gehts los
+Const strSelectIdent As String = "TRiASEx.SelectIdentObjTyp.1"
+Const strSelectFromORWnd As String = "TRiASEx.SelectFromObjectWindow.1"
+Const strClassify As String = "TRiASEx.ClassifyByObjProp.1"
+Const strCopyObjects As String = "TRiASEx.CopyObjects.1"
+Const strUnionObjects As String = "TRiASEx.UnionObjects.1"
+Const strModifyIdent As String = "TRiASEx.ModifyIdent.1"
+Const strFilterScript As String = "TRiASEx.FilterScript.1"
+Const strShowInORWnd As String = "TRiASEx.ShowInObjectWindow.1"
+
+Const strNoShow As String = "NoShow=1"
+
+'------------------------------------------------------------
+
+Sub Stanzen()
+
+Dim Wins As GeoObjectWins
+Dim fORWnd As Boolean
+Dim Obj As GeoObject
+Dim XMin As Double
+Dim XMax As Double
+Dim YMin As Double
+Dim YMax As Double
+Dim ObjsUnion As GeoObjects
+Dim ObjsRect As GeoObjects
+Dim ObjsOut As New GeoObjects
+Dim ObjsDel As New GeoObjects
+Dim MyFeat As GeoFeature
+
+	Set docGD = GetActiveDocument()
+
+	fORWnd = True
+	Set Wins = docGD.GetGeoObjectWins()
+	If (Wins Is Nothing) Then
+		fORWnd = False
+	ElseIf (Wins.Count = 0) Then
+		fORWnd = False
+	End If
+
+	dZahl = 0.5
+
+	Dim MyObj As GeoObject
+	Dim MyObjs As GeoObjects
+
+	Dim o As GeoObject
+
+	Msg.Open NL & "   Routine: Stanze bilden" & NL &  _
+			 "   Bitte etwas Geduld - die Abarbeitung wird vorbereitet!   " & NL, , _
+			 False, False
+
+
+' Operation durchführen
+Dim Seq As New PropertySequence
+
+	Seq.Description = strToolSearch
+	If (fORWnd = True) Then
+		Seq.AddAction strSelectFromORWnd, strNoShow
+	Else
+		Seq.AddAction strSelectIdent, strNoShow + ";Select=[961016]:4"
+	End If
+
+
+	Seq.AddAction strCopyObjects, strNoShow
+
+	Seq.AddAction strModifyIdent, strNoShow + ";ModifyTo=[961016a]"
+
+	Set MyObjs = Seq.DoActions()
+
+	Msg.Close
+
+ 	If MyObjs Is Nothing Or MyObjs.Count = 0 Then
+		Exit Sub
+	End If
+
+	Dim SelObjs As Long 
+	SelObjs = MyObjs.Count
+
+' StatusAnzeige erzeugen und initialisieren
+	Dim Status0 As New StatusIndicator 
+
+	If (Status0 Is Not Nothing) Then
+		Status0.Restart 0, SelObjs, STATUS_ShowAllFields
+		Status0.Caption = "Analyse der ALK-Karten "
+		Status0.Field(1) = Str$(SelObjs)
+		Status0.Field(2) = "Objekte werden durchsucht."
+		Status0.Field(3) = "Es wurden bereits %d%% der Objekte analysiert."
+	End If
+
+' Jetzt alle selektierten Objekte bearbeiten
+	Dim ActCnt As Long		' Zähler der bearbeiteten Objekte
+
+
+	Set ClsGrund = docGD.GetClass(strGrund)
+	If ClsGrund Is Nothing Then
+		MsgBox " Keine Grundstücke definiert ! - Exit"
+		Exit Sub
+	End If
+
+
+	Dim ftFlInhalt As GeoFeature	
+	Set MyObj = MyObjs(1)
+	Set ftFlInhalt = MyObj.GetFeature("Flächeninhalt")
+	If (ftFlInhalt Is Nothing) Then 
+		MsgBox "Bitte Statistikkomponente laden - Abbruch!", ebCritical, strBoxTitel
+		Exit Sub
+	End If
+
+	
+
+ 	For Each MyObj In MyObjs
+			 	
+	' Status weiterschalten
+		If (Status0 Is Not Nothing) Then
+			ActCnt = ActCnt + 1
+			Status0.Field(4) = "Objekt: " + Str$(MyObj.Value)
+			If (Status0 Is Not Nothing) Then
+				Status0.SetPosition ActCnt
+				If (Status0.WasCanceled()) Then	' Abbrechen gedrückt
+					Set Status0 = Nothing
+					Exit Sub					' innere Schleife beenden
+				End If
+			End If
+		End If
+
+	
+
+	' alle Objekte innerhalb des Containers finden
+		ErrFile " **** Start Objekt " + STR$(MyObj.Value)
+
+		MyObj.GetGeometryRect XMin, YMin, XMax, YMax
+
+		Set ObjsRect = ClsGrund.GetObjectsInRect(XMin, YMin, XMax, YMax)
+		Set ObjsDel = New GeoObjects
+
+		Set ObjsOut = GrundRecherche (MyObj,ObjsRect,ObjsDel)
+
+		if ( ObjsOut Is Not Nothing ) Then
+
+
+	' Operation durchführen
+			Dim Seq1 As New PropertySequence
+
+			Seq1.Description = strToolSearch 
+
+			Seq1.AddAction strCopyObjects, strNoShow
+ 	   		Seq1.AddAction strUnionObjects, strNoShow
+	   		Seq1.AddAction strModifyIdent, strNoShow + ";ModifyTo=[961016a]"
+
+			Set ObjsUnion = Seq1.DoActions (ObjsOut)
+
+			Set Seq1 = Nothing 
+
+   '			msgbox " ObjsUnion.Count = " + STR$(ObjsUnion.Count)
+			
+			Dim ObjStanze As New GeoObjects
+
+			docGD.RemoveObject MyObj
+
+			Set ObjStanze = GrundSchnitt ( ObjsUnion,ObjsDel)
+
+			Set ObjsDel = Nothing
+			Set ObjsOut = Nothing
+			Set ObjStanze = Nothing
+		End If
+
+	Next MyObj
+
+	If (fORWnd = True) Then
+		Set ObjsOut = Nothing
+   		Beep
+   		MsgBox "Und tschüß!", ebInformation, strBoxTitel
+		Exit Sub
+ 	End If
+
+	Set ClsGrund = docGD.GetClass(strGrund)
+	If ClsGrund Is Nothing Then
+		MsgBox " Keine Grundstücke definiert ! - Exit"
+		Exit Sub
+	End If
+
+' Inseln in Stanzen beseitigen !
+' lokale innenliegende Stanzen zuordnen
+	Set ClsStanze = docGD.GetClass(strStanze)
+	If ClsStanze Is Nothing Then
+		MsgBox " Keine Stanzen gebildet ! - Exit"
+		Exit Sub
+	End If
+
+	Set MyObjs = ClsStanze.GetObjects(OT_Area)
+	SelObjs = MyObjs.Count
+
+	If (Status0 Is Not Nothing) Then
+		Status0.Restart 0, SelObjs, STATUS_ShowAllFields
+		Status0.Caption = "Aus Stanzen Inseln beseitigen"
+		Status0.Field(1) = Str$(SelObjs)
+		Status0.Field(2) = "Objekte werden durchsucht."
+		Status0.Field(3) = "Es wurden bereits %d%% der Objekte analysiert."
+	End If
+
+
+' Jetzt alle selektierten Objekte bearbeiten
+	ActCnt = 0
+
+
+ 	For Each MyObj In MyObjs
+		 	
+' Status weiterschalten
+		If (Status0 Is Not Nothing) Then
+			ActCnt = ActCnt + 1
+			Status0.Field(4) = "Objekt: " + Str$(MyObj.Value)
+			If (Status0 Is Not Nothing) Then
+				Status0.SetPosition ActCnt
+				If (Status0.WasCanceled()) Then	' Abbrechen gedrückt
+					Exit For					' innere Schleife beenden
+				End If
+			End If
+		End If
+		FuelleInseln MyObj
+	Next MyObj
+
+'===========================================================================
+	
+
+' lokale innenliegende Stanzen zuordnen
+
+	SelObjs = MyObjs.Count
+
+	If (Status0 Is Not Nothing) Then
+		Status0.Restart 0, SelObjs, STATUS_ShowAllFields
+		Status0.Caption = "Suche nach lokalen Stanzen "
+		Status0.Field(1) = Str$(SelObjs)
+		Status0.Field(2) = "Objekte werden durchsucht."
+		Status0.Field(3) = "Es wurden bereits %d%% der Objekte analysiert."
+	End If
+
+
+' Jetzt alle selektierten Objekte bearbeiten
+	ActCnt = 0
+
+	Dim NewObjs As New GeoObjects
+ 	For Each MyObj In MyObjs
+		 	
+' Status weiterschalten
+		If (Status0 Is Not Nothing) Then
+			ActCnt = ActCnt + 1
+			Status0.Field(4) = "Objekt: " + Str$(MyObj.Value)
+			If (Status0 Is Not Nothing) Then
+				Status0.SetPosition ActCnt
+				If (Status0.WasCanceled()) Then	' Abbrechen gedrückt
+					Exit For					' innere Schleife beenden
+				End If
+			End If
+		End If
+
+		MyObj.GetGeometryRect XMin, YMin, XMax, YMax
+
+		Set ObjsRect = ClsStanze.GetObjectsInRect(XMin, YMin, XMax, YMax)
+		If ObjsRect Is Not Nothing And ObjsRect.Count > 0 Then
+			
+			If  ObjsRect.Count > 1 Then
+				UmOrdnen MyObj,ObjsRect,NewObjs
+			Else
+				ErrFile " Fehlerhafte Containerbildung bei Objekt " + STR$(MyObj.Value) 
+			End If
+			
+
+		End If
+	Next MyObj
+
+	' Innenligende Stanzen Beseitigen
+	If NewObjs Is Not Nothing And NewObjs.Count > 0 Then
+		StanzenLoeschen NewObjs
+	End If
+
+	Set NewObjs = Nothing
+
+' Und nun Grundstücke prüfen
+	Set MyObjs = ClsGrund.GetObjects(OT_Area)
+	SelObjs = MyObjs.Count
+
+	If (Status0 Is Not Nothing) Then
+		Status0.Restart 0, SelObjs, STATUS_ShowAllFields
+		Status0.Caption = "Suche nach den verlorenen Kindern "
+		Status0.Field(1) = Str$(SelObjs)
+		Status0.Field(2) = "Objekte werden durchsucht."
+		Status0.Field(3) = "Es wurden bereits %d%% der Objekte analysiert."
+	End If
+
+
+' Jetzt alle selektierten Objekte bearbeiten
+	ActCnt = 0
+
+	Set ObjsOut = new GeoObjects
+
+ 	For Each MyObj In MyObjs
+		 	
+' Status weiterschalten
+		If (Status0 Is Not Nothing) Then
+			ActCnt = ActCnt + 1
+			Status0.Field(4) = "Objekt: " + Str$(MyObj.Value)
+			If (Status0 Is Not Nothing) Then
+				Status0.SetPosition ActCnt
+				If (Status0.WasCanceled()) Then	' Abbrechen gedrückt
+					Exit For					' innere Schleife beenden
+				End If
+			End If
+		End If
+		Set MyFeat = MyObj.GetFeature(strKarte)
+		If MyFeat Is Nothing Then
+			ObjsOut.Add MyObj
+		End If
+
+	Next MyObj
+
+	Set Status0 = Nothing
+
+	If ObjsOut.Count > 0 Then
+		Dim orw As GeoObjectWin
+		Set orw = ObjsOut.CreateGeoObjectWin()
+		orw.Name = "Grundstück ohne Kartennummer"
+		orw.Visible = 1
+
+	End If
+	Set ObjsOut = Nothing
+	Beep
+	MsgBox "Und tschüß!", ebInformation, strBoxTitel
+
+End Sub
+'--------------------------------------------------------------------
+Private Sub FuelleInseln ( Obj As GeoObject) 
+
+	If Obj Is Nothing Or Obj.Value < 0 Then
+		Exit Sub
+	End If
+	
+	Dim x() As Double
+	Dim y() As Double
+	Dim Koord() As Long
+	Dim OType As Integer
+	Dim Count As Long
+	Dim Cnt As Integer
+
+	ReDim x(0)
+	ReDim y(0)
+	ReDim Koord(0)
+
+	OType = Obj.GetGeometry (Count,x,y,Cnt,Koord)
+
+	If Cnt > 1 Then
+		ErrFile " Insel " + STR$(Obj.Value)
+		ReDim x(Count)
+		ReDim y(Count)
+		ReDim Koord(Cnt)
+
+		OType = Obj.GetGeometry (Count,x,y,Cnt,Koord)
+		Dim i As Integer
+		Dim iRef As Integer
+
+		Dim XRef(Koord(0)) As Double
+		Dim YRef(Koord(0)) As Double
+
+		For i = 0 To Koord(0) - 1
+			XRef(i) = x(i)
+			YRef(i) = y(i)
+		Next i
+
+		iRef = Obj.PutGeometry ( OType,XRef,YRef)
+
+	End If
+
+End Sub
+'---------------------------------------------------------------------
+Private Sub UmOrdnen ( Obj As GeoObject,Objs As GeoObjects, NewObjs As GeoObjects) 
+
+
+	If Objs Is Nothing Or Objs.Count = 0 Then
+		Exit Sub
+	End If
+
+	If Objs.Count = 1 And Obj.Value = Objs(1).Value Then
+		Exit Sub
+	End If
+
+	Dim SObj As GeoObject
+	Dim Feat As GeoFeature
+	Dim SFeat As String
+	Set Feat = Obj.GetFeature(strKarte)
+	If Feat Is Nothing Then
+		Exit Sub
+	End If
+	SFeat = Trim$(Feat.Feature$)
+
+	Dim XMin As Double
+	Dim XMax As Double
+	Dim YMin As Double
+	Dim YMax As Double
+	Dim ObjsU As GeoObjects
+	Dim OU As GeoObject
+
+	For Each SObj in Objs
+
+	   If SObj.Value <> Obj.Value And SObj.Value > 0 Then
+		Dim intRel As Integer	
+		Dim FlInSObj As Double
+		Dim FlInObj As Double
+	
+		' Rückgabewert kann sein: innerhalb (0), außerhalb (1), inner/außerhalb (2) oder
+		' unklar (3)
+
+		intRel = Obj.TopRelation(SObj)	' Stanze enthält kleinere Stanze
+		If intRel = 0 Then	'Nur innenliegende Stanzen
+			FlInSObj = FlaechenInhalt (SObj)
+			FlInObj = FlaechenInhalt (Obj)
+			If FlInSObj < FlInObj Then
+
+				Set Feat = SObj.GetFeature(strKarte)
+				If Feat Is Not Nothing Then
+					Feat.Feature$ = SFeat
+				End If
+				SObj.GetGeometryRect XMin, YMin, XMax, YMax
+
+				Set ObjsU = ClsGrund.GetObjectsInRect(XMin, YMin, XMax, YMax)
+				If ObjsU Is Not Nothing And ObjsU.Count > 0 Then
+					For Each OU In ObjsU
+						Dim iRel As Integer		
+						iRel = SObj.TopRelation(OU)	' Stanze enthält kleinere Stanze
+						If iRel = 0 Then
+							Set Feat = OU.GetFeature(strKarte)
+							If Feat Is Not Nothing Then
+								Feat.Feature$ = SFeat
+							End If
+						End If
+					Next OU
+				End If
+				NewObjs.Add SObj.Value
+			End If
+		End If
+
+'	Löcher suchen !!
+		If intRel = 1 Then	'außen
+			FlInSObj = FlaechenInhalt (SObj)
+			FlInObj = FlaechenInhalt (Obj)
+			If FlInSObj < FlInObj Then
+'	Puffer um Loch				
+	
+			End If
+			
+		End If
+
+	   End If
+
+	Next SObj
+End Sub
+'--------------------------------------------------------------------
+'--------------------------------------------------------------------
+
+Private Sub StanzenLoeschen ( Objs As GeoObjects) 
+
+	If Objs Is Nothing Or Objs.Count = 0 Then
+		Exit Sub
+	End If
+
+
+	Dim SObj As GeoObject
+
+	For Each SObj in Objs
+
+		docGD.RemoveObject SObj
+
+	Next SObj
+End Sub
+'--------------------------------------------------------------------
+
+Private Function GrundSchnitt ( ObjsUnion As GeoObjects, ObjsDel As GeoObjects) As GeoObjects
+	Dim NewObjS As New GeoObjects
+	Dim NeuObjS As New GeoObjects
+
+	If ObjsUnion.Count > 1 Then
+		MsgBox " Mehrere AusgabeStanzen "
+		Set GrundSchnitt = NewObjS
+		Exit Function
+	End If
+
+
+  	Dim Count As Integer
+	Dim SObj As GeoObject
+	Dim IMo As GeoObject
+	Set SObj = ObjsUnion(1)
+	NewObjs.Add SObj
+	NeuObjs.Add SObj
+
+	If ObjsDel.Count > 0 Then
+
+' StatusAnzeige erzeugen und initialisieren
+		Dim Status1 As New StatusIndicator 
+		Dim SelObjs As Long
+   		SelObjs = ObjsDel.Count
+
+  		If (Status1 Is Not Nothing) Then
+   			Status1.Restart 0, SelObjs, STATUS_ShowAllFields
+   			Status1.Caption = "Ausschneiden von Objekten "
+   			Status1.Field(1) = Str$(SelObjs)
+   			Status1.Field(2) = "Objekte werden durchsucht."
+   			Status1.Field(3) = "Es wurden bereits %d%% der Objekte analysiert."
+   		End If
+
+' Jetzt alle selektierten Objekte bearbeiten
+   		Dim ActCnt As Long		' Zähler der bearbeiteten Objekte
+
+
+	'Ausschneiden
+		Dim SObjS As GeoObjects
+
+		For Each IMo In ObjsDel
+
+' Status weiterschalten
+			If (Status1 Is Not Nothing) Then
+				ActCnt = ActCnt + 1
+		   		Status1.Field(4) = "Objekt: " + Str$(IMo.Value)
+		   		If (Status1 Is Not Nothing) Then
+		   			Status1.SetPosition ActCnt
+		   			If (Status1.WasCanceled()) Then	' Abbrechen gedrückt
+		   				Exit Function					' innere Schleife beenden
+		   			End If
+		   		End If
+	   		End If
+
+		    For Each SObj in NewObjs
+
+			Dim intRel As Integer		
+			intRel = IMo.TopRelation(SObj)
+			If intRel = 2 Then
+
+	   			Set SObjs = IMo.GetIntersectObjects(SObj,OP_OuterParts)
+				ErrFile "Obj " + STR$(IMo.Value) + " .GetInterSectObjects ( Obj " + STR$(SObj.Value) + " ,OP_OuterParts)"
+	   			If SObjs Is Not Nothing And SObjs.Count > 0 Then
+	   				Dim Mo As GeoObject
+	   				Count = 0
+			   		For Each Mo In SObjs
+			   			If Mo.ObjType = OT_Area Then
+				   			Count = Count + 1
+							If Count = 1 Then
+			   					docGD.RemoveObject SObj
+								NeuObjs.Remove SObj.Value
+							End If
+			   				Set SObj = Mo
+							NeuObjs.Add Mo
+			   			Else
+			   				docGD.RemoveObject Mo
+			   			End If
+			   		Next Mo
+				Else
+					docGD.RemoveObject SObj
+					NeuObjs.Remove SObj.Value
+
+				End If
+			End If
+
+			If intRel = 0 Then
+				docGD.RemoveObject SObj
+				NeuObjs.Remove SObj.Value
+			End If
+
+		     Next SObj
+		     If NeuObjs Is Not Nothing And NeuObjs.Count > 0 Then
+			     Set NewObjs = NeuObjS
+		     End If
+	
+	'	     Set NeuObjs = new GeoObjects
+		Next IMo
+
+		Set Status1 = Nothing
+
+	End If
+	Set GrundSchnitt = NewObjS
+End Function
+' -----------------------------------------------------------------------------
+Private Function GrundStContainer ( ObjK As GeoObject, ObjG As GeoObject) As Boolean
+
+
+Dim Obj As GeoObject
+Dim o As GeoObject
+
+Dim XMin As Double
+Dim XMax As Double
+Dim YMin As Double
+Dim YMax As Double
+
+Dim ObjsRect As GeoObjects
+Dim ObjsV As GeoObjects
+
+	GrundStContainer = False
+
+	Set ClsKarte = docGD.GetClass(strALKKarte)
+	If ClsKarte Is Nothing Then
+		MsgBox " Keine ALK-Karten definiert ! - Exit"
+		Exit Function
+	End If
+'	Set Cls = ObjK.ObjClass
+
+	ObjG.GetGeometryRect XMin, YMin, XMax, YMax
+
+	Set ObjsRect = ClsKarte.GetObjectsInRect(XMin, YMin, XMax, YMax)
+	If ObjsRect Is Nothing Or ObjsRect.Count = 0 Then
+		Exit Function
+	End If
+Dim FlG As Double
+Dim FlIn As Double
+
+Dim Feat As GeoFeature
+Dim MyFeat As String
+Dim MyStr As String
+
+
+ 	MyFeat = ""
+ 	Set Feat = ObjK.GetFeature("Objektname")
+	If Feat Is Not Nothing Then
+		MyFeat = TRIM$(Feat.Feature$)
+	End If
+	
+
+	FlG = 0.0
+	For Each Obj In ObjsRect
+		If Obj.ObjType = OT_Area Then
+	' Topologie
+			Dim intRel As Integer		
+			intRel = ObjG.TopRelation(Obj)
+			If intRel = 0 Or intRel = 2 Then
+				Set ObjsV = Obj.GetIntersectObjects (ObjG)
+				For Each o In ObjsV
+					If o.ObjType = OT_Area Then
+
+						FlIn = FlaechenInhalt (o)
+						If FlIn > FlG Then
+							FlG = FlIn
+						   	Set Feat = Obj.GetFeature("Objektname")
+							If Feat Is Not Nothing Then
+								MyStr = TRIM$(Feat.Feature$)
+							End If
+						
+						End If
+					End If						
+					docGD.RemoveObject o	
+				Next o
+			End If
+		End If
+
+	Next Obj
+	If MyStr = MyFeat Then
+		GrundStContainer = True
+	End If
+
+End Function
+
+' -----------------------------------------------------------------------------
+Private Function GrundRecherche ( MyObj As GeoObject, ObjsRect As GeoObjects,ObjsDel As GeoObjects) As GeoObjects
+
+	Dim NewObjs As New GeoObjects
+	Dim o As GeoObject
+
+	Dim MyFeat As GeoFeature
+	Dim MyStr As String
+	Dim RefStr As String
+
+
+	Set MyFeat = MyObj.GetFeature("Objektname")
+	If MyFeat Is Nothing Then
+		msgbox " Keine Kartennummer angegeben !"
+		Set GrundRecherche = Nothing
+		Exit Function
+	End If
+	
+	
+	
+	NewObjs.Add MyObj
+
+	MyStr = Trim$(MyFeat.Feature$)
+ 	ErrFile "     Objekt " + STR$(MyObj.Value) + " mit KN " + MyStr
+
+	Set MyFeat = MyObj.GetFeature(strKarte)
+	If MyFeat Is Nothing Then
+		Set MyFeat = MyObj.AddFeature(strKarte,FEATURETYPE_WriteAble)
+	End If
+	MyFeat.Feature$ = MyStr
+
+	If ObjsRect Is Nothing Then
+		Exit Function
+	End If
+
+'	msgbox " Kartennummer " + MyStr
+
+ '	NewObjs.Remove MyObj
+
+	For Each o In ObjsRect
+	   If o.ObjType = OT_Area Then
+	' Topologie
+			Dim intRel As Integer		
+			intRel = MyObj.TopRelation(o)
+			If intRel = 0 Then
+				Set MyFeat = o.GetFeature(strKarte)
+				If MyFeat Is Nothing Then
+					Set MyFeat = o.AddFeature(strKarte,FEATURETYPE_WriteAble)
+				End If
+				MyFeat.Feature$ = MyStr
+			End If
+			If intRel = 2 Then	'Innen/Aussen
+				If ObjektAnteil(MyObj,o) = True Then
+					Set MyFeat = o.GetFeature(strKarte)
+					RefStr = MyStr
+					If MyFeat Is Nothing Then
+						Set MyFeat = o.AddFeature(strKarte,FEATURETYPE_WriteAble)
+					Else
+				' Schon bearbeitet
+						RefStr = Trim$(MyFeat.Feature$)
+					End If
+					If RefStr = MyStr Then
+						MyFeat.Feature$ = MyStr
+	   					NewObjs.Add o
+					Else
+						' rausschneiden
+						ObjsDel.Add o
+					End If
+				Else
+			' Größenverhältnis Nachbarkarten !
+					If GrundStContainer ( MyObj,o) = False Then
+				' Ausschneiden
+						ObjsDel.Add o
+					Else
+						Set MyFeat = o.GetFeature(strKarte)
+						If MyFeat Is Nothing Then
+							Set MyFeat = o.AddFeature(strKarte,FEATURETYPE_WriteAble)
+						End If
+						MyFeat.Feature$ = MyStr
+	   					NewObjs.Add o
+
+					End If
+
+				End If
+				
+			End If
+	  End If
+	Next o 
+
+'	NewObjs.Add MyObj
+
+	Set GrundRecherche = NewObjs
+
+End Function
+
+'-------------------------------------------------------------------------------    
+' --------------------------------------------------------------------------------------
+' Fehlertext strErrText in Fehlerdatei (Name des aktuellen Projektes mit Attribut "err")
+' eintragen
+Sub ErrFile (strErrText As String)
+	Dim strErrDatei As String
+	strErrDatei = Left$(GetActiveDocument.FullName$,Len(GetActiveDocument.FullName$)-3) + "err"
+	Open strErrDatei For Append Lock Write As #1	' Fehler-Datei öffnen
+	Print #1, strErrText
+	Close											' Fehler-Datei schließen
+	bErrFile = True
+End Sub ' ErrFile
+'---------------------------------------------------------------------------------------
+'======================================================================
+Private Function ObjektAnteil ( Obj1 As GeoObject, Obj2 As GeoObject ) As Boolean
+
+	Dim objsTO As GeoObjects	'in obj1 liegende Teilobjekte von obj2
+
+
+	Dim Fl1In As Double
+	Dim Fl2In As Double
+	Dim MyFl As Double
+
+	If obj2.ObjType = OT_Area Then
+		Fl2In = FlaechenInhalt (obj2)
+	End If
+
+	If obj1.ObjType = OT_Area Then
+		Fl1In = FlaechenInhalt (obj1)
+	End If
+
+	If Fl1In > Fl2In Then
+		MyFl = Fl2In
+'		Set objsTO = obj1.GetIntersectObjects (obj2)
+	Else
+		MyFl = Fl1In
+ '		Set objsTO = obj2.GetIntersectObjects (obj1)
+	End If
+
+	Set objsTO = obj1.GetIntersectObjects (obj2)
+
+	ObjektAnteil = False
+
+	If objsTO Is Nothing Then 
+ '		msgBox " Fläche : Fehler bei Durchschnitt",ebCritical,strBoxTitel
+		ObjektAnteil = False
+		Exit Function
+	End If
+
+	If objsTO.Count = 0  Then 
+  '		msgBox " Fläche : Fehler bei Durchschnitt : Objektanzahl 0",ebCritical,strBoxTitel
+   '		msgBox "Objekt " + STR$(Obj1.Value) + "/" + STR$(Obj2.Value)
+		ObjektAnteil = False
+		Exit Function
+	End If
+
+
+
+	Dim RefFL As Double
+	RefFL = 0.0
+
+	Dim objTO As GeoObject
+
+	For Each objTO In objsTO
+		If objTO.ObjType = OT_Area Then
+			Dim FL As Double
+			FL = FlaechenInhalt (objTO)
+			If FL > RefFL Then
+				RefFL = FL
+			End If
+		End If
+		docGD.RemoveObject objTO
+	next objTO
+
+	objsTO.Refresh
+	Set objsTO = Nothing
+
+	If RefFL/MyFl > dZahl Then
+		ObjektAnteil = True
+	End If
+
+End Function ' ObjektTeilen
+'=================================================================================================
+'-------------------------------------------------------------------------------------------------
+'Flächeninhalt eines GeoObjektes in m²; im Fehlerfall (unbekannte Maßeinheit) wird -1 zurückgegeben
+Function FlaechenInhalt (objGO As GeoObject) As Double
+	Dim ftFlInhalt As GeoFeature	
+	Set ftFlInhalt = objGO.GetFeature("Flächeninhalt")
+	If (ftFlInhalt Is Nothing) Then 
+		MsgBox "Bitte Statistikkomponente laden!", ebCritical, strBoxTitel
+		FlaechenInhalt = -1
+		Exit Function
+	End If
+
+	Dim Fl As String
+
+	Fl = Trim$(ftFlInhalt.Feature$)	'Flächeninhalt und Maßeinheit
+	If Fl = "" Then	'kein Flächenobjekt
+  		FlaechenInhalt = -1
+		Exit Function
+	End If
+
+	Dim Flaeche As Double				'Flächeninhalt ohne Maßeinheit
+	Dim ME As String
+	ME = MasseinheitAbtrennen (Fl, Flaeche)
+
+	Select Case LCase(Mid(ME,2,1))	'das 1. Zeichen von ME ist "["
+		Case "m"	'm²
+			FlaechenInhalt = Flaeche
+		Case "h"	'ha
+			FlaechenInhalt = 10000 * Flaeche
+		Case "k"	'km²
+			FlaechenInhalt = 1000000 * Flaeche
+		Case Else
+			MsgBox "Die ermittelte Maßeinheit ist unbekannt!", ebCritical, strBoxTitel
+			FlaechenInhalt = -1
+	End Select
+End Function 'FlaechenInhalt
+'-------------------------------------------------------------------------------------------------
+'Maßeinheit aus dem übergebenen String MWert eliminieren und in der Form "[...]"
+'zurückgeben; dabei wird vorausgesetzt, daß die Maßeinheit in eckige Klammern '[]'
+'eingeschlossen ist
+Function MasseinheitAbtrennen (MWert As String, MZahl As Double) As String
+	Dim Pos As Integer
+	Pos = InStr (MWert$,"[")		'Position der öffnenden Klammer "[" suchen
+	If Pos = 0 Then
+		MsgBox "Maßeinheit beginnt nicht mit [", ebCritical, strBoxTitel
+		MasseinheitAbtrennen = "  "	'Rückgabe bei Fehler
+	End If
+
+	Pos = InStr (MWert," ")			'Position zwischen Zahlenwert und Dimension
+	MZahl = Val (Left(MWert,Pos))	'Dimension abschneiden
+	MasseinheitAbtrennen = Right(MWert,Len(MWert)-Pos)	'Maßzahl ohne Maßeinheit als Rückgabewert
+End Function 'MasseinheitAbtrennen
+'-------------------------------------------------------------------------------------------------
+           

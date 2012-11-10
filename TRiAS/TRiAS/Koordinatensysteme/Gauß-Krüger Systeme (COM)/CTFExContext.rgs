@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiASCTF.CTFExGKContext.1 = s 'Kontext für Koordinatentransformation (Gauß-Krüger)'
+	{
+		CLSID = s '{F2D244C1-B04F-11d2-8CEC-006097A8F384}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {F2D244C1-B04F-11d2-8CEC-006097A8F384} = s 'Kontext für Koordinatentransformation (Gauß-Krüger)'
+		{
+			ProgID = s 'TRiASCTF.CTFExGKContext.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

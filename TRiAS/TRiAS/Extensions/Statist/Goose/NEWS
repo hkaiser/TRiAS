@@ -1,0 +1,242 @@
+Goose v0.0.11
+Currently in CVS
+
+* Massive type changes
+  + Removed all size_t from DataSet object interface.
+  + Changed DataSet derivatives to have their elements indexed by ints,
+    and introduced offsets so that objects can be indexed over arbitrary
+    ranges of integers, rather than 0..(N-1).
+
+* Jon added Permutation::permute(vector<X>&) function.
+
+* Mikkel added some statistical tests: Kruskal-Wallis, Cochran's Q,
+  McNemar, Spearman.
+
+* Jon added the Hypergeometric CDF (and the inverse, too).
+
+* Asger made various tweaks for Win32 compatibility.
+
+
+Goose v0.0.10
+Released Jul 12, 1999.
+
+* Fixed a number of portability problems that were tracked down by
+  Philippe Defert <Philippe.Defert@cern.ch>.
+
+* Bugfixes due to Tom Shannon <tshanno@bsd.medctr.luc.edu>
+
+* Added first hints of XML support.
+
+* Renamed/revised some functions in Random.
+
+* Added "convenience exceptions" to Exception.h, and began integrating
+  them into the code.
+
+* Catch-all random hacking.
+
+
+Goose v0.0.9
+Released May 28, 1999
+
+* For configure purposes, the project was renamed to `goose' (from `libgoose').
+  That way our tarballs will come out being called `goose-?.?.?.tar.gz'.
+  (Suggested by members of the GNU ftp-upload mailing list.)
+
+* Added calculations on empirical distribution functions: Kolmogorov &
+  Smirnov's D, D+, D-, Kuiper's V.
+
+* Added standardize() function to RealSet.
+
+* Fixed some potential data/sorted data coherence problems in RealSet.
+
+* Added more guile bindings.
+
+
+Goose v0.0.8
+Released May 27, 1999
+
+* Another bump-the-version-number-for-build-purposes release by Havoc.
+
+
+Goose v0.0.7
+Released May 26, 1999
+
+* Havoc fixed the build to check for guile properly, among other things.
+
+* Jon added to the guile bindings.
+
+* Jon added to the documentation.  Much of what he wrote quickly
+  became obsolete.
+
+* Jon wreaked hav... uh... took a chainsaw to the code, decrufting some stuff,
+  breaking a lot of other stuff, splitting everything up into a bunch
+  of different libraries, breaking and then repairing the build, and
+  generally imposed his own ideosyncratic version of cleanliness.
+
+* Jon added a lot of half-finished, undebugged stuff.  If you find new feature
+  tucked in there that doesn't seem to work, don't assume that it is supposed
+  to.
+
+* Jon generally failed to document everything that happened.  He sucks for
+  not keeping a ChangeLog or for updating NEWS more often.
+
+* Jon also sucks for not releasing more often.
+
+
+Goose v0.0.6
+Unreleased
+
+* At some point, for the purposes of getting the build to work
+  properly, Havoc had to gratuitously increment the version number.
+
+
+Goose v0.0.5
+Released January 22, 1999
+
+* As of this version, development has been CVSified.
+
+* Everybody added lots of fixes and tweaks.
+
+* Asger added exceptions, replacing a bunch of brain-dead assert()s.
+
+* Havoc made some changes to DataSet to make modifying existing data
+  easier.
+
+* Jon improved inv_beta_cdf() some more.  It still doesn't really do the
+  right thing for extreme parameters, but works quite nicely in all of 
+  the usual, reasonable cases.  ("I'm not a numerical analyst, although
+  I play one on TV...")
+
+* Finally, an improvement that actually adds some new statistical capabilities!
+  Jon added inference to the LinearRegression class, so that you can now
+  generate confidence intervals around the estimates of the slope and
+  intercept, as well as around the linear model's predictions.
+
+* Jon added regression testing stuff.  (Regression *testing*, not regression
+  in the statistical sense...)
+
+* Asger added a bunch of portability stuff, so we can now build under Win32.
+  Jon has mixed feelings about this, but recognizes that portability is
+  a Good Thing.
+
+* Asger added tons of improvements to the ASCII import mechanism.
+
+* Jon added MetaCurve, which is a base class for handling a sampling and
+  interpolation for 2d curves.  An example of its use is the
+  GaussianKD class, which calculates gaussian kernel density estimates from
+  a DataSet.  Later, the MetaCurve will also be used for non-linear
+  regressions, like Loess curves.
+
+* Asger added more improvements to the ASCII import thing.  It works for
+  many files now, but a few more features are planned to make it the killer
+  importer.
+
+* Our class heirarchy got jiggled, and stuff got renamed.  The thing that
+  used to be called a 'DataSet' is now a 'RealSet'.
+
+* Jon trashed all of the existing numerics code and created a separate
+  numerics library, called specfns, derived from on the PD cephes library.
+
+* Havoc started a scm directory, with some preliminary doodles that will
+  one day turn into guile bindings.
+
+* Jon re-worked the bootstraping code so that it can use threads to
+  distribute calculations between multiple CPUs.  If you have a multi-
+  CPU box, this is a big performance winner, since those kinds of
+  calculations are completely parallelizable.
+
+* Lots of other stuff happened, but we forgot to report it.  Crufty old
+  code has been taken out, and immature new code has been shoved in.
+
+
+Goose v0.0.4
+Released October 7, 1998
+
+* Added gala, the Goose Acceptable Linear Algebra micro-package.  This
+  replaces our previous, much grottier, matrix routines.  The new version
+  is a bit slower, but (thanks to some hidden, ugly optimizations) it
+  isn't really that bad.  (I get 170 40x40 inversions with the gala GMat
+  class on my P2-300, versus 227 inversions/sec with the old, hacked-up
+  code.)
+
+* Added two (well, three) independence measures to DataSet:
+  AR1_independence_z(), autocorr() and autocorr_z().
+
+* Added StatsDB, a way to access descriptive statistics by name, via
+  a string.
+
+* Added inv_beta_cdf().  It has not yet been carefully tested for
+  numerical stability.
+
+
+Goose v0.0.3
+Released September 19, 1998
+
+* We're back to the LGPL, due to popular demand.  (Well, OK, it was just one
+  person... but it was one person who was willing to contribute code!)
+
+* Added Permutation class.
+
+* Added permute() and sorting_permutation() functions to DataSet, making
+  use of our fun new Permutation objects.
+
+* Added add_at() and remove_at() to DataSet in order to let you insert
+  individual elements at places other than the end, and to remove elements.
+  The implementations of both are a bit gross, and both operations are
+  somewhat inefficient... but you really shouldn't be doing this sort of
+  thing.  DataSet != Array.
+
+* Started putting in some assert()s where throws will eventually go.
+
+* Added global variable common_random to Random.{cc,h}... a global Random
+  object that routines can call if they don't need their own.
+
+
+Goose v0.0.2
+Released September 14, 1998
+
+* Switched from LGPL to GPL, to facilitate code-borrowing from other
+  free software projects involving math/statistics/numerical analysis.
+
+* Added the a skeletal framework for documentation.  Nothing currently
+  useful, though.
+
+* Fixed sortedness() bug which mishandled the case of constant data
+  in a DataSet.
+
+* Changed DataSet to use reference-counting arrays w/ copy-on-write semantics
+  for storing data.  This allowed lots of DataSet code to be simplified,
+  since we no longer need to explicitly check for the case when data_ and
+  sdata_ are aliased.
+
+* Changed the interface to the bootstrap, jackknife, and regression routines
+  to take advantage of the fact that we can now efficiently return DataSet
+  objects from functions.  No more gratuitous dereferencing of returned
+  pointers required!
+
+* Added lots of new functions from statfn.h.  I've borrowed a lot of nice code
+  from the R project (see http://fangorn.ci.tuwien.ac.at/R) that has
+  really helped a lot.
+
+* New functions in DataSet: mean_trimmed(), mean_winsorized(),
+  exp_transform(), logit_transform(), pooled_mean(), pooled_var(),
+  weighted_mean().
+    
+* Added objects for runs tests in runs.{cc,h}.
+
+* Added support for the basic chi-square Goodness-of-Fit test in fit.{cc,h}.
+
+* Added DataType abstract base interface; this holds all functions specific to 
+  a particular type (currency, real numbers, dates, etc.)
+
+* Changed DataImport parsing routines to be more flexible and more
+  GUI-friendly. (stream import temporarily suboptimal)
+
+* Optimized greater_than(), less_than(), equal_to() and between() to use
+  sorted data.
+
+
+Goose v0.0.1
+Released August 21, 1998
+
+* Initial release

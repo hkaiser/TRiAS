@@ -1,0 +1,120 @@
+HKCR
+{
+	%PROGID% = s 'TRiAS® Dokument'
+	{
+		CLSID = s '%CLSID%'
+		CurVer = s '%PROGID%.2'
+	}
+	%PROGID%.2 = s 'TRiAS® Dokument'
+	{
+		CLSID = s '%CLSID%'
+		Insertable = s ''
+		Protocol
+		{
+			StdFileEditing
+			{
+				Server = s '%TRIASMODULE%'
+				Verb
+				{
+					0 = s '&Bearbeiten,0,2'
+				}
+			}
+		}
+	}
+	NoRemove CLSID
+	{
+		ForceRemove %CLSID% = s 'TRiAS® Dokument'
+		{
+			ProgID = s '%PROGID%.2'
+			VersionIndependentProgID = s '%PROGID%'
+			LocalServer32 = s '%TRIASMODULE%'
+			DefaultIcon = s '%MODULE%,1'
+			InprocHandler32 = s 'ole32.dll'
+			Insertable = s ''
+			MiscStatus = s '16'
+			{
+				1 = s '17'
+			}
+			Verb
+			{
+				0 = s '&Bearbeiten,0,2'
+				1 = s '&Projekt öffnen,0,2'
+			}
+			DataFormats
+			{
+				GetSet
+				{
+					0 = s '14,-1,64,1'
+					1 = s '3,-1,32,1'
+				}
+			}
+		}
+		ForceRemove {D4752D2F-6067-442C-87E8-8C9417B99955} = s 'TRiAS GeoDocument'
+		{
+			InprocServer32 = s '%MODULE%'
+		}
+	}
+	TRiAS.Workspace.1 = s 'TRiAS® Projekt'
+	{
+		CLSID = s '{1CB3AB64-2E87-11D1-969D-00A024D6F582}'
+		DefaultIcon = s '%MODULE%,2'
+		Shell 
+		{
+			Open = s '&Projekt öffnen'
+			{
+				command = s '%TRIASMODULE% "%%1"'
+			}
+		}
+		Insertable
+		Protocol
+		{
+			StdFileEditing
+			{
+				Server = s '%TRIASMODULE%'
+				Verb
+				{
+					0 = s '&Bearbeiten,0,2'
+				}
+			}
+		}
+	}
+	.riw = s 'TRiAS.Workspace.1'
+	{
+		'ShellNew'
+		{
+			val command = s '%TRIASMODULE% /Init:NoShortcut "%%2"'
+		}
+	}
+	TRiAS.Workspace = s 'TRiAS® Projekt'
+	{
+		CLSID = s '{1CB3AB64-2E87-11D1-969D-00A024D6F582}'
+		CurVer = s 'TRiAS.Workspace.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {1CB3AB64-2E87-11D1-969D-00A024D6F582} = s 'TRiAS® Projekt'
+		{
+			ProgID = s 'TRiAS.Workspace.1'
+			DefaultIcon = s '%MODULE%,2'
+			VersionIndependentProgID = s 'TRiAS.Workspace'
+			ForceRemove 'Programmable'
+			InprocHandler32 = s 'ole32.dll'
+			LocalServer32 = s '%TRIASMODULE%' 
+			Insertable = s ''
+			MiscStatus = s '16'
+			{
+				1 = s '17'
+			}
+			Verb
+			{
+				0 = s '&Bearbeiten,0,2'
+				1 = s '&Projekt öffnen,0,2'
+			}
+			AuxUserType
+			{
+				2 = s 'TRiAS®'
+				3 = s 'TRiAS® Projekt'
+			}
+		}
+	}
+}

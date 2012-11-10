@@ -1,0 +1,43 @@
+// @doc
+// @module Export.idl | IDL source for Export.ext
+
+// This file will be processed by the MIDL tool to
+// produce the type library (Export.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "ProgInd2.idl";
+
+#include "Export.ver"
+#define STDINTERFACE(help)	object, dual, pointer_default(unique), helpstring(help)
+
+[ uuid(BD1B0ED0-FFAF-11D2-94C3-0080C786297B)
+	, version(TYPELIB_Export_VERSION)
+	, helpstring(TYPELIB_Export_HELPSTRING)
+] library ExportXTension {
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[ uuid(C141ADA0-086C-11d3-9960-0060085FC1CE)
+		, STDINTERFACE("TRiASExport")
+	] interface ITRiASExportXTension : IDispatch {
+	};
+
+	[ uuid(F9023EC0-0C70-11d3-9965-0060085FC1CE)
+		, STDINTERFACE("TRiASExport")
+	] interface ITRiASExportAction : IDispatch {
+	};
+
+	// der eigentliche TRiAS-Zusatzmodul
+	[ uuid(BD1B0ED1-FFAF-11D2-94C3-0080C786297B),
+		helpstring("Export Class")
+	] coclass ExportXTension {
+		[default] interface IUnknown;
+	};
+
+	[ uuid(65C6A760-FFB4-11D2-94C5-0080C786297B),
+		helpstring("ExportPropertyAction Class")
+	] coclass ExportPropertyAction {
+		[default] interface IUnknown;
+	};
+};

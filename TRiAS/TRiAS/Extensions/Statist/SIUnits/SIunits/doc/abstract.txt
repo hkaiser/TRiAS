@@ -1,0 +1,33 @@
+SIunits:  The SI Library of Unit-Based Computation
+
+Scientific programmers typically make heavy use of a programming
+language's native numeric data types.  Such practice, however, obscures
+the diverse intentions (e.g., distances, masses, energies, momenta,
+etc.) that any such purely numeric value could represent.
+
+While limitations in programming language expressiveness and compiler
+technology have historically made such efforts difficult, the SI
+Library, known as SIunits, provides, in a modern programming language
+(C++), a convenient means of expressing, computing with, and displaying
+numeric values with attached units.  The fundamental requirements, (1)
+to apply compile-time type-checking while (2) avoiding time and space
+overhead at run-time, have been met.  Thus, SIunits enables automated
+(compile-time) checking of the dimensions of the numeric values within
+a computer program, and so provides the well-known benefits of
+type-safety to a new category of computing contexts.
+
+In particular, SIunits provides data types corresponding to all the
+base dimensions specified by le Systeme International d'Unites (SI),
+the recognized international standard for describing measurable
+quantities and their units.  SIunits also provides a mechanism to
+generate additional data types to describe and represent derived
+dimensions in accordance with SI's provisions.  Thus, for example, an
+object resulting from the product of two Length objects is
+automatically of type Area.
+
+All the base and composite units specified by SI are provided as well,
+as are forms of the mandated prefixes for describing multiples and
+sub-multiples of the units.  A significant number of additional
+standard values (any of which may be used as units), are also furnished
+within the library.  As additional features, the library permits user
+specification, at compile time, of precision, calibration, and models.

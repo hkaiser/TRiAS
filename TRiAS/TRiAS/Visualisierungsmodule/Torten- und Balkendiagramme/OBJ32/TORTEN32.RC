@@ -1,0 +1,239 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "torten32.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "ver.h"
+#include "../tortenr.h"
+#include "typesel.h"
+
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+TORTENDLG DIALOG DISCARDABLE  83, 47, 254, 215
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Kreis- und Säulendiagramme"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",-1,"Static",SS_ETCHEDFRAME | WS_GROUP,5,7,182,164
+    LTEXT           "&Diagrammtyp:",-1,11,11,106,8
+    COMBOBOX        IDCB_TORTENTYPEN,11,22,170,63,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        " Vorschau ",-1,112,41,69,69,WS_GROUP
+    CONTROL         "",IDT_TORTENPREVIEW,"Static",SS_BLACKFRAME,116,51,61,56
+    GROUPBOX        "          ",-1,11,41,98,42,WS_GROUP
+    CONTROL         "&Zahlenwerte anzeigen ",IDCB_SHOWVALUES,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,18,41,86,10
+    CONTROL         "&Absolut",IDR_ABSVALUES,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,18,54,62,10
+    CONTROL         "&Prozentual",IDR_RELVALUES,"Button",BS_AUTORADIOBUTTON,
+                    18,67,60,10
+    CONTROL         "Zusätzliche &Verschiebung",IDCB_OFFSET,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,11,91,100,11
+    LTEXT           "&Werte aus Objekteigenschaft verwenden:",-1,11,113,168,
+                    8
+    COMBOBOX        IDCB_FEATURECODE,11,124,170,70,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Zu verwendende Diagrammpalette:",-1,11,141,122,8
+    COMBOBOX        IDCB_COLORPALETTE,11,152,170,60,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "&Optionen ...",IDB_COLORS,193,156,55,14,WS_GROUP
+    GROUPBOX        " Beschreibung ",-1,5,174,244,35,WS_GROUP
+    LTEXT           "",IDT_HELPTEXT,8,184,238,22,NOT WS_GROUP
+    PUSHBUTTON      "&Hilfe",IDB_TORTENHILFE,194,135,55,14,WS_GROUP
+    DEFPUSHBUTTON   "OK",IDOK,194,8,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,194,28,55,14
+END
+
+COLORSELDLG DIALOG DISCARDABLE  34, 42, 239, 196
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Diagrammoptionen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Diagrammpalette:",-1,5,9,58,8
+    EDITTEXT        IDE_PALETTENAME,4,20,165,12,ES_AUTOHSCROLL
+    LTEXT           "&Prozentangaben mit",IDT_PERCENTS,5,42,67,8
+    EDITTEXT        IDE_NUMDIGITS,74,40,18,12,ES_AUTOHSCROLL
+    LTEXT           "Nachkommastellen",IDT_NUMDIGITS,96,42,70,8,NOT WS_GROUP
+    GROUPBOX        " Farben der Diagrammsegmente ",-1,4,57,229,134,WS_GROUP
+    RTEXT           "1",-1,8,76,7,8
+    CONTROL         "",IDFT_COLOR1,"Button",BS_OWNERDRAW | WS_TABSTOP,18,74,
+                    60,12
+    RTEXT           "2",-1,8,90,7,8
+    CONTROL         "",IDFT_COLOR2,"Button",BS_OWNERDRAW | WS_TABSTOP,18,88,
+                    60,12
+    RTEXT           "3",-1,8,104,7,8
+    CONTROL         "",IDFT_COLOR3,"Button",BS_OWNERDRAW | WS_TABSTOP,18,102,
+                    60,12
+    RTEXT           "4",-1,8,118,7,8
+    CONTROL         "",IDFT_COLOR4,"Button",BS_OWNERDRAW | WS_TABSTOP,18,116,
+                    60,12
+    RTEXT           "5",-1,8,132,7,8
+    CONTROL         "",IDFT_COLOR5,"Button",BS_OWNERDRAW | WS_TABSTOP,18,130,
+                    60,12
+    RTEXT           "6",-1,8,146,7,8
+    CONTROL         "",IDFT_COLOR6,"Button",BS_OWNERDRAW | WS_TABSTOP,18,144,
+                    60,12
+    RTEXT           "7",-1,8,160,7,8
+    CONTROL         "",IDFT_COLOR7,"Button",BS_OWNERDRAW | WS_TABSTOP,18,158,
+                    60,12
+    RTEXT           "8",-1,8,174,7,8
+    CONTROL         "",IDFT_COLOR8,"Button",BS_OWNERDRAW | WS_TABSTOP,18,172,
+                    60,12
+    RTEXT           "9",-1,85,76,11,8
+    CONTROL         "",IDFT_COLOR9,"Button",BS_OWNERDRAW | WS_TABSTOP,100,74,
+                    60,12
+    RTEXT           "10",-1,85,90,11,8
+    CONTROL         "",IDFT_COLOR10,"Button",BS_OWNERDRAW | WS_TABSTOP,100,
+                    88,60,12
+    RTEXT           "11",-1,85,104,11,8
+    CONTROL         "",IDFT_COLOR11,"Button",BS_OWNERDRAW | WS_TABSTOP,100,
+                    102,60,12
+    RTEXT           "12",-1,85,118,11,8
+    CONTROL         "",IDFT_COLOR12,"Button",BS_OWNERDRAW | WS_TABSTOP,100,
+                    116,60,12
+    RTEXT           "13",-1,85,132,11,8
+    CONTROL         "",IDFT_COLOR13,"Button",BS_OWNERDRAW | WS_TABSTOP,100,
+                    130,60,12
+    RTEXT           "14",-1,85,146,11,8
+    CONTROL         "",IDFT_COLOR14,"Button",BS_OWNERDRAW | WS_TABSTOP,100,
+                    144,60,12
+    RTEXT           "15",-1,85,160,11,8
+    CONTROL         "",IDFT_COLOR15,"Button",BS_OWNERDRAW | WS_TABSTOP,100,
+                    158,60,12
+    RTEXT           "16",-1,85,174,11,8
+    CONTROL         "",IDFT_COLOR16,"Button",BS_OWNERDRAW | WS_TABSTOP,100,
+                    172,60,12
+    PUSHBUTTON      "De&finieren ...",IDB_SELECTOTHER,170,151,55,14,WS_GROUP
+    PUSHBUTTON      "&Rücksetzen",IDB_RESETCOLORS,170,170,55,14,WS_GROUP
+    PUSHBUTTON      "&Hilfe",IDB_FARBENHILFE,178,41,55,14,WS_GROUP
+    DEFPUSHBUTTON   "OK",IDOK,178,4,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,178,22,55,14
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "torten32.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""ver.h""\r\n"
+    "#include ""../tortenr.h""\r\n"
+    "#include ""typesel.h""\r\n"
+    "\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""torten32.rcv""\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_FULLCIRCLE          "Vollkreisdiagramm"
+    IDS_UPPERHALF           "Halbkreisdiagramm (obere Hälfte)"
+    IDS_LOWERHALF           "Halbkreisdiagramm (untere Hälfte)"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_BALKENHOCHPOS       "Säulendiagramm (nach oben)"
+    IDS_BALKENHOCHPOSLOG    "Säulendiagramm (nach oben), logarithmisch"
+    IDS_BALKENROT           "Säulendiagramm (drehbar)"
+    IDS_BALKENROTLOG        "Säulendiagramm (drehbar), logarithmisch"
+    IDS_BALKENHOCHPOSEXP    "Säulendiagramm (nach oben), exponentiell"
+    IDS_BALKENHOCHNEG       "Säulendiagramm (nach unten)"
+    IDS_BALKENQUERPOS       "Säulendiagramm (nach rechts)"
+    IDS_BALKENQUERNEG       "Säulendiagramm (nach links)"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CUSTFORMAT          "t=%d,""%s""; z=""torten"":%%%ld;"
+    IDS_OBEN                "oben"
+    IDS_UNTEN               "unten"
+    IDS_TORTENPALETTEN      "TortenPaletten"
+    IDS_VMDEXT              ".pal"
+    IDS_SELECTCAPTION       "Darstellungsattribute eines Grafiksegmentes"
+    IDS_DEFAULTPALETTE      "Standardpalette"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDCB_TORTENTYPEN        "Symbolisiert die markierten Objekte als %s."
+    IDCB_FEATURECODE        "Die Objekteigenschaft '%s' enthält die Zahlenwerte, die für die Erzeugung der Grafik verwendet werden sollen."
+    IDCB_COLORPALETTE       "Verwendet die Palette '%s' für die Darstellungsattribute der erzeugten Grafik."
+    IDCB_OFFSET             "Verschiebt das generierte Diagramm bezüglich seines Bezugspunktes nach %s."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDR_RELVALUES           "Aktiviert die Darstellung der Ausgangszahlen als Prozentwerte gemeinsam mit dem generierten Diagramm."
+    IDR_ABSVALUES           "Aktiviert die Darstellung der Ausgangszahlenwerte gemeinsam mit dem generierten Diagramm."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Diagramme"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "torten32.rcv"
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

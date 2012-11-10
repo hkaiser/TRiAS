@@ -1,0 +1,146 @@
+' -----------------------------------------------------------------------------
+' $DESCRIPTION: Alle Objekte einer Selektionsmenge vereinigen
+' -----------------------------------------------------------------------------
+'	'UeberSchwemmung.ebs'	TRiAS-MakroErweiterung
+' -----------------------------------------------------------------------------
+'	(c)	FEZ Potsdam GmbH, 05. Mai 1999, K.Kurth
+' -----------------------------------------------------------------------------
+'	Bildet Ueberschwemmungsgebiete - Blinkeln.
+'	Spezielle Makroerweiterung für Gewaessermanagement/Hydraulik.
+' -----------------------------------------------------------------------------
+
+Option Explicit
+
+' -----------------------------------------------------------------------------
+' Globale Variablen
+Private docGD As GeoDocument		' aktuelles Projekt
+Private Cls as GeoClass
+
+' -----------------------------------------------------------------------------
+' Beschreibungs-Strings
+Const NL = Chr$(13) + Chr$(10)		' Zeilenwechsel
+Const strToolSearch As String = "Überschwemmungsgebiete bilden"
+Const strGebiet = "Hydraulik:Überschwemmungsgebiet"
+Const strGewNr = "Gewässernummer"
+Const strObjName = "Objektname"
+' -----------------------------------------------------------------------------
+
+' -----------------------------------------------------------------------------
+' "Main()" ist der eigentliche Startpunkt des Makroscriptes 
+Function UeberSchwemmung(GewNr As String, strClsName As String, strQuelle As String) As Boolean
+
+	On Error GoTo CheckError
+
+' -----------------------------------------------------------------------------
+' Hier gehts los
+Const strSelectIdent As String = "TRiASEx.SelectIdentObjTyp.1"
+Const strClassify As String = "TRiASEx.ClassifyByObjProp.1"
+Const strCopyObjects As String = "TRiASEx.CopyObjects.1"
+Const strUnionObjects As String = "TRiASEx.UnionObjectsEx.1"
+Const strModifyIdent As String = "TRiASEx.ModifyIdent.1"
+Const strFilterScript As String = "TRiASEx.FilterScript.1"
+
+Const strNoShow As String = "NoShow=1"
+Const strShow As String = "NoShow=1;DataSource="
+	
+
+	Set docGD = GetActiveDocument()
+
+	if strQuelle = "" Then
+		Set Cls = docGD.GetClass(strClsName)
+	else
+		Set Cls = docGD.GetClass(strClsName,strQuelle)
+	End If
+
+	UeberSchwemmung = False
+
+
+	If Cls Is Nothing Then
+		msgbox strClsName + " nicht definiert !",ebExclamation,strToolSearch
+		Exit Function
+	End If
+
+	Dim ObjS As GeoObjects
+	Dim ObjsUnion As GeoObjects
+	Dim ObjsF As New GeoObjects
+
+	Set ObjS = Cls.GetObjects(OT_Area)
+	If ObjS Is Nothing or ObjS.Count = 0 Then
+		msgbox strClsName + " nicht definiert !",ebExclamation,strToolSearch
+		Exit Function
+	End If
+
+' Richtige Objekte suchen
+	Dim NewObj As GeoObject
+	Dim Feat As GeoFeature
+	Dim TObjS As New GeoObjects
+
+	For Each NewObj In ObjS
+		Set Feat = NewObj.GetFeature (strGewNr)
+		If Feat Is Not Nothing Then
+			Dim MyFeat As String
+			MyFeat = TRIM$(Feat.Feature$)
+			If MyFeat = GewNr Then
+				TObjS.Add NewObj
+			End If
+		End If
+	Next NewObj
+
+	If TObjS Is Nothing or TObjS.Count = 0 Then
+		msgbox strClsName + " nicht definiert !",ebExclamation,strToolSearch
+		Exit Function
+	End If
+
+' Operation durchführen
+
+	Dim myShow As String
+	myShow = strShow+strQuelle
+
+	Dim Seq As New PropertySequence
+
+	Seq.Description = strToolSearch
+
+
+	if strQuelle = "" Then
+		Seq.AddAction strUnionObjects, strNoShow
+	Else
+		Seq.AddAction strUnionObjects, myShow
+	End If
+
+	Set ObjsUnion = Seq.DoActions (TObjS)
+
+	If ObjsUnion Is Nothing Then
+		msgbox " Vereinigung Klasse *" + strClsName + "* fehlgeschlagen !",ebExclamation,strToolSearch
+		docGD.Rebuild
+		Exit Function
+	End If
+
+	For Each NewObj In ObjsUnion
+		Cls.AddObject NewObj.Value
+		ObjsF.Add NewObj
+	Next NewObj
+
+	Dim ID As Long
+	For Each NewObj In ObjsF
+
+		Set Feat = NewObj.GetFeature (strObjName)
+		If Feat Is Not Nothing Then
+			Feat.Feature$ = GewNr
+		Else
+			Set Feat = NewObj.AddFeature (strObjName,FEATURETYPE_WriteAble)
+			If Feat Is Not Nothing Then
+				Feat.Feature$ = GewNr
+			End If
+		End If
+	Next NewObj
+
+	Ueberschwemmung = True
+
+	Exit Function
+
+CheckError :
+	msgbox " RunTime - Error : Abbruch bei Fehler-Nr. " +STR$(Err.Number),ebExclamation,strToolSearch
+
+End Function
+
+' -----------------------------------------------------------------------------

@@ -1,0 +1,223 @@
+// Typelibrary für Toolbars et.al.
+// File: Toolbar.idl
+
+#define DISPID_VALUE	(0)
+#define DISPID_NEWENUM	(-4)
+
+cpp_quote("#define TOOLBAR_TYPELIB_VERSION_MAJOR 1")
+cpp_quote("#define TOOLBAR_TYPELIB_VERSION_MINOR 0")
+cpp_quote("#define TOOLBAR_TYPELIB_VERSION \"1.0\"")
+cpp_quote("#define TOOLBAR_TYPELIB_LCID 0")
+
+
+#include "TRiASBaseInterfaces.idl"
+import "oaidl.idl";
+
+#define TOOLBAR_TYPELIB_VERSION_MAJOR 1
+#define TOOLBAR_TYPELIB_VERSION_MINOR 0
+#define TOOLBAR_TYPELIB_VERSION 1.0
+#define TOOLBAR_TYPELIB_LCID 0
+
+[
+	uuid(07963874-3123-101C-BB62-00AA0018497C),
+	version(TOOLBAR_TYPELIB_VERSION),
+	helpstring("TRiAS ToolBar Type Library"),
+	lcid(TOOLBAR_TYPELIB_LCID)
+]
+library ToolBarLib
+{
+	importlib("stdole32.tlb");
+
+///////////////////////////////////////////////////////////////////////////////
+// Dispatch(dual)-Interfaces
+
+	import "oaidl.idl";
+	import "objidl.idl";
+
+	#include "TRiASToolBars.idl"
+
+	enum TOOLBARLIB_VERSIONS {
+		TYPELIB_TOOLBAR_VERSION_MAJOR = TOOLBAR_TYPELIB_VERSION_MAJOR,
+		TYPELIB_TOOLBAR_VERSION_MINOR = TOOLBAR_TYPELIB_VERSION_MINOR,
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// CustomInterfaces
+[
+	uuid(07963870-3123-101C-BB62-00AA0018497C), 
+	odl, oleautomation, 
+	helpstring("IControlToolBar")
+]  
+interface IControlToolBar : IUnknown
+{
+// _TRiASBaseClass properties
+	[propget] HRESULT isA ([out, retval]LONG *plRTTI);		// ObjektTyp (RTTI)
+	[propget] HRESULT Parent ([out, retval]IDispatch **ppIBase);	// übergeordnetes Objekt
+	[propput] HRESULT Parent ([in]IDispatch *pIBase);
+	[propget] HRESULT Application ([out, retval]IDispatch **ppIApp);	// Anwendung
+	[propput] HRESULT Application ([in]IDispatch *pIApp);		// Anwendung
+
+// IControlToolbar properties
+	[propget] HRESULT Name ([out, retval]BSTR *pbstrName);
+	[propput] HRESULT Name ([in]BSTR bstrName);
+
+	[propget] HRESULT Width ([out, retval]long *piWidth);
+	[propput] HRESULT Width ([in]long iWidth);
+	[propget] HRESULT Height ([out, retval]long *piHeight);
+	[propput] HRESULT Height ([in]long iHeight);
+	[propget] HRESULT Left ([out, retval]long *piLeft);
+	[propput] HRESULT Left ([in]long iLeft);
+	[propget] HRESULT Top ([out, retval]long *piTop);
+	[propput] HRESULT Top ([in]long iTop);
+	
+	[propget] HRESULT DockState ([out, retval]DOCKSTATE *prgState);
+	[propput] HRESULT DockState ([in]DOCKSTATE rgState);
+	[propget] HRESULT Visible ([out, retval]VARIANT_BOOL *pfVisible);
+	[propput] HRESULT Visible ([in]VARIANT_BOOL fVisible);
+	[propget] HRESULT Style ([out, retval]long *pdwStyle);
+	[propput] HRESULT Style ([in]long dwStyle);
+
+	HRESULT ToolBarButtons ([out, retval]DControlToolBarButtons **pIBttns);
+	HRESULT Reset (void);
+	HRESULT InsertButton ([in]int iIndex, [in]DControlToolBarButton *pIBttn,
+			      [in]DToolBarUIOwner *pUIOwner, [in]IUnknown *pIInstCtrl);
+	HRESULT DeleteButton ([in]int iIndex);
+	HRESULT Remove (void);
+};
+
+[
+	uuid(07963875-3123-101C-BB62-00AA0018497C), 
+	odl, oleautomation, 
+	helpstring("IControlToolBars")
+]  
+interface IControlToolBars : IUnknown
+{
+// _TRiASBaseClass properties
+	[propget] HRESULT isA ([out, retval]LONG *plRTTI);		// ObjektTyp (RTTI)
+	[propget] HRESULT Parent ([out, retval]IDispatch **ppIBase);	// übergeordnetes Objekt
+	[propput] HRESULT Parent ([in]IDispatch *pIBase);
+	[propget] HRESULT Application ([out, retval]IDispatch **ppIApp);// Anwendung
+	[propput] HRESULT Application ([in]IDispatch *pIApp);		// Anwendung
+
+	[restricted, propget] HRESULT _NewEnum ([out, retval]IUnknown **pvEnum);
+	[propget]HRESULT Item ([in]long lIndex, [out, retval]DControlToolBar **ppIToolBar);
+	[propget] HRESULT Count ([out, retval]long *plCnt);
+	
+	HRESULT AddItem ([out]DControlToolBar **ppIToolBar, [in, optional]VARIANT vName);
+};
+
+[
+	uuid(07963872-3123-101C-BB62-00AA0018497C), 
+	odl, oleautomation, 
+	helpstring("IControlToolBarButton")
+]  
+interface IControlToolBarButton : IUnknown 
+{
+cpp_quote("#if !defined(TOOLBARCLASSNAME)")
+	typedef struct _TBBUTTON {
+		int iBitmap;
+		int idCommand;
+		BYTE fsState;
+		BYTE fsStyle;
+	#ifdef _WIN32
+		BYTE bReserved[2];
+	#endif
+		DWORD dwData;
+		int iString;
+	} TBBUTTON;
+cpp_quote("#endif // TOOLBARCLASSNAME")
+
+// _TRiASBaseClass properties
+	[propget] HRESULT isA ([out, retval]LONG *plRTTI);				// ObjektTyp (RTTI)
+	[propget] HRESULT Parent ([out, retval]IDispatch **ppIBase);	// übergeordnetes Objekt
+	[propput] HRESULT Parent ([in]IDispatch *pIBase);
+	[propget] HRESULT Application ([out, retval]IDispatch **ppIApp);// Anwendung
+	[propput] HRESULT Application ([in]IDispatch *pIApp);
+
+	[propget] HRESULT Name ([out, retval]BSTR *pbstrName);
+	[propput] HRESULT Name ([in]BSTR bstrName);
+	[propget] HRESULT Width ([out, retval]long *piWidth);
+	[propput] HRESULT Width ([in]long iWidth);
+	[propget] HRESULT HelpText ([out, retval]BSTR *pbstrHelpText);
+	[propput] HRESULT HelpText ([in]BSTR bstrHelpText);
+	[propget] HRESULT CmdID ([out, retval]int *piCmdID);
+	[propput] HRESULT CmdID ([in]int iCmdID);
+
+	[propget] HRESULT Style ([out, retval]BUTTONSTYLE *pdwStyle);
+	[propput] HRESULT Style ([in]BUTTONSTYLE dwStyle);
+	[propget] HRESULT State ([out, retval]BUTTONSTATE *pdwState);
+	[propput] HRESULT State ([in]BUTTONSTATE dwState);
+
+	HRESULT GetImage ([out]long *phBitmap, [out]int *piCnt, [out, retval]int *piOffsetInBmp);
+	HRESULT AttachImage ([in]VARIANT vPicture, [in, optional]VARIANT iIndex, [in, optional]VARIANT vSizeX);
+	[propput] HRESULT Value ([in]VARIANT_BOOL fClick);
+
+	HRESULT ButtonInfo ([in, out, size_is(sizeof(TBBUTTON)), length_is(sizeof(TBBUTTON))] /*TBBUTTON*/BYTE *pBttns);		// internal use only
+};
+
+[
+	uuid(07963877-3123-101C-BB62-00AA0018497C), 
+	odl, oleautomation, 
+	helpstring("IControlToolBarButtons")
+]  
+interface IControlToolBarButtons : IUnknown
+{
+// _TRiASBaseClass properties
+	[propget] HRESULT isA ([out, retval]LONG *plRTTI);		// ObjektTyp (RTTI)
+	[propget] HRESULT Parent ([out, retval]IDispatch **ppIBase);	// übergeordnetes Objekt
+	[propput] HRESULT Parent ([in]IDispatch *pIBase);
+	[propget] HRESULT Application ([out, retval]IDispatch **ppIApp);// Anwendung
+	[propput] HRESULT Application ([in]IDispatch *pIApp);		// Anwendung
+
+	[restricted, propget] HRESULT _NewEnum ([out, retval]IUnknown **pvEnum);
+	[propget] HRESULT Item ([in]long lIndex, [out, retval]DControlToolBarButton **ppIToolBar);
+	[propget] HRESULT Count ([out, retval]long *plCnt);
+
+	HRESULT AddItem ([out]DControlToolBarButton **ppIBttn, [in, optional]VARIANT vName);
+};
+
+[
+	uuid(0796387A-3123-101C-BB62-00AA0018497C), 
+	odl, oleautomation, 
+	helpstring("IToolBarUIOwner")
+]  
+interface IToolBarUIOwner : IUnknown {
+// specific methods
+	HRESULT SetToolBarUIOwnerSite ([in]int uiID, [in]DControlToolBar *pIToolBar);
+	HRESULT UpdateUI ([in]DTRiASCmdUI *pICmdUI);
+	HRESULT GetDescription ([in]int uiID, [out, retval]BSTR *pbstrDesc);
+	HRESULT FireCommand ([in]int uiID, [in]int nCode);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// objects
+[
+	uuid(07963835-3123-101C-BB62-00AA0018497C),
+	helpstring("ToolBar-Objekt"), hidden
+]
+	coclass TRiASToolBar
+	{
+		[restricted] interface IControlToolBar;
+		[default] interface DControlToolBar;
+	};
+
+[
+	uuid(07963879-3123-101C-BB62-00AA0018497C),
+	helpstring("ToolBarButton-Objekt"), hidden
+]
+	coclass TRiASToolBarButton
+	{
+		[restricted] interface IControlToolBarButton;
+		[default] interface DControlToolBarButton;
+		interface DToolBarUIOwner;
+	};
+
+[
+	uuid(59574E42-E4CE-11D1-8610-00600875138A),
+	helpstring("StatusProgress Class")
+]
+	coclass StatusProgress
+	{
+		[default] interface IStatusProgress;
+	};
+}; // library

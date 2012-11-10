@@ -1,0 +1,25 @@
+[
+	uuid(58DAD7D7-6F34-11D2-9EEC-006008447800),
+	version(1.0), lcid(0)
+]
+library DelegatorLib
+{
+	importlib( "stdole32.tlb" );
+	[
+		uuid(58DAD7D6-6F34-11D2-9EEC-006008447800),
+		object
+	]
+	interface IDelegatorFactory : IUnknown
+	{
+		HRESULT CreateDelegator( [in] IUnknown* pUnkOuter, [in] IUnknown* pUnkInner,
+								 [in] REFIID iid, [out] void** ppv );
+	}
+
+	[uuid(58DAD7D5-6F34-11D2-9EEC-006008447800)]
+	coclass CoDelegator
+	{
+		// midl 3.00.44 chokes if we don't list any interfaces,
+		// so I'm lying here...
+		interface IDelegatorFactory;
+	}
+}

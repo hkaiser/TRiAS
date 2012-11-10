@@ -1,0 +1,66 @@
+
+
+
+IMCLTFREE(3IM)         SDSC IMAGE LIBRARY          IMCLTFREE(3IM)
+
+
+
+NAME
+     ImCltFree - free the storage for a color lookup table
+
+SYNOPSIS
+     #include "im.h"
+
+     void ImCltFree( srcClt )
+          ImClt *srcClt ;
+
+
+DESCRIPTION
+     ImCltFree frees the dynamic storage for color  lookup  table
+     _s_r_c_C_l_t.   _s_r_c_C_l_t  is  no  longer  valid  after this call and
+     should not be used.
+
+NOTES
+     It is assumed that  _s_r_c_C_l_t  was  originally  allocated  with
+     ImCltAlloc (3IM).
+
+     If _s_r_c_C_l_t  is  attached  to  a  virtual  frame  buffer  (see
+     ImVfbSClt  (3IM)),  it should be freed using ImCltFree prior
+     to freeing the virtual frame buffer using ImVfbFree (3IM).
+
+RETURNS
+     ImCltFree returns nothing.
+
+SEE ALSO
+     ImIntro (3IM), ImErrNo  (3IM),  ImCltAlloc  (3IM),  ImCltDup
+     (3IM), ImVfbFree (3IM), ImVfbQClt (3IM)
+
+AUTHOR
+     Mike Bailey
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SDSC              Last change: August 19, 1992                  1
+
+
+

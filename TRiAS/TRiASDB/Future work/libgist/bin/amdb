@@ -1,0 +1,7 @@
+#!/bin/sh
+
+CPATH=$LIBGISTHOME/src/gui:$LIBGISTHOME/src/analysis:$LIBGISTHOME/src/amdbgist:$LIBGISTHOME/src/treeview:$CLASSPATH
+
+echo $CPATH
+
+java -classpath $CPATH -mx64m -ms16m MainWindow $@

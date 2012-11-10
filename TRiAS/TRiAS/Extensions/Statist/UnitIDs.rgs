@@ -1,0 +1,25 @@
+HKCR
+{
+	TRiAS.UnitIDs.1 = s 'UnitIDs Class'
+	{
+		CLSID = s '{A2497E99-EF70-11D2-9BE5-5AB320524153}'
+	}
+	TRiAS.UnitIDs = s 'UnitIDs Class'
+	{
+		CLSID = s '{A2497E99-EF70-11D2-9BE5-5AB320524153}'
+		CurVer = s 'TRiAS.UnitIDs.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {A2497E99-EF70-11D2-9BE5-5AB320524153} = s 'UnitIDs Class'
+		{
+			ProgID = s 'TRiAS.UnitIDs.1'
+			VersionIndependentProgID = s 'TRiAS.UnitIDs'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{CF461D81-EE47-11D2-9BE4-BAF620524153}'
+		}
+	}
+}

@@ -1,0 +1,237 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "TopoRelR.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "dlgs.h"
+#include "resstrg.h"
+
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_TOPORELOPTIONS DIALOG DISCARDABLE  0, 0, 284, 127
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Wählen Sie die zu analysierenden Beziehungen aus",
+                    IDC_STATIC,0,0,170,8
+    CONTROL         " Objekte mit &Gemeinsamkeiten",IDC_INTERSECT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,12,12,111,10
+    CONTROL         " Vollständig &innerhalb liegende Objekte",IDC_WITHIN,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,23,24,139,10
+    CONTROL         " Vollständig über&deckende Objekte",IDC_CONTAIN,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,23,35,130,10
+    CONTROL         " Teilweise über&lappende Objekte",IDC_OVERLAP,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,23,46,130,10
+    CONTROL         " &Eindringende Objekte",IDC_ENTER,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,163,24,109,10
+    CONTROL         " Von außen &berührende Objekte",IDC_TOUCH,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,163,35,117,10
+    CONTROL         " I&dentische Objekte",IDC_EQUAL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,163,46,109,10
+    CONTROL         " Vollständig &außerhalb liegende Objekte",IDC_DISJOINT,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,58,141,10
+    CONTROL         " Ergebnissanzeige in &getrennten Objektrecherchefenstern",
+                    IDC_RECHWINDOWS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,
+                    73,197,10
+    LTEXT           "Beschreibung der zuletzt getroffenen Auswahl",
+                    IDC_STATIC,12,91,150,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,162,96,115,1
+    LTEXT           "",IDT_OPTDESCRIPT,15,101,261,26,NOT WS_GROUP
+END
+
+IDD_SEVERALREFOBJECTS DIALOGEX 0, 0, 284, 127
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Die ausgewählten Beziehungen sollen erfüllt sein für",
+                    IDC_STATIC,0,0,164,8
+    CONTROL         " &Alle Bezugsobjekte",IDR_ALLREFOBJECTS,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,12,17,76,10
+    CONTROL         "",IDR_SOMEREFOBJECTS,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,12,35,8,10
+    COMBOBOX        IDC_REFTYPELIST,27,34,94,54,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    EDITTEXT        IDC_LIMITCOUNT,131,34,26,14,ES_AUTOHSCROLL | ES_NUMBER,
+                    WS_EX_RIGHT
+    CONTROL         "",IDC_SPINREF,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_AUTOBUDDY | UDS_ARROWKEYS,156,33,12,14
+    LTEXT           "Bezugsobjekt(e)",IDC_STATIC,169,36,52,8
+    LTEXT           "Beschreibung der zuletzt getroffenen Auswahl",
+                    IDC_STATIC,12,91,150,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,169,96,115,1
+    LTEXT           "",IDT_REFDESCRIPT,15,101,261,26,NOT WS_GROUP
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "TopoRelR.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""dlgs.h""\r\n"
+    "#include ""resstrg.h""\r\n"
+    "\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""TopoRel.rcv""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_TOPORELPROPACT      REGISTRY DISCARDABLE    "TopoRelPropAct.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// HTML
+//
+
+TOPOLOGICALANALYSISMAIN.XML HTML    DISCARDABLE     "Res\\TopologicalAnalysisMain.tlc"
+TOPOLOGICALANALYSISORWIN.XML HTML    DISCARDABLE     "Res\\TopologicalAnalysisORWin.tlc"
+GEOCOMPONENTSEQUENCE.DTD HTML    DISCARDABLE     "Res\\GeoComponentSequence.dtd"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Topologische Analyse"
+    IDS_LAGEBEST            "&Topologische Analyse ..."
+    IDS_OBJSWITHIN          "Innerhalb liegende Objekte"
+    IDS_OBJSDISJOINT        "Außerhalb liegende Objekte"
+    IDS_OBJSCONTAIN         "Überdeckende Objekte"
+    IDS_OBJSOVERLAP         "Überlappende Objekte"
+    IDS_OBJSENTER           "Eindringende Objekte"
+    IDS_OBJSTOUCH           "Berührende Objekte"
+    IDS_OBJSEQUAL           "Identische Objekte"
+    IDS_OBJSINTERSECT       "Objekte mit Gemeinsamkeiten"
+    IDS_OBJSUNCLEAR         "Objekte mit Geometriefehlern"
+    IDS_OBJRELAT            "Ermittelte Objekte"
+    IDS_WITHGEOMETRYERRORS  "Für einige Objekte mit Geometriefehlern konnte\ndie topologische Relation nicht ermittelt werden.\nSollen diese Objekte in einem gesonderten\nRecherchefenster angezeigt werden?"
+    IDS_ATLEAST             "mindestens"
+    IDS_ATMOST              "höchstens"
+    IDS_EXACTLY             "genau"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_COMMWITHIN          "Die Ergebnisobjekte liegen vollständig innerhalb eines Bezugsobjektes. Berührungen von innen sind zulässig."
+    IDS_COMMDISJOINT        "Die Ergebnisobjekte liegen vollständig außerhalb eines Bezugsobjektes. Berührungen sind dabei nicht zulässig."
+    IDS_COMMCONTAIN         "Die Ergebnisobjekte überdecken vollständig ein Bezugsobjekt, d. h. ein Bezugsobjekt liegt vollständig innerhalb der Ergebnisobjekte."
+    IDS_COMMOVERLAP         "Die Ergebnisobjekte überlappen sich teilweise mit einem Bezugsobjekt (nur für Linie/Linie bzw. Fläche/Fläche). Der gemeinsame Teil muss wieder eine Linie bzw. eine Fläche sein."
+    IDS_COMMENTER           "Die Ergebnisobjekte dringen in ein Bezugsobjekt ein oder kreuzen es (nur für Linie/Linie bzw. Linie/Fläche). Der gemeinsame Teil darf nur ein Punkt bzw. eine Linie sein."
+    IDS_COMMTOUCH           "Die Ergebnisobjekte liegen außerhalb eines Bezugsobjektes, müssen dieses aber berühren."
+    IDS_COMMEQUAL           "Die Ergebnisobjekte sind vollständig identisch mit einem Bezugsobjekt."
+    IDS_COMMINTERSECT       "Die Ergebnisobjekte haben ""irgend etwas"" mit einem Bezugsobjekt gemeinsam, d. h. alle Objekte, außer denjenigen, die ohne jede Berührung vollständig außerhalb der Bezugsobjekte liegen."
+    IDS_COMMSEPARWINDOWS    "Die Ergebnisobjekte werden für jede ausgewählte Relation in getrennten Objektrecherchefenstern angezeigt."
+    IDS_COMMSINGLEWINDOW    "Die Ergebnisobjekte werden für alle ausgewählten Relationen in einem gemeinsamen Objektrecherchefenster angezeigt."
+    IDS_COMMALL             "Die ausgewählten Beziehungen müssen für alle Bezugsobjekte erfüllt sein."
+    IDS_COMMSOME            "Die ausgewählten Beziehungen müssen für einige Bezugsobjekte erfüllt sein."
+    IDS_COMMLEAST           "Die ausgewählten Beziehungen müssen mindestens für die angegebene Anzahl von Bezugsobjekten erfüllt sein."
+    IDS_COMMMOST            "Die ausgewählten Beziehungen dürfen höchstens für die angegebene Anzahl von Bezugsobjekten erfüllt sein."
+    IDS_COMMEXACT           "Die ausgewählten Beziehungen müssen genau für die angegebene Anzahl von Bezugsobjekten erfüllt sein."
+    IDS_COMMLIMITCOUNT      "Anzahl der Bezugsobjekte für die Auswahl ""mindestens"", ""höchstens"" bzw. ""genau""."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NOWITHIN            "Es liegt kein Objekt vollständig innerhalb eines Bezugsobjektes."
+    IDS_NODISJOINT          "Es liegt kein Objekt ohne Berührung vollständig außerhalb der Bezugsobjekte."
+    IDS_NOCONTAIN           "Es gibt kein Objekt, welches ein Bezugsobjekt überdeckt."
+    IDS_NOOVERLAP           "Es gibt kein Objekt, welches sich mit einem Bezugsobjekt teilweise überlappt."
+    IDS_NOENTER             "Es gibt kein Objekt, welches in ein Bezugsobjekt eindringt bzw. dieses kreuzt."
+    IDS_NOTOUCH             "Es gibt kein Objekt, welches ein Bezugsobjekt von außen berührt."
+    IDS_NOEQUAL             "Es gibt kein Objekt, welches mit einem Bezugsobjekt identisch ist."
+    IDS_NOINTERSECT         "Es gibt kein Objekt, welches mit einem Bezugsobjekt ""irgend etwas"" gemeinsam hat."
+    IDS_NORELAT             "Es gibt kein Objekt, das die ausgewählten Relationen erfüllt."
+    IDS_COMMDELETE          " "
+    IDS_DESCRIPTION_TOPORELPROPACT 
+                            "Gruppierung von Objekten an Hand ihrer topologischen Beziehung zu gegebenen Bezugsobjekten"
+    IDS_GEOFEHL1            "Das Bezugsobjekt (Objekt-Nr. %ld) enthält einen Geometriefehler. Deshalb\r\nkann es nicht als Bezugsobjekt für topologische Analysen verwendet werden."
+    IDS_GEOFEHL2            "Das Objekt %ld enthält einen Geometriefehler. Deshalb können für\r\ndieses Objekt die topologischen Analysen nicht ermittelt werden."
+    IDS_STATUS_STAND        "Es wurden bereits %ld %% bearbeitet"
+    IDS_BEARB_OBJEKT        "Objekt: %ld"
+    IDS_CANCEL              "Die Bearbeitung wurde durch den Anwender abgebrochen."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NOGEOREIN           "Das Zusatzmodul ""GeoRein.ext"" wurde nicht gefunden.\r\nDeshalb kann nicht getestet werden, ob das betreffende Objekt fehlerfrei ist."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXEXTENSIONPROC    "DEXEXTENSIONPROC"
+    IDS_DEXXEXTENSIONPROC   "DEXXEXTENSIONPROC"
+    IDS_DEXNOTIFICATIONPROC "DEXNOTIFICATIONPROCEX"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "TopoRel.rcv"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

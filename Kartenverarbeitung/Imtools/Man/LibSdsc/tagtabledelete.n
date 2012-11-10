@@ -1,0 +1,62 @@
+'\"t
+.TH TAGTABLEDELETE 3TAG "July 1990" "SDSC" "TAG TABLE"
+.SH NAME
+TagTableDelete - delete a tag table entry from a tag table
+.SH SYNOPSIS
+\fB
+.nf
+#include "sdsc.h"
+
+extern int TagErrNo;
+
+int TagTableDelete( tagTable, nthEntry )
+	TagTable *tagTable;
+	int nthEntry;
+.fi
+\fR
+.SH DESCRIPTION
+\fITagTableDelete\fR deletes the \fInthEntry\fR tag table entry
+from the \fItagTable\fR.
+The deleted tag entry is deallocated (see \fITagEntryFree\fR(3TAG))
+and should not be referenced again.
+.SH NOTES
+For a description of the fields of a tag table entry, see the \fBman\fP page
+on \fITagEntryAlloc\fR(3TAG).
+.LP
+Deleting an entry causes all further entries in the table to move up by one.
+This decreases their \fInthEntry\fR fields by one each.
+.LP
+Deleting an entry also removes it from the list of occurrences of entries
+with the same tag.
+All further entries in the tag's occurrence list are moved up by one.
+This decreases their \fInthOccur\fR fields by one each.
+.SH RETURNS
+On success, \fITagTableDelete\fR returns the new total number of entries in
+the tag table.
+On failure, -1 is returned and \fITagErrNo\fR set to:
+.sp
+.ta 2i
+.nf
+TAGEBADNTHENTRY	The nth entry argument is < 0 or > 
+	the size of the table
+TAGENULLTAGTABLE	The tag table argument is bad
+.SH SEE ALSO
+TagTableAppend(3TAG),
+TagEntryAlloc(3TAG),
+TagEntryFree(3TAG),
+TagTableInsert(3TAG),
+TagTableQDirect(3TAG),
+TagEntryQNthEntry(3TAG),
+TagEntryQNthOccur(3TAG),
+TagTableQLinear(3TAG),
+TagTableQNEntry(3TAG),
+TagTableReplace(3TAG),
+TagTableAlloc(3TAG),
+TagTableFree(3TAG)
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

@@ -1,0 +1,88 @@
+/* Datenbank - Deklaration fuer Idtdb/RIS                       */
+/* File: IDTDB.DBS						*/
+ 
+database idtdb {
+/* VersionsNummer */
+	version 3.00.00.001;
+
+/* Identifikatordatei */
+        data file "*.mid"       contains mid, mif;
+/* Merkmalskodedatei */
+        data file "*.mmk"       contains mmk, mkf, mmw, mmf;
+/* Relationsartendatei */
+        data file "*.mrl"       contains mrl, mrf;
+
+/* Key - Dateien fuer den Einstieg in die Datenbank */
+/*         Identifikator */
+        btree key file "*.isk"        contains ids;           
+/*         Merkmalskode  */
+        btree key file "*.msk"        contains mks;           
+/*         Relationsart  */
+        btree key file "*.rsk"        contains prirel;
+
+/* Basisinformationen */
+/* Alle Texte haben eine L„nge von 76 Byte                    */
+/* Alle Fortsetzungstexte haben eine L„nge von 120 Byte.
+   Die Struktur der S„tze in Bezug auf die Texte bzw. Kurztexte
+   ist identisch, um mit ein und derselben Zugriffsfunktion
+   (schreiben, lesen) arbeiten zu k”nnen                       */
+
+        record mid {    /* Identifikatorliste */
+        unique  key long ids;           /* Identifikator */
+                char texti[76];         /* Text */
+                long zntxti;            /* Zeiger auf Fortsetzungstext */
+                char ktexti[16];        /* Kurztext */
+        }
+        record mif {    /* Identifikatorliste - Fortsetzungstext */
+                char textif[120];       /* Fortsetzungstext */
+                long ztxtif;            /* Zeiger auf Fortsetzungstext */
+        }
+
+        record mmk {    /* Merkmalskodeliste */
+        unique  key long mks;           /* Merkmalskode */
+                char textm[76];         /* Text */
+                long zntxtm;            /* Zeiger auf Fortsetzungstext */
+                char ktextm[16];        /* Kurztext */
+                char mtyp[4];           /* Typ des Merkmalswerts */
+                long wfakm;             /* Wiederholungsfaktor */
+                union {                 /* Beginn des Wertebereichs */
+                        double dwvon;
+                        long iwvon[2];
+                } wvon;
+                union {                 /* Ende des Wertebereichs */
+                        double dwbis;
+                        long iwbis[2];
+                } wbis;
+        }
+        record mkf {    /* Merkmalskodeliste - Fortsetzungstext */
+                char textmf[120];       /* Fortsetzungstext */
+                long ztxtmf;            /* Zeiger auf Fortsetzungstext */
+        }
+
+        record mmw {    /* Merkmalswertliste */
+                long wkode;             /* Kode fuer Merkmalswert */
+                char textw[76];         /* Text */
+                long zntxtw;            /* Zeiger auf Fortsetzungstext */
+                long znwert;            /* Zeiger auf naechsten Wertesatz */
+        }
+	record mmf {
+		char textmw[120];	/* Fortsetzungstext */
+		long ztxtmw;		/* weiterer Text */
+	}
+
+        record mrl {    /* Relationenliste */
+        unique  key long prirel;        /* Prim„rrelation */
+                char textr[76];         /* Text */
+                long zntxtr;            /* Zeiger auf Fortsetzungstext */
+                char ktextr[16];        /* Kurztext */
+/* Der relationsTyp kann einen der folgenden Werte annehemen:
+	Typ 'H':	gleichrangige Relation,
+	Typ 'K':	Relation innerhalb von Komplexobjekten.
+ */
+		short reltyp;		/* Typ der Relation */
+        }
+        record mrf {    /* Relationsliste - Fortsetzungstext */ 
+                char textrf[120];       /* Fortsetzungstext */
+                long ztxtrf;            /* Zeiger auf Fortsetzungstext */
+        }
+}

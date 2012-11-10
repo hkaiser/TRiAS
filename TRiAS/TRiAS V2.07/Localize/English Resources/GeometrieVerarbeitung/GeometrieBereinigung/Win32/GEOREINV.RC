@@ -1,0 +1,114 @@
+// VersionInfoStructure for GEOREIN.EXT ---------------------------------------
+// File: GEOREINV.RC
+
+#ifndef VS_FF_DEBUG
+// ----------------------------------------------------------------------------
+// The required constant definitions are included in VER.H -------------
+#include <ver.h>
+#endif
+
+// ----------------------------------------------------------------------------
+// The following lines should be updated for every build by the 
+// person in charge of the product 
+
+#define VER_PRODUCTVERSION_STR     "@A.@B.@C\0"
+#define VER_PRODUCTVERSION          @A,@B,0,@C
+
+// ----------------------------------------------------------------------------
+// Product-specific information ------------------------------------------
+
+// Default is NODEBUG
+#ifndef DEBUG
+#define VER_DEBUG                   0
+#else
+#define VER_DEBUG                   VS_FF_DEBUG
+#endif
+
+// Default is PrivateBuild
+#ifndef OFFICIAL
+#define VER_PRIVATEBUILD            VS_FF_PRIVATEBUILD
+#else
+#define VER_PRIVATEBUILD            0
+#endif
+
+// Default is PreRelease
+#ifndef FINAL
+#define VER_PRERELEASE              VS_FF_PRERELEASE
+#else
+#define VER_PRERELEASE              0
+#endif
+
+#define VER_FILEFLAGSMASK    VS_FFI_FILEFLAGSMASK
+#define VER_FILEFLAGS        (VER_PRIVATEBUILD|VER_PRERELEASE|VER_DEBUG|VS_FF_SPECIALBUILD)
+
+#define VER_FILEOS           VOS_DOS_WINDOWS32
+
+#define VER_COMPANYNAME_STR     "uve GmbH Fernerkundungszentrum Potsdam\0"
+#define VER_LEGALCOPYRIGHT_STR  "Copyright © uve GmbH Fernerkundungszentrum Potsdam 1991 - 1996, #@D\0"
+#define VER_PRODUCTNAME_STR     \
+        "TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.\0"
+#define VER_LEGALTRADEMARKS_STR \
+        "TRiAS® is a registered trademark of uve GmbH Fernerkundungszentrum Potsdam.\0"
+
+// ----------------------------------------------------------------------------
+// File-specific information --------------------------------------------
+
+#define VER_FILETYPE                VFT_DLL
+
+#define VER_FILESUBTYPE             VFT2_UNKNOWN
+#define VER_FILEVERSION             VER_PRODUCTVERSION
+
+#define VER_FILEVERSION_STR             VER_PRODUCTVERSION_STR
+#define VER_FILEDESCRIPTION_STR         \
+	"Territoriales Raumbezogenes Informations- und Abfragesystem, " \
+        "Extension for geometry clearing.\0"
+#define VER_INTERNALNAME_STR            "GEOREIN\0"
+#define VER_ORIGINALFILENAME_STR        "GEOREIN.EXT\0"
+#define VER_SPECIALBUILD_STR            "Personalization information: " \
+	"@E " "@F " "\0"
+
+// The actual version structure -------------------------------------------
+#ifdef RC_INVOKED
+
+VS_VERSION_INFO         VERSIONINFO
+FILEVERSION     VER_FILEVERSION
+PRODUCTVERSION  VER_PRODUCTVERSION
+FILEFLAGSMASK   VER_FILEFLAGSMASK
+FILEFLAGS       VER_FILEFLAGS
+FILEOS          VER_FILEOS
+FILETYPE        VER_FILETYPE
+FILESUBTYPE     VER_FILESUBTYPE
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+	BLOCK "040704E4"        // German and multilingual CodePage
+	BEGIN
+		VALUE "CompanyName",            VER_COMPANYNAME_STR
+		VALUE "FileDescription",        VER_FILEDESCRIPTION_STR
+		VALUE "FileVersion",            VER_FILEVERSION_STR
+		VALUE "InternalName",           VER_INTERNALNAME_STR
+		VALUE "LegalCopyright",         VER_LEGALCOPYRIGHT_STR
+		VALUE "LegalTrademarks",        VER_LEGALTRADEMARKS_STR
+		VALUE "OriginalFileName",       VER_ORIGINALFILENAME_STR
+		VALUE "ProductName",            VER_PRODUCTNAME_STR
+		VALUE "ProductVersion",         VER_PRODUCTVERSION_STR
+                VALUE "TRiASSelfRegister"       "\0"
+	// More information for
+	// local versions.
+		VALUE "SpecialBuild",           VER_SPECIALBUILD_STR
+	END
+    END
+
+    BLOCK "VarFileInfo"
+    BEGIN
+	// The following information will be modified only
+	// for localized product versions. One WORD, WORD
+	// pair defines a specified language or supported CodePage.
+
+	VALUE "Translation", 0x407, 1252
+    END
+END
+
+#endif
+
+

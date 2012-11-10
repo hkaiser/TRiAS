@@ -1,0 +1,25 @@
+HKCR
+{
+	TRiAS.Xtension.1 = s 'Xtension Class'
+	{
+		CLSID = s '{6A507FE0-EB40-11D2-9BDF-745820524153}'
+	}
+	TRiAS.Xtension = s 'Xtension Class'
+	{
+		CLSID = s '{6A507FE0-EB40-11D2-9BDF-745820524153}'
+		CurVer = s 'TRiAS.Xtension.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {6A507FE0-EB40-11D2-9BDF-745820524153} = s 'Xtension Class'
+		{
+			ProgID = s 'TRiAS.Xtension.1'
+			VersionIndependentProgID = s 'TRiAS.Xtension'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{6A507FB6-EB40-11D2-9BDF-745820524153}'
+		}
+	}
+}

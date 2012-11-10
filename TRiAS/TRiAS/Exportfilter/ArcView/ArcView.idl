@@ -1,0 +1,42 @@
+// $Header: $
+// Copyright© 1999-2000 TRiAS GmbH Potsdam, All rights reserved
+// Created: 03.07.2000 10:42:25
+//
+// @doc
+// @module ArcView.idl | Declaration of Interfaces etc.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#include "ArcView.ver"
+
+[ 
+	uuid(6D284BC0-733F-4D77-B946-2083DC87C2E1),
+	version(TYPELIB_ArcView_VERSION),
+	helpstring(TYPELIB_ArcView_HELPSTRING),
+] 
+library ArcViewExport 
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[ 
+		uuid(6D284BC1-733F-4D77-B946-2083DC87C2E1),
+		object, 
+		dual, 
+		pointer_default(unique), 
+		helpstring("IArcViewExport Interface")
+	] 
+	interface IArcViewExport : IDispatch 
+	{
+	};
+
+	[ 
+		uuid(6D284BC2-733F-4D77-B946-2083DC87C2E1),
+		helpstring("ArcViewExport Class")
+	] 
+	coclass ArcViewExport 
+	{
+		[default] interface IArcViewExport;
+	};
+};

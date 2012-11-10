@@ -1,0 +1,4070 @@
+Document Type: WSE
+item: Global
+  Version=8.14
+  Title=TRiAS® Installation
+  Title German=TRiAS® Installation
+  Flags=00110100
+  Languages=64 0 0 0 65 0 0 0 0 0 0 0 0 0 0 0
+  Default Language=4
+  Japanese Font Name=MS Gothic
+  Japanese Font Size=10
+  Progress Bar DLL=%_WISE_%\Progress\WIZ%_EXE_OS_TYPE_%.DLL
+  Start Gradient=0 128 128
+  End Gradient=0 128 128
+  Windows Flags=00100100000000110010110000011100
+  Log Pathname=%MAINDIR%\INSTALL.LOG
+  Message Font=MS Sans Serif
+  Font Size=8
+  Extra Flags=00000000000000000000001000000010
+  Pages Modified=00110101011101100000111100100111
+  Extra Pages=00000000000000000000000010110011
+  Disk Filename=SETUP
+  Patch Flags=0000000000001110
+  Patch Threshold=85
+  Patch Memory=24000
+  EXE Filename=D:\Setups\TRiAS_V4_0\Release\WiseInstallMaster\TRiAS4_Plus.exe
+  FTP Cluster Size=20
+  Passwd Start=230419590
+  Passwd End=959140320
+  Passwd Total=10000
+  Per-User Version ID=1
+  Dialogs Version=7
+  Version File=3.00.007
+  Version Description=TRiAS® Installation
+  Version Copyright=Copyright© 1991-2001, #HK011017
+  Version Company=TRiAS Potsdam
+  Crystal Format=10111100101100000010001001001001
+  Distribute Path=D:\Programme\InstallShield\WiseInstallMaster\Trias3deb\Disks
+  Distribute Type=2
+  Step View=All
+  Variable Name1=_SYS_
+  Variable Default1=C:\WINDOWS\System32
+  Variable Flags1=00001000
+  Variable Name2=_WISE_
+  Variable Default2=C:\Programme\Wise InstallMaster 8.1
+  Variable Flags2=00001000
+  Variable Name3=_ALIASNAME_
+  Variable Flags3=00001000
+  Variable Name4=_ALIASPATH_
+  Variable Flags4=00001000
+  Variable Name5=_ALIASTYPE_
+  Variable Flags5=00001000
+  Variable Name6=_ODBC16_
+  Variable Default6=C:\WINDOWS\System32
+  Variable Flags6=00001000
+  Variable Name7=_ODBC32_
+  Variable Default7=D:\PROGRA~2\WISEIN~1.1\Runtime\ODBC30
+  Variable Flags7=00001000
+end
+item: Check Configuration
+  Flags=10000000
+end
+item: Check Configuration
+  Message German=Das Installationsprogramm hat festgestellt, daß auf diesem Computer nicht zumindest Windows 95 installiert ist.\nDie Installation wird daher abgebrochen.
+  Title German=TRiAS® Installation
+  Flags=01011010
+end
+item: Check Configuration
+  Message German=Das Installationsprogramm hat festgestellt, daß die derzeit auf diesem Computer eingestellte minimale Farbauflösung nicht zumindest 256 Farben besitzt.\nDie Installation wird daher abgebrochen.
+  Title German=TRiAS® Installation
+  Flags=01000001
+end
+item: End Block
+end
+item: Check Configuration
+  Flags=10100000
+end
+remarked item: Remark
+  Text=Systemvorraussetzungen testen
+end
+item: Check Configuration
+  Message German=Das Installationsprogramm hat festgestellt, daß der derzeit angemeldete Nutzer keine Administratorrechte besitzt.\nTRiAS® benötigt derzeit unter Windows NT zur korrekten Installation Administratorrechte.\nDie Installation wird daher abgebrochen.
+  Title German=TRiAS® Installation
+  Flags=01011111
+end
+item: Check Configuration
+  Message German=Das Installationsprogramm hat festgestellt, daß auf diesem Computer nicht Windows NT mindestens der Version 4.0 installiert ist.\nDie Installation wird daher abgebrochen.
+  Title German=TRiAS® Installation
+  Flags=01011011
+end
+remarked item: Remark
+  Text=Voreinstellungen für Nutzer/Company besorgen
+end
+item: End Block
+end
+item: Open/Close INSTALL.LOG
+  Flags=00000001
+end
+item: Check if File/Dir Exists
+  Pathname=%SYS%
+  Flags=10000100
+end
+item: Set Variable
+  Variable=SYS
+  Value=%WIN%
+end
+item: End Block
+end
+item: Set Variable
+  Variable=APPTITLE
+  Value=TRiAS
+  Flags=10000000
+end
+item: Set Variable
+  Variable=APPTITLE_UI
+  Value=TRiAS® V4.20
+  Flags=10000000
+end
+item: Set Variable
+  Variable=GROUP
+  Value=TRiAS
+  Flags=10000000
+end
+item: Set Variable
+  Variable=DISABLED
+  Value=!
+end
+item: Check Configuration
+  Flags=10111011
+end
+item: Get Registry Key Value
+  Variable=COMMON
+  Key=SOFTWARE\Microsoft\Windows\CurrentVersion
+  Default=C:\Program Files\Common Files
+  Value Name=CommonFilesDir
+  Flags=00000100
+end
+item: Get Registry Key Value
+  Variable=PROGRAM_FILES
+  Key=SOFTWARE\Microsoft\Windows\CurrentVersion
+  Default=C:\Program Files
+  Value Name=ProgramFilesDir
+  Flags=00000100
+end
+item: Set Variable
+  Variable=EXPLORER
+  Value=1
+end
+item: Set Variable
+  Variable=MAINDIR
+  Value=%PROGRAM_FILES%\TRiAS
+  Flags=10000000
+end
+item: Else Statement
+end
+item: Set Variable
+  Variable=MAINDIR
+  Value=C:\TRiAS
+  Flags=00001100
+end
+item: End Block
+end
+item: Set Variable
+  Variable=BACKUP
+  Value=%MAINDIR%\BACKUP
+  Flags=10000000
+end
+item: Set Variable
+  Variable=DOBACKUP
+  Value=B
+  Flags=10000000
+end
+item: Set Variable
+  Variable=COMPONENTS
+  Value=ABCDEFGH
+  Flags=10000000
+end
+item: Set Variable
+  Variable=BRANDING
+  Value=1
+end
+item: Set Variable
+  Variable=NAME
+  Value=%%
+end
+item: If/While Statement
+  Variable=BRANDING
+  Value=1
+end
+remarked item: Read INI Value
+  Variable=NAME
+  Pathname=%INST%\CUSTDATA.INI
+  Section=Registration
+  Item=Name
+end
+remarked item: Read INI Value
+  Variable=COMPANY
+  Pathname=%INST%\CUSTDATA.INI
+  Section=Registration
+  Item=Company
+end
+remarked item: Read INI Value
+  Variable=REGNUMBER
+  Pathname=%INST%\CUSTDATA.INI
+  Section=Registration
+  Item=Serial
+end
+item: Get Registry Key Value
+  Variable=NAME
+  Key=SOFTWARE\TRiAS\TRiAS\4.0
+  Value Name=User
+  Flags=00000100
+end
+item: Get Registry Key Value
+  Variable=COMPANY
+  Key=SOFTWARE\TRiAS\TRiAS\4.0
+  Value Name=Company
+  Flags=00000100
+end
+remarked item: Get Registry Key Value
+  Variable=REGNUMBER
+  Key=SOFTWARE\TRiAS\TRiAS\4.0
+  Value Name=Serial
+  Flags=00000100
+end
+item: If/While Statement
+  Variable=NAME
+end
+item: Set Variable
+  Variable=DOBRAND
+  Value=1
+end
+item: Check Configuration
+  Flags=10100000
+end
+item: Get Registry Key Value
+  Variable=NAME
+  Key=SOFTWARE\Microsoft\Windows NT\CurrentVersion
+  Value Name=RegisteredOwner
+  Flags=00000100
+end
+item: Get Registry Key Value
+  Variable=COMPANY
+  Key=SOFTWARE\Microsoft\Windows NT\CurrentVersion
+  Value Name=RegisteredOrganization
+  Flags=00000100
+end
+item: End Block
+end
+item: Else Statement
+end
+item: Set Variable
+  Variable=DOBRAND
+  Value=0
+end
+item: End Block
+end
+item: End Block
+end
+item: Include Script
+  Pathname=%_WISE_%\INCLUDE\mdacinit.wse
+end
+item: Wizard Block
+  Direction Variable=DIRECTION
+  Display Variable=DISPLAY
+  Bitmap Pathname=%_WISE_%\DIALOGS\TEMPLATE\WIZARD.BMP
+  X Position=9
+  Y Position=10
+  Filler Color=8421440
+  Dialog=Welcome
+  Dialog=Get Registration Information
+  Dialog=Display Registration Information
+  Dialog=Select Destination Directory
+  Dialog=Select Components
+  Dialog=Select Program Manager Group
+  Variable=
+  Variable=DOBRAND
+  Variable=DOBRAND
+  Variable=
+  Variable=
+  Variable=GROUP
+  Value=
+  Value=1
+  Value=1
+  Value=
+  Value=
+  Value=
+  Compare=0
+  Compare=1
+  Compare=0
+  Compare=0
+  Compare=0
+  Compare=0
+  Flags=00000011
+end
+item: Custom Dialog Set
+  Name=Welcome
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=Welcome
+    Title French=Bienvenue
+    Title German=Willkommen im Installationsprogramm für %APPTITLE_UI%
+    Title Portuguese=Bem-vindo 
+    Title Spanish=Bienvenido
+    Title Italian=Benvenuto
+    Title Danish=Velkommen
+    Title Dutch=Welkom
+    Title Norwegian=Velkommen
+    Title Swedish=Välkommen
+    Width=280
+    Height=224
+    Font Name=Helv
+    Font Size=8
+    item: Push Button
+      Rectangle=172 185 214 199
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=&Next >
+      Text French=&Suivant>
+      Text German=&Weiter >
+      Text Portuguese=&Próximo>
+      Text Spanish=&Siguiente >
+      Text Italian=&Avanti >
+      Text Danish=&Næste>
+      Text Dutch=&Volgende>
+      Text Norwegian=&Neste>
+      Text Swedish=&Nästa >
+    end
+    item: Push Button
+      Rectangle=222 185 264 199
+      Action=3
+      Create Flags=01010000000000010000000000000000
+      Text=Cancel
+      Text French=Annuler
+      Text German=Abbrechen
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Annuller
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+    item: Static
+      Rectangle=9 177 263 178
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=83 8 121 33
+      Action=2
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000001011
+      Pathname=%_WISE_%\dialogs\template\install.grf
+      Pathname French=%_WISE_%\dialogs\template\install.grf
+      Pathname German=%_WISE_%\dialogs\template\install.grf
+      Pathname Portuguese=%_WISE_%\dialogs\template\install.grf
+      Pathname Spanish=%_WISE_%\dialogs\template\install.grf
+      Pathname Italian=%_WISE_%\dialogs\template\install.grf
+      Pathname Danish=%_WISE_%\dialogs\template\install.grf
+      Pathname Dutch=%_WISE_%\dialogs\template\install.grf
+      Pathname Norwegian=%_WISE_%\dialogs\template\install.grf
+      Pathname Swedish=%_WISE_%\dialogs\template\install.grf
+    end
+    item: Static
+      Rectangle=121 10 258 44
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Text=Welcome to %APPTITLE_UI% Setup program. This program will install %APPTITLE_UI% on your computer.
+      Text French=Bienvenue sur le programme d'installation %APPTITLE%. Ce programme va installer %APPTITLE% sur votre ordinateur.
+      Text German=Dieses Programm installiert  %APPTITLE_UI% auf Ihrem Computer.
+      Text Portuguese=Bem-vindo ao programa de configuração %APPTITLE%. Este programa instalará %APPTITLE% no seu computador
+      Text Spanish=Bienvenido al programa de Configuración %APPTITLE%. Este programa instalará %APPTITLE en su ordenador
+      Text Italian=Benvenuto nel programma di installazione di %APPTITLE%. Con questo programma puoi installare %APPTITLE% sul tuo computer.
+      Text Danish=Velkommen til %APPTITLE% installationsprogrammet. Dette program installerer %APPTITLE% på computeren.
+      Text Dutch=Welkom bij het %APPTITLE% installatieprogramma. Dit programma installeert %APPTITLE% op uw computer.
+      Text Norwegian=Velkommen til %APPTITLE% Oppsett-program. Dette programmet vil installere %APPTITLE% på datamaskinen din.
+      Text Swedish=Välkommen till installationsprogrammet för %APPTITLE%. Detta program installerar %APPTITLE% på din dator.
+    end
+    item: Static
+      Rectangle=90 45 260 175
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Text=It is strongly recommended that you exit all Windows programs before running this Setup Program.
+      Text=
+      Text=Click Cancel to quit Setup and close any programs you have running.  Click Next to continue with the Setup program .
+      Text=
+      Text=WARNING: This program is protected by copyright law and international treaties.
+      Text=
+      Text=Unauthorized reproduction or distribution of this program, or any portion of it, may result in severe civil and criminal penalties, and will be prosecuted to the maximum extent possible under law.
+      Text French=Il vous est fortement recommandé de fermer tous les programmes Windows avant d'exécuter le Programme d'Installation
+      Text French=
+      Text French=Cliquez sur Annuler pour quitter l'Installation et fermez tous les programmes actuellement utilisés. Cliquez sur Suivant pour continuer l'installation
+      Text French=
+      Text French=ATTENTION : Ce programme est protégé par la loi sur les droits d'exploitation et par les traités internationaux
+      Text French=
+      Text French=Toute reproduction ou distribution, même partielle, de ce programme qui n'aura pas reçu d'autorisation préalable fera l'objet de poursuites et sera sévèrement sanctionnée par le droit civil et pénal
+      Text German=Wir empfehlen nachdrücklich, vor Ausführen dieses Installationsprogramms alle Windows-Programme zu beenden. 
+      Text German=
+      Text German=Klicken Sie auf Abbrechen, um die Installation zu beenden und alle laufenden Programme zu schließen. Klicken Sie auf Weiter, um mit der Installation zu beginnen.
+      Text German=
+      Text German=WARNUNG: Dieses Programm ist urheberrechtlich sowie durch internationale Verträge geschützt. 
+      Text German=
+      Text German=Die unzulässige Vervielfältigung oder Verbreitung dieses Programms, ob ganz oder auszugsweise, kann schwere zivil- und strafrechtliche Konsequenzen nach sich ziehen und wird unter voller Ausschöpfung der Rechtsmittel geahndet.
+      Text Portuguese=Recomenda-se insistentemente que saia de todos os programas do Windows antes de executar este Programa de Configuração.
+      Text Portuguese=
+      Text Portuguese=Faça um clique sobre Cancelar para sair da Configuração e feche todos os programas que estiver a executar. Faça um clique sobre Próximo para continuar com o programa de configuração
+      Text Portuguese=
+      Text Portuguese=AVISO: Este programa está protegido pela lei de direitos do autor e tratados internacionais
+      Text Portuguese=
+      Text Portuguese=A reprodução e a distribuição sem autorização deste programa, ou qualquer parte dele, pode dar lugar à aplicação de severas sanções civis e criminais, e serão perseguidas à extensão máxima permitida pela lei.
+      Text Spanish=Se recomienda encarecidamente que salga de todos los programas Windows antes de ejecutar este programa de Configuración.
+      Text Spanish=
+      Text Spanish=Haga un clic en Cancelar para abandonar la Configuración y cerrar cualquier programa que haya estado ejecutando. Haga un clic en Siguiente para continuar con el programa de Configuración.
+      Text Spanish=
+      Text Spanish=AVISO: Este programa está protegido por las leyes de derechos de autor y tratados internacionales.
+      Text Spanish=
+      Text Spanish=La reproducción o distribución no autorizadas de este programa, o cualquier parte de él, podría dar como resultado rigurosas multas civiles y penales, y se entablará la máxima acción judicial que permita la ley.
+      Text Italian=Ti consigliamo di uscire da tutti i programmi Windows prima di eseguire questo programma di installazione.
+      Text Italian=
+      Text Italian=Fai clic su Annulla per uscire dal programma di installazione e chiudi tutti i programmi aperti. Fai clic su Avanti per continuare con il programma di Installazione.
+      Text Italian=
+      Text Italian=AVVERTENZA: Questo programma è protetto ai sensi delle norme di legge e delle convenzioni internazionali in materia di diritti di copyright.
+      Text Italian=
+      Text Italian=La riproduzione o la distribuzione totale o parziale non autorizzata di questo programma potrà essere soggetta a penalità civili e penali, e sarà punita con la massima severità possibile a norma di legge.
+      Text Danish=Det anbefales kraftigt at afslutte alle Windows programmer, inden man kører dette installationsprogram.
+      Text Danish=
+      Text Danish=Klik på Annuller for at forlade installationsprogrammet og lukke alle igangværende programmer. Klik på Næste for at fortsætte med installationsprogrammet.
+      Text Danish=
+      Text Danish=ADVARSEL: Dette program er beskyttet af copyright og internationale traktater. 
+      Text Danish=
+      Text Danish=Uautoriseret gengivelse eller videresalg af dette program eller dele heraf kan føre til streng civil- og/eller kriminel stra. Retsforfølgning heraf vil finde sted i det videste omfang der hjemles muligt.
+      Text Dutch=Het wordt aangeraden om alle Windows programma's af te sluiten voordat u met de installatie van dit programma begint.
+      Text Dutch=
+      Text Dutch=Klik op Annuleren om de installatie te verlaten en eventueel nog lopende programma's af te sluiten. Klik op Volgende om verder te gaan met het Installatieprogramma.
+      Text Dutch=
+      Text Dutch=WAARSCHUWING: dit computerprogramma is auteursrechtelijk beschermd.
+      Text Dutch=
+      Text Dutch=Onrechtmatige verveelvoudiging of distributie van dit programma of een gedeelte ervan is verboden en strafbaar en zal met alle beschikbare juridische middelen worden bestreden.
+      Text Norwegian=Det anbefales på det sterkeste at du avslutter alle Windows-programmer før du kjører dette Oppsett-programmet.
+      Text Norwegian=
+      Text Norwegian=Velg Avbryt for å avbryte Oppsett og lukk alle programmer som er i bruk. Velg Neste for å fortsette med Oppsett-programmet.
+      Text Norwegian=
+      Text Norwegian=ADVARSEL: Dette programmet er beskyttet i henhold til lover om opphavsrett og internasjonale konvensjoner.
+      Text Norwegian=
+      Text Norwegian=Uautorisert kopiering eller distribuering av dette programmet eller deler av det, vil resultere i alvorlig sivil og kriminell straff og vil føre til saksmål i høyest mulig utstrekning i henhold til loven. 
+      Text Swedish=Du tillråds bestämt att gå ur alla Windows-program innan du kör installationsprogrammet.
+      Text Swedish=
+      Text Swedish=Klicka på Avbryt för att gå ur installationsprogrammet och stäng eventuella program som du har laddade. Klicka på Nästa för att fortsätta med installationen.
+      Text Swedish=
+      Text Swedish=VARNING: Detta program är skyddat av upphovsrätten och internationella avtal.
+      Text Swedish=
+      Text Swedish=Om du utan tillstånd kopierar eller distribuerar detta program eller delar av det kan det bli allvarliga civilrättsliga och brottsrättliga straffpåföljder. Vi beivrar sådana överträdelser i den allra högsta utsträckning som lagen tillåter.
+    end
+  end
+end
+item: Custom Dialog Set
+  Name=Get Registration Information
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=Get Registration Information
+    Title French=Obtenir les informations l'enregistrement
+    Title German=Angaben zur Registrierung
+    Title Portuguese=Obter Informação de Registo
+    Title Spanish=Obtener información sobre Inscripción
+    Title Italian=Inserisci dati registrazione
+    Title Danish=Get Registration Information
+    Title Dutch=Vraag om registratie-informatie.
+    Title Norwegian=Få registreringsinformasjon
+    Title Swedish=Ta upp registreringsinformation
+    Width=280
+    Height=224
+    Font Name=Helv
+    Font Size=8
+    item: Static
+      Rectangle=90 10 260 66
+      Create Flags=01010000000000000000000000000000
+      Text=Please enter the name and company of the registered owner of %APPTITLE_UI% into the fields below. All fields must be filled in to proceed.
+      Text French=Veuillez entrer le nom et la société du propriétaire enregistré de %APPTITLE% dans les champs ci-dessous. Tous les champs doivent être complétés afin de pouvoir poursuivre
+      Text German=Bitte tragen Sie in den Feldern den Namen und das Unternehmen des registrierten Eigentümers von %APPTITLE_UI% ein. 
+      Text German=
+      Text German=Um fortzufahren müssen alle Felder ausgefüllt sein.
+      Text Portuguese=É favor introduzir o nome e a companhia do proprietário registado de %APPTITLE% nos campos abaixo. Todos os campos devem ser preenchidos para prosseguir.
+      Text Spanish=Introduzca el nombre y la empresa del propietario autorizado de %APPTITLE% en los campos que se ofrecen a continuación. Para continuar deben rellenarse todos los campos.
+      Text Italian=Inserisci il nome e la società del proprietario registrato di  %APPTITLE% nei campi sotto. Per poter procedere devi completare tutti i campi.
+      Text Danish=Indtast navn og selskab for den indregistrerede ejer af %APPTITLE% i nedenstående felter. Alle felter skal udfyldes, inden man kan fortsætte.
+      Text Dutch=Voer de naam en het bedrijf van de geregistreerde eigenaar van %APPTITLE% in onderstaande velden in. Alle velden moeten ingevuld zijn voordat u verder kunt.
+      Text Norwegian=Tast inn personnavnet og firmaet til den registrerte eieren av %APPTITLE% i feltet nedenfor. Alle felt må fylles inn før du kan fortsette.
+      Text Swedish=Ange namn och företag för den registrerade ägaren till %APPTITLE% i fälten nedan. Samtliga fält måste vara ifyllda för att du ska kunna fortsätta.
+    end
+    item: Static
+      Rectangle=90 66 250 76
+      Create Flags=01010000000000000000000000000000
+      Text=Name:
+      Text French=Nom
+      Text German=Name:
+      Text Portuguese=Nome:
+      Text Spanish=Nombre:
+      Text Italian=Nome e cognome:
+      Text Danish=Navn:
+      Text Dutch=Naam
+      Text Norwegian=Navn:
+      Text Swedish=Namn:
+    end
+    item: Editbox
+      Rectangle=90 75 260 87
+      Variable=NAME
+      Help Context=16711681
+      Create Flags=01010000100000010000000010000000
+      Flags=0000100000000000
+      Text=%NAME%
+      Text French=%NAME%
+      Text German=%NAME%
+      Text Portuguese=%NAME%
+      Text Spanish=%NAME%
+      Text Italian=%NAME%
+      Text Danish=%NAME%
+      Text Dutch=%NAME%
+      Text Norwegian=%NAME%
+      Text Swedish=%NAME%
+    end
+    item: Static
+      Rectangle=90 94 251 105
+      Create Flags=01010000000000000000000000000000
+      Text=Company:
+      Text French=Société
+      Text German=Gesellschaft:
+      Text Portuguese=Companhia:
+      Text Spanish=Empresa:
+      Text Italian=Società:
+      Text Danish=Selskab:
+      Text Dutch=Bedrijf
+      Text Norwegian=Firma:
+      Text Swedish=Företag:
+    end
+    item: Editbox
+      Rectangle=90 103 260 115
+      Variable=COMPANY
+      Help Context=16711681
+      Create Flags=01010000100000010000000010000000
+      Flags=0000100000000000
+      Text=%COMPANY%
+      Text French=%COMPANY%
+      Text German=%COMPANY%
+      Text Portuguese=%COMPANY%
+      Text Spanish=%COMPANY%
+      Text Italian=%COMPANY%
+      Text Danish=%COMPANY%
+      Text Dutch=%COMPANY%
+      Text Norwegian=%COMPANY%
+      Text Swedish=%COMPANY%
+    end
+    item: Static
+      Rectangle=9 177 263 178
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Push Button
+      Rectangle=172 185 214 199
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=&Next >
+      Text French=&Suivant>
+      Text German=&Weiter >
+      Text Portuguese=&Próximo>
+      Text Spanish=&Siguiente >
+      Text Italian=&Avanti >
+      Text Danish=&Næste>
+      Text Dutch=&Volgende>
+      Text Norwegian=&Neste>
+      Text Swedish=&Nästa >
+    end
+    item: Push Button
+      Rectangle=130 185 172 199
+      Variable=DIRECTION
+      Value=B
+      Create Flags=01010000000000010000000000000000
+      Flags=0000000000000001
+      Text=< &Back
+      Text French=<&Retour
+      Text German=< &Zurück
+      Text Portuguese=<&Retornar
+      Text Spanish=<&Retroceder
+      Text Italian=< &Indietro
+      Text Danish=<&Tilbage
+      Text Dutch=<&Terug
+      Text Norwegian=<&Tilbake
+      Text Swedish=< &Tillbaka
+    end
+    item: Push Button
+      Rectangle=222 185 264 199
+      Action=3
+      Create Flags=01010000000000010000000000000000
+      Text=Cancel
+      Text French=Annuler
+      Text German=Abbrechen
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Annuller
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+  end
+end
+item: Custom Dialog Set
+  Name=Display Registration Information
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=Display Registration Information
+    Title French=Afficher les informations l'enregistrement
+    Title German=Registrierinformationen einblenden.
+    Title Portuguese=Mostrar Informação de Registo
+    Title Spanish=Mostrar Información de Inscripción
+    Title Italian=Visualizza dati registrazione
+    Title Danish=Vis registreringsoplysninger
+    Title Dutch=Vertoon registratie-informatie.
+    Title Norwegian=Vis registreringsinformasjon.
+    Title Swedish=Visa registreringsinformation
+    Width=280
+    Height=224
+    Font Name=Helv
+    Font Size=8
+    item: Static
+      Rectangle=90 51 260 87
+      Create Flags=01010000000000000000000000000000
+      Text=%NAME%
+      Text=%COMPANY%
+      Text French=%NAME%
+      Text French=%COMPANY%
+      Text German=%NAME%
+      Text German=%COMPANY%
+      Text German=
+      Text Portuguese=%NAME%
+      Text Portuguese=%COMPANY%
+      Text Spanish=%NAME%
+      Text Spanish=%COMPANY%
+      Text Italian=%NAME%
+      Text Italian=%COMPANY%
+      Text Danish=%NAME%
+      Text Danish=%COMPANY%
+      Text Dutch=%NAME%
+      Text Dutch=%COMPANY%
+      Text Norwegian=%NAME%
+      Text Norwegian=%COMPANY%
+      Text Swedish=%NAME%
+      Text Swedish=%COMPANY%
+    end
+    item: Static
+      Rectangle=90 11 260 51
+      Create Flags=01010000000000000000000000000000
+      Text=This software has already been installed by the following person. If you are not licensed to use this software you may not install this software onto your computer.
+      Text French=Ce logiciel a déjà été installé par la personne nommée ci-dessous. Si vous n'avez pas l'autorisation d'utiliser ce logiciel, veuillez ne pas l'installer sur votre ordinateur
+      Text German=Diese Software wurde bereits von der folgenden Person installiert. Ohne Lizenz zur Verwendung dieser Software dürfen Sie diese Software nicht auf Ihrem Computer installieren.
+      Text Portuguese=Este programa já foi instalado pela seguinte pessoa. Se não tiver a licença para utilizar este programa, não pode instalar este programa no seu computador.
+      Text Spanish=La persona que se cita a continuación ya ha instalado este software. Si no está autorizado para usar este software no debe instalarlo en su ordenador.
+      Text Italian=Questo software è stato già installato dal seguente utente. Se non possiedi la licenza per usare questo software non puoi installarlo sul tuo computer.
+      Text Danish=Denne software er allerede installeret af denne person. Hvis du ikke har licens til at benytte denne software, må du ikke installere dette software software på computeren.
+      Text Dutch=Deze software is reeds door de volgende persoon ge•nstalleerd. Als u niet bevoegd bent om deze software te gebruiken, mag u deze software niet op uw computer installeren.
+      Text Norwegian=Denne programvaren har allerede blitt installert av følgende person. Hvis du ikke har lisens til å bruke denne programvaren kan du ikke installere den på datamaskinen din.
+      Text Swedish=Denna programvara har redan installerats av personen nedan. Om du inte har licens att använda denna programvara får du inte installera programvaran på din dator.
+    end
+    item: Push Button
+      Rectangle=172 185 214 199
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=&Next >
+      Text French=&Suivant>
+      Text German=&Weiter>
+      Text Portuguese=&Próximo>
+      Text Spanish=&Siguiente >
+      Text Italian=&Avanti >
+      Text Danish=&Næste>
+      Text Dutch=&Volgende>
+      Text Norwegian=&Neste>
+      Text Swedish=&Nästa >
+    end
+    item: Push Button
+      Rectangle=130 185 172 199
+      Variable=DIRECTION
+      Value=B
+      Create Flags=01010000000000010000000000000000
+      Flags=0000000000000001
+      Text=< &Back
+      Text French=<&Retour
+      Text German=<&Zurück
+      Text Portuguese=<&Retornar
+      Text Spanish=<&Retroceder
+      Text Italian=< &Indietro
+      Text Danish=<&Tilbage
+      Text Dutch=<&Terug
+      Text Norwegian=<&Tilbake
+      Text Swedish=< &Tillbaka
+    end
+    item: Push Button
+      Rectangle=222 185 264 199
+      Action=3
+      Create Flags=01010000000000010000000000000000
+      Text=Cancel
+      Text French=Annuler
+      Text German=Abbrechen
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Annuller
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+    item: Static
+      Rectangle=9 177 263 178
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+  end
+end
+item: Custom Dialog Set
+  Name=Select Destination Directory
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=Choose Destination Location
+    Title French=Choisissez la localisation de destination
+    Title German=Zielordner wählen
+    Title Portuguese=Escolher Local de Destino
+    Title Spanish=Elegir una localización de destino
+    Title Italian=Scegli Posizione di Destinazione
+    Title Danish=Vælg destinationsmappe
+    Title Dutch=Kies doellocatie
+    Title Norwegian=Velg målplassering
+    Title Swedish=Välj ställe för installationen
+    Width=280
+    Height=224
+    Font Name=Helv
+    Font Size=8
+    item: Push Button
+      Rectangle=172 185 214 199
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=&Next >
+      Text French=&Suivant>
+      Text German=&Weiter >
+      Text Portuguese=&Próximo>
+      Text Spanish=&Siguiente >
+      Text Italian=&Avanti >
+      Text Danish=&Næste>
+      Text Dutch=&Volgende>
+      Text Norwegian=&Neste>
+      Text Swedish=&Nästa >
+    end
+    item: Push Button
+      Rectangle=130 185 172 199
+      Variable=DIRECTION
+      Value=B
+      Create Flags=01010000000000010000000000000000
+      Flags=0000000000000001
+      Text=< &Back
+      Text French=<&Retour
+      Text German=< &Zurück
+      Text Portuguese=<&Retornar
+      Text Spanish=<&Retroceder
+      Text Italian=< &Indietro
+      Text Danish=<&Tilbage
+      Text Dutch=<&Terug
+      Text Norwegian=<&Tilbake
+      Text Swedish=< &Tillbaka
+    end
+    item: Push Button
+      Rectangle=222 185 264 199
+      Action=3
+      Create Flags=01010000000000010000000000000000
+      Text=Cancel
+      Text French=Annuler
+      Text German=Abbrechen
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Annuller
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+    item: Static
+      Rectangle=9 177 263 178
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=90 10 260 122
+      Create Flags=01010000000000000000000000000000
+      Text=Setup will install %APPTITLE% in the following folder.
+      Text=
+      Text=To install into a different folder, click Browse, and select another folder. 
+      Text=
+      Text=You can choose not to install %APPTITLE% by clicking Cancel to exit Setup.
+      Text French=%APPTITLE% va être installé dans le répertoire ci-dessous
+      Text French=
+      Text French=Pour l'installer dans un répertoire différent, cliquez sur Parcourir et sélectionnez un autre répertoire
+      Text French=
+      Text French=Vous pouvez choisir de ne pas installer %APPTITLE% en cliquant sur Annuler pour quitter l'Installation
+      Text German=Die Installation speichert %APPTITLE_UI% im unten angegebenen Ordner:
+      Text German=
+      Text German=Zur Installation in einem anderen Ordner klicken Sie bitte auf Durchsuchen und wählen einen anderen Ordner aus.
+      Text German=
+      Text German=Wenn Sie %APPTITLE_UI% nicht installieren möchten, können Sie durch Klicken auf Abbrechen die Installation beenden.
+      Text Portuguese=Configuração instalará %APPTITLE% na seguinte pasta
+      Text Portuguese=
+      Text Portuguese=Para instalar numa pasta diferente, faça um clique sobre Procurar, e seleccione uma outra pasta.
+      Text Portuguese=
+      Text Portuguese=Pode escolher não instalar %APPTITLE% clicando no botão Cancelar para sair da Configuração
+      Text Spanish=El programa de Configuración instalará %APPTITLE% en la siguiente carpeta.
+      Text Spanish=
+      Text Spanish=Para instalar en una carpeta diferente, haga un clic en Visualizar, y seleccione otra carpeta.
+      Text Spanish=
+      Text Spanish=Puede elegir no instalar %APPTITLE% haciendo un clic en Cancelar para salir de Configuración.
+      Text Italian=Il programma di installazione installerà %APPTITLE% nella seguente cartella.
+      Text Italian=
+      Text Italian=Per effettuare l’installazione in una cartella diversa, fai clic su Sfoglia, e scegli un’altra cartella.
+      Text Italian=
+      Text Italian=Puoi scegliere di non installare %APPTITLE% facendo clic su Annulla per uscire dal programma di installazione
+      Text Danish=Installationsprogrammet installerer %APPTITLE% i denne mappe.
+      Text Danish=
+      Text Danish=Man installerer i en anden mappe ved at klikke på Browse og vælge en anden mappe.
+      Text Danish=
+      Text Danish=Man kan vælge ikke at installere %APPTITLE% ved at klikke på Slet og forlade installationsprogrammet.
+      Text Dutch=Het installatieprogramma installeert %APPTITLE% in de volgende directory.
+      Text Dutch=
+      Text Dutch=Als u het in een andere directory wilt installeren, klik dan op Bladeren en kies een andere locatie.
+      Text Dutch=
+      Text Dutch=U kunt ervoor kiezen om %APPTITLE% niet te installeren: klik op Annuleren om het installatieprogramma te verlaten.
+      Text Norwegian=Oppsett vil installere %APPTITLE% i følgende mappe.
+      Text Norwegian=
+      Text Norwegian=For å installere i en annen mappe, klikk Bla igjennom og velg en annen mappe.
+      Text Norwegian=
+      Text Norwegian=Du kan velge å ikke installere %APPTITLE% ved å velge Avbryt for å gå ut av Oppsett.
+      Text Swedish=Installationsprogrammet installerar %APPTITLE% i följande mapp.
+      Text Swedish=
+      Text Swedish=Om du vill att installationen ska göras i en annan mapp, klickar du på Bläddra och väljer en annan mapp.
+      Text Swedish=
+      Text Swedish=Du kan välja att inte installera %APPTITLE% genom att klicka på Avbryt för att lämna installationsprogrammet.
+    end
+    item: Static
+      Rectangle=90 134 260 162
+      Action=1
+      Create Flags=01010000000000000000000000000111
+      Text=Destination Folder
+      Text French=Répertoire de destination
+      Text German=Zielordner
+      Text Portuguese=Pasta de Destino
+      Text Spanish=Carpeta de Destino
+      Text Italian=Cartella di destinazione
+      Text Danish=Destinationsmappe
+      Text Dutch=Doeldirectory
+      Text Norwegian=Målmappe
+      Text Swedish=Destinationsmapp
+    end
+    item: Push Button
+      Rectangle=206 143 255 157
+      Variable=MAINDIR_SAVE
+      Value=%MAINDIR%
+      Destination Dialog=1
+      Action=2
+      Create Flags=01010000000000010000000000000000
+      Text=B&rowse...
+      Text French=P&arcourir
+      Text German=&Durchsuchen...
+      Text Portuguese=P&rocurar
+      Text Spanish=V&isualizar...
+      Text Italian=Sfoglia...
+      Text Danish=&Gennemse...
+      Text Dutch=B&laderen...
+      Text Norwegian=Bla igjennom
+      Text Swedish=&Bläddra
+    end
+    item: Static
+      Rectangle=95 146 205 157
+      Destination Dialog=2
+      Create Flags=01010000000000000000000000000000
+      Text=%MAINDIR%
+      Text French=%MAINDIR%
+      Text German=%MAINDIR%
+      Text Portuguese=%MAINDIR%
+      Text Spanish=%MAINDIR%
+      Text Italian=%MAINDIR%
+      Text Danish=%MAINDIR%
+      Text Dutch=%MAINDIR%
+      Text Norwegian=%MAINDIR%
+      Text Swedish=%MAINDIR%
+    end
+  end
+  item: Dialog
+    Title=Select Destination Directory
+    Title French=Choisissez le répertoire de destination
+    Title German=Zielverzeichnis wählen
+    Title Portuguese=Seleccionar Directório de Destino
+    Title Spanish=Seleccione el Directorio de Destino
+    Title Italian=Seleziona Directory di destinazione
+    Title Danish=Vælg Destinationsbibliotek
+    Title Dutch=Kies doeldirectory
+    Title Norwegian=Velg målkatalog
+    Title Swedish=Välj destinationskalatog
+    Width=221
+    Height=173
+    Font Name=Helv
+    Font Size=8
+    item: Listbox
+      Rectangle=5 2 160 149
+      Variable=MAINDIR
+      Create Flags=01010000100000010000000101000000
+      Flags=0000110000100010
+      Text=%MAINDIR%
+      Text French=%MAINDIR%
+      Text German=%MAINDIR%
+      Text Portuguese=%MAINDIR%
+      Text Spanish=%MAINDIR%
+      Text Italian=%MAINDIR%
+      Text Danish=%MAINDIR%
+      Text Dutch=%MAINDIR%
+      Text Norwegian=%MAINDIR%
+      Text Swedish=%MAINDIR%
+    end
+    item: Push Button
+      Rectangle=167 6 212 21
+      Create Flags=01010000000000010000000000000001
+      Text=OK
+      Text French=OK
+      Text German=OK
+      Text Portuguese=OK
+      Text Spanish=ACEPTAR
+      Text Italian=OK
+      Text Danish=OK
+      Text Dutch=OK
+      Text Norwegian=OK
+      Text Swedish=OK
+    end
+    item: Push Button
+      Rectangle=167 25 212 40
+      Variable=MAINDIR
+      Value=%MAINDIR_SAVE%
+      Create Flags=01010000000000010000000000000000
+      Flags=0000000000000001
+      Text=Cancel
+      Text French=Annuler
+      Text German=Abbrechen 
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Slet
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+  end
+end
+item: Custom Dialog Set
+  Name=Select Components
+  Display Variable=DISPLAY
+  Flags=00000001
+  item: Dialog
+    Title=Select Components 
+    Title French=Sélectionner les éléments
+    Title German=Komponenten auswählen
+    Title Portuguese=Seleccionar Componentes
+    Title Spanish=Seleccione los Componentes
+    Title Italian=Seleziona Componenti
+    Title Danish=Vælg komponenter
+    Title Dutch=Selecteer onderdelen
+    Title Norwegian=Velg komponenter
+    Title Swedish=Välj komponenter
+    Width=280
+    Height=224
+    Font Name=Helv
+    Font Size=8
+    item: Push Button
+      Rectangle=172 185 214 199
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=&Next >
+      Text French=&Suivant>
+      Text German=&Weiter >
+      Text Portuguese=&Próximo>
+      Text Spanish=&Siguiente >
+      Text Italian=&Avanti >
+      Text Danish=&Næste>
+      Text Dutch=&Volgende>
+      Text Norwegian=&Neste>
+      Text Swedish=&Nästa >
+    end
+    item: Push Button
+      Rectangle=130 185 172 199
+      Variable=DIRECTION
+      Value=B
+      Create Flags=01010000000000010000000000000000
+      Text=< &Back
+      Text French=<&Retour
+      Text German=< &Zurück
+      Text Portuguese=<&Retornar
+      Text Spanish=<&Retroceder
+      Text Italian=< &Indietro
+      Text Danish=<&Tilbage
+      Text Dutch=<&Terug
+      Text Norwegian=<&Tilbake
+      Text Swedish=< &Tillbaka
+    end
+    item: Push Button
+      Rectangle=222 185 264 199
+      Action=3
+      Create Flags=01010000000000010000000000000000
+      Text=Cancel
+      Text French=Annuler
+      Text German=Abbrechen
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Annuller
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+    item: Static
+      Rectangle=9 177 263 178
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=205 155 253 165
+      Variable=COMPONENTS
+      Value=MAINDIR
+      Create Flags=01010000000000000000000000000010
+    end
+    item: Static
+      Rectangle=205 147 253 156
+      Variable=COMPONENTS
+      Create Flags=01010000000000000000000000000010
+    end
+    item: Static
+      Rectangle=95 146 184 157
+      Create Flags=01010000000000000000000000000000
+      Text=Disk Space Required:
+      Text French=Espace disque requis
+      Text German=Benötigter Festplattenspeicher:
+      Text Portuguese=Espaço de disco necessário:
+      Text Spanish=Espacio de Disco Requerido:
+      Text Italian=Spazio su disco richiesto:
+      Text Danish=Nødvendig diskplads:
+      Text Dutch=Vereiste hoeveelheid schijfruimte
+      Text Norwegian=Diskplass nødvendig:
+      Text Swedish=Erforderligt diskutrymme
+    end
+    item: Static
+      Rectangle=95 156 190 166
+      Create Flags=01010000000000000000000000000000
+      Text=Disk Space Remaining:
+      Text French=Espace disque disponible
+      Text German=Verbleibender Festplattenspeicher:
+      Text Portuguese=Espaço de disco restante:
+      Text Spanish=Espacio de Disco Remanente:
+      Text Italian=Spazio su disco rimanente:
+      Text Danish=Ledig diskplads:
+      Text Dutch=Resterende schijfruimte
+      Text Norwegian=Ledig diskplass:
+      Text Swedish=Återstående diskutrymme
+    end
+    item: Static
+      Rectangle=90 138 264 168
+      Action=1
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=90 8 260 41
+      Create Flags=01010000000000000000000000000000
+      Text=In the options list below, select the checkboxes for the options that you would like to have installed.  The disk space fields reflect the requirements of the options you have selected.
+      Text French=Dans la liste d'options suivante, veuillez sélectionner les cases des options que vous désirez installer. Le champ d'espace disque indique les conditions requises pour les options choisies
+      Text German=Wählen Sie in der Optionenliste unten die Kontrollkästchen für diejenigen Optionen, die Sie installieren möchten. Die Speicherfelder zeigen die benötigte Speicherkapazität für die gewählten Optionen an.
+      Text Portuguese=Na lista de opções abaixo, seleccione as caixas de verificação para as opções que gostaria de ter instalado. Os campos de espaço de disco reflectem os requerimentos das opções que seleccionou.
+      Text Spanish=En la lista de opciones que se ofrece a continuación, seleccione las casillas de comprobación para las opciones que desea instalar. Los campos del espacio en el disco reflejan los requerimientos de las opciones que ha seleccionado.
+      Text Italian=Nell’elenco delle opzioni sotto, marca le caselle di controllo delle opzioni che vuoi installare. I campi dello spazio sul disco riflettono i requisiti delle opzioni selezionate.
+      Text Danish=Marker afkrydsningsfelterne for de komponenter, der skal installeres, på listen herunder. Diskpladsfelterne angiver pladskravene for de valgte komponenter.
+      Text Dutch=Kruis in de onderstaande lijst het vakje aan naast de opties die u wilt installeren. Achter elke optie staat de benodigde schijfruimte vermeld.
+      Text Norwegian=I listen over alternativer nedenfor, klikk i kontrollrutene for de alternativene du ønsker å installere. Diskplassfeltene gjenspeiler kravene for de alternativene du har valgt.
+      Text Swedish=Kryssa för i rutorna nedan vilka alternativ du vill få installerade. I diskutrymmesfälten anges utrymmesbehoven för de alternativ du väljer.
+    end
+    item: Listbox
+      Rectangle=90 42 263 133
+      Variable=COMPONENTS
+      Create Flags=01010000101000010000000101010001
+      Flags=0000010001000111
+      Text=Demoprojekt
+      Text=Hilfedateien
+      Text=Exportmodule
+      Text=Importmodule
+      Text=Koordinaten
+      Text=TRiAS-Basic
+      Text=Zusatzmodule
+      Text=Visualisierung
+      Text=
+      Text French=Demoprojekt
+      Text French=Hilfedateien
+      Text French=Exportmodule
+      Text French=Importmodule
+      Text French=Koordinaten
+      Text French=TRiAS-Basic
+      Text French=Zusatzmodule
+      Text French=Visualisierung
+      Text French=
+      Text German=Demoprojekt
+      Text German=Hilfedateien
+      Text German=Exportmodule
+      Text German=Importmodule
+      Text German=Koordinaten
+      Text German=TRiAS-Basic
+      Text German=Zusatzmodule
+      Text German=Visualisierung
+      Text German=
+      Text Portuguese=%1%
+      Text Portuguese=
+      Text Spanish=Demoprojekt
+      Text Spanish=Hilfedateien
+      Text Spanish=Exportmodule
+      Text Spanish=Importmodule
+      Text Spanish=Koordinaten
+      Text Spanish=TRiAS-Basic
+      Text Spanish=Zusatzmodule
+      Text Spanish=Visualisierung
+      Text Spanish=
+      Text Italian=Demoprojekt
+      Text Italian=Hilfedateien
+      Text Italian=Exportmodule
+      Text Italian=Importmodule
+      Text Italian=Koordinaten
+      Text Italian=TRiAS-Basic
+      Text Italian=Zusatzmodule
+      Text Italian=Visualisierung
+      Text Italian=
+      Text Danish=%1%
+      Text Danish=
+      Text Dutch=%1%
+      Text Dutch=
+      Text Norwegian=%1%
+      Text Norwegian=
+      Text Swedish=%1%
+      Text Swedish=
+    end
+  end
+end
+item: Custom Dialog Set
+  Name=Select Program Manager Group
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=Select Program Manager Group
+    Title French=Sélectionnez le Groupe du Gestionnaire de Programmes
+    Title German=Programmgruppe wählen
+    Title Portuguese=Seleccionar o Grupo Gestor de Programas
+    Title Spanish=Seleccione el Grupo del Administrador del Programa
+    Title Italian=Seleziona il gruppo Program Manager
+    Title Danish=Vælg Programstyringsgruppen
+    Title Dutch=Kies Programmabeheergroep.
+    Title Norwegian=Velg Programbehandlingsgruppen
+    Title Swedish=Välj grupp i Programhanteraren
+    Width=280
+    Height=224
+    Font Name=Helv
+    Font Size=8
+    item: Push Button
+      Rectangle=172 185 214 199
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=&Next >
+      Text French=&Suivant>
+      Text German=&Weiter >
+      Text Portuguese=&Próximo>
+      Text Spanish=&Siguiente >
+      Text Italian=&Avanti >
+      Text Danish=&Næste>
+      Text Dutch=&Volgende>
+      Text Norwegian=&Neste>
+      Text Swedish=&Nästa >
+    end
+    item: Push Button
+      Rectangle=130 185 172 199
+      Variable=DIRECTION
+      Value=B
+      Create Flags=01010000000000010000000000000000
+      Flags=0000000000000001
+      Text=< &Back
+      Text French=<&Retour
+      Text German=< &Zurück
+      Text Portuguese=<&Retornar
+      Text Spanish=<&Retroceder
+      Text Italian=< &Indietro
+      Text Danish=<&Back
+      Text Dutch=<&Terug
+      Text Norwegian=<&Tilbake
+      Text Swedish=< &Tillbaka
+    end
+    item: Push Button
+      Rectangle=222 185 264 199
+      Action=3
+      Create Flags=01010000000000010000000000000000
+      Text=Cancel
+      Text French=Annuler
+      Text German=Abbrechen
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Slet
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+    item: Static
+      Rectangle=9 177 263 178
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=90 10 260 38
+      Create Flags=01010000000000000000000000000000
+      Text=Enter the name of the Program Manager group to add %APPTITLE% icons to:
+      Text French=Entrez le nom du groupe du Gestionnaire de Programmes où placer les icônes %APPTITLE% à :
+      Text German=Wählen Sie den Namen der Programmgruppe, in der die Symbole für %APPTITLE_UI% gespeichert werden sollen:
+      Text Portuguese=Introduzir o nome do Grupo Gestor de Programa para acrescentar os ícones %APPTITLE% para:
+      Text Spanish=Introduzca el nombre del grupo del Administrador del Programa para añadir los iconos %APPTITLE para:
+      Text Italian=Inserisci il nome del gruppo Program Manager per aggiungere le icone di %APPTITLE% a:
+      Text Danish=Indtast navnet på Programstyringsgruppen der skal tilføjes %APPTITLE% elementer:
+      Text Dutch=Breng de naam van de programmabeheergroep in waaraan u %APPTITLE%-pictogrammen wilt toevoegen.
+      Text Norwegian=Tast inn navnet på programbehandlingsgruppen for å legge %APPTITLE%-ikoner til:
+      Text Swedish=Skriv in namnet på den grupp i Programhanteraren där du vill ha ikonerna för %APPTITLE%:
+    end
+    item: Combobox
+      Rectangle=90 42 260 172
+      Variable=GROUP
+      Create Flags=01010000001000010000001100000001
+      Flags=0000000000000001
+      Text=%GROUP%
+      Text=
+      Text French=%GROUP%
+      Text French=
+      Text German=%GROUP%
+      Text German=
+      Text Portuguese=%GROUP%
+      Text Portuguese=
+      Text Spanish=%GROUP%
+      Text Spanish=
+      Text Italian=%GROUP%
+      Text Italian=
+      Text Danish=%GROUP%
+      Text Danish=
+      Text Dutch=%GROUP%
+      Text Dutch=
+      Text Norwegian=%GROUP%
+      Text Norwegian=
+      Text Swedish=%GROUP%
+      Text Swedish=
+    end
+  end
+end
+item: Custom Dialog Set
+  Name=Start Installation
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=Start Installation
+    Title French=Commencer l'installation
+    Title German=Installation beginnen
+    Title Portuguese=Iniciar Instalação
+    Title Spanish=Comenzar la Instalación
+    Title Italian=Avvia Installazione
+    Title Danish=Start installationen
+    Title Dutch=Start de installatie
+    Title Norwegian=Start installeringen
+    Title Swedish=Starta installationen
+    Width=280
+    Height=224
+    Font Name=Helv
+    Font Size=8
+    item: Push Button
+      Rectangle=172 185 214 199
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=&Next >
+      Text French=&Suivant>
+      Text German=&Weiter >
+      Text Portuguese=&Próximo>
+      Text Spanish=&Siguiente >
+      Text Italian=&Avanti >
+      Text Danish=&Næste>
+      Text Dutch=&Volgende>
+      Text Norwegian=&Neste>
+      Text Swedish=&Nästa >
+    end
+    item: Push Button
+      Rectangle=130 185 172 199
+      Variable=DIRECTION
+      Value=B
+      Create Flags=01010000000000010000000000000000
+      Text=< &Back
+      Text French=<&Retour
+      Text German=< &Zurück
+      Text Portuguese=<&Retornar
+      Text Spanish=<&Retroceder
+      Text Italian=< &Indietro
+      Text Danish=<&Tilbage
+      Text Dutch=<&Terug
+      Text Norwegian=<&Tilbake
+      Text Swedish=< &Tillbaka
+    end
+    item: Push Button
+      Rectangle=222 185 264 199
+      Action=3
+      Create Flags=01010000000000010000000000000000
+      Text=Cancel
+      Text French=Annuler
+      Text German=Abbrechen
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Annuller
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+    item: Static
+      Rectangle=9 177 263 178
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=90 10 260 70
+      Create Flags=01010000000000000000000000000000
+      Text=You are now ready to install %APPTITLE%.
+      Text=
+      Text=Press the Next button to begin the installation or the Back button to reenter the installation information.
+      Text French=Vous êtes maintenant prêt à installer %APPTITLE%
+      Text French=
+      Text French=Cliquez sur Suivant pour commencer l'installation ou Retour pour entrer à nouveau les informations d'installation
+      Text German=Sie sind jetzt zur Installation von %APPTITLE_UI% bereit.
+      Text German=
+      Text German=Klicken Sie auf die Schaltfläche Weiter, um mit der Installation zu beginnen, oder auf die Schaltfläche Zurück, um die bereits ausgewählten Installationsinformationen nochmals aufzurufen.
+      Text Portuguese=Está agora pronto para instalar %APPTITLE%
+      Text Portuguese=
+      Text Portuguese=Pressione o botão Próximo para começar a instalação ou o botão Retornar para introduzir novamente a informação sobre a instalação
+      Text Spanish=Ahora estará listo para instalar %APPTITLE%.
+      Text Spanish=
+      Text Spanish=Pulse el botón de Siguiente para comenzar la instalación o el botón Retroceder para volver a introducir la información sobre la instalación.
+      Text Italian=Sei pronto ad installare %APPTITLE%.
+      Text Italian=
+      Text Italian=Premi il tasto Avanti per iniziare l’installazione o il tasto Indietro per rientrare nuovamente nei dati sull’installazione
+      Text Danish=Du er nu klar til at installere %APPTITLE%.
+      Text Danish=
+      Text Danish=Klik på Næste for at starte installationen eller på Tilbage for at ændre installationsoplysningerne.
+      Text Dutch=U bent nu klaar om %APPTITLE% te installeren.
+      Text Dutch=
+      Text Dutch=Druk op Volgende om met de installatie te beginnen of op Terug om de installatie-informatie opnieuw in te voeren.
+      Text Norwegian=Du er nå klar til å installere %APPTITLE%
+      Text Norwegian=
+      Text Norwegian=Trykk på Neste-tasten for å starte installeringen, eller Tilbake-tasten for å taste inn installasjonsinformasjonen på nytt.
+      Text Swedish=Du är nu redo att installera %APPTITLE%.
+      Text Swedish=
+      Text Swedish=Tryck på Nästa för att starta installationen eller på Tillbaka för att skriva in installationsinformationen på nytt.
+    end
+  end
+end
+item: If/While Statement
+  Variable=DISPLAY
+  Value=Select Destination Directory
+end
+item: Set Variable
+  Variable=BACKUP
+  Value=%MAINDIR%\BACKUP
+end
+item: End Block
+end
+item: End Block
+end
+remarked item: Remark
+  Text=Testen, ob eingegebene Registriernummer gültig ist
+end
+item: Get Temporary Filename
+  Variable=DLLPATH
+end
+item: Install File
+  Source=D:\Setups\TRiAS_V4_0\Runtime\RegNum.dll
+  Destination=%TEMP%\%DLLPATH%
+  Flags=0000000000000010
+  File Size=36864
+  File Date=19991115 122310
+  EXE Type=32
+end
+remarked item: Call DLL Function
+  Pathname=%TEMP%\%DLLPATH%
+  Function Name=IsLegalRegNumber
+  Variables Added=LEGALREGNUMBER
+  Parameter=%REGNUMBER%
+  Parameter German=%REGNUMBER%
+  Return Variable=0
+end
+remarked item: Remark
+  Text=Version der ComCtl prüfen
+end
+item: Set Variable
+  Variable=COMCTL_VER
+  Value=0
+end
+item: Get System Information
+  Variable=COMCTL_VER
+  Pathname=%SYS32%\comctl32.dll
+  Flags=00000101
+end
+item: Call DLL Function
+  Pathname=%TEMP%\%DLLPATH%
+  Function Name=HasToInstallComCtl
+  Variables Added=INSTALL_COMCTL
+  Parameter=%COMCTL_VER%
+  Parameter German=%COMCTL_VER%
+  Return Variable=0
+end
+remarked item: Remark
+  Text=Version des XML-Parsers prüfen
+end
+item: Set Variable
+  Variable=XML_VER
+  Value=0
+end
+item: Get System Information
+  Variable=XML_VER
+  Pathname=%SYS32%\msxml.dll
+  Flags=00000101
+end
+item: Call DLL Function
+  Pathname=%TEMP%\%DLLPATH%
+  Function Name=HasToInstallXMLParser
+  Variables Added=INSTALL_XML
+  Parameter=%XML_VER%
+  Parameter German=%XML_VER%
+  Return Variable=0
+end
+remarked item: Remark
+  Text=Version der IProp.dll prüfen
+end
+item: Set Variable
+  Variable=IPROP_VER
+  Value=0
+end
+item: Get System Information
+  Variable=IPROP_VER
+  Pathname=%SYS32%\iprop.dll
+  Flags=00000101
+end
+item: Call DLL Function
+  Pathname=%TEMP%\%DLLPATH%
+  Function Name=HasToInstallIProp
+  Variables Added=INSTALL_IPROP
+  Parameter=%IPROP_VER%
+  Parameter German=%IPROP_VER%
+  Return Variable=0
+end
+remarked item: Remark
+  Text=Version der ComCat.dll prüfen
+end
+remarked item: Set Variable
+  Variable=COMCAT_VER
+  Value=0
+end
+remarked item: Get System Information
+  Variable=COMCAT_VER
+  Pathname=%SYS32%\comcat.dll
+  Flags=00000101
+end
+remarked item: Call DLL Function
+  Pathname=%TEMP%\%DLLPATH%
+  Function Name=HasToInstallComCat
+  Variables Added=INSTALL_COMCAT
+  Parameter=%IPROP_VER%
+  Parameter German=%COMCAT_VER%
+  Return Variable=0
+end
+remarked item: Remark
+  Text=Hier gehts richtig los
+end
+item: If/While Statement
+  Variable=DOBACKUP
+  Value=A
+end
+item: Set Variable
+  Variable=BACKUPDIR
+  Value=%BACKUP%
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=BRANDING
+  Value=1
+end
+item: If/While Statement
+  Variable=DOBRAND
+  Value=1
+end
+remarked item: Edit INI File
+  Pathname=%INST%\CUSTDATA.INI
+  Settings=[Registration]
+  Settings=NAME=%NAME%
+  Settings=COMPANY=%COMPANY%
+  Settings=SERIAL=%REGNUMBER%
+  Settings=
+end
+item: Open/Close INSTALL.LOG
+  Flags=00000001
+end
+item: Get Registry Key Value
+  Variable=LICENSE
+  Key=SOFTWARE\TRiAS
+  Value Name=License
+  Flags=00000100
+end
+item: If/While Statement
+  Variable=LICENSE
+end
+item: Set Variable
+  Variable=LICENSE
+  Value=%MAINDIR%
+  Flags=00001100
+end
+remarked item: Set Variable
+  Variable=LICENSE
+  Value=%LICENSE%
+  Flags=00000010
+end
+item: Set Variable
+  Variable=LICENSE
+  Value=\Lizenz\trias.exe
+  Flags=00000001
+end
+item: End Block
+end
+item: Edit Registry
+  Total Keys=7
+  item: Key
+    Key=SOFTWARE
+    Root=34
+  end
+  item: Key
+    Key=SOFTWARE\TRiAS
+    Root=34
+  end
+  item: Key
+    Key=SOFTWARE\TRiAS\TRiAS
+    Root=34
+  end
+  item: Key
+    Key=SOFTWARE\TRiAS\TRiAS\4.0
+    Root=34
+  end
+  item: Key
+    Key=SOFTWARE\TRiAS\TRiAS\4.0
+    New Value=%COMPANY%
+    Value Name=Company
+    Root=2
+  end
+  item: Key
+    Key=SOFTWARE\TRiAS\TRiAS\4.0
+    New Value=%NAME%
+    Value Name=User
+    Root=2
+  end
+  item: Key
+    Key=SOFTWARE\TRiAS
+    New Value=%LICENSE%
+    New Value=
+    Value Name=License
+    Root=34
+  end
+end
+remarked item: If/While Statement
+  Variable=LEGALREGNUMBER
+  Value=1
+end
+remarked item: Remark
+  Text=Zusätzlich RegNummer in Registry schreiben
+end
+remarked item: Edit Registry
+  Total Keys=5
+  item: Key
+    Key=SOFTWARE
+    Root=34
+  end
+  item: Key
+    Key=SOFTWARE\TRiAS
+    Root=34
+  end
+  item: Key
+    Key=SOFTWARE\TRiAS\TRiAS
+    Root=34
+  end
+  item: Key
+    Key=SOFTWARE\TRiAS\TRiAS\4.0
+    Root=34
+  end
+  item: Key
+    Key=SOFTWARE\TRiAS\TRiAS\4.0
+    New Value=%REGNUMBER%
+    Value Name=Serial
+    Root=2
+  end
+end
+remarked item: End Block
+end
+item: Open/Close INSTALL.LOG
+end
+item: End Block
+end
+item: End Block
+end
+item: Open/Close INSTALL.LOG
+end
+remarked item: Remark
+  Text=Vorbereitungen für Uninstall
+end
+item: Include Script
+  Pathname=%_WISE_%\INCLUDE\uninstal.wse
+end
+item: Add Text to INSTALL.LOG
+  Text=Delete File: %MAINDIR%\Programm\register.log
+end
+remarked item: Remark
+  Text=Installation beginnen
+end
+item: Check Disk Space
+  Component=COMPONENTS
+end
+item: Create Directory
+  Pathname=%MAINDIR%\Projekte
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\Visobj.ext
+  Destination=%MAINDIR%\Programm\Visobj.ext
+  Flags=0000000010000011
+  Version String=3.30.109
+  Version MS=196638
+  Version LS=109
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=291395
+  File Date=20001208 105337
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\Rasterkarten\LPict42.dll
+  Destination=%MAINDIR%\Programm\LPict42.dll
+  Flags=0000000010000011
+  Version String=3.0.140
+  Version MS=196608
+  Version LS=140
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=358470
+  File Date=20001212 144125
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\Rasterkarten\lmfcx42.dll
+  Destination=%MAINDIR%\Programm\lmfcx42.dll
+  Flags=0000000010000011
+  Version String=3.0.105
+  Version MS=196608
+  Version LS=105
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=81990
+  File Date=20001212 144125
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\Rasterkarten\karten.vmd
+  Destination=%MAINDIR%\Programm\karten.vmd
+  Flags=0000000010000011
+  Version String=4.0.272
+  Version MS=262144
+  Version LS=272
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=79435
+  File Date=20001212 144124
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\TRiASUI.dll
+  Destination=%MAINDIR%\Programm\TRiASUI.dll
+  Flags=0000000010000011
+  Version String=1.00.042
+  Version MS=65536
+  Version LS=42
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=126019
+  File Date=20001208 105339
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\TRiASMDS.dll
+  Destination=%MAINDIR%\Programm\TRiASMDS.dll
+  Flags=0000000010000011
+  Version String=1.0.236
+  Version MS=65536
+  Version LS=236
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=80447
+  File Date=20001208 105339
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\TRiASICN.dll
+  Destination=%MAINDIR%\Programm\TRiASICN.dll
+  Flags=0000000010000011
+  Version String=1.00.011
+  Version MS=65536
+  Version LS=11
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=44101
+  File Date=20001208 105339
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\TriasDB.dll
+  Destination=%MAINDIR%\Programm\TriasDB.dll
+  Flags=0000000010000011
+  Version String=1.00.783
+  Version MS=65536
+  Version LS=783
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=1280067
+  File Date=20001208 105338
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\TRiASCs.dll
+  Destination=%MAINDIR%\Programm\TRiASCs.dll
+  Flags=0000000010000011
+  Version String=1.00.305
+  Version MS=65536
+  Version LS=305
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=413245
+  File Date=20001208 105339
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\TRiAS323.dll
+  Destination=%MAINDIR%\Programm\TRiAS323.dll
+  Flags=0000000010000011
+  Version String=3.30.352
+  Version MS=196638
+  Version LS=352
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=816701
+  File Date=20001208 105335
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\TRiAS322.dll
+  Destination=%MAINDIR%\Programm\TRiAS322.dll
+  Flags=0000000010000011
+  Version String=6.00.203
+  Version MS=393216
+  Version LS=203
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=207421
+  File Date=20001208 105335
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\TRiAS321.dll
+  Destination=%MAINDIR%\Programm\TRiAS321.dll
+  Flags=0000000010000011
+  Version String=6.31.178
+  Version MS=393247
+  Version LS=178
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=366141
+  File Date=20001208 105335
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\TRiAS4.exe
+  Destination=%MAINDIR%\Programm\TRiAS32.exe
+  Flags=0000000010000011
+  Version String=4.00.1175
+  Version MS=262144
+  Version LS=1175
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=1700410
+  File Date=20001208 105339
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\UnRegTRiAS.exe
+  Destination=%MAINDIR%\Programm\UnRegTRiAS.exe
+  Flags=0000000010000011
+  Version String=1.00.008
+  Version MS=65536
+  Version LS=8
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=44616
+  File Date=20001221 103706
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\trias.tip
+  Destination=%MAINDIR%\Programm\trias.tip
+  Flags=0000000010000010
+  File Size=2981
+  File Date=19970922 020600
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\Tfrmwork.dll
+  Destination=%MAINDIR%\Programm\Tfrmwork.dll
+  Flags=0000000010000011
+  Version String=3.00.083
+  Version MS=196608
+  Version LS=83
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=235073
+  File Date=20001208 105336
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\TErrTrk.dll
+  Destination=%MAINDIR%\Programm\TErrTrk.dll
+  Flags=0000000010000011
+  Version String=1.0.128
+  Version MS=65536
+  Version LS=128
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=40509
+  File Date=20001208 105339
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\Tdbgeo.dll
+  Destination=%MAINDIR%\Programm\Tdbgeo.dll
+  Flags=0000000010000011
+  Version String=1.00.247
+  Version MS=65536
+  Version LS=247
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=275002
+  File Date=20001208 105339
+  EXE Type=32
+end
+item: Install File
+  Source=D:\Setups\TRiAS_V4_0\Release\Programmdateien\OTP701as.dll
+  Destination=%MAINDIR%\Programm\OTP701as.dll
+  Flags=0000000010000011
+  Version String=6.0.000
+  Version MS=393216
+  Company=Stingray Software Inc.
+  Product=Objective Toolkit PRO
+  File Size=1818624
+  File Date=20001208 105152
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\Ospace.dll
+  Destination=%MAINDIR%\Programm\Ospace.dll
+  Flags=0000000010000011
+  Version String=2.0
+  Version MS=131072
+  Version LS=6
+  Company=ObjectSpace, Inc., 14881 Quorum Drive, Suite 400 Dallas, TX 75240
+  Product=Systems<Toolkit>
+  File Size=528444
+  File Date=20001208 105336
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\Objman.dll
+  Destination=%MAINDIR%\Programm\Objman.dll
+  Flags=0000000010000011
+  Version String=2.05.044
+  Version MS=131077
+  Version LS=44
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.\o
+  File Size=69187
+  File Date=20001208 105337
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\sfl103as.dll
+  Destination=%MAINDIR%\Programm\sfl103as.dll
+  Flags=0000000010000011
+  Version String=6.0.000
+  Version MS=393216
+  Company=Stingray Software Inc.
+  Product=Objective Studio - MVC
+  File Size=49152
+  File Date=20001208 105151
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\Muscrl32.dll
+  Destination=%MAINDIR%\Programm\Muscrl32.dll
+  Flags=0000000010000010
+  File Size=13312
+  File Date=20001208 105149
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\lol.dll
+  Destination=%MAINDIR%\Programm\lol.dll
+  Flags=0000000010000011
+  Version String=2.1.006
+  Version MS=131073
+  Version LS=6
+  Company=Compiler Resources, Hopkinton, MA 01748 U.S.A.
+  Product=Yacc++ ® and the Language Objects Library
+  File Size=102468
+  File Date=20001208 105336
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\Identsdb.ext
+  Destination=%MAINDIR%\Programm\Identsdb.ext
+  Flags=0000000010000011
+  Version String=4.30.098
+  Version MS=262174
+  Version LS=98
+  Company=TRiAS GmbH
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=320071
+  File Date=20001208 105337
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\Helper.dll
+  Destination=%MAINDIR%\Programm\Helper.dll
+  Flags=0000000010000011
+  Version String=1.00.027
+  Version MS=65536
+  Version LS=27
+  Company=Helperv.tpl
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=88658
+  File Date=20001208 105339
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\georein.ext
+  Destination=%MAINDIR%\Programm\georein.ext
+  Flags=0000000010000011
+  Version String=2.12.058
+  Version MS=131084
+  Version LS=58
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=118836
+  File Date=20001208 105336
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\Geometr.dll
+  Destination=%MAINDIR%\Programm\Geometr.dll
+  Flags=0000000010000011
+  Version String=2.12.058
+  Version MS=131084
+  Version LS=58
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=255540
+  File Date=20001208 105336
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\GeoEdit.ext
+  Destination=%MAINDIR%\Programm\GeoEdit.ext
+  Flags=0000000010000011
+  Version String=2.12.058
+  Version MS=131084
+  Version LS=58
+  Company=TRiAS GmbH Potsdam
+  Product=ITRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=442932
+  File Date=20001208 105337
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\fakemfc.ext
+  Destination=%MAINDIR%\Programm\fakemfc.ext
+  Flags=0000000010000011
+  Version String=2.20.476
+  Version MS=131092
+  Version LS=476
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=713800
+  File Date=20001208 105336
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\DefCtfs.css
+  Destination=%MAINDIR%\Programm\DefCtfs.css
+  Flags=0000000010000011
+  Version String=3.20.052
+  Version MS=196628
+  Version LS=52
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=57411
+  File Date=20001208 105339
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\containr.dll
+  Destination=%MAINDIR%\Programm\containr.dll
+  Flags=0000000010000011
+  Version String=3.00.037
+  Version MS=196608
+  Version LS=36
+  Company=TRiAS GmbH
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=77895
+  File Date=20001208 105336
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\Colors.ebn
+  Destination=%MAINDIR%\Programm\Colors.ebn
+  Flags=0000000010000011
+  Version String=1.00.018
+  Version MS=65536
+  Version LS=18
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=49731
+  File Date=20001208 105338
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\TRiASCFG.dll
+  Destination=%MAINDIR%\Programm\TRiASCFG.dll
+  Flags=0000000010000011
+  Version String=1.00.018
+  Version MS=65536
+  Version LS=18
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=49731
+  File Date=20001208 105338
+  EXE Type=32
+end
+remarked item: Remark
+  Text=Crypkey support
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Crypkey\License\Ck16rmv.exe
+  Destination=%MAINDIR%\Programm\Ck16rmv.exe
+  Flags=0000000010000010
+  File Size=8768
+  File Date=19990802 020218
+  EXE Type=16
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Crypkey\Crp32dll.dll
+  Destination=%MAINDIR%\Programm\Crp32dll.dll
+  Flags=0000000010000010
+  File Size=89610
+  File Date=20001010 182432
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Crypkey\Cki32h_b.dll
+  Destination=%MAINDIR%\Programm\Cki32h_b.dll
+  Flags=0000000010000011
+  File Size=56832
+  File Date=20001113 104233
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Crypkey\cki32h.dll
+  Destination=%MAINDIR%\Programm\cki32h.dll
+  Flags=0000000010000011
+  File Size=193536
+  File Date=20000920 153518
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Crypkey\Cki32.hlp
+  Destination=%MAINDIR%\Programm\Cki32.hlp
+  Flags=0000000010000010
+  File Size=12741
+  File Date=20001207 142833
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Crypkey\Cklicens.hlp
+  Destination=%MAINDIR%\Programm\Cklicens.hlp
+  Flags=0000000010000010
+  File Size=13940
+  File Date=20001207 142638
+end
+item: Check Configuration
+  Flags=10111001
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Crypkey\License\Cryp95e.dll
+  Destination=%MAINDIR%\Programm\Cryp95e.dll
+  Flags=0000000010000011
+  File Size=52746
+  File Date=20000628 144706
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Crypkey\License\Crp9516e.dll
+  Destination=%MAINDIR%\Programm\Crp9516e.dll
+  Flags=0000000010000010
+  File Size=87705
+  File Date=20000920 012004
+  EXE Type=16
+end
+item: End Block
+end
+item: Check Configuration
+  Flags=10100000
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Crypkey\License\Setupex.exe
+  Destination=%MAINDIR%\Programm\Setupex.exe
+  Flags=0000000010000011
+  Version String=5.3
+  Version MS=327683
+  Company=CrypKey
+  Product=CrypKey Software Licensing System
+  File Size=208384
+  File Date=20000613 032514
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Crypkey\License\Cks.exe
+  Destination=%MAINDIR%\Programm\Cks.exe
+  Flags=0000000010000010
+  File Size=234138
+  File Date=20000711 181846
+  EXE Type=32
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=B
+  Flags=00001010
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Hilfedateien\TRiAS.hlp
+  Destination=%MAINDIR%\Programm\TRiAS.hlp
+  Flags=0000000010000010
+  File Size=15138173
+  File Date=19990924 093720
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Hilfedateien\TRiAS.cnt
+  Destination=%MAINDIR%\Programm\TRiAS.cnt
+  Flags=0000000010000010
+  File Size=36063
+  File Date=19991018 191007
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=F
+  Flags=00001010
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Trias-Basic\Sumnrn22.dll
+  Destination=%MAINDIR%\Programm\Sumnrn22.dll
+  Flags=0000000010000011
+  Version String=2.25.1566
+  Version MS=131073
+  Company=Summit Software Company
+  Product=BasicScript
+  File Size=606208
+  File Date=20001023 141027
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Trias-Basic\Sumnpb22.dll
+  Destination=%MAINDIR%\Programm\Sumnpb22.dll
+  Flags=0000000010000011
+  Version String=2.25.1566
+  Version MS=131073
+  Company=Summit Software Company
+  Product=BasicScript
+  File Size=125952
+  File Date=20001023 141026
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Trias-Basic\Sumnol22.dll
+  Destination=%MAINDIR%\Programm\Sumnol22.dll
+  Flags=0000000010000011
+  Version String=2.25.1566
+  Version MS=131073
+  Company=Summit Software Company
+  Product=BasicScript
+  File Size=38400
+  File Date=20001023 141026
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Trias-Basic\Sumndg22.dll
+  Destination=%MAINDIR%\Programm\Sumndg22.dll
+  Flags=0000000010000011
+  Version String=2.25.1566
+  Version MS=131073
+  Company=Summit Software Company
+  Product=BasicScript
+  File Size=435200
+  File Date=20001023 141026
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Trias-Basic\Sumndd22.dll
+  Destination=%MAINDIR%\Programm\Sumndd22.dll
+  Flags=0000000010000011
+  Version String=2.25.1566
+  Version MS=131073
+  Company=Summit Software Company
+  Product=BasicScript
+  File Size=40960
+  File Date=20001023 141026
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Trias-Basic\Sumndc22.dll
+  Destination=%MAINDIR%\Programm\Sumndc22.dll
+  Flags=0000000010000011
+  Version String=2.25.1566
+  Version MS=131073
+  Company=Summit Software Company
+  Product=BasicScript
+  File Size=254464
+  File Date=20001023 141026
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Trias-Basic\Sumncx22.dll
+  Destination=%MAINDIR%\Programm\Sumncx22.dll
+  Flags=0000000010000011
+  Version String=2.25.1566
+  Version MS=131073
+  Company=Summit Software Company
+  Product=BasicScript
+  File Size=86016
+  File Date=20001023 141027
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Trias-Basic\Sumncm22.dll
+  Destination=%MAINDIR%\Programm\Sumncm22.dll
+  Flags=0000000010000011
+  Version String=2.25.1566
+  Version MS=131073
+  Company=Summit Software Company
+  Product=BasicScript
+  File Size=385536
+  File Date=20001023 141026
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Trias-Basic\oleauto.ext
+  Destination=%MAINDIR%\Programm\oleauto.ext
+  Flags=0000000010000011
+  Version String=2.20.428
+  Version MS=131092
+  Version LS=428
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=749125
+  File Date=20001208 105336
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Trias-Basic\Dg.hlp
+  Destination=%MAINDIR%\Programm\Dg.hlp
+  Flags=0000000010000010
+  File Size=56291
+  File Date=19980729 011000
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Trias-Basic\Dg.cnt
+  Destination=%MAINDIR%\Programm\Dg.cnt
+  Flags=0000000010000010
+  File Size=3413
+  File Date=19980729 011000
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Trias-Basic\Dd.hlp
+  Destination=%MAINDIR%\Programm\Dd.hlp
+  Flags=0000000010000010
+  File Size=57937
+  File Date=19980729 011000
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Trias-Basic\Dd.cnt
+  Destination=%MAINDIR%\Programm\Dd.cnt
+  Flags=0000000010000010
+  File Size=3222
+  File Date=19980729 011000
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Trias-Basic\DaoLayer.ebn
+  Destination=%MAINDIR%\Programm\DaoLayer.ebn
+  Flags=0000000010000011
+  Version String=1.10.015
+  Version MS=65546
+  Version LS=15
+  Company=TRiAS GmbH
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=294983
+  File Date=20001208 105338
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Trias-Basic\Bscript.ext
+  Destination=%MAINDIR%\Programm\Bscript.ext
+  Flags=0000000010000011
+  Version String=3.07.120
+  Version MS=196615
+  Version LS=120
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=566342
+  File Date=20001208 105337
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Trias-Basic\Az.hlp
+  Destination=%MAINDIR%\Programm\Az.hlp
+  Flags=0000000010000010
+  File Size=665199
+  File Date=19980729 011000
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Trias-Basic\Az.cnt
+  Destination=%MAINDIR%\Programm\Az.cnt
+  Flags=0000000010000010
+  File Size=40866
+  File Date=19980729 011000
+end
+item: End Block
+end
+remarked item: If/While Statement
+  Variable=LEGALREGNUMBER
+  Value=1
+  Flags=00000001
+end
+remarked item: Remark
+  Text=Nicht registrierte Version
+end
+remarked item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Programmdateien\TRiAS32.exe
+  Destination=%MAINDIR%\Programm\TRiAS32.001
+  Flags=0000000010000011
+end
+remarked item: Install File
+  Source=D:\Setups\TRiAS_V4_0\Release\Programmdateien\VSetupT.exe
+  Destination=%TEMP%\VSetup.exe
+  Flags=0000000010000010
+end
+remarked item: End Block
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\System\Msvcrt.dll
+  Destination=%SYS32%\Msvcrt.dll
+  Flags=0000001010000011
+  Version String=6.00.8397.0
+  Version MS=393216
+  Version LS=550305792
+  Company=Microsoft Corporation
+  Product=Microsoft (R) Visual C++
+  File Size=266293
+  File Date=19990201 230000
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\System\Msvcp60.dll
+  Destination=%SYS32%\Msvcp60.dll
+  Flags=0000001010000011
+  Version String=6.00.8168.0
+  Version MS=393216
+  Version LS=535298048
+  Company=Microsoft Corporation
+  Product=Microsoft (R) Visual C++
+  File Size=401462
+  File Date=19980617 010000
+  EXE Type=32
+end
+item: Check Configuration
+  Flags=10100000
+end
+item: Install File
+  Source=D:\Setups\TRiAS_V4_0\Runtime\Atl.dll
+  Destination=%SYS32%\Atl.dll
+  Flags=0001001010000011
+  Version String=3.00.8168
+  Version MS=196608
+  Version LS=535298048
+  Company=Microsoft Corporation
+  Product=Microsoft (R) Visual C++
+  File Size=69632
+  File Date=19980617 010000
+  EXE Type=32
+end
+item: Else Statement
+end
+item: Install File
+  Source=D:\Setups\TRiAS_V4_0\Runtime\Win95\Atl.dll
+  Destination=%SYS32%\Atl.dll
+  Flags=0001001010000011
+  Version String=3.00.8168
+  Version MS=196608
+  Version LS=535298048
+  Company=Microsoft Corporation
+  Product=Microsoft (R) Visual C++
+  File Size=69632
+  File Date=19990404 100123
+  EXE Type=32
+end
+item: End Block
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Runtime\Comcat.dll
+  Destination=%SYS32%\Comcat.dll
+  Flags=0001001010000011
+  Version String=4.71
+  Version MS=262215
+  Version LS=94437377
+  Company=Microsoft Corporation
+  Product=Microsoft(R) Windows NT(R) Operating System
+  File Size=22288
+  File Date=19981103 120400
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\System\msvcirt.dll
+  Destination=%SYS32%\msvcirt.dll
+  Flags=0000001010000011
+  Version String=6.00.8168.0
+  Version MS=393216
+  Version LS=535298048
+  Company=Microsoft Corporation
+  Product=Microsoft (R) Visual C++
+  File Size=77878
+  File Date=19980617 000000
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\System\mfc42.dll
+  Destination=%SYS32%\mfc42.dll
+  Flags=0000001010000011
+  Version String=6.00.8447.0
+  Version MS=393216
+  Version LS=553582592
+  Company=Microsoft Corporation
+  Product=Microsoft (R) Visual C++
+  File Size=995383
+  File Date=19990426 230000
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\System\mfc42loc.dll
+  Destination=%SYS32%\mfc42loc.dll
+  Flags=0000000010000011
+  Version String=6.00.8168.0
+  Version MS=393216
+  Version LS=535298048
+  Company=Microsoft Corporation
+  Product=Microsoft (R) Visual C++
+  File Size=57344
+  File Date=19980617 000000
+  EXE Type=32
+end
+item: Install File
+  Source=D:\Setups\TRiAS_V4_0\Runtime\401comupd.exe
+  Destination=%TEMP%\401comupd.exe
+  Flags=0000000010000010
+  Version String=4.71.0819.0
+  Version MS=262215
+  Version LS=53673984
+  Company=Microsoft Corporation
+  Product=Microsoft(R) Windows NT(R) Operating System
+  File Size=435448
+  File Date=19981015 100706
+  EXE Type=32
+end
+item: Install File
+  Source=D:\Setups\TRiAS_V4_0\Runtime\xmlredist.exe
+  Destination=%TEMP%\xmlredist.exe
+  Flags=0000000010000010
+  Version String=4.71.1015.0
+  Version MS=262215
+  Version LS=66519040
+  Company=Microsoft Corporation
+  Product=Microsoft(R) Windows NT(R) Operating System
+  File Size=338888
+  File Date=19990608 135405
+  EXE Type=32
+end
+item: Install File
+  Source=D:\Setups\TRiAS_V4_0\Runtime\Iprop.exe
+  Destination=%TEMP%\Iprop.exe
+  Flags=0000000010000010
+  Version String=4.00
+  Version MS=262144
+  Version LS=90505321
+  Company=Microsoft Corporation
+  Product=OLE PropertySet Implementation Setup
+  File Size=89360
+  File Date=19981103 120400
+  EXE Type=32
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=C
+  Flags=00001010
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Exportmodule\ACADDXF.flt
+  Destination=%MAINDIR%\Programm\ACADDXF.flt
+  Flags=0000000010000011
+  Version String=1.0.176
+  Version MS=65536
+  Version LS=176
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=155204
+  File Date=20001208 110441
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Exportmodule\atlasbna.flt
+  Destination=%MAINDIR%\Programm\atlasbna.flt
+  Flags=0000000010000011
+  Version String=1.0.141
+  Version MS=65536
+  Version LS=141
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=85062
+  File Date=20001208 105339
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Exportmodule\DirisASC.flt
+  Destination=%MAINDIR%\Programm\DirisASC.flt
+  Flags=0000000010000011
+  Version String=1.0.264
+  Version MS=65536
+  Version LS=264
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=90182
+  File Date=20001208 105339
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Exportmodule\Export.ext
+  Destination=%MAINDIR%\Programm\Export.ext
+  Flags=0000000010000011
+  Version String=1.0.750
+  Version MS=65536
+  Version LS=750
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=210498
+  File Date=20001208 105338
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Exportmodule\TRIASARC.flt
+  Destination=%MAINDIR%\Programm\TRIASARC.flt
+  Flags=0000000010000011
+  Version String=1.0.148
+  Version MS=65536
+  Version LS=148
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=167494
+  File Date=20001208 105339
+  EXE Type=32
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=E
+  Flags=00001010
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Koordinaten\GeodCtfs.css
+  Destination=%MAINDIR%\Programm\GeodCtfs.css
+  Flags=0000000010000011
+  Version String=3.21.045
+  Version MS=196629
+  Version LS=45
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=98891
+  File Date=20001208 105339
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Koordinaten\GKCtfs.css
+  Destination=%MAINDIR%\Programm\GKCtfs.css
+  Flags=0000000010000011
+  Version String=3.22.018
+  Version MS=196630
+  Version LS=18
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=100423
+  File Date=20001208 105339
+  EXE Type=32
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=H
+  Flags=00001010
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Visualisierung\txtrotl.vmd
+  Destination=%MAINDIR%\Programm\txtrotl.vmd
+  Flags=0000000010000011
+  Version String=3.20.013
+  Version MS=196628
+  Version LS=13
+  Company=TRiAS GmbH
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=13388
+  File Date=20010207 145445
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Visualisierung\torten.vmd
+  Destination=%MAINDIR%\Programm\torten.vmd
+  Flags=0000000010000011
+  Version String=3.20.012
+  Version MS=196628
+  Version LS=12
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=56906
+  File Date=20001108 135838
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Visualisierung\Linesig.vmd
+  Destination=%MAINDIR%\Programm\Linesig.vmd
+  Flags=0000000010000011
+  Version String=3.0.0.215
+  Version MS=196608
+  Version LS=215
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem
+  File Size=163917
+  File Date=20001108 135838
+  EXE Type=32
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=G
+  Flags=00001010
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Zusatzmodule\Tproject.ext
+  Destination=%MAINDIR%\Programm\Tproject.ext
+  Flags=0000000010000011
+  Version String=4.00.003
+  Version MS=262144
+  Version LS=196608
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=104023
+  File Date=20010116 081507
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Zusatzmodule\objoper.ext
+  Destination=%MAINDIR%\Programm\objoper.ext
+  Flags=0000000010000011
+  Version String=2.12.054
+  Version MS=131084
+  Version LS=54
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=272948
+  File Date=20001108 135837
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Zusatzmodule\maschblr.ext
+  Destination=%MAINDIR%\Programm\maschblr.ext
+  Flags=0000000010000011
+  Version String=2.12.054
+  Version MS=131084
+  Version LS=54
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=168005
+  File Date=20001108 135837
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Zusatzmodule\Gitter.ext
+  Destination=%MAINDIR%\Programm\Gitter.ext
+  Flags=0000000010000011
+  Version String=2.12.054
+  Version MS=131084
+  Version LS=54
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=88113
+  File Date=20001108 135837
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Zusatzmodule\toporel.ext
+  Destination=%MAINDIR%\Programm\toporel.ext
+  Flags=0000000010000011
+  Version String=2.12.054
+  Version MS=131084
+  Version LS=54
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=95283
+  File Date=20001108 135837
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Zusatzmodule\odbcext.ext
+  Destination=%MAINDIR%\Programm\odbcext.ext
+  Flags=0000000010000011
+  Version String=2.02.052
+  Version MS=131074
+  Version LS=52
+  Company=@I
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=1010245
+  File Date=20001108 135837
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Zusatzmodule\geostat.ext
+  Destination=%MAINDIR%\Programm\geostat.ext
+  Flags=0000000010000011
+  Version String=3.00.006
+  Version MS=196608
+  Version LS=393216
+  Company=TRiAS GmbH
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=315460
+  File Date=20001108 135837
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Zusatzmodule\buffer.ext
+  Destination=%MAINDIR%\Programm\buffer.ext
+  Flags=0000000010000011
+  Version String=2.12.054
+  Version MS=131084
+  Version LS=54
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=106545
+  File Date=20001108 135837
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Zusatzmodule\bilder.ext
+  Destination=%MAINDIR%\Programm\bilder.ext
+  Flags=0000000010000011
+  Version String=3.10.017
+  Version MS=196618
+  Version LS=17
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=56899
+  File Date=20001108 135838
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Zusatzmodule\abstand.ext
+  Destination=%MAINDIR%\Programm\abstand.ext
+  Flags=0000000010000011
+  Version String=2.12.054
+  Version MS=131084
+  Version LS=54
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=108595
+  File Date=20001108 135837
+  EXE Type=32
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=D
+  Flags=00001010
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Importmodule\ARCTRIAS.ext
+  Destination=%MAINDIR%\Programm\ARCTRIAS.ext
+  Flags=0000000010000011
+  Version String=2.02.044
+  Version MS=131074
+  Version LS=44
+  Company=TRiAS GmbH
+  Product=InterTRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=137286
+  File Date=20001208 105339
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Importmodule\ascimp.ext
+  Destination=%MAINDIR%\Programm\ascimp.ext
+  Flags=0000000010000011
+  Version String=1.00.060
+  Version MS=65536
+  Version LS=60
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=118851
+  File Date=20001208 105339
+  EXE Type=32
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Importmodule\dxfimp.ext
+  Destination=%MAINDIR%\Programm\dxfimp.ext
+  Flags=0000000010000011
+  Version String=3.00.011
+  Version MS=196608
+  Version LS=11
+  Company=TRiAS GmbH Potsdam
+  Product=TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem.
+  File Size=118850
+  File Date=20001208 105339
+  EXE Type=32
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=A
+  Flags=00001010
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Datenquellen\Bilder\Baum.dib
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Datenquellen\Bilder\Baum.dib
+  Flags=0000000010000010
+  File Size=133078
+  File Date=19990312 091402
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Datenquellen\Orthophoto_Bildinfo.ris
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Datenquellen\Orthophoto_Bildinfo.ris
+  Flags=0000000010000010
+  File Size=35840
+  File Date=20001214 214053
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Datenquellen\Orthophoto_Bildinfo.ini
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Datenquellen\Orthophoto_Bildinfo.ini
+  Flags=0000000010000010
+  File Size=170
+  File Date=20001214 214125
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_wae.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_wae.TIF
+  Flags=0000000010000010
+  File Size=1003
+  File Date=20000906 123628
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_wad.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_wad.TIF
+  Flags=0000000010000010
+  File Size=1731
+  File Date=20000906 123628
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_wac.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_wac.TIF
+  Flags=0000000010000010
+  File Size=3339
+  File Date=20000906 123627
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_wab.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_wab.TIF
+  Flags=0000000010000010
+  File Size=6999
+  File Date=20000906 123626
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_waa.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_waa.TIF
+  Flags=0000000010000010
+  File Size=14491
+  File Date=20000906 123626
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_wa.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_wa.TIF
+  Flags=0000000010000010
+  File Size=30336
+  File Date=20000906 123624
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_stoe.tif
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_stoe.tif
+  Flags=0000000010000010
+  File Size=401
+  File Date=20000906 123709
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_stod.tif
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_stod.tif
+  Flags=0000000010000010
+  File Size=467
+  File Date=20000906 123708
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_stoc.tif
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_stoc.tif
+  Flags=0000000010000010
+  File Size=597
+  File Date=20000906 123708
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_stob.tif
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_stob.tif
+  Flags=0000000010000010
+  File Size=869
+  File Date=20000906 123707
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_stoa.tif
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_stoa.tif
+  Flags=0000000010000010
+  File Size=1401
+  File Date=20000906 123706
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_sto.tif
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_sto.tif
+  Flags=0000000010000010
+  File Size=2408
+  File Date=20000906 123705
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_stge.tif
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_stge.tif
+  Flags=0000000010000010
+  File Size=469
+  File Date=20000906 123704
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_stgd.tif
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_stgd.tif
+  Flags=0000000010000010
+  File Size=593
+  File Date=20000906 123704
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_stgc.tif
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_stgc.tif
+  Flags=0000000010000010
+  File Size=847
+  File Date=20000906 123703
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_stgb.tif
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_stgb.tif
+  Flags=0000000010000010
+  File Size=1383
+  File Date=20000906 123702
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_stga.tif
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_stga.tif
+  Flags=0000000010000010
+  File Size=2477
+  File Date=20000906 123701
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_stg.tif
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_stg.tif
+  Flags=0000000010000010
+  File Size=4696
+  File Date=20000906 123700
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_ree.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_ree.TIF
+  Flags=0000000010000010
+  File Size=935
+  File Date=20000906 123623
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_red.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_red.TIF
+  Flags=0000000010000010
+  File Size=1941
+  File Date=20000906 123623
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_rec.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_rec.TIF
+  Flags=0000000010000010
+  File Size=4185
+  File Date=20000906 123622
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_reb.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_reb.TIF
+  Flags=0000000010000010
+  File Size=7935
+  File Date=20000906 123622
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_rea.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_rea.TIF
+  Flags=0000000010000010
+  File Size=14543
+  File Date=20000906 123621
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_re.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_re.TIF
+  Flags=0000000010000010
+  File Size=29306
+  File Date=20000906 123619
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_kne.tif
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_kne.tif
+  Flags=0000000010000010
+  File Size=647
+  File Date=20000906 123659
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_knd.tif
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_knd.tif
+  Flags=0000000010000010
+  File Size=1103
+  File Date=20000906 123658
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_knc.tif
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_knc.tif
+  Flags=0000000010000010
+  File Size=2229
+  File Date=20000906 123658
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_knb.tif
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_knb.tif
+  Flags=0000000010000010
+  File Size=4243
+  File Date=20000906 123657
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_kna.tif
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_kna.tif
+  Flags=0000000010000010
+  File Size=7367
+  File Date=20000906 123656
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_kn.tif
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_kn.tif
+  Flags=0000000010000010
+  File Size=14118
+  File Date=20000906 123655
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_hye.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_hye.TIF
+  Flags=0000000010000010
+  File Size=1119
+  File Date=20000906 123614
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_hyd.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_hyd.TIF
+  Flags=0000000010000010
+  File Size=2557
+  File Date=20000906 123613
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_hyc.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_hyc.TIF
+  Flags=0000000010000010
+  File Size=5289
+  File Date=20000906 123612
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_hyb.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_hyb.TIF
+  Flags=0000000010000010
+  File Size=9867
+  File Date=20000906 123612
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_hya.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_hya.TIF
+  Flags=0000000010000010
+  File Size=19067
+  File Date=20000906 123611
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_hy.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_hy.TIF
+  Flags=0000000010000010
+  File Size=39046
+  File Date=20000906 123609
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_hfe.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_hfe.TIF
+  Flags=0000000010000010
+  File Size=647
+  File Date=20000906 123619
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_hfd.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_hfd.TIF
+  Flags=0000000010000010
+  File Size=969
+  File Date=20000906 123618
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_hfc.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_hfc.TIF
+  Flags=0000000010000010
+  File Size=1583
+  File Date=20000906 123617
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_hfb.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_hfb.TIF
+  Flags=0000000010000010
+  File Size=2905
+  File Date=20000906 123617
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_hfa.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_hfa.TIF
+  Flags=0000000010000010
+  File Size=5577
+  File Date=20000906 123616
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_hf.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_hf.TIF
+  Flags=0000000010000010
+  File Size=11200
+  File Date=20000906 123614
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_gze.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_gze.TIF
+  Flags=0000000010000010
+  File Size=503
+  File Date=20000906 123648
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_gzd.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_gzd.TIF
+  Flags=0000000010000010
+  File Size=721
+  File Date=20000906 123647
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_gzc.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_gzc.TIF
+  Flags=0000000010000010
+  File Size=1023
+  File Date=20000906 123647
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_gzb.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_gzb.TIF
+  Flags=0000000010000010
+  File Size=1563
+  File Date=20000906 123646
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_gza.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_gza.TIF
+  Flags=0000000010000010
+  File Size=2639
+  File Date=20000906 123645
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_gz.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_gz.TIF
+  Flags=0000000010000010
+  File Size=4836
+  File Date=20000906 123644
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_gre.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_gre.TIF
+  Flags=0000000010000010
+  File Size=1585
+  File Date=20000906 123634
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_grd.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_grd.TIF
+  Flags=0000000010000010
+  File Size=4513
+  File Date=20000906 123633
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_grc.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_grc.TIF
+  Flags=0000000010000010
+  File Size=12723
+  File Date=20000906 123633
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_grb.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_grb.TIF
+  Flags=0000000010000010
+  File Size=31079
+  File Date=20000906 123632
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_gra.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_gra.TIF
+  Flags=0000000010000010
+  File Size=58365
+  File Date=20000906 123631
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_gr.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_gr.TIF
+  Flags=0000000010000010
+  File Size=113444
+  File Date=20000906 123629
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_gge.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_gge.TIF
+  Flags=0000000010000010
+  File Size=443
+  File Date=20000906 123639
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_ggd.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_ggd.TIF
+  Flags=0000000010000010
+  File Size=533
+  File Date=20000906 123638
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_ggc.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_ggc.TIF
+  Flags=0000000010000010
+  File Size=703
+  File Date=20000906 123637
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_ggb.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_ggb.TIF
+  Flags=0000000010000010
+  File Size=1071
+  File Date=20000906 123637
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_gga.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_gga.TIF
+  Flags=0000000010000010
+  File Size=1751
+  File Date=20000906 123636
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_gg.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_gg.TIF
+  Flags=0000000010000010
+  File Size=2966
+  File Date=20000906 123635
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_gbe.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_gbe.TIF
+  Flags=0000000010000010
+  File Size=565
+  File Date=20000906 123643
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_gbd.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_gbd.TIF
+  Flags=0000000010000010
+  File Size=873
+  File Date=20000906 123643
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_gbc.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_gbc.TIF
+  Flags=0000000010000010
+  File Size=1559
+  File Date=20000906 123642
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_gbb.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_gbb.TIF
+  Flags=0000000010000010
+  File Size=3095
+  File Date=20000906 123641
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_gba.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_gba.TIF
+  Flags=0000000010000010
+  File Size=5727
+  File Date=20000906 123641
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Tk25\4139_gb.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\4139_gb.TIF
+  Flags=0000000010000010
+  File Size=11682
+  File Date=20000906 123639
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Orthophoto\45185744e.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Orthophoto\45185744e.TIF
+  Flags=0000000010000010
+  File Size=26289
+  File Date=20000904 105959
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Orthophoto\45185744d.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Orthophoto\45185744d.TIF
+  Flags=0000000010000010
+  File Size=99329
+  File Date=20000904 105957
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Orthophoto\45185744c.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Orthophoto\45185744c.TIF
+  Flags=0000000010000010
+  File Size=392755
+  File Date=20000904 105956
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Orthophoto\45185744b.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Orthophoto\45185744b.TIF
+  Flags=0000000010000010
+  File Size=1565157
+  File Date=20000904 105954
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Orthophoto\45185744a.TIF
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Orthophoto\45185744a.TIF
+  Flags=0000000010000010
+  File Size=6254801
+  File Date=20000904 105949
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Rasterbilder\Orthophoto\45185744.tif
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Orthophoto\45185744.tif
+  Flags=0000000010000010
+  File Size=25003298
+  File Date=20000904 083822
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\ODBC\Demoprojekt.mdb
+  Destination=%MAINDIR%\Projekte\Demoprojekt\ODBC\Demoprojekt.mdb
+  Flags=0000000010000010
+  File Size=180224
+  File Date=20001107 111030
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\ODBC\Demoprojekt.dsn
+  Destination=%MAINDIR%\Projekte\Demoprojekt\ODBC\Demoprojekt.dsn
+  Flags=0000000010000010
+  File Size=288
+  File Date=20001120 123812
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Demoprojekt.tdc
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Demoprojekt.tdc
+  Flags=0000000010000010
+  File Size=367
+  File Date=20001120 123504
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Demoprojekt.riw
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Demoprojekt.riw
+  Flags=0000000010000010
+  File Size=86016
+  File Date=20001120 125433
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Demoprojekt.ini
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Demoprojekt.ini
+  Flags=0000000010000010
+  File Size=258
+  File Date=20001120 125455
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Datenquellen\Karten.ris
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Datenquellen\Karten.ris
+  Flags=0000000010000010
+  File Size=45056
+  File Date=20001120 125245
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Datenquellen\Karten.ini
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Datenquellen\Karten.ini
+  Flags=0000000010000010
+  File Size=34
+  File Date=20001115 135000
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Datenquellen\ATKIS_DVG.ris
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Datenquellen\ATKIS_DVG.ris
+  Flags=0000000010000010
+  File Size=367616
+  File Date=20001120 125243
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Datenquellen\ATKIS_DVG.ini
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Datenquellen\ATKIS_DVG.ini
+  Flags=0000000010000010
+  File Size=247
+  File Date=20001120 123839
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Datenquellen\ATKIS_DSM.ris
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Datenquellen\ATKIS_DSM.ris
+  Flags=0000000010000010
+  File Size=858112
+  File Date=20001120 125244
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Datenquellen\ATKIS_DSM.ini
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Datenquellen\ATKIS_DSM.ini
+  Flags=0000000010000010
+  File Size=34
+  File Date=20001115 134950
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Datenquellen\ALK.ris
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Datenquellen\ALK.ris
+  Flags=0000000010000010
+  File Size=253952
+  File Date=20001120 125243
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\Datenquellen\ALK.ini
+  Destination=%MAINDIR%\Projekte\Demoprojekt\Datenquellen\ALK.ini
+  Flags=0000000010000010
+  File Size=34
+  File Date=20001115 135428
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\ALB\Demoprojekt.dpd
+  Destination=%MAINDIR%\Projekte\Demoprojekt\ALB\Demoprojekt.dpd
+  Flags=0000000010000010
+  File Size=179
+  File Date=20001120 122835
+end
+item: Install File
+  Source=d:\Setups\TRiAS_V4_0\Release\Beispieldateien\Demoprojekt\ALB\Alb.mdb
+  Destination=%MAINDIR%\Projekte\Demoprojekt\ALB\Alb.mdb
+  Flags=0000000010000010
+  File Size=520192
+  File Date=20000926 090019
+end
+item: Edit INI File
+  Pathname=%MAINDIR%\Projekte\Demoprojekt\Demoprojekt.ini
+  Settings=[karten]
+  Settings=Verzeichnis1="%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Tk25\"
+  Settings=Verzeichnis2="%MAINDIR%\Projekte\Demoprojekt\Rasterbilder\Orthophoto\"
+  Settings=[Parameters]
+  Settings=LastOKS=Ortslagen_Bebauung,1117
+  Settings=
+end
+item: End Block
+end
+item: Set Variable
+  Variable=COMMON
+  Value=%COMMON%
+  Flags=00010100
+end
+item: Set Variable
+  Variable=MAINDIR
+  Value=%MAINDIR%
+  Flags=00010100
+end
+item: Check Configuration
+  Flags=10111011
+end
+item: Get Registry Key Value
+  Variable=STARTUPDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%WIN%\Start Menu\Programs\StartUp
+  Value Name=StartUp
+  Flags=00000010
+end
+item: Get Registry Key Value
+  Variable=DESKTOPDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%WIN%\Desktop
+  Value Name=Desktop
+  Flags=00000010
+end
+item: Get Registry Key Value
+  Variable=STARTMENUDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%WIN%\Start Menu
+  Value Name=Start Menu
+  Flags=00000010
+end
+item: Get Registry Key Value
+  Variable=GROUPDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%WIN%\Start Menu\Programs
+  Value Name=Programs
+  Flags=00000010
+end
+item: Get Registry Key Value
+  Variable=CSTARTUPDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%STARTUPDIR%
+  Value Name=Common Startup
+  Flags=00000100
+end
+item: Get Registry Key Value
+  Variable=CDESKTOPDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%DESKTOPDIR%
+  Value Name=Common Desktop
+  Flags=00000100
+end
+item: Get Registry Key Value
+  Variable=CSTARTMENUDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%STARTMENUDIR%
+  Value Name=Common Start Menu
+  Flags=00000100
+end
+item: Get Registry Key Value
+  Variable=CGROUPDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%GROUPDIR%
+  Value Name=Common Programs
+  Flags=00000100
+end
+item: Set Variable
+  Variable=CGROUP_SAVE
+  Value=%GROUP%
+end
+item: Set Variable
+  Variable=GROUP
+  Value=%GROUPDIR%\%GROUP%
+end
+item: Create Shortcut
+  Source German=%MAINDIR%\Programm\trias32.exe
+  Destination German=%CGROUPDIR%\%CGROUP_SAVE%\TRiAS.lnk
+  Icon Number German=0
+  Icon Pathname German=%MAINDIR%\Programm\TRiAS32.exe
+  Flags=00000001
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=A
+  Flags=00001010
+end
+item: Create Shortcut
+  Source German=%MAINDIR%\Programm\trias32.exe
+  Destination German=%CGROUPDIR%\%CGROUP_SAVE%\Demoprojekt.lnk
+  Command Options German=%MAINDIR%\Projekte\Demoprojekt\Demoprojekt.riw
+  Working Directory German=%MAINDIR%\Programm\
+  Icon Number German=2
+  Icon Pathname German=%MAINDIR%\Programm\triasdb.dll
+  Flags=00000001
+end
+item: End Block
+end
+item: Create Shortcut
+  Source German=%MAINDIR%\UNWISE.EXE
+  Destination German=%CGROUPDIR%\%CGROUP_SAVE%\TRiAS Deinstallation.lnk
+  Command Options German=%MAINDIR%\INSTALL.LOG
+  Icon Number German=0
+  Icon Pathname German=%MAINDIR%\Programm\UnRegTRiAS.exe
+  Flags=00000001
+end
+item: Create Shortcut
+  Source German=%MAINDIR%\Programm\TRiAS32.exe
+  Destination German=%CGROUPDIR%\%CGROUP_SAVE%\TRiAS Registrierung.lnk
+  Command Options German=-regserver
+  Working Directory German=%MAINDIR%\Programm
+  Icon Number German=4
+  Icon Pathname German=%MAINDIR%\Programm\TRiAS32.exe
+  Flags=00000001
+end
+item: Else Statement
+end
+item: Add ProgMan Icon
+  Group=%GROUP%
+  Icon Name German=TRiAS Registrierung
+  Command Line=%MAINDIR%\Programm\TRiAS32.exe -regserver
+  Icon Pathname=%MAINDIR%\Programm\TRiAS32.exe
+  Icon Number=4
+  Default Directory=%MAINDIR%\Programm
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=A
+  Flags=00001010
+end
+item: Add ProgMan Icon
+  Group=%GROUP%
+  Icon Name German=Demoprojekt
+  Command Line=%MAINDIR%\Programm\trias32.exe %MAINDIR%\Projekte\Demoprojekt\Demoprojekt.riw
+  Icon Pathname=%MAINDIR%\Programm\triasdb.dll
+  Icon Number=2
+  Default Directory=%MAINDIR%\Programm\
+end
+item: End Block
+end
+item: Add ProgMan Icon
+  Group=%GROUP%
+  Icon Name German=TRiAS
+  Command Line=%MAINDIR%\Programm\trias32.exe
+  Icon Pathname=%MAINDIR%\Programm\TRiAS32.exe
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=INSTALL_COMCTL
+  Value=1
+end
+remarked item: Add Text to INSTALL.LOG
+  Text=Executing 401comupd.exe
+end
+item: Execute Program
+  Pathname=%TEMP%\401comupd.exe
+  Command Line=/Q
+  Flags=00000010
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=INSTALL_XML
+  Value=1
+end
+remarked item: Add Text to INSTALL.LOG
+  Text=Executing xmlredist.exe
+end
+item: Execute Program
+  Pathname=%TEMP%\xmlredist.exe
+  Command Line=/Q
+  Flags=00000010
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=INSTALL_IPROP
+  Value=1
+end
+remarked item: Add Text to INSTALL.LOG
+  Text=Executing iprop.exe
+end
+item: Execute Program
+  Pathname=%TEMP%\iprop.exe
+  Command Line=/Q
+  Flags=00000010
+end
+item: End Block
+end
+remarked item: Remark
+  Text=Registrierung, Lizensierung
+end
+remarked item: If/While Statement
+  Variable=LEGALREGNUMBER
+  Value=1
+  Flags=00000001
+end
+remarked item: Remark
+  Text=Nicht registrierte Version
+end
+remarked item: Execute Program
+  Pathname=%MAINDIR%\Programm\trias32.exe
+  Command Line=/regserver:setup:demoregnum
+  Default Directory=%MAINDIR%\Programm
+  Flags=00000010
+end
+remarked item: Execute Program
+  Pathname=%TEMP%\VSetup.exe
+  Default Directory=%TEMP%
+  Flags=00000010
+end
+remarked item: Delete File
+  Pathname=%MAINDIR%\Programm\trias32.exe
+end
+remarked item: Rename File/Directory
+  Old Pathname=%MAINDIR%\Programm\trias32.001
+  New Filename=TRiAS32.exe
+end
+remarked item: Delete File
+  Pathname=%TEMP%\VSetup.exe
+end
+remarked item: Else Statement
+end
+remarked item: Remark
+  Text=Registrierte Version
+end
+item: Check Configuration
+  Flags=10100000
+end
+remarked item: Remark
+  Text=Crypkey NT Treiber installieren
+end
+item: Execute Program
+  Pathname=%MAINDIR%\Programm\Setupex.exe
+  Command Line=/s
+  Default Directory=%MAINDIR%\Programm
+  Flags=00000010
+end
+item: Add Text to INSTALL.LOG
+  Text=Execute Program: %MAINDIR%\Programm\Setupex.exe /D /S
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=A
+  Flags=00001010
+end
+item: Edit INI File
+  Pathname=%MAINDIR%\Projekte\Demoprojekt\Datenquellen\ATKIS_DVG.ini
+  Settings=[ODBC-Data-Source-Names]
+  Settings=Gemeinden="3,%MAINDIR%\PROJEKTE\DEMOPROJEKT\ODBC\DEMOPROJEKT.DSN"
+  Settings=
+end
+item: Edit INI File
+  Pathname=%MAINDIR%\Projekte\Demoprojekt\ODBC\Demoprojekt.dsn
+  Settings=[ODBC]
+  Settings=DefaultDir="%MAINDIR%\Projekte\Demoprojekt\ODBC"
+  Settings=DBQ="%MAINDIR%\Projekte\Demoprojekt\ODBC\Demoprojekt.mdb"
+  Settings=
+  Settings=
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=B
+  Flags=00001010
+end
+remarked item: Remark
+  Text=Hilfesystem in Registry eintragen
+end
+item: Edit Registry
+  Total Keys=4
+  item: Key
+    Key=SOFTWARE
+    Root=34
+  end
+  item: Key
+    Key=SOFTWARE\Microsoft\Windows\Help
+    Root=34
+  end
+  item: Key
+    Key=SOFTWARE\Microsoft\Windows\Help
+    New Value=%MAINDIR%\Programm\TRiAS.hlp
+    Value Name=TRiAS.hlp
+    Root=2
+  end
+  item: Key
+    Key=SOFTWARE\Microsoft\Windows\Help
+    New Value=%MAINDIR%\Programm\TRiAS.cnt
+    Value Name=TRiAS.cnt
+    Root=2
+  end
+end
+item: End Block
+end
+remarked item: Remark
+  Text=Aufräumen ...
+end
+item: Delete File
+  Pathname=%TEMP%\401comupd.exe
+end
+item: Delete File
+  Pathname=%TEMP%\xmlredist.exe
+end
+item: Delete File
+  Pathname=%TEMP%\iprop.exe
+end
+item: Delete File
+  Pathname=%TEMP%\%DLLPATH%
+end
+item: Add Text to INSTALL.LOG
+  Text=Delete in-use files: On
+end
+item: Edit Registry
+  Total Keys=5
+  item: Key
+    Key=Software\Microsoft\Windows\CurrentVersion\Uninstall\%APPTITLE%
+    New Value=Version 4.20
+    Value Name=DisplayVersion
+    Root=2
+  end
+  item: Key
+    Key=Software\Microsoft\Windows\CurrentVersion\Uninstall\%APPTITLE%
+    New Value=+49 (331) 620030
+    Value Name=HelpTelephone
+    Root=2
+  end
+  item: Key
+    Key=Software\Microsoft\Windows\CurrentVersion\Uninstall\%APPTITLE%
+    New Value=TRiAS Potsdam
+    Value Name=Publisher
+    Root=2
+  end
+  item: Key
+    Key=Software\Microsoft\Windows\CurrentVersion\Uninstall\%APPTITLE%
+    New Value=http://www.trias.biz
+    Value Name=URLInfoAbout
+    Root=2
+  end
+  item: Key
+    Key=Software\Microsoft\Windows\CurrentVersion\Uninstall\%APPTITLE%
+    New Value=%MAINDIR%\Programm\TRiAS32.exe,-0
+    Value Name=DisplayIcon
+    Root=2
+  end
+end
+item: Add Text to INSTALL.LOG
+  Text=Execute Program: %MAINDIR%\Programm\unregtrias.exe
+end
+remarked item: Remark
+  Text=Booten ?
+end
+item: If/While Statement
+  Variable=RESTART
+  Flags=00000001
+end
+item: Display Message
+  Title=Install
+  Title French=Installer
+  Title German=Installation von Systemdateien
+  Title Portuguese=Instalar
+  Title Spanish=Instalar
+  Title Italian=Installa
+  Title Danish=Installer
+  Title Dutch=Installeren
+  Title Norwegian=Installer
+  Title Swedish=Installera
+  Text=The OLE system files are in-use and cannot be updated. This installation will restart Windows to update OLE. You must re-run this installation after Windows restarts to complete the installation.
+  Text French=Les fichiers systèmes OLE sont utilisés et ne peuvent pas être remis à jour. Cette installation va redémarrer Windows pour mettre à jour les fichiers OLE. Vous devez relancer cette installation après le redémarrage de Windows afin d'achever l'installation
+  Text German=Verschiedene Systemdateien sind in Gebrauch und können nicht aktualisiert werden. Diese Installation startet Windows neu, damit das System aktualisiert werden kann. Um die Installation fertigzustellen, müssen Sie nach dem Windows-Neustart diese Installation nochmals ausführen.
+  Text Portuguese=Os ficheiros do sistema OLE estão em uso e não podem ser actualizados. Esta instalação reiniciará Windows para actualizar OLE. Deve executar esta instalação novamente após Windows reiniciar para concluir a instalação
+  Text Spanish=El sistema de archivos OLE se encuentra en uso y no puede actualizarse. Esta instalación reiniciará Windows para actualizar el OLE. Debe volver a ejecutar esta instalación después de que Windows vuelva a completar la instalación
+  Text Italian=I file del sistema OLE sono in uso e non possono essere aggiornati. Questa procedura di installazione riavvierà Windows per aggiornare OLE. Per completare l’installazione devi rilanciare questa installazione, dopo aver riavviato Windows.
+  Text Danish=OLE systemfilerne er i brug og kan ikke opdateres. Denne installation starter Windows igen for opdatering af OLE. Denne installation skal køres igen efter Windows genstart for at fuldføre installationen.
+  Text Dutch=De OLE-systeembestanden zijn in gebruik en kunnen niet worden bijgewerkt. Dit installatieprogramma zal Windows opnieuw opstarten om OLE bij te werken. Nadat Windows opnieuw is opgestart dient u het installatieprogramma nogmaals laten draaien om de installatie af te maken.
+  Text Norwegian=OLE-systemfilene er i bruk og kan ikke oppdateres. Denne installasjonen vil starte Windows på nytt for å oppdatere OLE. Du må kjøre denne installasjonen én gang til når Windows har startet på nytt for å fullføre installasjonen.
+  Text Swedish=OLE-systemfilerna används och kan inte uppdateras. Denna installation startar om Windows för att uppdatera OLE. Du måste köra om denna installation efter omstart av Windows för att fullborda installationen.
+  Flags=00100000
+end
+item: Exit Installation
+end
+item: End Block
+end
+item: Self-Register OCXs/DLLs
+  Description=Updating System Configuration, Please Wait...
+end
+item: Execute Program
+  Pathname=%MAINDIR%\Programm\trias32.exe
+  Command Line=/regserver:setup
+  Default Directory=%MAINDIR%\Programm
+  Flags=00000010
+end
+remarked item: End Block
+end
+item: Wizard Block
+  Direction Variable=DIRECTION
+  Display Variable=DISPLAY
+  Bitmap Pathname=%_WISE_%\DIALOGS\TEMPLATE\WIZARD.BMP
+  X Position=9
+  Y Position=10
+  Filler Color=8421440
+  Flags=00000011
+end
+item: Custom Dialog Set
+  Name=Finished
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=Installation Complete
+    Title French=Installation en cours
+    Title German=Installation abgeschlossen
+    Title Portuguese=Instalação Completa 
+    Title Spanish=Se ha completado la Instalación
+    Title Italian=Installazione completata
+    Title Danish=Installation gennemført
+    Title Dutch=Installatie afgerond
+    Title Norwegian=Installasjonen er fullført
+    Title Swedish=Installationen klar
+    Width=280
+    Height=224
+    Font Name=Helv
+    Font Size=8
+    item: Push Button
+      Rectangle=170 185 212 199
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=&Finish >
+      Text French=&Terminer>
+      Text German=&Fertigstellen
+      Text Portuguese=&Terminar >
+      Text Spanish=&Finalizar>
+      Text Italian=&Fine >
+      Text Danish=&Afslut >
+      Text Dutch=&Klaar>
+      Text Norwegian=&Avslutt>
+      Text Swedish=&Sluta>
+    end
+    item: Push Button
+      Control Name=CANCEL
+      Rectangle=222 185 264 199
+      Action=3
+      Create Flags=01010000000000010000000000000000
+      Text=Cancel
+      Text French=Annuler
+      Text German=Abbrechen
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Annuller
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+    item: Static
+      Rectangle=9 177 263 178
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=90 10 260 63
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Text=%APPTITLE_UI% has been successfully installed.
+      Text=
+      Text=
+      Text=Press the Finish button to exit this installation.
+      Text=
+      Text French=L'installation de %APPTITLE% est réussie
+      Text French=
+      Text French=
+      Text French=Cliquez sur Terminer pour quitter cette installation
+      Text French=
+      Text German=%APPTITLE_UI% wurde erfolgreich installiert.
+      Text German=
+      Text German=
+      Text German=Zum Beenden dieser Installation klicken Sie bitte auf Fertigstellen.
+      Text German=
+      Text Portuguese=%APPTITLE% foi instalado com êxito
+      Text Portuguese=
+      Text Portuguese=
+      Text Portuguese=Pressionar o botão Terminar para sair desta instalação
+      Text Portuguese=
+      Text Spanish=%APPTITLE% se ha instalado con éxito.
+      Text Spanish=
+      Text Spanish=
+      Text Spanish=Pulse el botón de Finalizar para salir de esta instalación.
+      Text Spanish=
+      Text Italian=%APPTITLE% è stato installato.
+      Text Italian=
+      Text Italian=
+      Text Italian=Premi il pulsante Fine per uscire dal programma di installazione
+      Text Italian=
+      Text Danish=%APPTITLE% er nu installeret korrekt.
+      Text Danish=
+      Text Danish=
+      Text Danish=Klik på Afslut for at afslutte installationen.
+      Text Danish=
+      Text Dutch=%APPTITLE% is met succes geïnstalleerd.
+      Text Dutch=
+      Text Dutch=
+      Text Dutch=Druk op Klaar om deze installatie af te ronden.
+      Text Dutch=
+      Text Norwegian=Installasjonen av %APPTITLE% er vellykket.
+      Text Norwegian=
+      Text Norwegian=
+      Text Norwegian=Trykk på Avslutt-tasten for å avslutte denne installasjonen.
+      Text Norwegian=
+      Text Swedish=Installationen av %APPTITLE% har lyckats.
+      Text Swedish=
+      Text Swedish=
+      Text Swedish=Tryck på Sluta för att gå ur installationsprogrammet.
+      Text Swedish=
+    end
+    item: Push Button
+      Control Name=BACK
+      Rectangle=128 185 170 199
+      Variable=DIRECTION
+      Value=B
+      Create Flags=01010000000000010000000000000000
+      Text=< &Back
+      Text French=<&Retour
+      Text German=< &Zurück
+      Text Portuguese=<&Retornar
+      Text Spanish=<&Retroceder
+      Text Italian=< &Indietro
+      Text Danish=<&Tilbage
+      Text Dutch=<&Terug
+      Text Norwegian=<&Tilbake
+      Text Swedish=< &Tillbaka
+    end
+    item: Set Control Attribute
+      Control Name=BACK
+      Operation=1
+    end
+    item: Set Control Attribute
+      Control Name=CANCEL
+      Operation=1
+    end
+  end
+end
+item: End Block
+end
+item: New Event
+  Name=Cancel
+end
+item: Include Script
+  Pathname=%_WISE_%\INCLUDE\rollback.wse
+end

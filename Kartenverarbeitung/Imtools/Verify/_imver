@@ -1,0 +1,31 @@
+#!/bin/sh
+#
+#	Verify a single format
+#
+
+
+tool=$1
+info=$2
+display=$3
+fromfile=$4
+format=$5
+outfile=$6
+tooldir=$7
+cp=/usr/bin/cp
+badfile=bad.rgb
+
+echo "		$format - $info"
+
+#  File read and write
+
+echo "			Write file..."
+$tooldir/$tool $fromfile $options tmp.$format
+if [ $? -ne 0 ] ; then echo "			Conversion error."; $cp $badfile $outfile; exit 1; fi
+
+echo "			Read file..."
+$tooldir/$tool tmp.$format $outfile
+if [ $? -ne 0 ] ; then echo "			Conversion error."; $cp  $badfile $outfile; exit 1; fi
+rm -f tmp.$format
+
+exit 0
+

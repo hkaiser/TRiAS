@@ -1,0 +1,18 @@
+HKCR
+{
+	TRiASGM.AreaVisInfo.1 = s 'Visualisierungsinformation für Flächenobjekte'
+	{
+		CLSID = s '{429906A3-B83F-11D1-85B5-00600875138A}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {429906A3-B83F-11D1-85B5-00600875138A} = s 'Visualisierungsinformation für Flächenobjekte'
+		{
+			ProgID = s 'TRiASGM.AreaVisInfo.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+}

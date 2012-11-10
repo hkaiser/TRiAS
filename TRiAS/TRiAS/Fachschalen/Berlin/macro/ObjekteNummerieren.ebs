@@ -1,0 +1,116 @@
+' ***********************************************************************
+' *									*
+' *	Filter Grundstuecke vergleichen					*
+' *	GrundstückeNummerieren.ebf					*
+' ***********************************************************************
+
+Option Explicit
+
+' ======================================================================================
+'Programmkonstanten
+Const NL = Chr$(13) + Chr$(10)		'NewLine
+Const HT = Chr$(9)	   		' Tab		 
+
+' anwendungsspezifische Konstanten
+Const strBoxTitel = "Grundstücke nummerieren"
+Const strNummer = "Grundstücksnummer"
+Const strKZ = "Kennungszeichen"
+
+' --------------------------------------------------------------------------------------
+
+Public strLogFileName As String
+
+' ---------------------------------------------------
+' FunktionsDeklarationen
+
+Declare Private Sub ErrFile (strErrText As String)
+
+Private bErrFile As Boolean			' Fehlerdatei angelegt (True)
+
+' ---------------------------------------------------
+
+' Globale Variablen
+Dim lGlobalCnt As Long
+
+' ---------------------------------------------------
+' "BeginAction" wird gerufen, bevor die erste Objektmenge verarbeitet werden soll
+Function BeginAction() As Boolean
+
+' Hier notwendige Initialisierungen durchführen
+	
+' BeginAction für Abbruch auf 'False' setzen 
+	BeginAction = True
+	bErrFile = False	' Fehlerdatei (noch) nicht angelegt
+	lGlobalCnt = 0
+End Function
+
+' ---------------------------------------------------
+' "DoAction" wird für jede der zu verarbeitenden Objektmengen gerufen
+Function DoAction (Objs As GeoObjects) As GeoObjects
+Dim o As GeoObject
+Dim ObjsOrg As New GeoObjects
+ 
+	If Objs.Count = 1 Then 
+		Set DoAction = ObjS
+		Exit Function
+	End If
+
+
+	Dim Feat As GeoFeature
+	Dim MyFeat As String
+	Dim VFeat As GeoFeature
+	Dim MyVFeat As String
+	MyFeat = " "
+	MyVFeat = " "
+	Dim lNumber As Integer
+	lNumber = 0
+	For Each o in Objs
+		ObjsOrg.Add o
+		Set Feat = o.GetFeature ( strNummer)
+		If Feat Is Not Nothing Then
+			MyFeat = Feat.Feature$
+			Dim Mtext As String
+			MText = Trim$(Feat.Feature$)
+			lNumber = lNumber + 1
+			MText = Mtext + "/" + Trim$(STR$(lNumber))
+			Feat.Feature$ = MText
+			Set VFeat = o.GetFeature ( strKZ)
+			If VFeat Is Not Nothing Then
+				MyVFeat = VFeat.Feature$
+			End If
+			ErrFile  MyFeat + HT + MText + HT + MyVFeat
+		End If
+	Next o
+
+' Ergebnisanzeige in Recherchefenstern
+
+	Dim RWin As GeoObjectWin
+	Set RWin = ObjsOrg.CreateGeoObjectWin()
+	RWin.Name = "Doppelte Nummern : " + MyFeat
+	RWin.Visible = 1
+
+	Set DoAction = Objs
+
+End Function
+'=================================================================
+' --------------------------------------------------------------------------------------
+' Fehlertext strErrText in Fehlerdatei (Name des aktuellen Projektes mit Attribut "err")
+' eintragen
+Sub ErrFile (strErrText As String)
+	Dim strErrDatei As String
+	strErrDatei = Left$(GetActiveDocument.FullName$,Len(GetActiveDocument.FullName$)-3) + "err"
+	Open strErrDatei For Append Lock Write As #1	' Fehler-Datei öffnen
+	Print #1, strErrText
+	Close											' Fehler-Datei schließen
+	bErrFile = True
+End Sub ' ErrFile
+
+'=================================================================
+' ---------------------------------------------------
+' "EndAction" wird nach der Verarbeitung der
+' letzten Objektmenge gerufen
+Sub EndAction()
+' Hier notwendige Aufräumarbeiten durchführen
+
+End Sub
+ 

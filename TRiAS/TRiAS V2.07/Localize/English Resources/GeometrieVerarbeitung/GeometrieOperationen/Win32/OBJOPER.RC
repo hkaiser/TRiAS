@@ -1,0 +1,258 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "objopera.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resstrg.h"
+#include "objoper.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialogue
+//
+
+IDD_OPERATAUSWAHL DIALOG DISCARDABLE  140, 104, 349, 212
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Parameter settings for object operations"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " Operations ",-1,4,3,157,205,WS_GROUP
+    LTEXT           "> Blinking object (""knife"") intersects",-1,6,14,134,
+                    8,NOT WS_GROUP
+    CONTROL         "  Every marked object",IDR_SELEKTOBJEKTE,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,10,23,145,10
+    CONTROL         "  Every object of the object classes",IDR_KLASSEN,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,10,34,142,10
+    LTEXT           "> Combination of all marked objects",-1,6,116,
+                    147,9,NOT WS_GROUP
+    CONTROL         "  &Average (areas only)",IDR_DURCHSCHNITT,
+                    "Button",BS_AUTORADIOBUTTON | WS_TABSTOP,10,125,142,10
+    CONTROL         "  &Union",IDR_VEREINIGUNG,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,10,136,143,10
+    LTEXT           "Object class for average or union object:",
+                    -1,10,149,129,16,NOT WS_GROUP
+    COMBOBOX        IDL_IDENTIFIKATOR,10,167,146,96,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "> Exclusive Oder of the blinking area",-1,6,185,134,8,
+                    NOT WS_GROUP
+    CONTROL         "  With every marked area",IDR_EXKLUSIV,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,10,194,144,10
+    GROUPBOX        " For intersection with area only  ",-1,167,3,115,71,WS_GROUP
+    LTEXT           "New objects are situated",-1,173,15,97,8,NOT WS_GROUP
+    CONTROL         "  &Inside",IDC_INNERHALB,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,173,27,97,10
+    CONTROL         "  On the edge",IDC_RAND,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,173,38,97,10
+    CONTROL         "  Outside",IDC_AUSSERHALB,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,173,49,98,10
+    GROUPBOX        " New objects ",IDG_SPEICHERFORM,167,76,115,37,WS_GROUP
+    CONTROL         "  &Create temporarily",IDR_TEMPORAER,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,173,88,88,9
+    CONTROL         "  &Create permanently",IDR_PERMANENT,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,173,99,94,10
+    GROUPBOX        " Display of results ",-1,167,115,115,39,WS_GROUP
+    CONTROL         "  &Window with new objects",IDC_LISTEANZ,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,172,127,108,10
+    CONTROL         "  Window with original objects",IDC_ORIGLISTE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,172,138,108,10
+    DEFPUSHBUTTON   "&OK",IDOK,289,7,55,14,WS_GROUP
+    PUSHBUTTON      "&Cancel",IDCANCEL,289,29,55,14
+    PUSHBUTTON      "All classes",IDB_ALLEKLASSEN,289,59,55,14
+    GROUPBOX        " Description ",-1,167,156,177,52,WS_GROUP
+    LTEXT           "",IDT_KOMMENTAR,172,165,168,42,NOT WS_GROUP
+    LISTBOX         IDL_IDLISTE1,10,47,146,64,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_GROUP | WS_TABSTOP
+    LTEXT           "of the intersecting area",-1,173,61,91,8
+    PUSHBUTTON      "",IDC_BUTTON1,167,80,115,33,WS_DISABLED | NOT 
+                    WS_TABSTOP
+END
+
+IDD_STATUS DIALOG DISCARDABLE  69, 59, 151, 73
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Editing state"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Totally there have been edited:",-1,3,15,135,8
+    CONTROL         "%3d%%",IDG_STATUS,"GaugeBox32",0x2,3,30,145,16
+    DEFPUSHBUTTON   "&Cancel",IDCANCEL,47,54,55,14
+    LTEXT           "",IDT_OBJEKTNR,99,5,22,8
+    LTEXT           "Edit new object:",-1,3,5,96,8
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "objopera.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""resstrg.h""\r\n"
+    "#include ""objoper.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""objoper.rcv""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Object operations"
+    IDS_GEOREIN             "TRiAS.Clearing.1"
+    IDS_OPERATIONEN         "&Select object operations ..."
+    IDS_OPLOESCHEN          "&Delete new objects
+    IDS_OPORIGLOESCHEN      "&Delete original objects ..."
+    IDS_NEUEOBJ             "New objects"
+    IDS_ALTEOBJ             "Original objects"
+    IDS_BOXTEXT1            "No operations have been previewed for this object selection."
+    IDS_BOXTEXT2            "The marked objects have no common average\n  or cancel by user."
+    IDS_BOXTEXT3            "Cannot unite the marked objects\n or cancel by user."
+    IDS_BOXTEXT6            "No result of operation\n or cancel by user."
+    IDS_KOMM1               "The blinking object intersects with all marked objects. As a result of the intersection with an area the subobjects situated inside, outside or on the edge of this area can be created."
+    IDS_KOMM2               "The blinking object intersects with all objects of the selected classes. As a result of the intersection with an area the subobjects situated inside, outside or on the edge of this area can be created."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_KOMM3               "The blinking object intersects with all objects of the actual view. As a result of the intersection with an area the subobjects situated inside, outside or on the edge of this area can be created."
+    IDS_KOMM4               "Creates one or several new areas from the intersection of all marked areas."
+    IDS_KOMM5               "Combines all marked areas to form a new area. If 2 lines are marked, one new line will be formed. A space will be completed."
+    IDS_KOMM6               "Creates new areas from all parts of the marked area that do not belong to the blinking area, and from all parts of the blinking area that do not belong to one of the marked areas."
+    IDS_KOMM7               "The new objects will emerge from the parts of the objects to be intersected that are inside of the blinking (i. e. intersecting) area."
+    IDS_KOMM8               "The new objects will emerge from the parts of the objects to be intersected that are on the outer edge of the blinking (i. e. intersecting) area. This setting is only useful for intersecting lines."
+    IDS_KOMM9               "The new objects will emerge from the parts of the objects to be intersected that are outside of the blinking (i. e. intersecting) area."
+    IDS_KOMM10              "The new objects are only created for the actual process. If you change the view they will be deleted."
+    IDS_KOMM11              "The new objects will be permanently saved in the database. After closing and reopening the project they will still be available."
+    IDS_KOMM12              "Shows the new object in a research window."
+    IDS_KOMM13              "Shows the objects used in creating the new objects in a research window.."
+    IDS_GEOFEHL1            "There is a geometric error in the blinking object (object no. %ld). Cannot be used in any operation."
+    IDS_GEOFEHL2            "There is a geometric error in the %ld object. Cannot perform the selected operation."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UNIQUEIDENT         "Unique Ident    "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UIFORMAT            "/OBJOPER_EXT_%ld"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXEXTENSIONPROC    "DEXEXTENSIONPROC"
+    IDS_DEXXEXTENSIONPROC   "DEXXEXTENSIONPROC"
+    IDS_DEXNOTIFICATIONPROC "DEXNOTIFICATIONPROCEX"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialogue
+//
+
+IDD_OLE_PROPPAGE_LARGE DIALOG DISCARDABLE  0, 0, 250, 110
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "TODO: layout OLE  property page",IDC_STATIC,71,51,108,8
+    CONTROL         "Tab1",IDC_OPERATIONEN,"SysTabControl32",0x0,45,31,157,
+                    55
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_OLE_PROPPAGE_LARGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 103
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "objoper.rcv"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

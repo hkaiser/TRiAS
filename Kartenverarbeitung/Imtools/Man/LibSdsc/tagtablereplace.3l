@@ -1,0 +1,132 @@
+
+
+
+     TTTTAAAAGGGGTTTTAAAABBBBLLLLEEEERRRREEEEPPPPLLLLAAAACCCCEEEE((((3333TTTTAAAAGGGG))))   SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))    TTTTAAAAGGGGTTTTAAAABBBBLLLLEEEERRRREEEEPPPPLLLLAAAACCCCEEEE((((3333TTTTAAAAGGGG))))
+
+
+
+     NNNNAAAAMMMMEEEE
+          TagTableReplace - replace a tag table entry in a tag table
+
+     SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+          ####iiiinnnncccclllluuuuddddeeee """"ssssddddsssscccc....hhhh""""
+
+          eeeexxxxtttteeeerrrrnnnn iiiinnnntttt TTTTaaaaggggEEEErrrrrrrrNNNNoooo;;;;
+
+          iiiinnnntttt TTTTaaaaggggTTTTaaaabbbblllleeeeRRRReeeeppppllllaaaacccceeee(((( ttttaaaaggggTTTTaaaabbbblllleeee,,,, nnnntttthhhhEEEEnnnnttttrrrryyyy,,,, ttttaaaaggggEEEEnnnnttttrrrryyyy ))))
+               TTTTaaaaggggTTTTaaaabbbblllleeee ****ttttaaaaggggTTTTaaaabbbblllleeee;;;;
+               iiiinnnntttt nnnntttthhhhEEEEnnnnttttrrrryyyy;;;;
+               TTTTaaaaggggEEEEnnnnttttrrrryyyy ****ttttaaaaggggEEEEnnnnttttrrrryyyy;;;;
+
+
+     DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+          _T_a_g_T_a_b_l_e_R_e_p_l_a_c_e replaces the _n_t_h_E_n_t_r_y tag table entry in the
+          _t_a_g_T_a_b_l_e with the new entry _t_a_g_E_n_t_r_y.  The _n_t_h_E_n_t_r_y and
+          _n_t_h_O_c_c_u_r fields of the _t_a_g_E_n_t_r_y are set.  The replaced tag
+          entry is deallocated (see _T_a_g_E_n_t_r_y_F_r_e_e(3TAG)) and should not
+          be referenced again.
+
+     NNNNOOOOTTTTEEEESSSS
+          For a description of the fields of a tag table entry, see
+          the mmmmaaaannnn page on _T_a_g_E_n_t_r_y_A_l_l_o_c(3TAG).
+
+          Replacing an entry in the tag table deletes the entry at
+          _n_t_h_E_n_t_r_y, and inserts the new _t_a_g_E_n_t_r_y in its place, giving
+          the new entry an _n_t_h_E_n_t_r_y field the same as the replaced
+          entry.  The first entry in the table has an _n_t_h_E_n_t_r_y field
+          of 0.  The second entry in the table has an _n_t_h_E_n_t_r_y of 1,
+          and so on.
+
+          This operation may be accomplished identically using
+          _T_a_g_T_a_b_l_e_D_e_l_e_t_e(3TAG) and _T_a_g_T_a_b_l_e_I_n_s_e_r_t(3TAG) but is faster
+          using _T_a_g_T_a_b_l_e_R_e_p_l_a_c_e.
+
+          Tag entries may be retrieved based on their entry number
+          using _T_a_g_T_a_b_l_e_Q_L_i_n_e_a_r(3TAG), which treats the tag table like
+          a linear list.  Tag entries may be deleted and inserted,
+          based on their entry number using _T_a_g_T_a_b_l_e_D_e_l_e_t_e(3TAG) and
+          _T_a_g_T_a_b_l_e_I_n_s_e_r_t(3TAG). Tag entries may be appended to a table
+          using _T_a_g_T_a_b_l_e_A_p_p_e_n_d(3TAG).
+
+          Replacing an entry in the tag table removes the old entry
+          from the occurrence list of entries with that tag, then
+          inserts the new entry into the list of occurrences of
+          entries with the same tag as the new entry.  The new entry
+          acquires the _n_t_h_O_c_c_u_r field of the old entry.  The first
+          entry in the table with this tag has an _n_t_h_O_c_c_u_r field of 0.
+          The second entry in the table with this tag has an _n_t_h_O_c_c_u_r
+          of 1, and so on.
+
+
+
+
+     Page 1                                          (printed 6/30/95)
+
+
+
+
+
+
+     TTTTAAAAGGGGTTTTAAAABBBBLLLLEEEERRRREEEEPPPPLLLLAAAACCCCEEEE((((3333TTTTAAAAGGGG))))   SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))    TTTTAAAAGGGGTTTTAAAABBBBLLLLEEEERRRREEEEPPPPLLLLAAAACCCCEEEE((((3333TTTTAAAAGGGG))))
+
+
+
+          Tag entries may be retrieved based on their tag and
+          occurrence number using _T_a_g_T_a_b_l_e_Q_D_i_r_e_c_t(3TAG), which treats
+          the tag table like a hash table.
+
+     RRRREEEETTTTUUUURRRRNNNNSSSS
+          On success, _T_a_g_T_a_b_l_e_R_e_p_l_a_c_e returns the new total number of
+          entries in the tag table.  On failure, -1 is returned and
+          _T_a_g_E_r_r_N_o set to:
+
+          TAGEBADNTHENTRY     The nth entry argument is < -1 or >
+                              the size of the table
+          TAGEMALLOC          Cannot allocate enough memory
+          TAGENULLTAGENTRY    The tag entry argument is bad
+          TAGENULLTAGTABLE    The tag table argument is bad
+
+     SSSSEEEEEEEE AAAALLLLSSSSOOOO
+          TagTableAppend(3TAG), TagTableDelete(3TAG),
+          TagEntryAlloc(3TAG), TagEntryFree(3TAG),
+          TagTableInsert(3TAG), TagTableQDirect(3TAG),
+          TagEntryQNthEntry(3TAG), TagEntryQNthOccur(3TAG),
+          TagTableQLinear(3TAG), TagTableQNEntry(3TAG),
+          TagTableAlloc(3TAG), TagTableFree(3TAG)
+
+     AAAAUUUUTTTTHHHHOOOORRRRSSSS
+          Dave Nadeau
+          San Diego Supercomputer Center
+
+     CCCCOOOONNNNTTTTAAAACCCCTTTT
+          SDSC consultants, (619)534-5100, ccccoooonnnnssssuuuulllltttt@@@@yyyy1111....ssssddddsssscccc....eeeedddduuuu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Page 2                                          (printed 6/30/95)
+
+
+

@@ -1,0 +1,158 @@
+tooldir=../tools/`../mach`
+base=ras
+testfile=panic.ras
+testrgbfile=panic.rgb
+testredrampfile=redramp.ras
+testalphafile=panalpha.rgb
+testbluefile=blue.ras
+display=none
+
+tooloutfile=toolout.rgb
+formatoutfile=formout.rgb
+
+echo "Verifying Tools"
+
+_imvertool imadjust "Making all red pixels blue" \
+	"You should see a purple 'don't panic'" \
+	$display "$testrgbfile -red 10-255 -set -blue 10-255 out1.$base" out1.$base $tooldir
+
+_imvertool imcltroll "Rolling the clt" \
+	"The colors should be swapped." \
+	$display "$testfile -roll 2 out2.$base" out2.$base $tooldir
+
+_imvertool imcomp "Compositing" \
+	"There should be a red background." \
+	$display "$testalphafile $testredrampfile out3.$base" out3.$base $tooldir
+
+_imvertool imcopy "Copying" \
+	"Just the green guy should be in the picture." \
+	$display "$testfile -xposition 76 -yposition 60 -xsize 175 -ysize 127 out4.$base" out4.$base $tooldir
+
+_imvertool imdissolve "Dissolving" \
+	"Picture should be faded to half brightness." \
+	$display "$testfile -weight 0.5 out5.$base" out5.$base $tooldir
+
+_imvertool imfill "Filling" \
+	"Picture should be filled with a ramp of hue." \
+	$display "-intensity 0.3 -saturation 0.5 -hue 0-360 -xsize 100 -ysize 100 out6.$base" out6.$base $tooldir
+
+_imvertool imflip "Flipping" \
+	"Picture should be upside down." \
+	$display "$testfile -yflip out7.$base" out7.$base $tooldir
+
+_imvertool imgray "Converting to grayscale." \
+	"Picture should be grayscale." \
+	$display "$testfile out8.$base" out8.$base $tooldir
+
+_imvertool imkey "Keying on intensity 0.0." \
+	"Red should show through background." \
+	$display "-intensity 0.0 $testrgbfile $testredrampfile out9.$base" out9.$base $tooldir
+
+_imvertool imlighten "Lightening." \
+	"Picture should be lighter." \
+	$display "$testfile -factor 3.0 out10.$base" out10.$base $tooldir
+
+_imvertool immono "Converting to mono." \
+	"Picture should be dithered mono." \
+	$display "$testfile -dither out11.$base" out11.$base $tooldir
+
+_imvertool impaste "Pasting" \
+	"There should be a blue square on a red background." \
+	$display "$testbluefile $testredrampfile out12.$base" out12.$base $tooldir
+
+_imvertool imroll "Rolling" \
+	"'Don't Panic' should now be on the bottom." \
+	$display "$testfile -yroll 60 out13.$base" out13.$base $tooldir
+
+_imvertool imrotate "Rotating" \
+	"Image should be rotated against a ramped blue background." \
+	$display "$testrgbfile -rotate 30 -blue 0-100 out14.$base" out14.$base $tooldir
+
+_imvertool imscale "Scaling" \
+	"Image should be twice as long" \
+	$display "$testfile -xscale 2 out15.$base" out15.$base $tooldir
+
+_imvertool imshear "Shearing" \
+	"Image should be sheared against a red background" \
+	$display "$testrgbfile -xshear 40 -red 0-100 out16.$base" out16.$base $tooldir
+
+_imvertool imstoryboard "Storyboarding" \
+	"There should be two pictures next to each other." \
+	$display "$testrgbfile $testrgbfile -outfile out17.$base" out17.$base $tooldir
+
+echo "       Storyboarding images together into $tooloutfile"
+rm -f $tooloutfile
+$tooldir/imstoryboard out1.$base out2.$base out3.$base out4.$base out5.$base out6.$base  \
+	out7.$base out8.$base out9.$base out10.$base out11.$base out12.$base \
+	out13.$base out14.$base out15.$base out16.$base out17.$base \
+	-outfile $tooloutfile
+
+rm -f out1.$base out2.$base out3.$base out4.$base out5.$base out6.$base 
+rm -f out7.$base out8.$base out9.$base out10.$base out11.$base out12.$base 
+rm -f out13.$base out14.$base out15.$base out16.$base out17.$base 
+
+# imprint
+# imformats
+# imfile
+# imcat
+# imsplit
+# imhist
+
+
+
+echo "Verifying Formats"
+_imver imconv "Windows bitmap image file" $display $testfile bmp out1.$base $tooldir
+_imver imconv "Windows cursor image file" $display $testfile cur out2.$base $tooldir
+_imver imconv "Graphics Image File" $display $testfile gif out3.$base $tooldir
+_imver imconv "Hierarchical Data File" $display $testfile hdf out4.$base $tooldir
+_imver imconv "Windows icon image file" $display $testfile ico out5.$base $tooldir
+_imver imconv "Sun Icon and Cursor file" $display $testfile icon out6.$base $tooldir
+_imver imconv "Sun TAAC Image File Format" $display $testfile iff out7.$base $tooldir
+_imver imconv "JPEG Image File Format" $display $testfile jpeg out8.$base $tooldir
+_imver imconv "ImageMagick's MIFF file format" $display $testfile miff out9.$base $tooldir
+_imver imconv "Apple Macintosh MacPaint file" $display $testfile mpnt out10.$base $tooldir
+_imver imconv "PBM Portable Bit Map file" $display $testfile pbm out11.$base $tooldir
+_imver imconv "ZSoft IBM PC Paintbrush file" $display $testfile pcx out12.$base $tooldir
+_imver imconv "PIXAR picture file" $display $testfile pic out13.$base $tooldir
+_imver imconv "Apple Macintosh QuickDraw/PICT file" $display $testfile pict out14.$base $tooldir
+_imver imconv "Alias image file" $display $testfile pix out15.$base $tooldir
+_imver imconv "Sun Rasterfile" $display $testfile ras out16.$base $tooldir
+_imver imconv "SGI RGB image file" $display $testfile rgb out17.$base $tooldir
+_imver imconv "Wavefront raster image file" $display $testfile rla out18.$base $tooldir
+_imver imconv "Utah Run length encoded image file" $display $testfile rle out19.$base $tooldir
+_imver imconv "SoftImage's image file format" $display $testfile softimage out20.$base $tooldir
+_imver imconv "SDSC Synu image file" $display $testfile synu out21.$base $tooldir
+_imver imconv "Truevision Targa image file" $display $testfile tga  out22.$base $tooldir
+_imver imconv "Tagged image file" $display $testfile tiff out23.$base $tooldir
+_imver imconv "Khoros Visualization image file" $display $testfile viff out24.$base $tooldir
+_imver imconv "AVS X image file" $display $testfile x out25.$base $tooldir
+_imver imconv "X11 bitmap file" $display $testfile xbm out26.$base $tooldir
+_imver imconv "X11 pixmap file" $display $testfile xpm out27.$base $tooldir
+_imver imconv "X Window System window dump image file" $display $testfile xwd out28.$base $tooldir
+_imver imconv "Z compression" $display $testfile ras.Z out29.$base $tooldir
+_imver imconv "z packing" $display $testfile ras.z out30.$base $tooldir
+_imver imconv "gz compression" $display $testfile ras.gz out31.$base $tooldir
+_imver imconv "uu encoding" $display $testfile ras.uu out32.$base $tooldir
+
+# _imver imconv "Adobe PostScript file" $display $testfile ps
+# _imver imconv "Encapsulated PostScript file" $display $testfile eps
+
+echo "       Storyboarding images together into $formatoutfile"
+
+rm -f $formatoutfile
+$tooldir/imstoryboard out1.$base out2.$base out3.$base out4.$base out5.$base out6.$base  \
+	out7.$base out8.$base out9.$base out10.$base out11.$base out12.$base \
+	out13.$base out14.$base out15.$base out16.$base out17.$base \
+	out18.$base out19.$base out20.$base out21.$base out22.$base \
+	out23.$base out24.$base out25.$base out26.$base out27.$base \
+	out28.$base out29.$base out30.$base out31.$base out32.$base \
+	-outfile $formatoutfile
+
+rm -f out1.$base out2.$base out3.$base out4.$base out5.$base out6.$base 
+rm -f out7.$base out8.$base out9.$base out10.$base out11.$base out12.$base 
+rm -f out13.$base out14.$base out15.$base out16.$base out17.$base 
+rm -f out18.$base out19.$base out20.$base out21.$base out22.$base 
+rm -f out23.$base out24.$base out25.$base out26.$base out27.$base out28.$base
+rm -f out29.$base out30.$base out31.$base out32.$base 
+
+

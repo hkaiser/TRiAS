@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASQL.MathFunction.1 = s 'MathFunction Class'
+	{
+		CLSID = s '{E6045697-27F8-11D3-8580-00104B8CC00A}'
+	}
+	TRiASQL.MathFunction = s 'MathFunction Class'
+	{
+		CLSID = s '{E6045697-27F8-11D3-8580-00104B8CC00A}'
+		CurVer = s 'TRiASQL.MathFunction.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {E6045697-27F8-11D3-8580-00104B8CC00A} = s 'MathFunction Class'
+		{
+			ProgID = s 'TRiASQL.MathFunction.1'
+			VersionIndependentProgID = s 'TRiASQL.MathFunction'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{62ECE770-EC1D-4680-9A37-B5CD0BF0C1BC}'
+		}
+	}
+}

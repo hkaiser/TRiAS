@@ -1,0 +1,537 @@
+// Importgrammatiken für TXI, TXM und TXR -Dateien ----------------------------
+// File: IDNTSDB.YXX
+
+output lexer 	source "idntsdbl.cxx" ;
+output lexer 	header "idntsdbl.hxx" ;
+output parser 	source "idntsdby.cxx" ;
+output parser 	header "idntsdby.hxx" ;
+
+// ----------------------------------------------------------------------------
+// Die LexerKlasse enthält als zusätzlichen Member die Zahlenbasis der Idents
+// und der MerkmalsCodes in dieser Datenbasis.
+
+class base_identsdb ;		// Lexer für alle drei Parser (TXI, TXM, TXR)
+
+lexer ::
+	name yy_lex_identsdb_obj
+	member	{
+		private:
+			short m_iIdMkBase;	// Zahlenbasis für Idents/MCodes
+
+			int m_iReturnState;
+
+		public:
+			short &IntBase (void) { return m_iIdMkBase; }
+			void StartLangText (void)
+			{
+				m_iReturnState = yy_lex_class();
+				yy_lex_start (yy_lex_class_langtext_lexer_);
+			}
+			void Return (void) { yy_lex_start (m_iReturnState); }
+		}
+	
+	constructor initializer 
+		{
+			m_iIdMkBase(10), m_iReturnState(0)
+		}
+	;	
+
+charset ASCII8 ;
+
+token		INTEGER, KURZTEXT ;
+
+discard token 	SPACES ;
+
+// construct statements for lexer tokens --------------------------------------
+construct	INTEGER :: DEFAULT
+	member	{
+		protected:
+			long m_lValue;
+
+		public:
+				INTEGER (void) { m_lValue = 0L; }
+
+			long &Value (void) { return m_lValue; }
+		}
+			
+	constructor initializer	
+		{
+			m_lValue(0L)
+		}
+			
+	constructor body 
+		{
+		string strTok (yy_this_lex_ptr->yy_lex_token(), yy_this_lex_ptr->yy_lex_len());
+
+			m_lValue = strtoul (strTok.c_str(), NULL, yy_this_lex_ptr->IntBase());
+		}
+	;
+	
+construct 	KURZTEXT :: STRING
+	constructor body
+		{	// führendes '/*' und abschließendes '*/' entfernen
+		int iLen = yy_this_lex_ptr->yy_lex_len();
+
+			memmove (yy_this_string, yy_this_string+2, iLen-4);
+			yy_this_string[iLen-4] = '\0';
+
+			OemToAnsi (yy_this_string, yy_this_string);
+
+		// alles bis zum Zeilenende ist der LANGTEXT
+			yy_this_lex_ptr->StartLangText();
+		}
+	;
+
+// lexer rules ----------------------------------------------------------------
+INTEGER:	("0" .. "9") ("0" .. "9" | "a" .. "f" | "A" .. "F")* ;
+
+KURZTEXT:	"/" "*" ( (@)* "*")+ "/" ;
+
+SPACES:		(" " | "\t")+ ;
+
+///////////////////////////////////////////////////////////////////////////////
+// LexerSection für LANGTEXT --------------------------------------------------
+class langtext_lexer ;
+
+lexer
+
+charset ASCII8 ;
+
+token		LANGTEXT ;
+
+// lexer construct statements -------------------------------------------------
+construct 	LANGTEXT :: STRING 
+	constructor body 
+		{	// enthaltene und abschließendes '\n' entfernen
+		int iLen = yy_this_lex_ptr->yy_lex_len();
+		char *pSrc = yy_this_string;
+		char *pDest = yy_this_string;
+
+			for (int i = 0; i < iLen; i++) {
+				if ('\n' == *pSrc) {
+					++pSrc;
+					continue;
+				}
+				else if ('\\' == *pSrc && '\n' == *(pSrc+1)) {
+					++i;
+					pSrc += 2;
+					continue;
+				}
+
+				*pDest++ = *pSrc++;
+			}
+			*pDest = '\0';
+
+			OemToAnsi (yy_this_string, yy_this_string);
+
+		// wieder in Ausgangslage schalten
+			yy_this_lex_ptr->Return(); 
+		}
+	;
+
+// lexer rules ----------------------------------------------------------------
+LANGTEXT:	((@) | ESCAPEDCHAR | CONTCHAR)* "\n" { ++yy_cur_lineno(); } ;
+
+CONTCHAR:	"\\" "\n" { ++yy_cur_lineno(); } ;		// Folgezeile
+
+ESCAPEDCHAR:	"\\" ("t" | "n" | "r" | "v" | "\\" | " ") ;
+
+///////////////////////////////////////////////////////////////////////////////
+// globale Lexer-Includes
+global	{
+	#include <ctype.h>
+	#include <istatus.h>	// LPPROGRESSINDICATOR
+
+	#pragma warning (disable:4251)	// needs to have dll-interface to be used by clients of class 'yy_psr_identsdb_obj'
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Identifikatoren einlesen ---------------------------------------------------
+class icodedesc from base_identsdb ;
+
+lexer
+
+token		HEXIDENT OKS ;
+
+construct	HEXIDENT :: DEFAULT
+	base	{
+			public INTEGER
+		}
+			
+	constructor body 
+		{
+			if (yy_this_lex_ptr -> IntBase() != 16) {
+			// inkonsistente Identifikator-Zahlenbasis
+				yy_this_lex_ptr -> yy_lex_abort();
+				return;
+			}
+		
+		string strTok (yy_this_lex_ptr->yy_lex_token(),	yy_this_lex_ptr->yy_lex_len());
+
+			m_lValue = strtoul (strTok.c_str(), NULL, 16);
+		}
+	;
+	
+construct 	OKS :: STRING 
+	constructor body
+		{	// führendes '\"' und abschließendes '\"' entfernen
+		int iLen = yy_this_lex_ptr->yy_lex_len();
+
+			memmove (yy_this_string, yy_this_string+1, iLen-2);
+			yy_this_string[iLen-2] = '\0';
+		}
+	;
+
+HEXIDENT:	("0x" | "0X") ("0" .. "9" | "a" .. "f" | "A" .. "F") + ;
+
+OKS:		"\"" @+ "\"" ;
+
+// ParserSection (Basisklasse) ------------------------------------------------
+parser ::
+	name yy_psr_identsdb_obj 
+	member	{
+		public:
+			typedef set<long, less<long> > MCodeSet;
+			bool isMCodeUsed (long lMCode)
+			{
+				if (!m_fMCodesFilled) {
+				ENUMNOKEYLONGEX ENK;
+
+					ENK.eFcn = (ENUMNOKEYLONGEXPROC)FillAllMCodeParserList;
+					ENK.ePtr = &m_setMCodes;
+					ENK.eData = (MPSystemFeatures|MPAllFeatures);
+					DEX_EnumMCodesEx (ENK);		// mit allen MCodes füllen
+
+					m_fMCodesFilled = true;
+				}
+
+			return m_setMCodes.find (lMCode) != m_setMCodes.end();
+			}
+
+		private:
+			bool m_fMCodesFilled;
+			MCodeSet m_setMCodes;		// alle existierenden MerkmalCodes 
+
+		public:
+			enum IMPORTMODE {
+				IMPORTMODE_OverWrite = 1,	// der neue Eintrag gilt
+				IMPORTMODE_KeepEntry = 2,	// der alte Eintrag gilt
+				IMPORTMODE_AdjustManually = 3,	// manuell abgleichen
+			};
+			IMPORTMODE &IMode (void) { return m_rgIMode; }
+
+			enum REJECTMODE {
+				REJECTMODE_RejectUnused = 1,	// nur benutzte importieren
+				REJECTMODE_ImportAll = 2,	// alle importieren
+			};
+			REJECTMODE &RMode (void) { return m_rgRMode; }
+
+		// eigentliche ImportFunktionen
+			bool WriteTXI (TXISatz *pTXI);
+			bool WriteTXM (TXMSatz *pTXM);
+			bool WriteTXR (TXRSatz *pTXR);
+
+		// StatusFenster setzen
+			void SetStatus (LPPROGRESSINDICATOR pIStatus)
+			{
+				if (m_pIStatus) m_pIStatus -> Release();
+				m_pIStatus = pIStatus;
+				if (m_pIStatus) m_pIStatus -> AddRef();
+			}
+			HRESULT GetStatus (LPPROGRESSINDICATOR *ppIStatus) 
+			{ 
+				if (m_pIStatus) {
+					*ppIStatus = m_pIStatus; 
+					m_pIStatus -> AddRef();
+					return S_OK;
+				}
+				return E_FAIL;
+			}
+
+			void SetDataSource (HPROJECT hPr) { m_hPr = hPr; }
+			HPROJECT GetDataSource() { return m_hPr; }
+
+		private:
+			IMPORTMODE m_rgIMode;	// ImportModus
+			REJECTMODE m_rgRMode;	// RejectModus
+			LPPROGRESSINDICATOR m_pIStatus;
+			HPROJECT m_hPr;				// ZielDatenquelle
+		}
+
+	constructor initializer 
+		{
+			m_rgIMode(IMPORTMODE_OverWrite), 
+			m_rgRMode(REJECTMODE_ImportAll),
+			m_fMCodesFilled(false),
+			m_pIStatus(NULL),
+			m_hPr(NULL)
+		}
+	;
+
+construct 	TXISatz :: all 
+	constructor body 
+		{
+			yy_this_psr_ptr -> WriteTXI (this);
+
+		LPPROGRESSINDICATOR pIStatus = NULL;
+		HRESULT hr = yy_this_psr_ptr -> GetStatus (&pIStatus);
+		bool fAborted = false;
+
+			if (SUCCEEDED(hr)) {
+				if (pIStatus -> WasCanceled())
+					fAborted = true;
+
+			DWORD dwPos = yy_this_psr_ptr -> yy_psr_cur_lex() -> 
+					yy_lex_cur_inp() -> yy_inp_cur_offset();
+
+				pIStatus -> SetPosition (dwPos);
+				pIStatus -> Release();
+			}
+			delete this;		// wird nicht mehr gebraucht
+
+			if (fAborted) yy_this_psr_ptr -> yy_psr_abort();
+		}
+	;
+
+///////////////////////////////////////////////////////////////////////////////
+// globale Parser-Includes
+global	{
+	#include <istatus.h>	// LPPROGRESSINDICATOR
+
+	#pragma warning (disable: 4304)		// STL
+	#include <ospace/std/set>
+	#include <ospace/std/algorithm>
+
+	extern "C" BOOL _XTENSN_EXPORT PASCAL FillAllMCodeParserList (long lMCode, DWORD, void *pData);
+
+	#pragma warning (disable:4251)	// needs to have dll-interface to be used by clients of class 'yy_psr_identsdb_obj'
+	#pragma warning (disable:4273)	// 'yy_psr_identsdb_obj::yy_psr_identsdb_obj' : inconsistent dll linkage.  dllexport assumed.
+}
+
+remove		TXISatz, TXIDatei ;
+
+TXIDatei:	TXISatz *		// IdentBeschreibungen
+	;
+	
+TXISatz:	(INTEGER | HEXIDENT) (KURZTEXT)? LANGTEXT
+	|		(INTEGER | HEXIDENT) OKS (KURZTEXT)? LANGTEXT
+	|		OKS (KURZTEXT)? LANGTEXT
+	|		yy_error (KURZTEXT)? LANGTEXT 
+	;
+
+///////////////////////////////////////////////////////////////////////////////
+// MerkmalsCodes einlesen -----------------------------------------------------
+class mcodedesc from base_identsdb ;
+
+lexer
+
+token		HEXMCODE ;
+
+construct	HEXMCODE :: DEFAULT
+	base 	{
+			public INTEGER
+		}
+
+	constructor body 
+		{
+			if (yy_this_lex_ptr -> IntBase() != 16) {
+			// inkonsistente MerkmalsCode-Zahlenbasis
+				yy_this_lex_ptr -> yy_lex_abort();
+				return;
+			}
+		
+		string strTok (yy_this_lex_ptr->yy_lex_token(), yy_this_lex_ptr->yy_lex_len());
+
+			m_lValue = strtoul (strTok.c_str(), NULL, 16);
+		}
+	;
+	
+HEXMCODE:	("0x" | "0X") ("0" .. "9" | "a" .. "f" | "A" .. "F")+  ;
+
+parser
+
+construct 	TXMSatz :: all
+	constructor body 
+		{
+			yy_this_psr_ptr -> WriteTXM (this);
+
+		LPPROGRESSINDICATOR pIStatus = NULL;
+		HRESULT hr = yy_this_psr_ptr -> GetStatus (&pIStatus);
+		bool fAborted = false;
+
+			if (SUCCEEDED(hr)) {
+				if (pIStatus -> WasCanceled())
+					fAborted = true;
+
+			DWORD dwPos = yy_this_psr_ptr -> yy_psr_cur_lex() -> 
+					yy_lex_cur_inp() -> yy_inp_cur_offset();
+
+				pIStatus -> SetPosition (dwPos);
+				pIStatus -> Release();
+			}
+			delete this;		// wird nicht mehr gebraucht
+
+			if (fAborted) yy_this_psr_ptr -> yy_psr_abort();
+		}
+	;
+
+construct 	TXMType :: default
+	member	{
+		public:
+		inline int Type (void) { return m_iType; }
+		
+		private:
+			int m_iType;
+		}
+
+	constructor initializer
+		{
+			m_iType(0)
+		}
+
+	constructor body
+		{
+		int iNumOps = yy_this_psr_ptr->yy_psr_last();
+
+			if (1 <= iNumOps) {
+			yy_ref_obj Op1 = yy_this_psr_ptr->yy_psr_ref(1);
+
+				switch (Op1.yy_type()) {
+				case yy_psr_identsdb_obj::A_:	// Objektmerkmal
+					m_iType = 'A'; 
+					break;
+				case yy_psr_identsdb_obj::B_:	// Sichtmerkmal
+					m_iType = 'B'; 
+					break;
+				case yy_psr_identsdb_obj::C_:	// Identmerkmal
+					m_iType = 'C'; 
+					break;
+				case yy_psr_identsdb_obj::I_:	// obsolete
+					m_iType = 'I'; 
+					break;
+				case yy_psr_identsdb_obj::AS_:	// SystemObjektmerkmal
+					m_iType = char('A'|PBDMERKMAL_SYSTEMFLAG);
+					break;
+				case yy_psr_identsdb_obj::BS_:	// SystemSichtmerkmal
+					m_iType = char('B'|PBDMERKMAL_SYSTEMFLAG); 
+					break;
+				case yy_psr_identsdb_obj::CS_:	// SystemIdentMerkmal
+					m_iType = char('C'|PBDMERKMAL_SYSTEMFLAG); 
+					break;
+				default:
+					return;
+				}
+			}
+			if (2 == iNumOps) {
+			yy_ref_obj Op2 = yy_this_psr_ptr->yy_psr_ref(2);
+
+				if (yy_psr_identsdb_obj::R_ == Op2.yy_type())
+				// schreibgeschütztes Merkmal
+					m_iType |= PBDMERKMAL_READONLY;
+			}
+		}
+	;
+
+remove		TXMSatz, TXMDatei ;
+
+TXMDatei:	TXMSatz *
+	;
+	
+TXMSatz:	(INTEGER | HEXMCODE) TXMType INTEGER INTEGER INTEGER KURZTEXT? LANGTEXT 
+	|	yy_error KURZTEXT? LANGTEXT 
+	;
+
+TXMType:	(A | B | C | AS | BS | CS) R ?
+	|	I	/* obsolete */
+	;
+
+A:	"A" ;
+B:	"B" ;
+C:	"C" ;
+AS:	"á" ;		// "á" ---> 'A' | 0x80
+BS:	"â" ;		// "â" ---> 'B' | 0x80
+CS:	"ã" ;		// "ã" ---> 'C' | 0x80
+R:	"R" ;
+I:	"I" ;
+
+///////////////////////////////////////////////////////////////////////////////
+// RelationsCodes einlesen ----------------------------------------------------
+class rcodedesc from base_identsdb ;
+
+lexer
+
+parser
+
+construct 	TXRSatz :: all
+	constructor body 
+		{
+			yy_this_psr_ptr -> WriteTXR (this);
+
+		LPPROGRESSINDICATOR pIStatus = NULL;
+		HRESULT hr = yy_this_psr_ptr -> GetStatus (&pIStatus);
+		bool fAborted = false;
+
+			if (SUCCEEDED(hr)) {
+				if (pIStatus -> WasCanceled())
+					fAborted = true;
+
+			DWORD dwPos = yy_this_psr_ptr -> yy_psr_cur_lex() -> 
+					yy_lex_cur_inp() -> yy_inp_cur_offset();
+
+				pIStatus -> SetPosition (dwPos);
+				pIStatus -> Release();
+			}
+			delete this;		// wird nicht mehr gebraucht
+
+			if (fAborted) yy_this_psr_ptr -> yy_psr_abort();
+		}
+	;
+
+construct 	TXRType :: default
+	member	{
+		public:
+		inline int Type (void) { return toupper(m_iType); }
+		
+		private:
+			int m_iType;
+		}
+
+	constructor initializer
+		{
+			m_iType(0)
+		}
+
+	constructor body
+		{
+			if (1 == yy_this_psr_ptr->yy_psr_last()) {
+			yy_ref_obj Op1 = yy_this_psr_ptr->yy_psr_ref(1);
+
+				switch (Op1.yy_type()) {
+				case yy_psr_identsdb_obj::KRel_:
+					m_iType = 'K'; 
+					break;
+				case yy_psr_identsdb_obj::HRel_:
+					m_iType = 'H'; 
+					break;
+				default:
+					return;
+				}
+			}
+		}
+	;
+
+remove		TXRSatz, TXRDatei ;
+
+TXRDatei:	TXRSatz *
+	;
+	
+TXRSatz:	INTEGER TXRType KURZTEXT? LANGTEXT 
+	|	yy_error KURZTEXT? LANGTEXT 
+	;
+
+TXRType:	KRel | HRel	// Komplexrelation oder gleichrangige Relation
+	;
+
+KRel:	"K" ;
+HRel:	"H" ;
+

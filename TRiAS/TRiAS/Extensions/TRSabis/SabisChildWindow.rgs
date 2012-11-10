@@ -1,0 +1,53 @@
+HKCR
+{
+	TRiAS.SabisChildWindow.1 = s 'SabisChildWindow Class'
+	{
+		CLSID = s '{139DED31-68CD-11D2-8CBD-006097A8F384}'
+	}
+	TRiAS.SabisChildWindow = s 'SabisChildWindow Class'
+	{
+		CLSID = s '{139DED31-68CD-11D2-8CBD-006097A8F384}'
+		CurVer = s 'TRiAS.SabisChildWindow.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {139DED31-68CD-11D2-8CBD-006097A8F384} = s 'SabisChildWindow Class'
+		{
+			ProgID = s 'TRiAS.SabisChildWindow.1'
+			VersionIndependentProgID = s 'TRiAS.SabisChildWindow'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{139DED23-68CD-11D2-8CBD-006097A8F384}'
+			'Version' = s '1.0'
+		}
+	}
+    NoRemove TRiAS.Application.4
+    {
+        NoRemove TRiASEx
+        {
+            NoRemove TabServiceProviders
+            {
+                ForceRemove {16D14142-F8A4-4CD8-B3E8-D2F83A7D24AF} = s 'SABiSTabVerwaltung'
+                {
+                    val Name = s 'Sachdaten'
+                    val Style = d 24341
+                    val StyleEx = d 3857
+                    val EnableDocking = d 20480
+                    val InitialDocking = d 59421
+                }
+                ForceRemove {16D14143-F8A4-4CD8-B3E8-D2F83A7D24AF} = s 'SABiSTabVerwaltung2'
+                {
+                    val Name = s 'Sachdaten 2'
+                    val Style = d 24341
+                    val StyleEx = d 3857
+                    val EnableDocking = d 20480
+                    val InitialPosX = d 50
+                    val InitialPosY = d 50
+                }
+            }
+        }
+    }
+}

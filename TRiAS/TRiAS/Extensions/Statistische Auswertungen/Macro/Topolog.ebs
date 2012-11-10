@@ -1,0 +1,503 @@
+'**************************************************************************
+'*                                                                        *
+'*  TRiAS :  Analysen                                                     *
+'*                                                                        *
+'*                                                                        *
+'**************************************************************************
+Declare Sub ObjektFTeilen ( IAObjsF As GeoObjects, obj1 As GeoObject, obj2 As GeoObject)
+Declare Sub ObjektLTeilen ( IAObjsF As GeoObjects, obj1 As GeoObject, obj2 As GeoObject)
+Declare Function FlaechenInhalt (objGO As GeoObject) As Double
+Declare Function FlaechenWert (objGO As GeoObject) As String
+Declare Function LinienInhalt (objGO As GeoObject) As Double
+Declare Function LinienWert (objGO As GeoObject) As String
+Declare Function MasseinheitAbtrennen (MWert$, MZahl#) As String
+
+Declare Sub AbbruchBeiFehler (FehlerNr As Long)
+
+'======================================================================================
+'Programmkonstanten
+Const NL = Chr$(13) + Chr$(10)		'NewLine
+Const HT = Chr$(9)	   		' Tab		 
+
+
+'==================================================================
+
+Private docGD As GeoDocument		'Projekt
+Private objsErgeb As GeoObjects	'Ergebnis der Durchschnittsoperation 
+Private IObjsF As GeoObjects
+Private IAObjsF As GeoObjects
+
+Private DatenQuelle As String
+'======================================================================================
+
+'Titel der Message-Boxen
+Const strBoxTitel = "Flächenanalyse"
+
+
+'========================================================================================
+'Hauptprogramm
+Sub TOPOLOG (MyObj As GeoObject,strQuelle As String)
+
+'Pfade für BasicScript und Daten
+
+	On Error GoTo CheckError0	'Reaktion bei Runtime-Error
+
+  	Set docGD = GetActiveDocument()			'Zugriff auf aktuelles Projekt
+
+	if strQuelle = "" Then
+		Exit Sub
+	End If
+
+	DatenQuelle = strQuelle
+
+'	Objektklasse durchlesen
+	Dim IObjsF As New GeoObjects
+	Dim IUObjsF As New GeoObjects
+	Dim IAObjsF As New GeoObjects
+
+
+'Fenster
+	Dim myWin1 As GeoObjectWin
+	Dim myWin2 As GeoObjectWin
+	Dim myWin3 As GeoObjectWin
+
+
+	Dim ObjS As GeoObjects
+
+
+	Dim Obj As GeoObject
+
+	Dim Feat As GeoFeature 	' Ident
+	Dim MyFeat$
+
+	Dim Dlg As New PropertySequence
+	Dlg.Description = "Wählen Sie bitte die zu verschneidenden Objektklassen aus:"
+
+	Dlg.AddAction "TRiASEx.SelectIdentObjTyp.1"
+
+	Set ObjS = Dlg.DoActions()
+
+
+	If Objs Is Nothing Then
+		Exit Sub
+	End If
+
+	Set IObjsF = docGD.CreateGeoObjectsCollection()
+	Set IAObjsF = docGD.CreateGeoObjectsCollection()
+
+	'Geduldsanzeige starten
+
+	SelObjs& = ObjS.Count
+
+
+' StatusAnzeige erzeugen und initialisieren
+	Dim Status As New StatusIndicator 
+
+	If (Status Is Not Nothing) Then
+		Status.Restart 0, SelObjs, STATUS_ShowAllFields
+		Status.Caption = "Recherchieren von Objekten"
+		Status.Field(1) = Str$(SelObjs)
+		Status.Field(2) = "Objekte werden selektiert."
+		Status.Field(3) = "Es wurden bereits %d%% Objekte verarbeitet."
+	End If
+
+	Dim ActCnt As Long
+	ActCnt = 0
+
+	For Each obj In ObjS
+
+'		if obj.ObjType = OT_Area Then
+	'Rückgabewert kann sein: 
+	'innerhalb (0), außerhalb (1), inner/außerhalb (2) oder unklar (3)
+		rel% = MyObj.TopRelation(obj)
+		Dim RefObj As GeoObject
+		Select Case rel%
+			Case 3	'unklar
+
+			Case 2	'Innen/aussen
+				Set objDummy = IUObjsF.Add(obj)
+				If obj.ObjType = OT_Area Then
+					ObjektFTeilen IAObjsF,MyObj,Obj
+				End If
+				If obj.ObjType = OT_Line Then
+					ObjektLTeilen IAObjsF,MyObj,Obj
+				End If
+			Case 1	'aussen
+
+			Case 0  'innen
+				Set objDummy = IObjsF.Add(obj)
+		End Select
+'		End If
+		' Status weiterschalten
+		If (Status Is Not Nothing) Then
+			ActCnt = ActCnt + 1
+			Status.Field(4) = "Objekt: " + Str$(obj.Value)
+			If (Status Is Not Nothing) Then
+				Status.SetPosition ActCnt
+				If (Status.WasCanceled()) Then	' Abbrechen gedrückt
+					Exit For					' innere Schleife beenden
+				End If
+			End If
+		End If
+'		End If
+	Next obj
+
+	Set Status = Nothing	' Geduldsanzeige ausblenden
+
+
+
+'///////////////// Fenster //////////////////////////
+	If IObjsF.Count > 0 Then
+		Set myWin1 = IObjsF.CreateGeoObjectWin()
+		myWin1.Name$ = "Innenliegende Objekte"
+		myWin1.Top = 1
+		myWin1.Visible = true 
+	End If
+'////////////////////////////////////////////////////
+	If IAObjsF.Count > 0 Then
+		Set myWin2 = IAObjsF.CreateGeoObjectWin()
+		myWin2.Name$ = "Verschnittene Objekte"
+		myWin2.Left = 1
+   		myWin2.Visible = true 
+	End If
+
+	If IUObjsF.Count > 0 Then
+		Set myWin3 = IUObjsF.CreateGeoObjectWin()
+		myWin3.Name$ = "UrsprungsObjekte"
+		if IObjsF.Count > 0 Then
+			myWin3.Top = myWin1.Height + myWin1.Height
+		Else
+			myWin3.Top = 1
+		End If
+
+   		myWin3.Visible = true 
+	End If
+'////////////////////////////////////////////////////
+	
+	DocGD.RePaint	  
+
+	Exit Sub
+
+'Abbruch bei Runtime-Error
+CheckError0:
+	AbbruchBeiFehler Err.Number
+
+End Sub 
+'===========================================================================
+Sub ObjektFTeilen ( IAObjSF As GeoObjects,Obj1 As GeoObject, Obj2 As GeoObject )
+
+	On Error GoTo CheckError1	'Reaktion bei Runtime-Error
+	Dim KKS As String
+
+	KKS$ = obj2.ObjClass.Name$
+
+	Dim objsTO As GeoObjects	'in obj1 liegende Teilobjekte von obj2
+
+'	Set objsTO = obj1.GeometryIntersection (obj2)
+	Set objsTO = obj1.GetIntersectObjects (obj2)
+
+	If objsTO Is Nothing Then 
+		msgBox " Fläche ( ONr. "+STR$(obj2.value)+" ) : Fehler bei Durchschnitt",ebCritical,strBoxTitel
+		Exit Sub
+	End If
+
+	If objsTO.Count = 0  Then 
+		msgBox " Fläche ( ONr. "+STR$(obj2.value)+" ) : Fehler bei Durchschnitt : Objektanzahl 0",ebCritical,strBoxTitel
+		Exit Sub
+	End If
+
+	Dim FlWert As String
+	Dim FlIn As Double
+	Dim FL As Double
+	Dim Proz As Double
+
+	FlWert$ = ""
+	FlIn# = -1
+
+	Dim BFeat As GeoFeature	' Ursprungsflaeche
+	Dim BFlaeche As String 
+
+	If obj2.ObjType = OT_Area Then
+		FlWert$ = FlaechenWert (obj2)
+		FlIn# = FlaechenInhalt (obj2)
+		BFlaeche = FlWert$
+	End If
+
+	Dim PFeat As GeoFeature	' Prozent
+	Dim PFlaeche As String
+
+	Dim objTO As GeoObject
+
+	Dim cls As GeoClass
+
+	Set cls = docGD.GetClass(KKS$,DatenQuelle)
+	For Each objTO In objsTO
+		If objTO.ObjType = OT_Area Then
+			FL# = FlaechenInhalt (objTO)
+			Proz# = FL# / FlIn#
+			Dim RefFlaeche As String
+			RefFlaeche = Format$(Proz#,"##.## %")
+
+			If Left$(RefFlaeche,1) = "," Then
+				PFlaeche = "0"+RefFlaeche
+			Else
+				PFlaeche = RefFlaeche
+			End If
+
+			Set BFeat = objTO.GetFeature("Größe Ursprungsobjekt")
+   			If BFeat Is Nothing Then
+   				Set BFeat = objTO.AddFeature ("Größe Ursprungsobjekt",FEATURETYPE_WriteAble)
+   			End If
+			If BFeat is Not Nothing Then
+	   			BFeat.Feature$ = BFlaeche$
+			End If
+   			Set PFeat = objTO.GetFeature("Prozentualer Anteil")
+   			If PFeat Is Nothing Then
+   				Set PFeat = objTO.AddFeature ("Prozentualer Anteil",FEATURETYPE_WriteAble)
+   			End If
+			If PFeat Is Not Nothing Then
+	   			PFeat.Feature$ = PFlaeche$
+			End If
+			cls.AddObject objTO
+			Set objDummy = IAObjsF.Add(objTO)
+		Else
+			docGD.RemoveObject objTO
+
+		End If
+
+	next objTO
+
+	objsTO.Refresh
+	Set objsTO = Nothing
+
+	Exit Sub
+'Abbruch bei Runtime-Error
+CheckError1:
+	AbbruchBeiFehler Err.Number
+
+End Sub ' ObjektTeilen
+'===========================================================================
+Sub ObjektLTeilen ( IAObjSF As GeoObjects,Obj1 As GeoObject, Obj2 As GeoObject )
+
+	On Error GoTo CheckError2	'Reaktion bei Runtime-Error
+	Dim KKS As String
+
+	KKS$ = obj2.ObjClass.Name$
+
+	Dim objsTO As GeoObjects	'in obj1 liegende Teilobjekte von obj2
+
+'	Set objsTO = obj1.GeometryIntersection (obj2)
+	Set objsTO = obj1.GetIntersectObjects (obj2)
+
+	If objsTO Is Nothing Then 
+		msgBox " Linie ( ONr. "+STR$(obj2.value)+" ) : Fehler bei Durchschnitt",ebCritical,strBoxTitel
+		Exit Sub
+	End If
+
+	If objsTO.Count = 0  Then 
+		msgBox " Linie ( ONr. "+STR$(obj2.value)+" ) : Fehler bei Durchschnitt : Objektanzahl 0",ebCritical,strBoxTitel
+		Exit Sub
+	End If
+
+	Dim LiWert As String
+	Dim LiIn As Double
+	Dim FL As Double
+	Dim Proz As Double
+
+	LiWert$ = ""
+	LiIn# = -1
+
+	Dim BFeat As GeoFeature	' Ursprungsflaeche
+	Dim BFlaeche As String
+
+	If obj2.ObjType = OT_Line Then
+		LiWert$ = LinienWert (obj2)
+		LiIn# = LinienInhalt (obj2)
+		BFlaeche = LiWert$
+	End If
+
+	Dim PFeat As GeoFeature	' Prozent
+	Dim PFlaeche As String
+
+	Dim objTO As GeoObject
+
+	Dim cls As GeoClass
+
+	Set cls = docGD.GetClass(KKS$,DatenQuelle)
+	For Each objTO In objsTO
+		If objTO.ObjType = OT_Line Then
+			FL# = LinienInhalt (objTO)
+			Proz# = FL# / LiIn#
+			Dim RefLinie As String
+			RefLinie = Format$(Proz#,"##.## %")
+
+			If Left$(RefLinie,1) = "," Then
+				PFlaeche = "0"+RefLinie
+			Else
+				PFlaeche = RefLinie
+			End If
+
+			Set BFeat = objTO.GetFeature("Größe Ursprungsobjekt")
+   			If BFeat Is Nothing Then
+   				Set BFeat = objTO.AddFeature ("Größe Ursprungsobjekt",FEATURETYPE_WriteAble)
+   			End If
+			If BFeat Is Not Nothing Then
+	   			BFeat.Feature$ = BFlaeche$
+			End If
+   			Set PFeat = objTO.GetFeature("Prozentualer Anteil")
+   			If PFeat Is Nothing Then
+   				Set PFeat = objTO.AddFeature ("Prozentualer Anteil",FEATURETYPE_WriteAble)
+   			End If
+			If PFeat Is Not Nothing Then
+	   			PFeat.Feature$ = PFlaeche$
+			End If
+			cls.AddObject objTO
+			Set objDummy = IAObjsF.Add(objTO)
+		Else
+			docGD.RemoveObject objTO
+		End If
+
+
+	next objTO
+
+	objsTO.Refresh
+	Set objsTO = Nothing
+
+	Exit Sub
+
+
+'Abbruch bei Runtime-Error
+CheckError2:
+	AbbruchBeiFehler Err.Number
+
+
+End Sub ' ObjektTeilen
+'=================================================================================================
+'-------------------------------------------------------------------------------------------------
+'Flächeninhalt eines GeoObjektes in m²; im Fehlerfall (unbekannte Maßeinheit) wird -1 zurückgegeben
+Function FlaechenInhalt (objGO As GeoObject) As Double
+	Dim ftFlInhalt As GeoFeature	
+	Set ftFlInhalt = objGO.GetFeature("Flächeninhalt")
+	If (ftFlInhalt Is Nothing) Then 
+		FlaechenInhalt = 0
+		Exit Function
+	End If
+
+	Fl$ = Trim$(ftFlInhalt.Feature$)	'Flächeninhalt und Maßeinheit
+	If Fl$ = "" Then	'kein Flächenobjekt
+		FlaechenInhalt = 0
+		Exit Function
+	End If
+
+	Dim Flaeche As Double				'Flächeninhalt ohne Maßeinheit
+	ME$ = MasseinheitAbtrennen (Fl$, Flaeche)
+
+	Select Case LCase(Mid(ME$,2,1))	'das 1. Zeichen von ME$ ist "["
+		Case "m"	'm²
+			FlaechenInhalt = Flaeche
+		Case "h"	'ha
+			FlaechenInhalt = 10000 * Flaeche
+		Case "k"	'km²
+			FlaechenInhalt = 1000000 * Flaeche
+		Case Else
+			MsgBox "Die ermittelte Maßeinheit ist unbekannt!", ebCritical, strBoxTitel
+			FlaechenInhalt = -1
+	End Select
+End Function 'FlaechenInhalt
+'-------------------------------------------------------------------------------------------------
+'-------------------------------------------------------------------------------------------------
+'Flächeninhalt eines GeoObjektes in m²; im Fehlerfall (unbekannte Maßeinheit) wird -1 zurückgegeben
+Function FlaechenWert (objGO As GeoObject) As String
+	Dim ftFlInhalt As GeoFeature	
+	Set ftFlInhalt = objGO.GetFeature("Flächeninhalt")
+	If (ftFlInhalt Is Nothing) Then 
+		FlaechenWert = "***"
+		Exit Function
+	End If
+
+	FlaechenWert = Trim$(ftFlInhalt.Feature$)	'Flächeninhalt und Maßeinheit
+
+End Function 'FlaechenWert
+'-------------------------------------------------------------------------------------------------
+'-------------------------------------------------------------------------------------------------
+'LinienLaenge eines GeoObjektes in m; im Fehlerfall (unbekannte Maßeinheit) wird -1 zurückgegeben
+Function LinienInhalt (objGO As GeoObject) As Double
+	Dim ftFlInhalt As GeoFeature	
+	Set ftFlInhalt = objGO.GetFeature("Linienlänge")
+	If (ftFlInhalt Is Nothing) Then 
+		LinienInhalt = 0
+		Exit Function
+	End If
+
+	Fl$ = Trim$(ftFlInhalt.Feature$)	'Linieninhalt und Maßeinheit
+	If Fl$ = "" Then	'kein Linienobjekt
+		LinienInhalt = 0
+		Exit Function
+	End If
+
+	Dim Linie As Double				'Linieninhalt ohne Maßeinheit
+	ME$ = MasseinheitAbtrennen (Fl$, Linie)
+
+	Select Case LCase(Mid(ME$,2,1))	'das 1. Zeichen von ME$ ist "["
+		Case "m"	'm
+			LinienInhalt = Linie
+		Case "k"	'km²
+			LinienInhalt = 1000 * Linie
+		Case Else
+			MsgBox "Die ermittelte Maßeinheit ist unbekannt!", ebCritical, strBoxTitel
+			LinienInhalt = -1
+	End Select
+End Function 'LinienInhalt
+'-------------------------------------------------------------------------------------------------
+'-------------------------------------------------------------------------------------------------
+'Linienlaenge eines GeoObjektes in m; im Fehlerfall (unbekannte Maßeinheit) wird -1 zurückgegeben
+Function LinienWert (objGO As GeoObject) As String
+	Dim ftFlInhalt As GeoFeature	
+	Set ftFlInhalt = objGO.GetFeature("Linienlänge")
+	If (ftFlInhalt Is Nothing) Then 
+		LinienWert = "***"
+		Exit Function
+	End If
+
+	LinienWert = Trim$(ftFlInhalt.Feature$)	'Linienlänge und Maßeinheit
+
+End Function 'LinienWert
+'-------------------------------------------------------------------------------------------------
+
+'Maßeinheit aus dem übergebenen String MWert eliminieren und in der Form "[...]"
+'zurückgeben; dabei wird vorausgesetzt, daß die Maßeinheit in eckige Klammern '[]'
+'eingeschlossen ist
+Function MasseinheitAbtrennen (MWert$, MZahl#) As String
+	Pos% = InStr (MWert$,"[")		'Position der öffnenden Klammer "[" suchen
+	If Pos% = 0 Then
+		MZahl# = Val (Left(MWert$,Len(MWert)))	'Dimension abschneiden
+		MasseinheitAbtrennen = "[m]"	'Maßzahl ohne Maßeinheit als Rückgabewert
+		Exit Function
+'		MsgBox "Maßeinheit beginnt nicht mit [", ebCritical, strBoxTitel
+'		MasseinheitAbtrennen = "  "	'Rückgabe bei Fehler
+	End If
+
+	Pos% = InStr (MWert$," ")			'Position zwischen Zahlenwert und Dimension
+	MZahl# = Val (Left(MWert$,Pos%))	'Dimension abschneiden
+	MasseinheitAbtrennen = Right(MWert$,Len(MWert$)-Pos%)	'Maßzahl ohne Maßeinheit als Rückgabewert
+End Function 'MasseinheitAbtrennen
+'-------------------------------------------------------------------------------------------------
+'-------------------------------------------------------------------------------------------------
+'ein Runtime-Error ist aufgetreten
+Sub AbbruchBeiFehler (FehlerNr As Long)
+
+
+	If FehlerNr = 18 Then	'User interrupt (z.B. Cancel bei Geduldsanzeige)
+		MsgBox "Die Abarbeitung wurde durch den Anwender vorzeitig beendet !", _
+			   ebExclamation, strBoxTitel
+
+	Else
+
+		MsgBox "Das Programm wurde abgebrochen mit"+NL+ _
+			   "Fehler " & FehlerNr & " ("+Error(FehlerNr)+")", _
+			   ebCritical, strBoxTitel
+
+	End If
+End Sub 'AbbruchBeiFehler
+
+'===========================================================================

@@ -1,0 +1,374 @@
+// Visinfo.idl : type library source for VisObj.ext
+//
+
+cpp_quote("#define VISINFO_TYPELIB_VERSION_MAJOR 1")
+cpp_quote("#define VISINFO_TYPELIB_VERSION_MINOR 0")
+cpp_quote("#define VISINFO_TYPELIB_VERSION \"1.0\"")
+cpp_quote("#define VISINFO_TYPELIB_LCID 0")
+
+#define VISINFO_TYPELIB_VERSION 1.0
+#define VISINFO_TYPELIB_LCID 0
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "objidl.idl";
+
+///////////////////////////////////////////////////////////////////////////////
+// Funktionalitäts-Interface für VisObj-Erweiterung
+[
+	uuid(079638E0-3123-101C-BB62-00AA0018497C),
+	helpstring("Funktionalitäts-Interface für VisObj-Erweiterung"),
+	pointer_default(unique)
+]
+interface IVisObjExt : IUnknown
+{
+	import "TRiASBaseInterfaces.idl";
+	import "VisInfoInterfaces.idl";
+
+///////////////////////////////////////////////////////////////////////////
+// Funktionen für Objektklassen- Visualisierung
+	[
+		helpstring("Liefert VisInfo für eine Objektklasse einer Ansicht.")
+	] 
+	HRESULT GetVisInfoClass(
+		[in] long lIdent, 
+		[in] VISINFOTYPE rgType,
+		[in, optional] VARIANT vViewName,
+		[out, retval] DVisInfo **ppIVisInfo);
+
+	[
+		helpstring("Setzt VisInfo für eine Objektklasse einer Ansicht.")
+	] 
+	HRESULT SetVisInfoClass(
+		[in] long lIdent, 
+		[in] VISINFOTYPE rgType,
+		[in] DVisInfo *pIVisInfo,
+		[in, optional] VARIANT vViewName);
+
+	[
+		helpstring("Setzt VisInfo für eine Objektklasse einer Ansicht zurück.")
+	] 
+	HRESULT ResetVisInfoClass(
+		[in] long lIdent, 
+		[in] VISINFOTYPE rgType,
+		[in, optional] VARIANT vView);
+
+///////////////////////////////////////////////////////////////////////////
+// Funktionen für objektbezogene Visualisierung
+	[
+		helpstring("Liefert VisInfo für ein Objekt einer Ansicht.")
+	] 
+	HRESULT GetVisInfoObject(
+		[in] long lONr, 
+		[in] VISINFOTYPE rgType,
+		[in, optional] VARIANT vViewName,
+		[out, retval] DVisInfo **ppIVisInfo);
+
+	[
+		helpstring("Setzt VisInfo für ein Objekt einer Ansicht.")
+	] 
+	HRESULT SetVisInfoObject(
+		[in] long lONr, 
+		[in] VISINFOTYPE rgType,
+		[in] DVisInfo *pIVisInfo,
+		[in] VARIANT_BOOL fSameAsSource, 
+		[in, optional] VARIANT vViewName);
+
+	[
+		helpstring("Setzt VisInfo für ein Objekt einer Ansicht zurück.")
+	] 
+	HRESULT ResetVisInfoObject(
+		[in] long lONr, 
+		[in] VISINFOTYPE rgType,
+		[in, optional] VARIANT vViewName);
+
+	[
+		helpstring("Liefert, ob ein Objhekt in einer Ansicht ein bzw. ausgeblendet ist.")
+	] 
+	HRESULT GetObjectHiddenStatus(
+		[in] long lONr, 
+		[in, optional] VARIANT vViewName,
+		[out, retval] VARIANT_BOOL *pfShow);
+	[
+		helpstring("Blendet ein Objekt in einer Ansicht ein bzw. aus.")
+	] 
+	HRESULT SetObjectHiddenStatus(
+		[in] long lONr, 
+		[in] VARIANT_BOOL fShow,
+		[in, optional] VARIANT vViewName);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Connection-Interface zur Einbindung objektbezogener Visualisierung
+[
+	uuid(079638E3-3123-101C-BB62-00AA0018497C),
+	helpstring("Interface zur Einbindung objektbezogener Visualisierung."),
+	pointer_default(unique)
+]
+interface IVisQuery : IUnknown
+{
+	typedef [public] enum _tagIDENTVISMODE {
+	[helpstring("Objektklasse wird nicht speziell behandelt.")] 
+		IDENTVISMODE_NoAction = 0,
+	[helpstring("Objekte der Objektklasse erhalten neue VisInfo.")] 
+		IDENTVISMODE_HasNewVI = 0x0001,
+	[helpstring("Objekte der Objektklasse werden vollständig gezeichnet.")] 
+		IDENTVISMODE_WillDrawComplete = 0x0002,
+	[helpstring("Objekte der Objektklasse sollen ausgeblendet werden.")] 
+		IDENTVISMODE_HideObject = 0x0004,
+
+	[hidden] IDENTVISMODE_ModVisInfo = 0x0100,
+	[hidden] IDENTVISMODE_ModShowStatus = 0x0200,
+	} IDENTVISMODE;
+	
+	[
+		helpstring("Status für Objektklassenbehandlung abfragen.")
+	]
+	HRESULT GetIdentMode ([in] LONG Ident, BSTR View, [in, out] IDENTVISMODE *VisMode);
+
+	[
+		helpstring("Visualisierungsinfo für Objekt abfragen")
+	]
+	HRESULT GetObjectVis ([in] LONG ObjNr, [in, out] DVisInfo **Vis);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface zur Kombination verschiedener VisInfo's
+[
+	uuid(079638E4-3123-101C-BB62-00AA0018497C),
+	helpstring("Interface zur Kombination verschiedener VisInfo's."),
+	pointer_default(unique)
+]
+interface IMergeVisInfo : IUnknown
+{
+	HRESULT MergeVisInfo ([in] VARIANT_BOOL OnlyChanged, [in, out] DVisInfo **VisInfo);
+};
+
+#if _MSC_VER >= 1100
+///////////////////////////////////////////////////////////////////////////////
+// (Mogel-)Interface zum direkten Zugriff auf VisInfo-Objekte in DVisInfo's
+[
+	object,
+	uuid(4BAB20A3-A922-11D1-8588-00600875138A),
+	dual,
+	helpstring("IRawVisInfo Interface"),
+	pointer_default(unique)
+]
+interface IRawVisInfo : IUnknown
+{
+	HRESULT SetRawData ([in] VISINFOTYPE rgType, [in] BSTR Data);
+	HRESULT RetrieveRawData ([in] VISINFOTYPE rgType, [out, retval] BSTR *Data);
+};
+#endif // _MSC_VER >= 1100
+
+///////////////////////////////////////////////////////////////////////////////
+// Library
+[
+	uuid(0796385C-3123-101C-BB62-00AA0018497C),
+	version(VISINFO_TYPELIB_VERSION),
+	lcid(VISINFO_TYPELIB_LCID),
+	helpstring("TRiAS VisInfo Type Library")
+]
+library VisInfoLib
+{
+	importlib("stdole32.tlb");
+
+///////////////////////////////////////////////////////////////////////////////
+// Basisklasse für alle Visualisierungsinformationen
+[
+	uuid(07963865-3123-101C-BB62-00AA0018497C),
+	odl, oleautomation,
+	helpstring("Basisinterface für alle Visualisierungsinformationen"),
+	local, hidden
+]
+interface IVisInfo : IUnknown
+{
+	// _TRiASBaseClass properties
+	[propget] HRESULT isA ([out, retval]LONG *plRTTI);		// ObjektTyp (RTTI)
+	[propget] HRESULT Parent ([out, retval]IDispatch **ppIBase);	// übergeordnetes Objekt
+	[propput] HRESULT Parent ([in]IDispatch *pIBase);
+	[propget] HRESULT Application ([out, retval]IDispatch **ppIApp);	// Anwendung
+	[propput] HRESULT Application ([in]IDispatch *pIApp);	// Anwendung
+
+	// base properties
+	[propget] HRESULT Style ([out, retval] int *piStyle);
+	[propput] HRESULT Style ([in]int iStyle);
+	[propget] HRESULT Priority ([out, retval] int *piPrio);
+	[propput] HRESULT Priority ([in]int iPrio);
+	[propget] HRESULT Name ([out, retval] BSTR *pbstrDesc);
+	[propput] HRESULT Name ([in]BSTR bstrDesc);
+	[propget] HRESULT MainColor ([out, retval]TRIASCOLOR *pocMain);
+	[propput] HRESULT MainColor ([in]TRIASCOLOR ocMain);
+};
+
+// VisualisierungsInfo für ein Punktobjekt
+[
+	uuid(0796385E-3123-101C-BB62-00AA0018497C),
+	odl, oleautomation,
+	helpstring("VisualisierungsInfo für ein Punktobjekt"),
+	local, hidden
+]
+interface IPointVisInfo : IVisInfo
+{
+	[propget] HRESULT SizeX ([out, retval] int *piX);
+	[propput] HRESULT SizeX ([in]int iX);
+	[propget] HRESULT SizeY ([out, retval] int *piY);
+	[propput] HRESULT SizeY ([in]int iY);
+	[propget] HRESULT Rotate ([out, retval] int *piRot);
+	[propput] HRESULT Rotate ([in]int iRot);
+	[propget] HRESULT BkColor ([out, retval]TRIASCOLOR *pocBack);
+	[propput] HRESULT BkColor ([in]TRIASCOLOR ocBack);
+};
+
+// VisualisierungsInfo für ein Linienobjekt
+[
+	uuid(07963860-3123-101C-BB62-00AA0018497C),
+	odl, oleautomation,
+	helpstring("VisualisierungsInfo für ein Linienobjekt"),
+	local, hidden
+]
+interface ILineVisInfo : IVisInfo
+{
+	[propget] HRESULT Width ([out, retval]int *piWidth);
+	[propput] HRESULT Width ([in]int iWidth);
+};
+
+// VisualisierungsInfo für ein Flächenobjekt
+[
+	uuid(07963862-3123-101C-BB62-00AA0018497C),
+	odl, oleautomation,
+	helpstring("VisualisierungsInfo für ein Flächenobjekt"),
+	local, hidden
+]
+interface IAreaVisInfo : IVisInfo
+{
+	[propget] HRESULT Width ([out, retval]int *piWidth);
+	[propput] HRESULT Width ([in]int iWidth);
+	[propget] HRESULT Opaque ([out, retval]int *pfOpaque);
+	[propput] HRESULT Opaque ([in]int fOpaque);
+	[propget] HRESULT BkContour ([out, retval]int *pfBkContour);
+	[propput] HRESULT BkContour ([in]int fBkContour);
+	[propget] HRESULT BkColor ([out, retval]TRIASCOLOR *pocBack);
+	[propput] HRESULT BkColor ([in]TRIASCOLOR ocBack);
+};
+
+// VisualisierungsInfo für ein Textobjekt
+[
+	uuid(07963864-3123-101C-BB62-00AA0018497C),
+	odl, oleautomation,
+	helpstring("VisualisierungsInfo für ein Textobjekt"),
+	local, hidden
+]
+interface ITextVisInfo : IVisInfo
+{
+	[propget] HRESULT SizeX ([out, retval] int *piX);
+	[propput] HRESULT SizeX ([in]int iX);
+	[propget] HRESULT SizeY ([out, retval] int *piY);
+	[propput] HRESULT SizeY ([in]int iY);
+	[propget] HRESULT Bold ([out, retval]int *pfBold);
+	[propput] HRESULT Bold ([in]int fBold);
+	[propget] HRESULT Italic ([out, retval]int *pfItalic);
+	[propput] HRESULT Italic ([in]int fItalic);
+	[propget] HRESULT Underline ([out, retval]int *pfUnderline);
+	[propput] HRESULT Underline ([in]int fUnderline);
+	[propget] HRESULT StrikeThrough ([out, retval]int *pfStrikeThrough);
+	[propput] HRESULT StrikeThrough ([in]int fStrikeThrough);
+	[propget] HRESULT FrameStyle ([out, retval]FRAMESTYLE *prgFrameStyle);
+	[propput] HRESULT FrameStyle ([in]FRAMESTYLE rgFrameStyle);
+	[propget] HRESULT AlignStyle ([out, retval]ALIGNSTYLE *prgAlign);
+	[propput] HRESULT AlignStyle ([in]ALIGNSTYLE rgAlign);
+	[propget] HRESULT Rotate ([out, retval] int *piRot);
+	[propput] HRESULT Rotate ([in]int iRot);
+	[propget] HRESULT Slant ([out, retval] int *piSlant);
+	[propput] HRESULT Slant ([in]int iSlant);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Exportierte Objekte
+[
+	uuid(289BE0C4-92F6-11D1-BA03-080036D63803),
+	helpstring("DefaultVisInfo Class")
+]
+	coclass DefaultVisInfo
+	{
+		interface IVisInfo;
+		interface IPersistStreamInit;
+		[default] interface DVisInfo;
+		interface IMergeVisInfo;
+#if _MSC_VER >= 1100
+		[restricted] interface IRawVisInfo;
+#endif // _MSC_VER >= 1100
+	};
+
+[
+	uuid(0796385D-3123-101C-BB62-00AA0018497C),
+	helpstring("PointVisInfo Class")
+]
+	coclass PointVisInfo
+	{
+		interface IPointVisInfo;
+		interface IPersistStreamInit;
+		[default] interface DPointVisInfo;
+		interface IMergeVisInfo;
+#if _MSC_VER >= 1100
+		[restricted] interface IRawVisInfo;
+#endif // _MSC_VER >= 1100
+	};
+
+[
+	uuid(0796385F-3123-101C-BB62-00AA0018497C),
+	helpstring("LineVisInfo Class")
+]
+	coclass LineVisInfo
+	{
+		interface ILineVisInfo;
+		interface IPersistStreamInit;
+		[default] interface DLineVisInfo;
+		interface IMergeVisInfo;
+#if _MSC_VER >= 1100
+		[restricted] interface IRawVisInfo;
+#endif // _MSC_VER >= 1100
+	};
+
+[
+	uuid(07963861-3123-101C-BB62-00AA0018497C),
+	helpstring("AreaVisInfo Class")
+]
+	coclass AreaVisInfo
+	{
+		interface IAreaVisInfo;
+		interface IPersistStreamInit;
+		[default] interface DAreaVisInfo;
+		interface IMergeVisInfo;
+#if _MSC_VER >= 1100
+		[restricted] interface IRawVisInfo;
+#endif // _MSC_VER >= 1100
+	};
+
+[
+	uuid(07963863-3123-101C-BB62-00AA0018497C),
+	helpstring("TextVisInfo Class")
+]
+	coclass TextVisInfo
+	{
+		interface ITextVisInfo;
+		interface IPersistStreamInit;
+		[default] interface DTextVisInfo;
+		interface IMergeVisInfo;
+#if _MSC_VER >= 1100
+		[restricted] interface IRawVisInfo;
+#endif // _MSC_VER >= 1100
+	};
+
+[
+	uuid(ED9655C5-3122-101C-BB62-00AA0018497C),
+	helpstring("TRiAS-Erweiterung für objektbezogene Visualisierung.")
+]
+	coclass ObjVisInfoExtension
+	{
+//		[default] interface ITriasExtension;
+		interface IVisObjExt;
+		interface IConnectionPointContainer;
+		[source, default] interface IVisQuery;
+	};
+};

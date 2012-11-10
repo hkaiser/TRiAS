@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASDB.TRiASMIObjects.1 = s 'TRiASMIObjects Class'
+	{
+		CLSID = s '{66E0F829-6877-4B11-878F-218F4E7B00BF}'
+	}
+	TRiASDB.TRiASMIObjects = s 'TRiASMIObjects Class'
+	{
+		CLSID = s '{66E0F829-6877-4B11-878F-218F4E7B00BF}'
+		CurVer = s 'TRiASDB.TRiASMIObjects.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {66E0F829-6877-4B11-878F-218F4E7B00BF} = s 'TRiASMIObjects Class'
+		{
+			ProgID = s 'TRiASDB.TRiASMIObjects.1'
+			VersionIndependentProgID = s 'TRiASDB.TRiASMIObjects'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{EE31A3CF-69DE-4628-91C8-01513D8B9A70}'
+		}
+	}
+}

@@ -1,0 +1,79 @@
+// $Header: $
+// Copyright© 1999-2002 Geopunkt GmbH & Co. KG, NL Potsdam, All rights reserved
+// Created: 05.09.2002 12:41:08 
+//
+// @doc
+// @module CvrtCoords.idl | Declaration of the <c CCvrtCoords> class
+//
+// This file will be included by dependand modules
+
+#if !defined(_CVRTCOORDS_IDL__CF48EE86_81B9_4F2C_A8D1_A107D845CDED__INCLUDED_)
+#define _CVRTCOORDS_IDL__CF48EE86_81B9_4F2C_A8D1_A107D845CDED__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+
+// Header include diagnostics
+#if defined(_TRIAS_DBG_HEADER_DIAGNOSTICS)
+#pragma message(__TIME__": include " __FILE__ )
+#endif
+
+// ITransformLineOfTextCallback Interface
+[ 
+	object, 
+	uuid(4BB28F76-3DF5-4110-83C4-7A9F21E539D6), 
+	dual, 
+	oleautomation, 
+	pointer_default(unique) 
+]
+interface ITransformLineOfTextCallback : IDispatch
+{
+	import "oaidl.idl";
+	import "ocidl.idl";
+	
+	[id(1), helpstring("method TransformCoords")] HRESULT TransformCoords([in, out] double *pdX, [in, out] double *pdY);
+};
+
+// ITransformLineOfText Interface
+[
+	object, 
+	uuid(073F080F-8D7F-42FF-B969-6147ED9D8776), 
+	dual, 
+	oleautomation, 
+	pointer_default(unique) 
+]
+interface ITransformLineOfText : IDispatch
+{
+	import "oaidl.idl";
+	import "ocidl.idl";
+
+	[propput, id(1), helpstring("property Callback")] HRESULT Callback([in] ITransformLineOfTextCallback *pVal);
+	[propget, id(2), helpstring("property Version")] HRESULT Version([out, retval] BSTR *pVal);
+	
+	[id(100), helpstring("method TransformLineOfText")] HRESULT TransformLineOfText([in] BSTR bstrIn, [out, retval] BSTR *bstrOut);
+};
+
+#if !defined(_NO_LIBRARY)
+[
+	uuid(A7B6385D-D3F9-40F3-A183-C0021E5333CE),
+	version(1.0),
+	helpstring("CvrtCoords 1.0 Type Library")
+]
+library CvrtCoords
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(E58ADCF7-DFE3-491E-8084-A063FB01B764),
+		helpstring("TransformCallback Class")
+	]
+	coclass TransformCallback
+	{
+		[default] interface ITransformLineOfTextCallback;
+	};
+};
+#endif // !defined(_NO_LIBRARY)
+
+#endif // !defined(_CVRTCOORDS_IDL__CF48EE86_81B9_4F2C_A8D1_A107D845CDED__INCLUDED_)

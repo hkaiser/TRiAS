@@ -1,0 +1,26 @@
+HKCR
+{
+	Edbs.parser.1 = s 'parser Class'
+	{
+		CLSID = s '{0F117342-4B39-11D3-8E0C-00105AF354F9}'
+	}
+	Edbs.parser = s 'parser Class'
+	{
+		CLSID = s '{0F117342-4B39-11D3-8E0C-00105AF354F9}'
+		CurVer = s 'Edbs.parser.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {0F117342-4B39-11D3-8E0C-00105AF354F9} = s 'parser Class'
+		{
+			ProgID = s 'Edbs.parser.1'
+			VersionIndependentProgID = s 'Edbs.parser'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{0F117331-4B39-11D3-8E0C-00105AF354F9}'
+		}
+	}
+}

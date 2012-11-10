@@ -1,0 +1,132 @@
+
+
+
+IMVFBMIX(3IM)          SDSC IMAGE LIBRARY           IMVFBMIX(3IM)
+
+
+
+NAME
+     ImVfbMix - Combine any of the fields in  two  virtual  frame
+     buffers by a certain weighting factor
+     ImVfbFade - Fade the pixels in a vfb towards zero.
+
+SYNOPSIS
+     #include "im.h"
+
+     ImVfbMix( src1Vfb, src1Weight, src2Vfb, src2Weight, fieldMask, dstVfb )
+             ImVfb *src1Vfb;
+             float  src1Weight;
+             ImVfb *src2Vfb;
+             float  src2Weight;
+             int    fieldMask;
+             ImVfb *dstVfb;
+
+     ImVfbFade( srcVfb, srcWeight, fieldMask, dstVfb )
+          ImVfb *srcVfb;
+          double srcWeight;
+          int fieldMask;
+          ImVfb *dstVfb;
+
+
+DESCRIPTION
+     ImVfbMix combines any fields (one or more)  of  two  virtual
+     frame  buffers  by  multiplying  src1Vfb  by  src1Weight and
+     adding it to src2Vfb times src2Weight this  result  is  then
+     stored in the dstVfb, a pointer to which is returned.
+
+     ImVfbFade fades any fields of a virtual frame buffer towards
+     zero.   That is, all pixels in the specified fields are mul-
+     tiplied by _s_r_c_W_e_i_g_h_t.
+
+     _s_r_c_1_V_f_b is the Vfb to take one set of values to combine into
+     the dstVfb.
+
+     _s_r_c_1_W_e_i_g_h_t is the weight to multiply it by.
+
+     _s_r_c_1_V_f_b is the Vfb to take one set of values to combine into
+     the dstVfb.
+
+     _s_r_c_1_W_e_i_g_h_t is the weight to multiply it by.
+
+     _f_i_e_l_d_M_a_s_k is the mask which tells what fields to fill.  Pos-
+     sible values for _f_i_e_l_d_M_a_s_k are:
+
+             Value                     Meaning
+8          ___________________________________________________
+          IMVFBRGB       Fill the red, green and blue fields
+          IMVFBRED       Fill the red field
+          IMVFBGREEN     Fill the green field
+          IMVFBBLUE      Fill the blue field
+          IMVFBIDATA     Fill the integer field
+
+
+
+SDSC               Last change: June 14, 1995                   1
+
+
+9
+
+
+IMVFBMIX(3IM)          SDSC IMAGE LIBRARY           IMVFBMIX(3IM)
+
+
+
+          IMVFBFDATA     Fill the floating point field
+          IMVFBALL       Fill all the fields
+          IMVFBWPROT     Fill the write protect field
+          IMVFBZ         Fill the zbuffer field
+          IMVFBALPHA     Fill the alpha field
+          IMVFBINDEX8    Fill the index8 field
+          IMVFBINDEX16   Fill the index16 field
+          IMVFBMONO      Fill the mono field
+
+     Note that any combination of these can  be  used  to  change
+     multiple fields.
+
+     _d_s_t_V_f_b is the Vfb to contain the new image.   If  _d_s_t_V_f_b  is
+     the  constant IMVFBNEW, a new Vfb is allocated with the same
+     size and the same fields as _s_r_c_V_f_b.  A pointer  to  the  new
+     Vfb is returned.
+
+RETURNS
+     Upon success, ImVfbMix returns a pointer to the  destination
+     Vfb.
+
+SEE ALSO
+     ImIntro (3IM), ImErrNo (3IM), imadjust (1IM), imcomp  (1IM),
+     imdissolve  (1IM),  imfill (1IM), impaste (1IM), ImVfbAdjust
+     (3IM), ImVfbComp (3IM), ImVfbFill (3IM)
+
+AUTHORS
+     Chris Groening and Dave Nadeau
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2                  Last change: June 14, 1995                SDSC
+
+
+

@@ -1,0 +1,25 @@
+HKCR
+{
+	TRiAS.ODBCProperty.1 = s 'ODBCProperty Class'
+	{
+		CLSID = s '{CF35D2F9-FEAB-4A15-BF34-9AEA27C23F45}'
+	}
+	TRiAS.ODBCProperty = s 'ODBCProperty Class'
+	{
+		CLSID = s '{CF35D2F9-FEAB-4A15-BF34-9AEA27C23F45}'
+		CurVer = s 'TRiAS.ODBCProperty.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {CF35D2F9-FEAB-4A15-BF34-9AEA27C23F45} = s 'ODBCProperty Class'
+		{
+			ProgID = s 'TRiAS.ODBCProperty.1'
+			VersionIndependentProgID = s 'TRiAS.ODBCProperty'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{5F5246F9-2EEF-4DF3-A028-797D1738858E}'
+		}
+	}
+}

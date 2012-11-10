@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiAS.ResetHideAddEntryCB.1 = s 'ResetHideAddEntryCB Class'
+	{
+		CLSID = s '{0CB3A667-E5CE-11D2-9BD9-586A20524153}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {0CB3A667-E5CE-11D2-9BD9-586A20524153} = s 'ResetHideAddEntryCB Class'
+		{
+			ProgID = s 'TRiAS.ResetHideAddEntryCB.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{A4FAE2FE-E5A3-11D2-9BD9-586A20524153}'
+		}
+	}
+}

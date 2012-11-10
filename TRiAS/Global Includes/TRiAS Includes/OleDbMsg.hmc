@@ -1,0 +1,120 @@
+///////////////////////////////////////////////////////////////////////////////
+// Messages for TRiASOleDB
+// SourceFile: OleDBMSG.MC
+
+#if !defined(_OLEDBMSG_HMC)
+#define _OLEDBMSG_HMC
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+
+#define MAX_MSG_LENGTH				1024
+#define SEVERITY_MASK					0xC0000000
+#define APPLICATION_MASK				0x20000000
+#define SEVERITY_SUCCESS_MASK			0x00000000
+#define SEVERITY_INFORMATIONAL_MASK	0x40000000
+#define SEVERITY_WARNING_MASK			0xB0000000
+#define SEVERITY_ERROR_MASK			0xC0000000
+#define FACILITY_MASK					0x0FFF0000
+#define FACILITY_FACILITY_DATASOURCE	0x0F200000
+#define FACILITY_FACILITY_SESSION		0x0F210000
+#define FACILITY_FACILITY_ROWSET		0x0F220000
+#define FACILITY_FACILITY_COMMAND		0x0F230000
+#define FACILITY_FACILITY_GEN_PURPOSE	0x0F2F0000
+
+//
+//  Values are 32 bit values layed out as follows:
+//
+//   3 3 2 2 2 2 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1
+//   1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
+//  +---+-+-+-----------------------+-------------------------------+
+//  |Sev|C|R|     Facility          |               Code            |
+//  +---+-+-+-----------------------+-------------------------------+
+//
+//  where
+//
+//      Sev - is the severity code
+//
+//          00 - Success
+//          01 - Informational
+//          10 - Warning
+//          11 - Error
+//
+//      C - is the Customer code flag
+//
+//      R - is a reserved bit
+//
+//      Facility - is the facility code
+//
+//      Code - is the facility's status code
+//
+//
+// Define the facility codes
+//
+#define FACILITY_SESSION                 0xF21
+#define FACILITY_ROWSET                  0xF22
+#define FACILITY_GENPURPOSE              0xF2F
+#define FACILITY_DATASOURCE              0xF20
+#define FACILITY_COMMAND                 0xF23
+
+
+//
+// Define the severity codes
+//
+#define STATUS_SEVERITY_WARNING          0x2
+#define STATUS_SEVERITY_SUCCESS          0x0
+#define STATUS_SEVERITY_INFORMATIONAL    0x1
+#define STATUS_SEVERITY_ERROR            0x3
+
+
+//
+// MessageId: TRIASOLEDB_E_NOSELECTSTMT
+//
+// MessageText:
+//
+//  Es ist keine 'SELECT' Klausel im SQL-Kommando gegeben.
+//
+#define TRIASOLEDB_E_NOSELECTSTMT        ((HRESULT)0xCF221001L)
+
+
+//
+// MessageId: TRIASOLEDB_E_NOSELECTEXPRESSION
+//
+// MessageText:
+//
+//  Es ist keine Auswahlausdruck in der 'SELECT' Klausel des SQL-Kommandos gegeben.
+//
+#define TRIASOLEDB_E_NOSELECTEXPRESSION  ((HRESULT)0xCF221002L)
+
+
+//
+// MessageId: TRIASOLEDB_E_SELECTEXPECTED
+//
+// MessageText:
+//
+//  Es wurde ein 'SELECT' Befehl erwartet.
+//
+#define TRIASOLEDB_E_SELECTEXPECTED      ((HRESULT)0xCF221003L)
+
+
+//
+// MessageId: TRIASOLEDB_E_TABLENOTGIVENINFROMCLAUSE
+//
+// MessageText:
+//
+//  Eine im 'SELECT' Befehl referenzierte Tabelle fehlt in der 'FROM' Klausel.
+//
+#define TRIASOLEDB_E_TABLENOTGIVENINFROMCLAUSE ((HRESULT)0xCF221004L)
+
+
+//
+// MessageId: TRIASOLEDB_E_SQL_TYPEMISMATCH
+//
+// MessageText:
+//
+//  Der SQL Befehl enthält Typ-Inkompatibilitäten.
+//
+#define TRIASOLEDB_E_SQL_TYPEMISMATCH    ((HRESULT)0xCF221005L)
+
+#endif // _OLEDBMSG_HMC

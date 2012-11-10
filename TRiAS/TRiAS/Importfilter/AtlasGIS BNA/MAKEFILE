@@ -1,0 +1,61 @@
+# Makefile für CustomTargets in Module BNAIMP.EXT -----------------------------
+
+!include "$(TRIASINCLUDE)/triasver.mak"
+
+# Generierungsdatum (yymmdd) und Version
+DATE = 040619
+VERSION = 1
+RELEASE = 00
+BUILD = 077
+
+COPYRIGHT = KK$(DATE)
+
+PNAME = $(TRIAS_PNAME)
+PADDRESS = $(TRIAS_PADDRESS)
+
+REPLACE = ersetz
+NAME = bnaimp
+DEF = $(NAME).def
+
+ASM = masm
+ASMF = /D?PLM=0 /D?WIN=1
+LINK = link16.exe
+
+# ------------------------------------------------------------------------------
+# Generieren der Versionsinfo's -----------------------------------------------
+
+# CopyrightEintraege Generieren 
+new:
+	@del $(NAME).rcv
+	@del $(DEF)
+	@del version.h
+
+formake:	$(DEF) $(NAME).rcv version.h
+
+# Personalisierungsinformation
+$(NAME).rcv:	$(NAME)v.tpl makefile
+	$(REPLACE) \
+		$(VERSION) \
+		$(RELEASE) \
+		$(BUILD) \
+		$(COPYRIGHT) \
+		$(PNAME) \
+		$(PADDRESS) \
+		$(TRIAS_VERSION) \
+		$(TRIAS_RELEASE) \
+		$(COMPANYNAME) \
+			$(NAME)v.tpl $(NAME).rcv
+
+$(DEF):		$(NAME).tpl makefile
+	$(REPLACE) \
+		$(VERSION) \
+		$(RELEASE) \
+		$(BUILD) \
+		$(COPYRIGHT) \
+			$(NAME).tpl $(DEF)
+
+version.h:	version.tpl makefile
+	$(REPLACE) \
+		$(VERSION) \
+		$(RELEASE) \
+			version.tpl version.h

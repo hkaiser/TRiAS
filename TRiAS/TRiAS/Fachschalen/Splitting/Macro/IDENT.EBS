@@ -1,0 +1,264 @@
+' **************************************************************************************
+' *                                                                                    *
+' *  Automatische Vergabe der Identifikationsnummer für Grundstücke                    *
+' *  W. Mörtl  (25. 03. 99)                                                            *
+' *                                                                                    *
+' **************************************************************************************
+
+
+Option Explicit
+
+' ======================================================================================
+' anwendungsspezifische Konstanten
+Const strGrund = "Grundstück"				' Kurztexte von TRiAS-Objektklassen
+Const strIdentNr = "Identifikationsnummer"
+Const strUrIdentNr = "Ursprungs-Identifikationsnummer"
+Const strDatenbankCode = "DatenbankCode"	' projektbezogener Eintrag im Datenbank-Header
+Const strTrenn = "/"						' Trennzeichen zwischen mehreren
+											'  Ursprungs-Identifikationsnummern
+
+' ======================================================================================
+' Programmkonstanten
+Const NL = Chr$(13) + Chr$(10)				' NewLine
+Const strBoxTitel = "Identifikationsnummer"	' Titel der Message-Boxen
+
+' ======================================================================================
+' globale Variable
+Private docGD As GeoDocument				' Projekt
+
+Private MyQuelle As String
+' ======================================================================================
+' Subroutine's und Function's-Deklarationen
+Declare Sub SetIdentNumber (objsGrund As GeoObjects)
+Declare Sub AbbruchBeiFehler (lngFehlerNr As Long)
+'Declare Function NextIdentNumber (intLfdIdent As Integer) As String
+Declare Function NextIdentNumber (intLfdIdent As Long) As String
+
+
+' ======================================================================================
+'Sub Main()
+Sub Ident(strQuelle As String)
+
+' Reaktion bei Runtime-Error
+	On Error GoTo CheckError
+
+' Eingangsbild
+	Msg.Open NL & "   Bitte etwas Geduld - die Abarbeitung wird vorbereitet!   " & _
+			 NL, , False, False
+
+' Initialisierungen
+	MyQuelle = strQuelle
+  	Set docGD = GetActiveDocument
+	Dim clsGrund As GeoClass		' Objektklasse (Grundstück)
+
+	If strQuelle = "" Then
+		Set clsGrund = docGD.GetClass (strGrund)
+	Else
+		Set clsGrund = docGD.GetClass (strGrund,strQuelle)
+	End If
+
+	Dim objsGrund As GeoObjects		' GeometrieObjekte (Grundstücke)
+	Set objsGrund = docGD.CreateGeoObjectsCollection()
+	Set objsGrund = clsGrund.GetObjects(OT_Area)'
+
+	Msg.Close	' Eingangsbild schließen
+
+	SetIdentNumber objsGrund
+
+	Beep
+	MsgBox "Es gibt Zirkusnummern und Identifikationsnummern," & NL & _
+			"so daß ich versucht bin zu sagen:" & NL & _
+			"Das ist ein Zirkus mit den Identifikationsnummern.", _
+			ebInformation, strBoxTitel
+
+	Exit Sub
+
+
+' Abbruch bei Runtime-Error
+CheckError:
+	AbbruchBeiFehler Err.Number
+
+End Sub ' Main 
+
+
+' ======================================================================================
+' Subroutine's
+' --------------------------------------------------------------------------------------
+' Routine, die nach dem Schließen des Projektes gerufen wird
+Sub OnDocumentToClose (Doc As GeoDocument)
+	SetBreakScript (True)	' Script soll beendet werden
+End Sub
+
+
+' --------------------------------------------------------------------------------------
+' Vergabe der Identifikationsnummer
+Sub SetIdentNumber (objsGrund As GeoObjects)
+
+	' projektbezogenen Eintrag aus Datenbank-Header lesen
+	Dim strDCode As String
+
+'	If MyQuelle = "" Then
+'		strDCode = docGD.GetHeaderEntry (strDatenbankCode)
+'	Else
+'		strDCode = docGD.GetHeaderEntryEx (MyQuelle,strDatenbankCode)
+'	End If
+
+'	If Len (Trim$ (strDCode)) <> 2 Then
+'		MsgBox "Projektbezogener Eintrag '" & strDatenbankCode & "'" & NL & _
+'				"im Datebbank-Header hat nicht genau 2 Zeichen.", _
+'				ebCritical, strBoxTitel
+'		End
+'	End If
+
+	Dim objsNoIdent As GeoObjects	' Grundstücke, für die sich keine
+									' Identifikationsnummer bilden läßt
+	Set objsNoIdent = docGD.CreateGeoObjectsCollection()
+	Dim objDummy As GeoObject		' Rückkehrwert von Add()
+
+	Dim objGrund As GeoObject		' einzelnes Grundstück
+	Dim lngAnzGrund As Long, j As Long
+	lngAnzGrund = objsGrund.Count	' Anzahl und
+	j = 0							' Zähler der abzuarbeitenden Grundstücke 
+
+	Dim Status As New StatusIndicator	' Geduldsanzeige 
+	If (Status Is Not Nothing) Then
+		Status.Restart 1, lngAnzGrund+1, STATUS_ShowAllFields
+		Status.Field(1) = Str$(lngAnzGrund)
+		Status.Field(2) = "Grundstücke werden abgearbeitet"
+		Status.Field(3) = "Bearbeitungsstand:  %d %%"
+		Status.Caption = "Vergabe der Identifikationsnummern"
+	End If
+
+' Abarbeitung aller Grundstücke
+	Dim strLfdIdent As String	' laufende Identifikationsnummer
+'	strLfdIdent = "001"			' Startwert
+	strLfdIdent = "00001"			' Startwert
+'	Dim intLfdIdent As Integer	' Identifikationsnummer als Integer	für Inkrementierung
+	Dim intLfdIdent As Long	' Identifikationsnummer als Integer	für Inkrementierung
+	intLfdIdent = Val (strLfdIdent)
+	Dim ftUrIdentNr As GeoFeature, ftIdentNr As GeoFeature
+	Dim strUIN As String	' Inhalt des Merkmals "Ursprungs-Identifikationsnummer"
+	Dim strIN As String		' Inhalt des Merkmals "Identifikationsnummer"
+	Dim intPos As Integer	' 1. Position des evtl. in strUIN enthaltenen Trennzeichens strTrenn
+
+
+	strUIN = "TRiAS"
+
+	For Each objGrund In objsGrund
+
+		If (Status Is Not Nothing) Then	' Status weiterschalten
+			j = j + 1
+			Status.SetPosition j
+			Status.Field(4) = objGrund.Value
+			If Status.WasCanceled() Then
+				Set Status = Nothing	' Geduldsanzeige abschalten
+				AbbruchBeiFehler 18		' Cancel
+			End If
+		End If
+
+'		Set ftUrIdentNr = objGrund.GetFeature (strUrIdentNr)
+'		If (ftUrIdentNr Is Nothing) Then
+'			Set objDummy = objsNoIdent.Add(objGrund.Value)
+'			GoTo Continue
+'		End If
+
+'		strUIN = Trim$ (ftUrIdentNr.Feature$)
+'		If strUIN = "" Then
+'			Set objDummy = objsNoIdent.Add(objGrund.Value)
+'			GoTo Continue
+'		End If
+
+		intPos = InStr (strUIN, strTrenn)
+
+		If intPos = 0 Then
+			strIN = strUIN
+		ElseIf intPos > 0 Then
+			strIN = Trim$ (Left$ (strUIN, intPos-1))
+		Else
+			Set objDummy = objsNoIdent.Add(objGrund.Value)
+			GoTo Continue
+		End If
+
+		If Len (strIN) <> 5 Then
+			Set objDummy = objsNoIdent.Add(objGrund.Value)
+			GoTo Continue
+		End If
+
+		Set ftIdentNr = objGrund.GetFeature (strIdentNr)
+		If (ftIdentNr Is Nothing) Then
+			Set ftIdentNr = objGrund.AddFeature (strIdentNr, FEATURETYPE_WriteAble)
+		End If
+
+		If (ftIdentNr Is Not Nothing) Then
+  			ftIdentNr.Feature$ = strIN & strDCode & strLfdIdent
+		End If
+
+		strLfdIdent = NextIdentNumber (intLfdIdent)
+
+Continue:
+	Next objGrund
+
+	Set Status = Nothing	' Geduldsanzeige abschalten
+
+' unklare Fälle in Recherchefenster anzeigen
+Dim gowRWin As GeoObjectWin
+
+	If objsNoIdent.Count > 0 Then
+		Set gowRWin = objsNoIdent.CreateGeoObjectWin()
+		gowRWin.Name = "Unklare Identifikationsnummern"
+		gowRWin.Left = 1
+		gowRWin.Visible = 1
+	End If
+
+End Sub ' SetIdentNumber
+
+
+' --------------------------------------------------------------------------------------
+' ein Runtime-Error ist aufgetreten
+Sub AbbruchBeiFehler (lngFehlerNr As Long)
+	Msg.Close	' Eingangsbild beenden
+	Beep
+
+	If lngFehlerNr = 18 Then	' User interrupt (z.B. Cancel bei Geduldsanzeige)
+		MsgBox "Die Bearbeitung wurde durch den Anwender vorzeitig beendet", _
+				ebExclamation, strBoxTitel
+		End
+	Else
+		MsgBox "Das Programm wurde abgebrochen mit" & NL & _
+				"Fehler " & lngFehlerNr & " (" & Error(lngFehlerNr) & ")", _
+				ebCritical, strBoxTitel
+		Resume Next		' für Fehlersuche
+	End If
+
+End Sub ' AbbruchBeiFehler
+
+
+' --------------------------------------------------------------------------------------
+' Rückgabe der nächsten Identifikationsnummer
+' Im Normalfall ist das die nächste Zahl (intLfdIdent+1). Da die Identifikationsnummer
+' aber nur dreistellig sein kann, gibt es ein kleines Problem, wenn das Projekt mehr als
+' 999 Grundstücke hat. In diesem Fall folgt auf 999 die Identifikationsnummer A00, auf
+' A99 folgt B00 usw., also eine alpha-numerische Darstellung der Hunderterstelle
+'Function NextIdentNumber (intLfdIdent As Integer) As String
+Function NextIdentNumber (intLfdIdent As Long) As String
+
+	intLfdIdent = intLfdIdent + 1
+
+	If intLfdIdent < 100000 Then		' Normalfall
+		NextIdentNumber = Right$ ("0000" & intLfdIdent, 5)
+		Exit Function
+	End If
+
+	' Projekt hat mehr als 99999 Grundstücke
+	Dim intId As Integer
+	intId = intLfdIdent Mod 10000
+
+	' durch nachfolgende Konstruktion wird
+	'	10xx  -->  Axx
+	'	11xx  -->  Bxx
+	'	16xx  -->  Gxx  usw.
+	' der Summand "55" macht aus 10 --> 65 = Asc("A")
+	NextIdentNumber = Chr$ (intLfdIdent \ 10000 + 55) & Right$ ("000" & intId, 4)
+
+End Function ' NextIdentNumber
+     

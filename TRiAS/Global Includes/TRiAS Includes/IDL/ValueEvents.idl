@@ -1,0 +1,59 @@
+// $Header: $
+// Copyright© 1999-2000 TRiAS GmbH Potsdam, All rights reserved
+// Created: 17.06.2000 20:13:17 
+//
+// @doc
+// @module ValueEvents.idl | Declaration of value related events
+
+#if !defined(_VALUEEVENTS_IDL__A1AC8581_D990_484A_98F0_16FCF8311F31__INCLUDED_)
+#define _VALUEEVENTS_IDL__A1AC8581_D990_484A_98F0_16FCF8311F31__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+
+// Header include diagnostics
+#if defined(_TRIAS_DBG_HEADER_DIAGNOSTICS)
+#pragma message(__TIME__": include " __FILE__ )
+#endif
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declarations
+interface ITRiASValueEvents;
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface Definition
+
+// @doc EVENTINTERFACE
+// @interface ITRiASValueEvents | Events die verschickt werden, wenn Ereignisse 
+// erfolgt sind, die sich auf einen Wert einer variable beziehen.
+// @group Methoden von <i ITRiASValueEvents> 
+// @index | ITRIASVALUEEVENTS
+// @doc ITRIASVALUEEVENTS
+	[
+		object,
+		uuid(66345077-4A52-4FD3-B05F-B0015C738129),
+		helpstring("ITRiASValueEvents Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASValueEvents : IUnknown
+	{
+	// @event ITRiASValueEvents | ModifyingValue | Ein Wert einer Variable soll modifiziert werden.
+	// @parm BSTR | Name | Der Name der zu modifizierenden Variable.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muﬂ auf VARIANT_TRUE gesetzt werden, wenn die
+	// Variable nicht modifiziert werden soll.
+	// @xref <i ITRiASValueEvents>
+		[helpstring("Ein Wert einer Variable soll modifiziert werden.")] HRESULT ModifyingValue ([in] BSTR Name, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASValueEvents | ValueToModify | Ein Wert einer Variable wird modifiziert werden.
+	// @parm BSTR | Name | Der Name der zu modifizierenden Variable.
+	// @xref <i ITRiASValueEvents>
+		[helpstring("Ein Wert einer Variable wird modifiziert.")] HRESULT ValueToModify ([in] BSTR Name);
+
+	// @event ITRiASValueEvents | ValueModified | Ein Wert einer Variable wurde modifiziert.
+	// @parm BSTR | Name | Der Name der modifizierten Variable.
+	// @xref <i ITRiASValueEvents>
+		[helpstring("Ein Wert einer Variable wurde modifiziert.")] HRESULT ValueModified ([in] BSTR Name);
+	};
+
+#endif // !defined(_VALUEEVENTS_IDL__A1AC8581_D990_484A_98F0_16FCF8311F31__INCLUDED_)

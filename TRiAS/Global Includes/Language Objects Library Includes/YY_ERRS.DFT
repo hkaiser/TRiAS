@@ -1,0 +1,143 @@
+/* yy_errs.dft:  Default error messages for Yacc++.   DO NOT DELETE!! */
+  0 0 %d Errors, %d Warnings, Highest Severity %d
+  1 3 No grammar input file specified.
+  2 3 Unable to open grammar input file "%s".
+  3 1 Ignoring unknown command line option "%s".
+  4 3 Unable to open output file "%s".
+  5 1 Unable to open syntax assist file "%s".\n\tUsing default syntax assists.
+  6 3 More than one grammar input file specified "%s".
+  7 1 Minimum display argument "%d" exceeds maximum severity 5.\n\tReplacing with default %d.
+  8 1 Minimum display argument "%d" less than lowest severity 0.\n\tReplacing with default %d.
+  9 1 Maximum errors abort argument "%d" less than 1.\n\tReplacing with default %d.
+ 10 1 Maximum warnings abort argument "%d" less than 1.\n\tReplacing with default %d.
+ 11 1 The option "%s" requires a filename following it.\n\tIgnoring the option.
+ 12 1 The option "%s" requires a number following it.\n\tIgnoring the option.
+ 13 1 Unable to open error file "%s"\n\tUsing default error message.
+ 14 1 The option "%s" requires a table type following it.\n\tIgnoring the option.
+ 15 1 Unknown table type "%s".\n\tReplacing with default type fast.
+100 2 SYNTAX ERROR while processing "%s".
+101 2 Resuming processing after ignoring text up through previous "%s".
+102 2 SYNTAX ERROR while lexing character "%c".
+103 2 "%s" was previously declared as a token.
+104 2 Lexical range "%c" .. "%c" is in descending order.\n\tReversing order to recover.
+105 1 %s symbol "%s" was defined but never used.
+106 1 Token "%s" was declared but never used.
+107 2 Lexer non-terminal "%s" was referenced but not defined.
+108 2 Token "%s" was declared but not defined.
+109 2 DISCARD symbol "%s" was referenced in the parser.
+110 2 SYNTAX ERROR while lexing character "%c" after seeing "%s".
+111 1 Start symbol "%s" invalid.\n\t"%s" was previously specified as the start symbol.
+112 2 "%s" was previously defined as a lexer non-terminal.
+113 1 Keyword symbol "%s" was declared but never used.
+114 2 "%s" was previously defined as a parser non-terminal.
+115 2 Multi-character string %s is not permitted in a lexical range.
+116 2 Null string as lexical event.
+117 2 Hexadecimal \\x escape with no digits\n\tstarting at character %d of string %s.
+118 2 Hexadecimal \\x escape with more than 2 digits\n\tstarting at character %d of string %s.
+119 2 Unknown control character (^) escape\n\tstarting at character %d of string %s.
+120 2 Unknown character following backslash\n\tat character %d of string %s.
+121 2 Error in string %s.
+122 2 IGNORE symbol "%s" was never defined.
+123 2 REMOVE symbol "%s" was never defined.
+124 2 Lexer non-terminal "%s" being used in the parser\n\tor missing TOKEN declaration for "%s".
+125 1 Missing syntax assist for production %d.
+126 2 Token "%s" being used in the lexer as a lexer non-terminal.
+127 2 Character "%s" being used in the parser.
+128 2 Parser non-terminal "%s" was referenced but not defined.
+129 2 "%s" was previously defined as an ASCII character.
+130 2 "%s" was previously defined as a keyword.
+131 2 %s was previously defined as an embedded string token.
+132 2 "%s" was previously defined as left associative.
+133 2 "%s" was previously defined as right associative.
+134 2 "%s" was previously defined as non-associative.
+135 2 Ignoring precedence request.\n\t"%s" was defined as a discard token.
+136 2 Ignoring precedence request.\n\tToken "%s" was not defined with precedence.
+137 2 Precedence/associativity not permitted because "%s" is not a token or keyword.
+138 2 Ignoring union declaration.\n\tAlready processed a union declaration on line %d.
+139 2 Local declaration did not precede first case of action code.
+140 2 Separate compilation of lexer with no lexer rules.
+141 2 Class "%s" does not have a definition for "%s".
+142 2 Class "%s" has not been defined.
+143 2 "%s" was previously defined as a class.
+144 2 Keyword "%s" being used in the lexer as a lexer non-terminal.
+145 2 Class "%s" being used in the lexer as a lexer non-terminal.
+146 2 "%s" was previously defined as a keyword spelling.
+147 2 New lexer prefix is %s, overrides setting of %s.
+148 2 New parser prefix is %s, overrides setting of %s.
+149 1 Keyword spellings "%s" and "%s" conflict.\n\tNo further substring processing will be done.
+150 1 Token or keyword number %d is not in ascending order.\n\tNumbering is currently at %d.
+151 1 Token or keyword %s was already numbered %d.\n\tChanging it to number %d.
+152 1 CHARSET %s is being ignored because\n\tCHARSET %s declaration was previously seen.  
+153 1 CHARSET DBCS not yet supported.  Substituting ASCII8.
+154 1 Ignoring CHARSET declaration in class "%s".\n\tIt is incompatible with character set in class "%s".
+155 1 Overriding default character set in class "%s".\n\tUsing the same character set as class "%s".
+156 2 New output lexer header name is "%s",\n\toverrides previous setting "%s".
+157 2 New output lexer source name is "%s",\n\toverrides previous setting "%s".
+158 2 New output parser header name is "%s",\n\toverrides previous setting "%s".
+159 2 New output parser source name is "%s",\n\toverrides previous setting "%s".
+160 2 Ignoring previous CONSTRUCT declaration\n\tfor "%s" in class "%s".
+161 2 Ignoring previous BASE declaration.
+162 2 Ignoring previous NAME declaration.
+163 2 Ignoring previous MEMBER declaration.
+164 2 Ignoring previous CONSTRUCTOR INITIALIZER declaration.
+165 2 Ignoring previous CONSTRUCTOR BODY NAME declaration.
+166 2 Ignoring previous DESTRUCTOR declaration.
+167 2 Ignoring previous DUMP declaration.
+168 2 Ignoring reduce action code for alternative with :: operator.
+169 2 No "CONSTRUCT %s*" declaration\n\tfor alternative with :: operator.
+170 3 Missing NAME class field\n\tfor per alternative construct for symbol "%s".
+171 2 New output union header name is "%s",\n\toverrides previous setting "%s".
+172 1 The class "%s"\n\tspecifies a lexer NAME of "%s".\n\tThis is only permited in the default lexer class for the grammar.\n\tOnly class "%s" may specify a lexer NAME.\n\tUsing "%s" as the lexer class name.
+173 1 The class "%s"\n\tspecifies a lexer BASE class.\n\tThis is only permited in the default lexer class for the grammar.\n\tOnly class "%s" may specify a lexer BASE class.
+174 1 The class "%s"\n\tspecifies a lexer MEMBER.\n\tThis is only permited in the default lexer class for the grammar.\n\tOnly class "%s" may specify a lexer MEMBER.
+175 1 The class "%s"\n\tspecifies a lexer CONSTRUCTOR INITIALIZER.\n\tThis is only permited in the default lexer class for the grammar.\n\tOnly class "%s" may specify a lexer CONSTRUCTOR INITIALIZER.
+176 1 The class "%s"\n\tspecifies a lexer CONSTRUCTOR BODY.\n\tThis is only permited in the default lexer class for the grammar.\n\tOnly class "%s" may specify a lexer CONSTRUCTOR BODY.
+177 1 The class "%s"\n\tspecifies a lexer DESTRUCTOR.\n\tThis is only permited in the default lexer class for the grammar.\n\tOnly class "%s" may specify a lexer DESTRUCTOR.
+178 1 The class "%s"\n\tspecifies a lexer DUMP.\n\tThis is only permited in the default lexer class for the grammar.\n\tOnly class "%s" may specify a lexer DUMP.
+179 1 The class "%s"\n\tspecifies a parser NAME of "%s".\n\tThis is only permited in the default parser class for the grammar.\n\tOnly class "%s" may specify a parser NAME.\n\tUsing "%s" as the parser class name.
+180 1 The class "%s"\n\tspecifies a parser BASE class.\n\tThis is only permited in the default parser class for the grammar.\n\tOnly class "%s" may specify a parser BASE class.
+181 1 The class "%s"\n\tspecifies a parser MEMBER.\n\tThis is only permited in the default parser class for the grammar.\n\tOnly class "%s" may specify a parser MEMBER.
+182 1 The class "%s"\n\tspecifies a parser CONSTRUCTOR INITIALIZER.\n\tThis is only permited in the default parser class for the grammar.\n\tOnly class "%s" may specify parser a CONSTRUCTOR INITIALIZER.
+183 1 The class "%s"\n\tspecifies a parser CONSTRUCTOR BODY.\n\tThis is only permited in the default parser class for the grammar.\n\tOnly class "%s" may specify a parser CONSTRUCTOR BODY.
+184 1 The class "%s"\n\tspecifies a parser DESTRUCTOR.\n\tThis is only permited in the default parser class for the grammar.\n\tOnly class "%s" may specify a parser DESTRUCTOR.
+185 1 The class "%s"\n\tspecifies a parser DUMP.\n\tThis is only permited in the default parser class for the grammar.\n\tOnly class "%s" may specify a parser DUMP.
+186 2 \n\tThe CONSTRUCT declaration follows the rule for "%s".\n\tCONSTRUCT declarations must appear before the rules are defined.
+187 1 Reduce action code\n\ton the rule for "%s" overrode its CONSTRUCT.\n\tThe constructor will not be called when this rule is reduced.
+188 2 "%s" was previously defined\n\tto be the spelling for a different keyword "%s".\n\tThe definition was in class "%s".
+189 2 %s was previously defined\n\tto be the spelling for a different keyword "%s".\n\tThe definition was in class "%s".
+190 3 "%s" was previously defined\n\tto be something other than a keyword.\n\tThe definition was in class "%s".
+200 2 State %d has an action code conflict.
+201 2 State %d has a DOT action code conflict.
+202 2 State %d has a shift/reduce conflict overriding with shift.
+203 0 State %d had items with varying numbers of pop actions which were merged.
+204 2 State %d has a reduce/accept conflict.
+205 2 State %d has an accept/reduce conflict.
+206 2 State %d with the lookahead of "%s" had an unresolvable reduce/reduce conflict for symbols "%s" and "%s".\n\tThe reduce to "%s" was retained.\n\tLook at the productions on lines %d and %d.\n\tThe lookahead came from line %d.
+207 1 State %d has a shift ("%s") /reduce (to "%s") conflict\n\tOverriding with shift.\n\tLook at the productions on lines %d and %d.\n\tThe lookahead came from line %d.
+208 1 The token "%s" can have an empty expansion.
+209 2 State %d with the lookahead of "%s" has two productions which both reduce to "%s"\n\tbut have differing numbers of pop actions.\n\tLook at the productions on lines %d and %d.\n\tThe lookahead came from line %d.
+210 2 State %d with the lookahead of "%s" has two productions which both reduce to "%s"\n\tbut one is an empty alternative and the other isn't.\n\tLook at the productions on lines %d and %d.\n\tThe lookahead came from line %d.
+211 1 There are %d conflicts in the input grammar.
+212 1 "%s" cannot be ignored in state %d.
+213 1 Items which begin with "%s" cannot be ignored in state %d.
+214 1 State %d with the lookahead of "%s" had a LALR reduce/reduce conflict for symbols "%s" and "%s".\n\tThe state has been successfully split into distinct LR states.\n\tLook at the productions on lines %d and %d.\n\tThe lookahead came from line %d.
+215 1 State %d with the lookahead of "%s" had two productions which both reduce to "%s"\n\tbut have differing numbers of pop actions.\n\tThe state has been split into distinct LR states.\n\tLook at the productions on lines %d and %d.\n\tThe lookahead came from line %d.
+216 1 State %d with the lookahead of "%s" had two productions which both reduce to "%s"\n\tbut one is an empty alternative and the other isn't.\n\tThe state has been split into distinct LR states.\n\tLook at the productions on lines %d and %d.\n\tThe lookahead came from line %d.
+217 2 State %d with the lookahead of "%s" has a ???/reduce (to "%s") conflict\n\tNot performing the reduce.\n\tLook at the productions on lines %d and %d.\n\tThe lookahead came from line %d.
+218 1 State %d with the lookahead of "%s" has an excess push/reduce (to "%s") conflict\n\tNot performing the reduce, but instead popping to state %d.\n\tLook at the production on line %d.\n\tThe lookahead came from line %d.
+219 1 LEX lexer is an interface lexer only.\n\tIgnoring rules defined in LEX lexer "%s".
+220 2 This grammar generated no output files.\n\tCheck if the grammar contains only VIRTUAL classes.
+300 3 Maximum number of errors of %d reached.
+301 3 Maximum number of warnings of %d reached.
+302 5 Previous maximum severity errors prevent further processing.\n\tCompilation aborted.
+303 5 Previous errors prevent table generation.\n\tCompilation aborted.
+400 3 Unexpected table error while processing lexer action code case %d.
+401 3 Unexpected table error while processing parser action %d,\n\taction code case %d is not legal.
+402 3 Parser action %d has unknown opcode %d.
+403 3 While executing parser action %d,\n\tthe parser opcode was overwritten with unknown value %d.
+404 3 Lexer action %d has unknown opcode %d.
+405 3 While executing lexer action %d,\n\tthe lexer opcode was overwritten with unknown value %d.
+406 4 Not enough memory to process input grammar.
+407 3 Keyword "%s" conflicts with another symbol of same name.\n\tThe keyword was not installed.
+408 3 Incompatible sizes of yy_ref_obj in this application.\nSome of the application was not compiled with the correct yy_ref_obj declaration.
+409 3 Parser backtracking mode %d is unknown.

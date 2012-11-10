@@ -1,0 +1,24 @@
+HKCR
+{
+	TRiAS.Designing.1 = s 'Funktionen für Designing'
+	{
+		CLSID = s '{8F2CA281-AB87-11d2-881A-00104BAF1F6B}'
+	}
+	TRiAS.Designing = s 'Funktionen für Designing'
+	{
+		CurVer = s 'TRiAS.Designing.1'
+	}
+	NoRemove CLSID
+	{
+
+		ForceRemove {8F2CA281-AB87-11d2-881A-00104BAF1F6B} = s 'Funktionen für Designing'
+		{
+			ProgID = s 'TRiAS.Designing.1'
+			VersionIndependentProgID = s 'TRiAS.Designing'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

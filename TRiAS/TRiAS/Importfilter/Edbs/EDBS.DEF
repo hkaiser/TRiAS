@@ -1,0 +1,74 @@
+LIBRARY   EDBS
+EXETYPE   WINDOWS
+CODE      PRELOAD MOVEABLE DISCARDABLE
+DATA      PRELOAD MOVEABLE SINGLE
+HEAPSIZE  1024
+EXPORTS
+;        DllGetClassObject       =
+ DLLGETCLASSOBJECT			@1
+;        DllCanUnloadNow         =
+ DLLCANUNLOADNOW			@2
+;        DllRegisterServer       =
+ DLLREGISTERSERVER			@3
+;        DllUnregisterServer     =
+ DLLUNREGISTERSERVER		@4
+; 0003:4BBC
+ ?AddRef@CImpTriasXtension@@VEAKXZ	@5
+; 0003:2AD0
+ ?AddRef@CTriasExtension@@VEAKXZ	@6
+; 0003:455C
+ ?AddRef@CXtensionClassFactory@@VEAKXZ	@7
+; 0003:4622
+ ?CreateInstance@CXtensionClassFactory@@VEAPEXPEUIUnknown@@AFUGUID@@PEPEX@Z	@8
+; 0003:49D6
+ ?CreateInstanceLic@CXtensionClassFactory@@VEAPEXPEUIUnknown@@0AFUGUID@@PEDPEPEX@Z	@9
+; 0003:4E00
+ ?GetCapabilities@CImpTriasXtension@@VEAJI@Z	@10
+; 0003:2EAE
+ ?GetCapabilities@CTriasExtension@@VEAJI@Z	@11
+; 0003:48CA
+ ?GetLicInfo@CXtensionClassFactory@@VEAPEXPEUtagLICINFO@@@Z	@12
+; 0001:25E0
+ ?InitExtension@CEDBSExtension@@NEAHF@Z	@41
+; 0003:4C72
+ ?InitExtension@CImpTriasXtension@@VEAHF@Z	@13
+; 0003:2D8A
+ ?InitExtension@CTriasExtension@@VEAHF@Z	@14
+; 0003:4C38
+ ?LoadExtension@CImpTriasXtension@@VEAPBUHDEX__@@PEUtagTRIASLOADEX@@PBUHWND__@@@Z	@15
+; 0003:2B98
+ ?LoadExtension@CTriasExtension@@VEAPBUHDEX__@@PEUtagTRIASLOADEX@@PBUHWND__@@@Z	@16
+; 0003:4886
+ ?LockServer@CXtensionClassFactory@@VEAPEXH@Z	@17
+; 0003:4D88
+ ?Notification@CImpTriasXtension@@VEAJIJ@Z	@25
+; 0003:2E66
+ ?Notification@CTriasExtension@@VEAJIJ@Z	@26
+; 0003:4B80
+ ?QueryInterface@CImpTriasXtension@@VEAPEXAFUGUID@@PEPEX@Z	@27
+; 0003:29E6
+ ?QueryInterface@CTriasExtension@@VEAPEXAFUGUID@@PEPEX@Z	@28
+; 0003:4440
+ ?QueryInterface@CXtensionClassFactory@@VEAPEXAFUGUID@@PEPEX@Z	@29
+; 0003:4BFA
+ ?Release@CImpTriasXtension@@VEAKXZ	@30
+; 0003:2B04
+ ?Release@CTriasExtension@@VEAKXZ	@31
+; 0003:4590
+ ?Release@CXtensionClassFactory@@VEAKXZ	@32
+; 0003:4958
+ ?RequestLicKey@CXtensionClassFactory@@VEAPEXKPEPED@Z	@33
+; 0001:2610
+ ?UnLoadExtension@CEDBSExtension@@NEAHXZ	@34
+; 0003:4CA6
+ ?UnLoadExtension@CImpTriasXtension@@VEAHXZ	@35
+; 0003:2DCA
+ ?UnLoadExtension@CTriasExtension@@VEAHXZ	@36
+; 0003:4DC2
+ ?WindowsNotification@CImpTriasXtension@@VEAJIIJ@Z	@37
+; 0003:2E8A
+ ?WindowsNotification@CTriasExtension@@VEAJIIJ@Z	@38
+; 0007:CD8E
+ _AFX_VERSION	@39
+; 0009:52EE
+ ___ExportedStub	@40

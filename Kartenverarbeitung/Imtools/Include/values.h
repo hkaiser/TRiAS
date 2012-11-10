@@ -1,0 +1,5 @@
+// definierten von pi
+#define M_PI 3.141592653589793238462643383279502884197169399375105820974944592308
+
+// Argument für _access
+#define R_OK	0x4

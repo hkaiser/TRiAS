@@ -1,0 +1,40 @@
+// RunCmdAs.idl : IDL source for RunCmdAs.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (RunCmdAs.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+	[
+		object,
+		uuid(FC7EA006-B13A-4B44-8517-F724BBCFEC37),
+		dual,
+		helpstring("IExecuteCmdAs Interface"),
+		pointer_default(unique)
+	]
+	interface IExecuteCmdAs : IDispatch
+	{
+		[id(1), helpstring("method ExecuteCmd")] HRESULT ExecuteCmd([in] BSTR Cmd, [in] BSTR CommandLine, [out, retval] int *RetVal);
+	};
+
+[
+	uuid(2F1D0E80-CD28-45F5-AE4A-9B248493FADF),
+	version(1.0),
+	helpstring("RunCmdAs 1.0 Type Library")
+]
+library RunCmdAs
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(ACB178DC-0C11-4054-B53A-F07909367099),
+		helpstring("ExecuteCmdAs Class")
+	]
+	coclass ExecuteCmdAs
+	{
+		[default] interface IExecuteCmdAs;
+	};
+};

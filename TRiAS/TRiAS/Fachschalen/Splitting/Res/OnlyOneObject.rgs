@@ -1,0 +1,21 @@
+HKCR
+{
+	TRiASEx.OnlyOneObjects.1 = s 'Flurstücke säubern'
+	{
+
+		CLSID = s '{974d5891-816d-11d3-A8AA-00104BAF20DA}'	
+
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {974d5891-816d-11d3-A8AA-00104BAF20DA} = s 'Flurstücke säubern'
+		{
+			val AppID = s '{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}'
+			ProgID = s 'TRiASEx.OnlyOneObjects.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+}

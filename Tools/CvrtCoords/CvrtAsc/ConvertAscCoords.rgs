@@ -1,0 +1,26 @@
+HKCR
+{
+	CvrtCoords.Asc.1 = s 'Konvertieren von ASC-Textdateien'
+	{
+		CLSID = s '{78981A25-5F91-46CA-9E19-2A8D36BC4F15}'
+	}
+	CvrtCoords.Asc = s 'Konvertieren von ASC-Textdateien'
+	{
+		CLSID = s '{78981A25-5F91-46CA-9E19-2A8D36BC4F15}'
+		CurVer = s 'CvrtCoords.Asc.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {78981A25-5F91-46CA-9E19-2A8D36BC4F15} = s 'Konvertieren von ASC-Textdateien'
+		{
+			ProgID = s 'CvrtCoords.Asc.1'
+			VersionIndependentProgID = s 'CvrtCoords.Asc'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{8161FB78-7BDA-4F58-B8F8-2804543E60C3}'
+		}
+	}
+}

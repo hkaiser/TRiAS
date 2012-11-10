@@ -1,0 +1,16 @@
+; ModulDefinitionsFile für Export-DLL DIRISMKL32
+
+LIBRARY		DIRISMKL
+
+DESCRIPTION	'Export von Merkmalsdaten im DIRIS MKL-Format V@A.@B (Build @C), (C) #@D'
+
+EXPORTS
+	DIRISMKLEXPORTBEGIN		= _DirisMKLExportBegin@16	@10
+	DIRISMKLEXPORTCOMMENT		= _DirisMKLExportComment@8	@11
+	DIRISMKLEXPORTHEADER		= _DirisMKLExportHeader@8	@12
+	DIRISMKLEXPORTDESCRIPTION	= _DirisMKLExportDescription@12	@13
+	DIRISMKLEXPORTDATA		= _DirisMKLExportData@20	@14
+	DIRISMKLEXPORTTRAILER		= _DirisMKLExportTrailer@8	@15
+	DIRISMKLEXPORTEND		= _DirisMKLExportEnd@4		@16
+	DIRISMKLGETEXPORTCAPS		= _DirisMKLGetExportCaps@4	@17
+	DIRISMKLEXPORTBREAK		= _DirisMKLExportBreak@4	@18

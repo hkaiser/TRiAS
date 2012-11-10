@@ -1,0 +1,33 @@
+HKCR
+{
+	TRiASEx.GenerateLabels.1 = s 'Textobjekte generieren'
+	{
+		CLSID = s '{51976425-F91C-11D1-8639-00600875138A}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {51976425-F91C-11D1-8639-00600875138A} = s 'Textobjekte generieren'
+		{
+			val AppID = s '{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}'
+			ProgID = s 'TRiASEx.GenerateLabels.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.2
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove TRiASEx.GenerateLabels.1 = s '{51976425-F91C-11D1-8639-00600875138A}'
+			}
+		}
+	}
+}

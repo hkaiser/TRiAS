@@ -1,0 +1,154 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "toporela.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "dlgs.h"
+#include "resstrg.h"
+#include "toporel.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_LAGEBESTIMMUNG DIALOG DISCARDABLE  12, 23, 241, 241
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Topologische Relationen des Objektes: %ld"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "   Testen aller markierten O&bjekte",IDR_OBJEKTE,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,5,7,
+                    126,10
+    CONTROL         "   Testen aller Objekte der Objektk&lassen",IDR_KLASSEN,
+                    "Button",BS_AUTORADIOBUTTON | WS_TABSTOP,5,19,153,10
+    LISTBOX         IDL_IDENTIFIKATOREN,14,33,157,96,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_GROUP | WS_TABSTOP
+    GROUPBOX        " Objektmengen anzeigen ",-1,5,141,231,55,WS_GROUP
+    CONTROL         "   Vollständig &innerhalb liegende Objekte",
+                    IDC_INNERHALB,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,
+                    154,221,10
+    CONTROL         "   Vollständig a&ußerhalb liegende Objekte",
+                    IDC_AUSSERHALB,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,
+                    168,222,10
+    CONTROL         "   &Sonstige Objekte",IDC_INNAUS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,12,182,222,10
+    DEFPUSHBUTTON   "&OK",IDOK,179,7,55,14,WS_GROUP
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,179,33,55,14
+    PUSHBUTTON      "Alle &Klassen",IDB_ALLEKLASSEN,179,115,55,14
+    GROUPBOX        " Beschreibung ",-1,5,201,231,35,WS_GROUP
+    LTEXT           "",IDT_KOMMENTAR,10,210,223,25
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "toporela.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""dlgs.h""\r\n"
+    "#include ""resstrg.h""\r\n"
+    "#include ""toporel.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""toporel.rcv""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Topologische Relationen"
+    IDS_LAGEBEST            "&Topologische Relationen ..."
+    IDS_OBJINN              "Innerhalb liegende Objekte"
+    IDS_OBJAUSS             "Außerhalb liegende Objekte"
+    IDS_OBJINNAUSS          "Sonstige Objekte"
+    IDS_KOMMINN             "Zu testende Objekte liegen vollständig innerhalb des selektierten Bezugsobjektes."
+    IDS_KOMMAUSS            "Zu testende Objekte liegen vollständig außerhalb des selektierten Bezugsobjektes. Berührungen sind dabei zulässig."
+    IDS_KOMMINNAUSS         "Zu testende Objekte liegen sowohl innerhalb als auch außerhalb des selektierten Bezugsobjektes."
+    IDS_NOINN               "Es liegt kein Objekt vollständig innerhalb des Bezugsobjektes."
+    IDS_NOAUSS              "Es liegt kein Objekt vollständig außerhalb des Bezugsobjektes."
+    IDS_NOINNAUSS           "Es gibt kein Objekt, das sowohl innerhalb als auch außerhalb liegt."
+    IDS_GEOFEHL1            "Das blinkende Objekt (Objekt-Nr. %ld) enthält einen Geometriefehler. Deshalb\r\nkann es nicht als Bezugsobjekt für topologische Relationen verwendet werden."
+    IDS_GEOFEHL2            "Das Objekt %ld enthält einen Geometriefehler. Deshalb können für\r\ndieses Objekt die topologischen Relationen nicht ermittelt werden."
+    IDS_TOPOREL_CAPTION     "Topologische Relationen geometrischer Objekte"
+    IDS_STATUS_STAND        "Es wurden bereits %ld%% bearbeitet"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXEXTENSIONPROC    "DEXEXTENSIONPROC"
+    IDS_DEXXEXTENSIONPROC   "DEXXEXTENSIONPROC"
+    IDS_DEXNOTIFICATIONPROC "DEXNOTIFICATIONPROCEX"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_BEARB_OBJEKT        "Objekt: %ld"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "toporel.rcv"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

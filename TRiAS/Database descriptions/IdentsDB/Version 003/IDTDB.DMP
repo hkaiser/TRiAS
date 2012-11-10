@@ -1,0 +1,141 @@
+Quelldateiname:   idtdb.dbs
+Includedateiname: idtdb.h
+Steuerdateiname : idtdb.dbd
+
+Datenbankstruktur: idtdb
+Mon Dec 07 11:06:40 1992
+
+DATEI: *.MID
+   Nummer: 0
+   Typ   : Data
+   Groesse der Record-slots : 140
+   Record-slots je Page     : 7
+   Ungenutzte Bytes je Page : 36
+
+DATEI: *.MMK
+   Nummer: 1
+   Typ   : Data
+   Groesse der Record-slots : 140
+   Record-slots je Page     : 7
+   Ungenutzte Bytes je Page : 36
+
+DATEI: *.MRL
+   Nummer: 2
+   Typ   : Data
+   Groesse der Record-slots : 140
+   Record-slots je Page     : 7
+   Ungenutzte Bytes je Page : 36
+
+DATEI: *.ISK
+   Nummer: 3
+   Typ   : BTreeKey
+   Groesse der Record-slots : 12
+   Record-slots je Page     : 84
+   Ungenutzte Bytes je Page : 8
+
+DATEI: *.MSK
+   Nummer: 4
+   Typ   : BTreeKey
+   Groesse der Record-slots : 12
+   Record-slots je Page     : 84
+   Ungenutzte Bytes je Page : 8
+
+DATEI: *.RSK
+   Nummer: 5
+   Typ   : BTreeKey
+   Groesse der Record-slots : 12
+   Record-slots je Page     : 84
+   Ungenutzte Bytes je Page : 8
+
+DATEI: *.TRA
+   Nummer: 6
+   Typ   : Backup
+   Groesse der Record-slots : 0
+   Record-slots je Page     : 0
+   Ungenutzte Bytes je Page : 1016
+
+RECORD: MID
+   Nummer : 0
+   Datei  : *.MID [0]
+   Recordgroesse            : 116
+   Ungenutzte Bytes je Slot : 24
+   Keynummer                : 0
+
+RECORD: MIF
+   Nummer : 1
+   Datei  : *.MID [0]
+   Recordgroesse            : 140
+   Ungenutzte Bytes je Slot : 0
+   Recordkette              : 0
+
+RECORD: MMK
+   Nummer : 2
+   Datei  : *.MMK [1]
+   Recordgroesse            : 140
+   Ungenutzte Bytes je Slot : 0
+   Keynummer                : 1
+
+RECORD: MKF
+   Nummer : 3
+   Datei  : *.MMK [1]
+   Recordgroesse            : 140
+   Ungenutzte Bytes je Slot : 0
+   Recordkette              : 2
+
+RECORD: MMW
+   Nummer : 4
+   Datei  : *.MMK [1]
+   Recordgroesse            : 88
+   Ungenutzte Bytes je Slot : 52
+   Recordkette              : 3
+
+RECORD: MMF
+   Nummer : 5
+   Datei  : *.MMK [1]
+   Recordgroesse            : 140
+   Ungenutzte Bytes je Slot : 0
+   Recordkette              : 4
+
+RECORD: MRL
+   Nummer : 6
+   Datei  : *.MRL [2]
+   Recordgroesse            : 118
+   Ungenutzte Bytes je Slot : 22
+   Keynummer                : 2
+
+RECORD: MRF
+   Nummer : 7
+   Datei  : *.MRL [2]
+   Recordgroesse            : 140
+   Ungenutzte Bytes je Slot : 0
+   Recordkette              : 6
+
+KEYFELD: IDS
+   Nummer : 0
+   Targetdatei: *.MID [0]
+   Keydatei   : *.ISK [3]
+   Feldtyp    : Long_Integer
+   Feldoffset : 0
+   Feldlaenge : 4
+   Keytyp     : Unique Key
+
+KEYFELD: MKS
+   Nummer : 1
+   Targetdatei: *.MMK [1]
+   Keydatei   : *.MSK [4]
+   Feldtyp    : Long_Integer
+   Feldoffset : 0
+   Feldlaenge : 4
+   Keytyp     : Unique Key
+
+KEYFELD: PRIREL
+   Nummer : 2
+   Targetdatei: *.MRL [2]
+   Keydatei   : *.RSK [5]
+   Feldtyp    : Long_Integer
+   Feldoffset : 0
+   Feldlaenge : 4
+   Keytyp     : Unique Key
+
+Versionsnummer:   03.00.00.003
+

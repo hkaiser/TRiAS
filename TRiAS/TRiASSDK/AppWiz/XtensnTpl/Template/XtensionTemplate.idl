@@ -1,0 +1,33 @@
+// $Header: $
+// Copyright© 1999-2004 Hartmut Kaiser, All rights reserved
+// Created: $$date_n_time$$
+//
+// @doc
+// @module $$root$$.idl | IDL source for $$root$$.ext
+
+// This file will be processed by the MIDL tool to
+// produce the type library ($$root$$.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid($$LIBID_GUID$$),
+	version(1.0),
+	helpstring("$$root$$ 1.0 Type Library")
+]
+library $$root$$
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+// der eigentliche TRiAS-Zusatzmodul
+	[
+		uuid($$XTENSION_GUID$$),
+		helpstring("$$safe_root$$ Class")
+	]
+	coclass $$safe_root$$
+	{
+		[default] interface IUnknown;
+	};
+};

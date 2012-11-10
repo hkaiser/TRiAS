@@ -1,0 +1,50 @@
+HKCR 
+{
+	TRiAS.ArcViewExport.1 = s 'TRiAS Export in das ArcView Shapeformat' 
+	{
+		CLSID = s '{6D284BC2-733F-4D77-B946-2083DC87C2E1}'
+	}
+	TRiAS.ArcViewExport = s 'TRiAS Export in das ArcView Shapeformat' 
+	{
+		CLSID = s '{6D284BC2-733F-4D77-B946-2083DC87C2E1}'
+		CurVer = s 'TRiAS.ArcViewExport.1'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {6D284BC2-733F-4D77-B946-2083DC87C2E1} = s 'TRiAS Export in das ArcView Shapeformat' 
+		{
+			ProgID = s 'TRiAS.ArcViewExport.1'
+			VersionIndependentProgID = s 'TRiAS.ArcViewExport'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%' 
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{6D284BC0-733F-4D77-B946-2083DC87C2E1}'
+		}
+	}
+}
+
+HKCU 
+{ 
+	NoRemove Software 
+	{ 
+		TRiAS 
+		{ 
+			TRiAS 
+			{ 
+				Extensions 
+				{ 
+					TRiAS.Export.1 
+					{ 
+						Engines 
+						{
+							ForceRemove {6D284BC2-733F-4D77-B946-2083DC87C2E1} = s 'ArcView Shape Export'
+						} 
+					} 
+				} 
+			} 
+		} 
+	} 
+}
+

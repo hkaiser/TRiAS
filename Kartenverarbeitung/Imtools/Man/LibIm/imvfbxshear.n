@@ -1,0 +1,136 @@
+'\"et
+.if t .TH IMVFBXSHEAR 1IM "November 24, 1992" "San Diego Supercomputer Center" "IMAGE TOOLS" 
+.if n .TH IMVFBXSHEAR 1IM "November 24, 1992" "SDSC" "IMAGE TOOLS"
+.SH NAME
+.LP
+ImVfbXShear, ImVfbYShear  -  shear an image in the X or Y direction
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+ImVfb *ImVfbXShear( srcVfb, degree, dstVfb )
+        ImVfb   *srcVfb;       
+        float    degree;     
+        ImVfb   *dstVfb;       
+
+ImVfb *ImVfbYShear( srcVfb, degree, dstVfb )
+        ImVfb   *srcVfb;       
+        float    degree;     
+        ImVfb   *dstVfb;       
+.fi
+\fR
+.SH DESCRIPTION
+\fBImVfbXShear\fR and \fBImVfbYShear\fR shear the \fIsrcVfb\fR along the
+X-axis and Y-axis, respectively.  The resulting sheared image is returned
+in \fIdstVfb\fR, a pointer to which is returned as the function value.
+.LP
+A shear operation can be viewed as a rotation of one edge of an image, while
+holding the other edge where it is.  The effect creates a parallelogram.
+The image shear angle \fIdegree\fR is the edge rotation angle measured
+using the right-hand rule:  positive angles rotate counter-clockwise while
+negative angles rotate clockwise.
+.LP
+\fBImVfbXShear\fR shears the image along the X-axis by rotating it's vertical,
+Y-axis, edge by \fIdegree\fR.  A positive angle will have the effect of
+shearing the top of the image to the left, relative to the bottom.  A negative
+angle will have the effect of shearing the top of the image to the right,
+relative to the bottom.
+.LP
+\fBImVfbYShear\fR shears the image along the Y-axis by rotating it's
+horizontal, X-axis, edge by \fIdegree\fR.  A positive angle will have the
+effect of shearing the right edge of the image upwards, relative to the
+left edge.  A negative angle will have the effect of shearing the right edge
+of the image downwards, relative to the left edge.
+.LP
+Both forms of shearing will create a new image larger in one
+dimension than the original.
+.LP
+If \fIdstVfb\fR is \fBIMVFBNEW\fR a new destination VFB will be automatically
+allocated with the proper size, the same fields as \fIsrcVfb\fR, and
+initialized to zeroes in all fields.  A pointer to the new \fIdstVfb\fR is
+returned by \fBImVfbXShear\fR or \fBImVfbYShear\fR.
+.LP
+If \fIdstVfb\fR is not \fBIMVFBNEW\fR, the VFB must have at least the same
+fields as \fIsrcVfb\fR and must be large enough to hold the sheared image.
+Sheared VFB sizes may be computed based upon the shear angle using:
+.RS 0.5i
+\fBX Shears\fR:
+.RS 0.5i
+Width = \fBImVfbQWidth\fR( \fIsrcVfb\fR ) +
+.br
+	fabs( tan( \fIdegree\fR ) * \fBImVfbQHeight\fR( \fIsrcVfb\fR ) )
+.br
+
+Height = \fBImVfbQHeight\fR( \fIsrcVfb\fR )
+.br
+.RE
+
+\fBY Shears\fR:
+.RS 0.5i
+Width = \fBImVfbQWidth\fR( \fIsrcVfb\fR )
+.br
+
+Height = \fBImVfbQHeight\fR( \fIsrcVfb\fR ) +
+.br
+	fabs( sin( \fIdegree\fR ) * \fBImVfbQWidth\fR( \fIsrcVfb\fR ) )
+.br
+.RE
+.RE
+.LP
+\fIdstVfb\fR contents will be overwritten by those pixels from \fIsrcVfb\fR
+that constitute the sheared image.  Pixels outside of the image (two corner
+triangles) will be unmodified in \fIdstVfb\fR.
+.SH NOTES
+Providing a \fIdstVfb\fR to \fBImVfbXShear\fR or \fBImVfbYShear\fR is
+appropriate for a variety
+of effects.  In the simplest case, the \fIdstVfb\fR may contain a background
+color that matches the background of the \fIsrcVfb\fR.  When sheared, the
+\fIsrcVfb\fR's pixels will blend seamlessly into the \fIdstVfb\fR background
+rather than leave empty black triangular corners.
+.LP
+In a more complex use of a \fIdstVfb\fR, the \fIdstVfb\fR may be intialized
+to a transparent alpha channel value.  The \fIsrcVfb\fR, complete with its
+own variety of transparent and opaque alpha values, will be sheared and
+placed into the transparent background of \fIdstVfb\fR.  The combination can
+then be used with \fBImVfbComp\fR to digitally composite the sheared image
+atop another image.
+.LP
+Finally, a \fIdstVfb\fR could contain a complete image atop which the sheared
+image is to be placed.  This is usually less satisfying that using an
+alpha-channel based compositing approach because the entire rectangle of the
+sheared \fIsrcVfb\fR will be pasted atop the \fIdstVfb\fR, leaving you
+a sheared image with \fIdstVfb\fR only showing through in the corners.
+.LP
+\fIsrcVfb\fR is unaltered by this operation.
+.SH RETURNS
+Upon success, \fBImVfbXShear\fR and \fBImVfbYShear\fR return a pointer to 
+the destination VFB.
+Upon failure, \fBIMVFBNULL\fR is returned, and \fBImErrNo\fR set
+to one of the following:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEFIELD	\fIsrcVfb\fR and \fBdstVfb\fR fields aren't compatible
+IMEHEIGHT	Height not the right size for the resulting shear 
+IMEMALLOC	Cannot allocate enough memory for the new VFB
+IMENOVFB	NULL \fIsrcVfb\fR
+IMEWIDTH	Width not the right size for the resulting shear
+IMEIMPSHEAR	An invalid shear was requested (<-90 or >90 degrees)
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH "SEE ALSO"
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBImVfbComp\fR(3IM),
+\fBImVfbRotate\fR(3IM)
+.SH AUTHOR
+Dave Nadeau and Chris Groening
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

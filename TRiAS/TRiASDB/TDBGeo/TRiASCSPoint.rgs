@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASCS.TRiASCSPoint.1 = s 'TRiASCSPoint Class'
+	{
+		CLSID = s '{0BDC3C1E-503F-11D1-96F0-00A024D6F582}'
+	}
+	TRiASCS.TRiASCSPoint = s 'TRiASCSPoint Class'
+	{
+		CLSID = s '{0BDC3C1E-503F-11D1-96F0-00A024D6F582}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {0BDC3C1E-503F-11D1-96F0-00A024D6F582} = s 'TRiASCSPoint Class'
+		{
+			ProgID = s 'TRiASCS.TRiASCSPoint.1'
+			VersionIndependentProgID = s 'TRiASCS.TRiASCSPoint'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{6A0120C3-70C6-11D1-974B-00A024D6F582}'
+			'Version' = s '1.0'
+		}
+	}
+}

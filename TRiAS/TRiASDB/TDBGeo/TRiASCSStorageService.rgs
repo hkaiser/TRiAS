@@ -1,0 +1,27 @@
+HKCR
+{
+	TRiASCS.TRiASCSStorageService.1 = s 'TRiASCSStorageService Class'
+	{
+		CLSID = s '{80B9A2F6-02B0-11D2-8650-00600875138A}'
+	}
+	TRiASCS.TRiASCSStorageService = s 'TRiASCSStorageService Class'
+	{
+		CLSID = s '{80B9A2F6-02B0-11D2-8650-00600875138A}'
+		CurVer = s 'TRiASCS.TRiASCSStorageService.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {80B9A2F6-02B0-11D2-8650-00600875138A} = s 'TRiASCSStorageService Class'
+		{
+			ProgID = s 'TRiASCS.TRiASCSStorageService.1'
+			VersionIndependentProgID = s 'TRiASCS.TRiASCSStorageService'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{6A0120C3-70C6-11D1-974B-00A024D6F582}'
+			'Version' = s '1.0'
+		}
+	}
+}

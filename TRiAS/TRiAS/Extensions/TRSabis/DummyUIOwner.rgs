@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiAS.DummyUIOwner.1 = s 'DummyUIOwner Class'
+	{
+		CLSID = s '{15884654-4F69-41FB-8A00-06829EDE1FD8}'
+	}
+	TRiAS.DummyUIOwner = s 'DummyUIOwner Class'
+	{
+		CLSID = s '{15884654-4F69-41FB-8A00-06829EDE1FD8}'
+		CurVer = s 'TRiAS.DummyUIOwner.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {15884654-4F69-41FB-8A00-06829EDE1FD8} = s 'DummyUIOwner Class'
+		{
+			ProgID = s 'TRiAS.DummyUIOwner.1'
+			VersionIndependentProgID = s 'TRiAS.DummyUIOwner'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{139DED23-68CD-11D2-8CBD-006097A8F384}'
+		}
+	}
+}

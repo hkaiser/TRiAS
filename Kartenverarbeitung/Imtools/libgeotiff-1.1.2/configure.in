@@ -1,0 +1,110 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(geotiff.h)
+AC_CONFIG_HEADER(geo_config.h)
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_COMPILER_WFLAGS
+
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_RANLIB
+
+dnl Checks for libraries.
+AC_CHECK_LIB(m,exp,,,)
+
+dnl We check for headers
+AC_HEADER_STDC
+AC_CHECK_HEADERS(string.h strings.h stdlib.h)
+ 
+dnl
+dnl Special logic to try and find a user specified libtiff tree.  If not
+dnl available check if the system directories have the library, _and_ the
+dnl required private include files.  Normally these private include files
+dnl (tiffiop.h) are not installed with the public interface.
+dnl
+if test "$TIFF_HOME" != "" ; then
+  echo Using predefined TIFF_HOME=$TIFF_HOME
+elif test -d ../../libtiff/libtiff ; then
+  TIFF_HOME=`pwd`/../../libtiff/libtiff
+  echo Found local TIFF_HOME=$TIFF_HOME
+elif test -d ../libtiff ; then
+  TIFF_HOME=`pwd`/../libtiff
+  echo Found local TIFF_HOME=$TIFF_HOME
+fi
+
+if test "$TIFF_HOME" != "" ; then
+  TIFF_LIB=$TIFF_HOME/libtiff.a
+  LIBS="$TIFF_LIB $LIBS"
+
+  TIFF_INC=-I$TIFF_HOME
+  AC_SUBST(TIFF_INC,$TIFF_INC)
+  
+else
+  AC_CHECK_LIB(tiff,TIFFOpen,,
+               AC_MSG_ERROR([You will need to substantially rewrite libxtiff to
+build libgeotiff without libtiff]),-lm)
+  AC_CHECK_HEADERS(tiffiop.h,,AC_MSG_ERROR("tiffiop.h not found - cannot build libxtiff"))
+fi
+
+dnl
+dnl Try and find libproj.a, and projects.h
+dnl
+if test "$PROJ_HOME" != "" ; then
+  echo Using predefined PROJ_HOME=$PROJ_HOME
+elif test -d ../../proj/src ; then
+  PROJ_HOME=`pwd`/../../proj/src
+  echo Found local PROJ_HOME=$PROJ_HOME
+fi
+
+if test "$PROJ_HOME" != "" ; then
+  PROJ_LIB=$PROJ_HOME/libproj.a
+  LIBS="$PROJ_LIB $LIBS"
+
+  PROJ_INC=-I$PROJ_HOME
+  AC_SUBST(PROJ_INC,$PROJ_INC)
+  AC_DEFINE(HAVE_PROJECTS_H)
+  AC_DEFINE(HAVE_LIBPROJ)
+  
+else
+  AC_CHECK_LIB(proj,pj_init,,,-lm)
+  AC_CHECK_HEADERS(projects.h,,)
+fi
+
+dnl
+dnl Add option to include libz in library list for use of libtiff.
+dnl
+AC_ARG_WITH(zip, [  --with-zip=dir          Use ZIP library in directory dir],[ZIP=$withval],[ZIP=yes])
+if test "$ZIP" = "yes" ; then
+  AC_CHECK_LIB(z,inflateInit_,,,-lm)
+  AC_CHECK_HEADERS(zlib.h,,)
+  AC_DEFINE(HAVE_ZIP)
+else
+  if test "$ZIP" != "no" ; then 
+    LIBS="${LIBS} -L${ZIP}/lib -lz"       
+    ZIP_INC="-I${ZIP}/include"            
+    AC_SUBST(ZIP_INC,$ZIP_INC)
+    AC_DEFINE(HAVE_ZIP)
+    echo "Using user supplied libzip directory: "$ZIP
+  fi
+fi
+
+dnl
+dnl Has the user requested "incode" EPSG tables, overriding the
+dnl default use of EPSG tables in csv files?
+dnl
+
+AC_ARG_ENABLE(incode-epsg, [  --enable-incode-epsg	  Use C code EPSG tables],, enable_incode_epsg=no)
+
+if test "$enable_incode_epsg" != "yes" ; then
+  echo "EPSG tables will be read from .csv files."
+  CSV_SOURCE="\$(CSV_FILE_OBJS)"
+else
+  echo "EPSG tables will be linked into library."
+  CSV_SOURCE="\$(CSV_INCODE_OBJS)"
+fi
+AC_SUBST(CSV_SOURCE,$CSV_SOURCE)
+
+
+
+AC_OUTPUT(Makefile bin/Makefile)

@@ -1,0 +1,97 @@
+# Makefile für Filter für DXF-Import
+# Windows/DLL-Version
+
+.SUFFIXES: 
+.SUFFIXES: .cxx .obj .rc .res .c .cx
+
+!include $(TRIASINCLUDE)\triasver.mak
+
+COPY = 1
+NAME = DXFIMP
+DEF = $(NAME).def
+DEBUG=1
+#MAP = $(NAME).map
+
+# Generierungsdatum (yymmdd) und Version
+DATE = 040504
+VERSION = 3
+RELEASE = 00
+BUILD = 015
+COPYRIGHT = JB$(DATE)
+
+PNAME = $(TRIAS_PNAME)
+PADDRESS = $(TRIAS_PADDRESS)
+
+YACC_FLAGS = -n -d        # suppress line, produce header, produce short int
+YACC_DEBUG_DEFINES = 
+YACC_FN = dxfy            # Yacc-Filename
+YACC = pcyacc
+YACC_HD = yytab           # Yacc-Header-File
+LEX = pclex
+LEX_DEBUG_DEFINES  =
+LEX_FLAGS = -l            # suppress line
+LEX_FN = dxflx            # LEX-Filename
+REPLACE = ersetz
+
+LINK = link16
+ASM = masm
+
+STUB = rights
+
+OUTDLL = $(NAME).ext
+RIGHTS = $(STUB).exe
+
+# !include "dxfimp.mak"
+
+lexyacc:	$(YACC_FN).cpp $(LEX_FN).cp
+
+$(YACC_FN).cpp: $(YACC_FN).y
+		$(YACC) $(YACC_FLAGS) $(YACC_FN).y -C$(YACC_FN).c
+                sed -f $(YACC_FN).sed $(YACC_FN).c >$(YACC_FN).cpp
+		@del $(YACC_FN).c
+
+$(LEX_FN).cp:   $(LEX_FN).l 
+		$(LEX) $(LEX_FLAGS) $(LEX_FN).l
+                 sed -f $(LEX_FN).sed $(LEX_FN).c >$(LEX_FN).cp
+                 @del $(LEX_FN).c
+
+# Versionskontrolle -----------------------------------------------------------
+
+# alle versionsabhängien Datein löschen
+new:
+	@del $(DEF) > nul
+	@del $(NAME).rcv > nul
+	@del versio32.h
+
+# nur Versionsabhängigkeiten auflösen
+formake: $(NAME).tpl $(NAME).rcv $(DEF) versio32.h
+
+# ModulDefinitionsDatei mit allen Exporten generieren
+$(DEF):  $(NAME).tpl makefile
+	ersetz \
+		$(VERSION) \
+		$(RELEASE) \
+		$(BUILD) \
+		$(COPYRIGHT) \
+			$(NAME).tpl $(DEF)
+
+versio32.h:    version.tpl makefile
+	ersetz \
+		$(VERSION) \
+		$(RELEASE) \
+			version.tpl versio32.h
+
+# Personalisierungsinformation
+$(NAME).rcv:	$(NAME)v.tpl makefile
+	$(REPLACE) \
+		$(VERSION) \
+		$(RELEASE) \
+		$(BUILD) \
+		$(COPYRIGHT) \
+		$(PNAME) \
+		$(PADDRESS) \
+		$(TRIAS_VERSION) \
+		$(TRIAS_RELEASE) \
+		$(COMPANYNAME) \
+			$(NAME)v.tpl $(NAME).rcv
+	

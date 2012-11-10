@@ -1,0 +1,101 @@
+'\"t
+.if t .TH IMVFBMIX 3IM "June 14, 1995" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY" 
+.if n .TH IMVFBMIX 3IM "June 14, 1995" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImVfbMix - Combine any of the fields in two virtual frame buffers by a
+certain weighting factor 
+.br
+ImVfbFade - Fade the pixels in a vfb towards zero.
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+ImVfbMix( src1Vfb, src1Weight, src2Vfb, src2Weight, fieldMask, dstVfb )
+        ImVfb *src1Vfb;        
+        float  src1Weight;    
+        ImVfb *src2Vfb;      
+        float  src2Weight;  
+        int    fieldMask;  
+        ImVfb *dstVfb;      
+
+ImVfbFade( srcVfb, srcWeight, fieldMask, dstVfb )
+	ImVfb *srcVfb;
+	double srcWeight;
+	int fieldMask;
+	ImVfb *dstVfb;
+.fi
+\fR
+.SH DESCRIPTION
+\fBImVfbMix\fR combines any fields (one or more) of two virtual frame buffers 
+by multiplying src1Vfb by src1Weight and adding it to src2Vfb times src2Weight
+this result is then stored in the dstVfb, a pointer to which is returned.
+.LP
+\fBImVfbFade\fR fades any fields of a virtual frame buffer towards zero.  That
+is, all pixels in the specified fields are multiplied by \fIsrcWeight\fR.
+.LP
+\fIsrc1Vfb\fR is the Vfb to take one set of values to combine into the dstVfb.
+.LP
+\fIsrc1Weight\fR is the weight to multiply it by.
+.LP
+\fIsrc1Vfb\fR is the Vfb to take one set of values to combine into the dstVfb.
+.LP
+\fIsrc1Weight\fR is the weight to multiply it by.
+.LP
+\fIfieldMask\fR is the mask which tells what fields to fill.
+Possible values for \fIfieldMask\fR are:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c
+l l.
+\fBValue	Meaning\fP
+_
+\fBIMVFBRGB\fR	Fill the red, green and blue fields 
+\fBIMVFBRED\fR	Fill the red field 
+\fBIMVFBGREEN\fR	Fill the green field 
+\fBIMVFBBLUE\fR	Fill the blue field 
+\fBIMVFBIDATA\fR	Fill the integer field 
+\fBIMVFBFDATA\fR	Fill the floating point field 
+\fBIMVFBALL\fR	Fill all the fields 
+\fBIMVFBWPROT\fR	Fill the write protect field 
+\fBIMVFBZ\fR	Fill the zbuffer field 
+\fBIMVFBALPHA\fR	Fill the alpha field 
+\fBIMVFBINDEX8\fR	Fill the index8 field 
+\fBIMVFBINDEX16\fR	Fill the index16 field 
+\fBIMVFBMONO\fR	Fill the mono field 
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+Note that any combination of these can be used to change multiple fields.
+.LP
+\fIdstVfb\fR is the Vfb to contain the new image.  If \fIdstVfb\fR is
+the constant \fBIMVFBNEW\fR, a new Vfb is allocated with the same
+size and the same fields as \fIsrcVfb\fR.  A pointer to the new Vfb is
+returned.
+.SH RETURNS
+Upon success, \fBImVfbMix\fR returns a pointer to the destination Vfb.
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH SEE ALSO
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBimadjust\fR (1IM),
+\fBimcomp\fR (1IM),
+\fBimdissolve\fR (1IM),
+\fBimfill\fR (1IM),
+\fBimpaste\fR (1IM),
+\fBImVfbAdjust\fR (3IM),
+\fBImVfbComp\fR (3IM),
+\fBImVfbFill\fR (3IM)
+.SH AUTHORS
+Chris Groening and Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

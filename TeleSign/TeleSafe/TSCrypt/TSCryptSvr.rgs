@@ -1,0 +1,24 @@
+HKCR
+{
+	TSCryptSvr.TSCryptSvr.1 = s 'TSCryptSvr Class'
+	{
+		CLSID = s '{2B07B6E1-D5A6-11D2-BA4C-000000000000}'
+	}
+	TSCryptSvr.TSCryptSvr = s 'TSCryptSvr Class'
+	{
+		CurVer = s 'TSCryptSvr.TSCryptSvr.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {2B07B6E1-D5A6-11D2-BA4C-000000000000} = s 'TSCryptSvr Class'
+		{
+			ProgID = s 'TSCryptSvr.TSCryptSvr.1'
+			VersionIndependentProgID = s 'TSCryptSvr.TSCryptSvr'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

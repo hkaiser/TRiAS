@@ -1,0 +1,88 @@
+// @doc
+// @module ValueProvider.Idl | IDL source for value provider et.al
+// properties
+// @group In diesem Modul definierte Interfaces
+// @index | INTERFACE
+// @end
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declarations
+interface IValueProvider;
+interface IValueProviderCallback;
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc	INTERFACE 
+// @interface IValueProvider | Über das <i IValueProvider> -Interface können
+// beliebige (zumeist globale) Werte zur Verfügung gestellt werden.
+// @group Methoden und Eigenschaften von <i IValueProvider> 
+// @index | IVALUEPROVIDER
+// @doc IVALUEPROVIDER
+	[
+		object,
+		oleautomation,
+		uuid(30E4A6F6-4712-4487-AA53-92BE3062C452),
+		helpstring("IValueProvider Interface"),
+		pointer_default(unique)
+	]
+	interface IValueProvider : IDispatch
+	{
+		import "oaidl.idl";
+		import "ocidl.idl";
+
+	// @doc VALUEPROVIDERPROPENUM
+	// @enum VALUEPROVIDERPROP | Mit der <t VALUEPROVIDERPROP> -Aufzählung werden zusätzliche Flags 
+	// zu einem Wert definiert.
+	// @xref <i IValueProvider>
+cpp_quote("#if !defined(_VALUEPROVIDERPROP_DEFINED)")
+cpp_quote("#define _VALUEPROVIDERPROP_DEFINED")
+		typedef [public, v1_enum, helpstring("Flags zu einem gelieferten Wert.")] 
+		enum _tagVALUEPROVIDERPROP {
+			VALUEPROVIDERPROP_Unknown = 0,
+			VALUEPROVIDERPROP_String = 0x00000000,		// @emem Wert liefert Zeichenkette
+			VALUEPROVIDERPROP_Integer = 0x00010000,		// @emem Wert liefert integer - Zahlen
+			VALUEPROVIDERPROP_Double = 0x00020000,		// @emem Wert liefert floatpoint - Zahlen
+			VALUEPROVIDERPROP_Bool = 0x00040000,		// @emem Wert liefert Bool
+			VALUEPROVIDERPROP_Date = 0x00080000,		// @emem Wert liefert Datum
+		} VALUEPROVIDERPROP;
+cpp_quote("#endif // !defined(_VALUEPROVIDERPROP_DEFINED)")
+
+	// @doc IVALUEPROVIDER
+	// @property String | IValueProvider | Name | Liefert den Namen des gelieferten Wertes.
+	// @xref <i IValueProvider>
+		[propget, helpstring("Liefert den Namen des gelieferten Wertes.")] HRESULT Name ([out, retval] BSTR *Name);
+
+	// @doc IVALUEPROVIDER
+	// @property String | IValueProvider | Description | Liefert eine Beschreibung des gelieferten Wertes.
+	// @xref <i IValueProvider>
+		[propget, helpstring("Liefert den Namen des gelieferten Wertes.")] HRESULT Description ([out, retval] BSTR *Name);
+
+	// @property <t VALUEPROVIDERPROP> | IValueProvider | Flags | Liefert zusätzliche Flags zum gelieferten Wert.
+	// @xref <i IValueProvider>
+		[propget, helpstring("Liefert zusätzliche Flags zum gelieferten Wert.")] HRESULT Flags ([out, retval] VALUEPROVIDERPROP *Flags);
+
+	// @property VARIANT | IValueProvider | Value | Liefert den eigentlichen Wert.
+	// @xref <i IValueProvider>
+		[propget, helpstring("Liefert den eigentlichen Wert.")] HRESULT Value ([out, retval] VARIANT *Value);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc	INTERFACE 
+// @interface IValueProviderCallback | Über das <i IValueProviderCallback> -Interface 
+// kann der Host eines <o ValueProvider> -Objektes von der Notwendigkeit der
+// Neuberechnung informiert werden
+// @group Methoden und Eigenschaften von <i IValueProviderCallback> 
+// @index | IVALUEPROVIDERCALLBACK
+// @doc IVALUEPROVIDERCALLBACK
+	[ 
+		object, 
+		uuid(648DD314-74D9-4A73-B64F-455017A29D77),
+	]
+	interface IValueProviderCallback : IUnknown
+	{
+	// @doc IVALUEPROVIDERCALLBACK
+	// @property String | IValueProviderCallback | NeedsRefresh | Fordert den Host
+	// des <o Valueprovide> -Objektes auf, den Wert neu einzulesen
+	// @xref <i IValueProviderCallback>
+		[helpstring("Wert neu einlesen.")] HRESULT NeedsRefresh ();
+	};
+

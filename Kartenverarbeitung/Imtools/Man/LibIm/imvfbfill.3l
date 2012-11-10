@@ -1,0 +1,203 @@
+
+
+
+IMVFBFILL(3IM)         SDSC IMAGE LIBRARY          IMVFBFILL(3IM)
+
+
+
+NAME
+     ImVfbFill - fill part or all of a virtual frame buffer
+
+SYNOPSIS
+     #include "im.h"
+
+     ImVfb *ImVfbFill( srcVfb, srcXLeft, srcYTop, srcDx, srcDy,
+          fillField, fillStart, fillEnd, inOut, graduate, dstVfb )
+          ImVfb     *srcVfb;
+          int  srcXLeft;
+          int  srcYTop;
+          int  srcDx;
+          int  srcDy;
+          int  fillField;
+          float     fieldStart;
+          float     fieldEnd;
+          int  inOut;
+          int  graduate;
+          ImVfb     *dstVfb;
+
+
+DESCRIPTION
+     ImVfbFill fills one or more fields  of  _s_r_c_V_f_b,  saving  the
+     result in _d_s_t_V_f_b.
+
+     _s_r_c_X_L_e_f_t and _s_r_c_Y_T_o_p are the upper-left  corner  of  a  fill
+     region  _s_r_c_D_x  pixels  wide  and  _s_r_c_D_y pixels high.  Pixels
+     within the region, or outside of the region will  be  filled
+     based upon the value of _i_n_O_u_t:
+
+          _i_n_O_u_t       Meaning
+8          ______________________________________________
+          IMINSIDE    Fill inside of the fill rectangle
+          IMOUTSIDE   Fill outside of the fill rectangle
+
+     Pixels will be filled with a gradation, or ramp,  of  values
+     between  _f_i_l_l_S_t_a_r_t  and  _f_i_l_l_E_n_d depending upon the value of
+     _g_r_a_d_u_a_t_e:
+
+          _g_r_a_d_u_a_t_e      Meaning
+8          _______________________________________________________
+          IMGRADNONE    Constant fill with _f_i_l_l_S_t_a_r_t
+          IMGRADHORIZ   Horizontal ramp from _f_i_l_l_S_t_a_r_t to _f_i_l_l_E_n_d
+          IMGRADVERT    Vertical ramp from _f_i_l_l_S_t_a_r_t to _f_i_l_l_E_n_d
+
+     Horizontal graduated fill's ramp from _f_i_l_l_S_t_a_r_t at the  left
+     edge of the fill area, to _f_i_l_l_E_n_d at the right edge.  Verti-
+     cal graduated fill's ramp from _f_i_l_l_S_t_a_r_t at the top edge  of
+     the fill area, to _f_i_l_l_E_n_d at the bottom edge.
+
+     _f_i_l_l_S_t_a_r_t and _f_i_l_l_E_n_d may have the  same  value.   _f_i_l_l_S_t_a_r_t
+     need not be less than _f_i_l_l_E_n_d.
+
+
+
+
+SDSC              Last change: August 31, 1992                  1
+
+
+
+
+
+
+IMVFBFILL(3IM)         SDSC IMAGE LIBRARY          IMVFBFILL(3IM)
+
+
+
+     _f_i_l_l_F_i_e_l_d selects the pixel fields to be filled:
+
+          _f_i_l_l_F_i_e_l_d      Meaning
+8          _____________________________________________________________
+          IMMONO         Fill the IMVFBMONO field
+8          _____________________________________________________________
+          IMGRAY         Fill the IMVFBINDEX8 (IMVFBGRAY) field
+          IMINDEX8       Fill the IMVFBINDEX8 field
+          IMINDEX16      Fill the IMVFBINDEX16 field
+8          _____________________________________________________________
+          IMRED          Fill the IMVFBRGB red field
+          IMGREEN        Fill the IMVFBRGB green field
+          IMBLUE         Fill the IMVFBRGB blue field
+8          _____________________________________________________________
+          IMALPHA        Fill the IMVFBALPHA field
+          IMWPROT        Fill the IMVFBWPROT field
+          IMZ            Fill the IMVFBZ field
+          IMIDATA        Fill the IMVFBIDATA field
+          IMFDATA        Fill the IMVFBFDATA field
+8          _____________________________________________________________
+          IMHUE          Fill the IMVFBRGB fields based upon hue
+          IMSATURATION   Fill the IMVFBRGB fields based upon saturation
+          IMINTENSITY    Fill the IMVFBRGB fields based upon intensity
+
+     The _s_r_c_V_f_b and _d_s_t_V_f_b must have the  field's  in  _f_i_l_l_F_i_e_l_d,
+     with  the exception of IMHUE, IMSATURATION, and IMINTENSITY,
+     which require that  the  _s_r_c_V_f_b  and  _d_s_t_V_f_b  have  IMVFBRGB
+     fields.
+
+     Fields in the source VFB not listed in _f_i_l_l_F_i_e_l_d are  copied
+     to the destination VFB without modification.
+
+     Fields not in the fill region are copied to the destionation
+     VFB without modification.
+
+NOTES
+     _d_s_t_V_f_b may be the same  VFB  as  _s_r_c_V_f_b  without  unpleasant
+     side-effects.
+
+     If _d_s_t_V_f_b is IMVFBNEW, a new VFB is  created  by  ImVfbFill.
+     The  new  _d_s_t_V_f_b  will have the same fields, dimensions, and
+     initial contents as _s_r_c_V_f_b.
+
+     The rectangle defined by _s_r_c_X_L_e_f_t, _s_r_c_Y_T_o_p, _s_r_c_D_x, and _s_r_c_D_y
+     will  be  prevented  from extending beyond the bounds of the
+     image.
+
+     Different pixel components have  different  types  and  dif-
+     ferent minimum and maximum values.
+
+          Value        Type      Minimum   Maximum
+8          ________________________________________
+          red          Integer   0         255
+          green        Integer   0         255
+          blue         Integer   0         255
+
+
+
+2                 Last change: August 31, 1992               SDSC
+
+
+
+
+
+
+IMVFBFILL(3IM)         SDSC IMAGE LIBRARY          IMVFBFILL(3IM)
+
+
+
+8          ________________________________________
+          monochrome   Integer   0         1
+          index 8      Integer   0         255
+          index 16     Integer   0         65535
+8          ________________________________________
+          hue          Float     0.0       360.0
+          saturation   Float     0.0       1.0
+          intensity    Float     0.0       1.0
+8          ________________________________________
+          alpha        Integer   0         255
+          wprot        Integer   0         255
+          z-buffer     Integer   0         maxint
+          idata        Integer   any       any
+          fdata        Float     any       any
+
+RETURNS
+     Upon success, ImVfbFill returns a pointer to the destination
+     VFB.  Upon failure, IMVFBNULL is returned and ImErrNo set to
+     one of the following:
+
+          IMEBADINOUT     Bad value for _i_n_O_u_t
+          IMEGRADUATION   Bad value for _g_r_a_d_u_a_t_e
+          IMEHEIGHT       Bad fill area height
+          IMEMALLOC       Out of host memory; cannot malloc
+          IMENOVFB        _s_r_c_V_f_b is IMVFBNULL
+          IMEWIDTH        Bad fill area width
+
+SEE ALSO
+     ImIntro (3IM), ImErrNo (3IM), imadjust (1IM), imcomp  (1IM),
+     imdissolve  (1IM),  imfill (1IM), impaste (1IM), ImVfbAdjust
+     (3IM), ImVfbComp (3IM), ImVfbMix (3IM)
+
+AUTHORS
+     Chris Groening and Dave Nadeau
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+9
+
+
+SDSC              Last change: August 31, 1992                  3
+
+
+

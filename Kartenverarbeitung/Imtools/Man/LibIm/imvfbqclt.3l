@@ -1,0 +1,132 @@
+
+
+
+IMVFBQCLT(3IM)         SDSC IMAGE LIBRARY          IMVFBQCLT(3IM)
+
+
+
+NAME
+     ImVfbQClt - Query the  CLT  (color  lookup  table)  that  is
+     attached to a virtual frame buffer
+     ImVfbSClt - Set the CLT attached to a virtual frame buffer
+
+SYNOPSIS
+     #include "im.h"
+
+     ImClt *ImVfbQClt( srcVfb )
+          ImVfb *srcVfb ;
+
+     void ImVfbSClt( srcVfb, clt )
+          ImVfb *srcVfb ;
+          ImClt *clt ;
+
+
+DESCRIPTION
+     ImVfbSClt attaches the color lookup table _c_l_t to the virtual
+     frame buffer _s_r_c_V_f_b.  Thereafter, color index information in
+     the virtual frame buffer is looked up in _c_l_t to  obtain  RGB
+     color triplets.
+
+     ImVfbQClt returns  a  pointer  to  the  color  lookup  table
+     attached  to  the _s_r_c_V_f_b.  A return value of IMCLTNULL indi-
+     cates the Vfb currently has no color lookup table.
+
+NOTES
+     Setting a Vfb's CLT to IMCLTNULL unattaches any CLT from the
+     Vfb.
+
+     Both ImVfbSClt and ImVfbQClt are macros.
+
+RETURNS
+     ImVfbQClt returns the _s_r_c_V_f_b's CLT.
+
+     ImVfbSClt returns nothing.
+
+SEE ALSO
+     ImIntro (3IM), ImErrNo  (3IM),  ImCltAlloc  (3IM),  ImCltDup
+     (3IM) ImCltFree (3IM) ImCltGrayRamp (3IM), ImCltQBlue (3IM),
+     ImCltQFirst  (3IM),  ImCltQGreen  (3IM),  ImCltQLast  (3IM),
+     ImCltQNColors  (3IM),  ImCltQNext  (3IM),  ImCltQPrev (3IM),
+     ImCltQPtr   (3IM),   ImCltQRed   (3IM),   ImCltRoll   (3IM),
+     ImCltSBlue   (3IM),   ImCltSDec  (3IM),  ImCltSGreen  (3IM),
+     ImCltSInc (3IM), ImCltSRed (3IM),
+
+AUTHOR
+     Mike Bailey
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+SDSC              Last change: August 25, 1992                  1
+
+
+
+
+
+
+IMVFBQCLT(3IM)         SDSC IMAGE LIBRARY          IMVFBQCLT(3IM)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2                 Last change: August 25, 1992               SDSC
+
+
+
+
+
+

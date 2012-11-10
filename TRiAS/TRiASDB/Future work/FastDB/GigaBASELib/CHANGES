@@ -1,0 +1,65 @@
+--- Release version 1.18 (7.10.1999) -------------------------------------
+
+1. Make it possible sort records by length of array fields.
+
+--- Release version 1.19 (14.10.1999) ------------------------------------
+
+1. Fix bug in cursor::reset method introduced in 1.17 version by incorrect
+   __INSURE__ conditional compilation.
+
+2. Fix mistyping in assert statement at database.cpp:3029
+
+3. Fix bug with reseting cursors opened by at() method.
+
+--- Release version 1.20 (20.10.1999) ------------------------------------
+
+1. Add RAW BINARY type.
+
+--- Release version 1.21 (01.11.1999) ------------------------------------
+
+1. Cascade deletes.
+2. New implementation of B+Tree index (placing full string keys at the
+   internal pages of the tree, case insensetive search, improved performance).
+
+--- Release version 1.22 (11.11.1999) ------------------------------------
+
+1. Add get peer name method to the WWWapi.
+2. Fix bug with calculating length by strxfrm in B+tree.
+3. New implementation of cascade deletes.
+4. Implementation of queue manager for WWW API.
+5. New example of Web database publishing - CLIDB. 
+   Example of multithreaded server development using queue manager.
+6. Add type of cursor parameter to the select statement.
+7. Support pointers to arrays as querry parameters
+
+--- Release version 1.23 (16.11.1999) ------------------------------------
+
+1. Fix bug in B+Tree implementation
+
+--- Release version 1.24 (29.11.1999) -------------------------------------
+
+1. Correctly handle non-persistent connections to HTTP server
+2. Fix minor bugs in CLIDB example
+
+--- Release version 1.25 (7.12.1999) -------------------------------------
+
+1. Fix bug with specifying cursor type when at() method is used.
+
+
+--- Release version 2.00 (20.01.2000) -------------------------------------
+
+1. Handle "create table" in SubSQL.
+2. Add CLI (call-level interface).
+3. Multithreaded server support.
+4. Fix bug with in place update of records with varying components. 
+
+--- Release version 2.01 (18.02.2000) -------------------------------------
+
+1. Add copy constructor to dbArray class
+2. Fix bug with transaction rollback
+3. Supports Sun CC compiler
+
+--- Release version 2.02 (22.02.2000) -------------------------------------
+
+1. Port to FreeBSD
+2. Fix mistypings in array.h and makefile

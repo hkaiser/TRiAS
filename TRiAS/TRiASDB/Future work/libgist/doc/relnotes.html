@@ -1,0 +1,49 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.02 [en] (WinNT; I) [Netscape]">
+   <TITLE>libgist v.2.0/amdb v.1.0</TITLE>
+</HEAD>
+<BODY>
+<!-- $Id: relnotes.html,v 1.5 1999/06/27 00:19:59 marcel Exp $ -->
+<UL>
+<CENTER>
+<H1>
+libgist v.2.0/amdb v.1.0 Release Notes</H1></CENTER>
+</UL>
+
+<CENTER>
+<HR WIDTH="100%"></CENTER>
+
+<h2>Libgist</h2>
+<UL>
+<LI>
+Node deletion is not implemented. Instead, empty nodes are simply left
+in the tree.</LI>
+
+<LI>
+Bounding predicates are not shrunk when leaf items are deleted.</LI>
+
+<li>
+Nearest-neighbor queries (e.g., operator <tt>~</tt> for the spatial tree
+extensions) are not supported by the delete operation.
+</UL>
+
+<CENTER>
+<HR WIDTH="100%"></CENTER>
+
+<h2>Amdb</h2>
+<UL>
+<LI>
+The menu items "New Analysis" and "Complete Analysis" are not implemented. Use
+<tt>gistcmdline</tt> (commands <tt>createanl</tt>, <tt>wkldstats</tt>, <tt>splitstats</tt>
+and <tt>penaltystats</tt>) to perform these operations. Use amdb to view the computed
+metrics.
+</li>
+</ul>
+
+<HR WIDTH="100%">Comments, questions and suggestions may be directed to
+<I><A HREF="mailto:gist@postgres.berkeley.edu">gist@postgres.berkeley.edu</A></I>
+<P><FONT SIZE=-2>Last modified: $Date: 1999/06/27 00:19:59 $ by $Author: marcel $.</FONT>
+</BODY>
+</HTML>

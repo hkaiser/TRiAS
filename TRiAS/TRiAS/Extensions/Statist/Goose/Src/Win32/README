@@ -1,0 +1,82 @@
+Goose and Win32
+---------------
+
+The goose library compiles on Windows using the 
+Microsoft Visual C++ 6.0 compiler.  
+
+It's now possible to use the library in other projects.
+Unfortunately, it's not possible to do this using a dynamic 
+link library (DLL) due to severe limitations in the Microsoft
+linking technology.  Instead, you have to link statically
+against the goose.lib library.
+
+Here's how you do it:
+
+1) Put the goose source distribution into a subdirectory
+   called "goose" in your project directory.
+
+2) Open the project that should use the goose library.
+
+3) Use the "Project->Insert project into workspace"
+   option, and insert the "goose.dsp" project definition
+   file into your project.
+
+4) Press F7 to build the goose.lib file.  You can find it
+   in the "goose\Library\goose.lib" directory.  It builds
+   with a few warnings that you can safely ignore.
+
+5) Now change the project to your own project again with
+   the project selection toolbar (or "Build->Set active
+   configuration".)
+
+6) Use "Project->Settings..." to edit the properties of
+   your project.  Under the "C/C++" tab, select the
+   "Preprocessor" category, and add the string
+   "goose\src, goose\win32, goose\specfns" to the
+   "Additional include directories" input field.
+
+7) Go to the "Link" tab, add "goose\Library\goose.lib"
+   to the "Object/Library modules" input field, and press
+   "OK".  Now you are ready to link against the goose library.
+
+8) Compile your project, and run it.
+
+There is an example project file that is set up to demonstrate
+how these things work.  It's called called "goosetest.dsp".  
+Compiling this project will give you an executable that tests 
+the ascii import feature.
+
+Compiling the stuff with other compilers should be
+relatively straight-forward.  However, don't try
+to use the provided project file with Visual C++ 5.0.
+Instead, create a new static library project and import all 
+the source files into that.
+
+
+Win32 Compatibility for Unix Contributors
+-----------------------------------------
+
+In order to keep the port alive, please observe these things
+when you write new code in goose:
+
+#include <config.h>
+
+as the first thing in all *.cpp files.  This is needed to
+work around some stupid limitations in the Microsoft compiler.
+
+Use
+
+#include <iostream>
+  
+instead of #include <iostream.h>.  Using egcs, the two variants
+at the same time goes well, but on other platforms, it breaks.
+(As could be expected, since this is what the C++ standard
+says you should do.)
+ 
+Also, use "using namespace std;" if you use any C++ standard
+library things.  This is also a part of the C++ standard.
+
+
+Comments welcome,
+
+Asger Alstrup <alstrup@diku.dk>

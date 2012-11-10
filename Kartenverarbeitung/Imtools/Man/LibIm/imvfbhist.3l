@@ -1,0 +1,400 @@
+
+
+
+IMVFBHIST(3IM)         SDSC IMAGE LIBRARY          IMVFBHIST(3IM)
+
+
+
+NAME
+     ImVfbHist, ImVfbHistTableFree - compute an  image  histogram
+     and free its data
+
+SYNOPSIS
+     #include "im.h"
+
+     ImHistTable *ImVfbHist( vfb, fieldMask, sort )
+             ImVfb *vfb;
+             int fieldMask;
+             boolean sort;
+
+     void ImVfbHistTableFree( table )
+          ImHistTable *table;
+
+
+DESCRIPTION
+     ImVfbHist computes a color histogram for pixels in  the  _v_f_b
+     by  counting  the number of occurrences of each unique color
+     in the image.  A pointer to a ImHistTable struction contain-
+     ing  a  table  of  the  computed  data  is  returned  as the
+     function's value.  If _s_o_r_t is TRUE, the table of  data  will
+     be  sorted  from  most-often occurring colors to least-often
+     occuring colors.
+
+     ImVfbHistTableFree  deallocates  space  associated  with   a
+     ImHistTable  histogram occurrence table returned by a previ-
+     ous call to ImVfbHist.
+
+     Histograms are computed by counting each unique color in the
+     image.   For  instance, in an RGB image, the red, green, and
+     blue fields act together to define a single color.  A histo-
+     gram  on  these three fields would consider each unique tri-
+     plet as a separate color and enter it in the returned histo-
+     gram data table.
+
+     Histograms may be computed on any subset of  the  fields  in
+     the  _v_f_b  by  setting  _f_i_e_l_d_M_a_s_k  to the fields of interest.
+     _f_i_e_l_d_M_a_s_k is a bitmask of one or more of the following:
+
+          _f_i_e_l_d_M_a_s_k      Use
+8          ___________________________________________
+          IMRED          Compute on red values
+          IMGREEN        Compute on green values
+          IMBLUE         Compute on blue values
+8          ___________________________________________
+          IMMONO         Compute on monochrome values
+          IMGRAY         Compute on grayscale values
+          IMGREY         Compute on grayscale values
+          IMINDEX8       Compute on color indexes
+          IMINDEX16      Compute on color indexes
+          IMALPHA        Compute on alpha values
+8          ___________________________________________
+          IMHUE          Compute on hue values
+
+
+
+SDSC              Last change: December 2, 1992                 1
+
+
+9
+
+
+IMVFBHIST(3IM)         SDSC IMAGE LIBRARY          IMVFBHIST(3IM)
+
+
+
+          IMSATURATION   Compute on saturation values
+          IMINTENSITY    Compute on intensity values
+
+     Fields selected by _f_i_e_l_d_M_a_s_k must exist in  the  _v_f_b.   Hue,
+     saturation, and intensity virtual fields may be used to com-
+     pute histograms in the HSI color space on IMVFBRGB images.
+
+     Histograms   may   not   be   computed   that   mix    color
+     spaces/representations.  For instance, histograms on IMRED |
+     IMINDEX8 or IMGREEN | IMHUE don't make sense.
+
+     ImVfbHist currently does not support computation  of  histo-
+     grams on IMZ, IMWPROT, IMIDATA, or IMFDATA fields.
+
+     Histogram results are returned as  a  ImHistTable  structure
+     allocated  by ImVfbHist.  The ImHistTable structure contains
+     header fields, followed by tables listing color  values  and
+     the number of occurrences of each in the image.
+
+          #define IMMAXFIELDS   20
+          typedef struct ImHistTable
+          {
+                  int     imhist_nEntries;
+                  int     imhist_fieldMask;
+                  int     imhist_nFields;
+                  uint32 *imhist_nOccur;
+                  union
+                      {
+                          uint16 *imhist_val16;
+                          uchar  *imhist_val8;
+                          float  *imhist_valFloat;
+                      } imhist_values[IMMAXFIELDS];
+          } ImHistTable;
+
+     The imhist_nEntries field gives the number of  unique  color
+     entries found and listed in the occurrence list.
+
+     The imhist_fieldMask field gives the  fields  on  which  the
+     histogram  was  computed.   This  will  be  identical to the
+     _f_i_e_l_d_M_a_s_k argument given to ImVfbHist.
+
+     The imhist_nFields field gives the number of fields involved
+     in  the  histogram.   If  _f_i_e_l_d_M_a_s_k  is IMRED | IMGREEN, for
+     instance, then the number of fields is 2.  If  _f_i_e_l_d_M_a_s_k  is
+     IMHUE  | IMSATURATION | IMINTENSITY | IMALPHA, the number of
+     fields is 4, and so on.
+
+     The remaining structure fields make up  a  set  of  parallel
+     arrays  for  the  histogram  occurrence  table  listing each
+     unique color in the image and the number of times it occurs.
+     Each  of  these list fields are dynamically allocated arrays
+     created and set by ImVfbHist.  They may be indexed like  any
+
+
+
+2                 Last change: December 2, 1992              SDSC
+
+
+
+
+
+
+IMVFBHIST(3IM)         SDSC IMAGE LIBRARY          IMVFBHIST(3IM)
+
+
+
+     C  array.   For  instance,  to  get  the number of times the
+     fourth most-often occuring color occurs in the image, refer-
+     ence myHistTable->imhist_nOccur[3].
+
+     The imhist_nOccur list gives the color occurrence count  for
+     each   color   given   by  the  appropriate  combination  of
+     _i_m_h_i_s_t__v_a_l_u_e_s lists.
+
+     The _i_m_h_i_s_t__v_a_l_u_e_s array of unions selects  between  multiple
+     lists  for different field types and different fields making
+     up a color for the histogram.   The  array  is  most  easily
+     referenced using a set of shorthands declared in im.h:
+
+          Shorthand           Action
+8          ___________________________________________________________________
+          imhist_red          imhist_values[IMHISTRED].imhist_val8
+          imhist_blue         imhist_values[IMHISTBLUE].imhist_val8
+          imhist_green        imhist_values[IMHISTGREEN].imhist_val8
+          imhist_alpha        imhist_values[IMHISTALPHA].imhist_val8
+          imhist_hue          imhist_values[IMHISTHUE].imhist_valFloat
+          imhist_saturation   imhist_values[IMHISTSATURATION].imhist_valFloat
+          imhist_intensity    imhist_values[IMHISTINTENSITY].imhist_valFloat
+          imhist_mono         imhist_values[IMHISTMONO].imhist_val8
+          imhist_gray         imhist_values[IMHISTGRAY].imhist_val8
+          imhist_grey         imhist_values[IMHISTGREY].imhist_val8
+          imhist_index8       imhist_values[IMHISTINDEX8].imhist_val8
+          imhist_index16      imhist_values[IMHISTINDEX16].imhist_val16
+
+     For instance, to get the red component of the 4th most-often
+     occuring  color  in  an  RGB  histogram,  use:  myHistTable-
+     >imhist_red[3].
+
+     Structure array pointers for fields not computed in the his-
+     togram will be NULL pointers.  For instance, if you computed
+     an RGB histogram, then myHistTable->imhist_index8 will be  a
+     NULL pointer because it was not used in the histogram.
+
+NOTES
+     ImVfbHist computes correlated field histograms.  Each  color
+     in  the  output  histogram  is  a  unique combination of the
+     selected input fields.  For instance, say an image  has  the
+     following RGB colors:
+
+          RED   GREEN   BLUE
+8          __________________
+          0     0       0
+          255   0       0
+          0     255     255
+          128   128     255
+          255   255     255
+
+     A histogram on the red field alone would report  that  there
+     are 3 different unique values:  0, 128, and 255.  Similarly,
+
+
+
+SDSC              Last change: December 2, 1992                 3
+
+
+
+
+
+
+IMVFBHIST(3IM)         SDSC IMAGE LIBRARY          IMVFBHIST(3IM)
+
+
+
+     independent single-field histograms on the  green  and  blue
+     fields would report that green has 0, 128, and 255 as unique
+     values, and blue has just 0 and 255 as unique values.
+
+     A correlated histogram on all three fields,  however,  would
+     report each unique combination of red, green, and blue field
+     values that occur in the image.  The  answer  would  be  the
+     table  listed  above.   In  the  table  the second and fifth
+     colors both have red values of  255,  but  differ  in  their
+     green  and  blue  components.   This  makes  them  different
+     colors, and thus different entries in the histogram.
+
+     Non-correlated single-field histograms are handy if you just
+     want to see how many pixels have some amount of red in them.
+     However, what if you want to know how many  have  yellow  in
+     them?   For  that  you need to correlate a histogram showing
+     red and green values.  Independent red and green  histograms
+     wouldn't show you anything useful.
+
+     ImVfbHist may be used to compute either single-field  histo-
+     grams  or  multiple-field correlated histograms.  To compute
+     single-field histograms on red and green, for instance, call
+     ImVfbHist  twice, once with _f_i_e_l_d_M_a_s_k set to IMRED, and once
+     with _f_i_e_l_d_M_a_s_k set to IMGREEN.  Alternatively, to compute  a
+     red-green  correlated  histogram, call ImVfbHist with _f_i_e_l_d_-
+     _M_a_s_k set to the bitwise OR of both fields:  IMRED | IMGREEN.
+
+     Computing single-field histograms is very quick and  doesn't
+     use much memory.  Computing multiple-field correlated histo-
+     grams can take quite a bit longer and use a lot more memory,
+     depending  upon the number of correlated fields, the size of
+     the image, and the number of unique  color  combinations  in
+     the  image.   The  following  table  provides an idea of the
+     memory explosion that can result when  computing  correlated
+     histograms.   The table's values are based upon a worst case
+     1024 x 1280 image with every pixel a different color.
+
+          Number      Color   Internal
+          of Fields   Space   Memory Use
+8          ___________________________________
+          1           RGBA    2K Bytes
+          1           HSI     10K Bytes
+          2           RGBA    328K Bytes
+          2           HSIA    4,000K Bytes
+          3           RGBA    9,175K Bytes
+          3           HSI     20,972K Bytes
+          4           RGBA    10,486K Bytes
+          4           HSIA    22,283K Bytes
+
+     The memory use  reported  above  is  for  intermediate  data
+     structures  internal  to  ImVfbHist.   This does not include
+     storage in memory of the image itself, nor any of the  other
+     administrative data structures needed.
+
+
+
+4                 Last change: December 2, 1992              SDSC
+
+
+9
+
+
+IMVFBHIST(3IM)         SDSC IMAGE LIBRARY          IMVFBHIST(3IM)
+
+
+
+     Of note on this table is the use of some 22Mb  for  internal
+     data  when  computing an HSI-Alpha correlated histogram on a
+     pathological case 1280 x 1024 image.  If your  host  doesn't
+     have  22Mb  (plus  overhead) of memory, or the equivalent in
+     swap space, ImVfbHist will be unabled to compute the  histo-
+     gram.   Every  effort  has  been  made  in ImVfbHist to keep
+     memory use to a minimum.  This high use of memory for corre-
+     lated histograms cannot be avoided without resorting to tem-
+     porary files for data storage, and the attendant sever  exe-
+     cution speed impact.
+
+     Please note again that this table was produced for a  patho-
+     logical  image  that  had a different color for every pixel.
+     Most images have considerably fewer colors.  In typical use,
+     memory will not be a problem.
+
+     When you're done with the data, be sure  to  deallocate  the
+     ImHistTable  by calling ImVfbHistTableFree.  There's quite a
+     lot of memory used up by  this  table  and  calling  _f_r_e_e(3)
+     directly won't get rid of most of it!
+
+     Computation time for correlated histograms also goes up with
+     the  number of correlated fields, the size of the image, and
+     the number of unique colors.  The following table shows com-
+     pute times for ImVfbHist on a Silicon Graphics Indigo.
+
+            Size      Field    # of Unique   Compute
+          (pixels)    Choice     Colors       (sec)
+8          ___________________________________________________
+          64,000      R        7             <1
+          64,000      RGB      14            <1
+          64,000      H        10            <1
+          64,000      HSI      14            1
+8          ___________________________________________________
+          90,000      R        140           <1
+          90,000      RGB      256           1
+          90,000      H        85            <1
+          90,000      HSI      256           5
+8          ___________________________________________________
+          490,000     R        254           1
+          490,000     RGB      149,942       210
+          490,000     H        355           5
+          490,000     HSI      149,942       345
+8          ___________________________________________________
+          1,000,000   R        217           2
+          1,000,000   RGB      7,256         9
+          1,000,000   H        284           7
+          1,000,000   HSI      7,256         32
+
+     Column one shows the number of pixels  in  the  test  image.
+     Column two gives the fields used in computing the histogram.
+     Column three  shows  the  number  of  unique  colors  found.
+     Column  four  shows  execution time for computing the histo-
+     gram.
+
+
+
+SDSC              Last change: December 2, 1992                 5
+
+
+
+
+
+
+IMVFBHIST(3IM)         SDSC IMAGE LIBRARY          IMVFBHIST(3IM)
+
+
+
+     This  table  illustrates  that  larger  images  with  larger
+     numbers  of  unique  colors drastically increase the time it
+     takes to compute a correlated  histogram.   This  is  to  be
+     expected.   The  table  also shows that computing in the HSI
+     domain, instead of RGB, takes longer.  This is  due  to  the
+     use  of  floating  point computations and RGB-to-HSI conver-
+     sions everywhere.
+
+EXAMPLES
+     Compute an RGB histogram and print it out to stdout:
+
+            ComputeAndPrint( vfb )
+                     ImVfb *vfb;
+            {
+                     ImHistTable *myTable;
+                     int i;
+
+                     myTable = ImVfbHist( vfb, IMRED|IMGREEN|IMBLUE, TRUE );
+                     for ( i = 0; i < myTable->imhist_nEntries; i++ )
+                     {
+                              printf( "%6d   (%d,%d,%d)0,
+                                            myTable->imhist_nOccur[i],
+                                            myTable->imhist_red[i],
+                                            myTable->imhist_green[i],
+                                            myTable->imhist_blue[i] );
+                     }
+                     ImVfbHistTableFree( myTable );
+            }
+
+RETURNS
+     Upon success, ImVfbHist returns a pointer to an  ImHistTable
+     structure.   Upon  failure, NULL is returned and ImErrNo set
+     to one of the following:
+
+          IMEMALLOC   Cannot allocate enough memory
+          IMEFIELD    _f_i_e_l_d_M_a_s_k is bad
+
+SEE ALSO
+     imhist(1IM), ImIntro(3IM), ImErrNo(3IM), ImVfbStat(3IM)
+
+AUTHOR
+     Dave Nadeau and Chris Groening
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+6                 Last change: December 2, 1992              SDSC
+
+
+

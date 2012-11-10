@@ -1,0 +1,219 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""Export.rcv""\r\n"
+    "#include ""../ExportStdResrc.rc""\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_EXPORTPROPERTYACTION REGISTRY DISCARDABLE    "ExportPropertyAction.rgs"
+IDR_EXPORTXTENSION      REGISTRY DISCARDABLE    "ExportXtension.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_EXPORT_OPTIONS DIALOG DISCARDABLE  0, 0, 276, 141
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Zu exportierendes Datenformat auswählen",
+                    IDC_STATIC_FORMAT,3,4,265,8
+    COMBOBOX        IDC_EXPORTFORMATS,3,15,265,78,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Dateinamen auswählen",IDC_STATIC_FILENAME,3,43,265,8
+    LTEXT           "",IDC_EXPORTFILENAME,3,55,248,14,SS_SUNKEN
+    PUSHBUTTON      "&...",IDC_BTNEXPORTFILENAME,255,55,13,14
+    LTEXT           "Exportoptionen auswählen",IDC_STATIC_OPTIONS,3,83,265,8
+    CONTROL         "&Objekte verschiedener Datenquellen in einzelne Dateien separieren",
+                    IDC_SEPARATE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,3,95,
+                    265,10
+    LTEXT           "Ausgabekoordinatensystem festlegen",IDC_STATIC_COORDSYS,
+                    7,126,206,8,NOT WS_VISIBLE
+    LTEXT           "",IDC_EXPORTCOORDSYS,3,122,248,14,SS_SUNKEN | NOT 
+                    WS_VISIBLE
+    PUSHBUTTON      "&...",IDC_BTNEXPORTCOORDSYS,255,122,13,14,NOT 
+                    WS_VISIBLE | WS_GROUP
+    PUSHBUTTON      "&Koordinaten",IDC_BTNEXPORTCOORDSYS00,206,122,55,14,NOT 
+                    WS_VISIBLE | WS_GROUP
+    CONTROL         "&Lediglich Objekte des selektierten Bereiches exportieren",
+                    IDC_SELECT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,3,107,
+                    237,10
+END
+
+IDD_SELECTPROPSTOEXPORT DIALOG DISCARDABLE  0, 0, 276, 141
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Bitte wählen Sie die &Objekteigenschaften aus, die im folgenden exportiert werden sollen:",
+                    IDC_STATIC,2,3,272,19
+    CONTROL         "Tree1",IDC_OBJECTPROPERTIES,"SysTreeView32",
+                    TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | 
+                    TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | WS_BORDER | 
+                    WS_TABSTOP,2,24,272,84
+    LTEXT           "Beschreibung der Objekteigenschaft",IDC_STATIC_DESC,2,
+                    111,272,8
+    LTEXT           "",IDC_OBJPROP_DESCRIPTION,2,123,272,17
+END
+
+IDD_SELECTCOORDSYSACTION_OPTIONS DIALOG DISCARDABLE  0, 0, 276, 141
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Bitte wählen Sie das &Koordinatensystem aus, in welchem die Geometrien der zu exportierenden Objekte ausgegeben werden sollen:",
+                    IDC_DESCTEXT,2,3,273,18
+    CONTROL         "Tree1",IDC_COORDSYSTEMS,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | 
+                    TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,2,24,273,84
+    LTEXT           "1\n2\n3",IDC_COORDDESCRIPTION,2,116,273,25
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// HTML
+//
+
+EXPORTDATAORWND.XML     HTML    DISCARDABLE     "res\\ExportDataORWnd.xml"
+EXPORTDATAOKS.XML       HTML    DISCARDABLE     "res\\ExportDataOKS.xml"
+GEOCOMPONENTSEQUENCE.DTD HTML    DISCARDABLE     "Res\\GeoComponentSequence.dtd"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_CHECKMARKS          BITMAP  DISCARDABLE     "res\\Chckmark.bmp"
+IDB_OBJPROPTYPES        BITMAP  DISCARDABLE     "res\\ObjPropTypes.bmp"
+IDB_COORDSYSTEM         BITMAP  DISCARDABLE     "res\\CoordSys.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_SELECTPROPSTOEXPORT, DIALOG
+    BEGIN
+        VERTGUIDE, 2
+        VERTGUIDE, 274
+    END
+
+    IDD_SELECTCOORDSYSACTION_OPTIONS, DIALOG
+    BEGIN
+        VERTGUIDE, 2
+        VERTGUIDE, 275
+        BOTTOMMARGIN, 140
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PROJNAME            "Export"
+    IDS_LONGCLASSNAME       "Datenexport in externe Formate"
+    IDS_DESCRIPTION_SELECTEXPORTOBJECTS 
+                            "Auswahl der zu exportierenden Objekte"
+    IDS_DATASOURCE_NAME     "Datenquellen"
+    IDS_OKSOTYP_NAME        "Ansicht"
+    IDS_LIMITTEXT           "Das ausgewählte Datenformat gestattet lediglich %ld Objekteigenschaften pro Objekt auszugeben.\nDeselektieren Sie ggf. eine oder mehrere Objekteigenschaften und versuchen Sie es erneut."
+    IDS_EXPORTCAP           "Exportieren von Daten"
+    IDS_OREXPORTCAP         "Exportieren von Objekten"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MENUENTRY           "Daten&export ..."
+    IDS_ORMENUENTRY         "Objekte &exportieren ..."
+    IDS_EXPORTDATA          "Exportiert die Daten in ein auswählbares Datenformat"
+    IDS_OREXPORTDADA        "Exportiert ausgewählte Objekte in ein auswählbares Datenformat"
+    IDS_SHOWXMLERROR_CAP    "Fehler beim Datenexport"
+    IDS_NOXMLDOMPARSER      "Die für den Datenexport notwendigen Komponenten konnten nicht gefunden werden.\nÜberprüfen und wiederholen Sie gegebenenfalls die Installation von %s."
+    IDS_SELECTDIRPRROMPT    "Verzeichnis auswählen:"
+    IDS_SELECTDIRNAME       "&Verzeichnis auswählen"
+    IDS_SELECTFILENAME      "&Dateinamen auswählen"
+    IDS_NOFOLDER            "Das Verzeichnis '%s' existiert nicht.\nSoll dieses Verzeichnis neu angelegt werden?"
+    IDS_INVALIDFOLDER       "Das Verzeichnis '%s' ist ungültig.\nBitte korrigieren Sie den eingegebenen Verzeichnisnamen."
+    IDS_COULDNOTCREATE      "Das Verzeichnis '%s' konnte nicht erzeugt werden.\nBitte prüfen Sie nochmals den eingegebenen Verzeichnisnamen."
+    IDS_SELECTBEREICH       "Objekte des selektierten Bereiches exportieren"
+    IDS_SELECTAUSSCHNITT    "Objekte des aktuellen Bildausschnittes exportieren"
+    IDS_INVALIDFILE         "Bitte Exportkriterien überprüfen !\nKein Objekt wurde exportiert !"
+    IDS_NOEXPORT            "Beim Exportvorgang traten Fehler auf - die Exportdatei ist unvollständig !"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CONTAINEREXPORT     "Es wurden nach der Selektion %ld Objekte exportiert !"
+    IDS_CANTLOADCS          "Das Koordinatensystem '%s' kann nicht geladen werden (Fehler: %08x)."
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "Export.rcv"
+#include "../ExportStdResrc.rc"
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

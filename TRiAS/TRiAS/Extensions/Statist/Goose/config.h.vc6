@@ -1,0 +1,61 @@
+/* config.h.  Generated automatically by configure.  */
+/* config.h.in.  Generated automatically from configure.in by autoheader.  */
+
+/* Define if you have the ANSI C header files.  */
+#define STDC_HEADERS 1
+
+#define PACKAGE "goose"
+#define VERSION "0.0.10"
+#define GOOSE_MAJOR_VERSION 0
+#define GOOSE_MINOR_VERSION 0
+#define GOOSE_MICRO_VERSION 10
+/* #undef HAVE_GUILE */
+
+/* Define if you have the erf function.  */
+#define HAVE_ERF 1
+
+/* Define if you have the isinf function.  */
+#define HAVE_ISINF 1
+
+/* Define if you have the isnan function.  */
+#define HAVE_ISNAN 1
+
+/* Define if you have the snprintf function.  */
+/* #undef HAVE_SNPRINTF */
+
+/* Define if you have the m library (-lm).  */
+#define HAVE_LIBM 1
+
+/* Define if you have the pthread library (-lpthread).  */
+/* #undef HAVE_LIBPTHREAD */
+
+/* Name of package */
+#define PACKAGE "goose"
+
+/* Version number of package */
+#define VERSION "0.0.10"
+
+/* define if compiled symbols have a leading underscore */
+#define WITH_SYMBOL_UNDERSCORE 1
+
+///////////////////////////////////////////////////////////////////////////////
+// Specifics for _MSC_VER
+#if defined(_MSC_VER)
+
+#pragma warning (disable: 4786)
+#define for if(0); else for
+#define __STDC__ 1
+
+#define OS_WIN_95
+//#define OS_ALTERNATIVE_STRING_NAMES
+#define OS_MULTI_THREADED
+#define OS_NO_STREAM_SUPPORT
+#define OS_NO_ALLOCATORS
+#define OS_STL_ASSERT
+
+namespace std {}
+
+#include <assert.h>
+
+#endif // _MSC_VER
+

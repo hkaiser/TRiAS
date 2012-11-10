@@ -1,0 +1,237 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+#include "secres.h"
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_TRIASOPTIONDLG      REGISTRY DISCARDABLE    "TRiASOptionDlg.rgs"
+IDR_EDITFEATUREPARAMDLG REGISTRY DISCARDABLE    "EditFeatureParamDlg.rgs"
+IDR_EDITFEATUREDLG      REGISTRY DISCARDABLE    "EditFeatureDlg.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_NOPIC               BITMAP  DISCARDABLE     "res\\nopic.bmp"
+IDC_ACTIONS             BITMAP  DISCARDABLE     "res\\actions.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_STDCTRLDLG DIALOGEX 0, 0, 380, 215
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Eigenschaften"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           " ",IDC_STATIC,3,3,165,192,WS_DISABLED,
+                    WS_EX_DLGMODALFRAME
+    LTEXT           "Einstellungen für:",IDC_STATIC,7,7,157,8
+    CONTROL         "Tree1",IDC_TREE,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS | 
+                    WS_BORDER | WS_TABSTOP,7,17,157,173
+    CONTROL         "Tab2",IDC_TAB,"SysTabControl32",WS_GROUP | WS_TABSTOP,
+                    173,3,203,192
+    LTEXT           " ",IDC_STATIC_RECTANGLE,173,17,203,178,NOT WS_VISIBLE | 
+                    WS_DISABLED,WS_EX_DLGMODALFRAME
+    GROUPBOX        "",IDC_STATIC_FRAME,188,52,175,72,NOT WS_VISIBLE
+    CTEXT           "Die ausgewählten Elemente besitzen keine gemeinsamen Eigenschaften.",
+                    IDC_STATIC_TEXT,196,81,158,22,NOT WS_VISIBLE
+    CONTROL         "&Aktionen",IDB_ACTIONS,"Button",BS_OWNERDRAW | WS_GROUP | 
+                    WS_TABSTOP,88,198,80,14
+    DEFPUSHBUTTON   "OK",IDOK,197,198,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,259,198,55,14
+    PUSHBUTTON      "&Übernehmen",IDAPPLY,321,198,55,14,WS_GROUP
+END
+
+IDD_EDITFEATUREPARAMDLG DIALOG DISCARDABLE  0, 0, 200, 170
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+END
+
+IDD_EDITFEATUREDLG DIALOG DISCARDABLE  0, 0, 194, 171
+STYLE WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Wert der Objekteigenschaft:",IDC_PROPERTY_NAME,0,3,192,
+                    8
+    CONTROL         "Objekteigenschaft ist &schreibgeschützt",
+                    IDC_PROPERTY_RO,"Button",BS_AUTOCHECKBOX | NOT 
+                    WS_VISIBLE | WS_TABSTOP,1,120,175,10
+    EDITTEXT        IDC_EDIT_FEATUREVALUE,0,14,192,116,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | WS_VSCROLL
+    LTEXT           "Static",IDC_PROPERTY_LONGNAME,0,136,192,34,SS_SUNKEN
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_STDCTRLDLG, DIALOG
+    BEGIN
+        VERTGUIDE, 5
+        VERTGUIDE, 7
+        VERTGUIDE, 164
+        VERTGUIDE, 168
+        VERTGUIDE, 173
+        VERTGUIDE, 376
+        TOPMARGIN, 3
+        BOTTOMMARGIN, 212
+        HORZGUIDE, 3
+        HORZGUIDE, 8
+        HORZGUIDE, 17
+        HORZGUIDE, 190
+        HORZGUIDE, 195
+    END
+
+    IDD_EDITFEATUREDLG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 192
+        BOTTOMMARGIN, 170
+        HORZGUIDE, 14
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// 11
+//
+
+IDR_MSG00407            11      DISCARDABLE     "Debug\\msg00407.bin"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_TREE_POPUPMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Popupmenu"
+    BEGIN
+        MENUITEM "Dummy",                       ID_DUMMY
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_TOOLBAR_HORZDRAG    CURSOR  DISCARDABLE     "RES\\horzdrag.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PROJNAME            "TRiASUI"
+    IDS_STDDIALOGCAPTION    "Eigenschaften"
+    IDS_NOCOMMON_PROPERTIES "Die ausgewählten Elemente besitzen keine gemeinsamen Eigenschaften."
+    IDS_NOPROPERTIES        "Das ausgewählte Element besitzt keine einstellbaren Eigenschaften"
+    IDS_NOSELECTEDITEM      "Es ist kein Element ausgewählt."
+    IDS_ERROR_SHOWPROPERTIES 
+                            "Die gewünschten Eigenschaften konnten nicht angezeigt werden (Fehlercode: %lx)."
+    IDS_PROPERTY_NAME_TEMPLATE "Wert der Objekteigenschaft '%s':"
+    IDS_EXPAND              "&Expandieren"
+    IDS_COLLAPSE            "&Zusammenfassen"
+    IDM_EXPAND              "Zeigt alle Einträge dieser Elementes."
+    IDM_COLLAPSE            "Faßt alle geöffneten Einträge dieses Elementes zusammen."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_TITLE_EDITFEATUREDLG "Allgemein"
+    IDS_TITLE_EDITFEATUREPARAMDLG "&Objekteigenschaft"
+    IDS_ACTIONS             "Aktionen"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "#include ""secres.h""\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "1 TYPELIB ""TRiASUI.tlb""\r\n"
+    "#include ""TRiASUI.Rcv""\r\n"
+    "// #include ""SecRes.rc""\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+1 TYPELIB "TRiASUI.tlb"
+#include "TRiASUI.Rcv"
+// #include "SecRes.rc"
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,526 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_MAPIMPORT           REGISTRY DISCARDABLE    "MapMgr.rgs"
+IDR_PICTHOLDER          REGISTRY DISCARDABLE    "res\\PictHolder.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PPGIMPORTFILE DIALOG DISCARDABLE  0, 0, 270, 140
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Tiff-Datei importieren"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         150,IDC_STATIC,"Static",SS_BITMAP | WS_BORDER,0,0,81,140
+    LTEXT           "",IDC_PROGRESSMESSAGE,95,0,170,75,WS_BORDER
+    CONTROL         "Progress1",IDC_PROGRESSCHUNK,"msctls_progress32",0x0,95,
+                    82,133,7
+    CONTROL         "Progress1",IDC_PROGRESSIMPORT,"msctls_progress32",0x0,
+                    95,90,133,7
+    PUSHBUTTON      "&Starten",IDC_BUTTONSTART,230,81,35,15
+    LTEXT           "&Zielverzeichnis:",IDC_STATIC,95,115,65,10
+    EDITTEXT        IDC_EDITDIR,95,128,155,12,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "&...",IDC_BUTTONSELDIR,254,128,11,12
+END
+
+IDD_PPGINTERGRAPH DIALOG DISCARDABLE  0, 0, 270, 141
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Intergraph-Datei"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         150,IDC_STATIC,"Static",SS_BITMAP | WS_BORDER,0,0,95,140
+    LTEXT           "&Transformationsparameter:",IDC_STATIC,95,1,170,8
+    CONTROL         "List1",IDC_TRANSFORMMATRIX,"SysListView32",LVS_REPORT | 
+                    LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_NOSORTHEADER | 
+                    WS_BORDER | WS_TABSTOP,95,11,170,69
+    GROUPBOX        " Global Origin ",IDC_STATIC,172,86,93,55
+    LTEXT           "X",IDC_STATIC,179,97,80,12,WS_BORDER
+    CONTROL         "",IDC_ORIGX,"{51BB3DDF-0C38-11D2-8F6B-0060085FC1CE}",
+                    WS_TABSTOP,197,98,60,10
+    LTEXT           "Y",IDC_STATIC,179,112,80,12,WS_BORDER
+    CONTROL         "",IDC_ORIGY,"{51BB3DDF-0C38-11D2-8F6B-0060085FC1CE}",
+                    WS_TABSTOP,197,113,60,10
+    LTEXT           "Z",IDC_STATIC,179,126,80,12,WS_BORDER
+    CONTROL         "",IDC_ORIGZ,"{51BB3DDF-0C38-11D2-8F6B-0060085FC1CE}",
+                    WS_TABSTOP,197,127,60,10
+    LTEXT           "&Skalierung:",IDC_STATIC,95,86,71,9
+    COMBOBOX        IDC_COMBO_SCALE,95,97,74,35,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_PPGMAPINFO DIALOG DISCARDABLE  0, 0, 270, 140
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Karteninformationen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         150,IDC_STATIC,"Static",SS_BITMAP | WS_BORDER,0,0,81,140
+    CONTROL         "List2",IDC_LISTGCPS,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER | 
+                    WS_BORDER | WS_TABSTOP,95,13,174,102
+    LTEXT           "Gefundene Referenzpunkte:",IDC_STATIC,95,1,154,9
+END
+
+IDD_PPGREFPOINTS DIALOG DISCARDABLE  0, 0, 270, 140
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Koordinatensystem und Eckpunkte der Karte"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         150,IDC_STATIC,"Static",SS_BITMAP | WS_BORDER,0,0,95,140
+    GROUPBOX        " Koordinatensystem der Karte ",IDC_STATIC,90,0,179,68
+    CONTROL         "",IDC_TRIASCSUI1,"{AE998A04-1127-11D2-8F75-0060085FC1CE}",
+                    WS_TABSTOP,95,9,150,54
+    PUSHBUTTON      "&...",IDC_BUTTONDEFCS,254,49,11,14,NOT WS_VISIBLE
+    GROUPBOX        " Karteneckkoordinaten ",IDC_STATIC,90,75,179,65
+    COMBOBOX        IDC_COMBOPOINTSCHEMA,95,90,171,41,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Punkt 1 X",IDC_STATIC,95,105,97,12,WS_BORDER
+    CONTROL         "",IDC_P0X,"{51BB3DDF-0C38-11D2-8F6B-0060085FC1CE}",
+                    WS_TABSTOP,132,106,60,10
+    LTEXT           "Y",IDC_STATIC,197,105,69,12,WS_BORDER
+    CONTROL         "",IDC_P0Y,"{51BB3DDF-0C38-11D2-8F6B-0060085FC1CE}",
+                    WS_TABSTOP,206,106,60,10
+    LTEXT           "Punkt 2 X",IDC_STATIC,95,120,97,12,WS_BORDER
+    CONTROL         "",IDC_P1X,"{51BB3DDF-0C38-11D2-8F6B-0060085FC1CE}",
+                    WS_TABSTOP,132,121,60,10
+    LTEXT           "Y",IDC_STATIC,197,120,69,12,WS_BORDER
+    CONTROL         "",IDC_P1Y,"{51BB3DDF-0C38-11D2-8F6B-0060085FC1CE}",
+                    WS_TABSTOP,206,121,60,10
+END
+
+IDD_PPGSELMAPTYPE DIALOG DISCARDABLE  0, 0, 276, 141
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Auswahl der anzuzeigenden Hintergrundrasterbilder"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         150,IDC_STATIC,"Static",SS_BITMAP | WS_BORDER,0,0,81,143
+    LTEXT           "&Typ der anzuzeigenden Hintergrundrasterbilder:",
+                    IDC_STATIC,92,0,183,8
+    CONTROL         "Tree1",IDC_TREEOFENGINES,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS | 
+                    WS_BORDER | WS_TABSTOP,92,10,183,91
+    LTEXT           "1\n2\n3\n4",IDC_DESCRIPTION,92,107,183,34
+END
+
+IDD_PPGSELADDFILE DIALOG DISCARDABLE  0, 0, 270, 140
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Zusätzliche Beschreibungsdatei(en)"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         150,IDC_STATIC,"Static",SS_BITMAP | WS_BORDER,0,0,81,140
+    EDITTEXT        IDC_DESCRIPTION,95,1,170,114,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "Dateiname:",IDC_STATIC,95,117,99,8
+    EDITTEXT        IDC_EDITNAME,95,128,155,12,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "&...",IDC_BUTTONNAME,254,128,11,12
+END
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDD_PPGSELDOCFILE$(_DEBUG) DIALOG DISCARDABLE  0, 0, 270, 140
+#else
+IDD_PPGSELDOCFILE DIALOG DISCARDABLE  0, 0, 270, 140
+#endif
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Übersicht über die erfolgte Auswahl"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         18036,IDC_STATIC,"Static",SS_BITMAP | WS_BORDER,0,0,81,
+                    139
+    LTEXT           "",IDC_FILEDESCRIPTION,95,6,170,118,SS_SUNKEN
+    CONTROL         "Hintergrundrasterbilder nicht kopieren",
+                    IDC_CHECKASCIIFILE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    95,128,165,10
+END
+#endif
+
+IDD_PPGNOMENCLATUR DIALOG DISCARDABLE  0, 0, 270, 140
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Karteninformationen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         150,IDC_STATIC,"Static",SS_BITMAP | WS_BORDER,0,0,81,140
+    LTEXT           "Nomenklatur:",IDC_STATIC,95,117,99,8
+    EDITTEXT        IDC_EDITSRCMAP,95,128,170,12,ES_AUTOHSCROLL | 
+                    ES_WANTRETURN
+END
+
+IDD_PPGSELFILES DIALOG DISCARDABLE  0, 0, 276, 141
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Auswahl der zu verwendenden Dateien und Verzeichnisse"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         150,IDC_STATIC,"Static",SS_BITMAP | WS_BORDER,0,0,81,140
+    LTEXT           "Wählen Sie die als Hintergrundrasterbilder anzuzeigenden Dateien aus:",
+                    IDC_STATIC_FILESORDIR,92,2,183,18
+    EDITTEXT        IDC_SELSOURCE,92,22,183,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Wählen Sie das Verzeichnis aus, wohin die anzuzeigenden Hintergrundrasterbilder kopiert werden sollen:",
+                    IDC_STATIC_DESTINATION,92,44,183,26
+    EDITTEXT        IDC_SELDESTINATION,92,74,183,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "Wählen Sie aus, wo die Dateien vom Typ '%s' gespeichert sind, die die zugehörigen Informationen für die Georeferenzierung enthalten:",
+                    IDC_STATIC_ALTFILES,92,95,183,25
+    EDITTEXT        IDC_SELREFFILES,92,125,183,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+END
+
+1536 DIALOG DISCARDABLE  109, 35, 204, 135
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Öffnen"
+FONT 8, "Helv"
+BEGIN
+    LTEXT           "File &Name:",1090,267,0,76,10
+    EDITTEXT        1152,267,10,90,12,ES_AUTOHSCROLL | ES_OEMCONVERT
+    LISTBOX         1120,267,26,90,68,LBS_SORT | LBS_OWNERDRAWFIXED | 
+                    LBS_HASSTRINGS | LBS_DISABLENOSCROLL | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "&Verzeichnisse:",-1,6,6,92,9
+    LTEXT           "",1088,6,18,128,9,SS_NOPREFIX
+    LISTBOX         1121,6,30,127,70,LBS_SORT | LBS_OWNERDRAWFIXED | 
+                    LBS_HASSTRINGS | LBS_DISABLENOSCROLL | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "List Files of &Type:",1089,267,98,90,9
+    COMBOBOX        1136,267,108,90,36,CBS_DROPDOWNLIST | CBS_AUTOHSCROLL | 
+                    WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Laufwerke:",1091,6,104,92,9
+    COMBOBOX        1137,6,114,127,68,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | 
+                    CBS_AUTOHSCROLL | CBS_SORT | CBS_HASSTRINGS | WS_BORDER | 
+                    WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,143,6,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,143,24,55,14,WS_GROUP
+    PUSHBUTTON      "&Help",1038,143,46,55,14,WS_GROUP
+    CONTROL         "&Schreibschutz",1040,"Button",BS_AUTOCHECKBOX | 
+                    WS_GROUP | WS_TABSTOP,138,68,60,12
+END
+
+IDD_PPGSELDATASOURCE DIALOG DISCARDABLE  0, 0, 276, 141
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Auswahl der Zieldatenquelle"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         150,IDC_STATIC,"Static",SS_BITMAP | WS_BORDER,0,0,81,143
+    LTEXT           "Wählen Sie die Datenquelle aus, in welche die Hintergrundrasterbilder importiert werden sollen:",
+                    IDC_STATIC,92,2,183,20
+    CONTROL         "",IDC_SELECTDATASOURCE,"ComboBoxEx32",CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP,92,22,183,59
+END
+
+IDD_SELECT_COORDSYS DIALOG DISCARDABLE  0, 0, 276, 141
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Auswahl des Koordinatensystemes"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Bitte wählen Sie ein &Koordinatensystem aus, in welchem die Georeferenzierung der einzubindenden Hintergrundrasterbilder vorliegt:",
+                    IDC_DESCTEXT,92,3,183,25
+    CONTROL         "Tree1",IDC_COORDSYSTEMS,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | 
+                    TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,92,30,183,85
+    LTEXT           "1\n2\n3",IDC_COORDDESCRIPTION,92,116,183,25
+    CONTROL         150,IDC_STATIC,"Static",SS_BITMAP | WS_BORDER,0,0,81,143
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_PPGINTERGRAPH DLGINIT
+BEGIN
+    IDC_ORIGX, 0x378, 0, 0
+    IDC_ORIGY, 0x378, 0, 0
+    IDC_ORIGZ, 0x378, 0, 0
+    IDC_COMBO_SCALE, 0x403, 2, 0
+0x0031, 
+    IDC_COMBO_SCALE, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_COMBO_SCALE, 0x403, 4, 0
+0x3031, 0x0030, 
+    IDC_COMBO_SCALE, 0x403, 5, 0
+0x3031, 0x3030, "\000" 
+    0
+END
+
+IDD_PPGREFPOINTS DLGINIT
+BEGIN
+    IDC_TRIASCSUI1, 0x376, 16, 0
+0x0000, 0x0000, 0x0300, 0x0000, 0x1741, 0x0000, 0x0918, 0x0000, 
+    IDC_COMBOPOINTSCHEMA, 0x403, 42, 0
+0x7550, 0x6b6e, 0x2074, 0x2031, 0x696c, 0x6b6e, 0x2073, 0x6e75, 0x6574, 
+0x2c6e, 0x2020, 0x7550, 0x6b6e, 0x2074, 0x2032, 0x6572, 0x6863, 0x7374, 
+0x6f20, 0x6562, 0x006e, 
+    IDC_COMBOPOINTSCHEMA, 0x403, 41, 0
+0x7550, 0x6b6e, 0x2074, 0x2031, 0x696c, 0x6b6e, 0x2073, 0x626f, 0x6e65, 
+0x202c, 0x7550, 0x6b6e, 0x2074, 0x2032, 0x6572, 0x6863, 0x7374, 0x7520, 
+0x746e, 0x6e65, "\000" 
+    IDC_P0X, 0x378, 0, 0
+    IDC_P0Y, 0x378, 0, 0
+    IDC_P1X, 0x378, 0, 0
+    IDC_P1Y, 0x378, 0, 0
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP_TRIAS        BITMAP  DISCARDABLE     "res\\bitmap2.bmp"
+IDB_MAPTYPES            BITMAP  DISCARDABLE     "res\\maptypes.bmp"
+IDB_LUFTBILD            BITMAP  DISCARDABLE     "res\\luftbild.bmp"
+IDB_PROJECTTYPES_MASK   BITMAP  DISCARDABLE     "res\\ProjectTypesMask.bmp"
+IDB_PROJECTTYPES        BITMAP  DISCARDABLE     "res\\ProjectTypes.bmp"
+IDB_COORDSYSTEM         BITMAP  DISCARDABLE     "res\\CoordSys.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_PPGIMPORTFILE, DIALOG
+    BEGIN
+        RIGHTMARGIN, 265
+        VERTGUIDE, 95
+        VERTGUIDE, 250
+        VERTGUIDE, 254
+    END
+
+    IDD_PPGINTERGRAPH, DIALOG
+    BEGIN
+        VERTGUIDE, 95
+        VERTGUIDE, 265
+    END
+
+    IDD_PPGMAPINFO, DIALOG
+    BEGIN
+        VERTGUIDE, 95
+        HORZGUIDE, 115
+    END
+
+    IDD_PPGREFPOINTS, DIALOG
+    BEGIN
+        VERTGUIDE, 95
+        VERTGUIDE, 245
+        VERTGUIDE, 254
+        VERTGUIDE, 265
+        HORZGUIDE, 9
+        HORZGUIDE, 63
+    END
+
+    IDD_PPGSELMAPTYPE, DIALOG
+    BEGIN
+        RIGHTMARGIN, 275
+        VERTGUIDE, 92
+        HORZGUIDE, 10
+        HORZGUIDE, 40
+        HORZGUIDE, 90
+    END
+
+    IDD_PPGSELADDFILE, DIALOG
+    BEGIN
+        RIGHTMARGIN, 265
+        VERTGUIDE, 95
+        HORZGUIDE, 115
+    END
+
+    "IDD_PPGSELDOCFILE$(_DEBUG)", DIALOG
+    BEGIN
+        VERTGUIDE, 95
+        BOTTOMMARGIN, 139
+    END
+
+    IDD_PPGNOMENCLATUR, DIALOG
+    BEGIN
+        RIGHTMARGIN, 265
+        VERTGUIDE, 95
+    END
+
+    IDD_PPGSELFILES, DIALOG
+    BEGIN
+        VERTGUIDE, 92
+        VERTGUIDE, 275
+        BOTTOMMARGIN, 140
+    END
+
+    IDD_PPGSELDATASOURCE, DIALOG
+    BEGIN
+        VERTGUIDE, 92
+        VERTGUIDE, 275
+    END
+
+    IDD_SELECT_COORDSYS, DIALOG
+    BEGIN
+        RIGHTMARGIN, 275
+        VERTGUIDE, 92
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\idr_main.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PROJNAME            "MapMgr"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UNIQUEIDENT         "UniqueIdent"
+    IDS_OBJNAME             "Objektname"
+    IDS_TKINFO              "TKInfo"
+    IDS_OBJKLASSE           "Hintergrundrasterbild"
+    IDS_UIDCODE             "51200000"
+    IDS_OBJNAMECODE         "51100000"
+    IDS_TKINFOCODE          "99999301"
+    IDS_OKLKEY              "99999302"
+    IDS_MYINISECTION        "Karten"
+    IDS_MAPDIRENTRY         "Verzeichnis"
+    IDS_INDICATORCAPTION    "Import von Hintergrundrasterbildern"
+    IDS_INDICATORSTATUS     "Datei einlesen"
+    IDS_INDICATORTAGS       "Tags analysieren"
+    IDS_INDICATORDOC        "Beschreibungsdatei analysieren"
+    IDS_SETCOORDINATE       "Koordinaten bestimmen"
+    IDS_MAPREDUCE           "Geringere Bildauflösungen berechnen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_STOREMAP            "Kartenobjekt speichern"
+    IDS_VIEWNAME            "Hintergrundrasterbilder"
+    IDS_NOMAP               "Die Datei '%s' ist keine gültige Hintergrundrasterbilddatei."
+    IDS_HARDERROR           "Schwerer interner Fehler"
+    IDS_NOMAPDOC            "Die Beschreibungsdatei '%s' ist keine gültige Beschreibungsdatei für Hintergrundrasterbilder des Typs '%s'."
+    IDS_NOMAPTYPE           "Die Datei '%s' ist keine Hintergrundrasterbilddatei vom Typ '%s'."
+    IDS_NOMAPINIT           "Der Modul zum Kartenimport konnte nicht korrekt initialisiert werden"
+    IDS_OPENFILETITLE       "Zu importierende Hintergrundrasterbilder auswählen"
+    IDS_SELECTDIRTITLE      "Zielverzeichnis für anzuzeigende Hintergrundrasterbilder auswählen:"
+    IDS_MAPIMPORTCAPTION    "Import von Hintergrundrasterbildern"
+    IDS_ERRORREDUCEMAP      "Fehlerhafte Bearbeitung der Hintergrundrasterbilder !"
+    IDS_ERRORACCESSDENIED   "Zugriffsfehler beim Kopieren der Hintergrundrasterbilddatei !"
+    IDS_ERRORDISKFULL       "Für Kopiervorgang der Hintergrundrasterbilddatei nicht ausreichend Speicher vorhanden !"
+    IDS_ERRORCOPYFILE       "Fehler beim Kopieren der Hintergrundrasterbilddatei ( Fehler-Nr. %ld)"
+    IDS_IMPORTNAME          "Hintergrundrasterbilder mit Referenzinformationen\\"
+    IDS_DISPLAYPROTOCOL     "Bildtyp:\n\t %s\nBeschreibungsdatei:\n\t %s\nQuellverzeichnis:\n\t %s\nZielverzeichnis:\n\t%s\n"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_IMPORTMENU          "&Hintergrundrasterbilder importieren ..."
+    IDS_NOMAPNAME           "Keine gültige Hintergrundrasterbilddatei !"
+    IDS_MAPREDUCETITLE      "Größenreduktion:\r\nInput: %s\r\nOutput: %s"
+    IDS_SELECTDIRTITLE_SRC  "Quellverzeichnis auswählen:"
+    IDS_SELECTDIRTITLE_ALT  "Verzeichnis mit Dateien auswählen, die die Informationen zur Georeferenzierung enthalten:"
+    IDS_DDX_GF_EDIT_TEXT    "..."
+    IDS_DDX_GFLDR_TT_MODIFY "Verzeichnis auswählen"
+    IDS_DDX_GF_TT_MODIFY    "Datei auswählen"
+    IDS_DDX_GF_OK           "OK"
+    IDS_DDX_GF_OVERWRITE_PROMPT 
+                            "%1\nDiese Datei existiert bereits.\nSoll diese Datei überschrieben werden ?"
+    IDS_ALTFILEPROMPT       "Wählen Sie aus, wo die Dateien vom Typ '%s' gespeichert sind, die die zugehörigen Informationen für die Georeferenzierung enthalten:"
+    IDS_SRCDIRECTORY        "Wählen Sie das Quellverzeichnis mit den als Hintergrundrasterbilder anzuzeigenden Dateien aus:"
+    IDS_SRCFILES            "Wählen Sie die als Hintergrundrasterbilder anzuzeigenden Dateien aus:"
+    IDS_NOMAP_MULTI         "Die folgenden Dateien sind keine gültigen Hintergrundrasterbilder vom Typ [%s]:\n"
+    IDS_NOMAP_DIR           "Das Verzeichnis '%s' ist kein gültiges Basisverzeichnis für Hintergrundrasterbilder vom Typ '%s'."
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "1 TYPELIB ""MapMgr.tlb""\r\n"
+    "#include ""Version.h""\r\n"
+    "#include ""MapMgr.rcv""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+1 TYPELIB "MapMgr.tlb"
+#include "Version.h"
+#include "MapMgr.rcv"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,66 @@
+'\"t
+.TH ARGREGISTER 3ARG "September 1991" "SDSC" "ARGUMENT PARSING"
+.SH NAME
+ArgRegister  -  output a user registration form
+.SH SYNOPSIS
+.if t \fB
+.nf
+#include "sdsc.h"
+
+int ArgErrNo;
+
+int ArgRegister( )
+.fi
+.if t \fR
+.SH DESCRIPTION
+\fIArgRegister\fR uses information about the command as passed into an
+earlier call to \fIArgParse(3ARG)\fR.
+.LP
+\fIArgRegister\fR creates a user registration form in the current directory
+with the name "commandname.reg.0," where "commandname" is the name of the
+command as given in the \fIarg_name\fR field of the \fIArgCommand\fR
+structure passed to \fIArgParse(3ARG)\fR.
+If a file of this name already exists in the current
+directory, "commandname.reg.1" is tried and so on.
+.SH RETURNS
+\fIArgRegister\fR returns 0.  If \fIArgRegister\fR fails to complete,
+it returns -1 and sets the global \fIArgErrNo\fR to an error code
+indicating the cause of the failure.  The following error codes may be
+generated: 
+.LP
+.IP "\fIARGEREG\fR = couldn't create registration form file"
+\fIArgRegister\fR attempted to create a registration form file
+with the name "commandname.reg.0" and failed.
+It added 1, tried again, failed, and so on up through 20.
+All attempts failed and a feedback form file could not be created.
+.IP "\fIARGESYS\fR = a system error has occurred"
+An error relating to the OS has occurred.
+This includes all directory write permission errors, file creation errors,
+and so on.
+The error code describing the system error is available in the
+global \fIerrno\fR (set by UNIX system calls).
+.SH NOTES
+Registration forms by product developers to
+let users register themselves for automatic notification of software updates
+and the release of new products.
+Registrations forms also let developers
+know who is using their software and for what.
+It lets developers
+better tailor their software development efforts to suit the needs
+of their user community.
+.SH "SEE ALSO"
+ArgFeedback(3ARG),
+ArgIntro(3ARG),
+ArgParse(3ARG),
+ArgPError(3ARG),
+ArgVersion(3ARG),
+errno(2),
+perror(3)
+.br
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

@@ -1,0 +1,42 @@
+HKCR
+{
+	TRiASEx.SplitPropertyActions.1 = s 'Auftrennen von Aktionsfolgen von Geo-Komponenten'
+	{
+		CLSID = s '{52E25FEE-D9C8-4B3C-AD5A-047EB92D7D60}'
+	}
+	TRiASEx.SplitPropertyActions = s 'Auftrennen von Aktionsfolgen von Geo-Komponenten'
+	{
+		CLSID = s '{52E25FEE-D9C8-4B3C-AD5A-047EB92D7D60}'
+		CurVer = s 'TRiASEx.SplitPropertyActions.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {52E25FEE-D9C8-4B3C-AD5A-047EB92D7D60} = s 'Auftrennen von Aktionsfolgen von Geo-Komponenten'
+		{
+			ProgID = s 'TRiASEx.SplitPropertyActions.1'
+			VersionIndependentProgID = s 'TRiASEx.SplitPropertyActions'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+			'Implemented Categories'
+			{
+				{079639C7-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiASEx.SplitPropertyActions.1' = s '{52E25FEE-D9C8-4B3C-AD5A-047EB92D7D60}'
+			}
+		}
+	}
+}

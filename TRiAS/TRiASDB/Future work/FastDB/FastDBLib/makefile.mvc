@@ -1,0 +1,297 @@
+# -*- makefile -*-
+# Makefile for Microsoft Windows with Microsoft Visual C++ 5.0 compiler
+
+GENERATE_DLL=0
+FAULT_TOLERANT=0
+
+OBJS = class.obj compiler.obj database.obj hashtab.obj file.obj \
+	sync.obj symtab.obj ttree.obj cursor.obj query.obj w32sock.obj \
+	wwwapi.obj localcli.obj
+
+CLI_OBJS = cli.obj w32sock.obj sync.obj 
+
+INCS = fastdb.h stdtp.h class.h database.h cursor.h reference.h wwwapi.h \
+	array.h file.h hashtab.h ttree.h sync.h query.h datetime.h
+
+FASTDB_LIB = fastdb.lib 
+CLI_LIB = cli.lib
+FASTDB_DLL = fastdb.dll 
+CLI_DLL = cli.dll
+
+EXES = subsql.exe cgistub.exe forcerecovery.exe
+
+EXAMPLES = guess.exe guess2.exe guess_std.exe testdb.exe testleak.exe testjoin.exe testddl.exe testperf.exe testsync.exe testiref.exe testtrav.exe testidx.exe bugdb.exe clidb.exe clitest.exe localclitest.exe testraw.exe testconcur.exe
+
+CC = cl
+
+# Possible FastDB compile time parameters (-Dxxx should be added to DEFS macro):
+# 1. USE_LOCALE_SETTING - use C locale for string comparison operations
+# 2. DEBUG - debug level
+#    - DEBUG_NODE - disable any checking and tracing (except asserts)
+#    - DEBUG_CHECK - disable trace message
+#    - DEBUG_TRACE - enable trace messages 
+# 3. SECURE_SERVER - enable authentication for remote logins: keep user/password table, 
+#                    check password for remote logins
+# 4. USE_QUEUE_MANAGER - use queue manager for internal HTTP server. This manager will manage pool
+#    of threads assigned for client connections. Otherwise all requests will be executed sequnetially
+#    in the main loop.
+# 5. FASTDB_DLL - create gigabase.dll
+# 6. THROW_EXCEPTION_ON_ERROR - throw C++ exception in case of database error 
+#    instead of abort(). Do not forgot to specify -GX option if using exceptions.
+# 7. IGNORE_CASE - perform all string comparisons as case insensitive
+# 8. USE_STD_STRING - support of std:;string type for class fields
+# 9. AUTOINCREMENT_SUPPORT support autoincrement fields (database built with this flag will be 
+#    incompatible with database built without it)
+# 10. CLONE_INDENTIFIERS - do not storef addresses of string constants in symbol table.
+#     This option is needed if DLL library using GigaBASE can be unloaded.
+# 11. DISKLESS_CONFIGURATION - only in-memory temporary database
+# 12. SET_NULL_DACL - use NULL DACL security descriptor for all synchronization objects.
+# 13. INT8_IS_DEFINED - int8 type is defined at your system, in this case you should use db_int8 type instead
+# 14. REPLICATION_SUPPORT - fault tolerant version of FastDB
+#
+
+DEFS = -DUSE_QUEUE_MANAGER -DUSE_STD_STRING -DTHROW_EXCEPTION_ON_ERROR -DSET_NULL_DACL
+#DEFS = -DUSE_QUEUE_MANAGER -DNO_MMAP
+#DEFS = -DTHROW_EXCEPTION_ON_ERROR -DUSE_QUEUE_MANAGER 
+
+CFLAGS = -c -nologo -Zi -W3 -GX -MTd $(DEFS)
+#CFLAGS = -c -nologo -Od -Zi -W3 -MTd -DDEBUG=DEBUG_TRACE $(DEFS)
+#CFLAGS = -c -Ox -G6 -nologo -Zi -W3 -MT $(DEFS)
+
+LD = $(CC)
+LDFLAGS = -MTd -Zi -nologo
+#LDFLAGS = -MT -Zi -nologo
+
+#DLLFLAGS = -LD -nologo
+DLLFLAGS = -LDd -Zi -nologo
+
+AR = lib
+ARFLAGS = 
+
+STDLIBS = advapi32.lib
+
+SOCKLIBS = wsock32.lib
+
+!IF $(FAULT_TOLERANT)
+DEFS = $(DEFS) -DREPLICATION_SUPPORT
+STDLIBS = $(STDLIBS) $(SOCKLIBS)
+!ENDIF
+
+
+!IF $(GENERATE_DLL)
+all: $(FASTDB_LIB) $(CLI_LIB) $(FASTDB_DLL) $(CLI_DLL) $(EXES) $(EXAMPLES)
+DEFS = $(DEFS) -DFASTDB_DLL
+CFLAGS = $(CFLAGS) -Ox
+!ELSE
+all: $(FASTDB_LIB) $(CLI_LIB) $(EXES) $(EXAMPLES)
+!ENDIF
+
+class.obj: class.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) class.cpp
+
+compiler.obj: compiler.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) compiler.cpp
+
+query.obj: query.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) query.cpp
+
+database.obj: database.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) database.cpp
+
+localcli.obj: localcli.cpp compiler.h compiler.d symtab.h localcli.h $(INCS)
+	$(CC) $(CFLAGS) localcli.cpp
+
+cursor.obj: cursor.cpp compiler.h compiler.d $(INCS)
+	$(CC) $(CFLAGS) cursor.cpp
+
+hashtab.obj: hashtab.cpp $(INCS)
+	$(CC) $(CFLAGS) hashtab.cpp
+
+file.obj: file.cpp $(INCS)
+	$(CC) $(CFLAGS) file.cpp
+
+sync.obj: sync.cpp $(INCS)
+	$(CC) $(CFLAGS) sync.cpp
+
+symtab.obj: symtab.cpp symtab.h $(INCS)
+	$(CC) $(CFLAGS) symtab.cpp
+
+ttree.obj: ttree.cpp $(INCS)
+	$(CC) $(CFLAGS) ttree.cpp
+
+wwwapi.obj: wwwapi.cpp wwwapi.h stdtp.h sockio.h
+	$(CC) $(CFLAGS) wwwapi.cpp
+
+w32sock.obj: w32sock.cpp w32sock.h sockio.h stdtp.h
+	$(CC) $(CFLAGS) w32sock.cpp
+
+cli.obj: cli.cpp cli.h cliproto.h
+	$(CC) $(CFLAGS) cli.cpp
+
+
+fastdb.lib: $(OBJS)
+	$(AR) $(ARFLAGS) /OUT:fastdb.lib $(OBJS)
+
+fastdb.dll: $(OBJS)
+	$(CC) $(DLLFLAGS) /Fefastdb.dll $(OBJS) $(STDLIBS) $(SOCKLIBS)
+
+cli.lib: $(CLI_OBJS)
+	$(AR) $(ARFLAGS) /OUT:cli.lib $(CLI_OBJS)
+
+cli.dll: $(CLI_OBJS)
+	$(CC) $(DLLFLAGS) /Fecli.dll $(CLI_OBJS) $(STDLIBS) $(SOCKLIBS)
+
+subsql.obj: subsql.cpp compiler.h server.h compiler.d subsql.h symtab.h $(INCS)
+	$(CC) $(CFLAGS) subsql.cpp
+
+server.obj: server.cpp server.h compiler.h compiler.d subsql.h symtab.h $(INCS)
+	$(CC) $(CFLAGS) server.cpp
+
+subsql.exe: subsql.obj server.obj $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) subsql.obj server.obj $(FASTDB_LIB) $(STDLIBS) $(SOCKLIBS)
+
+
+clitest.obj: clitest.c cli.h
+	$(CC) $(CFLAGS) clitest.c
+
+clitest.exe: clitest.obj $(CLI_LIB)
+	$(LD) $(LDFLAGS) clitest.obj $(CLI_LIB) $(STDLIBS) $(SOCKLIBS)
+
+localclitest.exe: clitest.obj $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) /Felocalclitest.exe clitest.obj $(FASTDB_LIB) $(STDLIBS)
+
+bugdb.obj: bugdb.cpp bugdb.h $(INCS)
+	$(CC) $(CFLAGS) bugdb.cpp
+
+bugdb.exe: bugdb.obj  $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) bugdb.obj $(FASTDB_LIB) $(STDLIBS) $(SOCKLIBS)
+
+
+clidb.obj: clidb.cpp clidb.h $(INCS)
+	$(CC) $(CFLAGS) clidb.cpp
+
+clidb.exe: clidb.obj  $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) clidb.obj $(FASTDB_LIB) $(STDLIBS) $(SOCKLIBS)
+
+
+cgistub.obj: cgistub.cpp stdtp.h sockio.h
+	$(CC) $(CFLAGS) cgistub.cpp 
+
+cgistub.exe: cgistub.obj
+	$(LD) $(LDFLAGS) cgistub.obj $(FASTDB_LIB) $(STDLIBS) $(SOCKLIBS)
+
+
+forcerecovery.obj: forcerecovery.cpp database.h
+	$(CC) $(CFLAGS) forcerecovery.cpp 
+
+forcerecovery.exe: forcerecovery.obj
+	$(LD) $(LDFLAGS) forcerecovery.obj
+
+
+guess.obj: guess.cpp $(INCS)
+	$(CC) $(CFLAGS) guess.cpp 
+
+guess.exe: guess.obj $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) guess.obj $(FASTDB_LIB) $(STDLIBS)
+
+guess_std.obj: guess_std.cpp $(INCS)
+	$(CC) $(CFLAGS) guess_std.cpp 
+
+guess_std.exe: guess_std.obj $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) guess_std.obj $(FASTDB_LIB) $(STDLIBS)
+
+guess2.obj: guess2.cpp $(INCS)
+	$(CC) $(CFLAGS) guess2.cpp 
+
+guess2.exe: guess2.obj $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) guess2.obj $(FASTDB_LIB) $(STDLIBS)
+
+testdb.obj: testdb.cpp $(INCS)
+	$(CC) $(CFLAGS) testdb.cpp 
+
+testdb.exe: testdb.obj $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) testdb.obj $(FASTDB_LIB) $(STDLIBS)
+
+testraw.obj: testraw.cpp $(INCS)
+	$(CC) $(CFLAGS) testraw.cpp 
+
+testraw.exe: testraw.obj $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) testraw.obj $(FASTDB_LIB) $(STDLIBS)
+
+testconcur.obj: testconcur.cpp $(INCS)
+	$(CC) $(CFLAGS) testconcur.cpp 
+
+testconcur.exe: testconcur.obj $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) testconcur.obj $(FASTDB_LIB) $(STDLIBS)
+
+testleak.obj: testleak.cpp $(INCS)
+	$(CC) $(CFLAGS) testleak.cpp 
+
+testleak.exe: testleak.obj $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) testleak.obj $(FASTDB_LIB) $(STDLIBS)
+
+testjoin.obj: testjoin.cpp $(INCS)
+	$(CC) $(CFLAGS) testjoin.cpp 
+
+testjoin.exe: testjoin.obj $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) testjoin.obj $(FASTDB_LIB) $(STDLIBS)
+
+testddl.obj: testddl.cpp $(INCS)
+	$(CC) $(CFLAGS) testddl.cpp 
+
+testddl.exe: testddl.obj $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) testddl.obj $(FASTDB_LIB) $(STDLIBS)
+
+testperf.obj: testperf.cpp $(INCS)
+	$(CC) $(CFLAGS) testperf.cpp 
+
+testperf.exe: testperf.obj $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) testperf.obj $(FASTDB_LIB) $(STDLIBS)
+
+testidx.obj: testidx.cpp $(INCS)
+	$(CC) $(CFLAGS) testidx.cpp 
+
+testidx.exe: testidx.obj $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) testidx.obj $(FASTDB_LIB) $(STDLIBS)
+
+testsync.obj: testsync.cpp $(INCS)
+	$(CC) $(CFLAGS) testsync.cpp 
+
+testsync.exe: testsync.obj $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) testsync.obj $(FASTDB_LIB) $(STDLIBS)
+
+testiref.obj: testiref.cpp $(INCS)
+	$(CC) $(CFLAGS) testiref.cpp 
+
+testiref.exe: testiref.obj $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) testiref.obj $(FASTDB_LIB) $(STDLIBS)
+
+testtrav.obj: testtrav.cpp $(INCS)
+	$(CC) $(CFLAGS) testtrav.cpp 
+
+testtrav.exe: testtrav.obj $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) testtrav.obj $(FASTDB_LIB) $(STDLIBS)
+
+
+
+cleanobj:
+	-del *.odb,*.exp,*.obj,*.pch,*.pdb,*.ilk,*.dsp,*.dsw,*.ncb,*.opt
+
+cleandbs:
+	-del *.fdb
+
+clean: cleanobj cleandbs
+	-del *~,*.lib,*.dll,*.exe
+
+
+zip: clean
+	cd ..
+	-del fastdb.zip
+        zip -r fastdb.zip fastdb
+
+copyzip: zip
+	copy fastdb.zip d:
+
+
+doxygen:
+	"c:\Program Files\doxygen\bin\doxygen" doxygen.cfg

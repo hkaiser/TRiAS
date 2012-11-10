@@ -1,0 +1,37 @@
+HKCR
+{
+	TRiASEx.UnitsOfMeasure.1 = s 'UnitsOfMeasurePP Class'
+	{
+		CLSID = s '{5A0BCA2C-13A9-4EF1-95D6-5753B29AE151}'
+	}
+	TRiASEx.UnitsOfMeasure = s 'UnitsOfMeasurePP Class'
+	{
+		CLSID = s '{5A0BCA2C-13A9-4EF1-95D6-5753B29AE151}'
+		CurVer = s 'TRiASEx.UnitsOfMeasure.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {5A0BCA2C-13A9-4EF1-95D6-5753B29AE151} = s 'UnitsOfMeasurePP Class'
+		{
+			ProgID = s 'TRiASEx.UnitsOfMeasure.1'
+			VersionIndependentProgID = s 'TRiASEx.UnitsOfMeasure'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertySheetHandlers
+			{
+				NoRemove Options
+				{
+					ForceRemove TRiASEx.UnitsOfMeasure.1 = s '{5A0BCA2C-13A9-4EF1-95D6-5753B29AE151}'
+				}
+			}
+		}
+	}
+}

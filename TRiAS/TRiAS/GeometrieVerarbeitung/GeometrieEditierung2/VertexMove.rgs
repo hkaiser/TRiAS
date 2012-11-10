@@ -1,0 +1,23 @@
+HKCR
+{
+	TRiAS.VertexMove.1 = s 'Stützpunkt verschieben'
+	{
+		CLSID = s '{079638FB-3123-101C-BB62-00AA0018497C}'
+	}
+	TRiAS.VertexMove = s 'Stützpunkt verschieben'
+	{
+		CurVer = s 'TRiAS.VertexMove.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {079638FB-3123-101C-BB62-00AA0018497C} = s 'Stützpunkt verschieben'
+		{
+			ProgID = s 'TRiAS.VertexMove.1'
+			VersionIndependentProgID = s 'TRiAS.VertexMove'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

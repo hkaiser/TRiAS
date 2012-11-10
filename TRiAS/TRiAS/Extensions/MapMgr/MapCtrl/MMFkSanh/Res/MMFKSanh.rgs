@@ -1,0 +1,18 @@
+HKCR {
+	TRiAS.MapMgr.Import.FkSanh.1 = s 'InterTRiAS® - Import von Flurkarten des Landesvermessungsamtes Sachsen Anhalt' {
+		CLSID = s '{B6AFCF04-1A64-11d2-8F7D-0060085FC1CE}'
+	}
+	TRiAS.MapMgr.Import.FkSanh = s 'InterTRiAS® - Import von Flurkarten des Landesvermessungsamtes Sachsen Anhalt' {
+		CurVer = s 'TRiAS.MapMgr.Import.FkSanh.1'
+	}
+	NoRemove CLSID {
+		ForceRemove {B6AFCF04-1A64-11d2-8F7D-0060085FC1CE} = s 'InterTRiAS® - Import von Flurkarten des Landesvermessungsamtes Sachsen Anhalt' {
+			ProgID = s 'TRiAS.MapMgr.Import.FkSanh.1'
+			VersionIndependentProgID = s 'TRiAS.MapMgr.Import.FkSanh'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%' {
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

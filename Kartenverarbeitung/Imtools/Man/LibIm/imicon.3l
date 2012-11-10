@@ -1,0 +1,198 @@
+
+
+
+IMICON(3IM)            SDSC IMAGE LIBRARY             IMICON(3IM)
+
+
+
+NAME
+     imicon - Sun ICON file translation
+
+SYNOPSIS
+     #include <stdio.h>
+     #include "sdsc.h"
+     #include "im.h"
+
+     int ImFileRead( fd, "icon", flagsTable, dataTable )
+          int         fd;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileFRead( fp, "icon", flagsTable, dataTable )
+          FILE         *fp;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileWrite( fd, "icon", flagsTable, dataTable )
+          int         fd;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileFWrite( fp, "icon", flagsTable, dataTable )
+          FILE         *fp;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+
+DESCRIPTION
+     icon image files are used by Sun Microsystem's SunView  win-
+     dow  system,  NeWS window system, OpenWindows NeWS tool set,
+     and X11 XView tool set for the storage  of  icons,  cursors,
+     fill  patterns,  and  pieces  of widgets (like button check-
+     marks).
+
+     Sun icon files can be  most  easily  generated  using  Sun's
+     iconedit(1)  icon and cursor editor.  The Sun operating sys-
+     tem release includes a directory of standard icons, cursors,
+     background patterns, and widget pieces in icon format in the
+     directory /usr/include/images.  See  the  Sun  documentation
+     set  for  details  on  how to use the tools dealing with Sun
+     icon files.
+
+FILE RECOGNITION
+     Sun icon files are recognized by  these  filename  suffixes:
+     .icon, .cursor, and .pr.
+
+NOTES
+     SDSC image library support of the Sun icon format  does  not
+     require  use  of  Sun  libraries and contains no proprietary
+     code.  Sun icon format handling is available on any  machine
+
+
+
+SDSC              Last change: August 19, 1992                  1
+
+
+
+
+
+
+IMICON(3IM)            SDSC IMAGE LIBRARY             IMICON(3IM)
+
+
+
+     for which the SDSC image library is available.
+
+     icon files contain a C-language array initialization  start-
+     ing with a comment header giving the width and height of the
+     icon, followed by ASCII hex data giving the  icon's  bitmap.
+     For example,
+
+          /* Format_version=1, Width=16, Height=16, Depth=1, Valid_bits_per_item=16
+           */
+                  0x0000,0x0000,0x0000,0x0000,0x6200,0x920C,0x1392,0x7250,
+                  0x9252,0x7B8C,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000
+
+     Format_version must be 1; there are  no  other  versions  at
+     this time.
+
+     Width and Height are the width and height of  the  icon,  in
+     pixels.  Sun's iconedit(1) tool requires that the icon width
+     be a multiple of 16.  The SDSC image library similarly  con-
+     strains  the  icon  width for consistency with Sun tools and
+     common usage.
+
+     Depth must be 1; there are no other depths in common use.
+
+     Valid_bits_per_item must be 16; there are no other sizes  in
+     common use.
+
+     Icon pixel data is given immediately following  the  comment
+     header.   Monochrome  pixels are packed 16 to an integer and
+     written out as a string of 4 hex characters.  Image data  is
+     given  from left to right, top to bottom.  Values are comma-
+     separated.
+
+  Reading Sun ICON files
+     The SDSC image library reads Sun icon bitmaps and maps  them
+     to IMVFBMONO VFBs without color lookup tables (CLTs).
+
+  Writing Sun ICON files
+     The SDSC image library writes IMVFBMONO  VFBs  as  Sun  icon
+     bitmaps.
+
+     Other image library VFB types  are  converted  to  IMVFBMONO
+     VFBs  prior  to being written out.  See the ImFileWrite(3IM)
+     man page for details.
+
+     Image width and height fields  in  the  comment  header  are
+     based on the VFB's width and height.  Image width is rounded
+     up to the next multiple of 16 bits.  If  padding  is  neces-
+     sary, pad bits are set to 0 (white).
+
+     _W_a_r_n_i_n_g:  The Sun icon editor iconedit(1)  was  designed  to
+     edit  small  bitmaps, like icons and cursors.  Consequently,
+     it tends to have severe difficulty with large bitmaps,  such
+
+
+
+2                 Last change: August 19, 1992               SDSC
+
+
+
+
+
+
+IMICON(3IM)            SDSC IMAGE LIBRARY             IMICON(3IM)
+
+
+
+     as those that can be generated using the SDSC image library.
+
+ERRORS
+     In addition to those listed for  ImFileRead(3IM),  Sun  icon
+     file reading returns the following error codes:
+
+          IMEMALLOC   Cannot allocate enough memory
+          IMESYNTAX   Syntax error in parsing icon file
+          IMESYS      System call error in read operation
+
+     In addition to those listed for ImFileWrite(3IM),  Sun  icon
+     file writing returns the following error codes:
+
+          IMEMALLOC   Cannot allocate enough memory
+          IMESYS      System call error in write operation
+
+DOCUMENTATION
+     iconedit(1) from the Sun OpenWindows man page set.
+
+     _P_i_x_r_e_c_t _R_e_f_e_r_e_n_c_e _M_a_n_u_a_l, Sun Microsystems.
+
+SEE ALSO
+     ImIntro(3IM),   ImErrNo(3IM),   imconv(1IM),    imfile(1IM),
+     imformats(1IM), imico(3IM), imxbm(3IM)
+
+AUTHOR
+     Dave Nadeau
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SDSC              Last change: August 19, 1992                  3
+
+
+

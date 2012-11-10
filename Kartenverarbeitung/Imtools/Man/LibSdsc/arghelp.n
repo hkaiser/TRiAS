@@ -1,0 +1,199 @@
+'\"t
+.TH ARGHELP 3ARG "September 1991" "SDSC" "ARGUMENT PARSING"
+.SH NAME
+ArgHelp  -  output a short help message
+.br
+ArgFullHelp  -  output a full-length help message
+.SH SYNOPSIS
+.if t \fB
+.nf
+#include "sdsc.h"
+
+int ArgHelp( )
+
+int ArgFullHelp( )
+.fi
+.if t \fR
+.SH DESCRIPTION
+\fIArgHelp\fR and \fIArgFullHelp\fR use
+information about the command as passed into an
+earlier call to \fIArgParse(3ARG)\fR.
+.LP
+\fIArgHelp\fR is used by \fIArgParse\fR(3ARG) to display a help message
+in response to the standard \fB-help\fR option.  Similarly, \fIArgFullHelp\fR
+is used to display a help text in response to the standard \fB-fullhelp\fR
+option.
+Users of the argument parsing package may call each of these help routines
+directly as well.
+.LP
+\fIArgHelp\fR and \fIArgFullHelp\fR each print
+to \fIstderr\fR a standard help message of the form:
+.LP
+.in +0.5i
+.nf
+Usage line
+Copyright
+First part of help text
+Option list
+Second part of help text
+.fi
+.in -0.5i
+.LP
+Exact content for each of these parts depends on character string fields
+in the \fIArgCommand\fR structure passed to \fIArgParse\fR(3ARG).
+\fIArgHelp\fR and \fIArgFullHelp\fR both display help text in the same
+format but differ in the quantity of help displayed.
+.LP
+.SS "Usage Line"
+Typically, the usage line describes the commandline syntax.  Optional
+arguments are surrounded by square brackets ('[ ]') and required arguments
+are left unaugmented.  \fIArgHelp\fR and \fIArgFullHelp\fR both display a
+usage line of the form:
+.LP
+.in +0.5i
+Usage is:  commandname options
+.in -0.5i
+.LP
+\fIcommandname\fR is the name of the command as invoked by the
+user (\fIargv[0]\fR).  If the user typed a path to get to the command,
+that same path is displayed in place of \fIcommandname\fR.
+.LP
+The \fIoptions\fR portion of the usage line is typically
+provided by the argument parsing package user by setting the text string
+\fIarg_usage\fR field of the \fIArgCommand\fR structure passed to
+\fIArgParse\fR(3ARG).
+.LP
+If the \fIarg_usage\fR field is a NULL string pointer,
+\fIArgHelp\fR and \fIArgFullHelp\fR both generate the usage line
+automatically by using the list of options in \fIArgOption\fR and
+\fIArgEquiv\fR structures passed to \fIArgParse\fR(3ARG).
+Automatic usage line generation uses the following rules:
+.LP
+.in +5
+.ne 10
+.TS
+c s
+l l.
+Options with \fIARGFREQUIRED\fR set in \fIarg_flags\fR
+-arg_keyword	Required keyword, no values
+-arg_keyword arg_valuenames	Required keyword, with values
+[-arg_keyword] arg_valuenames	Optional keyword, with values
+
+.T&
+c s
+l l.
+Options without \fIARGFREQUIRED\fR set
+[-arg_keyword]	Required keyword, no values
+[-arg_keyword arg_valuenames]	Required keyword, with values
+[[-arg_keyword] arg_valuenames]	Optional keyword, with values
+.TE
+.in +5
+.LP
+Options with \fIARGFHIDDEN\fR set in \fIarg_flags\fR are not shown
+in the usage line.
+.LP
+\fIArgHelp\fR (but not \fIArgFullHelp\fR)
+also omits display of options with the \fIARGFFULLHELP\fR
+flag set.  This allows package users to designate options that should only
+be listed when the user requests a full help listing.
+.LP
+.SS "Copyright"
+.LP
+The copyright line typically displays a copyright message for the
+author of the command.  Both \fIArgHelp\fR and \fIArgFullHelp\fR print
+the text string field \fIarg_copyright\fR from the \fIArgCommand\fR
+structure passed to \fIArgParse\fR(3ARG).  If this field is a NULL string
+pointer, no copyright message is displayed.
+.LP
+.SS "First part of help text"
+.LP
+The first part of the help text typically describes the purpose of the
+command in one or two sentences.
+.LP
+\fIArgHelp\fR prints the text string field \fIarg_help1\fR in the
+\fIArgCommand\fR structure passed to \fIArgParse\fR(3ARG).  If
+\fIarg_help1\fR is a NULL string pointer, no first part of the
+help text is displayed.
+.LP
+\fIArgFullHelp\fR prints the text string field \fIarg_fullhelp1\fR in the
+\fIArgCommand\fR structure.  If \fIarg_fullhelp1\fR is a NULL string pointer,
+then \fIArgFullHelp\fR uses \fIarg_help1\fR instead.  If this too is a NULL
+string pointer, no first part of the help text is displayed.
+.LP
+.SS "Option list"
+.LP
+The option list is a list of the command's options and their usage.  The
+list is generated automatically by \fIArgHelp\fR and \fIArgFullHelp\fR by
+using the list of \fIArgOption\fR and \fIArgEquiv\fR
+structures passed to \fIArgParse\fR(3ARG).
+.LP
+The option list shows one line for each option in the \fIArgOption\fR and
+\fIArgEquiv\fR lists,
+excluding those options (and their equivalent keywords)
+with \fIARGFHIDDEN\fR set in their \fIarg_flags\fR field.
+\fIArgHelp\fR (but not \fIArgFullHelp\fR) further excludes options (and
+their equivalent keywords) with the \fIARGFFULLHELP\fR flag set.
+.LP
+Each option list line is printed in the following format:
+.LP
+.in +0.5i
+.TS
+lw(2.5i) l.
+keyword valuenames	help
+.TE
+.in -0.5i
+.LP
+\fIkeyword\fR is the option's keyword, while \fIvaluenames\fR is
+the list of values that may follow the keyword.
+Keyword names are obtained from the \fIArgOption\fR and \fIArgEquiv\fR
+structures' \fIarg_keyword\fR fields.  Value names are obtained from the
+\fIArgOption\fR structure field \fIarg_valuenames\fR.  If
+\fIarg_valuenames\fR is a NULL string pointer, no value names are printed.
+.LP
+\fIhelp\fR is the \fIArgOption\fR's \fIarg_help\fR field giving
+an explanatory help message of 40-characters or less.  The help text is
+tabbed in to the 40th column and a carriage return added.
+If the \fIarg_keyword\fR and \fIarg_valuenames\fR portion takes more
+than 36 characters, \fIhelp\fR is printed on the following line.
+.LP
+Each option list line is indented 4 spaces to offset it from the body of
+the help message.
+.LP
+.SS "Second part of help text"
+.LP
+The second part of the help text typically describes exceptions, exclusions,
+and option relationships, and often includes an example or two.
+.LP
+\fIArgHelp\fR prints the text string field \fIarg_help2\fR in the
+\fIArgCommand\fR structure passed to \fIArgParse\fR(3ARG).  If
+\fIarg_help2\fR is a NULL string pointer, no second part of the
+help text is displayed.
+.LP
+\fIArgFullHelp\fR prints the text string field \fIarg_fullhelp2\fR in the
+\fIArgCommand\fR structure.  If \fIarg_fullhelp2\fR is a NULL string pointer,
+then \fIArgFullHelp\fR uses \fIarg_help2\fR instead.  If this too is a NULL
+string pointer, no second part of the help text is displayed.
+.SH RETURNS
+\fIArgHelp\fR and \fIArgFullHelp\fR always succeed and return a 0.
+.SH NOTES
+The \fIArgCommand\fR, \fIArgOption\fR, and \fIArgEquiv\fR
+structures are described together
+with \fIArgParse\fR(3ARG) on its \fBman\fP page.
+.LP
+Both \fIArgHelp\fR and \fIArgFullHelp\fR scan the first and second parts
+of help text for the special string "%command" and replace it with the
+name of the command, as invoked, but stripped of its leading path
+information.  This allows help text to refer to the command as the user
+calls it, rather than as the author intended it.
+.SH "SEE ALSO"
+ArgIntro(3ARG),
+ArgParse(3ARG),
+ArgVersion(3ARG)
+.br
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

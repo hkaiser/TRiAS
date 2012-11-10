@@ -1,0 +1,97 @@
+import "oaidl.idl";
+import "ocidl.idl";
+
+/*
+{B6AFCF01-1A64-11d2-8F7D-0060085FC1CE} // Arc Info
+{B6AFCF02-1A64-11d2-8F7D-0060085FC1CE} 
+{B6AFCF03-1A64-11d2-8F7D-0060085FC1CE} // Flurkarten LVermA Sachsen Anhalt
+{B6AFCF04-1A64-11d2-8F7D-0060085FC1CE}
+{B6AFCF05-1A64-11d2-8F7D-0060085FC1CE} // bekannte Eckpunkte
+{B6AFCF06-1A64-11d2-8F7D-0060085FC1CE}
+{B6AFCF07-1A64-11d2-8F7D-0060085FC1CE}
+{B6AFCF08-1A64-11d2-8F7D-0060085FC1CE}
+{B6AFCF09-1A64-11d2-8F7D-0060085FC1CE}
+{B6AFCF0A-1A64-11d2-8F7D-0060085FC1CE}
+{B6AFCF0B-1A64-11d2-8F7D-0060085FC1CE}
+{B6AFCF0C-1A64-11d2-8F7D-0060085FC1CE}
+{B6AFCF0D-1A64-11d2-8F7D-0060085FC1CE}
+{B6AFCF0E-1A64-11d2-8F7D-0060085FC1CE}
+{B6AFCF0F-1A64-11d2-8F7D-0060085FC1CE}
+*/
+
+[
+	uuid(71A5E813-1A57-11D2-8F7D-0060085FC1CE),
+	version(1.0),
+	helpstring("MapCtrl 1.0 Type Library")
+]
+library MAPCTRLLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		object,
+		uuid(D24C1821-1B49-11d2-8F7D-0060085FC1CE),
+		dual,
+		helpstring("ITopoPict"),
+		pointer_default(unique)
+	]
+	interface ITopoPict : IUnknown
+	{
+		[helpstring("method GetTagValue")] HRESULT GetTagValue([in] long tag, [out] VARIANT* value);
+		[helpstring("method GetGeoCodedPoints")] HRESULT GetGeoCodedPoints([out] SAFEARRAY(double) *pCoordinates, [out] IUnknown **ppICS);
+	};
+
+	[
+		object,
+		uuid(B6AFCF00-1A64-11d2-8F7D-0060085FC1CE),
+		dual,
+		helpstring("IMapImport"),
+		pointer_default(unique)
+	]
+	interface ITopoMap : IUnknown
+	{
+		typedef [public, v1_enum] enum _tagCOPYFLAG {
+			COPYFLAG_Default = 0x06,
+			COPYFLAG_SourceAreFiles = 0x00,		// Quelle sind Dateien
+			COPYFLAG_SourceIsDirectory = 0x01,	// Quelle ist Verzeichnis
+			COPYFLAG_MayCopyFiles = 0x00,		// Dateien können kopiert werden
+			COPYFLAG_ShouldCopyFiles = 0x02,	// Dateien sollten kopiert werden
+			COPYFLAG_MustReduceFiles = 0x04,	// es entstehen neue Dateien
+		} COPYFLAG;
+
+		HRESULT	GetCoordSystem([in, out] IUnknown** ppCoordSystem );
+		HRESULT GetImageFileFilter([in, out] BSTR* pStrFilter);
+		HRESULT GetAltFileFilter([in, out] BSTR* pStrFilter);
+		HRESULT GetDisplayName([in, out] BSTR* pStrDisplay);
+		HRESULT CheckPictureFile([in] ITopoPict*, [in, out] long* bFileIsvalidForMe);
+		HRESULT CheckAltFile([in] BSTR strFileName, [in, out] long* bFileIsvalidForMe);
+		HRESULT	PrepareFinalData([in, out] long* bHavePrepared);
+		HRESULT	GetCoordinates([out] SAFEARRAY(double) *pCoordinates );
+		HRESULT	GetRefPoints([out] SAFEARRAY(double) *pCoordinates );
+		HRESULT HaveNomenclatur([in, out] long* pYesNo);
+		HRESULT NeedFixPoints([in, out] long *pNeedPoints);
+		HRESULT PutFixPoints([in] SAFEARRAY(double) pCoordinates );
+		HRESULT GetNameAndIdent([in] BSTR strPathName, [out] BSTR* strName, [out] BSTR* strIdent );
+
+	// KK001108
+		HRESULT	GetDifferenz([out] SAFEARRAY(double) *pCoordinates );
+		HRESULT GetAltFileTyp([in, out] BSTR* pStrTyp);	// Typ der Doc-Datei
+		HRESULT HaveMultiMap([in, out] long* pYesNo);	// Einzelverarbeitung 
+
+	// #HK020318
+		HRESULT BitmapIndex ([out, retval] long *plIndex);
+		HRESULT CorrectName ([in] BSTR bstrDestDir, [in] BSTR bstrName, [out, retval] BSTR *pbstrToWrite);
+		HRESULT CorrectDirectory ([in] BSTR bstrDestDir, [out, retval] BSTR *pbstrToWrite);
+		HRESULT CopyFlags ([out, retval] COPYFLAG *prgFlags);
+		HRESULT GetDescription ([out, retval] BSTR *pbstrDesc);
+		HRESULT GetDefaultFileTyp([in, out] BSTR* pStrTyp);
+		HRESULT MakeFullName ([in] BSTR bstrBaseDir, [out, retval] BSTR *pbstrFullFileName);
+
+	// #HK021018
+		HRESULT NeedsCoordSystem ([out, retval] VARIANT_BOOL *pfNeedsCoordSys);
+
+	// #HK030211
+		HRESULT PutCoordSystem([in] IUnknown *pICS);
+	};
+};

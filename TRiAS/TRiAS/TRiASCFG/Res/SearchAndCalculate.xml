@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Copyright ¸ 1991 - 2004, Hartmut Kaiser, #HK020110 -->
+<!-- edited with XML Spy v3.5 NT (http://www.xmlspy.com) by Hartmut Kaiser (Hartmut Kaiser) -->
+<!DOCTYPE GeoComponentSequence SYSTEM "GeoComponentSequence.dtd">
+<GeoComponentSequence Version="1.0" Type="Property" ProgID="TRiASEx.StatisticObjectProperty.1" MayFail="1">
+	<Name>Berechnen statistischer Größen für Recherchemengen</Name>
+	<Description>Liefert das Ergebnis einer statistischen Funktion, die auf der Grundlage der Werte einer auswählbaren Objekteigenschaft aller recherchierten Objekte berechnet wird.</Description>
+	<GeoComponent ProgID="TRiASEx.SelectIdentObjTyp.1"/>
+	<GeoComponent ProgID="TRiASEx.PropertyChoice.1" Type="Sequence" Load="Registry">
+		<LoadInfo RegistryPath="TRiAS.Application.4\TRiASEx\SearchEngines">
+			<ErrorInfo>
+				<Caption>%s - Fehlerhafte Systemeinstellung</Caption>
+				<Prompt>Es wurden keine installierten Rechercheobjekte gefunden.
+Überprüfen und wiederholen Sie gegebenenfalls die Installation von %s.</Prompt>
+			</ErrorInfo>
+		</LoadInfo>
+	</GeoComponent>
+</GeoComponentSequence>

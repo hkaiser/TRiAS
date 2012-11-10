@@ -1,0 +1,90 @@
+// TRiASImport.idl : IDL source for TRiASImport.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (TRiASImport.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "TriasDB.idl";
+#define _DEFINED_HPROJECT
+#include "TRiASXtensionSite.idl"
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRiASImport
+// @interface IGetImportExtension | Das Interface <i IGetImportExtension>
+// dient der Rückgabe einer evtl. in einer Importoptionen-Propertypage instantiierten
+// ImportExtension an die ImportDatabase. Da der Aufruf des Konfigurationsdialoges
+// einer ImportExtension u.U. Optionen in der Instanz speichert, welche beim an-
+// schließenden Import zu berücksichtigen sind. Damit das gewährleistet ist, muß die
+// so konfigurierte Instanz auch nach dem Schließen des Dialogs erhalten werden.
+// Das Interface <i IGetImportExtension> wird demzufolge meist parallel zum Interface
+// <i ITRiASOpenWizardPropExt>  an dem für die Optionen-PropertyPage verantwortlichen
+// Objekt anzutreffen sein.
+// @group Methoden und Eigenschaften von <i IGetImportExtension> 
+// @index | IGETIMPORTEXTENSION
+// @doc IGETIMPORTEXTENSION
+[
+	object,
+	dual,
+	uuid(1DBC4EA3-A3AB-11D1-A053-0060975566B4),
+	helpstring("IGetImportExtension Interface"),
+	pointer_default(unique)
+]
+interface IGetImportExtension : IUnknown
+{
+	[id(00000000), propget, helpstring("Liefert ggf. die im Dialog bereits angelegte Instanz der Importextension.")]
+	HRESULT _stdcall GetImportExt([out, retval]IUnknown**pImpExt);
+};
+
+[
+	uuid(7BACA161-8C1B-11D1-A00E-0060975566B4),
+	version(1.0),
+	helpstring("TRiASImport 1.0 Type Library")
+]
+library TRIASIMPORTLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	
+	[
+		uuid(7BACA173-8C1B-11D1-A00E-0060975566B4),
+		helpstring("ImportDBEngine Class")
+	]
+	coclass ImportDBEngine
+	{
+		[default] interface ITRiASDBEngine;
+	};
+
+	[
+		uuid(56FD6492-93D5-11D1-A024-0060975566B4),
+		helpstring("DatabaseBase Class")
+	]
+	coclass DatabaseBase
+	{
+		[default] interface ITRiASDatabase;
+		interface ITriasXtensionSite;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASIMPORT
+// @object ImportDlgExt | Erzeugt eine zusätzliche OpenWizardseite 
+// für <tr>- Datenbanken.
+// @supint <i ITRiASOpenWizardPropExt> | Initialisierungsfunktionen für die Wizardseite
+// @supint <i IGetImportExtension> | Liefert ggf. die mit der Wizardseite angelegte
+// Instanz der ImportExtension 'lebend' an die zuständige Import-DBEngine,
+// @xref <i ITRiASOpenWizardPropExt>, <i IGetImportExtension>
+	[
+		uuid(1DBC4EA6-A3AB-11D1-A053-0060975566B4),
+		helpstring("ImportDlgExt Class")
+	]
+	coclass ImportDlgExt
+	{
+		[default] interface ITRiASOpenWizardPropExt;
+		interface IGetImportExtension;
+	};
+};

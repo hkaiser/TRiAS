@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASCS.TRiASCSPointGeometry.1 = s 'TRiASCSPointGeometry Class'
+	{
+		CLSID = s '{3327AD94-A2B1-11D1-A051-0060975566B4}'
+	}
+	TRiASCS.TRiASCSPointGeometry = s 'TRiASCSPointGeometry Class'
+	{
+		CLSID = s '{3327AD94-A2B1-11D1-A051-0060975566B4}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {3327AD94-A2B1-11D1-A051-0060975566B4} = s 'TRiASCSPointGeometry Class'
+		{
+			ProgID = s 'TRiASCS.TRiASCSPointGeometry.1'
+			VersionIndependentProgID = s 'TRiASCS.TRiASCSPointGeometry'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{6A0120C3-70C6-11D1-974B-00A024D6F582}'
+			'Version' = s '1.0'
+		}
+	}
+}

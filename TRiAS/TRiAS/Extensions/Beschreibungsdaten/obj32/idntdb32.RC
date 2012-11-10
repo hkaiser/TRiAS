@@ -1,0 +1,635 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "identr32.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resstrg.h"
+#include "../identsdb.h"
+#include "../defident.h"
+#include "../defiderr.h"
+#include "../newident.h"
+#include "../newmcode.h"
+#include "../newrcode.h"
+#include "../pbderr.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDBMP_IERRORLOGO        BITMAP  MOVEABLE PURE   "IERROR.BMP"
+IDBMP_MERRORLOGO        BITMAP  MOVEABLE PURE   "MERROR.BMP"
+IDBMP_PERRORLOGO        BITMAP  MOVEABLE PURE   "PERROR.BMP"
+IDB_METADATA            BITMAP  DISCARDABLE     "metadata.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+PBDEXTENSIONMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Beschreibung für Objektklassen"
+    BEGIN
+        MENUITEM "&Definieren ...",             IDM_DEFIDENT
+        MENUITEM "&Löschen ...",                IDM_DELIDENT
+    END
+    POPUP "Beschreibung für Objekteigenschaften"
+    BEGIN
+        MENUITEM "&Definieren ...",             IDM_DEFMCODE
+        MENUITEM "&Löschen ...",                IDM_DELMCODE
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+DEFINEIDENT DIALOGEX 68, 62, 249, 150
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Beschreibung einer %s Objektklasse"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",IDF_AUXINFO,"Static",SS_ETCHEDFRAME,6,6,237,23
+    LTEXT           "&Datenquelle:",IDT_PBDDB,11,13,44,8
+    COMBOBOX        IDC_CONNECTIONS,56,11,181,78,CBS_DROPDOWNLIST | 
+                    CBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        " Beschreibende Informationen ",IDG_IDENTDESC,6,31,237,
+                    92,WS_GROUP
+    LTEXT           "&Objektklassenschlüssel:",IDT_IDENT,11,45,80,8
+    COMBOBOX        IDC_SELECTOKS,93,43,144,78,CBS_DROPDOWN | CBS_SORT | 
+                    CBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Kurztext:",IDT_SHORTDESC,11,61,38,8
+    EDITTEXT        IDE_DEFIDSHORT,56,60,181,12,ES_AUTOHSCROLL
+    LTEXT           "&Langtext:",IDT_LONGDESC,11,78,36,8
+    EDITTEXT        IDE_DEFIDLONG,56,76,181,40,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    WS_VSCROLL
+    DEFPUSHBUTTON   "&OK",IDOK,126,130,55,14
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,188,130,55,14,WS_GROUP
+    CONTROL         "&Schreibgeschützt",IDC_READONLY,"Button",
+                    BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_DISABLED,6,134,76,
+                    10
+END
+
+DEFINEMERKMAL DIALOGEX 43, 29, 249, 146
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Beschreibung einer %s Objekteigenschaft"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDF_AUXINFO,"Static",SS_ETCHEDFRAME | WS_GROUP,6,6,
+                    237,38
+    LTEXT           "Zugehörige Objektklasse:",IDT_PBDDB,11,13,82,8
+    CONTROL         "",IDT_DEFMKDBNAME,"Static",SS_LEFTNOWORDWRAP,102,13,135,
+                    8
+    CONTROL         "S&chreibgeschützt",IDC_READONLY,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,11,28,74,10
+    CONTROL         "S&ysteminterne Objekteigenschaft",IDCB_SYSTEMFLAG,
+                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,118,28,
+                    119,10
+    GROUPBOX        " Beschreibende Informationen ",IDG_IDENTDESC,6,48,237,
+                    74,WS_GROUP
+    LTEXT           "&Kurztext:",IDT_SHORTDESC,11,61,38,8
+    EDITTEXT        IDE_DEFMKSHORT,54,60,181,12,ES_AUTOHSCROLL
+    LTEXT           "&Langtext:",IDT_LONGDESC,11,78,36,8
+    EDITTEXT        IDE_DEFMKLONG,54,76,181,40,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    WS_VSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,126,126,55,14,WS_GROUP
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,188,126,55,14
+    CONTROL         "&Objekt",IDC_OBJECTPROP,"Button",BS_AUTORADIOBUTTON | 
+                    NOT WS_VISIBLE,6,130,37,10
+    LTEXT           "Objekteigenschaft bezieht sich auf:",IDC_STATIC,6,132,
+                    154,8,NOT WS_VISIBLE
+    CONTROL         "&Ansicht",IDC_VIEWPROP,"Button",BS_AUTORADIOBUTTON | 
+                    NOT WS_VISIBLE,6,130,39,10
+    CONTROL         "Objekt&klasse",IDC_CLASSPROP,"Button",
+                    BS_AUTORADIOBUTTON | NOT WS_VISIBLE,6,130,57,10
+END
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+DEFINEMERKMAL_ADMIN$(_DEBUG) DIALOGEX 43, 29, 249, 178
+#else
+DEFINEMERKMAL_ADMIN DIALOGEX 43, 29, 249, 178
+#endif
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Beschreibung einer %s Objekteigenschaft"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDF_AUXINFO,"Static",SS_ETCHEDFRAME | WS_GROUP,6,6,
+                    237,72
+    LTEXT           "Zugehörige Objektklasse:",IDT_PBDDB,11,13,82,8
+    CONTROL         "",IDT_DEFMKDBNAME,"Static",SS_LEFTNOWORDWRAP,102,13,135,
+                    8
+    CONTROL         "S&chreibgeschützt",IDC_READONLY,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,11,28,74,10
+    CONTROL         "S&ysteminterne Objekteigenschaft",IDCB_SYSTEMFLAG,
+                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,118,28,
+                    119,10
+    GROUPBOX        " Beschreibende Informationen ",IDG_IDENTDESC,6,82,237,
+                    74,WS_GROUP
+    LTEXT           "&Kurztext:",IDT_SHORTDESC,11,95,38,8
+    EDITTEXT        IDE_DEFMKSHORT,54,94,181,12,ES_AUTOHSCROLL
+    LTEXT           "&Langtext:",IDT_LONGDESC,11,112,36,8
+    EDITTEXT        IDE_DEFMKLONG,54,110,181,40,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | WS_VSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,126,160,55,14,WS_GROUP
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,188,160,55,14
+    CONTROL         "&Objekt",IDC_OBJECTPROP,"Button",BS_AUTORADIOBUTTON,11,
+                    58,37,10
+    LTEXT           "Objekteigenschaft bezieht sich auf:",IDC_STATIC,11,46,
+                    154,8
+    CONTROL         "&Ansicht",IDC_VIEWPROP,"Button",BS_AUTORADIOBUTTON,105,
+                    59,39,10
+    CONTROL         "Objekt&klasse",IDC_CLASSPROP,"Button",
+                    BS_AUTORADIOBUTTON,179,59,57,10
+END
+#endif
+
+UNDEFINEDMERKMAL DIALOGEX 69, 41, 224, 101
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Undefinierter Merkmalscode"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "%s hat den Merkmalscode %s als nicht definiert gemeldet.",
+                    IDT_DEFMKERRTEXT,10,12,129,38
+    DEFPUSHBUTTON   "&Definieren",IDOK,153,6,65,14,WS_GROUP
+    PUSHBUTTON      "&Ignorieren",IDCANCEL,153,43,65,14
+    PUSHBUTTON      "Immer I&gnorieren",IDB_DEFMKERRIGNORE,153,62,65,14
+    PUSHBUTTON      "&Alle ignorieren",IDB_DEFMKERRALLIGNORE,153,81,65,14
+    CONTROL         "",IDF_MERRORLOGO,"Static",SS_ETCHEDFRAME | WS_GROUP,6,
+                    64,60,31
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,6,6,137,51
+END
+
+UNDEFINEDIDENT DIALOGEX 69, 41, 224, 101
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Undefinierter Objektklassenschlüssel"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "%s hat den Objektklassenschlüssel %s als nicht definiert gemeldet.",
+                    IDT_DEFIDERRTEXT,10,12,130,39
+    DEFPUSHBUTTON   "&Definieren",IDOK,153,6,65,14,WS_GROUP
+    PUSHBUTTON      "&Ignorieren",IDCANCEL,153,43,65,14
+    PUSHBUTTON      "Immer I&gnorieren",IDB_DEFIDERRIGNORE,153,62,65,14
+    PUSHBUTTON      "&Alle ignorieren",IDB_DEFIDERRALLIGNORE,153,81,65,14
+    CONTROL         "",IDF_IERRORLOGO,"Static",SS_ETCHEDFRAME | WS_GROUP,6,
+                    64,60,31
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,6,6,137,51
+END
+
+DEFINEIDENTDLG DIALOGEX 31, 33, 257, 138
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Definieren von Beschreibungen für Objektklassen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Beschreibung für &Objektklasse auswählen:",IDT_DELIDENT,
+                    8,7,147,8
+    LISTBOX         IDL_NEWIDLIST,6,18,181,114,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "&Modifizieren",IDOK,196,97,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,196,6,55,14
+    PUSHBUTTON      "&Neuer Eintrag",IDC_NEWENTRY,196,118,55,14,WS_GROUP
+END
+
+DELIDENTDLG DIALOGEX 29, 30, 257, 138
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Löschen von Beschreibungen für Objektklassen"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Beschreibungen für &Objektklassen auswählen:",
+                    IDT_DELIDENT,8,7,147,8
+    LISTBOX         IDL_DELIDLIST,6,18,181,114,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    DEFPUSHBUTTON   "&Löschen",IDOK,196,97,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,196,6,55,14
+    PUSHBUTTON      "&Alle Auswählen",IDB_DELIDENTS_SELALL,196,118,55,14,
+                    WS_GROUP
+END
+
+DEFMERKMALDLG DIALOGEX 31, 30, 257, 167
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Definieren von Beschreibungen für Objekteigenschaften"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Objektklasse auswählen:",IDC_STATIC,6,6,149,8
+    COMBOBOX        IDC_SELOBJCLASS,6,18,181,91,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Beschreibung für Objekteigenschaft auswählen:",
+                    IDT_NEWMKMCODE,6,36,152,8
+    LISTBOX         IDL_NEWMKMCODES,6,48,181,114,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "&Modifizieren",IDOK,196,126,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,196,6,55,14
+    PUSHBUTTON      "&Neuer Eintrag",IDC_NEWENTRY,196,147,55,14,WS_GROUP
+END
+
+DELMERKMALDLG DIALOGEX 28, 42, 257, 167
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Löschen von Beschreibungen für Objekteigenschaften"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Objektklasse auswählen:",IDC_STATIC,6,6,149,8
+    COMBOBOX        IDC_SELOBJCLASS,6,18,181,87,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Beschreibungen für Objekteigenschaften auswählen:",
+                    IDT_DELMKMCODES,6,36,168,8
+    LISTBOX         IDL_DELMKMCODES,6,48,181,113,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "&Alle Auswählen",IDB_DELMCODES_SELALL,196,147,55,14,
+                    WS_GROUP
+    DEFPUSHBUTTON   "&Löschen",IDC_DELETE,196,126,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,196,6,55,14
+END
+
+UNDEFINEDPBD DIALOGEX 69, 40, 224, 101
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Falsche oder fehlende Beschreibungsdatenbasis"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Für das aktuelle Projekt ist eine falsche oder keine Beschreibungsdatenbasis definiert.",
+                    IDT_UNDEFINEDPBD,10,12,136,30
+    DEFPUSHBUTTON   "&Neu anlegen",IDOK,163,6,55,14,WS_GROUP
+    PUSHBUTTON      "&Auswählen",IDB_SELECTPBD,163,26,55,14
+    PUSHBUTTON      "&Ignorieren",IDCANCEL,163,81,55,14,WS_GROUP
+    CONTROL         "",IDF_PERRORLOGO,"Static",SS_ETCHEDFRAME | WS_GROUP,6,
+                    64,61,31
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,6,6,144,42
+END
+
+IDD_IMPORTOPTIONS DIALOG DISCARDABLE  0, 0, 280, 81
+STYLE DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " Importoptionen ",IDG_IMPORTOPTIONS,4,0,271,76,WS_GROUP
+    CONTROL         "&Existierende Beschreibungsdaten löschen",
+                    IDC_DELETEEXISTING,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,13,14,231,10
+    CONTROL         "Existierende &Beschreibungsdaten ersetzen",
+                    IDC_KEEPEXISTING,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    13,26,229,10
+    CONTROL         "&Nur benutzte Beschreibungsdaten importieren",
+                    IDC_REJECTUNUSED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    13,42,229,10
+    CONTROL         "&Datenquelle auswählen:",IDC_SELECTDATASOURCE,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,13,59,91,10
+    COMBOBOX        IDC_DATASOURCES,107,58,161,105,CBS_DROPDOWNLIST | 
+                    WS_TABSTOP
+END
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+DEFINEIDENT_ADMIN$(_DEBUG) DIALOGEX 68, 62, 249, 161
+#else
+DEFINEIDENT_ADMIN DIALOGEX 68, 62, 249, 161
+#endif
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Beschreibung einer %s Objektklasse"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDF_AUXINFO,"Static",SS_ETCHEDFRAME,6,6,237,23
+    LTEXT           "&Datenquelle:",IDT_PBDDB,11,13,44,8
+    COMBOBOX        IDC_CONNECTIONS,56,11,181,78,CBS_DROPDOWNLIST | 
+                    CBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        " Beschreibende Informationen ",IDG_IDENTDESC,6,31,237,
+                    106,WS_GROUP
+    LTEXT           "&Objektklassenschlüssel:",IDT_IDENT,11,45,80,8
+    COMBOBOX        IDC_SELECTOKS,93,43,144,78,CBS_DROPDOWN | CBS_SORT | 
+                    CBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Kurztext:",IDT_SHORTDESC,11,61,38,8
+    EDITTEXT        IDE_DEFIDSHORT,56,60,181,12,ES_AUTOHSCROLL
+    LTEXT           "&Langtext:",IDT_LONGDESC,11,78,36,8
+    EDITTEXT        IDE_DEFIDLONG,56,76,181,40,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    WS_VSCROLL
+    CONTROL         "&Schreibgeschützt",IDC_READONLY,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,11,121,226,10
+    DEFPUSHBUTTON   "&OK",IDOK,126,141,55,14
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,188,141,55,14,WS_GROUP
+END
+#endif
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "identr32.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""resstrg.h""\r\n"
+    "#include ""../identsdb.h""\r\n"
+    "#include ""../defident.h""\r\n"
+    "#include ""../defiderr.h""\r\n"
+    "#include ""../newident.h""\r\n"
+    "#include ""../newmcode.h""\r\n"
+    "#include ""../newrcode.h""\r\n"
+    "#include ""../pbderr.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "// personalisierte Resourcen\r\n"
+    "#include ""idntdb32.rcv""\r\n"
+    "\r\n"
+    "\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    DEFINEIDENT, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 243
+        VERTGUIDE, 237
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 144
+    END
+
+    DEFINEMERKMAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 243
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 140
+    END
+
+    UNDEFINEDMERKMAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 218
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 95
+    END
+
+    UNDEFINEDIDENT, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 218
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 95
+    END
+
+    DEFINEIDENTDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 251
+        VERTGUIDE, 187
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 132
+    END
+
+    DELIDENTDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 251
+        VERTGUIDE, 187
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 132
+    END
+
+    DEFMERKMALDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 251
+        VERTGUIDE, 187
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 161
+    END
+
+    DELMERKMALDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 251
+        VERTGUIDE, 187
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 161
+        HORZGUIDE, 161
+    END
+
+    UNDEFINEDPBD, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 218
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 95
+    END
+
+    IDD_IMPORTOPTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 4
+        RIGHTMARGIN, 275
+        VERTGUIDE, 13
+        VERTGUIDE, 268
+        BOTTOMMARGIN, 76
+    END
+
+    "DEFINEIDENT_ADMIN$(_DEBUG)", DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 243
+        VERTGUIDE, 237
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 155
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDB_METADATA TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_METADATA_MODIDENT
+    BUTTON      ID_METADATA_DELIDENT
+    BUTTON      ID_METADATA_MODMCODES
+    BUTTON      ID_METADATA_DELMCODES
+    BUTTON      ID_METADATA_MODRCODES
+    BUTTON      ID_METADATA_DELRCODES
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PBDOPENTEMPLATE     "IdentsDB-Name (*.pbd,*.stb)|*.pbd;*.stb"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_OBJPROPKTEXT        "Kurztext"
+    IDS_OBJPROPLTEXT        "Langtext"
+    IDS_TXIEXTENSION        ".txi"
+    IDS_TXMEXTENSION        ".txm"
+    IDS_MODIFYENTRY         "&Modifizieren"
+    IDS_SAVETEMPLATE        "Beschreibungsdaten (*.txc)|*.txc"
+    IDS_IDENTSDBSUBDIR      "IDENTSDB"
+    IDS_PBDCREATETEMPLATE   "IdentsDB-Name (*.pbd)|*.pbd"
+    IDS_PBDNAME             "PBD-NAME        "
+    IDS_IDENTSDBEXT         ".PBD"
+    IDS_KTEXTHELP           "Liefert die Kurzbeschreibung für die Objektklasse des Objektes."
+    IDS_LTEXTHELP           "Liefert die ausführliche Beschreibung für die Objektklasse des Objektes."
+    IDS_UNDEFINEDIDENT      "%s hat den Objektklassenschlüssel %s als nicht definiert gemeldet."
+    IDS_UNDEFINEDMCODE      "%s hat den Merkmalscode %s als nicht definiert gemeldet."
+    IDS_NOUNUSEDPROPERTIES  "Keine unbenutzten Objekteigenschaften vorhanden"
+    IDS_UNDEFINEDPBD        "Für das aktuelle Projekt ist eine falsche oder keine Beschreibungsdatenbasis definiert."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Verwaltung der Beschreibungsdaten"
+    IDS_UNDEFINEDID         "Keine Objektklassenbeschreibung."
+    IDS_OPENTEMPLATE        "Beschreibungsdaten (*.txc)|*.txc"
+    IDS_IMPORTDATA          "Importieren von Beschreibungsdaten"
+    IDS_IMPORTFILE          "Datei: "
+    IDS_IMPORTSTATUS        "Es wurden bereits %d%% der Datei importiert."
+    IDS_EXPORTSTATUS        "Es wurden bereits %d%% der Datei exportiert."
+    IDS_NOUNUSEDIDENTS      "Keine ungenutzten Objektklassen vorhanden"
+    IDS_EXPORTDATA          "Exportieren von Beschreibungsdaten"
+    IDS_PBDCREATECAPTION    "Anlegen einer Beschreibungs-Datenbasis"
+    IDS_PBDOPENCAPTION      "Auswählen einer Beschreibungs-Datenbasis"
+    IDS_IMPORTERROR         "Fehler beim Import von Beschreibungsdaten"
+    IDS_UNDOMODMCODES       "Beschreibungen für Objekteigenschaften editieren"
+    IDS_UNDODELMCODES       "Beschreibungen für Objekteigenschaften löschen"
+    IDS_UNDODELIDENTS       "Objektklassenbeschreibungen löschen"
+    IDS_UNDOMODIDENTS       "Objektklassenbeschreibungen editieren"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDM_ALLMCODEIGNORE      "Gibt vor, ob fehlende Beschreibungsinformationen für Objekteigenschaften als Fehler angezeigt werden."
+    IDM_GENERATENEWPBD      "Legt eine neue Beschreibungs-Datenbasis an."
+    IDM_IMPORTCODES         "Importiert zusätzliche Beschreibungsinformationen."
+    IDS_METATOOLCAPTION     "Beschreibungsdaten"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDM_EXPORTCODES         "Exportiert die aktuellen Beschreibungsinformationen."
+    IDM_ALLIDENTIGNORE      "Gibt vor, ob fehlende Beschreibungsinformationen für Objektklassen als Fehler angezeigt werden."
+    IDM_SELPBDNAME          "Erlaubt eine existierende Beschreibungs-Datenbasis für das aktuelle Projekt auszuwählen."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NEWCLASSDESC        "Beschreibung einer neuen Objektklasse"
+    IDS_EXISTINGCLASSDESC   "Beschreibung einer bestehenden Objektklasse"
+    IDS_BUTTONCLOSE         "&Schließen"
+    IDS_PBDCOMENTRY         "ForceExternPbd  "
+    IDS_NEWOPROPDESC        "Beschreibung einer neuen Objekteigenschaft"
+    IDS_EXISTINGOPROPDESC   "Beschreibung einer bestehenden Objekteigenschaft"
+    IDS_SHOWXMLERROR_CAP    "Fehler beim Beschreibungsdatenimport"
+    IDS_SHOWXMLERROR        "In Zeile %ld ist folgender Fehler aufgetreten:\r\n%ls"
+    IDS_BADTXCFILE          "Die Datei '%s' enthält keine %s-Beschreibungsdaten."
+    IDS_IMPORT_META         "Beschreibungen &importieren ..."
+    IDS_EXPORT_META         "Beschreibungen &exportieren ..."
+    IDS_NOXMLDOMPARSER      "Die für den Datenimport notwendigen Komponenten konnten nicht gefunden werden.\nÜberprüfen und wiederholen Sie gegebenenfalls die Installation von %s."
+    IDS_SHOWENTRY           "&Anzeigen"
+    IDS_SAVETEMPLATE_ADMIN  "Beschreibungsdaten (*.txc)|*.txc|Objektklassenbeschreibung (*.txi)|*.txi"
+    IDS_QUERYDEF_OBJECTS    "Rechercheobjektmengen"
+    IDS_DEFAULTFEATURENAME  "Objekteigenschaft"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_METADATA_MODIDENT    "Definiert neue oder modifiziert existierende Beschreibungen für Objektklassen.\nBeschreibungen für Objektklassen definieren"
+    ID_METADATA_MODMCODES   "Definiert neue oder modifiziert existierende Beschreibungen für Objekteigenschaften.\nBeschreibungen für Objekteigenschaften definieren"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_METADATA_IMPORTCODES "Importiert Beschreibungsinformationen aus dem TXC- Format\nBeschreibungsinformationen importieren"
+    ID_METADATA_DELIDENT    "Löscht existierende Beschreibungen für Objektklassen.\nBeschreibungen für Objektklassen löschen"
+    ID_METADATA_DELMCODES   "Löscht existierende Beschreibungen für Objekteigenschaften.\nBeschreibungen für Objekteigenschaften löschen"
+    ID_METADATA_EXPORTCODES "Exportiert Beschreibungsinformationen in das TXC- Format\nBeschreibungsinformationen exportieren"
+    ID_METADATA_ALLIDENTIGNORE 
+                            "Ignoriert alle evtl. auftretenden fehlenden Beschreibungen für Objektklassen.\nFehlende Beschreibung für Objektklassen ignorieren"
+    ID_METADATA_ALLMCODEIGNORE 
+                            "Ignoriert alle evtl. auftretenden fehlenden Beschreibungen für Objekteigenschaften.\nFehlende Beschreibung für Objekteigenschaften ignorieren"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ALLDATASOURCES      "Import erfolgt in alle Datenquellen"
+    IDS_CLOSE               "&Schließen"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+// personalisierte Resourcen
+#include "idntdb32.rcv"
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

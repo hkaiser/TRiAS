@@ -1,0 +1,59 @@
+// karten.odl : type library source for OLE Control project.
+
+// This file will be processed by the Make Type Library (mktyplib) tool to
+// produce the type library (karten.tlb) that will become a resource in
+// karten.ocx.
+
+// #include <olectl.h>
+
+[ uuid(0603C947-B16A-11cf-86aa-00a024145748), version(1.0), helpstring("Vismodule for topographical Cards"), control ]
+library KARTENLib
+{
+	importlib("stdole.tlb");
+	// importlib("STDTYPE.TLB");
+
+	//  Primary dispatch interface for CKartenCtrl
+	[ uuid(0603C948-B16A-11CF-86AA-00A024145748), helpstring("Dispatch interface for Karten.vmd"), hidden ]
+	dispinterface _DKarten
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CKartenCtrl)
+			//}}AFX_ODL_PROP
+
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CKartenCtrl)
+			//}}AFX_ODL_METHOD
+	};
+
+	//  Event dispatch interface for CKartenCtrl
+	[ uuid(0603C949-B16A-11CF-86AA-00A024145748), helpstring("Event interface for Karten.vmd") ]
+	dispinterface _DKartenEvents
+	{
+		properties:
+			//  Event interface has no properties
+
+		methods:
+			// NOTE - ClassWizard will maintain event information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_EVENT(CKartenCtrl)
+			//}}AFX_ODL_EVENT
+	};
+
+	//  Class information for CKartenCtrl
+	// 07963893-3123-101C-BB62-00AA0018497C	- topographische Karten
+#ifdef _WIN32
+	[ uuid(07963893-3123-101C-BB62-00AA0018497C), helpstring("Karten.vmd"), control ]
+#else
+	[ uuid(321c58e0-0c60-101b-aae1-e7e7e7e7e7e7), helpstring("Karten.vmd"), control ]
+#endif
+	coclass Karten
+	{
+		[default] dispinterface _DKarten;
+		[default, source] dispinterface _DKartenEvents;
+	};
+	//{{AFX_APPEND_ODL}}
+};

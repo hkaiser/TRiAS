@@ -1,0 +1,62 @@
+'\"t
+.TH ARGFEEDBACK 3ARG "September 1991" "SDSC" "ARGUMENT PARSING"
+.SH NAME
+ArgFeedback  -  output a feedback form
+.SH SYNOPSIS
+.if t \fB
+.nf
+#include "sdsc.h"
+
+int ArgErrNo;
+
+int ArgFeedback( )
+.fi
+.if t \fR
+.SH DESCRIPTION
+\fIArgFeedback\fR uses information about the command as passed into an
+earlier call to \fIArgParse(3ARG)\fR.
+.LP
+\fIArgFeedback\fR creates a feedback form in the current directory
+with the name "commandname.fbk.0", where "commandname" is the name of the
+command, as given in the \fIarg_name\fR field of the \fIArgCommand\fR
+structure passed to \fIArgParse(3ARG)\fR.
+If a file of this name already exists in the current
+directory, "commandname.fbk.1" is tried, and so on up to 20.
+.SH RETURNS
+\fIArgFeedback\fR returns 0.  If \fIArgFeedback\fR fails to complete,
+it returns -1 and sets the
+global \fIArgErrNo\fR to an error code indicating the cause of the failure.
+The following error codes may be generated:
+.LP
+.IP "\fIARGEFBK\fR = couldn't create feedback form file"
+\fIArgFeedback\fR tried to create a feedback form file
+with the name "commandname.fbk.0" and failed.
+It added 1, tried again, failed, and so on up through 20.
+All attempts failed and a feedback form file could not be created.
+.IP "\fIARGESYS\fR = a system error has occurred"
+An error relating to the OS has occurred.
+This includes directory write permission problems, file creation errors,
+and so on.
+The error code describing the system error is available in the
+global \fIerrno\fR (set by UNIX system calls).
+.SH NOTES
+Product developers use feedback forms to obtain information on the
+performace of their software products.  Users are encouraged to fill
+out feedback forms whenever they find bugs, think of enhancements, or
+have comments regarding a tool, routine, or library. 
+.SH "SEE ALSO"
+ArgIntro(3ARG),
+ArgParse(3ARG),
+ArgPError(3ARG),
+ArgRegister(3ARG),
+ArgVersion(3ARG),
+errno(2),
+perror(3)
+.br
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

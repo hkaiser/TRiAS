@@ -1,0 +1,87 @@
+// imaschen.idl : IDL source for objects in maschblr.ext
+//
+import "oaidl.idl";
+
+#if !defined(_BASETSD_H_) && (501 >= __midl)
+#include <basetsd.h>
+#endif // _BASETSD_H_
+
+// This file will be processed by the Make Type Library (mktyplib) tool to
+// produce the type library (imaschen.tlb)
+[
+	uuid(079638D9-3123-101C-BB62-00AA0018497C),
+	version(1.0),lcid(0),
+	helpstring("Linienverfolgung 1.0 Type Library")
+]
+library imaschen
+{
+	importlib("stdole32.tlb");
+
+///////////////////////////////////////////////////////////////////////////////
+// obsolete: do not use any more
+	[
+		object,
+		uuid(079638D5-3123-101C-BB62-00AA0018497C),		
+		dual,
+		helpstring("IExtLinienVerfolgung Interface"),
+		pointer_default(unique)
+	]
+	interface IExtLinienVerfolgung : IDispatch
+	{
+		import "progind2.idl";
+		import "enumonr.idl";
+
+		[id (0), helpstring("Vereinigt Linien zu Maschen bzw. Linien."), helpcontext(0x0000)]
+			HRESULT LinesUnion(
+				[in]  IEnumObjectsByNumber *pInput,				//	Objektnummern-Eingabe-Strom
+				[in]  double dTolerance,						//	Fangbereich zweier Stützpunkte
+				[in]  VARIANT_BOOL bOutputUnIdents,				//	Unique Ident der Vereinigten als Merkmal ausgeben
+				[in]  VARIANT_BOOL bCreateAreas,				//	erzeuge Flächen (TRUE) bzw. Linien (FALSE)
+				[in,  optional] VARIANT vPI,					//	Fortschrittsanzeige
+				[out, optional] VARIANT *pvUsed,				//	Objektnummern der zur Vereinigung beitragenden
+				[out, retval] IEnumObjectsByNumber **ppUnion);	//	Objektnummern der Vereinigten
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+//
+	[
+		object,
+		uuid(D41E2047-E037-11D2-9BCF-3E6920524153),		
+		dual,
+		helpstring("IExtLinienVerfolgungEx Interface"),
+		pointer_default(unique)
+	]
+	interface IExtLinienVerfolgungEx : IDispatch
+	{
+		import "oaidl.idl";
+		import "progind2.idl";
+		import "enumonr.idl";
+
+		[id (0), helpstring("Vereinigt Linien zu Maschen bzw. Linien."), helpcontext(0x0000)]
+			HRESULT LinesUnion(
+				[in]  INT_PTR hPr,								// Zieldatenquelle für die neu erzeugten Objekte
+				[in]  IEnumObjectsByNumber *pInput,				//	Objektnummern-Eingabe-Strom
+				[in]  double dTolerance,						//	Fangbereich zweier Stützpunkte
+				[in]  VARIANT_BOOL bOutputUnIdents,				//	Unique Ident der Vereinigten als Merkmal ausgeben
+				[in]  VARIANT_BOOL bCreateAreas,				//	erzeuge Flächen (TRUE) bzw. Linien (FALSE)
+				[in,  optional] VARIANT vPI,					//	Fortschrittsanzeige
+				[out, optional] VARIANT *pvUsed,				//	Objektnummern der zur Vereinigung beitragenden
+				[out, retval] IEnumObjectsByNumber **ppUnion);	//	Objektnummern der Vereinigten
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+//
+	[
+		uuid(079638DA-3123-101C-BB62-00AA0018497C),
+		helpstring("ExtLinienVerfolgung Class")
+	]
+	coclass ExtLinienVerfolgung
+	{
+		[default] interface IExtLinienVerfolgungEx;
+#if _MSC_VER >= 1200
+		[restricted] 
+#endif // _MSC_VER >= 1200
+		interface IExtLinienVerfolgung;
+	};
+};
+

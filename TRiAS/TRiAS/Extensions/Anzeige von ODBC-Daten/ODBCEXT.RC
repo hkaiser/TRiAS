@@ -1,0 +1,1222 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "odbcext.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#include "afxres.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "ver.h"
+#include "gxresrc.h"
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_VIEW_FRAME          BITMAP  DISCARDABLE     "TOOLBAR.BMP"
+ADDRELU                 BITMAP  DISCARDABLE     "ADDRELU.BMP"
+ADDRELD                 BITMAP  DISCARDABLE     "ADDRELD.BMP"
+ADDRELF                 BITMAP  DISCARDABLE     "ADDRELF.BMP"
+ADDRELX                 BITMAP  DISCARDABLE     "ADDRELX.BMP"
+REMRELD                 BITMAP  DISCARDABLE     "REMRELD.BMP"
+REMRELF                 BITMAP  DISCARDABLE     "REMRELF.BMP"
+REMRELU                 BITMAP  DISCARDABLE     "REMRELU.BMP"
+REMRELX                 BITMAP  DISCARDABLE     "REMRELX.BMP"
+IDB_MENUICONS           BITMAP  DISCARDABLE     "menuicon.bmp"
+IDB_UNDO                BITMAP  DISCARDABLE     "Undo.bmp"
+IDB_CUT                 BITMAP  DISCARDABLE     "Cut.bmp"
+IDB_PASTE               BITMAP  DISCARDABLE     "Paste.bmp"
+IDB_REDO                BITMAP  DISCARDABLE     "Redo.bmp"
+IDB_SORTASC             BITMAP  DISCARDABLE     "Sortasc.bmp"
+IDB_SORTDESC            BITMAP  DISCARDABLE     "Sortdes.bmp"
+IDB_COPY                BITMAP  DISCARDABLE     "Copy.bmp"
+IDB_CLEAR               BITMAP  DISCARDABLE     "Delete.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_VIEW_FRAME DIALOGEX 0, 0, 186, 92
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "ODBC-Daten für das aktivierte Objekt"
+MENU IDM_VIEW_FRAME
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LISTBOX         IDL_ROWLIST,35,26,20,13,LBS_USETABSTOPS | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "Daten",IDC_GRID,"GXWND",WS_BORDER | WS_TABSTOP,0,0,185,
+                    91
+END
+
+IDD_LONGVAR DIALOGEX 0, 0, 124, 71
+STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_TOOLWINDOW
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDE_LONGVAR,0,0,124,71,ES_MULTILINE | ES_READONLY | 
+                    WS_VSCROLL
+END
+
+IDD_FIELDINFO DIALOGEX 0, 0, 124, 110
+STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Feldbeschreibungen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",IDL_FIELDINFO,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,0,0,124,109
+END
+
+IDD_RELATIONS DIALOG DISCARDABLE  15, 15, 277, 133
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Definierte Relationen:",-1,5,4,90,8
+    LISTBOX         IDL_DELETESLAVE,5,13,205,97,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_HSCROLL | WS_TABSTOP
+    CONTROL         "ADDREL",IDB_ADDREL,"Button",BS_OWNERDRAW | NOT 
+                    WS_VISIBLE | WS_DISABLED | WS_GROUP | WS_TABSTOP,95,88,
+                    15,12
+    CONTROL         "REMREL",IDB_REMREL,"Button",BS_OWNERDRAW | NOT 
+                    WS_VISIBLE | WS_DISABLED,150,85,15,12
+    LTEXT           "&Mögliche Relationen:",-1,125,4,84,8,NOT WS_VISIBLE | 
+                    WS_DISABLED
+    LISTBOX         IDL_ADDSLAVE,123,17,87,88,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | NOT WS_VISIBLE | 
+                    WS_DISABLED | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    PUSHBUTTON      "OK",IDOK,216,16,55,14
+    PUSHBUTTON      "Abbrechen",IDCANCEL,216,34,55,14,NOT WS_TABSTOP
+    PUSHBUTTON      "&Hilfe",IDB_RELHELP,216,60,55,14,WS_DISABLED | NOT 
+                    WS_TABSTOP
+    PUSHBUTTON      "&Erzeugen ...",IDB_FREEREL,155,115,55,14
+    PUSHBUTTON      "&Löschen",IDB_DELREL,5,115,55,14,WS_DISABLED
+END
+
+IDD_CONNECTIONS DIALOGEX 0, 0, 274, 258
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Definieren von ODBC-Anbindungen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "%s",IDC_STATIC1,4,4,124,105
+    LTEXT           "&Objektklasse:",IDC_STATIC,10,14,74,8
+    COMBOBOX        IDC_OBJKLASSEN,10,24,112,83,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    LTEXT           "Letzte Einstellung",IDC_STATIC,10,39,55,8
+    PUSHBUTTON      "&Verwenden",IDB_LASTENTRY,72,39,50,14
+    LTEXT           "&Aliasname:",IDC_STATIC,10,62,74,8
+    EDITTEXT        IDE_ALIASNAME,10,73,112,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Relationen ...",IDB_RELATIONEN,72,89,50,14,WS_DISABLED
+    GROUPBOX        " ODBC  ",IDC_STATIC,131,4,138,128,0,WS_EX_TRANSPARENT
+    LTEXT           "&ODBC-Datenquelle auswählen:",IDC_STATIC,138,14,79,8
+    CONTROL         "Tab1",IDC_TAB_DSN,"SysTabControl32",WS_TABSTOP,138,24,
+                    125,67
+    LTEXT           "&Tabellenname:",IDC_STATIC,138,106,74,8,NOT WS_GROUP
+    COMBOBOX        IDC_TABLES,138,116,125,65,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_DISABLED | WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    GROUPBOX        " Sachdaten-Anbindung ",IDC_STATIC,4,133,213,83
+    CONTROL         "Objekt&eigenschaft",IDB_MERKMALSKODE,"Button",
+                    BS_AUTORADIOBUTTON,10,146,80,10
+    COMBOBOX        IDC_MERKMALSKODES,10,158,99,65,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    LTEXT           "ODBC- Koppel&feld:",IDC_STATIC,114,147,79,8,NOT 
+                    WS_GROUP
+    COMBOBOX        IDC_KOPPELFELD,114,158,98,64,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,6,176,209,1
+    CONTROL         "Auswahl-&Kriterium:",IDB_SELECTWHERE,"Button",
+                    BS_AUTORADIOBUTTON,10,183,105,10
+    EDITTEXT        IDE_WHEREKLAUSEL,10,195,148,13,ES_AUTOHSCROLL | 
+                    ES_READONLY | WS_GROUP
+    PUSHBUTTON      "Er&zeugen",IDB_CREATEWHERE,162,194,50,14,NOT WS_TABSTOP
+    GROUPBOX        " Beschreibung ",IDC_STATIC,4,219,266,34
+    EDITTEXT        IDT_CONNECTDESCR,8,228,258,22,ES_MULTILINE | ES_READONLY | 
+                    WS_VSCROLL | NOT WS_TABSTOP
+    DEFPUSHBUTTON   "Speichern",IDB_STORECONNECT,220,137,50,14,WS_DISABLED | 
+                    WS_GROUP
+    PUSHBUTTON      "&Beenden",IDB_BEENDEN,220,153,50,14,NOT WS_TABSTOP
+    PUSHBUTTON      "&Hilfe",IDB_CONNECTHELP,220,202,50,14,WS_DISABLED | NOT 
+                    WS_TABSTOP
+    CONTROL         "Als &Standard verwenden",IDB_STANDARD_DSN,"Button",
+                    BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,12,118,104,10
+END
+
+IDD_CREATE_WHERE DIALOG DISCARDABLE  15, 15, 300, 186
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Eingeben eines Auswahl-Kriteriums"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Auswahl-&Kriterium:",-1,10,4,75,8
+    EDITTEXT        IDE_WHERE,8,14,223,12,ES_AUTOHSCROLL | ES_NOHIDESEL
+    LTEXT           "Objekt&eigenschaft",-1,8,30,71,8,NOT WS_GROUP
+    LISTBOX         IDL_OBJ_MERKMALE,8,42,90,77,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "&Text",IDB_AS_TEXT,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,8,122,29,10
+    CONTROL         "&Zahl",IDB_AS_NUM,"Button",BS_AUTORADIOBUTTON,37,122,28,
+                    10
+    CONTROL         "&Datum",IDB_AS_DATE,"Button",BS_AUTORADIOBUTTON,66,122,
+                    38,10
+    LTEXT           "Tabellen-&Felder:",-1,104,30,70,8
+    LISTBOX         IDL_TABLE_FIELDS,104,42,64,88,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "F&unktionen:",-1,175,30,52,8
+    LISTBOX         IDL_SCALE_FUNCTIONS,175,42,55,88,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Operatoren:",-1,237,30,49,8
+    LISTBOX         IDL_OPERATORS,237,42,55,88,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "&Prüfen",IDB_CHECK_WHERE,237,13,55,14,WS_DISABLED
+    DEFPUSHBUTTON   "OK",IDOK,237,149,55,14,WS_DISABLED
+    PUSHBUTTON      "Abbrechen",IDCANCEL,237,165,55,14,NOT WS_TABSTOP
+    GROUPBOX        " Beschreibung ",-1,7,134,223,46
+    EDITTEXT        IDT_WHERE_DESCR,11,143,215,34,ES_MULTILINE | ES_READONLY | 
+                    WS_VSCROLL | NOT WS_TABSTOP
+END
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDD_ABGLEICH$(_DEBUG) DIALOG DISCARDABLE  0, 0, 276, 140
+#else
+IDD_ABGLEICH DIALOG DISCARDABLE  0, 0, 276, 140
+#endif
+STYLE WS_CHILD | WS_VISIBLE | WS_CAPTION
+CAPTION "Nutzereingaben speichern unter/auswählen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Alle Eingaben speichern unter/auswählen:",-1,5,8,152,
+                    10
+    LISTBOX         IDL_ABGLEICH,11,35,117,102,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDE_ABGLEICH,5,20,123,13,ES_AUTOHSCROLL
+END
+#endif
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDD_TRIAS$(_DEBUG) DIALOG DISCARDABLE  0, 0, 276, 140
+#else
+IDD_TRIAS DIALOG DISCARDABLE  0, 0, 276, 140
+#endif
+STYLE WS_CHILD | WS_VISIBLE | WS_CAPTION
+CAPTION "Auswahl der %s-Einstellungen "
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Auswahl der abzugleichenden",-1,4,10,95,8
+    LTEXT           "Objekt&klassen:",-1,4,19,95,8
+    CONTROL         "Generic2",IDL_IMP_OBJ_KLASSEN,"SysListView32",
+                    LVS_REPORT | WS_BORDER | WS_TABSTOP,5,30,132,106
+    LTEXT           "Auswahl des abzugleichenden",-1,142,10,100,8
+    LTEXT           "Objekt&eigenschaft (eindeutiger Schlüssel):",-1,142,19,
+                    133,8
+    CONTROL         "Generic2",IDL_OBJ_MERKM_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,142,30,132,106
+END
+#endif
+
+IDD_DATENQUELLE DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD | WS_VISIBLE | WS_CAPTION
+CAPTION "ODBC-Datenquelle auswählen/Art des Abgleichs festlegen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&ODBC-Datenquelle auswählen:",IDC_STATIC,4,4,140,8
+    CONTROL         "Tab2",IDC_DSN_TAB,"SysTabControl32",WS_TABSTOP,0,14,145,
+                    77
+    LTEXT           "&Tabelle auswählen:",IDC_STATIC,150,4,84,8
+    LISTBOX         IDL_DSN_TABLE,150,14,125,77,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "%s-Objekte an Tabelle anpassen",IDB_DSN_ON_TRIAS,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,0,96,275,10
+    CONTROL         " Ta&belle an  %s-Objekte anpassen",IDB_DSN_ON_TABLE,
+                    "Button",BS_AUTORADIOBUTTON,0,106,275,10
+    CONTROL         "",IDB_IMP_IMP_NOTEXISTS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,0,116,270,10
+    CONTROL         "",IDB_IMP_DEL_NOTEXISTS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,0,126,270,10
+END
+
+IDD_FELDER DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD | WS_VISIBLE | WS_CAPTION
+CAPTION "Auswahl der Tabellenfelder "
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Koppelfeld",-1,0,4,80,8
+    CONTROL         "Generic1",IDL_FELD_KOPPEL,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,0,25,89,115
+    LTEXT           "&Rechtswert",-1,94,4,85,8
+    CONTROL         "Generic2",IDL_FELD_RECHTSW,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,93,25,89,115
+    LTEXT           "&Hochwert",-1,187,4,81,8
+    CONTROL         "Generic3",IDL_FELD_HOCHW,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,187,25,89,115
+    LTEXT           "(eindeutiger Schlüssel):",-1,0,13,85,8
+    LTEXT           "(Koordinatenfeld für X-Wert):",-1,94,13,88,8
+    LTEXT           "(Koordinatenfeld für Y-Wert):",-1,186,13,89,8
+END
+
+IDD_FILTER DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD | WS_VISIBLE | WS_CAPTION
+CAPTION "Datensätze aus Tabelle selektieren (optional)"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Filter&bedingung:",-1,10,0,253,8
+    EDITTEXT        IDE_FILTER_KLAUSEL,10,10,254,13,ES_AUTOHSCROLL
+    LTEXT           "&Felder:",-1,10,28,45,8
+    CONTROL         "Generic1",IDL_FILTER_FELD,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,10,39,110,67
+    LTEXT           "F&unktionen:",-1,129,28,47,8
+    LISTBOX         IDL_FILTER_FUNKT,128,39,70,67,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Operatoren:",-1,210,28,45,8
+    LISTBOX         IDL_FILTER_OPERA,209,39,55,67,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "&Prüfen",IDB_FILTER_CHECK,209,112,55,14,WS_DISABLED
+    EDITTEXT        IDT_IMP_FILTER_DESCR,14,117,181,19,ES_MULTILINE | 
+                    ES_READONLY | WS_VSCROLL | NOT WS_TABSTOP
+    GROUPBOX        " Beschreibung: ",-1,10,108,189,32
+END
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDD_ABGL_RESULT$(_DEBUG) DIALOG DISCARDABLE  0, 0, 276, 140
+#else
+IDD_ABGL_RESULT DIALOG DISCARDABLE  0, 0, 276, 140
+#endif
+STYLE WS_CHILD | WS_VISIBLE | WS_CAPTION
+CAPTION "Anzeige der Nutzereingaben/Abgleich starten"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "Definition:",IDC_STATIC,5,0,65,8
+    RTEXT           "Objektklassen:",IDC_STATIC,5,13,65,8
+    RTEXT           "Objektmerkmal:",IDC_STATIC,5,35,65,8
+    RTEXT           "Datenquelle:",IDC_STATIC,5,45,65,8
+    RTEXT           "Tabelle:",IDC_STATIC,5,55,65,8
+    RTEXT           "Koppelfeld:",IDC_STATIC,5,65,65,8
+    RTEXT           "Rechtswert (X):",IDC_STATIC,5,75,65,8
+    RTEXT           "Hochwert (Y):",IDC_STATIC,5,85,65,8
+    RTEXT           "Filter:",IDC_STATIC,5,95,65,8
+    EDITTEXT        IDE_IMP_RES_OBJKL,75,12,195,20,ES_MULTILINE | 
+                    ES_READONLY | WS_VSCROLL | NOT WS_TABSTOP
+    LTEXT           "",IDC_IMP_RES_DEF,75,0,195,8
+    LTEXT           "",IDC_IMP_RES_OBJMERKM,75,35,195,8
+    LTEXT           "",IDC_IMP_RES_DSN,75,45,195,8
+    LTEXT           "",IDC_IMP_RES_TABLE,75,55,195,8
+    LTEXT           "",IDC_IMP_RES_KOPPELF,75,65,195,8
+    LTEXT           "",IDC_IMP_RES_RECHTSW,75,75,195,8
+    LTEXT           "",IDC_IMP_RES_HOCHW,75,85,195,8
+    LTEXT           "",IDC_IMP_RES_FILTER,75,95,195,8
+    RTEXT           "Aktion:",IDC_STATIC,5,105,65,8
+    LTEXT           "",IDC_IMP_RES_NOTEXISTS,5,114,265,8
+    LTEXT           "",IDC_IMP_RES_ADD,5,123,265,8
+    LTEXT           "",IDC_IMP_RES_AKTION,75,105,195,8
+    LTEXT           "Wählen Sie ""Weiter"", um den Abgleich zu starten.",
+                    IDC_STATIC,5,132,266,8
+END
+#endif
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDD_IMP_ABGL_RES2$(_DEBUG) DIALOG DISCARDABLE  0, 0, 276, 140
+#else
+IDD_IMP_ABGL_RES2 DIALOG DISCARDABLE  0, 0, 276, 140
+#endif
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Ergebnisse des Abgleichs"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "",IDT_IMP_RES_ABGL,5,15,150,8
+    RTEXT           "",IDT_IMP_RES_ERR,5,75,150,8
+    RTEXT           "Doppelt vorhandene Punktobjekte:",
+                    IDT_IMP_RES_DOPP_TRIAS,5,45,150,8
+    RTEXT           "",IDT_IMP_RES_NEW,5,30,150,8
+    PUSHBUTTON      "&Protokoll anzeigen",IDB_IMP_RES_PROT,180,120,90,14
+    RTEXT           "",IDT_IMP_RES_DEL,5,90,150,8
+    LTEXT           "",IDT_IMP_RES_VABGL,165,15,105,8
+    LTEXT           "",IDT_IMP_RES_VNEW,165,30,105,8
+    LTEXT           "",IDT_IMP_RES_VDEL,165,90,105,8
+    LTEXT           "",IDT_IMP_RES_VERR,165,75,105,8
+    LTEXT           "",IDT_IMP_RES_VDOPP_TRIAS,165,45,105,8
+    LTEXT           "",IDT_IMP_RES_VDOPP_TABLE,165,60,105,8
+    RTEXT           "Doppelt vorhandene Datensätze:",IDT_IMP_RES_DOPP_TABLE,
+                    5,60,150,8
+END
+#endif
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDD_IMP_DOABGLEICH$(_DEBUG) DIALOG DISCARDABLE  0, 0, 276, 140
+#else
+IDD_IMP_DOABGLEICH DIALOG DISCARDABLE  0, 0, 276, 140
+#endif
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Abgleich ausführen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "",IDT_IMP_ABGLEICH_INFO,6,116,262,8
+    CONTROL         "Progress1",IDC_IMP_PROGRESS,"msctls_progress32",0x0,5,
+                    128,265,11
+    LTEXT           "Der Punktabgleich wird jetzt ausgeführt.",-1,5,15,255,8
+    LTEXT           "Der Vorgang kann einige Minuten dauern.",-1,5,30,255,8
+END
+#endif
+
+IDD_FREE_REL DIALOG DISCARDABLE  0, 0, 180, 204
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Tab2",IDC_DSN_TAB,"SysTabControl32",WS_TABSTOP,4,5,171,
+                    82
+    LTEXT           "&Tabellenname:",IDC_STATIC,4,94,84,8
+    COMBOBOX        IDC_TABLENAME,4,104,93,71,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Aliasname:",IDC_STATIC,100,93,63,9
+    EDITTEXT        IDE_ALIASNAME,100,104,75,12,ES_AUTOHSCROLL
+    LTEXT           "&Koppel&feld:",IDC_STATIC,4,121,86,9
+    COMBOBOX        IDC_KOPPELFIELD,4,131,93,70,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        " Beschreibung: ",IDC_STATIC,4,146,171,39
+    EDITTEXT        IDT_DESCRIPTION,8,155,164,27,ES_MULTILINE | ES_READONLY | 
+                    WS_VSCROLL | NOT WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,4,189,55,14,WS_DISABLED
+    PUSHBUTTON      "Abbrechen",IDCANCEL,63,189,55,14,NOT WS_TABSTOP
+    PUSHBUTTON      "&Hilfe",IDB_FRHELP,120,189,55,14,WS_DISABLED | NOT 
+                    WS_TABSTOP
+END
+
+IDD_USER_DSN DIALOG DISCARDABLE  0, 0, 120, 50
+STYLE WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&ODBC-Datenquelle auswählen:",IDC_STATIC,3,5,98,8
+    COMBOBOX        IDC_DSN,3,16,113,67,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "&Erzeugen ...",IDB_CREATE,3,31,50,14,WS_GROUP
+    PUSHBUTTON      "&Ändern ...",IDB_CHANGE,66,31,50,14,NOT WS_TABSTOP
+END
+
+IDD_FILE_DSN DIALOG DISCARDABLE  0, 0, 120, 50
+STYLE WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDE_DSN,3,15,98,14,ES_AUTOHSCROLL | ES_READONLY | NOT 
+                    WS_TABSTOP
+    DEFPUSHBUTTON   " ...",IDB_SELECT,103,15,15,14
+    LTEXT           "&ODBC-Datenquelle auswählen:",IDC_STATIC,3,5,98,8
+    DEFPUSHBUTTON   "&Erzeugen ...",IDB_CREATE,3,31,50,14,WS_GROUP
+    PUSHBUTTON      "&Ändern ...",IDB_CHANGE,66,31,50,14,WS_DISABLED | NOT 
+                    WS_TABSTOP
+END
+
+IDD_FILE_DSN_MEDIUM DIALOG DISCARDABLE  0, 0, 137, 57
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDE_DSN,0,15,118,14,ES_AUTOHSCROLL | ES_READONLY | NOT 
+                    WS_TABSTOP
+    DEFPUSHBUTTON   " ...",IDB_SELECT,121,15,15,14
+    LTEXT           "&ODBC-Datenquelle auswählen:",IDC_STATIC,0,5,98,8
+    DEFPUSHBUTTON   "&Erzeugen ...",IDB_CREATE,10,37,50,14,WS_GROUP
+    PUSHBUTTON      "&Ändern ...",IDB_CHANGE,74,37,50,14,NOT WS_TABSTOP
+END
+
+IDD_USER_DSN_MEDIUM DIALOG DISCARDABLE  0, 0, 137, 57
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&ODBC-Datenquelle auswählen:",IDC_STATIC,0,5,98,8
+    COMBOBOX        IDC_DSN,0,17,136,67,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "&Erzeugen ...",IDB_CREATE,10,37,50,14,WS_GROUP
+    PUSHBUTTON      "&Ändern ...",IDB_CHANGE,74,37,50,14,NOT WS_TABSTOP
+END
+
+IDD_INPUT_WHERE_PAGE1 DIALOG DISCARDABLE  0, 0, 270, 124
+STYLE DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CAPTION
+CAPTION "SQL-Abfrage"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&ODBC-Datenquelle:",IDC_STATIC,0,0,55,8
+    CONTROL         "Tab1",IDC_TAB_DSN,"SysTabControl32",WS_TABSTOP,0,10,130,
+                    70
+    LTEXT           "&Tabellen:",IDC_STATIC,135,0,55,8
+    COMBOBOX        IDL_FILTER_TABLES,135,10,80,120,CBS_DROPDOWN | CBS_SORT | 
+                    WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Felder:",IDC_STATIC,135,25,45,8
+    COMBOBOX        IDL_FILTER_FELD,135,35,65,85,CBS_DROPDOWN | CBS_SORT | 
+                    WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      " ...",IDB_CONTENTS,201,35,13,12,WS_DISABLED
+    LTEXT           "F&unktionen:",IDC_STATIC,218,0,47,8
+    COMBOBOX        IDL_FILTER_FUNKT,218,10,52,120,CBS_DROPDOWN | 
+                    WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Operatoren:",IDC_STATIC,218,25,45,8
+    COMBOBOX        IDL_FILTER_OPERA,218,35,52,85,CBS_DROPDOWN | WS_DISABLED | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Beschreibung:",IDC_STATIC,135,50,75,8
+    EDITTEXT        IDT_IMP_FILTER_DESCR,135,60,135,27,ES_MULTILINE | 
+                    ES_READONLY | WS_VSCROLL | NOT WS_TABSTOP
+    LTEXT           "Filter&bedingung:",IDC_STATIC,0,84,75,8
+    EDITTEXT        IDE_FILTER_KLAUSEL,0,94,218,30,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | WS_DISABLED | WS_VSCROLL
+    DEFPUSHBUTTON   "&Prüfen",IDB_FILTER_CHECK,220,94,50,14,WS_DISABLED
+END
+
+IDD_FIELD_CONTENT DIALOG DISCARDABLE  0, 0, 169, 117
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Tabelle: %s"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Feld:",IDC_STATIC,5,5,35,8
+    LTEXT           "",IDT_FELDNAME,40,5,125,8
+    LTEXT           "Datentyp:",IDC_STATIC,5,15,35,8
+    LTEXT           "",IDT_FELD_TYP,40,15,70,8
+    LTEXT           "&Werte:",IDC_STATIC,5,25,35,8
+    LISTBOX         IDL_FELD_CONTENTS,5,35,105,75,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,115,35,50,14,WS_DISABLED | WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,115,50,50,14,NOT WS_TABSTOP
+END
+
+IDD_INPUT_WHERE_PAGE2 DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CAPTION
+CAPTION "SQL-Abfrage"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&ODBC-Datenquelle:",IDC_STATIC,0,0,125,8
+    CONTROL         "Tab1",IDC_TAB_DSN,"SysTabControl32",WS_TABSTOP,0,10,130,
+                    82
+    LTEXT           "&Tabellen:",IDC_STATIC,135,0,55,8
+    COMBOBOX        IDL_FILTER_TABLES,135,10,82,120,CBS_DROPDOWN | CBS_SORT | 
+                    WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Felder:",IDC_STATIC,135,25,45,8
+    COMBOBOX        IDL_FILTER_FELD,135,35,67,85,CBS_DROPDOWN | CBS_SORT | 
+                    WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      " ...",IDB_CONTENTS,204,35,13,12,WS_DISABLED
+    LTEXT           "F&unktionen:",IDC_STATIC,221,0,47,8
+    COMBOBOX        IDL_FILTER_FUNKT,221,10,55,120,CBS_DROPDOWN | 
+                    WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Operatoren:",IDC_STATIC,221,25,45,8
+    COMBOBOX        IDL_FILTER_OPERA,221,35,55,85,CBS_DROPDOWN | WS_DISABLED | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Beschreibung:",IDC_STATIC,135,50,75,8
+    EDITTEXT        IDT_IMP_FILTER_DESCR,135,60,141,32,ES_MULTILINE | 
+                    ES_READONLY | WS_VSCROLL | NOT WS_TABSTOP
+    LTEXT           "Filter&bedingung:",IDC_STATIC,0,96,75,8
+    EDITTEXT        IDE_FILTER_KLAUSEL,0,106,224,34,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | WS_DISABLED | WS_VSCROLL
+    DEFPUSHBUTTON   "&Prüfen",IDB_FILTER_CHECK,226,106,50,14,WS_DISABLED
+END
+
+IDD_RECH_STATUS DIALOG DISCARDABLE  0, 0, 124, 57
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION
+CAPTION "Status der Recherche"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "Lese Satz, Nummer: ",IDC_STATIC,5,10,70,8
+    LTEXT           "",IDT_RECORD_NUMBER,80,10,30,8
+    DEFPUSHBUTTON   "Abbrechen",IDCANCEL,35,30,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDM_VIEW_FRAME MENU DISCARDABLE 
+BEGIN
+    POPUP "&Bearbeiten"
+    BEGIN
+        MENUITEM "&Rückgängig\tStrg+Z",         ID_EDIT_UNDO
+        MENUITEM "&Wiederholen\tStrg+Y",        ID_EDIT_REDO
+        MENUITEM SEPARATOR
+        MENUITEM "&Ausschneiden\tStrg+X",       ID_EDIT_CUT
+        MENUITEM "&Kopieren\tStrg+C",           ID_EDIT_COPY
+        MENUITEM "E&infügen\tStrg+V",           ID_EDIT_PASTE
+        MENUITEM SEPARATOR
+        MENUITEM "A&ufsteigend sortieren",      IDD_ASC
+        MENUITEM "&Absteigend sortieren",       IDD_DESC
+    END
+    POPUP "E&xtras"
+    BEGIN
+        MENUITEM "&Feldbeschreibungen ...",     IDM_FIELDINFO
+        MENUITEM SEPARATOR
+        MENUITEM "In Textdatei abspeichern",    ID_FILE_SAVE_AS
+    END
+END
+
+IDM_ODBC MENU DISCARDABLE 
+BEGIN
+    POPUP "&ODBC"
+    BEGIN
+        MENUITEM "&Einstellungen ...",          IDM_ODBCENTRY
+        MENUITEM "ODBC &Administrator ...",     IDM_CALL_ADMIN
+    END
+END
+
+IDM_ODBCBACKUP MENU DISCARDABLE 
+BEGIN
+    POPUP "&ODBC"
+    BEGIN
+        MENUITEM "&Einstellungen ...",          IDM_ODBCENTRY, GRAYED
+        MENUITEM "ODBC &Administrator ...",     IDM_CALL_ADMIN, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "&Punktabgleich ...",          IDM_IMPORT_PARAM, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "&Optimierung",                IDM_OPTIMIZE
+        , CHECKED, GRAYED
+    END
+END
+
+IDM_VIEW_FRAMEBACKUP MENU DISCARDABLE 
+BEGIN
+    POPUP "&Tabelle", INACTIVE
+    BEGIN
+        MENUITEM "&Erstes Feld",                IDM_FIRSTFIELD
+        MENUITEM "&Letztes Feld",               IDM_LASTFIELD
+        MENUITEM SEPARATOR
+        MENUITEM "Er&ster Satz",                IDM_FIRSTRECORD, GRAYED
+        MENUITEM "&Voriger Satz",               IDM_PREVRECORD, GRAYED
+        MENUITEM "&Nächster Satz",              IDM_NEXTRECORD, GRAYED
+        MENUITEM "Let&zter Satz",               IDM_LASTRECORD, GRAYED
+    END
+    POPUP "&Bearbeiten"
+    BEGIN
+        MENUITEM "&Kopieren   Strg-C",          IDM_COPY
+    END
+    POPUP "E&xtras"
+    BEGIN
+        MENUITEM "&Feldbeschreibungen ...",     IDM_FIELDINFO
+        MENUITEM SEPARATOR
+        MENUITEM "In Textdatei abspeichern",    ID_FILE_SAVE_AS
+    END
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "odbcext.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#include ""afxres.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""ver.h""\r\n"
+    "#include ""gxresrc.h""\r\n"
+    "\r\n"
+    "\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxdb.rc""\t\t// Database resources\r\n"
+    "#include ""afxres.rc""\r\n"
+    "#include ""odbcext.rcv""\r\n"
+    "#include ""defabout.dlg""\r\n"
+    "//#include ""gxres.rc""\r\n"
+    "#include ""gxresdeu.rc""\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    "IDD_ABGL_RESULT$(_DEBUG)", DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 269
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 133
+    END
+
+    "IDD_IMP_ABGL_RES2$(_DEBUG)", DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 269
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 133
+    END
+
+    "IDD_IMP_DOABGLEICH$(_DEBUG)", DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 269
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 133
+    END
+
+    IDD_FREE_REL, DIALOG
+    BEGIN
+        LEFTMARGIN, 4
+        RIGHTMARGIN, 172
+        TOPMARGIN, 4
+        BOTTOMMARGIN, 197
+    END
+
+    IDD_USER_DSN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 113
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 43
+    END
+
+    IDD_FILE_DSN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 113
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 43
+    END
+
+    IDD_FILE_DSN_MEDIUM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 130
+        VERTGUIDE, 125
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 50
+    END
+
+    IDD_USER_DSN_MEDIUM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 130
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 50
+    END
+
+    IDD_INPUT_WHERE_PAGE1, DIALOG
+    BEGIN
+        LEFTMARGIN, 3
+        VERTGUIDE, 215
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 117
+    END
+
+    IDD_FIELD_CONTENT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 162
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 110
+    END
+
+    IDD_INPUT_WHERE_PAGE2, DIALOG
+    BEGIN
+        LEFTMARGIN, 3
+        VERTGUIDE, 215
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 133
+    END
+
+    IDD_RECH_STATUS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 117
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 50
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+DEFIDICON               ICON    DISCARDABLE     "Xtension.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_WHERE_PROPACT_RGS   REGISTRY DISCARDABLE    "Whereprp.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_ACCELERATOR1 ACCELERATORS DISCARDABLE 
+BEGIN
+    "C",            IDM_COPY,               VIRTKEY, CONTROL, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+    IDS_DSNGLEICH           "DSN="
+    IDS_INTERNAL_ERROR      "Ein interner Fehler ist aufgetreten."
+    IDS_DBASEMENUITEM       "ODBC-&Informationen ... "
+    IDS_RELATIONS           "&Relationen ..."
+    IDS_GROUP_NAME          "ODBC-Informationen"
+    IDS_MASTER_REL          "%1:%2"
+    IDS_IMP_CAPTION         "Punktabgleich"
+    IDS_FILE_DSN_FORMAT     ";FILEDSN=%1"
+    IDS_CONNECTION          "Datenquelle"
+    IDS_SELECT_DSN          "Datenquelle auswählen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UNIQUE_IDENT        "%s_%ld"
+    IDS_BESCREIBUNG         "Beschreibung     "
+    IDS_IDENT               "Objektklasse"
+    IDS_MERKMALKODE         "Merkmalskode"
+    IDS_INIEXT              ".INI"
+    IDS_ALIASNAMES          "dBASE-AliasNames"
+    IDS_ACTEXTENSION        "FileExtension"
+    IDS_DEFAULT_DIR         "DefaultDir"
+    IDS_DBASEEXT            ".DBF"
+    IDS_DBASESUBDIR         "DBASE"
+    IDS_PFADSECTION         "Directories"
+    IDS_PROFID              "ID"
+    IDS_DEFWHEREKLAUSELDATE " =  #{%s}#"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_SQLSELECT           "SELECT * FROM [%1]"
+    IDS_ODBC_RELATION       "dBaseRelations"
+    IDS_OBJPROPFUNC         "%1\\%2"
+    IDS_RELCAPTION          "Relationen für ""%1:%2"""
+    IDS_ODBCERROR           "ODBC-Fehler"
+    IDS_CREATERELATION      "Definieren einer Relation für ""%1:%2"""
+    IDS_DEFAULTCONNECTION   "ODBC;"
+    IDS_TABLENAME           "ODBC-Table-Names"
+    IDS_STANDARD            "Standard"
+    IDS_DSN                 "ODBC-Data-Source-Names"
+    IDS_DRIVER              "DRIVER"
+    IDS_UNKNOWN_FORMAT      "Das Format des Feldes ist unbekannt."
+    IDS_EMPTY_FIELD         "Das Feld enthält keine Informationen."
+    IDS_RELCAPT             "ODBC-Relationen"
+    IDS_INPUT_KLAUSEL       "Bitte das Anfrage-Kriterium eingeben."
+    IDS_UNKNOWN_ERROR       "Unbekannter Fehler."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "ODBC-Daten"
+    IDS_DEFWHEREKLAUSEL     " = {%s}"
+    IDS_STRING_TRUNCATED    "..."
+    IDS_ABBRECHEN           "&Abbrechen"
+    IDS_CONNECTCAPTION      "ODBC-Anbindungen"
+    IDS_BESCHREIBUNG        "Beschreibung:"
+    IDS_DSNSECTION          "ODBC Data Sources"
+    IDS_ODBCINI             "odbc.ini"
+    IDS_FIELDESCRIPTIONFORMAT "Feldtyp: %s, Feldlänge: "
+    IDS_DESCRIPTION         "Description"
+    IDS_DEFWHEREKLAUSELTEXT " =  '{%s}'"
+    IDS_READOBJCLASS        "Lese ODBC-Anbindung zur Objektklasse ""%s""."
+    IDS_SELECTOBJCLASS      "Die Objektklasse ""%1""  wurde gewählt."
+    IDS_SELMERKMAL          "Es wurde die Objekteigenschaft '%s' ausgewählt."
+    IDS_USER_DSN_CAPT       "Benutzer-DSN"
+    IDS_DESCRIPTION_FONT    "Arial"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_KLAUSEL_DESCR       "Mit Hilfe des Auswahlkriteriums  wird die Verbindung zwischen einer Objekteigenschaft und dem Feld einer ODBC-Tabelle realisiert. "
+    IDS_ALIAS_DESCR         "Jeder Kombination aus ODBC-Datenquelle und Tabelle ist ein eindeutiger Aliasname zuzuordnen. I.a. wird hierfür der Name der ODBC-Tabelle benutzt."
+    IDS_OBJ_CLASS_FORMAT    "ID%08ld"
+    IDS_MERKM_CONN_FORM     "3,""%1"",""%2"","
+    IDS_KLAUSEL_CONN_FORM   "2,""%1"",""%2"""
+    IDS_ALL_OBJ_CLASSES     "Die gewählte Datenquelle ""%s"" soll für alle Objektklassen verwendet werden."
+    IDS_ONLY_OBJ_CLASSES    "Die gewählte Datenquelle ""%s"" soll für die aktuelle Objektklasse  verwendet werden."
+    IDS_SYSTEM_DSN_CAPT     "System-DSN"
+    IDS_STORE_CONNECTQ      "Anbindung für Objektklasse ""%s"" speichern ?"
+    IDS_TEXT_VALUE          "Der Wert des gewählten Merkmals wird als Text verwendet."
+    IDS_FILE_DSN_CAPT       "Datei-DSN"
+    IDS_AND_OP              "AND"
+    IDS_AND_OP_DESCR        "Logisches UND."
+    IDS_OR_OP               "OR"
+    IDS_OR_OP_DESCR         "Logisches ODER."
+    IDS_NOT_OP              "NOT ()"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NOT_OP_DESCR        "Logische Verneinung."
+    IDS_BET_OP              "BETWEEN  AND "
+    IDS_BET_OP_DESCR        "Der BETWEEN-Operator wird als Vereinfachnung für eine zusammengesetzte Abfrage benutzt, z.B.: ""BETWEEN 100 AND 200"" - Wert liegt zwischen 100 und 200."
+    IDS_IN_OP               "IN ()"
+    IDS_IN_OP_DESCR         "Der IN-Operator wird als Vereinfachung für eine zusammengesetzte Abfrage benutzt, z.B.: ""IN (10,20,30)"" - Wert ist entweder 10, 20 oder 30."
+    IDS_LIKE_OP             "LIKE ''"
+    IDS_LIKE_OP_DESCR       "Suche eines Textes in einer Zeichenkette, z.B.: ""LIKE '12_'"", sucht  an der 1. und 2. Position die Ziffernfolge ""12"". Für den Platzhalter ""_"" an 3. Stelle kann ein beliebiges Zeichen stehen."
+    IDS_IS_NULL_OP          "IS NULL"
+    IDS_IS_NULL_OP_DESCR    "Der ""IS NULL""-Operator wird für die Festellung verwendet, ob einem Feld ein Wert zugeordnet wurde, z.B.: ""Feld IS NULL"" oder das Gegenstück ""Feld IS NOT NULL""."
+    IDS_OP_GLEICH           "="
+    IDS_OP_GLEICH_DECSR     "Werte sind gleich."
+    IDS_OP_KLEINER          "<"
+    IDS_OP_KLEINER_DESCR    "Wert ist kleiner."
+    IDS_OP_GROESSER         ">"
+    IDS_OP_GROESSER_DESCR   "Wert ist größer."
+    IDS_OP_KLGL             "<="
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_OP_KLGL_DESCR       "Wert ist kleiner oder gleich."
+    IDS_OP_GRGL             ">="
+    DS_OP_GRGL_DESCR        "Wert ist größer oder gleich."
+    IDS_OP_VERSCH           "<>"
+    IDS_OP_VERSCH_DESCR     "Werte sind verschieden."
+    IDS_OP_ADD              "+"
+    IDS_OP_ADD_DESCR        "Arithmetische Addition oder Zeichenketten verbinden, z.B.: Aus ""AB "" + ""C"" wird ""AB C""."
+    IDS_OP_MINUS            "-"
+    IDS_OP_MINUS_DESCR      "Arithmetische Subtraktion oder Zeichenketten verbinden, z.B.: Aus ""AB "" + ""C"" wird ""ABC"", wobei abschließende Leerzeichen aus der 1. Zeichenkette entfernt werden."
+    IDS_OP_MUL              "*"
+    IDS_OP_MUL_DESCR        "Arithmetische Multiplikation."
+    IDS_OP_DIV              "/"
+    IDS_OP_DIV_DESCR        "Arithmetische Division."
+    IDS_STRING_ACII         "ASCII ()"
+    IDS_STRING_ASCII_DESCR  "Die Funktion ASCII () gibt den ASCII-CODE des 1. Zeichens der übergebenen Zeichenkette als Zahl zurück."
+    IDS_STRING_CHAR         "CHAR ()"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_STRING_CHAR_DESCR   "Die Funktion CHAR () gibt das Zeichen des übergebenen ASCII-Kodes zurück. Der Kode sollte zwichen 0 und 255 liegen."
+    IDS_STRING_CONCAT       "CONCAT (,)"
+    IDS_STRING_CONCAT_DESCR "Die Funktion CONCAT () verbindet die beiden übergebenen Zeichenketten miteinander, z.B.: ""CONCAT ('AB', 'CD')"" erzeugt die Zeichenkette 'ABCD'."
+    IDS_STRING_INSERT       "INSERT (,,,)"
+    IDS_STRING_INSERT_DESCR "Die Funktion INSERT (ZK1,Start,Länge,ZK2) gibt eine Zeichenkette zurück, in der in Zeichenkette 1 (ZK1) von der Position Start an Länge Zeichen gelöscht wurden und Zeichenkette 2 (ZK2) eingefügt wurde."
+    IDS_STRING_LCASE        "LCASE ()"
+    IDS_STRING_LCASE_DESCR  "Die Funktion LCASE () konvertiert die übergebene Zeichenkette in Kleinbuchstaben, z.B.:""LCASE ('ABCD')"" gibt die Zeichenkette 'abcd' zurück."
+    IDS_STRING_LEFT         "LEFT (,)"
+    IDS_STRING_LEFT_DESCR   "Die Funktion LCASE (ZK,Anzahl) gibt den linken Teil der übergebenen Zeichenkette, beginnend am 1. Zeichen, zurück, z.B.: ""LEFT ('Abcd', 2)"" erzeugt die Zeichenkette 'Ab'."
+    IDS_STRING_LENGTH       "LENGTH ()"
+    IDS_STRING_LENGTH_DESCR "Die Funktion LENGTH () berechnet die Länge der übergebenen Zeichenkette, z.B.: ""LENGTH ('Abcd')"" gibt die Zahl 4 zurück."
+    IDS_STRING_LOCATE       "LOCATE (,)"
+    IDS_STRING_LOCATE_DESCR "Die Funktion LOCATE (ZK1,ZK2[,Start]) ermittelt die Position des 1. Auftretens der Zeichenkette 1 (ZK1) in Zeichenkette 2 (ZK2) ab optionaler Position Start, z.B.: ""LOCATE ('cd', 'Abcd')"" gibt die Zahl 3 zurück."
+    IDS_STRING_LTRIM        "LTRIM ()"
+    IDS_STRING_LTRIM_DESCR  "Die Funktion LTRIM () entfernt führende Leerzeichen in der übergebenen Zeichenkette, z.B.: ""LTRIM ('   abcd')"" gibt die Zeichenkette 'abcd' zurück."
+    IDS_STRING_REPEAT       "REPEAT (,)"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_STRING_REPEAT_DESCR "Die Funktion REPEAT (ZK,Anzahl) gibt eine aus der übergebenen Zeichenkette (ZK) Anzahl-Mal erzeugte Zeichenkette zurück, z.B.: REPEAT ('ab',3) erzeugt 'ababab'."
+    IDS_STRING_REPLACE      "REPLACE (,,)"
+    IDS_STRING_REPLACE_DESCR 
+                            "Die Funktion REPLACE (ZK1,ZK2,ZK3) gibt eine Zeichenkette zurück, bei der jedes Auftreten der Zeichenkette 2 (ZK2) in Zeichenkette 1 (ZK1) durch Zeichenkette 3 (ZK3) ersetzt wird."
+    IDS_STRING_RIGHT        "RIGHT (,)"
+    IDS_STRING_RIGHT_DESCR  "Die Funktion RIGHT (ZK,Anzahl) gibt den rechten Teil der übergebenen Zeichenkette, beginnend am letzten Zeichen, zurück, z.B.: ""RIGHT ('Abcd', 2)"" erzeugt die Zeichenkette 'cd'."
+    IDS_STRING_RTRIM        "RTRIM ()"
+    IDS_STRING_RTRIM_DESCR  "Die Funktion RTRIM () entfernt abschließende Leerzeichen der übergebenen Zeichenkette, z.B.: ""RTRIM ('Abcd    ')"" erzeugt die Zeichenkette 'Abcd'."
+    IDS_STRING_SUBSTRING    "SUBSTRING (,,)"
+    IDS_STRING_SUBSTRING_DESCR 
+                            "Die Funktion SUBSTRING (ZK,Start,Länge)  erzeugt einen aus der übergebenen Zeichenkette (ZK) ab Position Start gebildeten Text der angebenen Länge, z.B.: ""SUBSTRING ('Abcd', 2, 3)"" gibt die Zeichenkette 'bcd' zurück."
+    IDS_STRING_UCASE        "UCASE ()"
+    IDS_STRING_UCASE_DESCR  "Die Funktion UCASE () konvertiert die übergebene Zeichenkette in Großbuchstaben, z.B.:""UCASE ('abcd')"" erzeugt die Zeichenkette 'ABCD'."
+    IDS_CVT_CONVERT         "CONVERT (,)"
+    IDS_CVT_CONVERT_DESCR   "Die Funktion CONVERT (Wert,Type) konvertiert den übergebenen  Wert in den angegebenen Typ, z.B.:CONVERT ('12', SQL_INTEGER) gibt die Zahl 12 zurück."
+    IDS_NUM_ABS             "ABS ()"
+    IDS_NUM_ABS_DESCR       "Die Funktion ABS () berechnet den absoluten Betrag des übergebenen  numerischen Wertes."
+    IDS_NUM_ACOS            "ACOS ()"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NUM_ACOS_DESCR      "Die Funktion ACOS () berechnet den Arcus-Cosinus des im Bogenmaß übergebenen Winkels."
+    IDS_NUM_ASIN            "ASIN ()"
+    IDS_NUM_ASIN_DESCR      "Die Funktion ASIN () berechnet den Arcus-Sinus des im Bogenmaß übergebenen Winkels."
+    IDS_NUM_ATAN            "ATAN ()"
+    IDS_NUM_ATAN_DESCR      "Die Funktion ATAN () berechnet den Arcus-Tangens des im Bogenmaß übergebenen Winkels."
+    IDS_NUM_ATAN2           "ATAN2 (,)"
+    IDS_NUM_ATAN2_DECR      "Die Funktion ATAN2 (Wi1,Wi2) berechnet den Arcus-Tangens der im Bogenmaß übergebenen Winkel Wi1 und Wi2."
+    IDS_NUM_CEILING         "CEILING ()"
+    IDS_NUM_CEILING_DESCR   "Die Funktion CEILING () berechnet die kleinste ganze Zahl, die größer oder gleich dem übergebenen numerischen Wert ist."
+    IDS_NUM_COS             "COS ()"
+    IDS_NUM_COS_DESCR       "Die Funktion COS () berechnet den Cosinus des im Bogenmaß übergebenen Winkels."
+    IDS_NUM_COT             "COT ()"
+    IDS_NUM_COT_DESCR       "Die Funktion COT () berechnet den Cotangens des im Bogenmaß übergebenen Winkels."
+    IDS_NUM_EXP             "EXP ()"
+    IDS_NUM_EXP_DESCR       "Die Funktion EXP () berechnet den Exponentialwert des übergebenen numerischen Wertes."
+    IDS_NUM_FLOOR           "FLOOR ()"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NUM_FLOOR_DESCR     "Die Funktion FLOOR () berechnet die größte ganze Zahl, die kleiner oder gleich dem übergebenen numerischen Wert ist."
+    IDS_NUM_LOG             "LOG ()"
+    IDS_NUM_LOG_DESCR       "Die Funktion LOG () berechnet den Logarithmus des übergebenen numerischen Wertes."
+    IDS_NUM_MOD             "MOD (,)"
+    IDS_NUM_MOD_DESCR       "Die Funktion MOD (Num1,Num2) berechnet den ganzzahligen Rest der Division der numerische Werte Num1 / Num2 , z.B.: ""MOD (105, 10)"" gibt die Zahl 5 zurück."
+    IDS_NUM_PI              "PI ()"
+    IDS_NUM_PI_DESCR        "Die Funktion PI () gibt den Wert der Konstanten ""Pi"" zurück."
+    IDS_NUM_RAND            "RAND ()"
+    IDS_NUM_RAND_DESCR      "Die Funktion RAND (Num) erzeugt unter Benutzung des übergebenen numerischen Wertes (Num) eine Zufallszahl. "
+    IDS_NUM_SIGN            "SIGN ()"
+    IDS_NUM_SIGN_DESCR      "Die Funktion SIGN () liefert das Vorzeichen einer Zahl als numerischen Wert (-1 negativ, 1 positiv, 0 Wert ist 0)."
+    IDS_NUM_SIN             "SIN ()"
+    IDS_NUM_SIN_DESCR       "Die Funktion SIN () berechnet den Sinus des im Bogenmaß übergebenen Winkels."
+    IDS_NUM_SQRT            "SQRT ()"
+    IDS_NUM_SQRT_DESCR      "Die Funktion SQRT () berechnet die Wurzel des übergebenen numerischen Wertes."
+    IDS_NUM_TAN             "TAN ()"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NUM_TAN_DESCR       "Die Funktion TAN () berechnet den Tangens des im Bogenmaß übergebenen Winkels."
+    IDS_TD_NOW              "NOW ()"
+    IDS_TD_NOW_DESCR        "Die Funktion NOW () gibt die aktuelle Zeit und das aktuelle Datum zurück."
+    IDS_TD_CURDATE          "CURDATE ()"
+    IDS_TD_CURDATE_DESCR    "Die Funktion CURDATE () gibt das aktuelle Datum im Format 'JJJJ-MM-TT' zurück."
+    IDS_TD_DAYOFMONTH       "DAYOFMONTH ()"
+    IDS_TD_DAYOFMONTH_DESCR "Die Funktion DAYOFMONTH () erzeugt den Monatstag des übergebenen Datums als Zahl zwischen 1 und 31, z.B.: ""DAYOFMONTH ('1994-10-30')"" gibt die Zahl 30 zurück."
+    IDS_TD_DAYOFWEEK        "DAYOFWEEK ()"
+    IDS_TD_DAYOFWEEK_DESCR  "Die Funktion DAYOFWEEK () erzeugt den Wochentag des übergebenen Datums als Zahl zwischen 1 und 7, z.B.: ""DAYOFWEEK ('1994-10-30')"" gibt die Zahl 1 zurück."
+    IDS_TD_DAYOFYEAR        "DAYOFYEAR ()"
+    IDS_TD_DAYOFYEAR_DESCR  "Die Funktion DAYOFYEAR () gibt den Tag des übergebenen Datums als Zahl zwischen 1 und 365 zurück."
+    IDS_TD_MONTH            "MONTH ()"
+    IDS_TD_MONTH_DESCR      "Die Funktion MONTH () erzeugt den Monat des übergebenen Datums als Zahl zwischen 1 und 12, z.B.: ""MONTH ('1994-10-30')"" gibt die Zahl 10 zurück."
+    IDS_TD_QUARTER          "QUARTER ()"
+    IDS_TD_QUARTER_DESCR    "Die Funktion QUARTER () gibt das Viertel des übergebenen Datums als Zahl zwischen 1 und 4 zurück."
+    IDS_TD_WEEK             "WEEK ()"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_TD_WEEK_DESCR       "Die Funktion WEEK () gibt die Woche des übergebenen Datums als Zahl zwischen 1 und 53 zurück."
+    IDS_TD_YEAR             "YEAR ()"
+    IDS_TD_YEAR_DESCR       "Die Funktion YEAR () erzeugt das Jahr des übergebenen Datums als 4stellige Zahl, z.B.: ""YEAR ('1994-10-30')"" gibt die Zahl 1994 zurück."
+    IDS_TD_CURTIME          "CURTIME ()"
+    IDS_TD_CURTIME_DESCR    "Die Funktion CURTIME () gibt die aktuelle lokale Zeit im Format 'HH:MM:SS' zurück."
+    IDS_TD_HOUR             "HOUR ()"
+    IDS_TD_HOUR_DESCR       "Die Funktion HOUR () gibt den Stundenanteil der übergebenen Zeit als Zahl zwischen 0 und 23 zurück."
+    IDS_TD_MINUTE           "MINUTE ()"
+    IDS_TD_MINUTE_DESCR     "Die Funktion MINUTE () gibt den Minutenanteil der übergebenen Zeit als Zahl zwischen 0 und 59 zurück."
+    IDS_TD_SECOND           "SECOND ()"
+    IDS_TD_SECOND_DESCR     "Die Funktion SECOND () gibt den Sekundenanteil der übergebenen Zeit als Zahl zwischen 0 und 59 zurück."
+    IDS_SELECT_WHERE        "SELECT * FROM [%1]  WHERE %2"
+    IDS_OK_KRIT             "Der Ausdruck ist OK."
+    IDS_UNKNOWN_MKODE       "Unbekannter Merkmalskode."
+    IDS_KEINE_ZIFFER        "Unbekanntes Zeichen im Merkmalskode."
+    IDS_NOSCHL_KLAMMER      "Die schließende geschweifte Klammer (""}"" ) zur Kennung des Merkmalskodes fehlt."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MEMO                "MEMO"
+    IDS_VARIABEL            "variabel"
+    IDS_OBJ_CLASS_FORMATX   "ID%08lx"
+    IDS_DATE_VALUE          "Der Wert der gewählten Objekteigenschaft wird als Datum oder Zeit  verwendet."
+    IDS_NUM_VALUE           "Der Wert der gewählten Objekteigenschaft wird als Zahl verwendet."
+    IDS_SCALE_FCN_FORMAT    "{ fn %s }"
+    IDS_OBJPROPFUNC_HELP    "Liefert den Inhalt des Feldes '%2' aus der Tabelle '%1'."
+    IDS_ODBC_FILE_DSN       "ODBC File DSN"
+    IDS_IMP_FELDNAME        "Feldname       "
+    IDS_IMP_FELDTYP         "Typ         "
+    IDS_IMP_FELDLAENGE      "Länge"
+    IDS_ODBC_DEFAULT_DIR    "DefaultDSNDir"
+    IDS_FILE_DSN_EXT        "DSN"
+    IDS_FILE_DSN_FILTER     "Dateidatenquelle (*.dsn)|*.dsn||"
+    IDS_SELECT_FILE_DSN     "Dateidatenquelle auswählen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_IMP_SEL_REC         "Selektiere Datensätze in Tabelle '%1' ..."
+    IDS_IMP_TABLE           "Tabelle"
+    IDS_IMP_DATASOURCE_TYPE "DataSourceType"
+    IDS_FELDINFO_FORMAT     "%s: %ld/%ld"
+    IDS_IMPORT_SECTION      "ODBC-Abgleich"
+    IDS_IMP_DELNOTEXIST     "DelNotExist"
+    IDS_IMP_IMPNOTEXIST     "ImpNotExist"
+    IDS_IMP_DATASOURCENAME  "DataSourceName"
+    IDS_IMP_AKTION          "Aktion"
+    IDS_IMP_TABLENAME       "TableName"
+    IDS_IMP_FILTER          "Filter"
+    IDS_IMP_FELDER          "Felder"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_IMP_OBJEKTKLASSEN   "Objektklassen"
+    IDS_IMP_OHNE            "keiner"
+    IDS_IMP_RES_TRIAS       "Abgleich der Punktobjekte in %s"
+    IDS_IMP_RES_TABLE       "Abgleich der Datensätze in der Tabelle"
+    IDS_IMP_RES_DNEB        "Datensätze in der Tabelle ohne Referenz werden %1."
+    IDS_IMP_RES_DNET        "%s-Objekte ohne Referenz werden %1."
+    IDS_DELETE              "gelöscht"
+    IDS_IGNORE              "ignoriert"
+    IDS_IMPORTED            "importiert"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_IMP_RES_ADDB        "In der Tabelle zusätzlich vorhandene Datensätze werden %1."
+    IDS_IMP_RES_ADDT        "In %s zusätzlich vorhandene Objekte werden %1."
+    IDS_IMP_SEL_OBJ         "Selektiere%s-Objekte ..."
+    IDS_FIELDNAME_FORMAT    "[%1]"
+    IDS_CONNECT_FORMAT      "3,""%s"",""%s"",%ld"
+    IDS_CONNECT_FORMATX     "3,""%s"",""%s"",%lx"
+    IDS_ENTRY_FORMAT        "%1"
+    IDS_BEENDEN             "&Beenden"
+    IDS_IMP_TRIAS_OBJEKTE   "%s-Objekte"
+    IDS_IMP_RECORDS         "Datensätze"
+    IDS_IMP_PUNKT_OBJEKTE   "Punktobjekte"
+    IDS_IMP_RES_ABGL        "Abgeglichene %1:"
+    IDS_IMP_RES_NEW         "Neu hinzugefügte %1:"
+    IDS_IMP_RES_DEL         "Gelöschte %1:"
+    IDS_IMP_RES_ERR         "Fehler beim Import der %1:"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_EDIT_COMMAND        "write %1"
+    IDS_ERR_EXTENSION       ".txt"
+    IDS_IMP_PROT_HEAD       "Protokoll für Abgleich '%1' vom %2\n"
+    IDS_ERR_DOPP_PUNKT      "Doppeltes Punktobjekt '%ld' ('%s') an der Position %ld,%ld nicht abgeglichen.\n"
+    IDS_ERR_DOPP_DEL        "Doppeltes Punktobjekt ohne Bezug '%ld' ('%s') an der Position %ld,%ld gelöscht.\n"
+    IDS_ERR_NREF_DEL        "Punktobjekt ohne Bezug '%ld' ('%s') an der Position %ld,%ld gelöscht.\n"
+    IDS_IMP_DEL_OBEZUG      " %1 ohne Bezug &löschen"
+    IDS_IMP_ZU_IMP          " &Zusätzlich vorhandene %1 importieren"
+    IDS_IMP_UNV_RECINFO     "Parameter im %ld. Datensatz ('%s', X=%ld, Y=%ld) sind unvollständig.\n"
+    IDS_IMP_ERR_IMP         "Fehler beim Import des %ld. Datensatzes ('%s',   X=%ld, Y=%ld).\n"
+    IDS_IMP_ERR_DOPPREC     "%ld. Datensatz ('%s',  X=%ld, Y=%ld) ist mehr als einmal vorhanden.\n"
+    IDS_IMP_ERR_ABGREC      "Fehler in %s bei der Modifikation des %ld. Datensatzes ('%s',   X=%ld, Y=%ld).\n"
+    IDS_ERR_EMPTY_MERKMAL   "Punktobjekt '%ld' mit leerem Merkmalswert an der Position %ld,%ld gelöscht.\n"
+    IDS_IMP_DOABGL          "Führe Abgleich durch ..."
+    IDS_DBASE               "DBASE"
+    IDS_DBASE_CONNECTION    "3,""%1"",""%2"","
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_IMP_ADD_NOT_EXIST   "Importiere zusätzlich in %s vorhandene Objekte ..."
+    IDS_IMP_ERR_ADDREC      "Fehler in Tabelle beim Anhängen des %ld. Datensatzes ('%s',   X=%ld, Y=%ld).\n"
+    IDS_IMP_DEL_NOTEXIST    "Lösche Objekte ohne Bezug in %s ..."
+    IDS_IMP_ERR_INFOTRUNC   "Feldinhalt(e) wurde(n) beim Anhängen des %ld. Datensatzes ('%s',   X=%ld, Y=%ld) auf maximale Länge gekürzt.\n"
+    IDS_ERR_FILENAME        "abgleich"
+    IDS_DATE_TIME_FORMAT    "%d.%m.%Y um %H:%M:%S Uhr"
+    IDS_DSN_FORMAT          "%d,%s"
+    IDS_DBQ                 "DBQ"
+    IDS_NO_ODBC_CONNECTIONS "Im Projekt sind keine gültigen ODBC-Anbindungen definiert !"
+    IDS_SELECT_FIELD        "SELECT DISTINCT [%1] FROM [%2] WHERE [%1] IS NOT NULL ORDER BY [%1]"
+    IDS_OUTPUT_FELD_CONTENTS 
+                            "Die Ausgabe der Werte des Feldinhaltes kann u.U. sehr lange dauern.\nMöchten Sie trotzdem fortfahren ?"
+    IDS_DATETIME_FORMAT     "#%s#"
+    IDS_STRING_FORMAT       "'%s'"
+    IDS_SELECT_PARSE_FORMAT "SELECT DISTINCT [%s] FROM [%s] WHERE %s"
+    IDS_DATE_TIME           "Datum/Zeit"
+    IDS_TEXT                "Text"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ZAHL                "Zahl"
+    IDS_SHOW_FIELD_CONTENTS "Feldinhalte zur Auswahl anzeigen"
+    IDS_HELPDESC_WHERE      "Recherche von raumbezogenen ODBC-Daten."
+    IDS_STATUS_STAND        "Es wurden bereits %ld%% der Objekte bearbeitet ..."
+    IDS_SELECT_PARSE_FORMAT2 
+                            "SELECT [%s].[%s] AS %s,[%s].[%s] AS %s FROM [%s],[%s] WHERE %s"
+    IDS_ADMIN_EXE           "odbcad32.exe"
+    IDS_ODBC_SECTION        "ODBC-TRiASDB"
+    IDS_ODBC_SECTION_OLD    "ODBC"
+    IDS_ODBC_SETUPSECTION   "ODBC"
+    IDS_ZEILENINFO          "Datensatz"
+    IDS_VIEWFRAMECAPTION    "ODBC-Daten [ %s ] für das aktivierte Objekt"
+    IDS_OP_NAME_ODBCPROPERTY "ODBC Feldinhalt"
+    IDS_OP_DESCRIPTION_ODBCPROPERTY 
+                            "Liefert den Wert eines Feldes der angebundenen ODBC-Tabelle"
+    IDS_SELECT_NOTNULL      "SELECT DISTINCT [%s] FROM [%s] WHERE [%s] IS NOT NULL"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_SAVE_AS         "Speichert alle Datensätze in einer Textdatei"
+    IDS_FILESELECTOR        "Text Dateien (*.txt)|*.txt|Alle Dateien (*.*)|*.*||"
+    IDS_FILENOTOPEN         "File %s could not be opened!"
+    IDS_CTRL_HEADER         "GXHeader"
+    IDS_DEFAULT_FONT        "Arial"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_EDIT_COPY            "Kopiert die Markierung und überträgt sie in die Zwischenablage.\nKopieren"
+    ID_EDIT_CUT             "Entfernt die Markierung und überträgt sie in die Zwischenablage.\nAusschneiden"
+    ID_EDIT_PASTE           "Fügt den Inhalt der Zwischenablage ein.\nEinfügen"
+    ID_EDIT_UNDO            "Macht die letzte Aktion rückgängig.\nRückgängig"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "afxdb.rc"		// Database resources
+#include "afxres.rc"
+#include "odbcext.rcv"
+#include "defabout.dlg"
+//#include "gxres.rc"
+#include "gxresdeu.rc"
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

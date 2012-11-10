@@ -1,0 +1,47 @@
+'\"t
+.TH TAGENTRYQNTHOCCUR 3TAG "July 1990" "SDSC" "TAG TABLE"
+.SH NAME
+TagEntryQNthOccur - query the nthOccur field of a tag table entry
+.SH SYNOPSIS
+\fB
+.nf
+#include "sdsc.h"
+
+extern int TagErrNo;
+
+int TagEntryQNthOccur( tagEntry )
+	TagEntry *tagEntry;
+.fi
+\fR
+.SH DESCRIPTION
+\fITagEntryQNthOccur\fR returns the \fInthOccur\fR field value for the
+\fItagEntry\fR.
+If the tag entry is not in any tag table, an error is returned.
+.SH NOTES
+For a description of the fields of a tag table entry, see the \fBman\fP page
+on \fITagEntryAlloc\fR(3TAG).
+.SH RETURNS
+\fITagEntryQNthOccur\fR returns the entry's occurrence number.  If it
+fails to complete, -1 is returned and \fITagErrNo\fR set to:
+.sp
+.TS
+center;
+l l.
+TAGENULLTAGENTRY	The tag entry argument is bad
+TAGENOTINTABLE	The tag entry is not in a table
+.TE
+.SH SEE ALSO
+TagEntryAlloc(3TAG),
+TagEntryFree(3TAG),
+TagTableQDirect(3TAG),
+TagEntryQNthEntry(3TAG),
+TagEntryQTag(3TAG),
+TagEntryQValue(3TAG),
+TagEntryQValueType(3TAG)
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

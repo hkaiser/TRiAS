@@ -1,0 +1,146 @@
+--- Release version 1.16 (7.10.1999) -------------------------------------
+
+1. Make it possible sort records by length of array fields.
+
+2. Optional reporting database errors through C++ exception mechanism. 
+   Switched on by defining THROW_EXCEPTION_ON_ERROR name.
+
+--- Release version 1.17 (11.10.1999) -------------------------------------
+
+1. Remove F_SYNC attribute of open() system call for database data file.
+   2.2.x Linux kernel works with memory regions mapped to the file opened 
+   in synchronous mode in very inefficient way (more than 20 times slower 
+   than 2.0 Linux kernel). As far as synchronization of memory pages with
+   disk image is done by msync() function with MS_SYNC flag, usage of F_SYNC
+   is not really needed. 
+
+--- Release version 1.18 (14.10.1999) -------------------------------------
+
+1. Fix bugs with reseting cursors opend by at() method.
+
+--- Release version 1.19 (20.10.1999) -------------------------------------
+
+1. Add RAW BINARY type.
+
+--- Release version 1.20 (28.10.1999) -------------------------------------
+
+1. Cascade deletes.
+
+--- Release version 1.22 (11.11.1999) -------------------------------------
+
+1. Add get peer name method to the WWWapi.
+2. New implementation of cascade deletes.
+3. Implementation of queue manager for WWW API.
+4. New example of Web database publishing - CLIDB. 
+   Example of multithreaded server development using queue manager.
+5. Add type of cursor parameter to the select statement.
+6. Support pointers to arrays as querry parameters
+
+--- Release version 1.23 (29.11.1999) -------------------------------------
+
+1. Correctly handle non-persistent connections to HTTP server
+2. Fix minor bugs in CLIDB example
+
+--- Release version 1.24 (07.12.1999) -------------------------------------
+
+1. Fix bug with specifying cursor type when at() method is used.
+2. Fix bug in cascade delete implementation.
+
+--- Release version 2.00 (20.01.2000) -------------------------------------
+
+1. Handle "create table" in SubSQL.
+2. Add CLI (call-level interface).
+3. Multithreaded server support.
+4. Fix bug with in place update of records with varying components. 
+
+--- Release version 2.01 (18.02.2000) -------------------------------------
+
+1. Add copy constructor to dbArray class
+2. Supports Sun CC compiler
+
+--- Release version 2.02 (22.02.2000) -------------------------------------
+
+1. Port to FreeBSD
+2. Fix mistypings in array.h
+
+--- Release version 2.03 (03.03.2000) -------------------------------------
+
+1. Check compilation flags in dbDatabase constructor
+
+--- Release version 2.04 (14.03.2000) -------------------------------------
+
+1. Fix bug in copy constructor of dbException class
+2. Compile with pthreads at Unix by default
+
+--- Release version 2.05 (27.03.2000) -------------------------------------
+
+1. Indexed joins (see testjoin.cpp example)
+2. Fix bug with sorting/comparing field with smallest integer value 
+
+--- Release version 2.06 (11.04.2000) -------------------------------------
+
+1. Fix bug with deleting first/last record in the cursor for all records in th table
+
+--- Release version 2.07 (30.04.2000) -------------------------------------
+
+1. Fix bug with packing array of strings
+2. Add dbDate class
+3. Non blocking online backup
+4. Fix bug in clitest.c
+5. Makes it possible to allocate array without specifying body
+
+--- Release version 2.08 (06.05.2000) -------------------------------------
+
+1. Fix bug with incorrent beginning of transaction by dbCursor::at method.
+2. Add dbDatabase.getAllocatedSize() method
+
+--- Release version 2.09 (12.05.2000) -------------------------------------
+
+1. Common makefile for all Unix platforms
+2. "make NO_PTHREADS=1"
+3. Cleanup IPC resources after closing database
+
+--- Release version 2.10 (21.07.2000) -------------------------------------
+
+1. Fix bug in local_win_socket::read 
+2. Fix memory leaks in CLI server
+3. Support GNU C library 
+4. Fix bug in implementation of global critical section for i86/Linux platform
+5. Add isLast, isFirst methods to the cursor
+
+--- Release version 2.11 (1.08.2000) -------------------------------------
+
+1. Fix bug in rollback "create table" statement
+2. Long-live cursor - freeze/unfreeze
+
+--- Release version 2.12 (4.08.2000) -------------------------------------
+
+1. Correctly set INDEXED flag when load classes from the database
+
+--- Release version 2.14 (17.10.2000) -------------------------------------
+
+1. Support NO_MMAP flag also for windows
+2. Fix some bugs in file model not using virtual memory mapping
+
+--- Release version 2.15 (23.11.2000) -------------------------------------
+
+1. Fix bug with file extension in NO_MMAP mode
+
+--- Release version 2.16 (29.11.2000) -------------------------------------
+
+1. Fix operator, problem for MS Visual C++
+2. Reduce number of memory leaks caused by "living forever" FastDB objects
+
+--- Release version 2.17 (19.03.2001) -------------------------------------
+
+1. Fix bug with scheme load. 
+2. Sharing of tables between several databases.
+
+--- Release version 2.18 (05.04.2001) -------------------------------------
+
+1. Comatibility with GCC 2.96
+
+--- Release version 2.19 (13.04.2001) -------------------------------------
+
+1. Fix bug with sycnhronization between different processes
+2. Add online recovery after client process fault

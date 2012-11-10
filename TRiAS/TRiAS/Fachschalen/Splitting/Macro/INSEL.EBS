@@ -1,0 +1,414 @@
+' **************************************************************************************
+' *                                                                                    *
+' *  Grünflächen und Dachteilflächen aus Straßen herausschneiden                       *
+' *  W. Mörtl   (18. 11. 98)                                                           *
+' *                                                                                    *
+' **************************************************************************************
+
+
+Option Explicit
+
+' ======================================================================================
+' anwendungsspezifische Konstanten
+Const strGruen = "Grünfläche/Straßenland"
+Const strDach = "Dachteilfläche"
+Const strStrasse = "Flurstück in Verkehrswegen"
+Const dblFlMin = 0.5									' Mindest-Flächeninhalt (in m²)
+
+' ======================================================================================
+' Programmkonstanten
+Const NL = Chr$(13) + Chr$(10)							' NewLine
+Const strBoxTitel = "Ausschneiden"						' Titel der Message-Boxen
+Const strErrGetIntersectObjects = "GetIntersectObjects"	' Fehlerausschrift
+
+' ======================================================================================
+' globale Variable
+Private docGD As GeoDocument			' Projekt
+Private clsGruen As GeoClass			' Objektklasse (Grünflächen)
+Private clsDach As GeoClass				' Objektklasse (Dachteilflächen)
+Private objsNeuStrasse As GeoObjects	' GeometrieObjekte (neue Straßen)
+
+' ======================================================================================
+' Subroutine's-Deklarationen
+Declare Sub StrassenSchnitt (Status As StatusIndicator, objStrasse As GeoObject)
+Declare Sub MinimumTest (objsTeil As GeoObjects)
+Declare Sub DeleteInTRiAS (objsGO As GeoObjects)
+Declare Sub AbbruchBeiFehler (lngFehlerNr As Long)
+Declare Sub TRiASFehler (strFehlerText As String, Optional lngONr1 As Variant, _
+						 Optional lngONr2 As Variant)
+Declare Sub StatistikFehler (Optional lngONr As Variant)
+
+' Function's-Deklarationen
+Declare Function FlaechenInhalt (objGO As GeoObject) As Double
+Declare Function MasseinheitAbtrennen (MWert$, MZahl#) As String
+
+
+' ======================================================================================
+Sub Insel(strQuelle As String)
+
+' Reaktion bei Runtime-Error
+	On Error GoTo CheckError
+
+' Eingangsbild
+	Msg.Open NL & "   Routine: Straßen und Grünflächen" & NL & _
+			 "   Bitte etwas Geduld - die Abarbeitung wird vorbereitet!   " & NL, , _
+			 False, False
+
+' Initialisierungen
+  	Set docGD = GetActiveDocument
+
+	Dim clsStrasse As GeoClass			' Objektklasse (Straßen)
+
+	If strQuelle = "" Then
+		Set clsStrasse = docGD.GetClass (strStrasse)
+		Set clsGruen = docGD.GetClass (strGruen)
+		Set clsDach = docGD.GetClass (strDach)
+	Else
+		Set clsStrasse = docGD.GetClass (strStrasse,strQuelle)
+		Set clsGruen = docGD.GetClass (strGruen,strQuelle)
+		Set clsDach = docGD.GetClass (strDach,strQuelle)
+	End If
+
+	If (clsGruen Is Nothing) Then
+		MsgBox "Im Projekt wurden keine Grünflächen gefunden!", _
+				ebInformation, strBoxTitel
+   	End If
+
+	If (clsDach Is Nothing) Then
+		MsgBox "Im Projekt wurden keine Dachteilflächen gefunden!", _
+				ebInformation, strBoxTitel
+   	End If
+
+	If (clsGruen Is Nothing) And (clsDach Is Nothing) Then Exit Sub
+
+	If (clsStrasse Is Nothing) Then
+		MsgBox "Im Projekt wurden keine Straßen gefunden!", _
+				ebInformation, strBoxTitel
+		Exit Sub
+	End If
+
+	Dim objsStrasse As GeoObjects		' GeometrieObjekte (Strassen)
+	Set objsStrasse = clsStrasse.GetObjects (OT_Area)'
+
+' Test, ob Statistik-Erweiterung geladen ist, durch den Versuch, von einer beliebigen
+' Straße den Flächeninhalt zu ermitteln
+	Dim ft As GeoFeature
+	Set ft = objsStrasse(1).GetFeature ("Flächeninhalt")
+	If (ft Is Nothing) Then StatistikFehler
+
+' weitere Initialisierungen
+	Set objsNeuStrasse = docGD.CreateGeoObjectsCollection()
+	Dim objStrasse As GeoObject			' einzelne Straße
+
+	Dim lngAnzStrasse As Long, j As Long
+	lngAnzStrasse = objsStrasse.Count	' Anzahl und
+	j = 0								' Zähler der Straßen
+
+	Msg.Close
+	Dim Status As New StatusIndicator	' Geduldsanzeige 
+
+
+' Abarbeitung aller Straßen
+	If (Status Is Not Nothing) Then
+		Status.Restart 1, lngAnzStrasse+1, STATUS_ShowAllFields
+		Status.Field(1) = Str$(lngAnzStrasse)
+		Status.Field(2) = "Straßen werden gepierct"
+		Status.Field(3) = "Bearbeitungsstand:  %d %%"
+		Status.Caption = "Erzeugung von Schlaglöchern"
+	End If
+
+	docGD.PreventRepaint = 1			' Zeichnen abschalten
+
+	For Each objStrasse In objsStrasse
+		If (Status Is Not Nothing) Then	' Status weiterschalten
+			Status.Field(4) = objStrasse.Value
+			j = j + 1
+			Status.SetPosition j
+			If Status.WasCanceled() Then
+				Set Status = Nothing	' Geduldsanzeige abschalten
+				AbbruchBeiFehler 18		' Cancel
+			End If
+		End If
+
+		' zugehörige Grünflächen und Dachteilflächen ermitteln und schneiden
+		StrassenSchnitt Status, objStrasse
+	Next objStrasse
+
+	docGD.PreventRepaint = 0	' Zeichnen wieder ermöglichen
+	docGD.Repaint				' Veränderungen zeichnen
+
+	Set Status = Nothing	' Geduldsanzeige abschalten
+
+
+' Ergebnisanzeige im Recherchefenster
+	If objsNeuStrasse.Count > 0 Then
+		Dim gowRWin As GeoObjectWin
+		Set gowRWin = objsNeuStrasse.CreateGeoObjectWin()
+		gowRWin.Name = "Neue Straßen"
+		gowRWin.Visible = 1
+	End If
+
+	Beep
+	MsgBox "Wann kommt die nächste Änderung?" & NL & _
+			"Es ist offenbar immer noch vieles grün;" & NL & _
+			"man kann auch sagen: unausgereift.", _
+			ebQuestion, strBoxTitel
+
+	Exit Sub
+
+
+' Abbruch bei Runtime-Error
+CheckError:
+	AbbruchBeiFehler Err.Number
+
+End Sub ' Main
+
+
+' ======================================================================================
+' Subroutine's
+' --------------------------------------------------------------------------------------
+' "OnDocumentToClose()" wird nach dem Schließen des Projektes gerufen
+Sub OnDocumentToClose (Doc As GeoDocument)
+	docGD.PreventRepaint = 0	' Zeichnen wieder ermöglichen
+'	SetBreakScript (True)		' den laufenden Script anhalten
+End Sub
+
+
+' ---------------------------------------------------------------------------------------
+' Die auf der Fläche objStrasse liegenden Grünflächen und Dachteilflächen werden
+' ermittelt und die Straße damit geschnitten
+Sub StrassenSchnitt (Status As StatusIndicator, objStrasse As GeoObject)
+
+	Dim xmin As Double, ymin As Double, xmax As Double, ymax As Double
+	objStrasse.GetGeometryRect xmin, ymin, xmax, ymax
+	Dim objsArea As GeoObjects		' im umschließenden Rechteck von objStrasse
+									' liegenden Grün- und Dachteilflächen
+	If (clsGruen Is Not Nothing) Then
+		Set objsArea = clsGruen.GetObjectsInRect (xmin, ymin, xmax, ymax)
+	Else
+		Set objsArea = docGD.CreateGeoObjectsCollection()
+	End If
+
+	If (clsDach Is Not Nothing) Then
+		Dim objsDach As GeoObjects
+		Set objsDach = clsDach.GetObjectsInRect (xmin, ymin, xmax, ymax)
+		Set objsArea = objsArea.Union(objsDach)
+	End If
+
+	If objsArea.Count = 0 Then Exit Sub
+
+	Dim objsSchnErg As GeoObjects	' die beim Schneiden von objStrasse mit allen
+									' Grün- und Dachteilflächen gebildeten Straßenteile
+	Set objsSchnErg = docGD.CreateGeoObjectsCollection()
+	Dim objSchnErg As GeoObject
+	Dim objsZwErg1 As GeoObjects, _
+		objsZwErg2 As GeoObjects	' Zwischenergebnisse vom Schneiden
+
+	Dim objDummy As GeoObject		' Rückkehrwert von Add()
+	Set objDummy = objsSchnErg.Add(objStrasse.Value)
+	Dim objArea As GeoObject		' einzelnes objsArea-Objekt
+
+	Dim bSchnittErg As Boolean, bSchnitt As Boolean
+	bSchnittErg = False				' es gibt Schnittergebnisse (True)
+
+	Dim lngONrStrasse As Long		' Zwischenspeicher für die Objektnummer von
+	lngONrStrasse = objStrasse.Value' objStrasse, da dieses Objekt gelöscht werden kann
+
+	For Each objArea In objsArea
+
+		If objArea.ObjType <> OT_Area Then GoTo Continue1
+
+		If (Status Is Not Nothing) Then	' Status weiterschalten
+			Status.Field(4) = lngONrStrasse & " mit " & objArea.Value
+		End If
+
+		Set objsZwErg2 = docGD.CreateGeoObjectsCollection()
+		bSchnitt = False				' es wurde aktuell geschnitten (True)
+
+		For Each objSchnErg In objsSchnErg
+
+			Set objsZwErg1 = objArea.GetIntersectObjects (objSchnErg, OP_OuterParts)
+			If (objsZwErg1 Is Not Nothing) Then
+				If objsZwErg1.Count > 0 Then
+					MinimumTest objsZwErg1
+					Set objsZwErg2 = objsZwErg2.Union(objsZwErg1)
+					bSchnittErg = True	' es gibt überhaupt Schnittergebnisse
+					bSchnitt = True		' es wurde aktuell geschnitten
+				Else
+					Set objDummy = objsZwErg2.Add(objSchnErg)
+				End If
+			Else
+				TRiASFehler strErrGetIntersectObjects, objSchnErg.Value, objArea.Value
+			End If
+
+		Next objSchnErg
+
+		If bSchnitt = True Then
+			Set objsSchnErg = objsSchnErg.Difference(objsZwErg2)
+			DeleteInTRiAS objsSchnErg
+			Set objsSchnErg = objsZwErg2
+		End If
+
+Continue1:
+	Next objArea
+
+	If bSchnittErg = True Then		' es wurde geschnitten
+		Set objsNeuStrasse = objsNeuStrasse.Union(objsSchnErg)
+	End If
+
+End Sub ' StrassenSchnitt
+
+
+' --------------------------------------------------------------------------------------
+' Test, ob der Flächeninhalt der übergebenen Flächen objsTeil den vorgegebenen
+' Mindest-Flächeninhalt dblFlMin haben; wenn nicht, werden diese Flächen gelöscht
+Sub MinimumTest (objsTeil As GeoObjects)
+
+	Dim objTeil As GeoObject
+	Dim dblFlInh As Double		' Flächeninhalt einer Teilfläche
+
+	For Each objTeil In objsTeil
+
+		If objTeil.ObjType = OT_Area Then
+			dblFlInh = FlaechenInhalt (objTeil)
+			If dblFlInh < dblFlMin Then
+				docGD.RemoveObject objTeil	' zu kleine Fläche löschen
+			End If
+		Else	' Schnittergebnis ist gar keine Fläche 
+			docGD.RemoveObject objTeil		' entartete Fläche löschen
+		End If
+
+	Next objTeil
+
+	objsTeil.Refresh
+
+End Sub ' MinimumTest
+
+
+' --------------------------------------------------------------------------------------
+' Löschen aller GeoObjekte einer GeoObjects-Collection und in der TRiAS-Datenbank
+Sub DeleteInTRiAS (objsGO As GeoObjects)
+	If (objsGO Is Nothing) Then Exit Sub
+	Dim objGO As GeoObject
+	For Each objGO In objsGO		' alle GeoObjekte löschen
+		docGD.RemoveObject objGO
+	Next objGO
+	objsGO.Refresh
+	Set objsGO = Nothing
+End Sub ' DeleteInTRiAS
+
+
+' --------------------------------------------------------------------------------------
+' ein Runtime-Error ist aufgetreten
+Sub AbbruchBeiFehler (lngFehlerNr As Long)
+
+	Msg.Close					' Eingangsbild beenden
+	docGD.PreventRepaint = 0	' Zeichnen wieder ermöglichen
+	docGD.Repaint				' Veränderungen zeichnen
+
+	Beep
+	If lngFehlerNr = 18 Then	' User interrupt (z.B. Cancel bei Geduldsanzeige)
+		MsgBox "Die Abarbeitung wurde durch den Anwender vorzeitig beendet!", _
+			   ebExclamation, strBoxTitel
+		End
+	Else
+		MsgBox "Das Programm wurde abgebrochen mit" & NL & _
+			   "Fehler " & lngFehlerNr & " (" & Error(lngFehlerNr) & ")", _
+			   ebCritical, strBoxTitel
+		Resume Next
+	End If
+
+End Sub ' AbbruchBeiFehler
+
+
+' --------------------------------------------------------------------------------------
+' Fehler bei Abarbeitung einer TRiAS-Routine aufgetreten
+Sub TRiASFehler (strFehlerText As String, Optional lngONr1 As Variant, _
+				 Optional lngONr2 As Variant)
+	Dim strZusatz As String
+	strZusatz = ""
+	If Not isMissing(lngONr1) Then
+		If Not isMissing(lngONr2) Then
+			strZusatz = NL & " (beteiligte Objekte: " & lngONr1 & ", " & lngONr2 & ")"
+		Else
+			strZusatz = NL & " (beteiligtes Objekt: " & lngONr1 & ")"
+		End If
+	End If
+
+	Beep
+	MsgBox "In der Funktion '" & strFehlerText & "' ist ein Fehler aufgetreten!" & _
+			strZusatz, ebCritical, strBoxTitel
+
+End Sub ' TRiASFehler
+
+
+' --------------------------------------------------------------------------------------
+' Fehler bei Statistik aufgetreten
+Sub StatistikFehler (Optional lngONr As Variant)
+	Beep
+	Dim strZusatz As String
+	strZusatz = "."
+	If Not isMissing(lngONr) Then
+		strZusatz = NL & "(beteiligtes Objekt: " & lngONr & ")."
+	End If
+	MsgBox "Das Programm mußte vorzeitig beendet werden" & strZusatz & NL & _
+		   "Prüfen Sie bitte, ob das Zusatzmodul" & NL & "'Statistische Auswertungen' geladen ist !", _
+		   ebCritical, strBoxTitel
+	End
+End Sub ' StatistikFehler
+
+
+
+' ======================================================================================
+' Function's
+' --------------------------------------------------------------------------------------
+' Flächeninhalt eines GeoObjetktes in m²; im Fehlerfall (unbekannte Maßeinheit) wird -1
+' zurückgegeben
+Function FlaechenInhalt (objGO As GeoObject) As Double
+	Dim ftFlInhalt As GeoFeature	
+	Set ftFlInhalt = objGO.GetFeature("Flächeninhalt")
+	If (ftFlInhalt Is Nothing) Then StatistikFehler objGO.Value
+
+	Dim strFl As String, strME As String
+	strFl = Trim$(ftFlInhalt.Feature$)	' Flächeninhalt und Maßeinheit
+	If strFl = "" Then	' kein Flächenobjekt
+		FlaechenInhalt = 0
+		Exit Function
+	End If
+
+	Dim Flaeche As Double				' Flächeninhalt ohne Maßeinheit
+	strME = MasseinheitAbtrennen (strFl, Flaeche)
+
+	Select Case LCase(Mid(strME,2,1))	' das 1. Zeichen von strME ist "["
+		Case "m"	' m²
+			FlaechenInhalt = Flaeche
+		Case "h"	' ha
+			FlaechenInhalt = 10000 * Flaeche
+		Case "k"	' km²
+			FlaechenInhalt = 1000000 * Flaeche
+		Case Else
+'			MsgBox "Die ermittelte Maßeinheit des Flächeninhalts ist unbekannt!", _
+'					ebCritical, strBoxTitel
+'			FlaechenInhalt = -1
+			FlaechenInhalt = Flaeche
+	End Select
+End Function ' FlaechenInhalt
+
+
+' --------------------------------------------------------------------------------------
+' Maßeinheit aus dem übergebenen String MWert eliminieren und in der Form "[...]"
+' zurückgeben; dabei wird vorausgesetzt, daß die Maßeinheit in eckige Klammern '[]'
+' eingeschlossen ist
+Function MasseinheitAbtrennen (MWert$, MZahl#) As String
+	Dim intPos As Integer
+	intPos = InStr (MWert$,"[")		' Position der öffnenden Klammer "[" suchen
+	If intPos = 0 Then
+		MsgBox "Maßeinheit des Flächeninhalts beginnt nicht mit [", _
+				ebCritical, strBoxTitel
+		MasseinheitAbtrennen = "  "	' Rückgabe bei Fehler
+	End If
+
+	intPos = InStr (MWert$," ")			' Position zwischen Zahlenwert und Dimension
+	MZahl# = Val (Left(MWert$,intPos))	' Dimension abschneiden
+	MasseinheitAbtrennen = Right(MWert$,Len(MWert$)-intPos)	' Maßzahl ohne Maßeinheit als Rückgabewert
+End Function ' MasseinheitAbtrennen

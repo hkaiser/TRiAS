@@ -1,0 +1,23 @@
+HKCR
+{
+	TRiAS.ObjectModify.1 = s 'Modifizierung der Geometrie existierender Objekte'
+	{
+		CLSID = s '{079638F7-3123-101C-BB62-00AA0018497C}'
+	}
+	TRiAS.ObjectModify = s 'Modifizierung der Geometrie existierender Objekte'
+	{
+		CurVer = s 'TRiAS.ObjectModify.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {079638F7-3123-101C-BB62-00AA0018497C} = s 'Modifizierung der Geometrie existierender Objekte'
+		{
+			ProgID = s 'TRiAS.ObjectModify.1'
+			VersionIndependentProgID = s 'TRiAS.ObjectModify'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

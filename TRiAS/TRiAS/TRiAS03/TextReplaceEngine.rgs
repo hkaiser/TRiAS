@@ -1,0 +1,39 @@
+HKCR
+{
+	TRiAS.TextReplaceEngine.1 = s 'TextReplaceEngine Class'
+	{
+		CLSID = s '{F6BE912A-BE20-4ABE-8B22-025B7FEA9822}'
+	}
+	TRiAS.TextReplaceEngine = s 'TextReplaceEngine Class'
+	{
+		CLSID = s '{F6BE912A-BE20-4ABE-8B22-025B7FEA9822}'
+		CurVer = s 'TRiAS.TextReplaceEngine.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {F6BE912A-BE20-4ABE-8B22-025B7FEA9822} = s 'TextReplaceEngine Class'
+		{
+			ProgID = s 'TRiAS.TextReplaceEngine.1'
+			VersionIndependentProgID = s 'TRiAS.TextReplaceEngine'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{FE6EDBE9-C934-433F-B93E-E6CDE78383DC}'
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiAS.TextReplaceEngine.1' = s '{F6BE912A-BE20-4ABE-8B22-025B7FEA9822}'
+			}
+		}
+	}
+}

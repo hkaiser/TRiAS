@@ -1,0 +1,24 @@
+/# include <stdio.h>/ {
+i\
+#if defined(__cplusplus) \
+extern "C" \{ \
+#endif
+a\
+#if defined(__cplusplus) \
+\} \
+#endif
+}
+/fprintf(yyout,"bad switch yylook %d",nstr);/ {
+s/fprintf(yyout,"bad switch yylook %d",nstr);/r_abort("InternerFehler im LEX-Parser");/
+/int nstr; extern int yyprevious;/ { 
+a\
+seek();
+}
+/# define LEXDEBUG 1/ {
+s/# define/# undef/
+s/1//
+}
+/FILE \*yyin/ {
+d
+}
+

@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiAS.MultiPi.1 = s 'Realisiert einen MultiprogressIndicator.'
+	{
+		CLSID = s '{079638D2-3123-101C-BB62-00AA0018497C}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {079638D2-3123-101C-BB62-00AA0018497C} = s 'Realisiert einen MultiprogressIndicator.'
+		{
+			val AppID = s '{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}'
+			ProgID = s 'TRiAS.MultiPi.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+}

@@ -1,0 +1,57 @@
+Subject: Announcing the BETA release of libgist v.2.0 and amdb v.1.0.
+
+BETA versions of libgist v.2.0 and amdb v.1.0 are now available for
+trial. This combined distribution can be obtained from 
+http://gist.cs.berkeley.edu.
+
+Amdb is an access method (AM) design and visualization tool for AMs
+implemented with the libgist library. Libgist is a C++ implementation
+of the Generalized Search Tree (GiST). Both packages, developed at
+U.C. Berkeley, have been tested and compiled on Solaris 2.6 and
+Solaris 2.5.1 (both Sparc and x86). Furthermore, JDK 1.1.5 and Swing
+(JFC) 1.0.2 or higher are required for using amdb. A Window 95/NT
+version will be available with the upcoming final release of libgist
+v.2.0 and amdb v.1.0 scheduled for March 1999.
+
+The libgist library implements the GiST framework which enables
+implementations of balanced-tree AMs.  A new AM is created by
+extending the core libgist classes with a class that encapsulates the
+high-level, data-oriented aspects of that AM.  It uses operating
+system files for storage purposes and supports single-user access
+without transactional behavior. This libgist distribution comes
+prepackaged with a B-tree and several R-tree variants.
+
+Amdb is a debugging, profiling, and visualization tool for AMs
+implemented with the libgist library. Its salient features include:
+
+1) Interactive execution of search tree operations (insert, delete and
+search) and debugger-like functionality, such as breakpoints.
+
+2) Visualization aids at various scales for browsing the search tree
+during debugging and analysis. These include:
+
+   *) Global View: an aggregate view of the search tree.
+
+   *) Tree View: a structural view for browsing paths and subtrees.
+
+   *) Node View: a user extensible visualization of tree nodes'
+	contents.
+
+3) Profiling tools which assess the performance of an AM. They
+characterize:
+
+   *) queries and tree structure in terms of search tree performance
+      factors: clustering, utilization, and excess coverage of
+      bounding predicates.
+
+   *) structure-shaping methods of the AM extension (those that guide
+      splits and insertions)
+
+A more detailed description of the GiST framework and the amdb
+analysis framework is contained in papers available from:
+http://gist.cs.berkeley.edu.
+
+Thanks and enjoy,
+
+Marcel Kornacker and Mehul Shah 
+University of California, Berkeley.

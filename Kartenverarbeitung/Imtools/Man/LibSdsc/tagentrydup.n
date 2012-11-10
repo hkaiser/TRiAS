@@ -1,0 +1,70 @@
+'\"t
+.TH TAGENTRYDUP 3TAG "June 1992" "SDSC" "TAG TABLE"
+.SH NAME
+TagEntryDup - duplicate a tag table entry
+.SH SYNOPSIS
+\fB
+.nf
+#include "sdsc.h"
+
+extern int TagErrNo;
+
+TagEntry *TagEntryDup( tagEntry )
+	TagEntry *tagEntry;
+.fi
+\fR
+.SH DESCRIPTION
+\fITagEntryDup\fR duplicates a tag table entry and returns the
+new duplicate.  The new entry will have the same tag and value pointer as
+the duplicated entry.
+.SH NOTES
+Tag table entries contain public and private data.
+Public data for the duplicate entry is set at the time the entry is
+duplicated and includes the \fItag\fR, \fItype\fR, and \fIpValue\fR fields.
+.LP
+Tag entry private data is set at the time the entry is added to a tag
+table using \fITagTableAppend\fR(3TAG), \fITagTableInsert\fR(3TAG),
+or \fITagTableReplace\fR(3TAG) and includes the \fInthEntry\fR and
+\fInthOccur\fR fields.  These fields are not copied from the given
+tag entry into the returned duplicate.
+.LP
+See \fITagTableAlloc\fR(3TAG) for an explanation of tag entry fields.
+.LP
+A tag table entry may only be in one table at a time and may not have
+its tag, type, or value changed after it has been allocated or duplicated.
+.LP
+Fields in tag table entries may be queried individually using
+\fITagEntryQNthEntry\fR(3TAG), \fITagEntryQNthOccur\fR(3TAG),
+\fITagEntryQTag\fR(3TAG), \fITagEntryQValueType\fR(3TAG),
+\fITagEntryQValue\fR(3TAG). 
+.SH RETURNS
+\fITagEntryDup\fR returns a new \fITagEntry *\fR.  If it fails to complete,
+\fITAGENTRYNULL\fR is returned and \fITagErrNo\fR set to:
+.sp
+.ta 2i
+.nf
+TAGEMALLOC	Cannot allocate enough memory for 
+	the new tag entry
+TAGENULLTAGENTRY	The tag entry argument is bad
+.SH SEE ALSO
+TagTableAppend(3TAG),
+TagTableDelete(3TAG),
+TagEntryFree(3TAG),
+TagTableInsert(3TAG),
+TagTableQDirect(3TAG),
+TagEntryQNthEntry(3TAG),
+TagEntryQNthOccur(3TAG),
+TagEntryQTag(3TAG),
+TagEntryQValue(3TAG),
+TagEntryQValueType(3TAG),
+TagTableQLinear(3TAG),
+TagTableQNEntry(3TAG),
+TagTableReplace(3TAG),
+TagTableFree(3TAG)
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

@@ -1,0 +1,134 @@
+'\"et
+.if t .TH IMGIF 3IM "August 24, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMGIF 3IM "August 24, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+'\"et
+.SH NAME
+imgif \- CompuServe GIF (Graphics Interchange Format) file translation 
+.SH SYNOPSIS
+.nf
+\fB
+#include <stdio.h>
+#include "sdsc.h"
+#include "im.h"
+.sp 1
+int ImFileRead( fd, "gif", flagsTable, dataTable )
+	int fd;
+	TagTable *flagsTable;
+	TagTable *dataTable;
+.sp 1
+int ImFileFRead( fp, "gif", flagsTable, dataTable )
+	FILE *fp;
+	TagTable *flagsTable;
+	TagTable *dataTable;
+.sp 1
+int ImFileWrite( fd, "gif",  flagsTable, dataTable )
+	int fd;
+	TagTable *flagsTable;
+	TagTable *dataTable;
+.sp 1
+int ImFileFWrite( fp, "gif",  flagsTable, dataTable ) 
+	FILE *fp; 
+	TagTable *flagsTable; 
+	TagTable *dataTable;
+
+\fR
+.fi
+.SH DESCRIPTION
+\fBGIF\fR (Graphics Interchange Format) is CompuServe's standard for
+generalized color raster images. This standard is a mechanism to
+exchange and display high-quality, high-resolution graphics images.
+.SH "FILE RECOGNITION"
+CompuServe \fBgif\fR files are recognized by the filename suffixes: .gif
+and .giff. 
+.SH NOTES
+SDSC image library support of CompuServe's \fBgif\fR format contains no
+proprietary code.  CompuServe \fBgif\fR format handling is available
+on any machine for which the SDSC image library is available. 
+.SS "Reading CompuServe GIF files"
+The SDSC image library reads LZW (Limpel-Ziv Welsh) compressed color
+index images with depths of 1 through 8 bits, with or without a CLT.
+1-bit images are stored as \fBIMVFBMONO\fR VFBs, while 2- 
+through 8-bit color index images are stored as \fBIMVFBINDEX8\fR VFBs. 
+.LP
+If the \fBgif\fR file contains multiple images, multiple VFBs are created
+and appended to the \fIdataTable\fR.  The SDSC image library reads both
+\fBgif 87a\fR and \fBgif 89a\fR.
+.SS "Writing CompuServe GIF files" 
+SDSC image library \fBIMVFBMONO\fR VFBs are written as LZW compressed
+1-bit images, with or without a CLT.  \fBIMVFBINDEX8\fR VFBs are
+written as LZW compressed 8-bit images, with or without a CLT.
+.LP
+Other image library VFB types are converted to \fBIMVFBMONO\fR or
+\fBIMVFBINDEX8\fR VFBs prior to being written out.  See the
+\fBImFileWrite\fR(3IM) \fBman\fP page for details.  The SDSC image library
+writes only \fBgif 87a\fR files.  This allows maximum portability of
+the file, since \fBgif 89a\fR decoders can also read \fBgif 87a\fR.
+.LP
+The \fBgif\fR format can support multiple images in a single file, with the
+restriction that all such images have the same depth.
+The SDSC image library currently does not support storage of more than one
+image in a single \fBgif\fR file.
+.LP
+The SDSC image library supports writing of a transparency field to a gif
+file.  This field is used by programs such as netscape to determine which 
+index value shall be considered transparent.  You may request image
+transparency via the flags table by adding an entry to the flags table
+named "image transparency request".  The value associated with this
+entry should be a character string in one of the following forms:
+.TS
+l l l.
+"most common"	Select the most common index value as transparent
+"rgb=r g b"	Select pixels with r red, g green, b blue as transparent
+"index=i"	Select pixels with index value i as transparent.
+.TE
+.SH ERRORS
+In addition to those listed for \fBImFileRead\fR(3IM),
+CompuServe \fBgif\fR file reading returns the following error codes:
+.ne 4
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEMAGIC	Bad magic number of GIF file
+IMEMALLOC	Cannot allocate enough memory
+IMESYS	System call error in read operation
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+In addition to those listed for \fBImFileWrite\fR(3IM),
+CompuServe \fBgif\fR file writing returns the following error codes:
+.ne 2
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEMALLOC	Cannot allocate enough memory
+IMESYS	System call error in write operation
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH DOCUMENTATION
+\fIGIF Graphics Interchange Format Version 89a\fR,
+CompuServe,
+July 31, 1990.
+.br
+\fIGIF Graphics Interchange Format Version 87a: 
+A standard defining a mechanism
+for the storage and transmission
+of raster-based graphics information\fR,
+CompuServe,
+June 15, 1987.
+.SH SEE ALSO
+\fBImIntro\fR(3IM),
+\fBImErrNo\fR(3IM),
+\fBimconv\fR(1IM),
+\fBimfile\fR(1IM),
+\fBimformats\fR(1IM)
+.SH AUTHOR
+Soraya Gonzalez, Toan-Vinh Le, Brian Duggan
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

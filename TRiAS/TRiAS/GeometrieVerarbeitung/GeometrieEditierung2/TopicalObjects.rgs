@@ -1,0 +1,23 @@
+HKCR
+{
+	TRiAS.TopicalObjects.1 = s 'Verwalten der aktuellen Objekte'
+	{
+		CLSID = s '{71924703-40C2-11d1-9B1F-444553540000}'
+	}
+	TRiAS.TopicalObjects = s 'Verwalten der aktuellen Objekte'
+	{
+		CurVer = s 'TRiAS.TopicalObjects.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {71924703-40C2-11d1-9B1F-444553540000} = s 'Verwalten der aktuellen Objekte'
+		{
+			ProgID = s 'TRiAS.TopicalObjects.1'
+			VersionIndependentProgID = s 'TRiAS.TopicalObjects'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

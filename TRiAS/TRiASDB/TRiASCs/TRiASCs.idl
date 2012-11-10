@@ -1,0 +1,1599 @@
+// $Header: $
+// Copyright© 1999-2000 TRiAS GmbH Potsdam, All rights reserved
+// Created: 25.09.2000 11:11:50 
+//
+// @doc
+// @module TRiASCs.idl | Definitionen und Konstanten für TRiAS - Koordinatensysteme
+
+import "wtypes.idl";
+import "oaidl.idl";
+import "ocidl.idl";
+
+import "SpatialReference.idl";
+
+#include <idl/Collection.idl>
+
+#include "TRiASCS.ver"
+#include <TRiASCs.hh>
+
+
+#define TYPELIB_TRiASCS_HELPFILE_NAME "TRiASCs.hlp"
+
+///////////////////////////////////////////////////////////////////////////////
+// forward decls only
+interface ITRiASCSSet;
+interface ITRiASCSDatumTransformation;
+interface ITRiASCSPCS;
+interface ITRiASCSGCS;
+interface ITRiASCS;
+interface ITRiASCSTransform;
+
+interface ITRiASCSEvents;
+
+interface ITRiASRawCoordTransform;
+
+//interface ITRiASCSStorageManager;
+
+interface ITRiASCSUIService;
+interface ITRiASCSTransformService;
+#if defined(_USE_WKTSERVICE)
+interface ITRiASCSWktService;
+#endif // defined(_USE_WKTSERVICE)
+
+///////////////////////////////////////////////////////////////////////////////
+//     Geographic_CS              =  Angular_Unit + Geodetic_Datum + Prime_Meridian
+//     Projected_CS               =  Geographic_CS + Projection
+//     Projection                 =  Linear Unit + Coord_Transf_Method + Coord_Transform_Parameters 
+//     Coord_Transform_Method     = { TransverseMercator | LambertCC | ...}
+//     Coord_Transform_Parameters = { OriginLatitude + StandardParallel + ...}
+///////////////////////////////////////////////////////////////////////////////
+
+typedef [public, v1_enum] enum CODETYPE {
+	tcsCType_Undefined = -1,
+	tcsCType_Storage = 0,		// Koordinatensystemtyp (Projected, Geografic ...)
+	tcsCType_Ellipsoid = 21,	// Bezugsellipsoid (Bessel, Krassovsky ...)
+	tcsCType_GD = 23,			// geod. Datum (DHDN, Pulkovo42 ...)
+	tcsCType_PM = 25,
+	tcsCType_UOA = 41,
+	tcsCType_UOL = 43,
+	tcsCType_PA = 3310,
+	tcsCType_DT = 3320,
+	tcsCType_EllipsOfGD = 32769,
+} CODETYPE;
+
+typedef [public, v1_enum] enum TCS_REGISTRYROOT {
+	TCS_HKCR = 1,
+	TCS_HKLM = 2,
+	TCS_HKCU = 3,
+	TCS_HKCC = 4,
+	TCS_HKU = 5,
+} TCS_REGISTRYROOT;
+
+cpp_quote("#define	TCS_PARAMETER_INRANGE(idx) ((idx) >= 0 && (idx) < tcsPP_SizeOfParameterSet)")
+cpp_quote("#include	\"TRiASCS.hmc\"")
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIASCS
+// @interface ITRiASCSDistanceService | Über dieses Interface sind diverse Berechnungen
+// verfügbar, die sich auf die Berechnung des Abstandes zwischen 2 Koordinatenpunkten
+// zurückführen lassen.
+// @group Eigenschaften von <i ITRiASCSDistanceService>
+// @index | ITRIASCSDISTANCESERVICE & PROPERTY
+// @group Methoden von <i ITRiASCSDistanceService>
+// @index | ITRIASCSDISTANCESERVICE & METHOD
+// @doc ITRIASCSDISTANCESERVICE
+[
+	object,
+	uuid(F6081608-368A-4F75-AB99-4DC4823D2E4B),
+	dual,
+	helpstring("ITRiASCSDistanceService Interface"),
+	pointer_default(unique),
+	helpcontext(ITRiASCSDistanceService_int)
+]
+interface ITRiASCSDistanceService : IDispatch
+{
+cpp_quote("#if !defined(_ACCURACY_DEFINED)")
+cpp_quote("#define _ACCURACY_DEFINED")
+// @doc ACCURACYENUMS 
+// @enum DIST_ACCURACY | Die Genauigkeitsgrundlage auf der die Berechnungen über das Objekt
+// <o TRiASCsDistanceService> durchgeführt werden.
+// @xref <i ITRiASCSDistanceService>, <om ITRiASCSDistanceService.GetDistancePts>
+	typedef [
+		public, 
+		v1_enum, 
+		helpstring("Genauigkeitsgrundlage der Entfernungsberechnungen"),
+		helpcontext(ACCURACY_enum)
+	]
+	enum _tagACCURACY {
+		[helpstring("Die Genauigkeit der Berechnungen ist nicht definiert"), helpcontext(ACCURACY_enum)]
+			ACCURACY_Unknown = 0,		// Die Genauigkeit der Berechnungen ist nicht definiert.
+		[helpstring("Die Berechnungen werden in der Ebene durchgeführt"), helpcontext(ACCURACY_enum)]
+			ACCURACY_Planar = 10,		// @emem Die Berechnungen werden in der Ebene durchgeführt.
+
+		[hidden, restricted, helpstring("Die Berechnungen werden auf die Kugel bezogen (große Halbachse)")]
+			ACCURACY_SphericMajorAxis = 20,		// Die Berechnungen werden auf die Kugel bezogen, deren 
+				// Radius identisch mit der großen Halbachse des Bezugsellipsoides ist.
+		[hidden, restricted, helpstring("Die Berechnungen werden auf die Kugel bezogen (arithmetischer Mittelwert der Halbachsen)")]
+			ACCURACY_SphericArithMean = 21,		// Die Berechnungen werden auf die Kugel bezogen, deren 
+				// Radius sich aus dem arithmetischen Mittelwert der großen und kleinen Halbachsen des Bezugsellipsoides
+				// berechnet.
+		[hidden, restricted, helpstring("Die Berechnungen werden auf die Kugel bezogen (geometrischer Mittelwert der Halbachsen)")]
+			ACCURACY_SphericGeomMean = 22,		// Die Berechnungen werden auf die Kugel bezogen, deren 
+				// Radius sich aus dem geometrischen Mittelwert der großen und kleinen Halbachsen des Bezugsellipsoides
+				// berechnet.
+		[hidden, restricted, helpstring("Die Berechnungen werden auf die Kugel bezogen (harmonischer Mittelwert der Halbachsen)")]
+			ACCURACY_SphericHarmMean = 23,		// Die Berechnungen werden auf die Kugel bezogen, deren 
+				// Radius sich aus dem harmonischen Mittelwert der großen und kleinen Halbachsen des Bezugsellipsoides
+				// berechnet.
+		[hidden, restricted, helpstring("Die Berechnungen werden auf die Kugel bezogen (Kugel mit identischem Volumen wie Ellipsoid)")]
+			ACCURACY_SphericVolume = 24,		// Die Berechnungen werden auf die Kugel bezogen, deren 
+				// Volumen identisch zu dem Volumen des durch die große und kleine Halbachsen gebildeten Bezugsellipsoiden
+				// ist.
+		[hidden, restricted, helpstring("Die Berechnungen werden auf die Kugel bezogen (Kugel mit identischem Volumen wie Ellipsoid)")]
+			ACCURACY_SphericArea = 25,			// Die Berechnungen werden auf die Kugel bezogen, deren 
+				// Oberfläche identisch zu der Oberfläche des durch die große und kleine Halbachsen gebildeten Bezugsellipsoiden
+				// ist.
+		[hidden, restricted, helpstring("Die Berechnungen werden auf die Kugel bezogen (gemetrischer Mittelwert der Krümmungsradien)")]
+			ACCURACY_SphericGeomMeanCurvatureRadii = 26,			// Die Berechnungen werden auf die Kugel bezogen, deren 
+				// Radius sich aus dem geometrischen Mittel des Meridiankrümmungsradiuses und des 
+				// Querkrümmungsradiuses berechnet.
+
+		[helpstring("Die Berechnungen werden auf die Kugel bezogen"), helpcontext(ACCURACY_enum)]
+			ACCURACY_Spheric = ACCURACY_SphericGeomMeanCurvatureRadii,		// @emem Die Berechnungen werden auf die Kugel bezogen, deren 
+				// Radius sich aus dem Mittelwert der großen und kleinen Halbachsen des Bezugsellipsoides
+				// der Koordinaten berechnet.
+
+		[hidden, restricted, helpstring("Die Berechnungen werden auf dem Bezugsellipsoiden durchgeführt (Algorithmus 1)")]
+			ACCURACY_Ellipsoidal1 = 30,	// Die Berechnungen werden auf dem Bezugsellipsoiden
+				// durchgeführt, auf welches die Koordinaten bezogen sind (forward/inverse).
+		[hidden, restricted, helpstring("Die Berechnungen werden auf dem Bezugsellipsoiden durchgeführt (Algorithmus 2)")]
+			ACCURACY_Ellipsoidal2 = 31,	// Die Berechnungen werden auf dem Bezugsellipsoiden
+				// durchgeführt, auf welches die Koordinaten bezogen sind (proj.4).
+		[helpstring("Die Berechnungen werden auf dem Bezugsellipsoiden durchgeführt"), helpcontext(ACCURACY_enum)]
+			ACCURACY_Ellipsoidal = ACCURACY_Ellipsoidal1,	// @emem Die Berechnungen werden auf dem Bezugsellipsoiden
+				// durchgeführt, auf welches die Koordinaten bezogen sind.
+	} DIST_ACCURACY;
+cpp_quote("#endif // _ACCURACY_DEFINED")
+
+cpp_quote("#if !defined(_DISTTYPE_DEFINED)")
+cpp_quote("#define _DISTTYPE_DEFINED")
+// @doc DISTTYPEENUMS 
+// @enum DIST_TYPE | Die verwendbaren Formen der Abstandsbestimmung zwischen zwei Geometrien.
+// @xref <i ITRiASCSDistanceService>, <om ITRiASCSDistanceService.GetDistance>
+	typedef [
+		public, 
+		v1_enum, 
+		helpstring("Verwendbare Formen der Abstandsbestimmung."),
+		helpcontext(DISTTYPE_enum)
+	]
+	enum _tagDISTTYPE {
+		[helpstring("Das zu verwendende Form der Abstandsbestimmung ist nicht definiert"), helpcontext(DISTTYPE_enum)]
+			DISTTYPE_Unknown = 0,		// Das zu verwendende Form der Abstandsbestimmung ist nicht definiert.
+
+		[helpstring("Automatische Entscheidung über die Form der Abstandsbestimmung"), helpcontext(DISTTYPE_enum)]
+			DISTTYPE_Auto = 1,			// Automatische Entscheidung über die Form der Abstandsbestimmung.
+	} DIST_TYPE;
+cpp_quote("#endif // _DISTTYPE_DEFINED")
+
+// @doc ITRIASCSDISTANCESERVICE | PROPERTY
+// @property <t DIST_ACCURACY> | ITRiASCSDistanceService | Accuracy | Die Eigenschaft <op .Accuracy> setzt 
+// bzw. liefert die Genauigkeitsgrundlage, auf der basierend alle Berechnungen durchgeführt werden.
+// @comm Wenn keine Genauigkeit vorgegeben wird, so erfolgen alle Berechnungen, als ob <e DIST_ACCURACY.ACCURACY_Spheric>
+// vorgegeben worden wäre.
+// @supby <o TRiASCSDistanceService>
+// @xref <i ITRiASCSDistanceService>
+	[propput, id(1), helpstring("Setzt die Genauigkeitsgrundlage, mit der sämtliche Berechnungen durchgeführt werden."), helpcontext(ITRiASCSDistanceService_Accuracy_prop)] HRESULT Accuracy ([in] DIST_ACCURACY newVal);
+	[propget, id(1), helpstring("Liest die Genauigkeitsgrundlage, mit der sämtliche Berechnungen durchgeführt werden."), helpcontext(ITRiASCSDistanceService_Accuracy_prop)] HRESULT Accuracy ([out, retval] DIST_ACCURACY *pVal);
+
+// @doc ITRIASCSDISTANCESERVICE | PROPERTY
+// @property <i ITRiASCSTransform> | ITRiASCSDistanceService | TransformPipe | Die Eigenschaft <op .TransformPipe>
+// setzt bzw. liefert das Transformationsobjekt, welches den Berechnungen zugrunde liegt.
+// @comm Das Transformationsobjekt wird verwendet, um alle Koordinaten in ein einheitliches 
+// Bezugskoordinatensystem umzusetzen, d.h. das im Transformationsobjekt eingestellte Ausgangskoordinatensystem 
+// legt fest, auf welcher Grundlage die Berechnungen erfolgen. 
+// @comm Die Eigenschaft <op .TransformPipe> muß nicht gesetzt werden. In diesem Fall wird als 
+// Bezugskoordinatensysstem WGS84 (UTM Projektion 9°/6°, Längenmaßeinheit Meter) verwendet.
+// @comm Das Transformationsobjekt bietet die Möglichkeit einer Optimierung, sowohl von vornherein sämtliche 
+// auftretenden Koordinatensysteme als Eingangskoordinatensysteme (s. <om ITRiASCSTransform.AddInputCS>)
+// zu registrieren, als auch u.U. das Ausgangskoordinatensystem auf das sowieso verwendete
+// Koordinatensystem der zu verarbeitetenden Koordinatenpunkte zu initialisieren. In diesem Fall wären intern
+// keine weiteren Transformationen notwendig, was die Verarbeitungszeit positiv beeinflußt.
+// @supby <o TRiASCSDistanceService>
+// @xref <i ITRiASCSDistanceService>, <i ITRiASCSTransform>
+	[propputref, id(2), helpstring("Setzt das Transformationsobjekt, welches den Berechnungen zugrunde liegt."), helpcontext(ITRiASCSDistanceService_TransformPipe_prop)] HRESULT TransformPipe ([in] ITRiASCSTransform *newVal);
+	[propget, id(2), helpstring("Liest das Transformationsobjekt, welches den Berechnungen zugrunde liegt."), helpcontext(ITRiASCSDistanceService_TransformPipe_prop)] HRESULT TransformPipe ([out, retval] ITRiASCSTransform **pVal);
+
+// @doc ITRIASCSDISTANCESERVICE | PROPERTY
+// @property double | ITRiASCSDistanceService | LastTime | Die Eigenschaft <op .LastTime> 
+// liefert die für die zuletzt ausgeführte  Berechnung benötigte Zeit in [ms].
+// @comm Die <op .LastTime> -Eigenschaft kann nicht gesetzt werden.
+// @supby <o TRiASCSDistanceService>
+// @xref <i ITRiASCSDistanceService>
+	[propget, id(3), helpstring("Liefert die für die zuletzt ausgeführte Berechnung benötigte Zeit in [ms]."), helpcontext(ITRiASCSDistanceService_LastTime_prop)] HRESULT LastTime ([out, retval] double *pVal);
+
+// @doc ITRIASCSDISTANCESERVICE | METHOD
+// @method double | ITRiASCSDistanceService | GetDistancePts | Die Methode <om .GetDistancePts>
+// berechnet den Abstand zwischen den beiden gegebenen Koordinaten.
+// @parm VARIANT | CS1 | Der Parameter <p CS1> definiert das Koordinatensystem des ersten 
+// Koordinatenpunktes (s. Parameter <p Pts1>). 
+// @parm VARIANT | Pts1 | Der Parameter <p Pts1> enthält die Koordinaten des ersten Punktes in Form eines
+// Zahlen-Tripels (X, Y, Z).
+// @parm VARIANT | CS2 | Der Parameter <p CS2> definiert das Koordinatensystem des ersten 
+// Koordinatenpunktes (s. Parameter <p Pts2>). 
+// @parm VARIANT | Pts2 | Der Parameter <p Pts2> enthält die Koordinaten des zweiten Punktes in Form eines
+// Zahlen-Tripels (X, Y, Z).
+// @comm Als Maßeinheit wird die im Ausgangssystem des Transformationsobjektes eingestellte 
+// Längenmaßeinheit (<op ITRiASCSPS.UnitOfLength>) verwendet. Ist im Ausgangssystem keine Projektion
+// definiert, dann wird [Meter] angenommen.
+// @comm Die Koordinatensysteme (s. Parameter <p CS1> bzw. <p CS2>) können sowohl direkt in Form eines
+// <i ITRiASCS> -Interfaces oder aber indirekt über einen GUID eines Koordinatensystemes gegeben sein (s <op ITRiASCS.GUID>). 
+// Wenn der GUID als Zeichenkette gegeben wird, dann muß das betreffende Koordinatensystem am Transformationsobjekt
+// als Einganssystem registriert sein (s. <om ITRiASCSTransform.AddInputCS>)
+// @comm Obwohl sämtliche Koordinatenangaben als Zahlen-Tripel (X, Y, Z) - bzw. (Rechtwert, Hochwert, Höhe)
+// gegeben sein müssen, werden z.Zt. lediglich der Rechtswert und der Hochwert ausgewertet. Die Höhe wird
+// in jedem Fall ignoriert und sollte daher auf den Wert Null vorinitialisiert werden.
+// @ex Berechnung des Abstandes zwischen zwei Punkten |
+//	Option Base 0
+//	Sub Main()
+//	' Erzeugen des Koordinatensystemes
+//	Dim cs As New TRiASCs.TRiASCS		' WGS84, geodätisch, Sekunden
+//
+//	' Initialisierung des ersten Punktes (12°, 52°30')
+//  Dim pt1() As Double: ReDim pt1(0 To 2)
+//
+//		pt1(0) = 12# * 3600
+//		pt1(1) = 52# * 3600 + 30# * 60#
+//		pt1(2) = 0
+//
+//	' Initialisierung des zweiten Punktes (11°59'54.51", 52°29'54.87")
+//  Dim pt2() As Double: ReDim pt2(0 To 2)
+//
+//		pt2(0) = 11# * 3600# + 59# * 60# + 54.51
+//		pt2(1) = 52# * 3600# + 29# * 60# + 54.87
+//		pt2(2) = 0
+//
+//	' Berechnen der Entfernung
+//	Dim DistService As New TRiASCs.TRiASCsDistanceService
+//
+//		MsgBox "Entfernung:", Str$(DistService.GetDistancePts(cs, pt1, cs, pt2))
+//
+//	End Sub
+// @xref <i ITRiASCSDistanceService>, <i TRiASCS>, <i ITRiASCSPS>, <i ITRiASCSTransform>
+	[id(100), helpstring("Berechnet den Abstand zwischen den beiden gegebenen Koordinaten."), helpcontext(ITRiASCSDistanceService_GetDistancePts_meth), hidden, restricted] HRESULT GetDistancePts([in] VARIANT CS1, [in] VARIANT Pts1, [in] VARIANT CS2, [in] VARIANT Pts2, [out, retval] double *pVal);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIASCS
+// @interface ITRIASCSSet | Eine Sammlung von Koordinatensystemen
+// @group Methoden und Eigenschaften von <i ITRIASCSSet>
+// @index | ITRIASCSSet
+// @normal ITRiASCSSet stellt eine einfache Möglichkeit dar Sammlungen von 
+//		Koordinatensystemen anzulegen, Elemente hinzuzufügen, Elemente daraus 
+//		zu löschen, Elemente zu suchen sowie den gesamten Satz zu speichern und
+//		zu lesen. 
+// @comm Siehe auch <l Speichern / Lesen von Koordinatensystemen>
+[
+	object,
+	uuid(2FB28CB5-89D8-11D2-9894-0060085FC1CE),
+	dual,
+	helpstring("ITRIASCSSet Interface"),
+	pointer_default(unique)
+] 
+interface ITRiASCSSet : IDispatch 
+{
+	[id(DISPID_NEWENUM), helpstring("method _NewEnum")] HRESULT _NewEnum([out,retval] IUnknown **ppIEnum);
+
+// @doc METHOD TRIASCS ITRIASCSSet
+// @method HRESULT | ITRIASCSSet | Add | 
+//		fügt der Sammlung ein Koordinatensystem hinzu
+	[id(1), helpstring("method Add")] HRESULT Add([in] VARIANT Item);
+
+// @doc METHOD TRIASCS ITRIASCSSet
+// @method HRESULT | ITRIASCSSet | Remove | 
+//		entfernt ein Koordinatensystem aus der Sammlung
+// @comm siehe auch <om .Find>.
+	[id(2), helpstring("method Remove")] HRESULT Remove([in] VARIANT Item);
+
+// @doc METHOD TRIASCS ITRIASCSSet
+// @method HRESULT | ITRIASCSSet | Find |
+//		Sucht ein Koordinatensystem in der Sammlung.
+// @normal Der anzugebende VARIANT wird wie folgt interpretiert:
+// @normal VT_I1, VT_I2, VT_I4, VT_UI1, VT_UI2, VT_UI4 - es wird das System mit dem entsprechenden
+//		Index zurückgegeben
+// @normal VT_BSTR - es wird das System mit dem entsprechenden Namen zurückgegeben
+	[id(3), helpstring("method Find")] HRESULT Find([in] VARIANT Item, [out,retval] IDispatch **ppCS);
+	[propget, id(4), helpstring("property Count")] HRESULT Count([out, retval] long *pVal);
+
+// @doc METHOD TRIASCS ITRIASCSSet
+// @method HRESULT | ITRIASCSSet | SaveToFile |
+// @normal Speichert die Sammlung unter dem angegebenen Dateinamen ab.
+	[id(5), helpstring("method SaveToFile")] HRESULT SaveToFile([in] BSTR strFile);
+
+// @doc METHOD TRIASCS ITRIASCSSet
+// @method HRESULT | ITRIASCSSet | LoadFromFile |
+// @normal Lädt eine Koordinatensystemsammlung aus der gegebenen Datei.
+	[id(6), helpstring("method LoadFromFile")] HRESULT LoadFromFile([in] BSTR strFileName);
+
+// @doc METHOD TRIASCS ITRIASCSSet
+// @method HRESULT | ITRIASCSSet | SaveToRegistry |
+// @normal Speichert die Sammlung unter dem angegebenen Registrierungsschlüssel ab.
+// @comm Als arument wird nur der Registrierungsschlüssel angegeben. Die Daten Werden als Binärdaten
+//		unter der dem Wert 'InstalledSystems' abgelegt.
+	[id(7), helpstring("method SaveToRegistry")] HRESULT SaveToRegistry([in] TCS_REGISTRYROOT root, [in] BSTR strRegKey, [in, optional] VARIANT strComputername);
+
+// @doc METHOD TRIASCS ITRIASCSSet
+// @method HRESULT | ITRIASCSSet | LoadFromRegistry |
+// @normal Lädt eine Sammlung aus dem angegebenen Registrierungsschlüssel.
+	[id(8), helpstring("method LoadFromRegistry")] HRESULT LoadFromRegistry([in] TCS_REGISTRYROOT root, [in] BSTR strRegKey, [in, optional] VARIANT strComputername);
+};
+
+#if defined(_USE_WKTSERVICE)
+[
+	object,
+	uuid(C689F443-3E59-4308-AD8E-94A948283101),
+	dual,
+	helpstring("ITRiASCSWktService Interface"),
+	pointer_default(unique),
+	helpcontext(ITRiASCSWktService_int)
+]
+interface ITRiASCSWktService : IDispatch
+{
+	typedef [
+		public, v1_enum, 
+		helpstring("Gibt das verwendete Textformat vor."),
+		helpcontext(WKTFORMAT_enum)
+	]
+	enum _tagWKTFORMAT {
+		WKTFORMAT_Unknown = 0,
+		WKTFORMAT_OgcWkt = 1,
+	} WKTFORMAT;
+
+	[id(100), helpstring("method CreateFromWkt"), helpcontext(ITRiASCSWktService_CreateFromWkt_meth)] HRESULT CreateFromWkt([in] WKTFORMAT Format, [in] BSTR WktCS, [out, retval] ITRiASCS **CS);
+	[id(101), helpstring("method ExportAsWkt"), helpcontext(ITRiASCSWktService_ExportAsWkt_meth)] HRESULT ExportAsWkt([in] WKTFORMAT Format, [in] ITRiASCS *CS, [out, retval] BSTR *WktCS);
+};
+#endif // defined(_USE_WKTSERVICE)
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIASCS INTERNAL
+// @interface ITRiASCSUIHelper | Das <i ITRiASCSUIHelper> -interface dient der 
+// Bereitstellung verschiedener Funktionen, die für die Koordinatendarstellung und
+// -Eingabe in einer Nutzerschnittstelle nützlich sind.
+// @group Eigenschaften von <i ITRiASCSUIHelper>
+// @index | ITRiASCSUIHelper & PROPERTY
+// @group Methoden von <i ITRiASCSUIHelper>
+// @index | ITRiASCSUIHelper & METHOD
+// @doc ITRiASCSUIHelper
+[ 
+	object, 
+	uuid(7A268E3E-C155-411F-AF39-AAEC957F0B2B), 
+	dual, 
+	helpstring("ITRiASCSUIHelper Interface"),
+	pointer_default(unique) 
+]
+interface ITRiASCSUIHelper : IDispatch
+{
+cpp_quote("#if !defined(_COORDELEMENT_DEFINED)")
+cpp_quote("#define _COORDELEMENT_DEFINED")
+// @doc COORDELEMENTENUMS 
+// @enum COORDELEMENT | Entscheidet welcher der Werte eines Koordinatentripels untersucht bzw. 
+// verwendet werden soll.
+// @xref <i ITRiASCSUIHelper>
+typedef [
+	public, v1_enum, 
+	helpstring("Entscheidet welcher der Werte eines Koordinatentripels untersucht bzw. verwendet werden soll"),
+	helpcontext(COORDELEMENT_enum)
+]
+enum _tagCOORDELEMENT {
+	[helpstring("Es wird der X-Wert eines Koordinatentripels untersucht bzw. ausgewertet"), helpcontext(COORDELEMENT_enum)]
+		COORDELEMENT_X = 0,		// @emem Es wird der X-Wert eines Koordinatentripels untersucht bzw. ausgewertet.
+	[helpstring("Es wird der Y-Wert eines Koordinatentripels untersucht bzw. ausgewertet"), helpcontext(COORDELEMENT_enum)]
+		COORDELEMENT_Y = 1,		// @emem Es wird der Y-Wert eines Koordinatentripels untersucht bzw. ausgewertet.
+	[helpstring("Es wird der Z-Wert eines Koordinatentripels untersucht bzw. ausgewertet"), helpcontext(COORDELEMENT_enum)]
+		COORDELEMENT_Z = 2,		// @emem Es wird der Z-Wert eines Koordinatentripels untersucht bzw. ausgewertet.
+} COORDELEMENT;
+cpp_quote("#endif // _COORDELEMENT_DEFINED")
+
+// @doc ITRiASCSUIHelper | PROPERTY INTERNAL
+// @property String | ITRiASCSUIHelper | InputMask | Die Eigenschaft <op .InputMask>
+// liefert die für die Koordinateneingabe eines Wertes zu verwendende Eingabemaske.
+// @parm COORDELEMENT | Element | Der Parameter <p Element> entscheidet, für welchen der Werte des 
+// Koordinatentripels die Eingabemaske geliefert wird.
+// @comm Die Eigenschaft <op .InputMask> kann nicht gesetzt werden.
+// @devnote Die Eingabemaske ist für das Control 'MsMskEdit.Ocx' formatiert und kann dort
+// für sowohl für die .Mask -Eigenschaft als auch für die .Format -Eigenschaft verwendet werden.
+// @xref <i ITRiASCSUIHelper>
+	[propget, id(1), helpstring("Liefert die für die Koordinateneingabe zu verwendende Eingabemaske."), helpcontext(ITRiASCSUIHelper_InputMask_prop)] HRESULT InputMask ([in] COORDELEMENT Element, [out, retval] BSTR *UIMask);
+
+// @doc ITRiASCSUIHelper | PROPERTY INTERNAL
+// @property Long | ITRiASCSUIHelper | Precision | Die Eigenschaft <op .Precision> liefert bzw.
+// setzt die Anzahl der auszuwertenden bzw. anzuzeigenden Nachkommastellen.
+// @xref <i ITRiASCSUIHelper>
+	[propget, id(2), helpstring("Liefert die Anzahl der auszuwertenden Nachkommastellen."), helpcontext(ITRiASCSUIHelper_Presision_prop)]  HRESULT Precision ([out, retval] long *Prec);
+	[propput, id(2), helpstring("Liefert die Anzahl der auszuwertenden Nachkommastellen."), helpcontext(ITRiASCSUIHelper_Presision_prop)]  HRESULT Precision ([in] long Prec);
+
+// @doc ITRiASCSUIHelper | METHOD INTERNAL
+// @method String | ITRiASCSUIHelper | Format | Die Methode <om .Format>
+// konvertiert einen Wert einer Koordinate in eine Zeichenkette.
+// @parm COORDELEMENT | Element | Der Parameter <p Element> entscheidet, welcher der Werte des 
+// Koordinatentripels in eine Zeichenkette konvertiert wird.
+// @parm Double | Value | Der Parameter <p Value> enthält den zu konvertierenden Koordinatenwert
+// der auf das zugehörige Koordinatensystem bezogen ist. 
+// @rvalue String | Der Rückgabewert enthält den aktuellen Einstellungen des zugehörigen Koordinatensystemes 
+// formatierten Koordinatenwert.
+// @xref <i ITRiASCSUIHelper>
+	[id(3), helpstring("Konvertiert einen Wert einer Koordinate in eine Zeichenkette."), helpcontext(ITRiASCSUIHelper_Format_meth)] HRESULT Format ([in] COORDELEMENT Element, [in] double Value, [out, retval] BSTR *FormattedElement);
+
+// @doc ITRiASCSUIHelper | METHOD INTERNAL
+// @method Double | ITRiASCSUIHelper | Convert | Die Methode <om .Convert>
+// konvertiert eine Zeichenkette in einen Wert einer Koordinate.
+// @parm COORDELEMENT | Element | Der Parameter <p Element> entscheidet, welcher der Werte des 
+// Koordinatentripels in eine Zeichenkette konvertiert wird.
+// @parm String | Formatted | Der Parameter <p Formatted> enthält eine entsprechend der Eingabemaske
+// formierte Zeichenkette
+// @rvalue Double | Der Rückgabewert enthält den konvertierten Koordinatenwert, der auf das zugehörige
+// Koordinatensystem bezogen ist
+// @xref <i ITRiASCSUIHelper>
+	[id(4), helpstring("Konvertiert eine Zeichenkette in einen Wert einer Koordinate."), helpcontext(ITRiASCSUIHelper_Convert_meth)] HRESULT Convert ([in] COORDELEMENT Element, [in] BSTR Formatted, [out, retval] double *Value);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIASCS
+[ 
+	object,
+	uuid(04D103F3-592A-11d2-8FCA-0060085FC1CE),
+	dual,
+	helpstring("ITRiASCSEvents Interface"),
+	pointer_default(unique)
+] 
+interface ITRiASCSEvents : IDispatch 
+{
+	[id(1), helpstring("")] HRESULT ChangingCS([in] ITRiASCS* pCS, [in,out] VARIANT_BOOL *canChange);
+	[id(2), helpstring("")] HRESULT CSToChange([in] ITRiASCS* pCS );
+	[id(3), helpstring("")] HRESULT CSChanged([in] ITRiASCS* pCS );
+};
+	
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE ITRIASCSUISERVICE
+// @interface ITRiASCSUIService | Das <i ITRiASCSUIService> -interface dient der 
+// Bereitstellung verschiedener Funktionen, die für die Koordinatendarstellung und
+// -Eingabe in einer Nutzerschnittstelle nützlich sind.
+// @group Eigenschaften von <i ITRiASCSUIService>
+// @index | ITRIASCSUISERVICE & PROPERTY
+// @group Methoden von <i ITRiASCSUIService>
+// @index | ITRiASCSUIService & METHOD
+// @doc ITRIASCSUISERVICE
+[ 
+	object, 
+	uuid(0A899448-E4F2-480F-B794-7F10D519C396),
+	dual, 
+	oleautomation, 
+	pointer_default(unique),
+	helpcontext(ITRiASCSUIService_int)
+]
+interface ITRiASCSUIService : IDispatch
+{
+// @doc ITRIASCSUISERVICE | PROPERTY
+// @property String | ITRiASCSUIService | InputMask | Die Eigenschaft <op .InputMask>
+// liefert die für die Koordinateneingabe eines Wertes zu verwendende Eingabemaske.
+// @parm COORDELEMENT | Element | Der Parameter <p Element> entscheidet, für welchen der Werte des 
+// Koordinatentripels die Eingabemaske geliefert wird.
+// @comm Die Eigenschaft <op .InputMask> kann nicht gesetzt werden.
+// @devnote Die Eingabemaske ist für das Control formatiert, welches durch die Eigenschaft <om .InputMaskControl>
+// geliefert wird und kann dort sowohl für die .Mask -Eigenschaft als auch für die .Format -Eigenschaft 
+// verwendet werden.
+// @xref <i ITRiASCSUIService>
+	[propget, id(1), helpstring("Liefert die für die Koordinateneingabe zu verwendende Eingabemaske."), helpcontext(ITRiASCSUIHelper_InputMask_prop)] HRESULT InputMask ([in] ITRiASCS *CoordSys, [in] COORDELEMENT Element, [out, retval] BSTR *UIMask);
+
+// @doc ITRIASCSUISERVICE | PROPERTY
+// @property Long | ITRiASCSUIService | Precision | Die Eigenschaft <op .Precision> liefert bzw.
+// setzt die Anzahl der auszuwertenden bzw. anzuzeigenden Nachkommastellen.
+// @xref <i ITRiASCSUIService>
+	[propget, id(2), helpstring("Liefert die Anzahl der auszuwertenden Nachkommastellen."), helpcontext(ITRiASCSUIHelper_Presision_prop)]  HRESULT Precision ([in] ITRiASCS *CoordSys, [out, retval] long *Prec);
+	[propput, id(2), helpstring("Liefert die Anzahl der auszuwertenden Nachkommastellen."), helpcontext(ITRiASCSUIHelper_Presision_prop)]  HRESULT Precision ([in] ITRiASCS *CoordSys, [in] long Prec);
+
+// @doc ITRIASCSUISERVICE | METHOD
+// @method String | ITRiASCSUIHelper | Format | Die Methode <om .Format>
+// konvertiert einen Wert einer Koordinate in eine Zeichenkette.
+// @parm COORDELEMENT | Element | Der Parameter <p Element> entscheidet, welcher der Werte des 
+// Koordinatentripels in eine Zeichenkette konvertiert wird.
+// @parm Double | Value | Der Parameter <p Value> enthält den zu konvertierenden Koordinatenwert
+// der auf das zugehörige Koordinatensystem bezogen ist. 
+// @rvalue String | Der Rückgabewert enthält den aktuellen Einstellungen des zugehörigen Koordinatensystemes 
+// formatierten Koordinatenwert.
+// @xref <i ITRiASCSUIService>
+	[id(3), helpstring("Konvertiert einen Wert einer Koordinate in eine Zeichenkette."), helpcontext(ITRiASCSUIHelper_Format_meth)] HRESULT Format ([in] ITRiASCS *CoordSys, [in] COORDELEMENT Element, [in] double Value, [out, retval] BSTR *FormattedElement);
+
+// @doc ITRIASCSUISERVICE | METHOD
+// @method Double | ITRiASCSUIService | Convert | Die Methode <om .Convert>
+// konvertiert eine Zeichenkette in einen Wert einer Koordinate.
+// @parm COORDELEMENT | Element | Der Parameter <p Element> entscheidet, welcher der Werte des 
+// Koordinatentripels in eine Zeichenkette konvertiert wird.
+// @parm String | Formatted | Der Parameter <p Formatted> enthält eine entsprechend der Eingabemaske
+// formierte Zeichenkette
+// @rvalue Double | Der Rückgabewert enthält den konvertierten Koordinatenwert, der auf das zugehörige
+// Koordinatensystem bezogen ist
+// @xref <i ITRiASCSUIService>
+	[id(4), helpstring("Konvertiert eine Zeichenkette in einen Wert einer Koordinate."), helpcontext(ITRiASCSUIHelper_Convert_meth)] HRESULT Convert ([in] ITRiASCS *CoordSys, [in] COORDELEMENT Element, [in] BSTR Formatted, [out, retval] double *Value);
+
+// @doc ITRIASCSUISERVICE | PROPERTY
+// @property String | ITRiASCSUIService | InputMaskControl | Die Eigenschaft <op .InputMaskControl>
+// liefert das Control, für welches die Eingabemaske für die Koordinateneingabe eines Wertes verwendet 
+// werden sollte.
+// @comm Die Eigenschaft <op .InputMaskControl> kann nicht gesetzt werden.
+// @xref <i ITRiASCSUIService>
+	[propget, id(5), helpstring("Liefert das für die Koordinateneingabe zu verwendende Eingabecontrol."), helpcontext(ITRiASCSUIHelper_InputMaskControl_prop)] HRESULT InputMaskControl ([out, retval] BSTR *UIGuid);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE ITRIASCSTRANSFORMSERVICE
+[
+	object,
+	uuid(C913AAB2-781E-4D71-9834-BCF00D78BDF0),
+	dual,
+	helpstring("IEnumCoordSystemnames Interface"),
+	pointer_default(unique)
+]
+interface IEnumCoordSystemNames : IStaticCollection
+{
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE ITRIASCSTRANSFORMSERVICE
+// @interface ITRiASCSTransformService | Das <i ITRiASCSTransformService> -interface dstellt 
+// Funktionen zur Verfügung, die es VB-Clients ermöglichen, Geometrieobjekte direkt durch eine
+// Koordinatentransformationspipe verarbeiten zu lassen.
+// @group Eigenschaften von <i ITRiASCSTransformService>
+// @index | ITRIASCSTRANSFORMSERVICE & PROPERTY
+// @group Methoden von <i ITRiASCSTransformService>
+// @index | ITRIASCSTRANSFORMSERVICE & METHOD
+// @doc ITRIASCSUISERVICE
+[ 
+	object, 
+	uuid(3FD138FF-221D-4D2E-AB5F-1510450B3872), 
+	dual, 
+	helpstring("ITRiASCSTransformService Interface"),	
+	pointer_default(unique) 
+]
+interface ITRiASCSTransformService : IDispatch
+{
+// @doc ITRIASCSTRANSFORMSERVICE METHOD 
+// @method HRESULT | ITRiASCSTransformService | Transform | Transformiert ein Geometrieobjekt
+// in das Ausgangssystem der Transformationspipe
+// @parm [in] Object | Geometry | Der Parameter <p Geometry> definiert das zu transformierende 
+// Geometrieobjekt
+// @parm [in] String | CoordSysGuid | Der Parameter <p CoordSysGuid> definiert das zu 
+// verwendende Eingangskoordinatensystem
+// @parm [in] <l ITRiASCSTransform> | CTF | Der Parameter <p CTF> definiert das zu 
+// verwendende Transformationsobjekt
+// @xref <i ITRiASCSTransformService>, <om ITRiASCSTransformService.TransformInversePts>
+	[id(100), helpstring("Transformiert die Koordinaten eines Geometrieobjekt ins Ausgangssystem der gegebenen Transformationspipe."), helpcontext(ITRiASCSTransformService_Transform_meth)] HRESULT Transform([in] IDispatch *Geometry, [in] BSTR CoordSysGuid, [in] ITRiASCSTransform *CTF);
+
+// @doc ITRIASCSTRANSFORMSERVICE METHOD 
+// @method HRESULT | ITRiASCSTransformService | TransformInverse | Transformiert ein Geometrieobjekt
+// aus dem Ausgangssystem der Transformationspipe in das angegebene Eingangssystem (gesetzt mit 
+// <om ITRiASCSTransform.AddInputCS>)
+// @parm [in] Object | Geometry | Der Parameter <p Geometry> definiert das zu transformierende 
+// Geometrieobjekt
+// @parm [in] String | CoordSysGuid | Der Parameter <p CoordSysGuid> definiert das zu 
+// verwendende Eingangskoordinatensystem
+// @parm [in] <l ITRiASCSTransform> | CTF | Der Parameter <p CTF> definiert das zu 
+// verwendende Transformationsobjekt
+// @xref <i ITRiASCSTransformService>, <om ITRiASCSTransformService.TransformPts>
+	[id(101), helpstring("Transformiert die Koordinaten eines Geometrieobjekt in eines der Eingangssysteme der gegebenen Transformationspipe."), helpcontext(ITRiASCSTransformService_TransformInverse_meth)] HRESULT TransformInverse([in] IDispatch *Geometry, [in] BSTR CoordSysGuid, [in] ITRiASCSTransform *CTF);
+
+// @doc METHOD TRIASCS ITRIASCSTRANSFORMSERVICE
+// @method Variant | ITRiASCSTransformService | TransformPts | Die Methode <om .TransformPts> transformiert ein Feld 
+// von Koordinaten vom angegebenen Eingangssystem des Transformationsobjektes (gesetzt mit 
+// <om .AddInputCS>) in das Ausgangssystem des Transformationsobjektes.
+// @parm [in] String | CoordSysGuid | Der Parameter <p CoordSysGuid> definiert das zu verwendende 
+// Eingangskoordinatensystem.
+// @parm [in] <l ITRiASCSTransform> | CTF | Das zu verwendende Transformationsobjekt
+// @parm [in] Double() | InPoints | Der Parameter <p InPoints> enthält die zu transformierenden 
+// Koordinaten. Das übergebene Feld muß durch eine 'ReDim'- Anweisung eine Größe zugewiesen
+// bekommen haben, die durch 3 teilbar ist. Es wird davon ausgegangen, daß jeweils 3 aufeinanderfolgende
+// Elemente dieses Feldes ein Koordinaten-Tripel (X, Y, Z) enthalten.
+// @rdesc Die Methode <om .TransformPts> liefert ein Feld, in dem die transformierten Koordinaten 
+// abgelegt sind. Das Format des gelieferten Feldes entspricht dem des Parameters <p InPoints>. Die
+// Elemente des Feldes sind vom Typ Double.
+// @except:(INTERNAL)
+// <nl><cv E_INVALIDARG> Zeiger auf Quellkoordinaten ist ungültig (NULL)
+// <nl><cv E_POINTER> Zeiger auf Zielkoordinaten ist ungültig (NULL)
+// <nl><cv CST_E_COORDSYSTEMNOTFOUND> Es wurde kein Koordinatensystem gefunden, welches dem übergebenen
+// GUID zugeordnet ist.
+// <nl><cv CST_E_INVALIDCOORDCOUNT> Die Anzahl der Werte im Parameter <p InPoints> ist nicht durch 3 teilbar.
+// <nl><cv CST_E_INPUTTRANSFORMATIONFAILED>
+// <nl><cv CST_E_OUTPUTTRANSFORMATIONFAILED>
+// <nl><cv CST_E_INVALIDSOURCECOORDSYSTEM> Das Eingangskoordinatensystem ist ungültig.
+// <nl><cv CST_E_INVALIDDESTINATIONCOORDSYSTEM> Das Ausgangskoordinatensystem ist ungültig.
+// @xref <i ITRiASCSTransformService>, <om ITRiASCSTransformService.TransformInverse>
+	[id(102), helpstring("Koordinatentransformation von einem der Einganssysteme zum Ausgangssystem."), helpcontext(ITRiASCSTransformService_TransformPts_meth)] HRESULT TransformPts([in] BSTR CoordSysGuid, [in] ITRiASCSTransform *CTF, [in] VARIANT InPoints, [out, retval] VARIANT *OutPoints);
+
+// @doc METHOD TRIASCS ITRIASCSTRANSFORMSERVICE
+// @method Variant | ITRiASCSTransformService | TransformInversePts | Die Methode <om .TransformInversPts>
+// transformiert ein Feld von Koordinaten aus dem Ausgangssystem des Transformators in das
+// angegebene Eingangssystem des Transformationsobjektes (gesetzt mit <om ITRiASCSTransform.AddInputCS>).
+// @parm [in] String | CoordSysGuid | Der Parameter <p CoordSysGuid> definiert das zu verwendende 
+// Eingangskoordinatensystem.
+// @parm [in] <l ITRiASCSTransform> | CTF | Das zu verwendende Transformationsobjekt
+// @parm [in] Double() | InPoints | Der Parameter <p InPoints> enthält die zu transformierenden 
+// Koordinaten. Das übergebene Feld muß durch eine 'ReDim'- Anweisung eine Größe zugewiesen
+// bekommen haben, die durch 3 teilbar ist. Es wird davon ausgegangen, daß jeweils 3 aufeinanderfolgende
+// Elemente dieses Feldes ein Koordinaten-Tripel (X, Y, Z) enthalten.
+// @rdesc Die Methode <om .TransformInversePts> liefert ein Feld, in dem die transformierten Koordinaten 
+// abgelegt sind. Das Format des gelieferten Feldes entspricht dem des Parameters <p InPoints>. Die
+// Elemente des Feldes sind vom Typ Double.
+// @rdesc Die Methode <om .TransformInversPts> liefert ein Feld, in dem die transformierten Koordinaten 
+// abgelegt sind. Das Format des gelieferten Feldes entspricht dem des Parameters <p InPoints>. Die
+// Elemente des Feldes sind vom Typ Double.
+// @except:(INTERNAL)
+// <nl><cv E_INVALIDARG> Zeiger auf Quellkoordinaten ist ungültig (NULL)
+// <nl><cv E_POINTER> Zeiger auf Zielkoordinaten ist ungültig (NULL)
+// <nl><cv CST_E_COORDSYSTEMNOTFOUND> Es wurde kein Koordinatensystem gefunden, welches dem übergebenen
+// GUID zugeordnet ist.
+// <nl><cv CST_E_INVALIDCOORDCOUNT> Die Anzahl der Werte im Parameter <p InPoints> ist nicht durch 3 teilbar.
+// <nl><cv CST_E_INPUTTRANSFORMATIONFAILED>
+// <nl><cv CST_E_OUTPUTTRANSFORMATIONFAILED>
+// <nl><cv CST_E_INVALIDSOURCECOORDSYSTEM>
+// <nl><cv CST_E_INVALIDDESTINATIONCOORDSYSTEM>
+// @xref <i ITRiASCSTransformService>, <om ITRiASCSTransformService.Transform>
+	[id(103), helpstring("Koordinatentransformation vom Ausgangssystem zu einem der Einganssysteme."), helpcontext(ITRiASCSTransformService_TransformInversePts_meth)] HRESULT TransformInversePts([in] BSTR CoordSysGuid, [in] ITRiASCSTransform *CTF, [in] VARIANT InPoints, [out, retval] VARIANT *OutPoints);
+
+// @doc METHOD TRIASCS ITRIASCSTRANSFORMSERVICE
+// @method Variant | ITRiASCSTransformService | EnumCoordSystemNames | Die Methode <om .EnumCoordSystemNames>
+// liefert einen Enumerator, der die Menge aller bekannten Koordinatensysteme enthält.
+// @rdesc Die Methode <om .EnumCoordSystemNames> liefert ein Enumeratorobjekt (<i IEnumCoordSystemNames>)
+// welches alle Namen der direkt verfügbaren Koordinatensysteme enthält.
+// @xref <i ITRiASCSTransformService>
+	[id(104), helpstring("Liefert die Namen der verfügbaren Koordinatensysteme."), helpcontext(ITRiASCSTransformService_EnumCoordSystemNames_meth)] HRESULT EnumCoordSystemNames ([out, retval] IEnumCoordSystemNames **ppIEnum);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Die eigentliche Type-Library ...
+[
+	uuid(2DF06A03-E3EF-11D1-8F3E-0060085FC1CE),
+	version(TYPELIB_TRiASCS_VERSION),
+	helpstring(TYPELIB_TRiASCS_HELPSTRING),
+	helpfile(TYPELIB_TRiASCS_HELPFILE_NAME)
+]
+library TRIASCS 
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	enum TRIASCS_VERSIONS 
+	{
+		TYPELIB_TRIASCS_VERSION_MAJOR = TYPELIB_TRiASCS_VERSION_MAJOR,
+		TYPELIB_TRIASCS_VERSION_MINOR = TYPELIB_TRiASCS_VERSION_MINOR,
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// Diese Koordinatensystemtypen gibt es:
+// @doc ENUM TRIASCS
+// @enum TRIASCSTYPE | legt den Typ des verwendeten Koordinatensystems fest
+	typedef [public, v1_enum] enum TRIASCSTYPE {
+		tcsCS_Undefined = -1,	// @emem undefiniertes Koordinatensystem
+		tcsCS_Projected = 1,	// @emem projektives Koordinatensystem
+		tcsCS_Geographic = 2,	// @emem geographisches Koordinatensystem
+		tcsCS_Geocentric = 3,	// @emem geozentrisches Kooordinatensystem
+	} TRIASCSTYPE;
+
+///////////////////////////////////////////////////////////////////////////////
+// ...und hier wird jetzt alles andere definiert 
+#include "EPSG.h"
+ 
+///////////////////////////////////////////////////////////////////////////////
+// @doc STRUCT TRIASCS
+// @struct CSCOORD | Ein Koordinaten-Tripel (X, Y, Z)
+// @index | CSCOORD
+	typedef struct CSCOORD {
+		double	X;			// @field Rechtswert der Koordinate in projektiven Systemen,
+			// in geodätischen Systemen die geographische Länge.
+		double	Y;			// @field Hochwert der Koordinate in projektiven Systemen,
+			// in geodätischen Systemen die geographische Breite.
+		double	Z;			// @field Höhe über Normalnull.
+	} CSCOORD;
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc STRUCT TRIASCS
+// @struct CSREFPOINT | Ein Referenzpunkt World zu Map
+// @index | CSREFPOINT
+	typedef struct CSREFPOINT {
+		CSCOORD	ptInWorld;	// @field Punkt in der Welt
+		CSCOORD	ptInMap;	// @field Punkt in der Karte
+	} CSREFPOINT;
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc STRUCT TRIASCS
+// @struct CSID | Unsere 'eigene' GUID - Deklaration
+// @devnote CSID ist genau dasselbe wie ein GUID; nur mit einem anderen Namen
+// ohne diesen zweiten Namen würde das '#import' - Statement
+// nur Fehler produzieren...
+// @index | CSID
+	typedef struct CSID {
+		DWORD Data1;
+		WORD  Data2;
+		WORD  Data3;
+		BYTE  Data4[8];
+	} CSID;
+
+#include <olectl.h>
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIASCS
+// @interface ITRiASCSDatumTransformation | TRiAS Koordinatensysteme; Datumstransformation
+// @group Methoden und Eigenschaften von <i ITRiASCSDatumTransformation>
+// @index | ITRiASCSDatumTransformation
+// @doc ITRiASCSDatumTransformation
+	[ 
+		object,
+		uuid(E5AC8733-0769-11D2-8F5E-0060085FC1CE),
+		dual,
+		helpstring("ITRiASCSDatumTransformation Interface"),
+		pointer_default(unique)
+	] 
+	interface ITRiASCSDatumTransformation : IDispatch 
+	{
+	// @doc PROPERTY TRIASCS ITRiASCSDatumTransformation
+	// @property <t TRIASCSDTRANSALGORITHM> | ITRiASCSDatumTransformation | TransformationAlgorithm | 
+	//		setzt / liest den Transformationsalgorithmus für die Datumstransformation
+	// @except:(INTERNAL)
+	//	<cv DTT_E_INAVLIDDATUMTRANSFORMATION>
+		[propget, id(1), helpstring("property TransformationAlgorithm")] HRESULT TransformationAlgorithm([out, retval] TRIASCSDTRANSALGORITHM *pVal);
+		[propput, id(1), helpstring("property TransformationAlgorithm")] HRESULT TransformationAlgorithm([in] TRIASCSDTRANSALGORITHM newVal);
+
+	// @doc PROPERTY TRIASCS ITRiASCSDatumTransformation
+	// @property <t TRIASCSDTRANSPARAMETER> | ITRiASCSDatumTransformation | Parameter | 
+	//		setzt / liest einen Parameter für die Datumstransformation
+	//	@head3 siehe auch |
+	//		<l Setzen / Lesen von Parametern>
+	// @except:(INTERNAL)
+	//	<cv TCS_E_INVALIDPARAMETERINDEX>
+		[propget, id(2), helpstring("property Parameter")] HRESULT Parameter([in] TRIASCSDTRANSPARAMETER par, [out, retval] double *pVal);
+		[propput, id(2), helpstring("property Parameter")] HRESULT Parameter([in] TRIASCSDTRANSPARAMETER par, [in] double newVal);
+
+	// @doc PROPERTY TRIASCS ITRiASCSDatumTransformation
+	// @property VARIANT * | ITRiASCSDatumTransformation | Parameters |
+	//		setzt / liest ein Parameterfeld für die Datumstransformation
+	//	@head3 siehe auch |
+	//		<l Setzen / Lesen von Parametern>
+	// @except:(INTERNAL)
+	//	<cv TCS_E_INVALIDPARAMETERCOUNT>
+		[propget, id(4), helpstring("property Parameters")] HRESULT Parameters([out, retval] VARIANT *pVal);
+		[propput, id(4), helpstring("property Parameters")] HRESULT Parameters([in] VARIANT newVal);
+
+	// @doc PROPERTY TRIASCS ITRiASCSDatumTransformation
+	// @property <t TRIASCSGEODETICDATUM> | ITRiASCSDatumTransformation | GeodeticDatum |
+	//		setzt / liest das geodätische Datum des Transformators
+	// @except:(INTERNAL)
+	//	<cv DTT_E_INAVLIDGEODETICDATUM>
+		[propget, id(8), helpstring("property GeodeticDatum")] HRESULT GeodeticDatum([out, retval] TRIASCSGEODETICDATUM *pVal);
+		[propput, id(8), helpstring("property GeodeticDatum")] HRESULT GeodeticDatum([in] TRIASCSGEODETICDATUM newVal);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIASCS
+// @interface ITRiASCSPCS | TRiAS Koordinatensysteme; projektives Koordinatensystem
+// @group Methoden und Eigenschaften von <i ITRiASCSPCS>
+// @index | ITRiASCSPCS
+// @doc ITRiASCSPCS
+	[
+		object,
+		uuid(4E1A7103-E993-11D1-8F48-0060085FC1CE),
+		dual,
+		helpstring("ITRiASCSPCS Interface"),
+		pointer_default(unique),
+	] 
+	interface ITRiASCSPCS : IDispatch 
+	{
+	// @doc PROPERTY TRIASCS ITRiASCSPCS
+	// @property <t TRIASCSPROJECTIONALGORITHM> | ITRiASCSPCS | ProjectionAlgorithm | 
+	//		setzt / liest den Projektionsalgorithmus
+	// @except:(INTERNAL)
+	//	<cv PCS_E_INAVLIDPROJECTIONALGORITHM>
+		[propget, id(1), helpstring("property ProjectionAlgorithm")] HRESULT ProjectionAlgorithm([out, retval] TRIASCSPROJECTIONALGORITHM *pVal);
+		[propput, id(1), helpstring("property ProjectionAlgorithm")] HRESULT ProjectionAlgorithm([in] TRIASCSPROJECTIONALGORITHM newVal);
+
+	// @doc PROPERTY TRIASCS ITRiASCSPCS
+	// @property <t TRIASCSUNITOFLENGTH> | ITRiASCSPCS | UnitOfLength | 
+	//		setzt / liest den Projektionsalgorithmus
+	// @except:(INTERNAL)
+	//	<cv PCS_E_INAVLIDUNITOFLENGTH>
+		[propget, id(2), helpstring("property UnitOfLength")] HRESULT UnitOfLength([out, retval] TRIASCSUNITOFLENGTH *pVal);
+		[propput, id(2), helpstring("property UnitOfLength")] HRESULT UnitOfLength([in] TRIASCSUNITOFLENGTH newVal);
+
+	// @doc PROPERTY TRIASCS ITRiASCSPCS
+	// @property VARIANT * | ITRiASCSPCS | ProjectionParameters |
+	//		setzt / liest ein Parameterfeld für den Projektionsalgorithmus
+	//	@head3 siehe auch |
+	//		<l Setzen / Lesen von Parametern>
+	// @except:(INTERNAL)
+	//	<cv TCS_E_INVALIDPARAMETERCOUNT>
+		[propget, id(3), helpstring("property ProjectionParameters")] HRESULT ProjectionParameters([out, retval] VARIANT *pVal);
+		[propput, id(3), helpstring("property ProjectionParameters")] HRESULT ProjectionParameters([in] VARIANT newVal);
+
+	// @doc PROPERTY TRIASCS ITRiASCSPCS
+	// @property <t TRIASCSPROJECTIONPARAMETER> | ITRiASCSPCS | ProjectionParameter | 
+	//		setzt / liest einen Parameter für den Projektionsalgorithmus 
+	//	@head3 siehe auch |
+	//		<l Setzen / Lesen von Parametern>
+	// @except:(INTERNAL)
+	//	<nl><cv TCS_E_INVALIDPARAMETERINDEX>
+		[propget, id(4), helpstring("property ProjectionParameter")] HRESULT ProjectionParameter(TRIASCSPROJECTIONPARAMETER par, [out, retval] double *pVal);
+		[propput, id(4), helpstring("property ProjectionParameter")] HRESULT ProjectionParameter(TRIASCSPROJECTIONPARAMETER par, [in] double newVal);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIASCS
+// @interface ITRiASCSGCS | TRiAS Koordinatensysteme; geodätische Grundlage
+// @group Methoden und Eigenschaften von <i ITRiASCSGCS>
+// @index | ITRiASCSGCS 
+// @doc ITRiASCSGCS
+	[	
+		object,
+		uuid(73372653-E66A-11D1-8F40-0060085FC1CE),
+		dual,
+		helpstring("ITRiASCSGCS Interface"),
+		pointer_default(unique)
+	] 
+	interface ITRiASCSGCS : IDispatch 
+	{
+	// @doc PROPERTY TRIASCS ITRiASCSGCS
+	// @property <t TRIASCSUNITOFANGLE> | ITRiASCSGCS | UnitOfAngle | 
+	//		setzt / liest die Maßeinheit für Winkelangaben
+	// @except:(INTERNAL)
+	//	<cv GCS_E_INVALIDUNITOFANGLE>
+		[propget, id(1), helpstring("property UnitOfAngle")] HRESULT UnitOfAngle([out, retval] TRIASCSUNITOFANGLE *pVal);
+		[propput, id(1), helpstring("property UnitOfAngle")] HRESULT UnitOfAngle([in] TRIASCSUNITOFANGLE newVal);
+
+	// @doc PROPERTY TRIASCS ITRiASCSGCS
+	// @property <t TRIASCSGEODETICDATUM> | ITRiASCSGCS | GeodeticDatum | 
+	//		setzt / liest das Geodätische Datum
+	// @except:(INTERNAL)
+	//	<cv GCS_E_INVALIDGEODETICDATUM>
+		[propget, id(2), helpstring("property GeodeticDatum")] HRESULT GeodeticDatum([out, retval] TRIASCSGEODETICDATUM *pVal);
+		[propput, id(2), helpstring("property GeodeticDatum")] HRESULT GeodeticDatum([in] TRIASCSGEODETICDATUM newVal);
+
+	// @doc PROPERTY TRIASCS ITRiASCSGCS
+	// @property <t TRIASCSPRIMEMERIDIAN> | ITRiASCSGCS |  PrimeMeridian | 
+	//		setzt / liest den 'PrimeMeridian'
+	// @except:(INTERNAL)
+	//	<cv GCS_E_INVALIDPRIMEMERIDIAN>
+		[propget, id(3), helpstring("property PrimeMeridian")] HRESULT PrimeMeridian([out, retval] TRIASCSPRIMEMERIDIAN *pVal);
+		[propput, id(3), helpstring("property PrimeMeridian")] HRESULT PrimeMeridian([in] TRIASCSPRIMEMERIDIAN newVal);
+
+	// @doc PROPERTY TRIASCS ITRiASCSGCS
+	// @property double | ITRiASCSGCS |  SemiMajorAxis | 
+	//		setzt / liest die große Halbachse des Ellipsoids
+	// @comm Diese Eigenschaft ist nur schreibbar, wenn das geodätische Datum
+	//		auf <e TRIASCSGEODETICDATUM.tcsGD_UserDefined> und das Ellipsoid
+	//		auf <e TRIASCSELLIPSOID.tcsEL_UserDefined> gesetzt ist.
+	// @except:(INTERNAL)
+	//	<cv TCS_E_CANNOTWRITEDATA>
+		[propget, id(4), helpstring("property SemiMajorAxis")] HRESULT SemiMajorAxis([out, retval] double *pVal);
+		[propput, id(4), helpstring("property SemiMajorAxis")] HRESULT SemiMajorAxis([in] double newVal);
+
+	// @doc PROPERTY TRIASCS ITRiASCSGCS
+	// @property double | ITRiASCSGCS | Flattening |
+	//		setzt / liest die Ablattung des Ellipsoids
+	// @comm Diese Eigenschaft ist nur schreibbar, wenn das geodätische Datum
+	//		auf <e TRIASCSGEODETICDATUM.tcsGD_UserDefined> und das Ellipsoid
+	//		auf <e TRIASCSELLIPSOID.tcsEL_UserDefined> gesetzt ist.
+	// @except:(INTERNAL)
+	//	<cv TCS_E_CANNOTWRITEDATA>
+		[propget, id(5), helpstring("property Flattening")] HRESULT Flattening([out, retval] double *pVal);
+		[propput, id(5), helpstring("property Flattening")] HRESULT Flattening([in] double newVal);
+
+	// @doc PROPERTY TRIASCS ITRiASCSGCS
+	// @property double | ITRiASCSGCS |  SemiMinorAxis | 
+	//		liest die klein Halbachse des Ellipsoids
+	// @comm Diese Eigenschaft wird aus den Parametern <op .SemiMajorAxis> und <op .Flattening> berechnet.
+		[propget, id(6), helpstring("property SemiMinorAxis")] HRESULT SemiMinorAxis([out, retval] double *pVal);
+
+	// @doc PROPERTY TRIASCS ITRiASCSGCS
+	// @property <t TRIASCSELLIPSOID> | ITRiASCSGCS | Ellipsoid | 
+	//		setzt / liest das dem Datum zugrundeliegende Ellipsoid
+	// @comm Diese Eigenschaft ist nur schreibbar, wenn das geodätische Datum
+	//		auf <e TRIASCSGEODETICDATUM.tcsGD_UserDefined> gesetzt ist.
+	// @except:(INTERNAL)
+	//	<cv TCS_E_CANNOTWRITEDATA>
+	//	<nl><cv GCS_E_INVALIDELLIPSOID>
+		[propget, id(7), helpstring("property Ellipsoid")] HRESULT Ellipsoid([out, retval] TRIASCSELLIPSOID *pVal);
+		[propput, id(7), helpstring("property Ellipsoid")] HRESULT Ellipsoid([in] TRIASCSELLIPSOID newVal);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIASCS
+// @interface ITRiASCS | TRiAS Koordinatensysteme; eigentliches Koordinatensystem
+// @group Methoden und Eigenschaften von <i ITRiASCS>
+// @index | ITRiASCS
+// @doc ITRiASCS
+	[
+		object,
+		uuid(AC3B1896-E585-11D1-8F3E-0060085FC1CE),
+		dual,
+		helpstring("ITRiASCS Interface"),
+		pointer_default(unique)
+	] 
+	interface ITRiASCS : IDispatch 
+	{
+	// @doc PROPERTY TRIASCS ITRiASCS
+	// @property <t TRIASCSTYPE> | ITRiASCS | CoordSystemType | setzt / liest den Typ des Koordinatensystems
+	// @except:(INTERNAL)
+	//	<cv CS_E_INVALIDCOORDSYSTEMTYPE>
+		[propget, id(1), helpstring("Gets the Identifier for the spatial Model")] HRESULT CoordSystemType([out, retval] TRIASCSTYPE *pVal);
+		[propput, id(1), helpstring("Sets the Identifier for the spatial Model")] HRESULT CoordSystemType([in] TRIASCSTYPE newVal);
+
+	// @doc PROPERTY TRIASCS ITRiASCS
+	// @property BSTR | ITRiASCS | GUID | setzt / liest den GUID des Koordinatensystems
+	// @comm Diese Eigenschaft sollte, nachdem das Koordinatensystem einem Transformator
+	//		als Eingangskoordinatensystem bekannt gemacht wurde <om ITRiASCSTransform.AddInputCS> ), <b nicht> mehr angwendet
+	//		werden.
+		[propget, id(2), helpstring("Gets the GUID for this CoordSystem Object")] HRESULT GUID([out, retval] BSTR* pVal);
+		[propput, id(2), helpstring("Sets the GUID for this CoordSystem Object")] HRESULT GUID([in] BSTR pVal);
+
+	// @doc PROPERTY TRIASCS ITRiASCS
+	// @property <i ITRiASCSGCS> | ITRiASCS | GeographicCS | liefert die geodätische Grundlage des Koordinatensystems
+		[propget, id(3), helpstring("property GeographicCS")] HRESULT GeographicCS([out, retval] ITRiASCSGCS **GCS);
+
+	// @doc PROPERTY TRIASCS ITRiASCS
+	// @property <i ITRiASCSPCS> | ITRiASCS | ProjectedCS | liefert die Projektion des Koordinatensystems
+		[propget, id(4), helpstring("property ProjectedCS")] HRESULT ProjectedCS([out, retval] ITRiASCSPCS **PCS);
+
+	// @doc PROPERTY TRIASCS ITRiASCS
+	// @property <i ITRiASCSDatumTransformation> | ITRiASCS | DatumTransformation | liefert die Datumstransformation des Koordinatensystems
+		[propget, id(5), helpstring("property DatumTransformation")] HRESULT DatumTransformation([out, retval] ITRiASCSDatumTransformation **pVal);
+
+	// @doc METHOD TRIASCS ITRiASCS
+	// @method HRESULT | ITRiASCS | ChangeGUID | 
+	//		erzeugt einen neuen GUID für dieses Koordinatensystem. Der GUID kann mit <om .GUID> ausgelesen werden.
+	// @rdesc
+	//	<cv S_OK>
+		[id(6), helpstring("Generates a new GUID for this CoordSystem Object")] HRESULT ChangeGUID();
+
+	// @doc METHOD TRIASCS ITRiASCS
+	// @method HRESULT | ITRiASCS | Recompute | 
+	//		Wird gerufen nachdem alle Änderungen am Koordinatensystem vorgenommen wurden.
+	// @rdesc
+	//	<cv S_OK>
+		[id(7), helpstring("Recomputes the Coordsystem")] HRESULT Recompute();
+
+	// @doc PROPERTY TRIASCS ITRiASCS
+	// @property BSTR | ITRiASCS | Description | setzt / liest eine Beschreibung des Koordinatensystems
+		[propget, id(8), helpstring("property Description")] HRESULT Description([out, retval] BSTR *pVal);
+		[propput, id(8), helpstring("property Description")] HRESULT Description([in] BSTR newVal);
+
+	// @doc PROPERTY TRIASCS ITRiASCS
+	// @property BSTR | ITRiASCS | Category | setzt / liest eine Beschreibung für eine Kategorie
+	// @comm Die Eigenschaft Kategorie kann verwendet werden um eine Menge von Koordinatensystemen
+	//		logisch zusammenzufassen. Im folgenden Beispiel werden in Koordinatensystemen
+	//		mit Backslash getrennte Beschreibungen gesetzt. Diese Beschreibungen können anderweitig
+	//		ausgelesen und damit das jeweilige Koordinatensystem (z.B. in einen Baum) eingeordnet werden.
+	// @ex Beispiel für Category: |
+	//	option base 0
+	//	sub main()
+	//		dim cs() as TRiASCS : redim cs(1 to 7)
+	//		cs(0).Category = "Geodätisch"			: cs(0).Description = "WGS84"
+	//		cs(1).Category = "Projektiv\Bessel"		: cs(1).Description = "9° / 3°"
+	//		cs(2).Category = "Projektiv\Bessel"		: cs(2).Description = "12° / 3°"
+	//		cs(3).Category = "Projektiv\Bessel"		: cs(3).Description = "15° / 3°"
+	//		cs(4).Category = "Projektiv\Krassovski" : cs(4).Description = "3° / 6°"
+	//		cs(5).Category = "Projektiv\Krassovski" : cs(5).Description = "9° / 6°"
+	//		cs(6).Category = "Projektiv\Krassovski" : cs(6).Description = "15° / 6°"
+	//	end sub
+		[propget, id(9), helpstring("property Category")] HRESULT Category([out, retval] BSTR *pVal);
+		[propput, id(9), helpstring("property Category")] HRESULT Category([in] BSTR newVal);
+
+	// @doc METHOD TRIASCS ITRiASCS
+	// @method HRESULT | ITRiASCS | SaveToFile | Koordinatensystem in Datei ablegen.
+	// @normal Speichert das Koordinatensystem unter dem angegebenen Dateinamen ab.
+		[id(10), helpstring("method SaveToFile")] HRESULT SaveToFile([in] BSTR strFile);
+
+	// @doc METHOD TRIASCS ITRiASCS
+	// @method HRESULT | ITRiASCS | LoadFromFile | Koordinatensystem aus Datei einlesen.
+	// @normal Lädt das Koordinatensystem aus der gegebenen Datei.
+		[id(11), helpstring("method LoadFromFile")] HRESULT LoadFromFile([in] BSTR strFileName);
+
+	// @doc METHOD TRIASCS ITRiASCS
+	// @method HRESULT | ITRiASCS | SaveToRegistry | Koordinatensystem in Registry ablegen
+	// @normal Speichert das Koordinatensystem unter dem angegebenen Registrierungsschlüssel ab.
+	// @comm Als arument wird nur der Registrierungsschlüssel angegeben. Die Daten Werden als Binärdaten
+	//		unter der dem Wert 'InstalledSystems' abgelegt.
+		[id(12), helpstring("method SaveToRegistry")] HRESULT SaveToRegistry([in] TCS_REGISTRYROOT root, [in] BSTR strRegKey, [in, optional] VARIANT strComputername);
+
+	// @doc METHOD TRIASCS ITRiASCS
+	// @method HRESULT | ITRiASCS | LoadFromRegistry | Koordinatensystem aus Registry lesen
+	// @normal Lädt das Koordinatensystem aus dem angegebenen Registrierungsschlüssel.
+		[id(13), helpstring("method LoadFromRegistry")] HRESULT LoadFromRegistry([in] TCS_REGISTRYROOT root, [in] BSTR strRegKey, [in, optional] VARIANT strComputername);
+
+	// @doc METHOD TRIASCS ITRiASCS
+	// @method HRESULT | ITRiASCS | IsEqual | Koordinatensystem mit anderem Koordinatensystem
+	// vergleichen
+	// @normal Vergleicht das Koordinatensystem mit dem als Parameter übergebenen.
+		[id(14), helpstring("Koordinatensystem mit Anderem vergleichen")] HRESULT IsEqual([in] ITRiASCS *pIOther, [out, retval] VARIANT_BOOL *pfEqual);
+
+	// @doc PROPERTY TRIASCS ITRiASCS
+	// @property BSTR | ITRiASCS | Name | setzt / liest den Kurzbezeichner des Koordinatensystemes
+		[propget, id(15), helpstring("property Name")] HRESULT Name([out, retval] BSTR *pVal);
+		[propput, id(15), helpstring("property Name")] HRESULT Name([in] BSTR newVal);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// öffentliche, nicht Automation-fähige Interfaces
+// Diese Interfaces werden durch TRiASCSTransform bereitgestellt
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIASCS
+// @interface ITRiASRawCoordTransform | TRiAS Koordinatensysteme; direkte Koordinatentransformation
+// @devnote Das Interfce <b ITRiASRawCoordTransform> ist <b nicht> OLE-Automation-kompatibel und
+//		daher nicht von Visual-Basic aus anzusprechen.
+// @group Methoden und Eigenschaften von <i ITRiASRawCoordTransform>
+// @index | ITRiASRawCoordTransform
+// @doc ITRiASRawCoordTransform
+	[
+		object,
+		uuid(792D9030-F412-11d1-8F50-0060085FC1CE),
+		helpstring("direkte Transformation von Koordinatenfeldern")
+	] 
+	interface ITRiASRawCoordTransform : IUnknown 
+	{
+	// @doc TRIASCS METHOD ITRiASRawCoordTransform
+	// @method HRESULT | ITRiASRawCoordTransform | Transform | 
+	//		transformiert ein Feld von Koordinaten in das Ausgangssystem des Transformators
+	// @parm [in] <l CSGUID> | csGUID | 
+	//		definiert das zu verwendende Eingangskoordinatensystem
+	// @parm [in] long | nCoords | 
+	//		Anzahl der zu transformierenden Koordinaten
+	// @parm [in,size_is(3*nCoords)] double* | pInPoints | 
+	//		Zeiger auf die zu transformierenden Koordinaten
+	// @parm [in,out] double* | pOutPoints | 
+	//		Zeiger auf Bereich, in dem die transformierten Koordinaten abzulegen sind
+	// @rdesc
+	//	siehe <om ITRiASCSTransform.Transform>
+		HRESULT	Transform( [in] struct CSID csUID, [in] long nCoords, [in,size_is(nCoords)] CSCOORD* pInPoints, [in,out,size_is(nCoords)] CSCOORD* pOutPoints );
+
+	// @doc TRIASCS METHOD ITRiASRawCoordTransform
+	// @method HRESULT | ITRiASRawCoordTransform | TransformInverse | 
+	//		transformiert ein Feld von Koordinaten aus dem Ausgangssystem des Transformators in das
+	//		angegebene Eingangssystem (gesetzt mit <om ITRiASCSTransform.AddInputCS>)
+	// @parm [in] <l CSGUID> | csGUID | 
+	//		definiert das zu verwendende Eingangskoordinatensystem
+	// @parm [in] long | nCoords | 
+	//		Anzahl der zu transformierenden Koordinaten
+	// @parm [in,size_is(3*nCoords)] double* | pInPoints | 
+	//		Zeiger auf die zu transformierenden Koordinaten
+	// @parm [in,out] double* | pOutPoints | 
+	//		Zeiger auf Bereich, in dem die transformierten Koordinaten abzulegen sind
+	// @rdesc
+	//	siehe <om ITRiASCSTransform.TransformInverse>
+		HRESULT	TransformInverse( [in] struct CSID csUID, [in] long nCoords, [in,size_is(nCoords)] CSCOORD* pInPoints, [in,out,size_is(nCoords)] CSCOORD* pOutPoints );
+	}
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIASCS
+// @interface ITRiASCSTransform | TRiAS Koordinatensysteme; Koordinatentransformation
+// @group Eigenschaften von <i ITRiASCSTransform>
+// @index | ITRIASCSTRANSFORM & PROPERTY
+// @group Methoden von <i ITRiASCSTransform>
+// @index | ITRIASCSTRANSFORM & METHOD
+// @doc ITRIASCSTRANSFORM
+	[ 
+		object,
+		uuid(24069B53-F3B9-11D1-8F50-0060085FC1CE),
+		dual,
+		helpstring("ITRiASCSTransform Interface (obsolete)"),
+		pointer_default(unique),
+		helpcontext(ITRiASCSTransform_int)
+	] 
+	interface ITRiASCSTransform0 : IDispatch 
+	{
+	// @doc PROPERTY TRIASCS ITRIASCSTRANSFORM
+	// @property <i ITRiASCS> | ITRiASCSTransform | OutputCS | Die Eigenschaft <op .OutputCS> setzt bzw.
+	// liest das Ausgangskoordinatensystem des Transformationsobjektes.
+	// @except:(INTERNAL) 
+	// <nl><cv E_POINTER> Das Koordinatensystem ist nicht gegeben (NULL).
+	// @comm Das Ausgangskoordinatensystem ist im allgemeinen das Koordinatensystem, welches im aktuellen
+	// <tr>- Projekt verwendet wird. Im Gegensatz dazu sind die Eingansgskoordinatensystem des 
+	// Transformationsobjektes im allgemeinen den einzelnen Datenquellen des aktuellen Projektes zugeordnet.
+	// @xref <i ITRiASCSTransform>, <om .AddInputCS>
+		[propget, id(1), helpstring("Liest das Ausgangskoordinatensystem des Transformationsobjektes."), helpcontext(ITRiASCSTransform_OutputCS_prop)] HRESULT OutputCS([out, retval] ITRiASCS **TRiASCS);
+		[propputref, id(1), helpstring("Setzt das Ausgangskoordinatensystem des Transformationsobjektes."), helpcontext(ITRiASCSTransform_OutputCS_prop)] HRESULT OutputCS([in] ITRiASCS *TRiASCS);
+
+	// @doc METHOD TRIASCS ITRIASCSTRANSFORM
+	// @method Sub | ITRiASCSTransform | AddInputCS | Die Methode <om .AddInputCS> fügt zu dem 
+	// Transformationsobjekt ein weiteres Eingangskoordinatensystem hinzu.
+	// @parm [in] <i ITRiASCS> | CS | Der Parameter <p CS> enthält das vorinitialisierte Koordinatensystem, 
+	// welches zum Transformationsobjekt hinzugefügt werden soll.
+	// @except:(INTERNAL) 
+	// <nl><cv E_POINTER> Das Koordinatensystem ist nicht gegeben (NULL).
+	// <nl><cv CST_E_INVALIDSOURCECOORDSYSTEM> Das übergebene Koordinatensystem ist ungültig.
+	// <nl><cv CST_E_COORDSYSTEMALREADYPRESENT> Das zu registrierende Koordinatensystem ist bereits registriert.
+	// @comm Ein Eingangskoordinatensystem wird häufig einer Datenquelle des aktuellen <tr>- Projektes 
+	// zugeordnet. Im Gegensatzsatz dazu entspricht das Ausgangskoordinatensystem im allgemeinen dem 
+	// <tr>- Projekt selbst.
+	// @xref <i ITRiASCSTransform>, <op .OutputCS>
+		[id(2), helpstring("Fügt ein Koordinatensystem zu dem Transformationsobjekt hinzu."), helpcontext(ITRiASCSTransform_AddInputCS_meth)] HRESULT AddInputCS([in] ITRiASCS *CS);
+
+	// @doc METHOD TRIASCS ITRIASCSTRANSFORM
+	// @method Sub | ITRiASCSTransform | RemoveInputCS | Die Methode <om .RemoveInputCS> entfernt das 
+	// angegebene Eingangskoordinatensystem aus dem Transformationsobjekt.
+	// @parm [in] String | strGUID | Der Parameter <p strGUID> enthält den GUID des aus dem
+	// Transformationsobjekt zu entfernenden Koordinatensystems.
+	// @except:(INTERNAL) 
+	// <nl><cv E_INVALIDARG> Die übergebene Zeichenkette ist kein Guid im Format '{xxxx-xxxx-....}'
+	// <nl><cv CST_E_COORDSYSTEMNOTFOUND> Es wurde kein Koordinatensystem gefunden, welches dem übergebenen
+	// GUID zugeordnet ist.
+	// @xref <i ITRiASCSTransform>
+		[id(3), helpstring("Entfernt ein Eingangskoordinatensystem aus dem Transformationsobjekt."), helpcontext(ITRiASCSTransform_RemoveInputCS_meth)] HRESULT RemoveInputCS([in] BSTR strGUID);
+
+	// @doc PROPERTY TRIASCS ITRIASCSTRANSFORM
+	// @property Boolean | ITRiASCSTransform | IsValid | Die Eigenschaft <op .IsValid> überprüft, ob die 
+	// Transformation vom gegebenen Eingangssystem zum Ausgangssystem möglich ist.
+	// @parm [in] String | strGUID | Der Parameter <p strGUID> enthält den der GUID des zu testenden 
+	// Eingangssystems.
+	// @except:(INTERNAL)  
+	// <nl><cv CST_E_COORDSYSTEMNOTFOUND> Es wurde kein Koordinatensystem gefunden, welches dem übergebenen
+	// GUID zugeordnet ist.
+	// <nl><cv CST_E_INVALIDSOURCECOORDSYSTEM> Das Eingangskoordinatensystem ist ungültig.
+	// <nl><cv CST_E_INVALIDDESTINATIONCOORDSYSTEM> Das Ausgangskoordinatensystem ist ungültig.
+	// @xref <i ITRiASCSTransform>
+		[propget, id(4), helpstring("Überprüfen, ob die Transformation vom gegebenen Eingangssystem zum Ausgangssystem möglich ist."), helpcontext(ITRiASCSTransform_IsValid_prop)] HRESULT IsValid([in] BSTR strGUID, [out, retval] VARIANT_BOOL *pVal);
+
+	// @doc METHOD TRIASCS ITRIASCSTRANSFORM
+	// @method Sub | ITRiASCSTransform | RecomputeTransformations | Die Methode <om .RecomputeTransformations>
+	// berechnet alle internen Transformationspfade neu.
+	// @devnote Die Methode <om .RecomputeTransformations> ist veraltet und darf nicht mehr benutzt werden.
+	// Zur Neuberechnung der Transformationspfade muß die Methode <om ITRiACS.Recompute> für eines der am
+	// Transformationsobjekt registrierten Koordinatensystem (Ausgangskoordinatensystem oder 
+	// Einganskoordinatensystem) gerufen werden.
+	// @xref <i ITRiASCSTransform>
+		[id(5), helpstring("Berechnet alle internen Transformationspfade neu (varaltet)."), hidden] HRESULT RecomputeTransformations();
+
+	// @doc METHOD TRIASCS ITRIASCSTRANSFORM
+	// @method Variant | ITRiASCSTransform | Transform | Die Methode <om .Transform> transformiert ein Feld 
+	// von Koordinaten vom angegebenen Eingangssystem des Transformationsobjektes (gesetzt mit 
+	// <om .AddInputCS>) in das Ausgangssystem des Transformationsobjektes.
+	// @parm [in] String | strGUID | Der Parameter <p strGUID> definiert das zu verwendende 
+	// Eingangskoordinatensystem.
+	// @parm [in] Double() | InPoints | Der Parameter <p InPoints> enthält die zu transformierenden 
+	// Koordinaten. Das übergebene Feld muß durch eine 'ReDim'- Anweisung eine Größe zugewiesen
+	// bekommen haben, die durch 3 teilbar ist. Es wird davon ausgegangen, daß jeweils 3 aufeinanderfolgende
+	// Elemente dieses Feldes ein Koordinaten-Tripel (X, Y, Z) enthalten.
+	// @rdesc Die Methode <om .Transform> liefert ein Feld, in dem die transformierten Koordinaten 
+	// abgelegt sind. Das Format des gelieferten Feldes entspricht dem des Parameters <p InPoints>. Die
+	// Elemente des Feldes sind vom Typ Double.
+	// @except:(INTERNAL)
+	// <nl><cv E_INVALIDARG> Zeiger auf Quellkoordinaten ist ungültig (NULL)
+	// <nl><cv E_POINTER> Zeiger auf Zielkoordinaten ist ungültig (NULL)
+	// <nl><cv CST_E_COORDSYSTEMNOTFOUND> Es wurde kein Koordinatensystem gefunden, welches dem übergebenen
+	// GUID zugeordnet ist.
+	// <nl><cv CST_E_INVALIDCOORDCOUNT> Die Anzahl der Werte im Parameter <p InPoints> ist nicht durch 3 teilbar.
+	// <nl><cv CST_E_INPUTTRANSFORMATIONFAILED>
+	// <nl><cv CST_E_OUTPUTTRANSFORMATIONFAILED>
+	// <nl><cv CST_E_INVALIDSOURCECOORDSYSTEM> Das Eingangskoordinatensystem ist ungültig.
+	// <nl><cv CST_E_INVALIDDESTINATIONCOORDSYSTEM> Das Ausgangskoordinatensystem ist ungültig.
+	// @xref <i ITRiASCSTransform>, <om .TransformInverse>
+		[id(6), helpstring("Koordinatentransformation von einem der Einganssysteme zum Ausgangssystem."), helpcontext(ITRiASCSTransform_Transform_meth)] HRESULT Transform([in] BSTR strGUID, [in] VARIANT InPoints, [out, retval] VARIANT *OutPoints);
+
+	// @doc METHOD TRIASCS ITRIASCSTRANSFORM
+	// @method Variant | ITRiASCSTransform | TransformInverse | Die Methode <om .TransformInvers>
+	// transformiert ein Feld von Koordinaten aus dem Ausgangssystem des Transformators in das
+	// angegebene Eingangssystem des Transformationsobjektes (gesetzt mit <om ITRiASCSTransform.AddInputCS>).
+	// @parm [in] String | strGUID | Der Parameter <p strGUID> definiert das zu verwendende 
+	// Eingangskoordinatensystem.
+	// @parm [in] Double() | InPoints | Der Parameter <p InPoints> enthält die zu transformierenden 
+	// Koordinaten. Das übergebene Feld muß durch eine 'ReDim'- Anweisung eine Größe zugewiesen
+	// bekommen haben, die durch 3 teilbar ist. Es wird davon ausgegangen, daß jeweils 3 aufeinanderfolgende
+	// Elemente dieses Feldes ein Koordinaten-Tripel (X, Y, Z) enthalten.
+	// @rdesc Die Methode <om .Transform> liefert ein Feld, in dem die transformierten Koordinaten 
+	// abgelegt sind. Das Format des gelieferten Feldes entspricht dem des Parameters <p InPoints>. Die
+	// Elemente des Feldes sind vom Typ Double.
+	// @rdesc Die Methode <om .TransformInvers> liefert ein Feld, in dem die transformierten Koordinaten 
+	// abgelegt sind. Das Format des gelieferten Feldes entspricht dem des Parameters <p InPoints>. Die
+	// Elemente des Feldes sind vom Typ Double.
+	// @except:(INTERNAL)
+	// <nl><cv E_INVALIDARG> Zeiger auf Quellkoordinaten ist ungültig (NULL)
+	// <nl><cv E_POINTER> Zeiger auf Zielkoordinaten ist ungültig (NULL)
+	// <nl><cv CST_E_COORDSYSTEMNOTFOUND> Es wurde kein Koordinatensystem gefunden, welches dem übergebenen
+	// GUID zugeordnet ist.
+	// <nl><cv CST_E_INVALIDCOORDCOUNT> Die Anzahl der Werte im Parameter <p InPoints> ist nicht durch 3 teilbar.
+	// <nl><cv CST_E_INPUTTRANSFORMATIONFAILED>
+	// <nl><cv CST_E_OUTPUTTRANSFORMATIONFAILED>
+	// <nl><cv CST_E_INVALIDSOURCECOORDSYSTEM>
+	// <nl><cv CST_E_INVALIDDESTINATIONCOORDSYSTEM>
+	// @xref <i ITRiASCSTransform>, <om .Transform>
+		[id(7), helpstring("Koordinatentransformation vom Ausgangssystem zu einem der Einganssysteme."), helpcontext(ITRiASCSTransform_TransformInverse_meth)] HRESULT TransformInverse([in] BSTR strGUID, [in] VARIANT InPoints, [out, retval] VARIANT *OutPoints);
+
+	// @doc METHOD TRIASCS ITRIASCSTRANSFORM
+	// @method HRESULT | ITRiASCSTransform | ShutDown | Gibt sämtliche durch diesen Transformator
+	// intern benötigten Resourcen sowie sämtliche enthaltenen Koordinatensysteme frei.
+	// @devnote Die Methode <om .ShutDown> muß unbedingt vor dem entgültigen Freigeben des 
+	// Transformators gerufen werden, da ansonsten die internen Resourcen nicht freigegeben werden 
+	// können.
+	// @xref <i ITRiASCSTransform>
+		[id(8), helpstring("Freigeben sämtlicher Koordinatensystem und Resourcen."), helpcontext(ITRiASCSTransform_ShutDown_meth)] HRESULT ShutDown();
+
+	// @doc METHOD TRIASCS ITRIASCSTRANSFORM
+	// @method HRESULT | ITRiASCSTransform | GetGoodEnvelope | 
+	//		Liefert einen (hoffentlich) gut passenden Container für das Koordinatensystem. Dieser
+	//		Container bezieht sich immer auf das festegelegte Ausgangskoordinatensystem.
+	//		Wurde bisher noch kein passender Container definiert werden Standardwerte aus
+	//		[HKCR\Software\{Company}\{Product}\Config\DefaultEnvelope] entnommen. Als Standard ist 
+	//		voreingestellt:
+	// @ex Beispiel für einen Registrierungseintrag |
+	// [HKEY_CURRENT_USER\Software\{Company}\{Product}\CoordTransform\DefaultEnvelope]
+	// \@="Deutschland gesamt, WGS84 Dezimalgrad"
+	// "XMin"="6"
+	// "XMax"="15"
+	// "YMin"="40"
+	// "YMax"="55"
+	// @rdesc
+	//	<cv S_OK>
+	// @xref <i ITRiASCSTransform>
+		[id(9)] HRESULT GetGoodEnvelope([in,out] double *lowerLeftX, [in,out] double *lowerLeftY, [in,out] double *upperRightX, [in,out] double *upperRightY );
+
+	// @doc METHOD TRIASCS ITRIASCSTRANSFORM
+	// @method HRESULT | ITRiASCSTransform | SetGoodEnvelope | 
+	//		Setzt für das Koordinatensystem einen gut passenden Container
+	// @rdesc
+	//	<cv S_OK>
+	// @xref <i ITRiASCSTransform>
+		[id(10)] HRESULT SetGoodEnvelope([in] double lowerLeftX, [in] double lowerLeftY, [in] double upperRightX, [in] double upperRightY );
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIASCS
+	[
+		object,
+		uuid(0D9D0690-3AA1-11d3-99A1-0060085FC1CE),
+		dual,
+		helpstring("ITRiASCSTransform Interface"),
+		pointer_default(unique)
+	] 
+	interface ITRiASCSTransform : ITRiASCSTransform0 
+	{
+	// @doc METHOD TRIASCS ITRiASCSTransform
+	// @method HRESULT | ITRiASCSTransform | Count | Liefert die Anzahl der registrierten Eingangskoordinatensysteme
+	// @rdesc
+	//	<cv S_OK>
+		[propget] HRESULT Count([out, retval] long* lpCount);
+
+	// @doc METHOD TRIASCS ITRiASCSTransform
+	// @method HRESULT | ITRiASCSTransform | Item | 
+	//		liefert das Eingangskoordinatensystem welches unter einem bestimmten GUID registriert
+	//		ist
+	// @rdesc
+	//	<cv S_OK>
+		[propget, id(DISPID_VALUE)] HRESULT Item([in] VARIANT vIndex, [out, retval] VARIANT* pTRiASCS);
+
+	// @doc METHOD TRIASCS ITRiASCSTransform
+	// @method HRESULT | ITRiASCSTransform | _NewEnum | 
+	//		liefert einen Enumerator über alle Eingangskoordinatensysteme; der Enumerator ist
+	//		vom Typ IEnumUnknown.
+	// @rdesc
+	//	<cv S_OK>
+		[propget, id(DISPID_NEWENUM), restricted] HRESULT _NewEnum([out,retval] IUnknown ** ppEnum);
+
+	// @doc METHOD TRIASCS ITRiASCSTransform
+	// @method HRESULT | ITRiASCSTransform | Add | Fügt ein Eingangskoordinatensystem hinzu
+	// @rdesc
+	//	<cv S_OK>
+		HRESULT Add([in] VARIANT vCS);
+
+	// @doc METHOD TRIASCS ITRiASCSTransform
+	// @method HRESULT | ITRiASCSTransform | Remove | Entfernt ein Eingangskoordinatensystem
+	// @rdesc
+	//	<cv S_OK>
+		HRESULT Remove([in] VARIANT CS);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIASCS
+// @interface ITRiASTransformGeometry | TRiAS Koordinatensysteme
+//		ein allgemeines Interface um Koordinaten zu transformieren.
+//		Dieses Interface wird von den Koordinatenservices selbst nicht genutzt.
+//		Ein Geometrieobjekt kann allerdings dieses Interface bereitstellen
+//		um 'sich selbst' zu transformieren.
+// @group Methoden und Eigenschaften von <i ITRiASCSTransform>
+// @index | ITRiASTransformGeometry
+// @doc ITRiASTransformGeometry
+	[
+		object,
+		uuid(6FABC490-4904-11d2-8FB8-0060085FC1CE),
+		helpstring("ITRiASTransformGeometry Interface"),
+		pointer_default(unique)
+	] 
+	interface ITRiASTransformGeometry : IUnknown {
+	// @doc TRIASCS METHOD ITRiASTransformGeometry
+	// @method HRESULT | ITRiASTransformGeometry | Transform | 
+	//		transformiert ein Feld von Koordinaten in das Ausgangssystem des Transformators
+	// @parm [in] <l CSGUID> | csGUID | 
+	//		das zu verwendende Eingangskoordinatensystem
+	// @parm [in] <l ITRiASCSTransform> | *pCSTransform | 
+	//		das zu verwendende Transformationsobjekt
+	// @rdesc
+	//	siehe <om ITRiASCSTransform.Transform>
+		HRESULT Transform( [in] struct CSID coordsysGUID, [in] ITRiASCSTransform *pCSTransform );
+
+	// @doc TRIASCS METHOD ITRiASTransformGeometry
+	// @method HRESULT | ITRiASTransformGeometry | TransformInverse | 
+	//		transformiert ein Feld von Koordinaten aus dem Ausgangssystem des Transformators in das
+	//		angegebene Eingangssystem (gesetzt mit <om ITRiASCSTransform.AddInputCS>)
+	// @parm [in] <l CSGUID> | csGUID | 
+	//		definiert das zu verwendende Eingangskoordinatensystem
+	// @parm [in] <l ITRiASCSTransform> | *pCSTransform | 
+	//		das zu verwendende Transformationsobjekt
+	// @rdesc
+	//	siehe <om ITRiASCSTransform.TransformInverse>
+		HRESULT TransformInverse( [in] struct CSID coordsysGUID, [in] ITRiASCSTransform *pCSTransform );
+	};
+
+// @doc
+	[ 
+		object,
+		uuid(AE998A03-1127-11D2-8F75-0060085FC1CE),
+		helpstring("ITRiASCSUI Interface"),
+		pointer_default(unique)
+	] 
+	interface ITRiASCSUI : IDispatch {
+		[propputref, id(DISPID_FONT)]
+		HRESULT Font([in]IFontDisp* pFont);
+		[propput, id(DISPID_FONT)]
+		HRESULT Font([in]IFontDisp* pFont);
+		[propget, id(DISPID_FONT)]
+		HRESULT Font([out, retval]IFontDisp** ppFont);
+	};
+	
+///////////////////////////////////////////////////////////////////////////////
+// Coclasses
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASCS
+// @object TRiASCS | TRiAS Koordinatensysteme; Koordinatensystem
+// @head3 Interfaces |
+// <i ITRiASCS>
+// @head3 Konstanten |
+// <t TRIASCSTYPE>
+	[
+		uuid(AC3B1897-E585-11D1-8F3E-0060085FC1CE),
+		helpstring("TRiAS Coordinate System"),
+		helpcontext(TRiASCS_obj)
+	] 
+	coclass TRiASCS 
+	{
+		[default] interface ITRiASCS;
+		interface ISpatialReferenceInfo;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASCS
+// @object TRiASCSGCS | TRiAS Koordinatensysteme; geodätische Grundlage
+// @head3 Interfaces |
+// <i ITRiASCSGCS>
+// @head3 Konstanten |
+// <t TRIASCSGEODETICDATUM>
+// <nl><t TRIASCSELLIPSOID>
+	[
+		uuid(73372654-E66A-11D1-8F40-0060085FC1CE),
+		helpstring("TRiAS Geographic spatial Model"),
+		helpcontext(TRiASCSGCS_obj)
+	] 
+	coclass TRiASCSGCS 
+	{
+		[default] interface ITRiASCSGCS;
+		interface ISpatialReferenceInfo;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASCS
+// @object TRiASCSPCS | TRiAS Koordinatensysteme; projektives Koordinatensystem
+// @head3 Interfaces |
+// <i ITRiASCSPCS>
+// @head3 Konstanten |
+// <t TRIASCSPROJECTIONALGORITHM>
+// <nl><t TRIASCSPROJECTIONPARAMETER>
+	[
+		uuid(4E1A7104-E993-11D1-8F48-0060085FC1CE),
+		helpstring("TRiAS Projected spatial Model"),
+		helpcontext(TRiASCSPCS_obj)
+	] 
+	coclass TRiASCSPCS 
+	{
+		[default] interface ITRiASCSPCS;
+		interface ISpatialReferenceInfo;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASCS
+// @object TRiASCSTransform | TRiAS Koordinatensysteme; Koordinatentransformator
+// @head3 Interfaces |
+// <i ITRiASCSTransform>
+// <nl><i ITRiASRawCoordTransform>
+	[
+		uuid(24069B54-F3B9-11D1-8F50-0060085FC1CE),
+		helpstring("TRiAS geographic CoordTransform"),
+		helpcontext(TRiASCSTransform_obj)
+	] 
+	coclass TRiASCSTransform 
+	{
+		[default] interface ITRiASCSTransform;
+		interface ITRiASRawCoordTransform;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASCS
+// @object TRiASCSDatumTransformation | TRiAS Koordinatensysteme; Datumstransformation
+// @head3 Interfaces |
+// <i ITRiASCSDatumTransformation>
+// @head3 Konstanten |
+// <t TRIASCSDTRANSALGORITHM>
+// <nl><t TRIASCSDTRANSPARAMETER>
+	[
+		uuid(E5AC8734-0769-11D2-8F5E-0060085FC1CE),
+		helpstring("TRiASCSDatumTransformation")
+	] 
+	coclass TRiASCSDatumTransformation 
+	{
+		[default] interface ITRiASCSDatumTransformation;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASCS
+// @object TRIASCSSet | TRiAS Koordinatensysteme; Sammlung von Koordinatensystemen
+// @head3 Interfaces |
+// <i ITRIASCSSet>
+// @head3 Konstanten |
+	[ 
+		uuid(2FB28CB6-89D8-11D2-9894-0060085FC1CE),
+		helpstring("TRiASCSSet"),
+		helpcontext(TRiASCSSet_obj)
+	] 
+	coclass TRiASCSSet 
+	{
+		[default] interface ITRiASCSSet;
+	};
+	
+///////////////////////////////////////////////////////////////////////////////
+// @doc
+	[	
+		uuid(AE998A04-1127-11D2-8F75-0060085FC1CE),
+		helpstring("TRiASCSUI Class"),
+	] 
+	coclass TRiASCSUI 
+	{
+		[default] interface ITRiASCSUI;
+	};
+	
+	[ uuid(F2FF1AF3-0FF1-11D2-8F6D-0060085FC1CE),
+		helpstring("TRiASCSPropertyPage")
+	] coclass TRiASCSPpg {
+		interface IUnknown;
+	};
+	
+	[ uuid(B1C41973-11C4-11D2-8F75-0060085FC1CE),
+		helpstring("TRiASGCSPpg Class")
+	] coclass TRiASGCSPpg {
+		interface IUnknown;
+	};
+	
+	[ uuid(59E3C095-13F7-11D2-8F77-0060085FC1CE),
+		helpstring("TRiASPCSPpg Class")
+	] coclass TRiASPCSPpg {
+		interface IUnknown;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASCS
+// @object TRiASCSUIService | Ein Datenobjekt vom Typ <o TRiASCSUIService> stellt verschiedene
+// Methoden zur Verfügung, mit deren Hilfe sich Eingabe- bzw. Ausgabeoperationen für Koordinatenwerte
+// in einer Oberfläche besser realisieren lassen.
+// @supint <i ITRiASCSUIHelper> | Über das Interface <i ITRiASCSUIHelper> sind sämtliche Eigenschaften
+// und Methoden des Objektes <o TRiASCSUIService> verfügbar. 
+// @comm Die Berechnungen erfolgen auf der Grundlage der Koordinatensysteme, in denen die einzelnen
+// Koordinatenwerte gegeben sind.
+	[ 
+		uuid(D7BF4727-14CB-474E-AAFD-C1202E3EC3C8),
+		helpstring("TRiASCSUIService Class") 
+	]
+	coclass TRiASCSUIService
+	{
+		[default] interface ITRiASCSUIService;
+	};
+
+#if defined(_USE_WKTSERVICE)
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASCS
+// @object TRiASCSWktService | Ein Datenobjekt vom Typ <o TRiASCSWktService> stellt 
+// verschiedene Funktionen zur Verfügung, mit deren Hilfe ein <o TRiASCS> -Objekt
+// in eine textliche Repräsentation (wkt steht 'well known text') bzw. eine textliche
+// Repräsentation eines Koordinatensystemes in ein <o TRiASCS> -Objekt umgewandelt werden
+// können.
+// @supint <i ITRiASCSWktService> | Über das Interface <i ITRiASCSWktService> sind sämtliche
+// Eigenschaften und Methoden des Objektes <o TRiASCSWktService> verfügbar.
+// @comm Die textliche Repräsentation, die durch das <o TRiASCSWktService> -Objekt erzeugt bzw.
+// interpretiert werden kann, entspricht dem durch das OGC standardisierten WKT-Format
+// für Koordinatensysteme (s. OpenGIS® Simple Feature Specification For SQL, Open GIS Consortium, Inc.
+// Revision 1.0, 13. March 1998, pp. 3-28, 3-29, Chapter 3.4 Well-known Text
+// Representation of Spatial Reference Systems).
+// @xref <o TRiASCS>, <i ITRiASCSWktService>
+	[
+		uuid(EF402E92-99D1-4B83-981C-7F53C7F6243E),
+		helpstring("TRiASCSWktService Class"),
+		helpcontext(TRiASCSWktService_obj)
+	]
+	coclass TRiASCSWktService
+	{
+		[default] interface ITRiASCSWktService;
+	};
+#endif // defined(_USE_WKTSERVICE)
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASCS
+// @object TRiASCSDistanceService | Ein Datenobjekt vom Typ <o TRiASCSDistanceService> stellt
+// verschiedenen Methoden zur Verfügung, mit deren Hilfe sich Abstände, Längen bzw. Flächeninhalte
+// berechnen lassen. 
+// @supint <i ITRiASCSDistanceService> | Über das Interface <i ITRiASCSDistanceService> sind
+// sämtliche Eigenschaften und Methoden eines Objektes vom Typ <o TRiASCSDistanceService> verfügbar.
+// @comm Die Berechnungen erfolgen auf der Grundlage der Koordinatensysteme, in denen die einzelnen
+// Koordinaten gegeben sind.
+// @xref <i ITRiASCSDistanceService>
+	[
+		uuid(4F4DF03D-3863-4808-8606-4F7513033066),
+		helpstring("TRiASCSDistanceService Class"),
+		helpcontext(TRiASCSDistanceService_obj)
+	]
+	coclass TRiASCSDistanceService
+	{
+		[default] interface ITRiASCSDistanceService;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASCS
+// @object TRiASCSTransformService | Ein Datenobjekt vom Typ <o TRiASCSTransformService> stellt 
+// Funktionen zur Verfügung, die es VB-Clients ermöglichen, Geometrieobjekte direkt durch eine
+// Koordinatentransformationspipe verarbeiten zu lassen
+// @xref <i ITRiASCSTransformService>
+	[ 
+		uuid(71B8F28B-10AE-406E-9679-796A63805801), 
+		helpstring("TRiASCSTransformService Object") 
+	]
+	coclass TRiASCSTransformService
+	{
+		[default] interface ITRiASCSTransformService;
+	};
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// internes Interface für CTRiASCS, CTRiASPCS und CDatumTransformation
+[
+	object
+	, uuid(2E02D030-F707-11d1-8F51-0060085FC1CE)
+]
+interface ITRiASCSTransformData : IUnknown {
+	[helpstring("Transformation LLH zu PCS")] HRESULT Transform( [in] long nCoords, [in,out,size_is(nCoords)] CSCOORD* pCoords /*, [in,defaultvalue(FALSE)] BOOL bTransformDatum*/ );
+	[helpstring("Transformation PCS zu LLH")] HRESULT TransformInverse( [in] long nCoords, [in,out,size_is(nCoords)] CSCOORD* pCoords /*, [in,defaultvalue(FALSE)] BOOL bTransformDatum */);
+}
+
+[
+	object
+	, uuid(3B94F3B0-48CF-11d2-8FB8-0060085FC1CE)
+]
+interface ITRiASCSValidate : IUnknown {
+	[helpstring("Interne Überprüfung des Koordinatensystems")] HRESULT IsValid( );
+	[helpstring("interne Neuberechnung der Transformation")] HRESULT RecomputeTransformation([in,defaultvalue(0)] ITRiASCSGCS *pGCS );
+}
+
+[
+	object
+	, uuid(0132E710-4E41-11d2-8FC0-0060085FC1CE)
+]
+interface ITRiASCSValidateDatum : ITRiASCSValidate {
+	[helpstring("Konsolidieren der Datumstransformation")] HRESULT RecomputeDatumTransformation([in] ITRiASCSGCS *pSrcGCS, [in] ITRiASCSGCS *pDstGCS, [in] ITRiASCSDatumTransformation *pDstDTrans );
+}
+
+[
+	object
+	, uuid(9BCD9BF2-1712-11d2-8F79-0060085FC1CE)
+]
+interface ITRiASCSTransformInfo : IUnknown {
+	[helpstring("method CanTransform")] HRESULT CanTransform([in] LONG typeOfTransformation);
+}

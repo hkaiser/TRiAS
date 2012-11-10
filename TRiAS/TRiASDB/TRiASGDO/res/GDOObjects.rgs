@@ -1,0 +1,24 @@
+HKCR 
+{
+	TRiASGDO.GDOObjects.1 = s 'TRiAS GDO-Objektklasse' 
+	{
+		CLSID = s '{C9500957-14CD-11D2-8F79-0060085FC1CE}'
+	}
+	TRiASGDO.GDOObjects = s 'TRiAS GDO-Objektklasse' 
+	{
+		CurVer = s 'TRiASGDO.GDOObjects.1'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {C9500957-14CD-11D2-8F79-0060085FC1CE} = s 'TRiAS GDO-Objektklasse' 
+		{
+			ProgID = s 'TRiASGDO.GDOObjects.1'
+			VersionIndependentProgID = s 'TRiASGDO.GDOObjects'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%' 
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

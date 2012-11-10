@@ -1,0 +1,798 @@
+//
+// 21.02.2001 17:38:46
+//		 Added ITRiASDBEngineEvents
+//
+// @doc 
+// @module TRiASDB.Idl | IDL source for TRiASDB typelib
+// @group In diesem Modul definierte Objekte (coclasses)
+// @index | OBJECT & TRIASDB
+
+// This file will be processed by the MIDL tool to
+// produce the type library (TriasDB.tlb) and marshalling code.
+
+cpp_quote("#define TYPELIB_TRIASDB_VERSION_MAJOR 1")
+cpp_quote("#define TYPELIB_TRIASDB_VERSION_MINOR 0")
+cpp_quote("#define TYPELIB_TRIASDB_VERSION \"1.0\"")
+cpp_quote("#define TYPELIB_TRIASDB_LCID 0")
+
+#define TYPELIB_TRIASDB_VERSION_MAJOR 1
+#define TYPELIB_TRIASDB_VERSION_MINOR 0
+#define TYPELIB_TRIASDB_VERSION 1.0
+#define TYPELIB_TRIASDB_LCID 0
+
+cpp_quote("#include <TRiASDBModuleStrings.h>")		// Stringkonstanten (füher module ...)
+
+///////////////////////////////////////////////////////////////////////////////
+// notwendige Includes
+import "oaidl.idl";
+import "ocidl.idl";
+
+#if !defined(_BASETSD_H_) && (501 >= __midl)
+#include <basetsd.h>
+#endif // !defined(_BASETSD_H_)
+
+#include "idl/TRiASDBEvents.idl"			// Events die von TRiASDB verschickt werden
+#include "idl/TRiASDBInterfaces.idl"
+#include "idl/TRiASDBNativeInterfaces.idl"
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc TYPELIB
+// Die eigentliche TypeLibrary
+[
+	uuid(1CB3AB53-2E87-11D1-969D-00A024D6F582),
+	version(TYPELIB_TRIASDB_VERSION),
+	lcid(TYPELIB_TRIASDB_LCID),
+	helpstring("TRiAS-DataBase 1.0 Type Library")
+]
+library TRiASDB
+{
+// TLib : OLE Automation : {00020430-0000-0000-C000-000000000046}
+	importlib("stdole2.tlb");
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc	TRIASDB VERSION
+	enum TRIASDB_VERSIONS {
+		TYPELIB_TRiASDB_VERSION_MAJOR = TYPELIB_TRIASDB_VERSION_MAJOR,
+		TYPELIB_TRiASDB_VERSION_MINOR = TYPELIB_TRIASDB_VERSION_MINOR,
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// interfaces to import
+	interface IReconnectDialog;
+	interface ICreateDatabase;
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASDB
+	[
+		uuid(1CB3AB7A-2E87-11D1-969D-00A024D6F582),
+		helpstring("TRiASProjects Class")
+	]
+	coclass TRiASProjects
+	{
+		[default] interface ITRiASProjects;
+	};
+
+// @doc OBJECT TRIASDB
+	[
+		uuid(E09B634E-8494-4236-A666-98113F02FEFD),
+		helpstring("TRiASProject Class")
+	]
+	coclass TRiASProject
+	{
+		[default] interface ITRiASProject;
+		[restricted] interface ITRiASPropertySupport;
+		[restricted] interface ITRiASPropertyMapHandler;
+		[restricted] interface ITRiASPropertyCallback;
+		interface ITRiASPropertyBase;
+		[source, default] interface ITRiASConnectionEvents;
+		[source] interface ITRiASPropertyEvents;
+		[source] interface ITRiASViewEvents;
+	};
+
+// @doc OBJECT TRIASDB
+	[
+		uuid(1CB3AB64-2E87-11D1-969D-00A024D6F582),
+		helpstring("OleDocumentWrapper Class")
+	]
+	coclass OleDocumentWrapper
+	{
+		[default] interface IUnknown;
+	};
+
+// @doc OBJECT TRIASDB
+	[
+		uuid(191A9AF8-37FE-11D1-96B6-00A024D6F582),
+		helpstring("TRiASConnections Class")
+	]
+	coclass TRiASConnections
+	{
+		[default] interface ITRiASConnections;
+		interface ITRiASConnectionEvents;
+	};
+
+// @doc OBJECT TRIASDB
+	[
+		uuid(191A9AF5-37FE-11D1-96B6-00A024D6F582),
+		helpstring("TRiASConnection Class")
+	]
+	coclass TRiASConnection
+	{
+		[default] interface ITRiASConnection;
+//		interface IPersistStreamInit;
+		[restricted] interface ITRiASPropertySupport;
+		[restricted] interface ITRiASPropertyMapHandler;
+		interface ITRiASPropertyBase;
+		[source, default] interface ITRiASPropertyEvents;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASDB
+// @object TRiASDatabaseOnFile | Ein Objekt vom Typ <o TRiASDatabaseOnFile> repräsentiert 
+// eine <tr> Datenbank, die über eine <o TRiASConnection> als eine Datenquelle
+// in <tr> selbst verfügbar gemacht wird.
+// @supint <i GDatabase> | Die zentralen Funktionalitäten eine Datenbank werden über dieses
+// Interface zugänglich gemacht. Es ist direkt kompatibel zum entsprechenden Interface in GeoMedia.
+// @supint <i ITRiASDatabase> | Zusätzliche datenbankspezifische Funktionen, die in <i GDatabase> 
+// fehlen sind in diesem Interface gruppiert.
+// @supint <i ITRiASPropertyBase> | Dieses Interface wird implizit als Basisinterface des
+// <i ITRiASDatabase> implemntiert. Eine Datenbank, die über TRiASDB angekoppelt werden soll
+// sollte Properties (Eigenschaften) besitzen, die über dieses Interface zugänglich gemacht werden.
+// sind keine derartigen Eigenschaften vorgesehen, dann können die Methoden von <i ITRiASPropertyBase>
+// in jedem Fall den Rückkehrwert <cv E_NOTIMPL> liefern.
+// @supint <i ITRiASPropertySupport> | Die Implementation der Properties innerhalb des TRiASDB-Modules
+// erfordert, daß die Eigenschaften selbst durch das zugehörige Parent-Objekt (in diesem Fall
+// <o TRiASDatabaseOnFile>) verwaltet werden. Die Implementation der Objekte <o TRiASProperties> und
+// <o TRiASProperty> basieren auf diesem Mechanismus und sind daher für alle Objekte wiederverwendbar.
+// @consumes <i ITRiASPropertyEvents>
+// @devnote Für jeden Typ einer Datenbank oder Datenquelle, die über TRiASDB verfügbar gemacht 
+// werden soll, muß genau ein Objekt dieses Types implementiert werden. Zwingend notwendig ist die
+// Implementation der Interfaces ITRiASDatabase und GDatabase, wenn das Objekt darüber hinausgehende
+// evtl. instanzabhängige Eigenschaften zur Verfügung stellen soll, dann in Ergänzung zu dem
+// Basisinterface ITRiASPropertyBase ebenfalls die Interfaces ITRiASPropertySupport und einen 
+// Connectionpoint für das Interface ITRiASPropertyEvents.
+// @xref <i ITRiASDatabase>, <i GDatabase>, <i ITRiASPropertyBase>, <o TRiASCompatibleDatabase>,
+// <i ITRiASPropertySupport>
+	[
+		uuid(6ACC24A4-3969-11D1-96B8-00A024D6F582),
+		helpstring("TRiASDatabaseOnFile 2.0 Class")
+	]
+	coclass TRiASDatabaseOnFile
+	{
+		[default] interface ITRiASDatabase;
+		interface ITRiASAccessDatabase;
+		interface ITRiASPropertyBase;
+		interface ITRiASSearchObjects;
+		[restricted] interface ITRiASPropertySupport;
+		[restricted] interface ITRiASPropertyMapHandler;
+		[restricted] interface ITRiASPropertyCallback;
+		[source, default] interface ITRiASPropertyEvents;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASDB
+// @object TRiASDatabaseOnStg | Ein Objekt vom Typ <o TRiASDatabaseOnStg> repräsentiert 
+// eine <tr> Datenbank, die über eine <o TRiASConnection> als eine Datenquelle
+// in <tr> selbst verfügbar gemacht wird und i.a. in der Projektdatei mit enthalten ist.
+// @supint <i ITRiASDatabase> | Zusätzliche datenbankspezifische Funktionen, die in <i GDatabase> 
+// fehlen sind in diesem Interface gruppiert.
+// @supint <i ITRiASPropertyBase> | Dieses Interface wird implizit als Basisinterface des
+// <i ITRiASDatabase> implemntiert. Eine Datenbank, die über TRiASDB angekoppelt werden soll
+// sollte Properties (Eigenschaften) besitzen, die über dieses Interface zugänglich gemacht werden.
+// sind keine derartigen Eigenschaften vorgesehen, dann können die Methoden von <i ITRiASPropertyBase>
+// in jedem Fall den Rückkehrwert <cv E_NOTIMPL> liefern.
+// @supint <i ITRiASPropertySupport> | Die Implementation der Properties innerhalb des TRiASDB-Modules
+// erfordert, daß die Eigenschaften selbst durch das zugehörige Parent-Objekt (in diesem Fall
+// <o TRiASDatabaseOnStg>) verwaltet werden. Die Implementation der Objekte <o TRiASProperties> und
+// <o TRiASProperty> basieren auf diesem Mechanismus und sind daher für alle Objekte wiederverwendbar.
+// @consumes <i ITRiASPropertyEvents>
+// @devnote Für jeden Typ einer Datenbank oder Datenquelle, die über TRiASDB verfügbar gemacht 
+// werden soll, muß genau ein Objekt dieses Types implementiert werden. Zwingend notwendig ist die
+// Implementation der Interfaces ITRiASDatabase und GDatabase, wenn das Objekt darüber hinausgehende
+// evtl. instanzabhängige Eigenschaften zur Verfügung stellen soll, dann in Ergänzung zu dem
+// Basisinterface ITRiASPropertyBase ebenfalls die Interfaces ITRiASPropertySupport und einen 
+// Connectionpoint für das Interface ITRiASPropertyEvents.
+// @xref <i ITRiASDatabase>, <i ITRiASPropertyBase>, <i ITRiASPropertySupport>,
+// <o TRiASCompatibleDatabase>, <o TRiASDatabaseOnFile>
+	[
+		uuid(5A28AAC2-D4B3-4A72-90FA-6DDE007EF5BD),
+		helpstring("TRiASDatabaseOnStg 2.0 Class")
+	]
+	coclass TRiASDatabaseOnStg
+	{
+		[default] interface ITRiASDatabase;
+		interface ITRiASAccessDatabase;
+		interface ITRiASPropertyBase;
+		interface ITRiASSearchObjects;
+		[restricted] interface ITRiASPropertySupport;
+		[restricted] interface ITRiASPropertyMapHandler;
+		[restricted] interface ITRiASPropertyCallback;
+		[source, default] interface ITRiASPropertyEvents;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASDB
+// @object TRiASCompatibleDatabase | Ein Objekt vom Typ <o TRiASCompatibleDatabase>
+// repräsentiert eine <tr> Datenbank, die über eine <o TRiASConnection> als eine Datenquelle
+// in <tr> selbst verfügbar gemacht wird. Der Unterschied zu <o TRiASDatabaseOnFile> besteht darin, daß 
+// hier ein veraltetes Dateiformat verwendet wird, welches aus Kompatibilitätsgründen weiterhin
+// unterstützt wird.
+// @comm Datenbanken dieses Types können lediglich Gelesen und nicht geschrieben werden.
+// @supint <i ITRiASDatabase> | Zusätzliche datenbankspezifische Funktionen, die in <i GDatabase> 
+// fehlen sind in diesem Interface gruppiert.
+// @supint <i ITRiASPropertyBase> | Dieses Interface wird implizit als Basisinterface des
+// <i ITRiASDatabase> implemntiert. Eine Datenbank, die über TRiASDB angekoppelt werden soll
+// sollte Properties (Eigenschaften) besitzen, die über dieses Interface zugänglich gemacht werden.
+// sind keine derartigen Eigenschaften vorgesehen, dann können die Methoden von <i ITRiASPropertyBase>
+// in jedem Fall den Rückkehrwert <cv E_NOTIMPL> liefern.
+// @supint <i ITRiASPropertySupport> | Die Implementation der Properties innerhalb des TRiASDB-Modules
+// erfordert, daß die Eigenschaften selbst durch das zugehörige Parent-Objekt (in diesem Fall
+// <o TRiASCompatibleDatabase>) verwaltet werden. Die Implementation der Objekte <o TRiASProperties> und
+// <o TRiASProperty> basieren auf diesem Mechanismus und sind daher für alle Objekte wiederverwendbar.
+// @consumes <i ITRiASPropertyEvents>
+// @xref <i ITRiASDatabase>, <i GDatabase>, <o TRiASDatabaseOnFile>, <i ITRiASPropertyBase>,
+// <i ITRiASPropertySupport>
+	[
+		uuid(AD0D7076-39B0-11D1-96B9-00A024D6F582),
+		helpstring("TRiASDatabase 1.30 Class")
+	]
+	coclass TRiASCompatibleDatabase
+	{
+		[default] interface ITRiASDatabase;
+		interface ITRiASPropertyBase;
+		interface ITRiASSearchObjects;
+		[restricted] interface ITRiASPropertySupport;
+		[restricted] interface ITRiASPropertyMapHandler;
+		[restricted] interface ITRiASPropertyCallback;
+		[source, default] interface ITRiASPropertyEvents;
+	};
+
+// @doc OBJECT TRIASDB
+	[
+		uuid(1CB3AB68-2E87-11D1-969D-00A024D6F582),
+		helpstring("TRiASViews Class")
+	]
+	coclass TRiASViews
+	{
+		[default] interface ITRiASViews;
+		interface ITRiASViewEvents;
+	};
+
+// @doc OBJECT TRIASDB
+	[
+		uuid(1CB3AB66-2E87-11D1-969D-00A024D6F582),
+		helpstring("TRiASView Class")
+	]
+	coclass TRiASView
+	{
+		[default] interface ITRiASView;
+		interface ITRiASPropertyBase;
+//		interface IPersistStreamInit;
+		[restricted] interface ITRiASPropertySupport;
+		[restricted] interface ITRiASPropertyMapHandler;
+		[source, default] interface ITRiASViewItemEvents; 
+		[source] interface ITRiASPropertyEvents; 
+	};
+
+// @doc OBJECT TRIASDB
+	[
+		uuid(1CB3AB6A-2E87-11D1-969D-00A024D6F582),
+		helpstring("TRiASClasses Class")
+	]
+	coclass TRiASViewItems
+	{
+		[default] interface ITRiASViewItems;
+	};
+
+// @doc OBJECT TRIASDB
+	[
+		uuid(1CB3AB6C-2E87-11D1-969D-00A024D6F582),
+		helpstring("TRiASClass Class")
+	]
+	coclass TRiASViewItem
+	{
+		[default] interface ITRiASViewItem;
+//		interface IPersistStreamInit;
+		interface ITRiASPropertyBase;
+		[restricted] interface ITRiASPropertySupport;
+		[restricted] interface ITRiASPropertyMapHandler;
+		[source, default] interface ITRiASPropertyEvents; 
+	};
+
+// @doc OBJECT TRIASDB
+	[
+		uuid(1CB3AB6E-2E87-11D1-969D-00A024D6F582),
+		helpstring("TRiASObjects Class")
+	]
+	coclass TRiASObjects
+	{
+		[default] interface ITRiASObjects;
+//		interface IPersistStreamInit;
+		interface ITRiASPropertyBase;
+		interface ITRiASObjectsOperations;
+		interface ITRiASSearchObjects;
+		[restricted] interface ITRiASPropertySupport;
+		[restricted] interface ITRiASPropertyMapHandler;
+		[source] interface ITRiASObjectEvents;
+		[source] interface ITRiASFeatureEvents;
+		[source] interface ITRiASPropertyEvents;
+		[source, default] interface ITRiASObjectsEvents;
+		[source] interface ITRiASObjectsCallback;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASDB
+// @object TRiASSimpleObjects | Das Object <o TRiASSimpleObjects> repräsentiert
+// alle GeoDB-Objekte eines Identifikators/Objekttypes.
+// @supint <i ITRiASObjects> | Hauptinterface, ist Vorraussetzung für die richtige
+// Einbindung dieses Objektes in die TRiASDB-Hierarchie.
+// @supint <i ITRiASSimpleObjects> | Interface, über welches das Objekt initialisiert 
+// werden kann, bzw. die Spezifika einer <tr>-Datenbank behandelt werden können.
+// @devnote Objekte dieses Types sind spezifisch für die <tr> Datenbanken und müssen
+// daher nicht für jeden TRiASDB-Schnittstellenmodul implementiert werden. In anderen
+// Schnittstellenmodulen werden sicherlich andere spezifische TRiASObjects-Objekte 
+// implementiert werden, die den jeweiligen Spezifika Rechnung tragen.
+// @xref <i ITRiASSimpleObjects>, <i ITRiASObjects>, <o TRiASSimpleObjects>
+	[
+		uuid(578D0E94-932B-11D1-BA04-080036D63803),
+		helpstring("TRiASSimpleObjects Class")
+	]
+	coclass TRiASSimpleObjects
+	{
+		interface ITRiASObjects;
+		interface ITRiASObjectsEx;
+		[default] interface ITRiASSimpleObjects;
+		interface ITRiASObjectsCallback;
+//		interface IPersistStreamInit;
+		interface ITRiASPropertyBase;
+		interface ITRiASObjectsOperations;
+		interface ITRiASSearchObjects;
+		[restricted] interface ITRiASPropertySupport;
+		[restricted] interface ITRiASPropertyMapHandler;
+		[source] interface ITRiASFeatureEvents;
+		[source] interface ITRiASPropertyEvents;
+		[source, default] interface ITRiASObjectsEvents;
+		[source] interface ITRiASObjectEvents;
+	};
+
+// @doc OBJECT TRIASDB
+	[
+		uuid(48172D65-AB72-11D1-858D-00600875138A),
+		helpstring("TRiASObjectsCollection Class")
+	]
+	coclass TRiASObjectsCollection
+	{
+		[default] interface ITRiASObjectsCollection;
+		interface ITRiASSearchObjects;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASDB
+	[
+		uuid(5F20C607-B87C-11D2-95A8-006008447800),
+		helpstring("TRiASSimpleObjectsCollection Class")
+	]
+	coclass TRiASSimpleObjectsCollection
+	{
+		[default] interface ITRiASSimpleObjectsCollection;
+	};
+
+// @doc OBJECT TRIASDB
+	[
+		uuid(1CB3AB70-2E87-11D1-969D-00A024D6F582),
+		helpstring("TRiASObject Class")
+	]
+	coclass TRiASObject
+	{
+		[default] interface ITRiASObject;
+		interface ITRiASPropertyBase;
+		[restricted] interface ITRiASPropertySupport;
+		[restricted] interface ITRiASPropertyMapHandler;
+		[source, default] interface ITRiASObjectEvents;
+		[source] interface ITRiASFeatureEvents;
+		[source] interface ITRiASPropertyEvents;
+		[source] interface ITRiASObjectCallback;
+	};
+
+// @doc OBJECT TRIASDB
+	[
+		uuid(90378E24-C54C-11D1-85D2-00600875138A),
+		helpstring("TRiASSimpleObject Class")
+	]
+	coclass TRiASSimpleObject
+	{
+		[default] interface ITRiASSimpleObject;
+		interface ITRiASObject;
+		interface ITRiASPropertyBase;
+		[restricted] interface ITRiASPropertySupport;
+		[restricted] interface ITRiASPropertyMapHandler;
+		[source, default] interface ITRiASObjectEvents;
+		[source] interface ITRiASFeatureEvents;
+		[source] interface ITRiASPropertyEvents;
+	};
+
+// @doc OBJECT TRIASDB
+	[
+		uuid(1CB3AB72-2E87-11D1-969D-00A024D6F582),
+		helpstring("TRiASFeatures Class")
+	]
+	coclass TRiASFeatures
+	{
+		[default] interface ITRiASFeatures;
+		[source, default] interface ITRiASFeatureEvents; 
+		[source] interface ITRiASFeaturesCallback; 
+	};
+
+// @doc OBJECT TRIASDB
+	[
+		uuid(1B52E2A6-EA84-11D1-861E-00600875138A),
+		helpstring("TRiASSimpleFeatures Class")
+	]
+	coclass TRiASSimpleFeatures
+	{
+		[default] interface ITRiASFeatures;
+		interface ITRiASPropertyBase;
+		[restricted] interface ITRiASPropertySupport;
+		[restricted] interface ITRiASPropertyMapHandler;
+		interface ITRiASSimpleFeatures;
+		interface ITRiASFeaturesCallback; 
+		[source] interface ITRiASPropertyEvents;
+	};
+
+// @doc OBJECT TRIASDB
+	[
+		uuid(701CD5C3-FB01-11D1-863E-00600875138A),
+		helpstring("TRiASSimpleGeoFeatures Class")
+	]
+	coclass TRiASSimpleGeoFeatures
+	{
+		[default] interface ITRiASFeatures;
+		interface ITRiASPropertyBase;
+		[restricted] interface ITRiASPropertySupport;
+		[restricted] interface ITRiASPropertyMapHandler;
+		interface ITRiASSimpleGeoFeatures;
+		interface ITRiASFeaturesCallback; 
+		[source] interface ITRiASPropertyEvents;
+	};
+
+// @doc OBJECT TRIASDB
+	[
+		uuid(1CB3AB74-2E87-11D1-969D-00A024D6F582),
+		helpstring("TRiASFeature Class")
+	]
+	coclass TRiASFeature
+	{
+		[default] interface ITRiASFeature;
+#if defined(_IMPLEMENT_LOCKFEATURE)
+		interface ITRiASLockFeature;
+#endif // defined(_IMPLEMENT_LOCKFEATURE)
+		[source] interface ITRiASFeatureCallback; 
+	};
+
+	typedef [public, v1_enum, helpstring("Typ einer Objekteigenschaft.")]
+	enum _tagEVALEXPARAM EVALEXPARAM;
+
+// @doc OBJECT TRIASDB
+	[
+		uuid(1B52E2A4-EA84-11D1-861E-00600875138A),
+		helpstring("TRiASSimpleFeature Class")
+	]
+	coclass TRiASSimpleFeature
+	{
+		[default] interface ITRiASFeature;
+		interface ITRiASSimpleFeature;
+		interface ITRiASFeatureCallback;
+		interface ITRiASSearchObjects;
+	};
+
+// @doc OBJECT TRIASDB
+	[
+		uuid(BED66F36-7351-11D2-9EF1-006008447800),
+		helpstring("TRiASGuidFeature Class")
+	]
+	coclass TRiASGuidFeature
+	{
+		[default] interface ITRiASFeature;
+		interface ITRiASSimpleFeature;
+		interface ITRiASFeatureCallback;
+	};
+
+// @doc OBJECT TRIASDB
+	[
+		uuid(701CD5C5-FB01-11D1-863E-00600875138A),
+		helpstring("TRiASSimpleGeoFeature Class")
+	]
+	coclass TRiASSimpleGeoFeature
+	{
+		[default] interface ITRiASFeature;
+		interface ITRiASSimpleFeature;
+		interface ITRiASFeatureCallback;
+		interface ITRiASSearchObjects;
+	};
+
+// @doc OBJECT TRIASDB
+	[
+		uuid(1CB3AB76-2E87-11D1-969D-00A024D6F582),
+		helpstring("TRiASRelations Class")
+	]
+	coclass TRiASRelations
+	{
+		[default] interface ITRiASRelations;
+	};
+
+// @doc OBJECT TRIASDB
+	[
+		uuid(1CB3AB78-2E87-11D1-969D-00A024D6F582),
+		helpstring("TRiASRelation Class")
+	]
+	coclass TRiASRelation
+	{
+		[default] interface ITRiASRelation;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASDB
+// @object TRiASDBEngine | Das erste Objekt der Objekthierarchie eines
+// TRiASDB-Schnittstellenmodules.
+// @supint <i ITRiASDBEngine> | Hauptinterface, muß von allen Objekten dieses Types 
+// implementiert werden.
+// @supint <i ITRiASMainDBEngine> | Interface darf lediglich von einem Schnittstellenmodul
+// implementiert werden, da über dieses Interface Projekte erzeugt werden. Zur Zeit wird 
+// dieses Interface vom Objekt <o TRiASDBEngine> implementiert.
+// @consumes <i ITRiASProjectEvents>
+// @devnote Ein Objekt dieses Types muß für jeden neuen TRiASDB- Schnittstellenmodul 
+// implementiert werden. Dieses Objekt muß das Interface ITRiASDBEngine implementieren. 
+// <nl>Die gesamte Projektverwaltung wird von genau einem Objekt dieses Types gemacht.
+// Deshalb darf auch das Interface ITRiASMainDBEngine nicht implementiert werden. 
+// Auch der Connectionpoint für das Interface ITRiASProjectEvents wird nur diesem Objekt
+// implementiert.
+// <nl>Jedes Objekt dieses Types muß als SINGLETON- Objekt instantiiert werden (es existiert in 
+// genau einer Instanz); s. hierzu das ATL-Makro DECLARE_CLASS_FACTORY_SINGLETON().
+// @xref <i ITRiASDBEngine>, <i ITRiASMainDBEngine>, <o TRiASDBEngine>
+	[
+		uuid(1CB3AB7C-2E87-11D1-969D-00A024D6F582),
+		helpstring("TRiASDBEngine Class")
+	]
+	coclass TRiASDBEngine
+	{
+		[default] interface ITRiASDBEngine;
+		interface ITRiASMainDBEngine;
+		[source, default] interface ITRiASProjectEvents;
+		[source] interface ITRiASDBEngineEvents;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// allgemeine Verwaltung von Properties
+	[
+		uuid(9A9E8F25-3D7F-11D1-96C0-00A024D6F582),
+		helpstring("TRiASProperty Class")
+	]
+	coclass TRiASProperty
+	{
+		[default] interface ITRiASProperty;
+		[source, default] interface ITRiASPropertyCallback;
+//		interface IPersistStreamInit;
+	};
+	[
+		uuid(9A9E8F27-3D7F-11D1-96C0-00A024D6F582),
+		helpstring("TRiASProperties Class")
+	]
+	coclass TRiASProperties
+	{
+		[default] interface ITRiASProperties;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASDB
+// @object TRiASDataServerRegEntries | Erlaubt den Zugriff auf alle in der Registry 
+// gespeicherten statischen Informationen aller TRiASDB-DataServer.
+// @supint <i ITRiASDataServerRegEntries> | Zugriffsfunktionen auf die 
+// gespeicherten statischen Informationen eines einzelnen TRiASDB-DataServers über 
+// die <o TRiASDataServerRegEntry> Objekte.
+// @xref <i ITRiASDataServerRegEntries>, <o TRiASDataServerRegEntry>
+// @devnote Objekte dieses Types müssen nicht implementiert werden. Bei der Entwicklung
+// von neuen TRiASDB- Schnittstellenmodule ist lediglich zu beachten, daß die Informationen
+// die zu neuen TRiASDB- Datenbank-Objekten derart in der Registry gespeichert werden, 
+// daß diese durch das Objekt <o TRiASDataServerRegEntry> auslesbar ist (siehe dazu
+// <l Registryeinträge für einen TRiASDB-DataServer>).
+	[
+		uuid(F4B3F946-810E-11D1-9776-00A024D6F582),
+		helpstring("TRiASDataServerRegEntries Class")
+	]
+	coclass TRiASDataServerRegEntries
+	{
+		[default] interface ITRiASDataServerRegEntries;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASDB
+// @object TRiASDataServerRegEntry | Erlaubt den Zugriff auf in der Registry gespeicherte
+// statische Informationen eines TRiASDB-DataServers.
+// @supint <i ITRiASDataServerRegEntry> | Zugriffsfunktionen auf die gespeicherten statischen 
+// Informationen eines TRiASDB-DataServers
+// @xref <i ITRiASDataServerRegEntry>
+	[
+		uuid(F4B3F948-810E-11D1-9776-00A024D6F582),
+		helpstring("TRiASDataServerRegEntry Class")
+	]
+	coclass TRiASDataServerRegEntry
+	{
+		[default] interface ITRiASDataServerRegEntry;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASDB
+// @object TRiASVariantProperty | Erlaubt den Zugriff auf eine Property eines anderen Objektes.
+// @supint <i ITRiASPropertySupport> | Verwaltungsfunktionen für eine Property
+// @xref <i ITRiASPropertySupport>
+	[
+		uuid(8C34B585-9FBA-11D1-BA1E-080036D63803),
+		helpstring("TRiASVariantProperty Class")
+	]
+	coclass TRiASVariantProperty
+	{
+		[default] interface ITRiASPropertyCallback;
+//		interface IPersist;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASDB
+// @object TRiASAutoSaveProperty | Erlaubt den Zugriff auf eine Property eines anderen Objektes,
+// gewährleistet die Speicherung dieser Property über ein <i IPersistStreamInit> -Interface.
+// @supint <i ITRiASPropertySupport> | Verwaltungsfunktionen für eine Property
+// @xref <i ITRiASPropertySupport>
+	[
+		uuid(9A869E25-584B-11D2-9ED0-006008447800),
+		helpstring("TRiASAutoSaveProperty Class")
+	]
+	coclass TRiASAutoSaveProperty
+	{
+		[default] interface ITRiASPropertyCallback;
+//		interface IPersist;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASDB
+// @object OpenWizPropExt | Erzeugt eine zusätzliche OpenWizardseite 
+// für <tr>- Datenbanken.
+// @supint <i ITRiASOpenWizardPropExt> | Initialisierungsfunktionen für die Wizardseite
+// @xref <i ITRiASOpenWizardPropExt>
+	[
+		uuid(C81DD8C5-A235-11D1-BA2A-080036D63803),
+		helpstring("OpenWizPropExt Class")
+	]
+	coclass OpenWizPropExt
+	{
+		[default] interface ITRiASOpenWizardPropExt;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASDB
+// @object TRiASObjectHandleMap | Gestattet die Zuordnung von eindeutigen Zugriffsnummern
+// zu <o TRiASObject>- Objekten innerhalb der TRiASDB-Schnittstelle,
+// @supint <i ITRiASObjectHandleMap> | Zuordnungsfunktionen für eindeutige
+// Zugriffsnummern für COM-Objekte.
+// @xref <i ITRiASObjectHandleMap>
+	[
+		uuid(D4C24AD6-A5EA-11D1-BA31-080036D63803),
+		helpstring("TRiASObjectHandleMap Class")
+	]
+	coclass TRiASObjectHandleMap
+	{
+		[default] interface ITRiASObjectHandleMap;
+		interface IObjectWithName;
+		interface ITRiASPropertyCallback;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASDB
+// @object TRiASObjectsHandleMap | Gestattet die Zuordnung von eindeutigen Zugriffsnummern
+// zu <o TRiASObjects>- Objekten innerhalb der TRiASDB-Schnittstelle,
+// @supint <i ITRiASObjectHandleMap> | Zuordnungsfunktionen für eindeutige
+// Zugriffsnummern für COM-Objekte.
+// @xref <i ITRiASObjectHandleMap>
+	[
+		uuid(CD579673-AA9D-11D1-858C-00600875138A),
+		helpstring("TRiASObjectsHandleMap Class")
+	]
+	coclass TRiASObjectsHandleMap
+	{
+		[default] interface ITRiASObjectHandleMap;
+		interface IObjectWithName;
+		interface ITRiASPropertyCallback;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASDB
+// @object TRiASFeatureHandleMap | Gestattet die Zuordnung von eindeutigen Zugriffsnummern
+// zu <o TRiASFeature>- Objekten innerhalb der TRiASDB-Schnittstelle,
+// @supint <i ITRiASObjectHandleMap> | Zuordnungsfunktionen für eindeutige
+// Zugriffsnummern für COM-Objekte.
+// @xref <i ITRiASObjectHandleMap>
+	[
+		uuid(95F58F33-DF2C-11D1-8606-00600875138A),
+		helpstring("TRiASFeatureHandleMap Class")
+	]
+	coclass TRiASFeatureHandleMap
+	{
+		[default] interface ITRiASObjectHandleMap;
+		interface IObjectWithName;
+		interface ITRiASPropertyCallback;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASDB
+// @object TRiASFeatureHandleMap | Gestattet die Zuordnung von eindeutigen Zugriffsnummern
+// zu beliebigen Objekten innerhalb der TRiASDB-Schnittstelle,
+// @supint <i ITRiASObjectHandleMap> | Zuordnungsfunktionen für eindeutige
+// Zugriffsnummern für COM-Objekte.
+// @xref <i ITRiASObjectHandleMap>
+	[
+		uuid(76D74B66-D3E4-41B8-A4AA-9FF2F383CBCE),
+		helpstring("TRiASGenericHandleMap Class")
+	]
+	coclass TRiASGenericHandleMap
+	{
+		[default] interface ITRiASObjectHandleMap;
+		interface IObjectWithName;
+		interface ITRiASPropertyCallback;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASDB
+// @object TRiASMetaDataMap | Gestattet das Speichern der Metainformationen zu den
+// Objektklassen einer Datenquelle an der zugehörigen Connection bzw. der 
+// Metainformationen der Objekteigenschaften an der zugehörigen Objektklasse.
+	[
+		uuid(733F03EE-CECA-4E3B-ACEF-0920F7DB996F),
+		helpstring("TRiASMetaDataMap Class")
+	]
+	coclass TRiASMetaDataMap
+	{
+		interface IObjectWithSite;
+		interface ITRiASPropertyCallback;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASDB
+// @object TRiASObjectsOperations | Stellt verschiedene Operationen über Objektmengen
+// zur Verfügung.
+// @comm Das <o TRiASObjectsOperations> -Objekt ist sowohl separat instatiierbar, als auch 
+// automatisch als Bestandteil eines jeden <o TRiASObjects> -Objektes vorhanden (aggregiert).
+// @supint <i ITRiASObjectsOperations> | Operationen über Objektmengen.
+// @xref <i ITRiASObjectsOperations>
+	[
+		uuid(F45F28D8-7D2F-11D2-9EF6-006008447800),
+		helpstring("TRiASObjectsOperations Class")
+	]
+	coclass TRiASObjectsOperations
+	{
+		[default] interface ITRiASObjectsOperations;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASDB
+// @object TRiASConnectionFilters | Verwaltet alle definierten Verbindungsfilter 
+// eines Projektes
+	[
+		uuid(8513C94D-D792-4286-B21B-AADAC2A8DCE7),
+		helpstring("TRiASConnectionFilters Class")
+	]
+	coclass TRiASConnectionFilters
+	{
+		[default] interface ITRiASConnectionFilters;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASDB
+// @object TRiASConnectionFilters | Verkörpert einen definierten Verbindungsfilter 
+// eines Projektes
+	[
+		uuid(52A74060-48AB-4FA0-A4DE-186A0C30FE4E),
+		helpstring("TRiASConnectionFilter Class")
+	]
+	coclass TRiASConnectionFilter
+	{
+		[default] interface ITRiASConnectionFilter;
+	};
+};
+

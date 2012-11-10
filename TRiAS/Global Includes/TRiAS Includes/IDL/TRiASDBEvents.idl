@@ -1,0 +1,785 @@
+///////////////////////////////////////////////////////////////////////////
+// 
+// 21.02.2001 17:22:22
+//		 Added ITRiASDBEngineEvents
+// @doc 
+// @module TRiASDBEvents.idl | IDL source for EventInterfaces for TRiASDB
+// @group In diesem Modul definierte Event-Interfaces
+// @index | EVENTINTERFACE 
+
+#if !defined(_TRIASDBEVENTS_IDL__B7AEB937_922C_11D1_BA01_080036D63803__INCLUDED_)
+#define _TRIASDBEVENTS_IDL__B7AEB937_922C_11D1_BA01_080036D63803__INCLUDED_
+
+interface ITRiASDBEngineEvents;
+interface ITRiASProjectEvents;
+interface ITRiASConnectionEvents;
+interface ITRiASViewEvents;
+interface ITRiASPropertyEvents;
+interface ITRiASViewItemEvents;
+interface ITRiASObjectEvents;
+interface ITRiASObjectsEvents;
+interface ITRiASFeatureEvents;
+
+// @doc EVENTINTERFACE
+// @interface ITRiASDBEngineEvents | Events die von einer DBEngine verschickt werden können
+// @supby <o TRiASDBEngine>
+// @xref <i ITRiASDBEngine>
+// @group Methoden von <i ITRiASDBEngineEvents> 
+// @index | ITRIASDBENGINEEVENTS
+// @doc ITRIASDBENGINEEVENTS
+	[ 
+		object,
+		uuid(27B09D60-15CE-4988-80D6-BEBFE391B9AC), 
+		helpstring("ITRiASDBEngineEvents Interface"),
+		pointer_default(unique) 
+	]
+	interface ITRiASDBEngineEvents : IUnknown
+	{
+		typedef [public, v1_enum, helpstring("Modi zur Abfrage des Unterbrechungsstatus")]
+		enum _tagCONTINUEMODE {
+			CONTINUEMODE_Continue = 0,
+			CONTINUEMODE_ShouldBreak = 1,
+			CONTINUEMODE_MustBreak = 2,
+		} CONTINUEMODE;
+
+	// @event ITRiASDBEngineEvents | AskToContinue | Ein neues Projekt soll erzeugt werden.
+	// @parm BSTR | Name | Der Name des zu erzeugenden Projektes.
+	// @supby <o TRiASDBEngine>
+	// @xref <i ITRiASDBEngineEvents>
+		[helpstring("Abfrage, ob eine Operation abgebrochen werden soll.")] HRESULT AskToContinue ([out, retval] CONTINUEMODE *Mode);
+	};
+
+// @doc EVENTINTERFACE
+// @interface ITRiASProjectEvents | Events die verschickt werden, wenn 
+// projektbezogene Ereignisse erfolgt sind.
+// @supby <o TRiASDBEngine>
+// @xref <i ITRiASDBEngine>
+// @group Methoden von <i ITRiASProjectEvents> 
+// @index | IPROJECTEVENTS
+// @doc IPROJECTEVENTS
+	[
+		object,
+		uuid(9A9E8F28-3D7F-11d1-96C0-00A024D6F582),
+		helpstring("ITRiASProjectEvents Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASProjectEvents : IUnknown
+	{
+	// @event ITRiASProjectEvents | ProjectToCreate | Ein neues Projekt soll erzeugt werden.
+	// @parm BSTR | Name | Der Name des zu erzeugenden Projektes.
+	// @supby <o TRiASDBEngine>
+	// @xref <i ITRiASProjectEvents>
+		[helpstring("Ein neues Projekt soll erzeugt werden.")] HRESULT ProjectToCreate ([in] BSTR Name);
+
+	// @event ITRiASProjectEvents | ProjectCreated | Ein neues Projekt wurde erzeugt.
+	// @parm IDispatch * | Prj | Das neu erzeugte Projekt.
+	// @supby <o TRiASDBEngine>
+	// @xref <i ITRiASProjectEvents>
+		[helpstring("Ein neues Projekt wurde erzeugt.")] HRESULT ProjectCreated ([in] IDispatch *pIPrj);
+
+	// @event ITRiASProjectEvents | OpeningProject | Ein Projekt soll geöffnet werden.
+	// @parm BSTR | Name | Der Name des zu öffnenden Projektes.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn das
+	// Projekt nicht geöffnet werden soll.
+	// @supby <o TRiASDBEngine>
+	// @xref <i ITRiASProjectEvents>
+		[helpstring("Ein Projekt soll geöffnet werden.")] HRESULT OpeningProject ([in] BSTR Name, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASProjectEvents | ProjectToOpen | Ein Projekt wird geöffnet werden.
+	// @parm BSTR | Name | Der Name des zu öffnenden Projektes.
+	// @supby <o TRiASDBEngine>
+	// @xref <i ITRiASProjectEvents>
+		[helpstring("Ein Projekt soll geöffnet werden.")] HRESULT ProjectToOpen ([in] BSTR Name);
+
+	// @event ITRiASProjectEvents | ProjectIsOpening | Ein Projekt wird geöffnet.
+	// @parm IDispatch * | Prj | Das neu geöffnete Projekt.
+	// @supby <o TRiASDBEngine>
+	// @xref <i ITRiASProjectEvents>
+		[helpstring("Ein Projekt wird geöffnet.")] HRESULT ProjectIsOpening ([in] IDispatch *pIPrj);
+
+	// @event ITRiASProjectEvents | ProjectOpened | Ein Projekt wurde geöffnet.
+	// @parm IDispatch * | Prj | Das neu geöffnete Projekt.
+	// @supby <o TRiASDBEngine>
+	// @xref <i ITRiASProjectEvents>
+		[helpstring("Ein Projekt wurde geöffnet.")] HRESULT ProjectOpened ([in] IDispatch *pIPrj);
+
+	// @event ITRiASProjectEvents | ClosingProject | Ein Projekt soll geschlossen werden.
+	// @parm IDispatch * | Prj | Das zu schließende Projekt.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn das
+	// Projekt nicht geschlossen werden soll.
+	// @supby <o TRiASDBEngine>
+	// @xref <i ITRiASProjectEvents>
+		[helpstring("Ein Projekt soll geschlossen werden.")] HRESULT ClosingProject ([in] IDispatch *pIPrj, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASProjectEvents | ProjectToClose | Ein Projekt wird geschlossen.
+	// @parm IDispatch * | Prj | Das zu schließende Projekt.
+	// @supby <o TRiASDBEngine>
+	// @xref <i ITRiASProjectEvents>
+		[helpstring("Ein Projekt wird geschlossen.")] HRESULT ProjectToClose ([in] IDispatch *pIPrj);
+
+	// @event ITRiASProjectEvents | ProjectClosed | Ein Projekt wurde geschlossen.
+	// @parm BSTR | Name | Der Name des geschlossenen Projektes.
+	// @supby <o TRiASDBEngine>
+	// @xref <i ITRiASProjectEvents>
+		[helpstring("Ein Projekt wurde geschlossen.")] HRESULT ProjectClosed ([in] BSTR Name);
+
+	// @event ITRiASProjectEvents | Save | Ein Projekt wird gespeichert.
+	// @parm IDispatch * | Prj | Das zu speichernde Projekt.
+	// @parm IUnknown * | Stg | Pointer auf das Storageobjekt.
+	// @parm VARIANT_BOOL | fSameAsLoad | Gibt an, ob das übergebene Storageobjekt identisch ist mit
+	// dem Storageobjekt, von dem das Projekt geladen bzw. zuletzt gespeichert worden ist.
+	// @supby <o TRiASDBEngine>
+	// @xref <i ITRiASProjectEvents>
+		[helpstring("Ein Projekt wird gespeichert.")] HRESULT Save ([in] IDispatch *pIPrj, [in] IUnknown *Stg, [in] VARIANT_BOOL fSameAsLoad);
+
+	// @event ITRiASProjectEvents | SaveCompleted | Das Speichern des Projektes ist abgeschlossen.
+	// @parm IDispatch * | Prj | Das zu speichernde Projekt.
+	// @parm VARIANT | Stg | Pointer (optional) auf das Storageobjekt.
+	// @supby <o TRiASDBEngine>
+	// @xref <i ITRiASProjectEvents>
+		[helpstring("Das Speichern des Projektes ist abgeschlossen.")] HRESULT SaveCompleted ([in] IDispatch *pIPrj, [in] VARIANT Stg);
+
+	// @event ITRiASProjectEvents | HandsOffStorage | Fordert alle Objekte dazu auf, ihre Storage-Pointer
+	// freizugeben.
+	// @parm IDispatch * | Prj | Das gespeicherte Projekt.
+	// @supby <o TRiASDBEngine>
+	// @xref <i ITRiASProjectEvents>
+		[helpstring("Freigeben aller Storage-Objekte.")] HRESULT HandsOffStorage([in] IDispatch *pIPrj);
+
+	// @event ITRiASProjectEvents | ErrorOpeningProject | Fehler beim Projektöffnen.
+	// @parm IDispatch * | Prj | Das zu schließende Projekt.
+	// @supby <o TRiASDBEngine>
+	// @xref <i ITRiASProjectEvents>
+		[helpstring("Fehler beim Projektöffnen.")] HRESULT ErrorOpeningProject ([in] IDispatch *pIPrj);
+	};
+
+// @doc EVENTINTERFACE
+// @interface ITRiASConnectionEvents | Events die verschickt werden, wenn 
+// connection-bezogene Ereignisse erfolgt sind.
+// @supby <o TRiASProject>
+// @xref <i ITRiASProject>
+// @group Methoden von <i ITRiASConnectionEvents> 
+// @index | ICONNECTIONEVENTS
+// @doc ICONNECTIONEVENTS
+	[
+		object,
+		uuid(9A9E8F29-3D7F-11d1-96C0-00A024D6F582),
+		helpstring("ITRiASConnectionEvents Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASConnectionEvents : IUnknown
+	{
+	// @event ITRiASConnectionEvents | CreatingConnection | Eine neue Connection soll erzeugt werden.
+	// @parm BSTR | Name | Der Name der zu erzeugenden Connection.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn die
+	// Connection nicht erzeugt werden soll.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASConnectionEvents>
+		[helpstring("Eine neue Connection soll erzeugt werden.")] HRESULT CreatingConnection ([in] BSTR Name, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASConnectionEvents | ConnectionToCreate | Eine neue Connection wird erzeugt.
+	// @parm BSTR | Name | Der Name der zu erzeugenden Connection.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASConnectionEvents>
+		[helpstring("Eine neue Connection wird erzeugt.")] HRESULT ConnectionToCreate ([in] BSTR Name);
+
+	// @event ITRiASConnectionEvents | ConnectionCreated | Eine neue Connection wurde erzeugt.
+	// @parm IDispatch * | Conn | Die neu erzeugte Connection.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASConnectionEvents>
+		[helpstring("Eine neue Connection wurde erzeugt.")] HRESULT ConnectionCreated ([in] IDispatch *pIConn);
+
+	// @event ITRiASConnectionEvents | OpeningConnection | Eine Connection soll geöffnet werden.
+	// @parm BSTR | Name | Der Name der zu öffnenden Connection.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn die
+	// Connection nicht geöffnet werden soll.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASConnectionEvents>
+		[helpstring("Eine Connection soll geöffnet werden.")] HRESULT OpeningConnection ([in] BSTR Name, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASConnectionEvents | ConnectionToOpen | Eine Connection wird geöffnet werden.
+	// @parm BSTR | Name | Der Name der zu öffnenden Connection.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASConnectionEvents>
+		[helpstring("Eine Connection wird geöffnet.")] HRESULT ConnectionToOpen ([in] BSTR Name);
+
+	// @event ITRiASConnectionEvents | ConnectionOpened | Eine Connection wurde geöffnet.
+	// @parm IDispatch * | Conn | Die neu geöffnete Connection .
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASConnectionEvents>
+		[helpstring("Eine Connection wurde geöffnet.")] HRESULT ConnectionOpened ([in] IDispatch *pIConn);
+
+	// @event ITRiASConnectionEvents | ClosingConnection | Eine Connection soll geschlossen werden.
+	// @parm IDispatch * | Conn | Die zu schließende Connection.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn die
+	// Connection nicht geschlossen werden soll.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASConnectionEvents>
+		[helpstring("Eine Connection soll geschlossen werden.")] HRESULT ClosingConnection ([in] IDispatch *pIConn, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASConnectionEvents | ConnectionToClose | Eine Connection wird geschlossen.
+	// @parm IDispatch * | Conn | Die zu schließende Connection .
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASConnectionEvents>
+		[helpstring("Eine Connection wird geschlossen.")] HRESULT ConnectionToClose ([in] IDispatch *pIConn);
+
+	// @event ITRiASConnectionEvents | ConnectionClosed | Eine Connection wurde geschlossen.
+	// @parm BSTR | Name | Der Name der geschlossenen Connection .
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASConnectionEvents>
+		[helpstring("Eine Connection wurde geschlossen.")] HRESULT ConnectionClosed ([in] BSTR Name);
+
+	// @event ITRiASConnectionEvents | DeletingConnection | Eine Connection soll gelöscht werden.
+	// @parm IDispatch * | Conn | Die zu löschende Connection.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn die
+	// Connection nicht gelöscht werden soll.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASConnectionEvents>
+		[helpstring("Eine Connection soll gelöscht werden.")] HRESULT DeletingConnection ([in] IDispatch *pIConn, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASConnectionEvents | ConnectionToDelete | Eine Connection wird gelöscht.
+	// @parm IDispatch * | Conn | Die zu löschende Connection.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASConnectionEvents>
+		[helpstring("Eine Connection wird gelöscht.")] HRESULT ConnectionToDelete ([in] IDispatch *pIConn);
+
+	// @event ITRiASConnectionEvents | ConnectionDeleted | Eine Connection wurde gelöscht.
+	// @parm BSTR | Name | Der Name der gelöschten Connection.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASConnectionEvents>
+		[helpstring("Eine Connection wurde gelöscht.")] HRESULT ConnectionDeleted ([in] BSTR Name);
+
+	// @event ITRiASConnectionEvents | RenamingConnection | Eine Connection soll umbenannt werden.
+	// @parm BSTR | OldName | Der bisherige Name der Connection.
+	// @parm BSTR | NewName | Der neue Name der Connection.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn der
+	// Name nicht modifiziert werden soll.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASConnectionEvents>
+		[helpstring("Eine Connection soll umbennant werden.")] HRESULT RenamingConnection ([in] BSTR OldName, [in] BSTR NewName, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASConnectionEvents | ConnectionToRename | Eine Connection wird umbenannt werden.
+	// @parm BSTR | OldName | Der bisherige Name der Connection.
+	// @parm BSTR | NewName | Der neue Name der Connection.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASConnectionEvents>
+		[helpstring("Eine Connection wird umbenant.")] HRESULT ConnectionToRename ([in] BSTR OldName, [in] BSTR NewName);
+
+	// @event ITRiASConnectionEvents | ConnectionRenamed | Eine Connection wurde umbenannt.
+	// @parm IDispatch * | Conn | Die umbenannte Connection.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASConnectionEvents>
+		[helpstring("Eine Connection wurde umbenannt.")] HRESULT ConnectionRenamed ([in] IDispatch *pIConn);
+
+	// @event ITRiASConnectionEvents | ChangingConnectedDatasource | Die angehängte Datenquelle soll derart
+	// modifiziert werden, daß ein Neueinlesen der Infos notwendig wird (z.B. SavAs).
+	// @parm IDispatch * | Conn | Die betroffene Connection.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn die Aktion 
+	// nicht durchgeführt werden soll.
+	// Name nicht modifiziert werden soll.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASConnectionEvents>
+		[helpstring("Die angehängte Datenquelle soll modifiziert werden (SaveAs).")] HRESULT ChangingConnectedDatasource ([in] IDispatch *pIConn, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASConnectionEvents | ConnectedDatasourceToChange | Die angehängte Datenquelle wird derart
+	// modifiziert werden, daß ein Neueinlesen der Infos notwendig wird (z.B. SavAs).
+	// @parm IDispatch * | Conn | Die betroffene Connection.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASConnectionEvents>
+		[helpstring("Die angehängte Datenquelle wird modifiziert (SaveAs).")] HRESULT ConnectedDatasourceToChange ([in] IDispatch *pIConn);
+
+	// @event ITRiASConnectionEvents | ConnectedDatasourceChanged | Die angehängte Datenquelle wurde derart
+	// modifiziert, daß ein Neueinlesen der Infos notwendig wird (z.B. SavAs).
+	// @parm IDispatch * | Conn | Die betroffene Connection.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASConnectionEvents>
+		[helpstring("Die angehängte Datenquelle wurde modifiziert (SaveAs).")] HRESULT ConnectedDatasourceChanged ([in] IDispatch *pIConn);
+	};
+
+// @doc EVENTINTERFACE
+// @interface ITRiASViewEvents | Events die verschickt werden, wenn 
+// Ansichts-bezogene Ereignisse erfolgt sind.
+// @supby <o TRiASProject>
+// @xref <i ITRiASProject>
+// @group Methoden von <i ITRiASViewEvents> 
+// @index | IVIEWEVENTS
+// @doc IVIEWEVENTS
+	[
+		object,
+		uuid(3E4A3F24-878C-11D1-9784-00A024D6F582),
+		helpstring("ITRiASViewEvents Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASViewEvents : IUnknown
+	{
+	// @event ITRiASViewEvents | CreatingView | Eine neue Ansicht soll erzeugt werden.
+	// @parm BSTR | Name | Der Name der zu erzeugenden Ansicht.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn die
+	// Ansicht nicht erzeugt werden soll.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASViewEvents>
+		[helpstring("Eine neue Ansicht soll erzeugt werden.")] HRESULT CreatingView ([in] BSTR Name, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASViewEvents | ViewToCreate | Eine neue Ansicht wird erzeugt.
+	// @parm BSTR | Name | Der Name der zu erzeugenden Ansicht.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASViewEvents>
+		[helpstring("Eine neue Ansicht wird erzeugt.")] HRESULT ViewToCreate ([in] BSTR Name);
+
+	// @event ITRiASViewEvents | ViewCreated | Eine neue Ansicht wurde erzeugt.
+	// @parm IDispatch * | Conn | Die neu erzeugte Ansicht.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASViewEvents>
+		[helpstring("Eine neue Ansicht wurde erzeugt.")] HRESULT ViewCreated ([in] IDispatch *pIView);
+
+	// @event ITRiASViewEvents | ChangingView | Eine neue Ansicht soll aktiviert werden werden.
+	// @parm BSTR | OldName | Der Name der derzeit aktivierten Ansicht.
+	// @parm BSTR | NewName | Der Name der zu aktivierenden Ansicht.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn die
+	// Ansicht nicht gewechselt werden soll.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASViewEvents>
+		[helpstring("Eine Ansicht soll aktiviert werden.")] HRESULT ChangingView ([in] BSTR OldName, [in] BSTR NewName, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASViewEvents | ViewToChange | Eine neue Ansicht wird aktiviert werden.
+	// @parm BSTR | Name | Der Name der zu aktivierenden Ansicht.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASViewEvents>
+		[helpstring("Eine Ansicht wird geöffnet.")] HRESULT ViewToChange ([in] BSTR OldName, [in] BSTR NewName);
+
+	// @event ITRiASViewEvents | ViewChanged | Eine neue Ansicht wurde aktiviert.
+	// @parm IDispatch * | View | Die neu aktivierte Ansicht .
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASViewEvents>
+		[helpstring("Eine Ansicht wurde aktiviert.")] HRESULT ViewChanged ([in] IDispatch *pIView);
+
+	// @event ITRiASViewEvents | DeletingView | Eine View soll gelöscht werden.
+	// @parm IDispatch * | Conn | Die zu löschende View.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn die
+	//  View nicht gelöscht werden soll.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASViewEvents>
+		[helpstring("Eine View soll gelöscht werden.")] HRESULT DeletingView ([in] IDispatch *pIConn, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASViewEvents | ViewToDelete | Eine Ansicht wird gelöscht.
+	// @parm IDispatch * | View | Die zu löschende Ansicht.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASViewEvents>
+		[helpstring("Eine Ansicht wird gelöscht.")] HRESULT ViewToDelete ([in] IDispatch *pIView);
+
+	// @event ITRiASViewEvents | ViewDeleted | Eine Ansicht wurde gelöscht.
+	// @parm BSTR | Name | Der Name der gelöschten Ansicht.
+	// @supby <o TRiASProject>
+	// @xref <i ITRiASViewEvents>
+		[helpstring("Eine Ansicht wurde gelöscht.")] HRESULT ViewDeleted ([in] BSTR Name);
+	};
+
+// @doc EVENTINTERFACE
+// @interface ITRiASPropertyEvents | Events die verschickt werden, wenn 
+// Property-bezogene Ereignisse erfolgt sind.
+// @supby <o TRiASProject>, <o TRiASDatabase>, <o TRiASCompatibleDatabase>
+// @xref <i ITRiASProject>, <i ITRiASDatabase>, <i ITRiASCompatibleDatabase>
+// @group Methoden von <i ITRiASPropertyEvents> 
+// @index | IPROPERTYEVENTS
+// @doc IPROPERTYEVENTS
+	[
+		object,
+		uuid(9A9E8F2A-3D7F-11d1-96C0-00A024D6F582),
+		helpstring("ITRiASPropertyEvents Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASPropertyEvents : IUnknown
+	{
+	// @event ITRiASPropertyEvents | CreatingProperty | Eine neue Property soll erzeugt werden.
+	// @parm BSTR | Name | Der Name der zu erzeugenden Property.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn die
+	// Property nicht erzeugt werden soll.
+	// @supby <o TRiASProject>, <o TRiASDatabase>, <o TRiASCompatibleDatabase>
+	// @xref <i ITRiASPropertyEvents>
+		[helpstring("Eine neue Property soll erzeugt werden.")] HRESULT CreatingProperty ([in] BSTR Name, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASPropertyEvents | PropertyToCreate | Eine neue Property wird erzeugt.
+	// @parm BSTR | Name | Der Name der zu erzeugenden Property.
+	// @supby <o TRiASProject>, <o TRiASDatabase>, <o TRiASCompatibleDatabase>
+	// @xref <i ITRiASPropertyEvents>
+		[helpstring("Eine neue Property wird erzeugt.")] HRESULT PropertyToCreate ([in] BSTR Name);
+
+	// @event ITRiASPropertyEvents | PropertyCreated | Eine neue Property wurde erzeugt.
+	// @parm IDispatch * | Prop | Die neu erzeugte Property.
+	// @supby <o TRiASProject>, <o TRiASDatabase>, <o TRiASCompatibleDatabase>
+	// @xref <i ITRiASPropertyEvents>
+		[helpstring("Eine neue Property wurde erzeugt.")] HRESULT PropertyCreated ([in] IDispatch *pIProp);
+
+	// @event ITRiASPropertyEvents | ModifyingProperty | Eine Property soll modifiziert werden.
+	// @parm BSTR | Name | Der Name der zu modifizierenden Property.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn die
+	// Property nicht modifiziert werden soll.
+	// @supby <o TRiASProject>, <o TRiASDatabase>, <o TRiASCompatibleDatabase>
+	// @xref <i ITRiASPropertyEvents>
+		[helpstring("Eine Property soll modifiziert werden.")] HRESULT ModifyingProperty ([in] BSTR Name, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASPropertyEvents | PropertyToModify | Eine Property wird modifiziert werden.
+	// @parm BSTR | Name | Der Name der zu modifizierenden Property.
+	// @supby <o TRiASProject>, <o TRiASDatabase>, <o TRiASCompatibleDatabase>
+	// @xref <i ITRiASPropertyEvents>
+		[helpstring("Eine Property wird modifiziert.")] HRESULT PropertyToModify ([in] BSTR Name);
+
+	// @event ITRiASPropertyEvents | PropertyModified | Eine Property wurde modifiziert.
+	// @parm BSTR | Name | Der Name der zu modifizierenden Property.
+	// @supby <o TRiASProject>, <o TRiASDatabase>, <o TRiASCompatibleDatabase>
+	// @xref <i ITRiASPropertyEvents>
+		[helpstring("Eine Property wurde modifiziert.")] HRESULT PropertyModified ([in] BSTR Name);
+
+	// @event ITRiASPropertyEvents | DeletingProperty | Eine Property soll gelöscht werden.
+	// @parm BSTR | Name | Der Name der zu löschenden Property.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn die
+	// Property nicht gelöscht werden soll.
+	// @supby <o TRiASProject>, <o TRiASDatabase>, <o TRiASCompatibleDatabase>
+	// @xref <i ITRiASPropertyEvents>
+		[helpstring("Eine Property soll gelöscht werden.")] HRESULT DeletingProperty ([in] BSTR Name, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASPropertyEvents | PropertyToDelete | Eine Property wird gelöscht.
+	// @parm BSTR | Name | Der Name der zu löschenden Property.
+	// @supby <o TRiASProject>, <o TRiASDatabase>, <o TRiASCompatibleDatabase>
+	// @xref <i ITRiASPropertyEvents>
+		[helpstring("Eine Property wird gelöscht.")] HRESULT PropertyToDelete ([in] BSTR Name);
+
+	// @event ITRiASPropertyEvents | PropertyDeleted | Eine Property wurde gelöscht.
+	// @parm BSTR | Name | Der Name der gelöschten Property.
+	// @supby <o TRiASProject>, <o TRiASDatabase>, <o TRiASCompatibleDatabase>
+	// @xref <i ITRiASPropertyEvents>
+		[helpstring("Eine Property wurde gelöscht.")] HRESULT PropertyDeleted ([in] BSTR Name);
+	};
+
+// @doc EVENTINTERFACE
+// @interface ITRiASViewItemEvents | Events die verschickt werden, wenn 
+// ViewItem-bezogene Ereignisse erfolgt sind.
+// @supby <o TRiASView>, <o TRiASViewItems>
+// @xref <i ITRiASView>, <i ITRiASViewItems>, <i ITRiASViewItem>
+// @group Methoden von <i ITRiASViewItemEvents> 
+// @index | IVIEWITEMEVENTS
+// @doc IVIEWITEMEVENTS
+	[
+		object,
+		uuid(B7AEB934-922C-11D1-BA01-080036D63803),
+		helpstring("ITRiASViewItemEvents Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASViewItemEvents : IUnknown
+	{
+	// @event ITRiASViewItemEvents | CreatingViewItem | Ein neues ViewItem soll erzeugt werden.
+	// @parm BSTR | Name | Der Name des zu erzeugenden ViewItems.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn das 
+	// ViewItem nicht erzeugt werden soll.
+	// @supby <o TRiASView>, <o TRiASViewItems>
+	// @xref <i ITRiASViewItemEvents>
+		[helpstring("Ein neues ViewItem soll erzeugt werden.")] HRESULT CreatingViewItem ([in] BSTR Name, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASViewItemEvents | ViewItemToCreate | Ein neues ViewItem wird erzeugt.
+	// @parm BSTR | Name | Der Name des zu erzeugenden ViewItems.
+	// @supby <o TRiASView>, <o TRiASViewItems>
+	// @xref <i ITRiASViewItemEvents>
+		[helpstring("Ein neues ViewItem wird erzeugt.")] HRESULT ViewItemToCreate ([in] BSTR Name);
+
+	// @event ITRiASViewItemEvents | ViewItemCreated | Ein neues ViewItem wurde erzeugt.
+	// @parm IDispatch * | ViewItem | Das neu erzeugte ViewItem.
+	// @supby <o TRiASView>, <o TRiASViewItems>
+	// @xref <i ITRiASViewItemEvents>
+		[helpstring("Ein neues ViewItem wurde erzeugt.")] HRESULT ViewItemCreated ([in] IDispatch *Item);
+
+	// @event ITRiASViewItemEvents | ModifyingViewItem | Ein ViewItem soll modifiziert werden.
+	// @parm IDispatch * | ViewItem | Das zu modifizierende ViewItem.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn das
+	// ViewItem nicht modifiziert werden soll.
+	// @supby <o TRiASView>, <o TRiASViewItems>
+	// @xref <i ITRiASViewItemEvents>
+		[helpstring("Ein ViewItem soll modifiziert werden.")] HRESULT ModifyingViewItem ([in] IDispatch *Item, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASViewItemEvents | ViewItemToModify | Ein ViewItem wird modifiziert werden.
+	// @parm IDispatch * | ViewItem | Das zu modifizierende ViewItem.
+	// @supby <o TRiASView>, <o TRiASViewItems>
+	// @xref <i ITRiASViewItemEvents>
+		[helpstring("Ein ViewItem wird modifiziert.")] HRESULT ViewItemToModify ([in] IDispatch *Item);
+
+	// @event ITRiASViewItemEvents | ViewItemModified | Ein ViewItem wurde modifiziert.
+	// @parm BSTR | Name | Der Name des zu modifizierenden ViewItems.
+	// @supby <o TRiASView>, <o TRiASViewItems>
+	// @xref <i ITRiASViewItemEvents>
+		[helpstring("Ein ViewItem wurde modifiziert.")] HRESULT ViewItemModified ([in] BSTR Name);
+
+	// @event ITRiASViewItemEvents | DeletingViewItem | Ein ViewItem soll gelöscht werden.
+	// @parm IDispatch * | ViewItem | Das zu löschende ViewItem.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn das
+	// ViewItem nicht gelöscht werden soll.
+	// @supby <o TRiASView>, <o TRiASViewItems>
+	// @xref <i ITRiASViewItemEvents>
+		[helpstring("Ein ViewItem soll gelöscht werden.")] HRESULT DeletingViewItem ([in] IDispatch *Item, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASViewItemEvents | ViewItemToDelete | Ein ViewItem wird gelöscht.
+	// @parm IDispatch * | ViewItem | Das zu löschende ViewItem.
+	// @supby <o TRiASView>, <o TRiASViewItems>
+	// @xref <i ITRiASViewItemEvents>
+		[helpstring("Ein ViewItem wird gelöscht.")] HRESULT ViewItemToDelete ([in] IDispatch *Item);
+
+	// @event ITRiASViewItemEvents | ViewItemDeleted | Ein ViewItem wurde gelöscht.
+	// @parm BSTR | Name | Der Name des gelöschten ViewItems.
+	// @supby <o TRiASView>, <o TRiASViewItems>
+	// @xref <i ITRiASViewItemEvents>
+		[helpstring("Ein ViewItem wurde gelöscht.")] HRESULT ViewItemDeleted ([in] BSTR Name);
+	};
+
+// @doc EVENTINTERFACE
+// @interface ITRiASObjectEvents | Events die verschickt werden, wenn 
+// Objekt-bezogene Ereignisse erfolgt sind.
+// @supby <o TRiASObject>, <o TRiASObjects>
+// @xref <i ITRiASObject>, <i ITRiASObjects>
+// @group Methoden von <i ITRiASObjectEvents> 
+// @index | IOBJECTEVENTS
+// @doc IOBJECTEVENTS
+	[
+		object,
+		uuid(D0248D00-3AEA-11D3-94FB-0080C786297B),
+		helpstring("ITRiASObjectsEvents Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASObjectsEvents : IUnknown
+	{
+	cpp_quote("#if !defined(_CHANGEDOBJECTS_DEFINED)")
+	cpp_quote("#define _CHANGEDOBJECTS_DEFINED")
+	// @doc CHANGEDOBJECTSENUMS 
+	// @enum CHANGEDOBJECTS | Flags geben an, was in einem Bezugsobjekt vom Typ <o TRiASObjects> 
+	// modifiziert werden soll bzw. modifiziert worden ist.
+	// @xref <i ITRiASObjectsCallback>, <om ITRiASObjectsCallback.OnChanging>, <om ITRiASObjectsCallback.OnChanged>
+		typedef [public, v1_enum, helpstring("Flags, was im Bezugsobjekt modifiziert werden soll/modifiert wurde.")]
+		enum _tagCHANGEDOBJECTS {
+			[helpstring("Name wurde modifiziert.")]
+				CHANGEDOBJECTS_Name = 0x01,			// @emem Name wurde modifiziert
+			[helpstring("Beschreibungsinfo wurde modifiziert.")]
+				CHANGEDOBJECTS_Description = 0x02,	// @emem Beschreibungsinfo wurde modifiziert
+			[helpstring("Objektklassenschlüssel wurde modifiziert.")]
+				CHANGEDOBJECTS_OKS = 0x04,			// @emem Objektklassenschlüssel wurde modifiziert
+			[helpstring("Eindeutige Zugriffsnummer wurde modifiziert.")]
+				CHANGEDOBJECTS_Handle = 0x08,		// @emem Eindeutige Zugriffsnummer wurde modifiziert
+			[helpstring("Objekttypen wurden modifiziert.")]
+				CHANGEDOBJECTS_Types = 0x10,		// @emem Objekttypen wurden modifiziert
+			[helpstring("Schreibschutz wurde modifiziert.")]
+				CHANGEDOBJECTS_ROMode = 0x20,		// @emem Schreibschutz wurde modifiziert
+		} CHANGEDOBJECTS;
+	cpp_quote("#endif // _CHANGEDOBJECTS_DEFINED")
+
+	// @event ITRiASObjectsEvents | CreatingObjects | Eine neue Objektsammlung soll erzeugt werden.
+	// @parm BSTR | Name | Der Name der zu erzeugenden Objektsammlung.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn die 
+	// Objektsammlung nicht erzeugt werden soll.
+	// @supby <o TRiASObjects>, <o TRiASObjectsCollection>
+	// @xref <i ITRiASObjectsEvents>
+		[helpstring("Eine neue Objektsammlung soll erzeugt werden.")] HRESULT CreatingObjects ([in] BSTR Name, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASObjectsEvents | ObjectsToCreate | Eine neue Objektsammlung wird erzeugt.
+	// @parm BSTR | Name | Der Name der zu erzeugenden Objektsammlung.
+	// @supby <o TRiASObjects>, <o TRiASObjectsCollection>
+	// @xref <i ITRiASObjectsEvents>
+		[helpstring("Eine neue Objektsammlung wird erzeugt.")] HRESULT ObjectsToCreate ([in] BSTR Name);
+
+	// @event ITRiASObjectsEvents | ObjectsCreated | Eine neue Objektsammlung wurde erzeugt.
+	// @parm IDispatch * | Objects | Die neu erzeugte Objektsammlung.
+	// @supby <o TRiASObjects>, <o TRiASObjectsCollection>
+	// @xref <i ITRiASObjectsEvents>
+		[helpstring("Eine neue Objektsammlung wurde erzeugt.")] HRESULT ObjectsCreated ([in] IDispatch *Item);
+
+	// @event ITRiASObjectsEvents | ModifyingObjects | Eine Objektsammlung soll modifiziert werden.
+	// @parm IDispatch * | Objects | Die zu modifizierende Objektsammlung.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn die
+	// Objektsammlung nicht modifiziert werden soll.
+	// @supby <o TRiASObjects>, <o TRiASObjectsCollection>
+	// @xref <i ITRiASObjectsEvents>
+		[helpstring("Eine Objektsammlung soll modifiziert werden.")] HRESULT ModifyingObjects ([in] CHANGEDOBJECTS Mode, [in] IDispatch *Item, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASObjectsEvents | ObjectsToModify | Eine Objektsammlung wird modifiziert werden.
+	// @parm IDispatch * | Objects | Die zu modifizierende Objektsammlung.
+	// @supby <o TRiASObjects>, <o TRiASObjectsCollection>
+	// @xref <i ITRiASObjectsEvents>
+		[helpstring("Eine Objektsammlung wird modifiziert werden.")] HRESULT ObjectsToModify ([in] CHANGEDOBJECTS Mode, [in] IDispatch *Item);
+
+	// @event ITRiASObjectsEvents | ObjectsModified | Eine Objektsammlung wurde modifiziert.
+	// @parm BSTR | Name | Der Name der zu modifizierenden Objektsammlung.
+	// @supby <o TRiASObjects>, <o TRiASObjectsCollection>
+	// @xref <i ITRiASObjectsEvents>
+		[helpstring("Eine Objektsammlung wurde modifiziert.")] HRESULT ObjectsModified ([in] CHANGEDOBJECTS Mode, [in] BSTR Name);
+
+	// @event ITRiASObjectsEvents | DeletingObjects | Eine Objektsammlung soll gelöscht werden.
+	// @parm IDispatch * | Objects | Die zu löschende Objektsammlung.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn die
+	// Objektsammlung nicht gelöscht werden soll.
+	// @supby <o TRiASObjects>, <o TRiASObjectsCollection>
+	// @xref <i ITRiASObjectsEvents>
+		[helpstring("Eine Objektsammlung soll gelöscht werden.")] HRESULT DeletingObjects ([in] IDispatch *Object, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASObjectsEvents | ObjectsToDelete | Eine Objektsammlung wird gelöscht.
+	// @parm IDispatch * | Objects | Die zu löschende Objektsammlung.
+	// @supby <o TRiASObjects>, <o TRiASObjectsCollection>
+	// @xref <i ITRiASObjectsEvents>
+		[helpstring("Eine Objektsammlung wird gelöscht.")] HRESULT ObjectsToDelete ([in] IDispatch *Object);
+
+	// @event ITRiASObjectsEvents | ObjectsDeleted | Eine Objektsammlung wurde gelöscht.
+	// @parm BSTR | Name | Der Name der gelöschten Objektsammlung.
+	// @supby <o TRiASObjects>, <o TRiASObjectsCollection>
+	// @xref <i ITRiASObjectsEvents>
+		[helpstring("Eine Objektsammlung wurde gelöscht.")] HRESULT ObjectsDeleted ([in] BSTR Name);
+	};
+
+// @doc EVENTINTERFACE
+// @interface ITRiASObjectEvents | Events die verschickt werden, wenn 
+// Objekt-bezogene Ereignisse erfolgt sind.
+// @supby <o TRiASObject>, <o TRiASObjects>
+// @xref <i ITRiASObject>, <i ITRiASObjects>
+// @group Methoden von <i ITRiASObjectEvents> 
+// @index | IOBJECTEVENTS
+// @doc IOBJECTEVENTS
+	[
+		object,
+		uuid(25FE9634-F798-11D1-8637-00600875138A),
+		helpstring("ITRiASObjectEvents Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASObjectEvents : IUnknown
+	{
+	// @event ITRiASObjectEvents | CreatingObject | Ein neues Objekt soll erzeugt werden.
+	// @parm BSTR | Name | Der Name des zu erzeugenden Objektes.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn das 
+	// Objekt nicht erzeugt werden soll.
+	// @supby <o TRiASObject>, <o TRiASObjects>
+	// @xref <i ITRiASObjectEvents>
+		[helpstring("Ein neues Objekt soll erzeugt werden.")] HRESULT CreatingObject ([in] BSTR Name, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASObjectEvents | ObjectToCreate | Ein neues Objekt wird erzeugt.
+	// @parm BSTR | Name | Der Name des zu erzeugenden Objektes.
+	// @supby <o TRiASObject>, <o TRiASObjects>
+	// @xref <i ITRiASObjectEvents>
+		[helpstring("Ein neues Objekt wird erzeugt.")] HRESULT ObjectToCreate ([in] BSTR Name);
+
+	// @event ITRiASObjectEvents | ObjectCreated | Ein neues Objekt wurde erzeugt.
+	// @parm IDispatch * | Object | Das neu erzeugte Objekt.
+	// @supby <o TRiASObject>, <o TRiASObjects>
+	// @xref <i ITRiASObjectEvents>
+		[helpstring("Ein neues Objekt wurde erzeugt.")] HRESULT ObjectCreated ([in] IDispatch *Item);
+
+	// @event ITRiASObjectEvents | ModifyingObject | Ein Objekt soll modifiziert werden.
+	// @parm IDispatch * | Object | Das zu modifizierende Objekt.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn das
+	// Objekt nicht modifiziert werden soll.
+	// @supby <o TRiASObject>, <o TRiASObjects>
+	// @xref <i ITRiASObjectEvents>
+		[helpstring("Ein Objekt soll modifiziert werden.")] HRESULT ModifyingObject ([in] IDispatch *Item, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASObjectEvents | ObjectToModify | Ein Objekt wird modifiziert werden.
+	// @parm IDispatch * | Object | Das zu modifizierende Objekt.
+	// @supby <o TRiASObject>, <o TRiASObjects>
+	// @xref <i ITRiASObjectEvents>
+		[helpstring("Ein Objekt wird modifiziert werden.")] HRESULT ObjectToModify ([in] IDispatch *Item);
+
+	// @event ITRiASObjectEvents | ObjectModified | Ein Objekt wurde modifiziert.
+	// @parm BSTR | Name | Der Name des zu modifizierenden Objektes.
+	// @supby <o TRiASObject>, <o TRiASObjects>
+	// @xref <i ITRiASObjectEvents>
+		[helpstring("Ein Objekt wurde modifiziert.")] HRESULT ObjectModified ([in] BSTR Name);
+
+	// @event ITRiASObjectEvents | DeletingObject | Ein Objekt soll gelöscht werden.
+	// @parm IDispatch * | Object | Das zu löschende Objekt.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn das
+	// Objekt nicht gelöscht werden soll.
+	// @supby <o TRiASObject>, <o TRiASObjects>
+	// @xref <i ITRiASObjectEvents>
+		[helpstring("Ein Objekt soll gelöscht werden.")] HRESULT DeletingObject ([in] IDispatch *Object, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASObjectEvents | ObjectToDelete | Ein Objekt wird gelöscht.
+	// @parm IDispatch * | Object | Das zu löschende Objekt.
+	// @supby <o TRiASObject>, <o TRiASObjects>
+	// @xref <i ITRiASObjectEvents>
+		[helpstring("Ein Objekt wird gelöscht.")] HRESULT ObjectToDelete ([in] IDispatch *Object);
+
+	// @event ITRiASObjectEvents | ObjectDeleted | Ein Objekt wurde gelöscht.
+	// @parm BSTR | Name | Der Name des gelöschten Objektes.
+	// @supby <o TRiASObject>, <o TRiASObjects>
+	// @xref <i ITRiASObjectEvents>
+		[helpstring("Ein Objekt wurde gelöscht.")] HRESULT ObjectDeleted ([in] BSTR Name);
+	};
+
+// @doc EVENTINTERFACE
+// @interface ITRiASFeatureEvents | Events die verschickt werden, wenn 
+// Feature-bezogene Ereignisse erfolgt sind.
+// @supby <o TRiASFeature>, <o TRiASFeatures>
+// @xref <i ITRiASFeature>, <i ITRiASFeatures>
+// @group Methoden von <i ITRiASFeatureEvents> 
+// @index | IFEATUREEVENTS
+// @doc IFEATUREEVENTS
+	[
+		object,
+		uuid(3C078223-DE71-11D1-8603-00600875138A),
+		helpstring("ITRiASFeatureEvents Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASFeatureEvents : IUnknown
+	{
+	// @event ITRiASFeatureEvents | CreatingFeature | Eine neue Objekteigenschaft soll erzeugt werden.
+	// @parm VARIANT | NameOrHandle | Der Name oder die Zugriffsnummer der zu erzeugenden Objekteigenschaft.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn die 
+	// Objekteigenschaft nicht erzeugt werden soll.
+	// @supby <o TRiASFeature>, <o TRiASFeatures>
+	// @xref <i ITRiASFeatureEvents>
+		[helpstring("Eine neue Objekteigenschaft soll erzeugt werden.")] HRESULT CreatingFeature ([in] VARIANT NameOrHandle, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASFeatureEvents | FeatureToCreate | Eine neue Objekteigenschaft wird erzeugt.
+	// @parm VARIANT | NameOrHandle | Der Name oder die Zugriffsnummer der zu erzeugenden Objekteigenschaft.
+	// @supby <o TRiASFeature>, <o TRiASFeatures>
+	// @xref <i ITRiASFeatureEvents>
+		[helpstring("Eine neue Objekteigenschaft wird erzeugt.")] HRESULT FeatureToCreate ([in] VARIANT NameOrHandle);
+
+	// @event ITRiASFeatureEvents | FeatureCreated | Eine neue Objekteigenschaft wurde erzeugt.
+	// @parm IDispatch * | Feature | Die neu erzeugte Objekteigenschaft.
+	// @supby <o TRiASFeature>, <o TRiASFeatures>
+	// @xref <i ITRiASFeatureEvents>
+		[helpstring("Eine neue Objekteigenschaft wurde erzeugt.")] HRESULT FeatureCreated ([in] IDispatch *Item);
+
+	// @event ITRiASFeatureEvents | ModifyingFeature | Eine Objekteigenschaft soll modifiziert werden.
+	// @parm IDispatch * | Feature | Die zu modifizierende Objekteigenschaft.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn die
+	// Objekteigenschaft nicht modifiziert werden soll.
+	// @supby <o TRiASFeature>, <o TRiASFeatures>
+	// @xref <i ITRiASFeatureEvents>
+		[helpstring("Eine Objekteigenschaft soll modifiziert werden.")] HRESULT ModifyingFeature ([in] IDispatch *Item, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASFeatureEvents | FeatureToModify | Eine Objekteigenschaft wird modifiziert werden.
+	// @parm IDispatch * | ViewItem | Die zu modifizierende Objekteigenschaft.
+	// @supby <o TRiASFeature>, <o TRiASFeatures>
+	// @xref <i ITRiASFeatureEvents>
+		[helpstring("Eine Objekteigenschaft wird modifiziert werden.")] HRESULT FeatureToModify ([in] IDispatch *Item);
+
+	// @event ITRiASFeatureEvents | FeatureModified | Eine Objekteigenschaft wurde modifiziert.
+	// @parm BSTR | Name | Der Name der zu modifizierenden Objekteigenschaft.
+	// @supby <o TRiASFeature>, <o TRiASFeatures>
+	// @xref <i ITRiASFeatureEvents>
+		[helpstring("Eine Objekteigenschaft wurde modifiziert.")] HRESULT FeatureModified ([in] BSTR Name);
+
+	// @event ITRiASFeatureEvents | DeletingFeature | Eine Objekteigenschaft soll gelöscht werden.
+	// @parm IDispatch * | Feature | Die zu löschende Objekteigenschaft.
+	// @parm VARIANT_BOOL * | pVal | Dieser Wert muß auf VARIANT_TRUE gesetzt werden, wenn die
+	// Objekteigenschaft nicht gelöscht werden soll.
+	// @supby <o TRiASFeature>, <o TRiASFeatures>
+	// @xref <i ITRiASFeatureEvents>
+		[helpstring("Eine Objekteigenschaft soll gelöscht werden.")] HRESULT DeletingFeature ([in] IDispatch *Item, [out, retval] VARIANT_BOOL *pVal);
+
+	// @event ITRiASFeatureEvents | FeatureToDelete | Eine Objekteigenschaft wird gelöscht.
+	// @parm IDispatch * | Feature | Die zu löschende Objekteigenschaft.
+	// @supby <o TRiASFeature>, <o TRiASFeatures>
+	// @xref <i ITRiASFeatureEvents>
+		[helpstring("Eine Objekteigenschaft wird gelöscht.")] HRESULT FeatureToDelete ([in] IDispatch *Item);
+
+	// @event ITRiASFeatureEvents | FeatureDeleted | Eine Objekteigenschaft wurde gelöscht.
+	// @parm BSTR | Name | Der Name der gelöschten Objekteigenschaft.
+	// @supby <o TRiASFeature>, <o TRiASFeatures>
+	// @xref <i ITRiASFeatureEvents>
+		[helpstring("Eine Objekteigenschaft wurde gelöscht.")] HRESULT FeatureDeleted ([in] BSTR Name);
+	};
+
+#endif // !defined(_TRIASDBEVENTS_IDL__B7AEB937_922C_11D1_BA01_080036D63803__INCLUDED_)

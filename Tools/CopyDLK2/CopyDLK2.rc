@@ -1,0 +1,243 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+#include "secres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_COPYDLK2_DIALOG DIALOGEX 0, 0, 320, 314
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Zusammenstellen von Dateien der DLK"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    LTEXT           "Ausgangsdaten",IDC_SOURCEDATA,7,7,306,8
+    LTEXT           "Auswahl der Inventarliste:",IDC_STATIC,7,18,82,8
+    EDITTEXT        IDC_INVENTAR_FILE,7,30,306,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "Auswahl der zu kopierenden DLK Nomenklaturen:",
+                    IDC_STATIC,7,49,200,8
+    EDITTEXT        IDC_FILESTOCOPYLIST,7,60,306,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "Einstellungen für das Kopieren",IDC_PARAMETERS,7,87,306,
+                    8
+    LTEXT           "Auswahl des &Quellverzeichnisses:",IDC_STATIC,7,99,141,
+                    8
+    EDITTEXT        IDC_SOURCEDIR,7,108,306,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Auswahl des &Zielbasisverzeichnisses:",IDC_STATIC,7,127,
+                    141,8
+    EDITTEXT        IDC_DESTINATIONDIR,7,137,306,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    CONTROL         "",IDC_FILESTOCOPY,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS | 
+                    WS_BORDER | WS_TABSTOP | 0x800,7,161,306,100
+    DEFPUSHBUTTON   "&Kopieren",IDC_COPY,197,293,55,14
+    PUSHBUTTON      "&Schließen",IDCANCEL,258,293,55,14
+    LTEXT           "Bereits %%d kopiert.",IDC_PROMPT,7,289,164,8
+    CONTROL         "Progress1",IDC_COPYPROGRESS,"msctls_progress32",0x1,7,
+                    301,181,6
+    PUSHBUTTON      "&Clipboard",IDC_CLIPBOARD,257,270,56,14
+    CONTROL         "Existierende Dateien nicht kopieren",IDC_SKIPEXISTING,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,272,135,10
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "#include ""secres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 7, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\CopyDLK2.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.deu\\afxres.rc""          // Standard components\r\n"
+    "#endif\r\n"
+    "\r\n"
+    "#include ""res\\copystr.rc""\r\n"
+    "#include ""res\\copydlk.rcv""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\CopyDLKW.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_COPYDLK2_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 313
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 307
+        HORZGUIDE, 161
+        HORZGUIDE, 284
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_FILETREE            BITMAP                  "res\\FileTree.bmp"
+IDB_FILETREEMASK        BITMAP                  "res\\FileTreeMask.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_TOOLBAR_HORZDRAG    CURSOR                  "res\\HorzDrag.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RT_MANIFEST
+//
+
+IDR_MANIFEST            RT_MANIFEST             "res\\CopyDLK2.manifest"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDP_OLE_INIT_FAILED     "OLE initialization failed.  Make sure that the OLE libraries are the correct version."
+    IDS_ABOUTBOX            "&Info über CopyDLK ..."
+    IDS_SHORTNAMECOLUMN     "Nomenklatur"
+    IDS_CAPTION             "Zusammenstellen von Dateien der DLK"
+    IDS_DDX_GF_EDIT_TEXT    "..."
+    IDS_DDX_GFLDR_TT_MODIFY "Verzeichnis auswählen"
+    IDS_SELECTSOURCEDIR     "Auswahl des Quellverzeichnisses"
+    IDS_SELECTDESTINATIONDIR "Auswahl des Zielbasisverzeichnisses"
+    IDS_DDX_GF_TT_MODIFY    "Datei auswählen"
+    IDS_DDX_GF_OK           "OK"
+    IDS_DDX_GF_EDIT_TEXT2   "&..."
+    IDS_DDX_GF_OVERWRITE_PROMPT 
+                            "%1\nDiese Datei existiert bereits.\nSoll diese Datei überschrieben werden ?"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SELECTINVENTAR      "Auswahl der Inventarliste"
+    IDS_SELECTFILELIST      "Auswahl der zu kopierenden DLK Nomenklaturen"
+    IDS_FILTERINVENTAR      "Inventarliste (*.dat)|*.dat|"
+    IDS_DEFEXTINVENTAR      "dat"
+    IDS_FILTERFILELIST      "DLK Nomenklaturen (*.dlk)|*.dlk|"
+    IDS_DEFEXTFILELIST      "dlk"
+    IDS_EXISTS              "Existiert"
+    IDS_COPIED              "Kopiert"
+    IDS_ERRORTEXT           "Bemerkung"
+    IDS_INVENTORYNOTLOADED  "Die Inventardatei '%s' konnte nicht eingelesen werden."
+    IDS_DLKLISTNOTLOADED    "Die DLK Nomenklaturdatei '%s' konnte nicht gelesen werden."
+    IDS_NOTEXISTANT_NODE    "Nicht existent"
+    IDS_NOTFOUND_NODE       "DLK nicht in Inventardatei enthalten"
+    IDS_NO                  "Nein"
+    IDS_YES                 "Ja"
+    IDS_CANCEL              "Abbrechen"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_COPY                "&Kopieren"
+    IDS_STATUSPROMPT        "Bereits %d%% der Dateien kopiert"
+    IDS_ASKTOCANCEL         "Soll das Kopieren abgebrochen werden?"
+    IDS_COPYERROR           "Die Datei '%s' konnte nicht kopiert werden.\nGemeldeter Fehler: %s (Fehlercode: %08x). "
+    IDS_DESTLISTNOTLOADED   "Das Zielverzeichnis '%s' kann nicht nach bereits existierenden Dateien untersucht werden."
+    IDS_FIELDNAMES          "Dlk;Datenträger;Bemerkung"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE 7, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\CopyDLK2.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.deu\afxres.rc"          // Standard components
+#endif
+
+#include "res\copystr.rc"
+#include "res\copydlk.rcv"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

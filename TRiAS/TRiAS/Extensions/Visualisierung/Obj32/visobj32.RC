@@ -1,0 +1,538 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "visres32.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resstrg.h"
+#include "visobj.h"
+#include "viserrdg.h"
+#include "resetvis.h"
+#include "visexp.h"
+#include "visimp.h"
+#include "vstatus.h"
+#include "colcntrl.h"
+#include "ver.h"
+#include "xvisdlg.h"
+// Trick 17
+// #include "dlgtrick.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+DEFIDICON               ICON    DISCARDABLE     "LUPE.ICO"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDBMP_VERRORLOGO        BITMAP  DISCARDABLE     "Pinsel.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+EXTENSIONMENU$(_DEBUG) MENU DISCARDABLE 
+#else
+EXTENSIONMENU MENU DISCARDABLE 
+#endif
+BEGIN
+    POPUP "&Visualisierung"
+    BEGIN
+        MENUITEM "I&dentifikatorunabhängig",    IDM_SAVECOMPLETE
+        MENUITEM "&Visualisierung rücksetzen ...", IDM_VISOBJREMOVE
+        MENUITEM SEPARATOR
+        MENUITEM "Ausgeblendete &Objekte anzeigen", IDM_SHOWHIDDEN
+        MENUITEM "&Ausblenden rückgängig ...",  IDM_REVOKEHIDE
+        MENUITEM SEPARATOR
+        MENUITEM "Visualisierung &importieren ...", IDM_VISINFOIMPORT
+        MENUITEM "Visualisierung &exportieren ...", IDM_VISINFOEXPORT
+        MENUITEM SEPARATOR
+        MENUITEM "Farbregelung ...",            IDM_COLORCONTROL
+    END
+END
+#endif
+
+OBJEXTENSIONMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&Darstellungsparameter"
+    BEGIN
+        MENUITEM "&Definieren ...",             IDM_CHANGEVISINFO
+        MENUITEM "&Objekte ausblenden",         IDM_HIDEOBJECTS
+        MENUITEM SEPARATOR
+        MENUITEM "Darstellungsparameter &rücksetzen", IDM_RESETVISINFO
+        MENUITEM "&Ausblenden rücksetzen",      IDM_SHOWOBJECTS
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+UNDEFINEDVISINFO DIALOG DISCARDABLE  69, 41, 224, 101
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Undefinierte Darstellungsparameter"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Definieren",IDOK,153,6,65,14,WS_GROUP
+    PUSHBUTTON      "&Ignorieren",IDCANCEL,153,26,65,14
+    PUSHBUTTON      "&Alle Ignorieren",IDB_IGNOREALLERRORS,153,81,65,14
+    LTEXT           "Für %s der Objektklasse '%s' sind in der aktuellen Ansicht keine Darstellungsparameter vorgegeben.",
+                    IDT_VISERRORMESSAGE,10,12,129,41
+    CONTROL         "",IDF_VERRORLOGO,"Static",SS_ETCHEDFRAME | WS_GROUP,6,
+                    64,60,31
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,6,6,137,52
+    PUSHBUTTON      "A&utomatisch",IDB_AUTOASSIGN,153,63,65,14
+END
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+RESETVISINFO$(_DEBUG) DIALOG DISCARDABLE  62, 52, 232, 111
+#else
+RESETVISINFO DIALOG DISCARDABLE  62, 52, 232, 111
+#endif
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Visualisierung rücksetzen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Visualisierung rücksetzen für:",IDT_LISTBOXTEXT,6,6,
+                    141,8
+    LISTBOX         IDL_RESETIDENTS,6,19,160,86,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,171,6,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,171,26,55,14
+END
+#endif
+
+EXPORTVISINFODLG DIALOG DISCARDABLE  70, 20, 207, 229
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Exportieren von Darstellungsparametern"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Zu exportierende Ansichten auswählen:",-1,6,6,126,8
+    LISTBOX         IDL_EXPORTVIEWS,6,18,133,93,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "&Alle Auswählen",IDB_SELECTALLVIEWS,146,97,55,14,
+                    WS_GROUP
+    LTEXT           "A&usgabedatei:",-1,6,119,49,8
+    EDITTEXT        IDE_EXPORTFILENAME,6,129,133,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Durchsuchen...",IDB_EXPORTFILESELECT,146,129,55,14,
+                    WS_GROUP
+    GROUPBOX        " Exportoptionen ",-1,6,149,195,74,WS_GROUP
+    CONTROL         "",-1,"Static",SS_ETCHEDVERT,139,162,1,40
+    CONTROL         "&Standardansicht exportieren",IDCB_DEFAULTVIEW,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,164,116,10
+    CONTROL         "Ansichts&eigenschaften exportieren",IDCB_VIEWFEATURES,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,178,124,10
+    CONTROL         "&Legende exportieren",IDCB_LEGENDFEATURES,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,192,115,10
+    CONTROL         "&Objektbezogene Darstellungsparameter exportieren",
+                    IDCB_OBJVISINFO,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,
+                    206,177,10
+    LTEXT           "Farbmodell:",-1,150,164,43,8
+    CONTROL         "&RGB",IDR_EXPORTRGB,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,152,177,45,10
+    CONTROL         "&HSB ",IDR_EXPORTHSB,"Button",BS_AUTORADIOBUTTON,152,
+                    191,46,10
+    DEFPUSHBUTTON   "OK",IDOK,146,6,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,146,25,55,14
+END
+
+IMPORTVISINFODLG DIALOG DISCARDABLE  62, 28, 206, 250
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Importieren von Darstellungsparametern"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Eingabedatei:",-1,6,6,49,8
+    EDITTEXT        IDE_IMPORTFILE,6,17,133,12,ES_AUTOHSCROLL | NOT 
+                    WS_TABSTOP
+    PUSHBUTTON      "&Durchsuchen...",IDB_IMPORTFILESELECT,145,17,55,14
+    LTEXT           "&Zu importierende Ansichten:",-1,6,44,131,8
+    LISTBOX         IDL_IMPORTVIEWS,6,56,133,77,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "&Alle Auswählen",IDB_SELECTALLIMPVIEWS,145,119,55,14,
+                    WS_GROUP
+    GROUPBOX        " Importoptionen ",-1,6,139,194,105,WS_GROUP
+    CONTROL         "",-1,"Static",SS_ETCHEDVERT,143,152,1,59
+    CONTROL         "&Standardansicht importieren",IDCB_IMPORTDEFAULTVIEW,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,153,115,10
+    CONTROL         "Ansichtseigenschaften i&mportieren",
+                    IDCB_IMPORTVIEWFEATURES,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,13,167,123,10
+    CONTROL         "&Legende importieren",IDCB_IMPORTLEGINFO,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,180,118,10
+    CONTROL         "&Nur für existierende Objektklassen importieren",
+                    IDCB_IMPORTEXISTENTIDENTS,"Button",BS_AUTOCHECKBOX | 
+                    BS_TOP | BS_MULTILINE | WS_TABSTOP,13,194,124,19
+    CONTROL         "&Objektbezogene Darstellungsparameter importieren",
+                    IDCB_IMPORTOBJVISINFO,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,13,217,176,10
+    CONTROL         "E&xistierende Ansichten vor Import löschen",
+                    IDCB_DELETEVIEWS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    13,230,177,10
+    LTEXT           "Farbmodell:",-1,150,153,45,8
+    CONTROL         "A&uto",IDR_AUTOSELECT,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,153,166,33,10
+    CONTROL         "&RGB",IDR_IMPORTRGB,"Button",BS_AUTORADIOBUTTON,153,179,
+                    33,10
+    CONTROL         "&HSB ",IDR_IMPORTHSB,"Button",BS_AUTORADIOBUTTON,153,
+                    192,33,10
+    DEFPUSHBUTTON   "OK",IDOK,145,44,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,145,63,55,14
+END
+
+IMPEXPORTSTATUS DIALOG DISCARDABLE  50, 51, 181, 64
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CLIPSIBLINGS | 
+    WS_CAPTION | WS_SYSMENU
+CAPTION "Status des aktuellen Exports"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Anteil der bereits exportierten Informationen:",
+                    IDT_COMMENT,5,10,169,10
+    DEFPUSHBUTTON   "&Abbrechen",IDCANCEL,63,45,55,14
+    CONTROL         "%3d%% ",IDG_STATUSGAUGE,"GaugeBox32",0x0,4,23,173,14
+    CONTROL         "",-1,"Static",SS_GRAYFRAME,2,21,177,18
+END
+
+COLORCONTROLDLG DIALOG DISCARDABLE  45, 43, 220, 142
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Farbregelung"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Sättigungwerte regeln",IDC_STATIC,6,4,70,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,77,9,74,1
+    CONTROL         "Ents&ättigte bis gesättigte Farben",IDR_ALLSAT,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,8,17,117,10
+    CONTROL         "&Ausgangsfarben bis gesättigte Farben",IDR_SMALLERSAT,
+                    "Button",BS_AUTORADIOBUTTON,8,31,133,10
+    CONTROL         "Entsättigte Farben bis &Ausgangsfarben",IDR_BIGGERSAT,
+                    "Button",BS_AUTORADIOBUTTON,8,45,137,10
+    SCROLLBAR       IDSB_ABSSAT,8,61,119,9,WS_GROUP | WS_TABSTOP
+    EDITTEXT        IDE_ABSSAT,129,59,20,12,ES_AUTOHSCROLL
+    LTEXT           "Helligkeitswerte regeln",IDC_STATIC,6,79,72,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,79,84,72,1
+    CONTROL         "&Schwarz bis Ausgangsfarbe",IDR_BRIGHTNESS,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,8,92,103,10
+    CONTROL         "Ausgangsfarbe bis &Weiß",IDR_NEGBRIGHTNESS,"Button",
+                    BS_AUTORADIOBUTTON,8,108,93,10
+    SCROLLBAR       IDSB_RELBRIGHTNESS,6,124,119,9,WS_GROUP | WS_TABSTOP
+    EDITTEXT        IDE_RELBRIGHTNESS,127,122,20,12
+    DEFPUSHBUTTON   "Speichern",IDOK,162,4,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,162,26,55,14
+    PUSHBUTTON      "&Test",IDC_PREVIEW,162,125,55,14,WS_GROUP
+END
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+EXTSYMBOLDLG$(_DEBUG) DIALOG DISCARDABLE  28, 39, 231, 114
+#else
+EXTSYMBOLDLG DIALOG DISCARDABLE  28, 39, 231, 114
+#endif
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Punktsymbolisierung"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Symbolisierungstyp:",-1,6,6,92,8
+    LISTBOX         IDL_EXTSYMBOLTYP,6,18,158,90,LBS_SORT | LBS_USETABSTOPS | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,170,6,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,170,25,55,14
+END
+#endif
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "visres32.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""resstrg.h""\r\n"
+    "#include ""visobj.h""\r\n"
+    "#include ""viserrdg.h""\r\n"
+    "#include ""resetvis.h""\r\n"
+    "#include ""visexp.h""\r\n"
+    "#include ""visimp.h""\r\n"
+    "#include ""vstatus.h""\r\n"
+    "#include ""colcntrl.h""\r\n"
+    "#include ""ver.h""\r\n"
+    "#include ""xvisdlg.h""\r\n"
+    "// Trick 17\r\n"
+    "// #include ""dlgtrick.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""visobj32.rcv""\t// VersionsResource\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    UNDEFINEDVISINFO, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 218
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 95
+    END
+
+    "RESETVISINFO$(_DEBUG)", DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 226
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 105
+    END
+
+    EXPORTVISINFODLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 201
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 223
+    END
+
+    IMPORTVISINFODLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 200
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 244
+    END
+
+    COLORCONTROLDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 217
+        VERTGUIDE, 151
+        TOPMARGIN, 4
+        BOTTOMMARGIN, 139
+    END
+
+    "EXTSYMBOLDLG$(_DEBUG)", DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 225
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 108
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// TYPELIB
+//
+
+IDR_TYPELIB             TYPELIB DISCARDABLE     "..\\Debug\\Visinfo.tlb"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_TEXTVISINFO_RGS     REGISTRY DISCARDABLE    "Res\\TextVisInfo.rgs"
+IDR_LINEVISINFO_RGS     REGISTRY DISCARDABLE    "Res\\LineVisInfo.rgs"
+IDR_POINTVISINFO_RGS    REGISTRY DISCARDABLE    "Res\\PointVisInfo.rgs"
+IDR_AREAVISINFO_RGS     REGISTRY DISCARDABLE    "Res\\AreaVisInfo.rgs"
+IDR_VISINFO_RGS         REGISTRY DISCARDABLE    "Res\\VisInfo.rgs"
+IDR_RESETVISADDENTRYCB  REGISTRY DISCARDABLE    "ResetVisAddEntryCB.rgs"
+IDR_RESETHIDEADDENTRYCB REGISTRY DISCARDABLE    "ResetHideAddEntryCB.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// POINTSYMBOL
+//
+
+IDR_OFFSETTABOBSOLETE   POINTSYMBOL DISCARDABLE "Res\\OffsetTabObsolete.bin"
+IDR_OFFSETTAB           POINTSYMBOL DISCARDABLE "Res\\OffsetTab.bin"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PUNKTOBJEKT         "Punktobjekte"
+    IDS_LINIENOBJEKT        "Linienobjekte"
+    IDS_FLAECHENOBJEKT      "Flächenobjekte"
+    IDS_TEXTOBJEKT          "Textobjekte"
+    IDS_UNKNOWNOBJECT       "die unbekannten Objekte"
+    IDS_OBJECTCAPTION       "Objekt %ld"
+    IDS_ALLOBJCAPTION       "Objekte"
+    IDS_PHEADER             "\tc %s { "
+    IDS_LHEADER             "\tl %s { "
+    IDS_FHEADER             "\ta %s { "
+    IDS_THEADER             "\tx %s { "
+    IDS_GHEADER             "\t%s { "
+    IDS_NEWSTYLE            "t=%u; "
+    IDS_NEWSTYLENAME        "t=%u,""%s""; "
+    IDS_NEWPRIORITY         "p=%d; "
+    IDS_NEWPRIMCOLOR        "m=%d,%d,%d; "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NEWPRIMCOLORHSB     "msbh=%d,%d,%d; "
+    IDS_NEWSECCOLOR         "f=%d,%d,%d; "
+    IDS_NEWSECCOLORHSB      "fsbh=%d,%d,%d; "
+    IDS_NEWSIZE             "s=%d,%d; "
+    IDS_NEWWIDTH            "w=%d; "
+    IDS_NEWTYPE             "y=0x%x; "
+    IDS_NEWROTATION         "r=%d; "
+    IDS_TRAILER             "} "
+    IDS_TAG                 " k"
+    IDS_PBDKURZTEXT         "VisInfo(%s)"
+    IDS_PBDLANGTEXT         "Informationen zu Darstellungsparametern in der Ansicht '%s'"
+    IDS_IGNOREALLERRORS     "&Fehlende Darstellungsparameter ignorieren"
+    IDS_HIDEACTIVATEDOBJECT "&Objekt ausblenden"
+    IDS_HIDESELECTEDOBJECTS "&Objekte ausblenden"
+    IDS_RESETVISCAPTION     "Rücksetzen von Darstellungsparametern"
+    IDS_RESETVISTEXT        "&Darstellungsparameter rücksetzen für:"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_RESETSHOWCAPTION    "Rücksetzen von ausgeblendeten Objekten"
+    IDS_RESETSHOWTEXT       "&Ausblenden rücksetzen für:"
+    IDS_VIEWHEADER          "v ""%s"" {"
+    IDS_DEFVIEWHEADER       "v Default {"
+    IDS_NEWROTORIENT        "r=%d; o=%d; "
+    IDS_VIEWFEATURE1        "\tg ""%-16.16s"" { b=""%s""; }"
+    IDS_VIEWFEATURE2        "\tg %lu { b=""%s""; }"
+    IDS_VISASCTEMPLATE      "Darstellungsparameter (*.vsc)|*.vsc"
+    IDS_DEFAULTVIEW         "__DefaultVisInfo__"
+    IDS_VISASCEXTENSION     ".vsc"
+    IDS_STARTVIEWHEADER     "sv ""%s"" {"
+    IDS_VIEWFEATURECOMM     "//\tg ""%-16.16s"" { b=""%s""; }"
+    IDS_YYERRORCAPTION      "Fehler beim Import der Darstellungsparameter"
+    IDS_TYPECLASH           "Zeile %d: TypeClash: %s -> %s."
+    IDS_EXPORTCOMMENT       "Anteil der bereits exportierten Informationen:"
+    IDS_EXPORTCAPTION       "Status des aktuellen Exports"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_IMPORTCOMMENT       "Anteil der bereits importierten Informationen:"
+    IDS_IMPORTCAPTION       "Status des aktuellen Imports"
+    IDS_VMDEXTENSION        ".vmd"
+    IDS_CUSTOMVISINFO1      "z=""%s"":%s; "
+    IDS_CUSTOMVISINFO2      "z=""%s"":""%s""; "
+    IDS_VMODFORMAT          "  { "
+    IDS_VIEWFEATURECOMM2    "//\tg %lu { b=""%s""; }"
+    IDS_EXPORTTIMEFORMAT    ": %e. %B %Y, %T"
+    IDS_VISMODULE           "VisModules"
+    IDS_VMODNUMS            "NumVisModules"
+    IDS_LEGENDINFOFORMAT    "\r\n\t\t     lg={ %%.%ds } "
+    IDS_OBJLEGENDINFOFORMAT "lg={ %s } }"
+    IDS_IMPORTWAIT          "Interne Datenstrukturen werden aufgebaut ..."
+    IDS_LONGCLASSNAME       "Objektbezogene Darstellungsparameter"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LEGINFOKTEXT        "LegInfo (%s)"
+    IDS_LEGINFOLTEXT        "Legendeninformation in der Ansicht '%s'"
+    IDS_OKS                 "o=""%s"""
+    IDS_SAVEVISCAP          "Exportieren von Darstellungsparametern"
+    IDS_OPENVISCAP          "Importieren von Darstellungsparametern"
+    IDS_UPPERSCALE          "us=%d; "
+    IDS_LOWERSCALE          "ls=%d; "
+    IDS_VISINFOIMPORT       "Darstellungsparameter &importieren ..."
+    IDS_VISINFOEXPORT       "Darstellungsparameter &exportieren ..."
+    IDS_SHOWHIDDEN          "Ausgeblendete &Objekte anzeigen"
+    IDS_VISOBJREMOVE        "Darstellungs&parameter rücksetzen ..."
+    IDS_REVOKEHIDE          "A&usblenden rücksetzen ..."
+    IDS_LOCATABLE           "loc=%d; "
+    IDS_VISIBLE             "vis=%d; "
+    IDS_GEOMETRY            "geom=""%s""; "
+    IDS_COLORCONTROL        "Far&bregelung ..."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_POINTVISINFO_DESC   "Darstellungsparameter für Punktobjekte"
+    IDS_LINEVISINFO_DESC    "Darstellungsparameter für Linienobjekte"
+    IDS_AREAVISINFO_DESC    "Darstellungsparameter für Flächenobjekte"
+    IDS_TEXTVISINFO_DESC    "Darstellungsparameter für Textobjekte"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_VIEWLEGENDHEADLINE  "\tlh { b=""%s""; }"
+    IDS_VIEWLEGENDHEADLINE_COMMENT "\t// %ld"
+    IDS_OBJPROPTOSHOW       "\tobjprop { b=""%x,%s""; }"
+    IDS_OBJPROPTOSHOW2      "\tobjprop { b=""%x""; }"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "visobj32.rcv"	// VersionsResource
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

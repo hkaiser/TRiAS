@@ -1,0 +1,2767 @@
+# Microsoft Developer Studio Generated NMAKE File, Format Version 4.20
+# ** DO NOT EDIT **
+
+# TARGTYPE "Win32 (x86) Dynamic-Link Library" 0x0102
+
+!IF "$(CFG)" == ""
+CFG=GbmTRiAS - Win32 Debug
+!MESSAGE No configuration specified.  Defaulting to GbmTRiAS - Win32 Debug.
+!ENDIF 
+
+!IF "$(CFG)" != "GbmTRiAS - Win32 Release" && "$(CFG)" !=\
+ "GbmTRiAS - Win32 Debug"
+!MESSAGE Invalid configuration "$(CFG)" specified.
+!MESSAGE You can specify a configuration when running NMAKE on this makefile
+!MESSAGE by defining the macro CFG on the command line.  For example:
+!MESSAGE 
+!MESSAGE NMAKE /f "GbmTRiAS.mak" CFG="GbmTRiAS - Win32 Debug"
+!MESSAGE 
+!MESSAGE Possible choices for configuration are:
+!MESSAGE 
+!MESSAGE "GbmTRiAS - Win32 Release" (based on\
+ "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "GbmTRiAS - Win32 Debug" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE 
+!ERROR An invalid configuration is specified.
+!ENDIF 
+
+!IF "$(OS)" == "Windows_NT"
+NULL=
+!ELSE 
+NULL=nul
+!ENDIF 
+################################################################################
+# Begin Project
+# PROP Target_Last_Scanned "GbmTRiAS - Win32 Debug"
+MTL=mktyplib.exe
+CPP=cl.exe
+RSC=rc.exe
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+# PROP BASE Use_MFC 6
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "Release"
+# PROP BASE Intermediate_Dir "Release"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 6
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "Release"
+# PROP Intermediate_Dir "Release"
+# PROP Target_Dir ""
+OUTDIR=.\Release
+INTDIR=.\Release
+
+ALL : "$(OUTDIR)\GbmTRiAS.ext" "$(OUTDIR)\GbmTRiAS.bsc"
+
+CLEAN : 
+	-@erase "$(INTDIR)\About.obj"
+	-@erase "$(INTDIR)\About.sbr"
+	-@erase "$(INTDIR)\DLDlg.obj"
+	-@erase "$(INTDIR)\DLDlg.sbr"
+	-@erase "$(INTDIR)\EdPage1.obj"
+	-@erase "$(INTDIR)\EdPage1.sbr"
+	-@erase "$(INTDIR)\EdPage2.obj"
+	-@erase "$(INTDIR)\EdPage2.sbr"
+	-@erase "$(INTDIR)\EdPage3.obj"
+	-@erase "$(INTDIR)\EdPage3.sbr"
+	-@erase "$(INTDIR)\EdPage4.obj"
+	-@erase "$(INTDIR)\EdPage4.sbr"
+	-@erase "$(INTDIR)\EdPage5.obj"
+	-@erase "$(INTDIR)\EdPage5.sbr"
+	-@erase "$(INTDIR)\EdPage6.obj"
+	-@erase "$(INTDIR)\EdPage6.sbr"
+	-@erase "$(INTDIR)\GbmTRiAS.obj"
+	-@erase "$(INTDIR)\GbmTRiAS.pch"
+	-@erase "$(INTDIR)\GbmTRiAS.res"
+	-@erase "$(INTDIR)\GbmTRiAS.sbr"
+	-@erase "$(INTDIR)\MyPropS.obj"
+	-@erase "$(INTDIR)\MyPropS.sbr"
+	-@erase "$(INTDIR)\NF_PG1.obj"
+	-@erase "$(INTDIR)\NF_PG1.sbr"
+	-@erase "$(INTDIR)\NF_PG1FL.obj"
+	-@erase "$(INTDIR)\NF_PG1FL.sbr"
+	-@erase "$(INTDIR)\NF_PG1GB.obj"
+	-@erase "$(INTDIR)\NF_PG1GB.sbr"
+	-@erase "$(INTDIR)\NF_PG2D.obj"
+	-@erase "$(INTDIR)\NF_PG2D.sbr"
+	-@erase "$(INTDIR)\NF_PG2H.obj"
+	-@erase "$(INTDIR)\NF_PG2H.sbr"
+	-@erase "$(INTDIR)\OpProDlg.obj"
+	-@erase "$(INTDIR)\OpProDlg.sbr"
+	-@erase "$(INTDIR)\OrteSet.obj"
+	-@erase "$(INTDIR)\OrteSet.sbr"
+	-@erase "$(INTDIR)\SetOI.obj"
+	-@erase "$(INTDIR)\SetOI.sbr"
+	-@erase "$(INTDIR)\SetSI.obj"
+	-@erase "$(INTDIR)\SetSI.sbr"
+	-@erase "$(INTDIR)\SPage1.obj"
+	-@erase "$(INTDIR)\SPage1.sbr"
+	-@erase "$(INTDIR)\SPage2.obj"
+	-@erase "$(INTDIR)\SPage2.sbr"
+	-@erase "$(INTDIR)\StatDlg.obj"
+	-@erase "$(INTDIR)\StatDlg.sbr"
+	-@erase "$(INTDIR)\StdAfx.obj"
+	-@erase "$(INTDIR)\StdAfx.sbr"
+	-@erase "$(INTDIR)\StrasseSet.obj"
+	-@erase "$(INTDIR)\StrasseSet.sbr"
+	-@erase "$(INTDIR)\SuchPage0.obj"
+	-@erase "$(INTDIR)\SuchPage0.sbr"
+	-@erase "$(INTDIR)\SuchPage1.obj"
+	-@erase "$(INTDIR)\SuchPage1.sbr"
+	-@erase "$(INTDIR)\SuchPage2.obj"
+	-@erase "$(INTDIR)\SuchPage2.sbr"
+	-@erase "$(INTDIR)\SuchPage3.obj"
+	-@erase "$(INTDIR)\SuchPage3.sbr"
+	-@erase "$(INTDIR)\SuchPage4.obj"
+	-@erase "$(INTDIR)\SuchPage4.sbr"
+	-@erase "$(INTDIR)\SuchResDlg.obj"
+	-@erase "$(INTDIR)\SuchResDlg.sbr"
+	-@erase "$(INTDIR)\TriDBSet.obj"
+	-@erase "$(INTDIR)\TriDBSet.sbr"
+	-@erase "$(INTDIR)\VerzSet.obj"
+	-@erase "$(INTDIR)\VerzSet.sbr"
+	-@erase "$(INTDIR)\VerzSet2.obj"
+	-@erase "$(INTDIR)\VerzSet2.sbr"
+	-@erase "$(INTDIR)\Xstring.obj"
+	-@erase "$(INTDIR)\Xstring.sbr"
+	-@erase "$(OUTDIR)\GbmTRiAS.bsc"
+	-@erase "$(OUTDIR)\GbmTRiAS.exp"
+	-@erase "$(OUTDIR)\GbmTRiAS.ext"
+	-@erase "$(OUTDIR)\GbmTRiAS.lib"
+
+"$(OUTDIR)" :
+    if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
+
+# ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /Yu"stdafx.h" /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "__XT" /D "__MFC__" /D "__DEXPROCS" /Fr /Yu"stdafx.h" /c
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D\
+ "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "__XT" /D "__MFC__" /D "__DEXPROCS"\
+ /Fr"$(INTDIR)/" /Fp"$(INTDIR)/GbmTRiAS.pch" /Yu"stdafx.h" /Fo"$(INTDIR)/" /c 
+CPP_OBJS=.\Release/
+CPP_SBRS=.\Release/
+# ADD BASE MTL /nologo /D "NDEBUG" /win32
+# ADD MTL /nologo /D "NDEBUG" /win32
+MTL_PROJ=/nologo /D "NDEBUG" /win32 
+# ADD BASE RSC /l 0x407 /d "NDEBUG" /d "_AFXDLL"
+# ADD RSC /l 0x407 /d "NDEBUG" /d "_AFXDLL"
+RSC_PROJ=/l 0x407 /fo"$(INTDIR)/GbmTRiAS.res" /d "NDEBUG" /d "_AFXDLL" 
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+BSC32_FLAGS=/nologo /o"$(OUTDIR)/GbmTRiAS.bsc" 
+BSC32_SBRS= \
+	"$(INTDIR)\About.sbr" \
+	"$(INTDIR)\DLDlg.sbr" \
+	"$(INTDIR)\EdPage1.sbr" \
+	"$(INTDIR)\EdPage2.sbr" \
+	"$(INTDIR)\EdPage3.sbr" \
+	"$(INTDIR)\EdPage4.sbr" \
+	"$(INTDIR)\EdPage5.sbr" \
+	"$(INTDIR)\EdPage6.sbr" \
+	"$(INTDIR)\GbmTRiAS.sbr" \
+	"$(INTDIR)\MyPropS.sbr" \
+	"$(INTDIR)\NF_PG1.sbr" \
+	"$(INTDIR)\NF_PG1FL.sbr" \
+	"$(INTDIR)\NF_PG1GB.sbr" \
+	"$(INTDIR)\NF_PG2D.sbr" \
+	"$(INTDIR)\NF_PG2H.sbr" \
+	"$(INTDIR)\OpProDlg.sbr" \
+	"$(INTDIR)\OrteSet.sbr" \
+	"$(INTDIR)\SetOI.sbr" \
+	"$(INTDIR)\SetSI.sbr" \
+	"$(INTDIR)\SPage1.sbr" \
+	"$(INTDIR)\SPage2.sbr" \
+	"$(INTDIR)\StatDlg.sbr" \
+	"$(INTDIR)\StdAfx.sbr" \
+	"$(INTDIR)\StrasseSet.sbr" \
+	"$(INTDIR)\SuchPage0.sbr" \
+	"$(INTDIR)\SuchPage1.sbr" \
+	"$(INTDIR)\SuchPage2.sbr" \
+	"$(INTDIR)\SuchPage3.sbr" \
+	"$(INTDIR)\SuchPage4.sbr" \
+	"$(INTDIR)\SuchResDlg.sbr" \
+	"$(INTDIR)\TriDBSet.sbr" \
+	"$(INTDIR)\VerzSet.sbr" \
+	"$(INTDIR)\VerzSet2.sbr" \
+	"$(INTDIR)\Xstring.sbr"
+
+"$(OUTDIR)\GbmTRiAS.bsc" : "$(OUTDIR)" $(BSC32_SBRS)
+    $(BSC32) @<<
+  $(BSC32_FLAGS) $(BSC32_SBRS)
+<<
+
+LINK32=link.exe
+# ADD BASE LINK32 /nologo /subsystem:windows /dll /machine:I386
+# ADD LINK32 ixtmfr40.lib cont32r.lib stdcppr.lib /nologo /subsystem:windows /dll /machine:I386 /out:"Release/GbmTRiAS.ext"
+LINK32_FLAGS=ixtmfr40.lib cont32r.lib stdcppr.lib /nologo /subsystem:windows\
+ /dll /incremental:no /pdb:"$(OUTDIR)/GbmTRiAS.pdb" /machine:I386\
+ /def:".\GbmTRiAS.def" /out:"$(OUTDIR)/GbmTRiAS.ext"\
+ /implib:"$(OUTDIR)/GbmTRiAS.lib" 
+DEF_FILE= \
+	".\GbmTRiAS.def"
+LINK32_OBJS= \
+	"$(INTDIR)\About.obj" \
+	"$(INTDIR)\DLDlg.obj" \
+	"$(INTDIR)\EdPage1.obj" \
+	"$(INTDIR)\EdPage2.obj" \
+	"$(INTDIR)\EdPage3.obj" \
+	"$(INTDIR)\EdPage4.obj" \
+	"$(INTDIR)\EdPage5.obj" \
+	"$(INTDIR)\EdPage6.obj" \
+	"$(INTDIR)\GbmTRiAS.obj" \
+	"$(INTDIR)\GbmTRiAS.res" \
+	"$(INTDIR)\MyPropS.obj" \
+	"$(INTDIR)\NF_PG1.obj" \
+	"$(INTDIR)\NF_PG1FL.obj" \
+	"$(INTDIR)\NF_PG1GB.obj" \
+	"$(INTDIR)\NF_PG2D.obj" \
+	"$(INTDIR)\NF_PG2H.obj" \
+	"$(INTDIR)\OpProDlg.obj" \
+	"$(INTDIR)\OrteSet.obj" \
+	"$(INTDIR)\SetOI.obj" \
+	"$(INTDIR)\SetSI.obj" \
+	"$(INTDIR)\SPage1.obj" \
+	"$(INTDIR)\SPage2.obj" \
+	"$(INTDIR)\StatDlg.obj" \
+	"$(INTDIR)\StdAfx.obj" \
+	"$(INTDIR)\StrasseSet.obj" \
+	"$(INTDIR)\SuchPage0.obj" \
+	"$(INTDIR)\SuchPage1.obj" \
+	"$(INTDIR)\SuchPage2.obj" \
+	"$(INTDIR)\SuchPage3.obj" \
+	"$(INTDIR)\SuchPage4.obj" \
+	"$(INTDIR)\SuchResDlg.obj" \
+	"$(INTDIR)\TriDBSet.obj" \
+	"$(INTDIR)\VerzSet.obj" \
+	"$(INTDIR)\VerzSet2.obj" \
+	"$(INTDIR)\Xstring.obj"
+
+"$(OUTDIR)\GbmTRiAS.ext" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
+    $(LINK32) @<<
+  $(LINK32_FLAGS) $(LINK32_OBJS)
+<<
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+# PROP BASE Use_MFC 6
+# PROP BASE Use_Debug_Libraries 1
+# PROP BASE Output_Dir "Debug"
+# PROP BASE Intermediate_Dir "Debug"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 6
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "Debug"
+# PROP Intermediate_Dir "Debug"
+# PROP Target_Dir ""
+OUTDIR=.\Debug
+INTDIR=.\Debug
+
+ALL : "F:\Trias200\TRiAS_Debug\GbmTRiAd.ext" "$(OUTDIR)\GbmTRiAS.bsc"
+
+CLEAN : 
+	-@erase "$(INTDIR)\About.obj"
+	-@erase "$(INTDIR)\About.sbr"
+	-@erase "$(INTDIR)\DLDlg.obj"
+	-@erase "$(INTDIR)\DLDlg.sbr"
+	-@erase "$(INTDIR)\EdPage1.obj"
+	-@erase "$(INTDIR)\EdPage1.sbr"
+	-@erase "$(INTDIR)\EdPage2.obj"
+	-@erase "$(INTDIR)\EdPage2.sbr"
+	-@erase "$(INTDIR)\EdPage3.obj"
+	-@erase "$(INTDIR)\EdPage3.sbr"
+	-@erase "$(INTDIR)\EdPage4.obj"
+	-@erase "$(INTDIR)\EdPage4.sbr"
+	-@erase "$(INTDIR)\EdPage5.obj"
+	-@erase "$(INTDIR)\EdPage5.sbr"
+	-@erase "$(INTDIR)\EdPage6.obj"
+	-@erase "$(INTDIR)\EdPage6.sbr"
+	-@erase "$(INTDIR)\GbmTRiAS.obj"
+	-@erase "$(INTDIR)\GbmTRiAS.pch"
+	-@erase "$(INTDIR)\GbmTRiAS.res"
+	-@erase "$(INTDIR)\GbmTRiAS.sbr"
+	-@erase "$(INTDIR)\MyPropS.obj"
+	-@erase "$(INTDIR)\MyPropS.sbr"
+	-@erase "$(INTDIR)\NF_PG1.obj"
+	-@erase "$(INTDIR)\NF_PG1.sbr"
+	-@erase "$(INTDIR)\NF_PG1FL.obj"
+	-@erase "$(INTDIR)\NF_PG1FL.sbr"
+	-@erase "$(INTDIR)\NF_PG1GB.obj"
+	-@erase "$(INTDIR)\NF_PG1GB.sbr"
+	-@erase "$(INTDIR)\NF_PG2D.obj"
+	-@erase "$(INTDIR)\NF_PG2D.sbr"
+	-@erase "$(INTDIR)\NF_PG2H.obj"
+	-@erase "$(INTDIR)\NF_PG2H.sbr"
+	-@erase "$(INTDIR)\OpProDlg.obj"
+	-@erase "$(INTDIR)\OpProDlg.sbr"
+	-@erase "$(INTDIR)\OrteSet.obj"
+	-@erase "$(INTDIR)\OrteSet.sbr"
+	-@erase "$(INTDIR)\SetOI.obj"
+	-@erase "$(INTDIR)\SetOI.sbr"
+	-@erase "$(INTDIR)\SetSI.obj"
+	-@erase "$(INTDIR)\SetSI.sbr"
+	-@erase "$(INTDIR)\SPage1.obj"
+	-@erase "$(INTDIR)\SPage1.sbr"
+	-@erase "$(INTDIR)\SPage2.obj"
+	-@erase "$(INTDIR)\SPage2.sbr"
+	-@erase "$(INTDIR)\StatDlg.obj"
+	-@erase "$(INTDIR)\StatDlg.sbr"
+	-@erase "$(INTDIR)\StdAfx.obj"
+	-@erase "$(INTDIR)\StdAfx.sbr"
+	-@erase "$(INTDIR)\StrasseSet.obj"
+	-@erase "$(INTDIR)\StrasseSet.sbr"
+	-@erase "$(INTDIR)\SuchPage0.obj"
+	-@erase "$(INTDIR)\SuchPage0.sbr"
+	-@erase "$(INTDIR)\SuchPage1.obj"
+	-@erase "$(INTDIR)\SuchPage1.sbr"
+	-@erase "$(INTDIR)\SuchPage2.obj"
+	-@erase "$(INTDIR)\SuchPage2.sbr"
+	-@erase "$(INTDIR)\SuchPage3.obj"
+	-@erase "$(INTDIR)\SuchPage3.sbr"
+	-@erase "$(INTDIR)\SuchPage4.obj"
+	-@erase "$(INTDIR)\SuchPage4.sbr"
+	-@erase "$(INTDIR)\SuchResDlg.obj"
+	-@erase "$(INTDIR)\SuchResDlg.sbr"
+	-@erase "$(INTDIR)\TriDBSet.obj"
+	-@erase "$(INTDIR)\TriDBSet.sbr"
+	-@erase "$(INTDIR)\vc40.idb"
+	-@erase "$(INTDIR)\vc40.pdb"
+	-@erase "$(INTDIR)\VerzSet.obj"
+	-@erase "$(INTDIR)\VerzSet.sbr"
+	-@erase "$(INTDIR)\VerzSet2.obj"
+	-@erase "$(INTDIR)\VerzSet2.sbr"
+	-@erase "$(INTDIR)\Xstring.obj"
+	-@erase "$(INTDIR)\Xstring.sbr"
+	-@erase "$(OUTDIR)\GbmTRiAd.exp"
+	-@erase "$(OUTDIR)\GbmTRiAd.lib"
+	-@erase "$(OUTDIR)\GbmTRiAd.pdb"
+	-@erase "$(OUTDIR)\GbmTRiAS.bsc"
+	-@erase "F:\Trias200\TRiAS_Debug\GbmTRiAd.ext"
+	-@erase "F:\Trias200\TRiAS_Debug\GbmTRiAd.ilk"
+
+"$(OUTDIR)" :
+    if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
+
+# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /Yu"stdafx.h" /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "__XT" /D "__MFC__" /D "__DEXPROCS" /FR /Yu"stdafx.h" /c
+CPP_PROJ=/nologo /MDd /W3 /Gm /GX /Zi /Od /D "_DEBUG" /D "WIN32" /D "_WINDOWS"\
+ /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "__XT" /D "__MFC__" /D "__DEXPROCS"\
+ /FR"$(INTDIR)/" /Fp"$(INTDIR)/GbmTRiAS.pch" /Yu"stdafx.h" /Fo"$(INTDIR)/"\
+ /Fd"$(INTDIR)/" /c 
+CPP_OBJS=.\Debug/
+CPP_SBRS=.\Debug/
+# ADD BASE MTL /nologo /D "_DEBUG" /win32
+# ADD MTL /nologo /D "_DEBUG" /win32
+MTL_PROJ=/nologo /D "_DEBUG" /win32 
+# ADD BASE RSC /l 0x407 /d "_DEBUG" /d "_AFXDLL"
+# ADD RSC /l 0x407 /d "_DEBUG" /d "_AFXDLL"
+RSC_PROJ=/l 0x407 /fo"$(INTDIR)/GbmTRiAS.res" /d "_DEBUG" /d "_AFXDLL" 
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+BSC32_FLAGS=/nologo /o"$(OUTDIR)/GbmTRiAS.bsc" 
+BSC32_SBRS= \
+	"$(INTDIR)\About.sbr" \
+	"$(INTDIR)\DLDlg.sbr" \
+	"$(INTDIR)\EdPage1.sbr" \
+	"$(INTDIR)\EdPage2.sbr" \
+	"$(INTDIR)\EdPage3.sbr" \
+	"$(INTDIR)\EdPage4.sbr" \
+	"$(INTDIR)\EdPage5.sbr" \
+	"$(INTDIR)\EdPage6.sbr" \
+	"$(INTDIR)\GbmTRiAS.sbr" \
+	"$(INTDIR)\MyPropS.sbr" \
+	"$(INTDIR)\NF_PG1.sbr" \
+	"$(INTDIR)\NF_PG1FL.sbr" \
+	"$(INTDIR)\NF_PG1GB.sbr" \
+	"$(INTDIR)\NF_PG2D.sbr" \
+	"$(INTDIR)\NF_PG2H.sbr" \
+	"$(INTDIR)\OpProDlg.sbr" \
+	"$(INTDIR)\OrteSet.sbr" \
+	"$(INTDIR)\SetOI.sbr" \
+	"$(INTDIR)\SetSI.sbr" \
+	"$(INTDIR)\SPage1.sbr" \
+	"$(INTDIR)\SPage2.sbr" \
+	"$(INTDIR)\StatDlg.sbr" \
+	"$(INTDIR)\StdAfx.sbr" \
+	"$(INTDIR)\StrasseSet.sbr" \
+	"$(INTDIR)\SuchPage0.sbr" \
+	"$(INTDIR)\SuchPage1.sbr" \
+	"$(INTDIR)\SuchPage2.sbr" \
+	"$(INTDIR)\SuchPage3.sbr" \
+	"$(INTDIR)\SuchPage4.sbr" \
+	"$(INTDIR)\SuchResDlg.sbr" \
+	"$(INTDIR)\TriDBSet.sbr" \
+	"$(INTDIR)\VerzSet.sbr" \
+	"$(INTDIR)\VerzSet2.sbr" \
+	"$(INTDIR)\Xstring.sbr"
+
+"$(OUTDIR)\GbmTRiAS.bsc" : "$(OUTDIR)" $(BSC32_SBRS)
+    $(BSC32) @<<
+  $(BSC32_FLAGS) $(BSC32_SBRS)
+<<
+
+LINK32=link.exe
+# ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386
+# ADD LINK32 ixtmfd40.lib cont32d.lib stdcppd.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"F:\Trias200\TRiAS_Debug/GbmTRiAd.ext"
+# SUBTRACT LINK32 /pdb:none
+LINK32_FLAGS=ixtmfd40.lib cont32d.lib stdcppd.lib /nologo /subsystem:windows\
+ /dll /incremental:yes /pdb:"$(OUTDIR)/GbmTRiAd.pdb" /debug /machine:I386\
+ /def:".\GbmTRiAS.def" /out:"F:\Trias200\TRiAS_Debug/GbmTRiAd.ext"\
+ /implib:"$(OUTDIR)/GbmTRiAd.lib" 
+DEF_FILE= \
+	".\GbmTRiAS.def"
+LINK32_OBJS= \
+	"$(INTDIR)\About.obj" \
+	"$(INTDIR)\DLDlg.obj" \
+	"$(INTDIR)\EdPage1.obj" \
+	"$(INTDIR)\EdPage2.obj" \
+	"$(INTDIR)\EdPage3.obj" \
+	"$(INTDIR)\EdPage4.obj" \
+	"$(INTDIR)\EdPage5.obj" \
+	"$(INTDIR)\EdPage6.obj" \
+	"$(INTDIR)\GbmTRiAS.obj" \
+	"$(INTDIR)\GbmTRiAS.res" \
+	"$(INTDIR)\MyPropS.obj" \
+	"$(INTDIR)\NF_PG1.obj" \
+	"$(INTDIR)\NF_PG1FL.obj" \
+	"$(INTDIR)\NF_PG1GB.obj" \
+	"$(INTDIR)\NF_PG2D.obj" \
+	"$(INTDIR)\NF_PG2H.obj" \
+	"$(INTDIR)\OpProDlg.obj" \
+	"$(INTDIR)\OrteSet.obj" \
+	"$(INTDIR)\SetOI.obj" \
+	"$(INTDIR)\SetSI.obj" \
+	"$(INTDIR)\SPage1.obj" \
+	"$(INTDIR)\SPage2.obj" \
+	"$(INTDIR)\StatDlg.obj" \
+	"$(INTDIR)\StdAfx.obj" \
+	"$(INTDIR)\StrasseSet.obj" \
+	"$(INTDIR)\SuchPage0.obj" \
+	"$(INTDIR)\SuchPage1.obj" \
+	"$(INTDIR)\SuchPage2.obj" \
+	"$(INTDIR)\SuchPage3.obj" \
+	"$(INTDIR)\SuchPage4.obj" \
+	"$(INTDIR)\SuchResDlg.obj" \
+	"$(INTDIR)\TriDBSet.obj" \
+	"$(INTDIR)\VerzSet.obj" \
+	"$(INTDIR)\VerzSet2.obj" \
+	"$(INTDIR)\Xstring.obj"
+
+"F:\Trias200\TRiAS_Debug\GbmTRiAd.ext" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
+    $(LINK32) @<<
+  $(LINK32_FLAGS) $(LINK32_OBJS)
+<<
+
+!ENDIF 
+
+.c{$(CPP_OBJS)}.obj:
+   $(CPP) $(CPP_PROJ) $<  
+
+.cpp{$(CPP_OBJS)}.obj:
+   $(CPP) $(CPP_PROJ) $<  
+
+.cxx{$(CPP_OBJS)}.obj:
+   $(CPP) $(CPP_PROJ) $<  
+
+.c{$(CPP_SBRS)}.sbr:
+   $(CPP) $(CPP_PROJ) $<  
+
+.cpp{$(CPP_SBRS)}.sbr:
+   $(CPP) $(CPP_PROJ) $<  
+
+.cxx{$(CPP_SBRS)}.sbr:
+   $(CPP) $(CPP_PROJ) $<  
+
+################################################################################
+# Begin Target
+
+# Name "GbmTRiAS - Win32 Release"
+# Name "GbmTRiAS - Win32 Debug"
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+!ENDIF 
+
+################################################################################
+# Begin Source File
+
+SOURCE=.\ReadMe.txt
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\GbmTRiAS.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_GBMTR=\
+	".\About.h"\
+	".\DLDlg.h"\
+	".\Gbmguid.h"\
+	".\GbmTRiAS.h"\
+	".\MyPropS.h"\
+	".\OpProDlg.h"\
+	".\SPage1.h"\
+	".\SPage2.h"\
+	".\StdAfx.h"\
+	".\Versio16.h"\
+	".\Versio32.h"\
+	".\Version.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Eonrguid.h"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Statguid.h"\
+	{$(INCLUDE)}"\TRiASHelper.h"\
+	{$(INCLUDE)}"\TRiASHelper_i.c"\
+	{$(INCLUDE)}"\Xtsnguid.h"\
+	
+
+"$(INTDIR)\GbmTRiAS.obj" : $(SOURCE) $(DEP_CPP_GBMTR) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\GbmTRiAS.sbr" : $(SOURCE) $(DEP_CPP_GBMTR) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_GBMTR=\
+	".\About.h"\
+	".\DLDlg.h"\
+	".\Gbmguid.h"\
+	".\GbmTRiAS.h"\
+	".\MyPropS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OpProDlg.h"\
+	".\OrteSet.h"\
+	".\SPage1.h"\
+	".\SPage2.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\Versio16.h"\
+	".\Versio32.h"\
+	".\Version.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Eonrguid.h"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Statguid.h"\
+	{$(INCLUDE)}"\TRiASHelper.h"\
+	{$(INCLUDE)}"\TRiASHelper_i.c"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Xtsnguid.h"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\GbmTRiAS.obj" : $(SOURCE) $(DEP_CPP_GBMTR) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\GbmTRiAS.sbr" : $(SOURCE) $(DEP_CPP_GBMTR) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\GbmTRiAS.def
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\StdAfx.cpp
+DEP_CPP_STDAF=\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+# ADD CPP /Yc"stdafx.h"
+
+BuildCmds= \
+	$(CPP) /nologo /MD /W3 /GX /O2 /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D\
+ "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "__XT" /D "__MFC__" /D "__DEXPROCS"\
+ /Fr"$(INTDIR)/" /Fp"$(INTDIR)/GbmTRiAS.pch" /Yc"stdafx.h" /Fo"$(INTDIR)/" /c\
+ $(SOURCE) \
+	
+
+"$(INTDIR)\StdAfx.obj" : $(SOURCE) $(DEP_CPP_STDAF) "$(INTDIR)"
+   $(BuildCmds)
+
+"$(INTDIR)\StdAfx.sbr" : $(SOURCE) $(DEP_CPP_STDAF) "$(INTDIR)"
+   $(BuildCmds)
+
+"$(INTDIR)\GbmTRiAS.pch" : $(SOURCE) $(DEP_CPP_STDAF) "$(INTDIR)"
+   $(BuildCmds)
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+# ADD CPP /Yc"stdafx.h"
+
+BuildCmds= \
+	$(CPP) /nologo /MDd /W3 /Gm /GX /Zi /Od /D "_DEBUG" /D "WIN32" /D "_WINDOWS"\
+ /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "__XT" /D "__MFC__" /D "__DEXPROCS"\
+ /FR"$(INTDIR)/" /Fp"$(INTDIR)/GbmTRiAS.pch" /Yc"stdafx.h" /Fo"$(INTDIR)/"\
+ /Fd"$(INTDIR)/" /c $(SOURCE) \
+	
+
+"$(INTDIR)\StdAfx.obj" : $(SOURCE) $(DEP_CPP_STDAF) "$(INTDIR)"
+   $(BuildCmds)
+
+"$(INTDIR)\StdAfx.sbr" : $(SOURCE) $(DEP_CPP_STDAF) "$(INTDIR)"
+   $(BuildCmds)
+
+"$(INTDIR)\GbmTRiAS.pch" : $(SOURCE) $(DEP_CPP_STDAF) "$(INTDIR)"
+   $(BuildCmds)
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\GbmTRiAS.rc
+DEP_RSC_GBMTRI=\
+	".\bitmap1.bmp"\
+	".\bitmap2.bmp"\
+	".\res\GbmTRiAS.rc2"\
+	
+
+"$(INTDIR)\GbmTRiAS.res" : $(SOURCE) $(DEP_RSC_GBMTRI) "$(INTDIR)"
+   $(RSC) $(RSC_PROJ) $(SOURCE)
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\OpProDlg.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_OPPRO=\
+	".\GbmTRiAS.h"\
+	".\OpProDlg.h"\
+	".\StdAfx.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\OpProDlg.obj" : $(SOURCE) $(DEP_CPP_OPPRO) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\OpProDlg.sbr" : $(SOURCE) $(DEP_CPP_OPPRO) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_OPPRO=\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OpProDlg.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\OpProDlg.obj" : $(SOURCE) $(DEP_CPP_OPPRO) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\OpProDlg.sbr" : $(SOURCE) $(DEP_CPP_OPPRO) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\DLDlg.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_DLDLG=\
+	".\DLDlg.h"\
+	".\EdPage1.h"\
+	".\EdPage2.h"\
+	".\EdPage3.h"\
+	".\EdPage4.h"\
+	".\EdPage5.h"\
+	".\EdPage6.h"\
+	".\GbmTRiAS.h"\
+	".\MyPropS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\SuchPage0.h"\
+	".\SuchPage1.h"\
+	".\SuchPage2.h"\
+	".\SuchPage3.h"\
+	".\SuchPage4.h"\
+	".\SuchResDlg.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\DLDlg.obj" : $(SOURCE) $(DEP_CPP_DLDLG) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\DLDlg.sbr" : $(SOURCE) $(DEP_CPP_DLDLG) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_DLDLG=\
+	".\DLDlg.h"\
+	".\EdPage1.h"\
+	".\EdPage2.h"\
+	".\EdPage3.h"\
+	".\EdPage4.h"\
+	".\EdPage5.h"\
+	".\EdPage6.h"\
+	".\GbmTRiAS.h"\
+	".\MyPropS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\SuchPage0.h"\
+	".\SuchPage1.h"\
+	".\SuchPage2.h"\
+	".\SuchPage3.h"\
+	".\SuchPage4.h"\
+	".\SuchResDlg.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\DLDlg.obj" : $(SOURCE) $(DEP_CPP_DLDLG) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\DLDlg.sbr" : $(SOURCE) $(DEP_CPP_DLDLG) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\VerzSet.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_VERZS=\
+	".\GbmTRiAS.h"\
+	".\StdAfx.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\VerzSet.obj" : $(SOURCE) $(DEP_CPP_VERZS) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\VerzSet.sbr" : $(SOURCE) $(DEP_CPP_VERZS) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_VERZS=\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\VerzSet.obj" : $(SOURCE) $(DEP_CPP_VERZS) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\VerzSet.sbr" : $(SOURCE) $(DEP_CPP_VERZS) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\TriDBSet.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_TRIDB=\
+	".\GbmTRiAS.h"\
+	".\SetOI.h"\
+	".\SetSI.h"\
+	".\StdAfx.h"\
+	".\TriDBSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\TriDBSet.obj" : $(SOURCE) $(DEP_CPP_TRIDB) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\TriDBSet.sbr" : $(SOURCE) $(DEP_CPP_TRIDB) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_TRIDB=\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\SetOI.h"\
+	".\SetSI.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\TriDBSet.obj" : $(SOURCE) $(DEP_CPP_TRIDB) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\TriDBSet.sbr" : $(SOURCE) $(DEP_CPP_TRIDB) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\VerzSet2.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_VERZSE=\
+	".\GbmTRiAS.h"\
+	".\StdAfx.h"\
+	".\VerzSet2.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\VerzSet2.obj" : $(SOURCE) $(DEP_CPP_VERZSE) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\VerzSet2.sbr" : $(SOURCE) $(DEP_CPP_VERZSE) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_VERZSE=\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	".\VerzSet2.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\VerzSet2.obj" : $(SOURCE) $(DEP_CPP_VERZSE) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\VerzSet2.sbr" : $(SOURCE) $(DEP_CPP_VERZSE) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\OrteSet.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_ORTES=\
+	".\GbmTRiAS.h"\
+	".\StdAfx.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\OrteSet.obj" : $(SOURCE) $(DEP_CPP_ORTES) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\OrteSet.sbr" : $(SOURCE) $(DEP_CPP_ORTES) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_ORTES=\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\OrteSet.obj" : $(SOURCE) $(DEP_CPP_ORTES) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\OrteSet.sbr" : $(SOURCE) $(DEP_CPP_ORTES) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\StrasseSet.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_STRAS=\
+	".\GbmTRiAS.h"\
+	".\StdAfx.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\StrasseSet.obj" : $(SOURCE) $(DEP_CPP_STRAS) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\StrasseSet.sbr" : $(SOURCE) $(DEP_CPP_STRAS) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_STRAS=\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\StrasseSet.obj" : $(SOURCE) $(DEP_CPP_STRAS) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\StrasseSet.sbr" : $(SOURCE) $(DEP_CPP_STRAS) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=\Work\Win16\Util\Xstring.cpp
+DEP_CPP_XSTRI=\
+	{$(INCLUDE)}"\lafx.h"\
+	{$(INCLUDE)}"\lafx.inl"\
+	{$(INCLUDE)}"\Xstring.h"\
+	
+NODEP_CPP_XSTRI=\
+	"..\..\..\Util\stdafx.h"\
+	
+
+BuildCmds= \
+	$(CPP) $(CPP_PROJ) $(SOURCE) \
+	
+
+"$(INTDIR)\Xstring.obj" : $(SOURCE) $(DEP_CPP_XSTRI) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+   $(BuildCmds)
+
+"$(INTDIR)\Xstring.sbr" : $(SOURCE) $(DEP_CPP_XSTRI) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+   $(BuildCmds)
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\SPage2.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_SPAGE=\
+	".\GbmTRiAS.h"\
+	".\SPage2.h"\
+	".\StdAfx.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\SPage2.obj" : $(SOURCE) $(DEP_CPP_SPAGE) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\SPage2.sbr" : $(SOURCE) $(DEP_CPP_SPAGE) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_SPAGE=\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\SPage2.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\SPage2.obj" : $(SOURCE) $(DEP_CPP_SPAGE) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\SPage2.sbr" : $(SOURCE) $(DEP_CPP_SPAGE) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\SPage1.cpp
+DEP_CPP_SPAGE1=\
+	".\GbmTRiAS.h"\
+	".\SPage1.h"\
+	".\StdAfx.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\SPage1.obj" : $(SOURCE) $(DEP_CPP_SPAGE1) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\SPage1.sbr" : $(SOURCE) $(DEP_CPP_SPAGE1) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\MyPropS.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_MYPRO=\
+	".\GbmTRiAS.h"\
+	".\MyPropS.h"\
+	".\StdAfx.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\MyPropS.obj" : $(SOURCE) $(DEP_CPP_MYPRO) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\MyPropS.sbr" : $(SOURCE) $(DEP_CPP_MYPRO) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_MYPRO=\
+	".\GbmTRiAS.h"\
+	".\MyPropS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\MyPropS.obj" : $(SOURCE) $(DEP_CPP_MYPRO) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\MyPropS.sbr" : $(SOURCE) $(DEP_CPP_MYPRO) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\StatDlg.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_STATD=\
+	".\GbmTRiAS.h"\
+	".\Stat1Dlg.h"\
+	".\StdAfx.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\StatDlg.obj" : $(SOURCE) $(DEP_CPP_STATD) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\StatDlg.sbr" : $(SOURCE) $(DEP_CPP_STATD) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_STATD=\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\Stat1Dlg.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\StatDlg.obj" : $(SOURCE) $(DEP_CPP_STATD) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\StatDlg.sbr" : $(SOURCE) $(DEP_CPP_STATD) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\NF_PG1.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_NF_PG=\
+	".\GbmTRiAS.h"\
+	".\StdAfx.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\NF_PG1.obj" : $(SOURCE) $(DEP_CPP_NF_PG) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\NF_PG1.sbr" : $(SOURCE) $(DEP_CPP_NF_PG) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_NF_PG=\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\NF_PG1.obj" : $(SOURCE) $(DEP_CPP_NF_PG) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\NF_PG1.sbr" : $(SOURCE) $(DEP_CPP_NF_PG) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\NF_PG2D.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_NF_PG2=\
+	".\GbmTRiAS.h"\
+	".\StdAfx.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\NF_PG2D.obj" : $(SOURCE) $(DEP_CPP_NF_PG2) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\NF_PG2D.sbr" : $(SOURCE) $(DEP_CPP_NF_PG2) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_NF_PG2=\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\NF_PG2D.obj" : $(SOURCE) $(DEP_CPP_NF_PG2) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\NF_PG2D.sbr" : $(SOURCE) $(DEP_CPP_NF_PG2) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\NF_PG2H.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_NF_PG2H=\
+	".\GbmTRiAS.h"\
+	".\StdAfx.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\NF_PG2H.obj" : $(SOURCE) $(DEP_CPP_NF_PG2H) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\NF_PG2H.sbr" : $(SOURCE) $(DEP_CPP_NF_PG2H) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_NF_PG2H=\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\NF_PG2H.obj" : $(SOURCE) $(DEP_CPP_NF_PG2H) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\NF_PG2H.sbr" : $(SOURCE) $(DEP_CPP_NF_PG2H) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\NF_PG1GB.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_NF_PG1=\
+	".\GbmTRiAS.h"\
+	".\StdAfx.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\NF_PG1GB.obj" : $(SOURCE) $(DEP_CPP_NF_PG1) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\NF_PG1GB.sbr" : $(SOURCE) $(DEP_CPP_NF_PG1) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_NF_PG1=\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\NF_PG1GB.obj" : $(SOURCE) $(DEP_CPP_NF_PG1) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\NF_PG1GB.sbr" : $(SOURCE) $(DEP_CPP_NF_PG1) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\NF_PG1FL.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_NF_PG1F=\
+	".\GbmTRiAS.h"\
+	".\StdAfx.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\NF_PG1FL.obj" : $(SOURCE) $(DEP_CPP_NF_PG1F) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\NF_PG1FL.sbr" : $(SOURCE) $(DEP_CPP_NF_PG1F) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_NF_PG1F=\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\NF_PG1FL.obj" : $(SOURCE) $(DEP_CPP_NF_PG1F) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\NF_PG1FL.sbr" : $(SOURCE) $(DEP_CPP_NF_PG1F) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\EdPage1.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_EDPAG=\
+	".\EdPage1.h"\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\EdPage1.obj" : $(SOURCE) $(DEP_CPP_EDPAG) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\EdPage1.sbr" : $(SOURCE) $(DEP_CPP_EDPAG) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_EDPAG=\
+	".\EdPage1.h"\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\EdPage1.obj" : $(SOURCE) $(DEP_CPP_EDPAG) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\EdPage1.sbr" : $(SOURCE) $(DEP_CPP_EDPAG) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\EdPage2.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_EDPAGE=\
+	".\EdPage2.h"\
+	".\GbmTRiAS.h"\
+	".\StdAfx.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\EdPage2.obj" : $(SOURCE) $(DEP_CPP_EDPAGE) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\EdPage2.sbr" : $(SOURCE) $(DEP_CPP_EDPAGE) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_EDPAGE=\
+	".\EdPage2.h"\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\EdPage2.obj" : $(SOURCE) $(DEP_CPP_EDPAGE) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\EdPage2.sbr" : $(SOURCE) $(DEP_CPP_EDPAGE) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\EdPage3.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_EDPAGE3=\
+	".\EdPage3.h"\
+	".\GbmTRiAS.h"\
+	".\StdAfx.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\EdPage3.obj" : $(SOURCE) $(DEP_CPP_EDPAGE3) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\EdPage3.sbr" : $(SOURCE) $(DEP_CPP_EDPAGE3) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_EDPAGE3=\
+	".\EdPage3.h"\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\EdPage3.obj" : $(SOURCE) $(DEP_CPP_EDPAGE3) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\EdPage3.sbr" : $(SOURCE) $(DEP_CPP_EDPAGE3) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\EdPage4.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_EDPAGE4=\
+	".\EdPage4.h"\
+	".\GbmTRiAS.h"\
+	".\StdAfx.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\EdPage4.obj" : $(SOURCE) $(DEP_CPP_EDPAGE4) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\EdPage4.sbr" : $(SOURCE) $(DEP_CPP_EDPAGE4) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_EDPAGE4=\
+	".\EdPage4.h"\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\EdPage4.obj" : $(SOURCE) $(DEP_CPP_EDPAGE4) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\EdPage4.sbr" : $(SOURCE) $(DEP_CPP_EDPAGE4) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\EdPage5.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_EDPAGE5=\
+	".\EdPage5.h"\
+	".\GbmTRiAS.h"\
+	".\StdAfx.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\EdPage5.obj" : $(SOURCE) $(DEP_CPP_EDPAGE5) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\EdPage5.sbr" : $(SOURCE) $(DEP_CPP_EDPAGE5) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_EDPAGE5=\
+	".\EdPage5.h"\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\EdPage5.obj" : $(SOURCE) $(DEP_CPP_EDPAGE5) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\EdPage5.sbr" : $(SOURCE) $(DEP_CPP_EDPAGE5) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\EdPage6.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_EDPAGE6=\
+	".\EdPage6.h"\
+	".\GbmTRiAS.h"\
+	".\StdAfx.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\EdPage6.obj" : $(SOURCE) $(DEP_CPP_EDPAGE6) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\EdPage6.sbr" : $(SOURCE) $(DEP_CPP_EDPAGE6) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_EDPAGE6=\
+	".\EdPage6.h"\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\EdPage6.obj" : $(SOURCE) $(DEP_CPP_EDPAGE6) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\EdPage6.sbr" : $(SOURCE) $(DEP_CPP_EDPAGE6) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\About.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_ABOUT=\
+	".\About.h"\
+	".\GbmTRiAS.h"\
+	".\StdAfx.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\About.obj" : $(SOURCE) $(DEP_CPP_ABOUT) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\About.sbr" : $(SOURCE) $(DEP_CPP_ABOUT) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_ABOUT=\
+	".\About.h"\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\About.obj" : $(SOURCE) $(DEP_CPP_ABOUT) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\About.sbr" : $(SOURCE) $(DEP_CPP_ABOUT) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\SetOI.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_SETOI=\
+	".\GbmTRiAS.h"\
+	".\SetOI.h"\
+	".\StdAfx.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\SetOI.obj" : $(SOURCE) $(DEP_CPP_SETOI) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\SetOI.sbr" : $(SOURCE) $(DEP_CPP_SETOI) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_SETOI=\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\SetOI.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\SetOI.obj" : $(SOURCE) $(DEP_CPP_SETOI) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\SetOI.sbr" : $(SOURCE) $(DEP_CPP_SETOI) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\SetSI.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_SETSI=\
+	".\GbmTRiAS.h"\
+	".\SetSI.h"\
+	".\StdAfx.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\SetSI.obj" : $(SOURCE) $(DEP_CPP_SETSI) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\SetSI.sbr" : $(SOURCE) $(DEP_CPP_SETSI) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_SETSI=\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\SetSI.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\SetSI.obj" : $(SOURCE) $(DEP_CPP_SETSI) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\SetSI.sbr" : $(SOURCE) $(DEP_CPP_SETSI) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\SuchPage4.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_SUCHP=\
+	".\GbmTRiAS.h"\
+	".\MyPropS.h"\
+	".\StdAfx.h"\
+	".\SuchPage4.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\SuchPage4.obj" : $(SOURCE) $(DEP_CPP_SUCHP) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\SuchPage4.sbr" : $(SOURCE) $(DEP_CPP_SUCHP) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_SUCHP=\
+	".\GbmTRiAS.h"\
+	".\MyPropS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\SuchPage4.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\SuchPage4.obj" : $(SOURCE) $(DEP_CPP_SUCHP) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\SuchPage4.sbr" : $(SOURCE) $(DEP_CPP_SUCHP) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\SuchPage1.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_SUCHPA=\
+	".\GbmTRiAS.h"\
+	".\MyPropS.h"\
+	".\StdAfx.h"\
+	".\SuchPage1.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\SuchPage1.obj" : $(SOURCE) $(DEP_CPP_SUCHPA) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\SuchPage1.sbr" : $(SOURCE) $(DEP_CPP_SUCHPA) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_SUCHPA=\
+	".\GbmTRiAS.h"\
+	".\MyPropS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\SuchPage1.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\SuchPage1.obj" : $(SOURCE) $(DEP_CPP_SUCHPA) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\SuchPage1.sbr" : $(SOURCE) $(DEP_CPP_SUCHPA) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\SuchPage2.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_SUCHPAG=\
+	".\GbmTRiAS.h"\
+	".\MyPropS.h"\
+	".\StdAfx.h"\
+	".\SuchPage2.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\SuchPage2.obj" : $(SOURCE) $(DEP_CPP_SUCHPAG) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\SuchPage2.sbr" : $(SOURCE) $(DEP_CPP_SUCHPAG) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_SUCHPAG=\
+	".\GbmTRiAS.h"\
+	".\MyPropS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\SuchPage2.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\SuchPage2.obj" : $(SOURCE) $(DEP_CPP_SUCHPAG) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\SuchPage2.sbr" : $(SOURCE) $(DEP_CPP_SUCHPAG) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\SuchPage3.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_SUCHPAGE=\
+	".\GbmTRiAS.h"\
+	".\MyPropS.h"\
+	".\StdAfx.h"\
+	".\SuchPage3.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\SuchPage3.obj" : $(SOURCE) $(DEP_CPP_SUCHPAGE) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\SuchPage3.sbr" : $(SOURCE) $(DEP_CPP_SUCHPAGE) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_SUCHPAGE=\
+	".\GbmTRiAS.h"\
+	".\MyPropS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\SuchPage3.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\SuchPage3.obj" : $(SOURCE) $(DEP_CPP_SUCHPAGE) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\SuchPage3.sbr" : $(SOURCE) $(DEP_CPP_SUCHPAGE) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\SuchPage0.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_SUCHPAGE0=\
+	".\GbmTRiAS.h"\
+	".\MyPropS.h"\
+	".\StdAfx.h"\
+	".\SuchPage0.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\SuchPage0.obj" : $(SOURCE) $(DEP_CPP_SUCHPAGE0) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\SuchPage0.sbr" : $(SOURCE) $(DEP_CPP_SUCHPAGE0) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_SUCHPAGE0=\
+	".\GbmTRiAS.h"\
+	".\MyPropS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\SuchPage0.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\SuchPage0.obj" : $(SOURCE) $(DEP_CPP_SUCHPAGE0) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\SuchPage0.sbr" : $(SOURCE) $(DEP_CPP_SUCHPAGE0) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\SuchResDlg.cpp
+
+!IF  "$(CFG)" == "GbmTRiAS - Win32 Release"
+
+DEP_CPP_SUCHR=\
+	".\GbmTRiAS.h"\
+	".\StdAfx.h"\
+	".\SuchResDlg.h"\
+	{$(INCLUDE)}"\bool.h"\
+	
+
+"$(INTDIR)\SuchResDlg.obj" : $(SOURCE) $(DEP_CPP_SUCHR) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\SuchResDlg.sbr" : $(SOURCE) $(DEP_CPP_SUCHR) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ELSEIF  "$(CFG)" == "GbmTRiAS - Win32 Debug"
+
+DEP_CPP_SUCHR=\
+	".\GbmTRiAS.h"\
+	".\NF_PG1.h"\
+	".\NF_PG1FL.h"\
+	".\NF_PG1GB.h"\
+	".\NF_PG2D.h"\
+	".\NF_PG2H.h"\
+	".\OrteSet.h"\
+	".\StdAfx.h"\
+	".\StrasseSet.h"\
+	".\SuchResDlg.h"\
+	".\TriDBSet.h"\
+	".\VerzSet.h"\
+	{$(INCLUDE)}"\bool.h"\
+	{$(INCLUDE)}"\Defines.hpp"\
+	{$(INCLUDE)}"\Errcodes.hxx"\
+	{$(INCLUDE)}"\Exceptio.hpp"\
+	{$(INCLUDE)}"\Ienumobj.hxx"\
+	{$(INCLUDE)}"\Istatus.h"\
+	{$(INCLUDE)}"\Ixtensn.hxx"\
+	{$(INCLUDE)}"\Triasm.hxx"\
+	{$(INCLUDE)}"\Tstring"\
+	{$(INCLUDE)}"\Tstring.hpp"\
+	{$(INCLUDE)}"\Xstring.h"\
+	{$(INCLUDE)}"\Xtencunk.hxx"\
+	{$(INCLUDE)}"\Xtension.h"\
+	{$(INCLUDE)}"\Xtensnm.hxx"\
+	{$(INCLUDE)}"\Xtensnx.h"\
+	{$(INCLUDE)}"\Xtsnaux.hxx"\
+	{$(INCLUDE)}"\Yxvals.h"\
+	
+
+"$(INTDIR)\SuchResDlg.obj" : $(SOURCE) $(DEP_CPP_SUCHR) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+"$(INTDIR)\SuchResDlg.sbr" : $(SOURCE) $(DEP_CPP_SUCHR) "$(INTDIR)"\
+ "$(INTDIR)\GbmTRiAS.pch"
+
+
+!ENDIF 
+
+# End Source File
+# End Target
+# End Project
+################################################################################

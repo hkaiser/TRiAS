@@ -1,0 +1,26 @@
+// $Header: $
+// Copyright© 1999-2001 TRiAS GmbH Potsdam, All rights reserved
+// Created: 05.05.2001 21:11:49 
+//
+// @doc
+// @module IGetAsOLEDBRowset.idl | Definition of the <i _IGetAsOLEDBRowset> interface
+
+[ 
+	object,
+	hidden,
+	uuid(0C60F1D3-0C52-11d3-8022-00805F9B645A),
+	helpstring("_IGetAsOLEDBRowset Interface"),
+	pointer_default(unique)
+]
+interface _IGetAsOLEDBRowset : IUnknown
+{
+	import "objidl.idl";		// For IUnknown etc.
+
+	HRESULT GetAsRowset(
+		[in] IUnknown *pUnkCreator,
+		[in] IUnknown *pUnkOuter,					// incase we're being aggregated
+		[in] REFIID riid,							// interface required
+		[out] LONG *pcRowsAffected,					// number of rows in the rowset
+		[out, iid_is(riid)] IUnknown **ppRowset);	// the rowset...
+};
+

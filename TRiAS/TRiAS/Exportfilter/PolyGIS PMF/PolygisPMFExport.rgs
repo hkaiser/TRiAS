@@ -1,0 +1,96 @@
+HKCR 
+{
+	TRiAS.PolygisPMFExport.1 = s 'TRiAS Export in das PolyGIS-PMF Format' 
+	{
+		CLSID = s '{D92F5E3D-7B28-4d3d-ADB7-9907860A6D91}'
+	}
+	TRiAS.PolygisPMFExport = s 'TRiAS Export in das PolyGIS-PMF Format' 
+	{
+		CLSID = s '{B8006847-06EF-11D3-995A-0060085FC1CE}'
+		CurVer = s 'TRiAS.PolygisPMFExport.1'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {D92F5E3D-7B28-4d3d-ADB7-9907860A6D91} = s 'TRiAS Export in das PolyGIS-PMF Format' 
+		{
+			ProgID = s 'TRiAS.PolygisPMFExport.1'
+			VersionIndependentProgID = s 'TRiAS.PolygisPMFExport'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%' 
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{EC9D9D10-06E9-11d3-995A-0060085FC1CE}'
+		}
+	}
+}
+
+HKCU 
+{ 
+	NoRemove Software 
+	{ 
+		NoRemove TRiAS 
+		{ 
+			NoRemove TRiAS 
+			{ 
+				NoRemove Extensions 
+				{ 
+					NoRemove TRiAS.Export.1 
+					{ 
+						NoRemove Engines 
+						{
+							ForceRemove {D92F5E3D-7B28-4d3d-ADB7-9907860A6D91} = s 'PolyGIS-PMF Export'
+						} 
+					} 
+				} 
+			} 
+		} 
+	} 
+}
+
+HKCU
+{ 
+	NoRemove Software 
+	{ 
+		NoRemove TRiAS 
+		{ 
+			NoRemove TRiAS 
+			{ 
+				NoRemove PolyGISWandler = s 'Konfigurationsdaten'
+				{ 
+					NoRemove Export = s 'Konfigurationsdaten'
+					{
+						Standarddefinitionen
+						{
+							val 'Key01' = s 'GCO-Code'
+							val 'Key02' = s 'Strassenname'
+							val 'Key03' = s 'Strassencode'
+							val 'Key04' = s 'Strassenwidmung'
+							val 'Key05' = s 'Bemerkung_Aussendienst'
+							val 'Key06' = s 'Bemerkung_Datenbank'
+							val 'Key07' = s 'Objektname'
+							val 'Key08' = s 'ObjUniqueIdent (intern)'
+							val 'Thema' = s 'Strassennetz'
+							val 'Gruppe1' = s 'Strasse'
+							val 'Gruppe2' = s 'Zusatz'
+							val 'MemoSuffix' = s '_Kontrolle'
+						}
+						Standardklassen
+						{
+							val 'BNASuffix' = s '_r'
+						}
+						Memoklassen
+						{
+							val 'Memo' = s 'Bemerkung_Aussendienst'
+							val 'M1' = s 'Strasse_Kontrolle'
+							val 'M2' = s 'Platz_Kontrolle'
+							val 'M3' = s 'Strasse_ohne_Haus_nr'
+							val 'M4' = s 'Uebergang_Strassenschluessel'
+							val 'BNASuffix' = s '_Kontrolle'
+						}
+					}
+				} 
+			} 
+		} 
+	} 
+}

@@ -1,0 +1,22 @@
+HKCR
+{
+	TRiASDB.EditFeatureParamDlg.1 = s 'EditFeatureParamDlg Class'
+	{
+		CLSID = s '{B31D1E66-56D1-11D2-9ECF-006008447800}'
+	}
+	TRiASDB.EditFeatureParamDlg = s 'EditFeatureParamDlg Class'
+	{
+		CurVer = s 'TRiASDB.EditFeatureParamDlg.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {B31D1E66-56D1-11D2-9ECF-006008447800} = s 'EditFeatureParamDlg Class'
+		{
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

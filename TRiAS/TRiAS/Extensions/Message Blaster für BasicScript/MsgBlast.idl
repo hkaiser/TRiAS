@@ -1,0 +1,81 @@
+// MsgBlast.idl : IDL source for MsgBlast.Ext
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (MsgBlast.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+	[
+		object,
+		uuid(00BFF6F7-1E4E-11D1-9679-00A024D6F582),
+		dual,
+		helpstring("IMessageMap interface"),
+		pointer_default(unique)
+	]
+	interface IMessageMap : IDispatch
+	{
+		[propget, id(1), helpstring("Liefert, ob die MessageMap aktiviert ist.")] HRESULT Enabled([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(1), helpstring("Gibt vor, ob die MessageMap aktiviert ist.")] HRESULT Enabled([in] VARIANT_BOOL newVal);
+		[propget, id(3), helpstring("Stellt fest, ob eine Message in der MessageMap enthalten ist.")] HRESULT HasMsg([in] LONG Msg, [out, retval] VARIANT_BOOL *pVal);
+		[propget, id(4), helpstring("Liefert die Routine, die für eine Message gerufen werden soll.")] HRESULT ToCall([in] LONG Msg, [out, retval] BSTR *pVal);
+		[propput, id(4), helpstring("Gibt die Routine vor, die für eine Message gerufen werden soll.")] HRESULT ToCall([in] LONG Msg, [in] BSTR newVal);
+		[id(100), helpstring("Fügt eine Message zur MessageMap hinzu.")] HRESULT AddMessage([in] LONG Msg, [in] BSTR ToCall, [out, retval] VARIANT_BOOL *pVal);
+		[id(101), helpstring("Enfernt eine Message aus der MessageMap.")] HRESULT RemoveMessage([in] LONG Msg, [out, retval] VARIANT_BOOL *pVal);
+		[id(102), helpstring("Entfernt alle registrierten Messages aus der MessageMap.")] HRESULT RemoveAll();
+	};
+
+	[
+		object,
+		uuid(E2054A21-4327-11D2-9EBE-006008447800),
+		dual,
+		helpstring("IMouseAction Interface"),
+		pointer_default(unique)
+	]
+	interface IMouseAction : IDispatch
+	{
+		typedef [public, helpstring("Zuletzt betätigte Maustaste.")] enum tagMOUSEKEY {
+			[helpstring("Unbekannte oder keine Taste betätigt.")] MOUSEKEY_Unknown = 0,
+			[helpstring("Linke Maustaste betätigt.")] MOUSEKEY_Left = 1,
+			[helpstring("Mittlere Maustaste betätigt.")] MOUSEKEY_Middle = 2,
+			[helpstring("Rechte Maustaste betätigt.")] MOUSEKEY_Right = 4,
+			[helpstring("Die Eingabeoperation wurde abgebrochen.")] MOUSEKEY_Breaked = 8,
+			[helpstring("Gleichzeitig mit Maustaste war Strg-Taste gedrückt.")] MOUSEKEY_Control = 0x100,
+			[helpstring("Gleichzeitig mit Maustaste war Alt-Taste gedrückt.")] MOUSEKEY_Alt = 0x200,
+			[helpstring("Gleichzeitig mit Maustaste war Umsch-Taste gedrückt.")] MOUSEKEY_Shift = 0x400,
+		} MOUSEKEY;
+
+		[propget, id(1), helpstring("Liefert zuletzt betätigte Maustaste.")] HRESULT LastKey([out, retval] long *pVal);
+		[id(100), helpstring("Wartet auf den nächsten Mausklick und liefert Koordinate.")] HRESULT GetPoint([in] BSTR Prompt, [in, out] double *pdX, [in, out] double *pdY);
+		[id(101), helpstring("Wartet auf nächsten Mausklick, zieht Gummiband und liefert Koordinate.")] HRESULT GetPointDrag([in] BSTR Prompt, [in, out] double *pdX, [in, out] double *pdY);
+	};
+
+[
+	uuid(00BFF6E6-1E4E-11D1-9679-00A024D6F582),
+	version(1.0),
+	helpstring("MsgBlast 1.0 Type Library")
+]
+library MsgBlastLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(00BFF6F8-1E4E-11D1-9679-00A024D6F582),
+		helpstring("TRiAS Message Map Class")
+	]
+	coclass MessageMap
+	{
+		[default] interface IMessageMap;
+	};
+
+	[
+		uuid(E2054A22-4327-11D2-9EBE-006008447800),
+		helpstring("MouseAction Class")
+	]
+	coclass MouseAction
+	{
+		[default] interface IMouseAction;
+	};
+};

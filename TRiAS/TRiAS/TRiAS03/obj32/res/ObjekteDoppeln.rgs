@@ -1,0 +1,43 @@
+HKCR
+{
+	TRiASEx.CopyObjects.2 = s 'Doppeln aller Eingabeobjekte'
+	{
+		CLSID = s '{D3F0170D-E741-4AD5-9BF0-82CDA30B1EF2}'
+	}
+	TRiASEx.CopyObjects.1 = s 'Doppeln aller Eingabeobjekte'
+	{
+		CLSID = s '{D3F0170D-E741-4AD5-9BF0-82CDA30B1EF2}'
+	}
+	TRiASEx.CopyObjects = s 'Doppeln aller Eingabeobjekte'
+	{
+		CLSID = s '{D3F0170D-E741-4AD5-9BF0-82CDA30B1EF2}'
+		CurVer = s 'TRiASEx.CopyObjects.2'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {D3F0170D-E741-4AD5-9BF0-82CDA30B1EF2} = s 'Doppeln aller Eingabeobjekte'
+		{
+			ProgID = s 'TRiASEx.CopyObjects.2'
+			VersionindependentProgId = s 'TRiASEx.CopyObjects'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				Delete TRiASEx.CopyObjects.1
+				ForceRemove TRiASEx.CopyObjects.2 = s '{D3F0170D-E741-4AD5-9BF0-82CDA30B1EF2}'
+			}
+		}
+	}
+}

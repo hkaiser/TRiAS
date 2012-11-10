@@ -1,0 +1,25 @@
+' nicht gelaufen -> siehe Zeile 18
+' AddNewProp()
+Sub Main ()
+    Dim dbsContacts As Database
+    Dim fldTmp As Field
+	Dim tblCustomer As TableDef
+    Dim prpNew As Property
+    Dim i as Long
+	Dim Felder As Fields
+
+    Set dbsContacts = OpenDatabase("c:\test\Contacts.mdb")
+    Set tblCustomer = dbsContacts.TableDefs.Item("Customers")
+   
+	Set Felder = tblCustomer.Fields
+    For i = 0 To Felder.Count - 1
+		Set fldTmp = Felder (i)
+        Set prpNew = fldTmp.CreateProperty("DateLastModified")
+        prpNew.Type = dbText	' Error 10001
+        prpNew.Value = Now		' Fehler 
+        fldTmp.Properties.Append prpNew
+    Next i
+
+    dbsContacts.Close
+End Sub
+

@@ -1,0 +1,25 @@
+HKCR
+{
+	TRiAS.CommonBorder.1 = s 'CommonBorder Class'
+	{
+		CLSID = s '{12A72E58-B157-4D03-9297-73A6429E131A}'
+	}
+	TRiAS.CommonBorder = s 'CommonBorder Class'
+	{
+		CLSID = s '{12A72E58-B157-4D03-9297-73A6429E131A}'
+		CurVer = s 'TRiAS.CommonBorder.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {12A72E58-B157-4D03-9297-73A6429E131A} = s 'CommonBorder Class'
+		{
+			ProgID = s 'TRiAS.CommonBorder.1'
+			VersionIndependentProgID = s 'TRiAS.CommonBorder'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{061D9CB3-B716-11D0-9568-00A024D6F582}'
+		}
+	}
+}

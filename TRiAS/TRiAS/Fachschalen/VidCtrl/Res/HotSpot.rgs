@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiAS.HotSpot.1 = s 'HotSpot Object'
+	{
+		CLSID = s '{E2FE47DC-85F7-473E-B8D4-9B6988DCA558}'
+	}
+	TRiAS.HotSpot = s 'HotSpot Object'
+	{
+		CLSID = s '{E2FE47DC-85F7-473E-B8D4-9B6988DCA558}'
+		CurVer = s 'TRiAS.HotSpot.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {E2FE47DC-85F7-473E-B8D4-9B6988DCA558} = s 'HotSpot Object'
+		{
+			ProgID = s 'TRiAS.HotSpot.1'
+			VersionIndependentProgID = s 'TRiAS.HotSpot'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{62A181BC-980E-41BC-8A49-3A1919EA7875}'
+			'Version' = s '1.0'
+		}
+	}
+}

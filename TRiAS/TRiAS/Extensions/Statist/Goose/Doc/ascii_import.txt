@@ -1,0 +1,375 @@
+This document served as the specification for the AsciiImport class that
+is being implemented in Goose.
+
+It provides a some background to understand what it does, and how the stuff
+works.
+
+Whitepaper on ASCII import in Goose
+-----------------------------------
+
+We want to design & implement a mechanism general enough to be able to import 
+a wide variety of ASCII files with numbers and strings arranged in columns
+into a useful data-structure, and preserve and correctly extract as much 
+information as possible.  In other words, the mother of all ASCII import 
+features.
+
+The ASCII files originate from a variety of sources, ranging from ASCII
+exports from other programs, hand-edited files and everything in between.
+For this reason, they are very common, and good support is important in any
+column-handling program.
+
+The main focus is numbers, but we should be generic enough to handle strings
+in general, and other types.
+
+We want the mechanism to be as automatic as possible, but still allow for
+manual overrides where practical.
+
+While we want to do as good as possible, it's better to import something in 
+a wrong way than not import it at all.
+
+The main problem we face in this task is that ASCII files have no uniform 
+structure.  We need to handle a lot of parameters, and still be efficient
+enough to handle fast imports of about 100000 data.
+
+This white-paper describes the specifications for a general ASCII importer 
+which will be implemented as a generic engine which plugs into different data 
+sources.  Some data sources will be able to handle strings, and numbers, 
+while others will only handle numbers.  Others will handle missing 
+information, others will not.
+The goal is to implement a general importer that supports different receiving 
+data sources.
+
+When we say that the user should be able to configure something, this is not
+necessarily the end-user in the interface.  Primarily, it's the user of the
+importing engine, i.e. a programmer, but typically, most of the settings 
+should be exported into the end user interface as well.
+
+
+End-of-line conventions
+-----------------------
+
+There are three common end-of-line conventions:
+
+0x0D 0x0A  DOS/Windows
+0x0A       Unix
+0x0D       Mac
+
+We want to support all, and mixes of them.
+
+We want to be able to import a file saved in Unix, but edited on DOS, such 
+that some of the lines end with 0x0A and some with 0X0D 0x0A.
+
+We could support strict modes where we enforce one particular kind, but
+chose not to.  Instead, we default to an automatic mode, where any of the 
+three end-of-line conventions will denote an end-of-line.
+
+In general, empty lines are always ignored.
+
+Since empty lines are ignored, we can obtain the automatic behaviour by
+defining the end-of-line characters to be any of 0x0d or 0x0a, or 
+equivalently convert all 0x0d characters to 0x0a and then just have
+0x0a as the end-of-line character.
+
+If a given fixed string is found on a line, the rest of the line is ignored
+as a comment.  Per default this is turned off.
+
+We will only support files where the data for a row is kept completely in
+one line as defined above.
+
+We ignore control-characters, including end-of-file characters 0x04 or 0x1a, 
+and form-feed characters 0x0c.  Generally, all characters with codes below
+0x20 are ignored, except line-delimiters and tabs.
+
+However, if we receive more than 50 of these characters, we issue a warning 
+that the file might be binary, and not ASCII.
+
+We specifically handle all characters above 0x7F as unsigned characters such
+that they are preserved.  We assume that the lower 128 values are the same
+as in ASCII.  
+I.e. we support ASCII, and all iso-8859-X encodings.
+
+Error-tolerant
+--------------
+
+When the data in a ASCII file is regarded as invalid by the importer, the
+faulty data should be handled in a forgiving manner, and parsing should 
+continue for some time.  The default is to be forgiving of 5 problems,
+and report these as warnings to the user.  The user should be able to
+configure the number of tolerated errors (including 0), and the number
+of reported errors (including 0) seperately.
+
+We want to be able to import the good stuff from things like
+
+    Column 1  Column 2
+1         12       123
+2        hmm        23
+3     232.43        23
+4   2323..23    -2-323
+
+Here, the "hmm", "2323..23" and "-2-323" are probably recognized as errors,
+but the rest should import correctly.
+
+Missing data
+------------
+
+We need to optionally handle missing data as well as possible:
+
+    Column 1  Column 2
+1         12       123
+2                   23
+3     232.43        23
+
+Here, we miss a column header at position (1,1), and a number at 
+row 2 column 1.  If the receiving data source supports it, we
+handle it.  If not, we throw an error.
+
+Column separation
+-----------------
+
+The data in an ASCII formatted file is separated into columns in different
+ways.  The two main styles are "free-format" and "character-delimited".
+
+Free-format delimited text
+--------------------------
+
+The free-format style delimits the columns by the visual appearance. This
+is typically the case for manually constructed files:
+
+   Column 1  Column 2
+         12       123
+          2        23
+     232.43        23
+
+We restrict ourselves to the case where the formatting of the columns is
+implied by using a mono-spaced font.  The main characteristic is that 
+the columns will span disjunct character-intervals of the line, rather
+than be delimited by some special character.
+
+One parameter to watch out for is the width of a tab-character.  Per
+default, the tab character is 8 characters wide.
+
+Another parameter is to allow for "spilled" columns.  Sometimes, a column
+will spill beyond the bounds of the column:
+
+   Column 1  Column 2
+         12 1234567890
+          2        23
+   1234567890  123324
+
+The opposite is strict column separation, where the above would become
+something like
+
+   Column 1  Column 2
+         121234567890
+          2        23
+   123456e4    123324
+
+We default to spilled columns, because this preserves the most information.
+
+The free-format handles missing data in a predictable way.
+
+If we decide (see later) that a file is in free-format, we automatically
+try to define the columns by reading the head of the file.
+
+The algorithm is described in the implementation file AsciiImport.cpp.
+
+
+Character delimited
+-------------------
+
+The columns can be separated by one or more fixed characters, surrounded
+by white-space.
+The delimiter is thus defined by two parts, where the first is a fixed length
+string, and the second is a "white-space" set of characters.
+
+A delimiter is then defined as any number of white-space (including 0) 
+followed by exactly one instance of the fixed length string and then any 
+number of white-space, including 0.  
+
+As a special case, the fixed length string can refer to the general 
+white-space class by using any one of the strings in the white-space set.
+I.e. if the fixed-length-delimiter is defined as ", ", and the white-space
+is defined as " \t", the fixed-length delimiter is in fact either the string 
+", " or the string ",\t".  In the table below, we note these cases with
+a *.  The reason for this special case is in order to handle commas as
+delimiters a little better.
+[Not implemented yet.]
+
+Sometimes, we will be able to determine that we miss data in a line, but not 
+in which column we miss it.  Then we should report a warning, and stuff the
+data in starting at the first column.
+
+If we decide that the data is character delimited (see later), we will 
+estimate the delimiter like this:
+
+Read in the first 10 lines.
+
+For each line, count the number of occurences of the different delimiters:
+
+	Fixed-delimiter		white-space
+	------------------------------------
+	space			[none]
+	tab			[none]
+	space			space tab   *
+	";"			space tab
+	","+space		space tab   *
+	","			space tab
+	":"			space tab
+	"/"			space tab
+	"|"			space tab
+	"*"			space tab
+
+(Do you know of other used ones?)
+
+Notice that we want to differentiate between comma followed by one whitespace,
+and just comma, because of data like
+
+  column 1, column 2
+  12,32, 23,23
+  12,12, 12,23
+
+which is common with a comma as the decimal delimiter, and it corresponds to
+
+  column 1;column 2
+  12,32;23,23
+  12,12;12,23
+
+using a semicolon as delimiter.
+
+Then we pick the most common delimiter as the delimiter.
+
+
+Quotes
+------
+
+The data in every column can be quoted.
+Per default, the columns are not regarded as quoted, but the user want to have
+the ability to specify that numbers are delimited by parenthesis, and the
+strings are delimited by "s, for instance.  This is probably a DataType-class 
+issue as discussed later.
+
+Number-format
+-------------
+
+The numbers can be formatted in a variety of ways.
+
+The main parameters are:
+
+Decimal symbol: "." or ","
+Digit grouping symbol: "," or "." or none.
+
+We need to handle "scientific notation" as well:
+
+-123, 123e12, 123e-123, -123e123, -123e-123
+
+Similarly, we want to handle variable negative symbols:
+-123 or ~123.
+
+We also need to handle variable negative symbol placement.
+I.e. the above would become
+
+123-, 123e12, 123e123-, 123-e123, 123-e123-
+
+We also have to be configurable regarding whether to demand
+leading and trailing zeros next to the decimal symbol:
+
+Allow ".1", "1.", "." for "0.1", "1.0", "0.0"?
+The parameters would be "demand leading zero" and "demand traling zero".
+
+All of this is probably a DataType-class issue as discussed later.
+
+Column specification
+--------------------
+
+The number of columns in a file can be explicitly defined, or determined
+automatically according, as the most common number of columns encountered 
+in the first 10 lines, ignoring the first line (since that will often be the 
+column headers).  If the maximum number of columns exceed 100, we give a 
+warning before going to work.
+
+The columns in a file can be of different types.  This will be handled by
+provided different DataType implementations.  We should at least handle
+numbers and strings.  The user should be able to specify that a given
+column is required to be of a given type, and then report errors on elements
+in the column that does not obey this.
+
+There should be a facility to automatically determine the types.
+After determining the number of columns as "X", we will build a 10 x X table
+with the types as we best judge them, and then default each column to be the
+most popular type, while numbers are preferred to strings.
+Notice that we determine the number of columnes before we attempt to determine
+the type of the columns.  This might be a bad idea, but this is the design
+I think is feasible.
+
+The user should be able to chose how many lines of the file should be
+headings.  There should be an option to determine this automatically as well.
+
+Header and footers
+------------------
+
+Often the data will be prefixed with some general information about the
+data, and maybe ended with some text about the data.  we don't want to 
+handle that specially.  We only want to be fault-tolerant.
+
+Table-orientation
+-----------------
+
+Sometimes, the user will have formatted the file horizontally, and
+the columns of data will be rows in the file:
+ 
+Column 1   12     2   232.43 
+column 2  123    23    23
+
+We need to be able to rotate the table 90 degrees.
+
+This is typically the case when there are substantially more columns than
+rows in the file, but it's difficult to give a sensible automatic default,
+especially before we read the entire file.
+Therefor, we just provide a switch to allow to rotate the data, which the
+user will have to use by hand.
+
+Dynamic preview
+---------------
+
+Since so many parameters can't be decided by a program in a predictable
+way, we need to support nice user interaction.  However, instead of 
+provided a way to access the tokens as delimited by the engine, I 
+instead propose that we support importing of only the first N lines 
+of the input.
+
+Then the preview can be implemented in a simple way like this:
+
+First, import the first N lines of input, and try to automatically set
+all parameters.  Now, present the result of the first N lines of input
+to the user in a mini-column-view, and allow him to change various 
+parameters.  When a parameter is changed, the data is reevaluated and 
+represented to the user.
+
+Once the user is satisfied, he'll press OK, and the entire file is imported.
+
+Notes
+-----
+
+When we say that we will read the first 10 lines of a file, we are talking
+in a general sense (everywhere):  The exact amount of lines could well be 
+less if the file ends before we reach ten lines.
+The number of pre-read lines is 10 per default, but of course this is 
+customizable.
+There is another user-definable restriction: we only pre-read up to 4000 
+bytes per default in order to avoid long response-times on binary files.
+
+Implementation notes
+--------------------
+
+The reading of the first 10 lines to be used as a learning mechanishm
+does not restrict us from using streams as input.  We'll just write
+a wrapper that buffers the input (if we can't use one of the existing).
+
+
+A data type is defined by a class that defines two methods: parse
+and recognize.
+Such a class with handle all of the number format issues, as well as
+qouting and escaping for strings and other stuff.
+
+Maybe we should add a "learn" method that given a bunch of strings will 
+let the DataType automatically configure itself for all of these parameters.

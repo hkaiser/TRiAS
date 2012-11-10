@@ -1,0 +1,136 @@
+'Hier Initialisierungsschritte vornehmen.
+Private Count As Long
+Sub Reset()
+'Hier notwendige Verarbeitungen durchführen.  
+   Count = 0
+End Sub
+
+'__________________________________
+
+'Zum Geoobjekt "Obj" kann hier der Wert einer Objekteigenschaft
+'berechnet werden. Dieser sollte nach Abarbeitung als Rückgabewert
+'der Funktion verwandt werden.
+Declare Private Function Existenz ( Obj As GeoObject, Cls As GeoClass) As Boolean
+
+Function GetProperty (Obj As GeoObject) As Variant
+'Hier notwendige Verarbeitungen durchführen.
+
+
+Dim MyOE AS String
+Dim ClsDach As GeoClass
+Dim ClsGruen As GeoClass
+Dim ClsSiegel As GeoClass
+Dim ClsSonder As GeoClass
+
+Const strSiegel = "versiegelte Fläche"
+Const strDach = "Dachteilfläche"
+Const strGruen = "Grünfläche/Straßenland"
+Const strSonder = "Sondergebiet"
+
+Dim docGD As GeoDocument
+
+' Initialisierungen
+  	Set docGD = GetActiveDocument
+
+	Set clsGruen = docGD.GetClass (strGruen)
+
+	Set clsSiegel = docGD.GetClass (strSiegel)
+
+	Set clsSonder = docGD.GetClass (strSonder)
+
+	Set clsDach = docGD.GetClass (strDach)
+
+
+	If ( Existenz ( Obj, clsSiegel)) Then
+		MyOE = "TRUE"
+		GetProperty = MyOE
+		Count = Count + 1
+		Exit Function
+	End If
+	If ( Existenz ( Obj, clsDach)) Then
+		MyOE = "TRUE"
+		GetProperty = MyOE
+		Count = Count + 1
+		Exit Function
+	End If
+	If ( Existenz ( Obj, clsGruen))	Then
+		MyOE = "TRUE"
+		GetProperty = MyOE
+		Count = Count + 1
+		Exit Function
+	End If
+' Nun die Sondergebiete
+Const strS1 = "Baustelle"
+Const strS2 = "ALK 11"
+Const strS3 = "ALK 81"
+Const strS4 = "ALK 11,81"
+Const strS5 = "Kleingärten"
+Const strS6 = "Park"
+Const strS7 = "Friedhof"
+	
+	If ( Existenz ( Obj, clsSonder)) Then
+		Dim MyStr As String
+		Dim MyFeat As GeoFeature
+		Set MyFeat = Obj.GetFeature("Objektname")
+		If Feat Is Not Nothing Then
+			MyStr = TRIM$(MyFeat.Feature$)
+			If MyStr = strS1 Or MyStr = strS2 or MyStr = strS3 or MyStr = strS4 or MyStr = strS5 or MyStr = strS6 or MyStr = strS7 Then
+				MyOE = "TRUE"
+				GetProperty = MyOE
+				Count = Count + 1
+				Exit Function
+			End If
+		End If
+	End If
+End Function
+'-------------------------------------------------------------
+'---------------------------------------------------------------------
+Private Function Existenz ( Obj As GeoObject, Cls As GeoClass) As Boolean
+
+
+Dim XMin As Double
+Dim XMax As Double
+Dim YMin As Double
+Dim YMax As Double
+
+Dim ObjsRect As GeoObjects
+
+	Existenz = False
+
+	If Cls Is Nothing Then
+		Exit Function
+	End If
+
+	Obj.GetGeometryRect XMin, YMin, XMax, YMax
+
+	Set ObjsRect = Cls.GetObjectsInRect(XMin, YMin, XMax, YMax)
+
+	If ObjsRect Is Nothing Then
+		Exit Function
+	End If
+
+	If ObjsRect.Count = 0 Then
+		Exit Function
+	End If
+
+	Dim MyObj As GeoObject
+	Dim intRel As Integer			' Rückkehrwert von TopRelation()
+
+	For Each MyObj In ObjsRect
+		intRel = Obj.TopRelation (MyObj)
+		If intRel = 0 Or intRel = 2 Then	' innerhalb oder inner/außerhalb
+			Existenz = True
+			Exit Function
+		End If
+		
+	Next MyObj
+
+End Function
+'__________________________________
+
+'Vorher berechnete Werte können hier aufsummiert werden. Das
+'Ergebnis sollte als Rückgabewert der Funktion verwandt werden.
+Function Cumulation() As Variant
+'Hier notwendige Verarbeitungen durchführen. 
+	  Cumulation = STR$(Count)
+End Function

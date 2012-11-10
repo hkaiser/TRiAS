@@ -1,0 +1,241 @@
+'\"t
+.TH BINERRORHANDLER 3BIN "July 1990" "SDSC" "BINARY I/O"
+.SH NAME
+BinErrorHandler  -  nominate an error condition handler function
+.SH SYNOPSIS
+.if t \fB
+.nf
+#include "sdsc.h"
+
+void BinErrorHandler( func )
+	int (*func)( );
+.fi
+.if t \fR
+.SH DESCRIPTION
+All binary I/O package routines check their arguments for legality before
+proceeding to read or write the data file or change any internal state.
+However, some errors cannot be detected until the data is actually read or
+written.
+Such errors include integer truncation and floating-point overflow and
+underflow on one or more data items of those to be read or written.
+These conditions are generally ones that cannot be corrected.
+If a 128-bit VAX 'h' format float in a file is being read into a Sun
+SPARCStation's 64-bit IEEE 'double' format and overflow occurs,
+foreknowledge of the problem is unlikely to stop overflow. 
+The float in the file is simply too big to be represented on the host.
+The most the program can do is to notify you that one or more of the
+data items read in or written out will be incorrect because of truncation,
+overflow or underflow.  The program should notify the user, then exit or try to
+continue as if nothing happened.
+.LP
+Notification of these data format errors is handled by automatic invocation
+of an error handler function nominated using \fIBinErrorHandler\fR.
+If the program does not nominate such a function, a default error handler
+in the binary I/O package will be used that prints a warning message
+to \fIstderr\fR.
+.LP
+\fIfunc\fR is a pointer to the program's error handling function or
+either of the following: 
+.RS
+.ta 2i
+.nf
+\fIfunc\fR	\fBMeaning\fR
+BINDEFFUNC	Reset to the default handler that prints 
+	to \fIstderr\fR.
+BINNOFUNC	Nominate no function.  The default action 
+	is disabled.
+.RE
+.LP
+\fIBINDEFFUNC\fR reinstates the default handler.
+Thereafter all error conditions causing a handler to be invoked are
+shunted to the default handler, which prints a message to \fIstderr\fR.
+.LP
+\fIBINNOFUNC\fR disables all handler calls.  Thereafter all error
+conditions causing a handler to be invoked are ignored.  No messages
+are printed to stderr. 
+.LP
+If \fIfunc\fR is a pointer to a program's own error handling function,
+that function will be invoked as follows upon error conditions:
+.RS 0.5i
+.LP
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+handler( fd, op, reason, data, frombits, tobits )
+	int fd, op, reason;
+	uchar *data;
+	int frombits, tobits;
+.fi
+.RE
+.LP
+\fIfd\fR is the file's file descriptor.
+.LP
+\fIop\fR is the operation in progress when the data format error
+occurred and will be one of the following:
+.LP
+.ne 5
+.RS 0.5i
+.TS
+l l.
+\fIop\fR	\fBMeaning\fR
+BINOPREAD	\fIBinRead\fR(3BIN) in progress
+BINOPREADSTRUCT	\fIBinReadStruct\fR(3BIN) in progress
+BINOPWRITE	\fIBinWrite\fR(3BIN) in progress
+BINOPWRITESTRUCT	\fIBinWriteStruct\fR(3BIN) in progress
+.TE
+.RE
+.LP
+\fIreason\fR indicates the reason the error handler function was called
+and will be one of the following:
+.LP
+.ne 5
+.RS 0.5i
+.TS
+l l.
+\fIreason\fR	\fBMeaning\fR
+BINEFLOATOVERFLOW	Floating point overflow occurred
+BINEFLOATUNDERFLOW	Floating point underflow occurred
+BINEINTEGERTRUNC	Integer truncation occurred
+.TE
+.RE
+.LP
+floating-point overflow and underflow occur when the size of a destination
+float's exponent is too small to accept the exponent of a source
+float value without truncation.
+If the source float's exponent is too large, then overflow occurs.
+If the source float's exponent is too small (a large negative number),
+then underflow occurs.
+.LP
+Integer truncation occurs when the size of a destination integer is too
+small to accept a source integer value without truncation.
+During truncation significant high bits in the integer are lost.
+.LP
+The \fIdata\fR argument in the handler call
+is a \fIuchar\fR pointer to the array of source bytes
+that represents the integer or float that is in error.
+.LP
+On integer truncation,
+\fIfrombits\fR is the length in bits of the source integer, and
+\fItobits\fR is the length of the destination integer.
+\fIfrombits\fR is larger than \fItobits\fR.
+.LP
+On floating-point overflow and underflow,
+\fIfrombits\fR is the length in bits of the source floating-point format's
+exponent, and \fItobits\fR is the length of a destination float's exponent.
+\fIfrombits\fR is larger than \fItobits\fR.
+.LP
+The default handler prints messages of the form:
+.RS 0.5i
+.LP
+.nf
+Bin:  integer truncation during read of file XYZ
+  XYZ bit integer truncated on storage into XYZ bit integer
+  Pre-truncation integer = 0xXYZ
+
+Bin:  floating-point overflow during write of file XYZ
+  XYZ bit exponent overflows when reduced to XYZ bits
+  Pre-overflow float = 0xXYZ
+
+Bin:  floating-point underflow during structure read of file XYZ
+  XYZ bit exponent underflows when reduced to XYZ bits
+  Pre-underflow float = 0xXYZ
+.fi
+.RE
+.LP
+.SH RETURNS
+\fIBinFloatFormat\fR returns nothing.
+.SH NOTES
+A typical error handler function sets a global flag that an error
+occurred during the operation.
+The main program checks this flag regularly.
+If the flag is set, a data error occurred and the
+program issues a message to the user and exits gracefully:
+.LP
+.RS 0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+int errorOccurred = FALSE;
+
+int
+errorHandler( fd, op, reason, data, frombits, tobits )
+	int fd, op, reason;
+	uchar *data;
+	int frombits, tobits;
+{
+	errorOccurred = TRUE;
+}
+
+main( ... )
+{
+	...
+	BinErrorHandler( errorHandler );
+	...
+	BinRead( ... );
+	if ( errorOccurred )
+	{
+		fprintf( stderr, "This data file contains data that\\n" );
+		fprintf( stderr, "cannot be represented accurately\\n" );
+		fprintf( stderr, "on this host.  It is impossible to\\n" );
+		fprintf( stderr, "continue processing this file\\n" );
+		fprintf( stderr, "and produce correct results.  Abort.\\n" );
+		exit( 1 );
+	}
+	...
+}
+.fi
+.RE
+.LP
+.br
+.ne 5
+.SH EXAMPLES
+.SS "Example 1"
+Nominate a custom error handler function.
+.LP
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+BinErrorHandler( myHandler );
+.in -0.5i
+.fi
+.SS "Example 2"
+Disable the default error handler but don't install a new one.
+.LP
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+BinErrorHandler( BINNOFUNC );
+.in -0.5i
+.fi
+.SS "Example 3"
+Reinstate the default error handler.
+.LP
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+BinErrorHandler( BINDEFFUNC );
+.in -0.5i
+.fi
+.SH "SEE ALSO"
+BinByteOrder(3BIN),
+BinFRead(3BIN),
+BinFReadStruct(3BIN),
+BinFWrite(3BIN),
+BinFWriteStruct(3BIN),
+BinFloatFormat(3BIN),
+BinPError(3BIN),
+BinQByteOrder(3BIN),
+BinQFloatFormat(3BIN),
+BinQMachine(3BIN),
+BinRead(3BIN),
+BinReadStruct(3BIN),
+BinSRead(3BIN),
+BinSWrite(3BIN),
+BinWrite(3BIN),
+BinWriteStruct(3BIN)
+.br
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

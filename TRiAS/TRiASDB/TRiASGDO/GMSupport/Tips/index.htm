@@ -1,0 +1,135 @@
+<HTML>
+
+<HEAD>
+
+<TITLE>TRiAS GDO - Tips und Hinweise</TITLE>
+
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META name="Author" content="Andreas Kasparz">
+<META NAME="GENERATOR" CONTENT="Internet Assistant for Microsoft Word 2.0z">
+</HEAD>
+
+<BODY>
+
+<H1>Hinweise f&uuml;r den Umgang mit GDO-Datenquellen </H1>
+
+<H2>Access-Datenquellen </H2>
+
+<P>
+<FONT SIZE=2>Hier sind keine besonderen Hinweise zu beachten.
+Es wird einfach die entsprechende Datei mit der Endung <B>.mdb</B>
+ge&ouml;ffnet. </FONT>
+<H2>Arc-Info Datenquellen </H2>
+
+<H3>&Ouml;ffnen einer Arc-Info Datenquelle</H3>
+
+<P>
+<FONT SIZE=2>Bei Arc-Info befinden sich die Daten in einem Verzeichnis,
+etwa wie folgt:</FONT>
+<P>
+<IMG SRC="IMG00001.GIF">
+<P>
+<FONT SIZE=2>Beim &Ouml;ffnen einer Arc-Info Datenquelle ist stets
+das Datenverzeichnis anzugeben:</FONT>
+<P>
+<IMG SRC="IMG00002.GIF">
+<H3>Koordinatensystem f&uuml;r eine Arc-Info Datenquelle festlegen
+</H3>
+
+<P>
+<FONT SIZE=2>Der Arc-Info Datenserver f&uuml;r GDO ben&ouml;tigt
+Informationen &uuml;ber das Koordinatensystem in dem die Arc-Info
+Daten abgelegt. Diese Informationen sind <B>nicht</B> implizit
+in den Daten abgelegt sondern m&uuml;ssen dem Datenserver explizit
+mitgeteilt werden. Hierbei gilt es zwei F&auml;lle zu unterscheiden:</FONT>
+<H4>Fall 1 - Die Koordinaten s&auml;mtlicher Layer / Objektklassen
+liegen in einem Koordinatensystem vor</H4>
+
+<P>
+In diesem Fall ist es ausreichend im Arc-Info Datenverzeichnis
+eine <B>.ini</B> - Datei mit folgendem Inhalt zu erstellen:
+<P>
+<IMG SRC="IMG00003.GIF">
+<P>
+Das gezeigte Beispiel bezieht sich auf die oben angegebene Verzeichnisstruktur.
+In dieser <B>.ini</B> Datei wird dem Arc-Info Datenserver mitgeteilt
+wo er die f&uuml;r das Projekt zust&auml;ndige Koordinatensystemdefinition
+finden kann. Diese <B>.csf</B> Datei kann mit Hilfe des bei Geomedia
+<A HREF="#DefCoordsystem" >mitgelieferten Tools</A> erstellt werden.
+Nachdem Sie die <B>.ini</B> Datei und die Koordinatensystemdefinitionsdatei
+erstellt haben, sollte Ihr Arc-Info Datenverzeichnis also wie
+folgt aussehen:
+<P>
+<IMG SRC="IMG00004.GIF">
+<H5>Hinweis: Zum Definieren der .ini- und der Koordinatensystmdefinitionsdatei
+sollten sie das Programm <I>GeoINIwz.exe</I> von Intergraph benutzen.
+</H5>
+
+<H4>Fall 2 - Die Koordinaten der Layer / Objektklassen liegen
+in unterschiedlichen  Koordinatensystemen vor</H4>
+
+<P>
+In diesem Fall ist <B>f&uuml;r jeden Layer</B> eine Koordinatensystmdefinitionsdatei
+zu erstellen. Diese Datei mu&szlig; im Verzeichnis des Layers
+liegen, den Namen des Verzeichnisses haben. Eine <B>.ini</B> Datei
+ist in diesem Fall <B>nicht</B> notwendig, weder im Arc-Inf Datenverzeichnis
+noch in den einzelnen Layerverzeichnissen. Unsere obigen Arc-Info
+Verzeichnisse w&uuml;rden dann also wie folgt aussehen:
+<P>
+<IMG SRC="IMG00005.GIF"> 
+<H2>Arc-View Datenquellen</H2>
+
+<P>
+<FONT SIZE=2>Bei Arc-View Datenquellen befinden sich die Layer
+/ Objektklassen in einem Verzeichnis. Auch hier ist wieder eine
+<B>.ini</B> und eine Koordinatensystemdefinitionsdatei anzugeben:</FONT>
+<P>
+<IMG SRC="IMG00006.GIF"><BR>
+
+<H5>Hinweis: Zum Definieren der .ini- und der Koordinatensystmdefinitionsdatei
+sollten sie das Programm <I>GeoINIwz.exe</I> von Intergraph benutzen.
+</H5>
+
+<H2><A NAME="DefCoordsystem">Definieren eines Koordinatensystems</A>
+</H2>
+
+<P>
+<FONT SIZE=2>Das Tool zum definieren einer Geomedia-Koordinatensystemdatei
+finden sie unter <B>Startmen&uuml;-&gt;Programme-&gt;Koordinatensystem
+definieren.</B></FONT>
+<H4>Beispiel: Sie m&ouml;chten ein Koordinatensystem definieren...
+</H4>
+
+<P>
+...welches eine Gau&szlig;-Kr&uuml;ger Projektion im 4. Meridianstreifen
+beschreibt. Zugrunde soll das Bessel-Ellipsoid liegen.
+<OL>
+<LI>Starten sie das Programm zur Definition des Koordinatensystems:
+<BR>
+<IMG SRC="IMG00007.GIF">
+<LI>Definieren Sie das System als projektives System:<BR>
+<IMG SRC="IMG00008.GIF">
+<LI>W&auml;hlen sie als Projektionstyp <B>Gau&szlig;-Kr&uuml;ger</B>
+aus un stellen sie die entsprechenden Parameter ein:<BR>
+<IMG SRC="IMG00009.GIF">
+<LI>legen sie das geod&auml;tische Datum f&uuml;r Ihr Koordinatensystem
+fest:<BR>
+<IMG SRC="IMG00010.GIF">
+<LI>Best&auml;tigen Sie Ihre Einstellungen und speichern Sie die
+Koordinatensystemdefinitionsdatei unter dem gew&uuml;nschten Namen
+ab:<BR>
+<IMG SRC="IMG00011.GIF">
+</OL>
+
+<H4>Hinweis: Sie m&ouml;chten sich nicht allzu viel Arbeit machen:
+</H4>
+
+<P>
+Legen Sie sich an einer definierten Stelle auf Ihrem Rechner vordefinierte
+Koordinatensysteme ab. Sie brauchen dann die jeweiligen Arbeiten
+nur einmal auszuf&uuml;hren; z.B:
+<P>
+<IMG SRC="IMG00012.GIF">
+</BODY>
+
+</HTML>

@@ -1,0 +1,180 @@
+// Helper.idl : IDL source for Helper.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (Helper.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#if !defined(_BASETSD_H_) && (501 >= __midl)
+#include <basetsd.h>
+#endif // !defined(_BASETSD_H_)
+
+cpp_quote("#define TYPELIB_TRIASSUPPORT_VERSION_MAJOR 1")
+cpp_quote("#define TYPELIB_TRIASSUPPORT_VERSION_MINOR 0")
+cpp_quote("#define TYPELIB_TRIASSUPPORT_VERSION \"1.0\"")
+cpp_quote("#define TYPELIB_TRIASSUPPORT_LCID 0")
+
+#define TYPELIB_TRIASSUPPORT_VERSION 1.0
+#define TYPELIB_TRIASSUPPORT_LCID 0
+
+///////////////////////////////////////////////////////////////////////////////
+// Sonstige hier benötigte Konstanten
+#if !defined(VARIANT_TRUE)
+#define VARIANT_TRUE	((VARIANT_BOOL)(-1))
+#define VARIANT_FALSE	((VARIANT_BOOL)0)
+#endif // !VARIANT_TRUE
+
+#include <idl/StringHandling.idl>
+#include <idl/MatchString.idl>
+#include <idl/TRiASPropertyBag.idl>
+
+#if _MSC_VER >= 1100
+	[
+		object,
+		uuid(BED66F39-7351-11D2-9EF1-006008447800),
+		dual,
+		helpstring("ICookieHelper Interface"),
+		pointer_default(unique)
+	]
+	interface ICookieHelper : IDispatch
+	{
+		[id(1), helpstring("method CreateCookieHolder")] HRESULT CreateCookieHolder([in] BSTR Name, [in] INT_PTR FirstCookie, [out, retval] INT_PTR *CookieHolder);
+		[id(2), helpstring("method GetCookieHolder")] HRESULT GetCookieHolder([in] BSTR Name, [out, retval] INT_PTR *CookieHolder);
+		[id(3), helpstring("method DeleteCookieHolder")] HRESULT DeleteCookieHolder([in] INT_PTR CookieHolder);
+		[id(4), helpstring("method GetNextCookie")] HRESULT GetNextCookie([in] INT_PTR CookieHolder, [out, retval] INT_PTR *NewCookie);
+		[id(5), helpstring("method SetInitialCookie")] HRESULT SetInitialCookie([in] INT_PTR CookieHolder, [in] INT_PTR newVal);
+		[id(6), helpstring("method GetLastCookie")] HRESULT GetLastCookie([in] INT_PTR CookieHolder, [out, retval] INT_PTR *pLastCookie);
+	};
+
+	[
+		object,
+		uuid(92081D85-C828-11D2-9BA2-006008447800),
+		helpstring("ICookieHelperEvents Interface"),
+		pointer_default(unique)
+	]
+	interface ICookieHelperEvents : IUnknown
+	{
+		[helpstring("method CookieHolderInitialized")] HRESULT CookieHolderInitialized([in] BSTR Name, [in] INT_PTR NewCookie);
+		[helpstring("method IssuedNextCookie")] HRESULT IssuedNextCookie([in] BSTR Name, [in] INT_PTR NextCookie);
+	};
+
+	[
+		object,
+		uuid(C3BF0D41-7DF6-11D2-9EF6-006008447800),
+		dual,
+		helpstring("IMatchPlainText Interface"),
+		pointer_default(unique)
+	]
+	interface IMatchPlainText : IDispatch
+	{
+
+		[propget, id(1), helpstring("property FullMatch")] HRESULT FullMatch([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(1), helpstring("property FullMatch")] HRESULT FullMatch([in] VARIANT_BOOL newVal);
+		[propget, id(2), helpstring("property ExistanceOnly")] HRESULT ExistanceOnly([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(2), helpstring("property ExistanceOnly")] HRESULT ExistanceOnly([in] VARIANT_BOOL newVal);
+		[propget, id(3), helpstring("property TestBOB")] HRESULT TestBOB([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(3), helpstring("property TestBOB")] HRESULT TestBOB([in] VARIANT_BOOL newVal);
+	};
+	[
+		object,
+		uuid(C3BF0D42-7DF6-11D2-9EF6-006008447800),
+		dual,
+		helpstring("IMatchRegExpr Interface"),
+		pointer_default(unique)
+	]
+	interface IMatchRegExpr : IDispatch
+	{
+
+		[propget, id(1), helpstring("property FullMatch")] HRESULT FullMatch([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(1), helpstring("property FullMatch")] HRESULT FullMatch([in] VARIANT_BOOL newVal);
+	};
+	[
+		object,
+		uuid(C3BF0D43-7DF6-11D2-9EF6-006008447800),
+		dual,
+		helpstring("IMatchFuzzy Interface"),
+		pointer_default(unique)
+	]
+	interface IMatchFuzzy : IDispatch
+	{
+
+	};
+
+#endif // _MSC_VER >= 1100
+
+[
+	uuid(C21AAF85-2DE5-11D1-969A-00A024D6F582),
+	version(TYPELIB_TRIASSUPPORT_VERSION),
+	lcid(TYPELIB_TRIASSUPPORT_LCID),
+	helpstring("TRiAS Support Objects 1.0 Type Library")
+]
+library TRiASSupport
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(C21AAF93-2DE5-11D1-969A-00A024D6F582),
+		helpstring("ParseRegularExpression Class")
+	]
+	coclass ParseRegularExpression
+	{
+		[default] interface IParseRegularExpression;
+	};
+	[
+		uuid(C21AAF96-2DE5-11D1-969A-00A024D6F582),
+		helpstring("ParseStringPairs Class")
+	]
+	coclass ParseStringPairs
+	{
+		[default] interface IParseStringPairs;
+		interface IParseStringPairs2;
+		interface IComposeStringPairs;
+	};
+
+#if _MSC_VER >= 1100
+	[
+		uuid(BED66F3A-7351-11D2-9EF1-006008447800),
+		helpstring("CookieHelper Class")
+	]
+	coclass CookieHelper
+	{
+		[default] interface ICookieHelper;
+		[default, source] interface ICookieHelperEvents;
+	};
+
+// Matching objects
+	[
+		uuid(C3BF0D37-7DF6-11D2-9EF6-006008447800),
+		helpstring("MatchPlainTextExakt Class")
+	]
+	coclass MatchPlainTextExakt
+	{
+		[default] interface DMatchString;
+		interface DMatchString2;
+		interface IMatchPlainText;
+	};
+	[
+		uuid(C3BF0D3B-7DF6-11D2-9EF6-006008447800),
+		helpstring("MatchRegExprExakt Class")
+	]
+	coclass MatchRegExprExakt
+	{
+		[default] interface DMatchString;
+		interface DMatchString2;
+		interface IMatchRegExpr;
+	};
+	[
+		uuid(C3BF0D3E-7DF6-11D2-9EF6-006008447800),
+		helpstring("MatchFuzzy Class")
+	]
+	coclass MatchFuzzy
+	{
+		[default] interface DMatchString;
+		interface DMatchString2;
+		interface IMatchFuzzy;
+	};
+#endif // _MSC_VER >= 1100
+};

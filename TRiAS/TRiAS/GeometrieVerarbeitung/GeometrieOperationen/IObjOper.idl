@@ -1,0 +1,48 @@
+// IObjOper.idl : IDL source for ObjOper.ext
+
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+// Definition der Interface's
+
+// --------------------------------------------------------------------------------------------
+// IGetGeoOperatOptions
+// Interface, das COptionsPropAct für die CRegOperatPropAct- bzw. CSetsOperatPropAct-Klasse
+// bereitstellt, d.h. das Interface, über das diese Klassen COptionsPropAct rufen können
+
+[
+	uuid(36F790D0-0769-11d3-888A-00104BAF1F6B),		// IID_IGetGeoOperatOptions
+	helpstring("IGetGeoOperatOptions Interface"),
+	pointer_default(unique)
+]
+
+// Funktionen dieses Interface's
+
+interface IGetGeoOperatOptions : IUnknown
+{
+	[helpstring("Liefert die im Dialog eingestellten Optionen")]
+	HRESULT (GetOptions) ([out] DWORD* pdwOptions);
+};
+
+
+// --------------------------------------------------------------------------------------------
+// ISetGeoOperatOptionsTarget
+// Interface, über das die CRegOperatPropAct- bzw. CSetsOperatPropAct-Klasse das Interface der
+// Klasse COptionsPropAct übergeben bekommt
+
+[		
+	uuid(B5542620-0786-11d3-888A-00104BAF1F6B),		// IID_ISetGeoOperatOptionsTarget
+	helpstring("ISetGeoOperatOptionsTarget Interface"),
+	pointer_default(unique)
+]
+
+// Funktionen dieses Interface's
+
+interface ISetGeoOperatOptionsTarget : IUnknown
+{
+	[helpstring("Übergibt COptionsPropAct-Interface an das Objekt")]
+	HRESULT SetOperatOptionsSite ([in] IGetGeoOperatOptions* pOperOptions);
+};

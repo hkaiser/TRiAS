@@ -1,0 +1,123 @@
+// $Header: $
+// Copyright© 1999-2000 TRiAS GmbH Potsdam, All rights reserved
+// Created: 18.03.2000 17:49:19
+//
+// @doc
+// @module GeoComponents.idl | Interface description for geocomponents
+// @group In diesem Modul definierte Interfaces
+// @index | INTERFACE & GEOCOMPONENT
+
+#if !defined(_GEOCOMPONENTS_IDL__FDC3E866_A660_4976_89CB_D6E2D1DD5EB8__INCLUDED_)
+#define _GEOCOMPONENTS_IDL__FDC3E866_A660_4976_89CB_D6E2D1DD5EB8__INCLUDED_
+
+#include "idl/progind2.idl"
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declaration
+interface DPropertyAction;
+interface DPropertySequence;
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE GEOCOMPONENT
+// @interface DPropertyAction | 
+// @group Methoden und Eigenschaften von <i DPropertyAction> 
+// @index | DPROPERTYACTION
+// @doc DPROPERTYACTION
+cpp_quote("#ifndef _DPROPERTYACTION_DEFINED")
+cpp_quote("#define _DPROPERTYACTION_DEFINED")
+[
+	object,
+	uuid(3092C75C-AAAB-406A-8992-61A35B1C7FD8),
+	dual,
+	helpstring("DPropertyAction Interface"),
+	pointer_default(unique)
+]
+interface DPropertyAction : IDispatch
+{
+	// @ supby <o PropertySequence>, <o PropertyChoice>
+	// @ xref <i DPropertyAction>
+	[id(100), helpstring("")] HRESULT BeginAction ([in, optional] VARIANT ProgressIndicator, [out, retval] VARIANT_BOOL *Success);
+
+	// @ supby <o PropertySequence>, <o PropertyChoice>
+	// @ xref <i DPropertyAction>
+	[id(101), helpstring("")] HRESULT DoAction ([in, optional] VARIANT ObjsIn, [out, retval] DGeoObjects **ObjsOut);
+
+	// @ supby <o PropertySequence>, <o PropertyChoice>
+	// @ xref <i DPropertyAction>
+	[id(102), helpstring("")] HRESULT EndAction ();
+};
+cpp_quote("#endif // _DPROPERTYACTION_DEFINED")
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE GEOCOMPONENT
+// @interface DPropertySequence | Das Interface <i DPropertySequence> dient der Verwaltung
+// einer Sequenz von Geokomponenten.
+// @group Methoden und Eigenschaften von <i DPropertySequence> 
+// @index | DPROPERTYSEQUENCE
+// @doc DPROPERTYSEQUENCE
+cpp_quote("#ifndef _DPROPERTYSEQUENCE_DEFINED")
+cpp_quote("#define _DPROPERTYSEQUENCE_DEFINED")
+[
+	object,
+	uuid(B85C25D2-C2D4-4B09-B845-EFE1046F96CF),
+	dual,
+	helpstring("DPropertySequence Interface"),
+	pointer_default(unique)
+]
+interface DPropertySequence : IDispatch
+{
+	// @property BSTR | DPropertySequence | Description | Die Eigenschaft <op .Description>
+	// enthält eine etwas ausführlichere Beschreibung der Sequenz.
+	// @comm Die Beschreibung der PropertySequence wird standardmäßig im Caption
+	// der Dialogsequenz angezeigt, wenn die aktuelle Seite keine eigene Beschreibung 
+	// gesetzt hat.
+	// @supby <o PropertySequence>, <o PropertyChoice>
+	// @xref <i DPropertySequence>
+	[propput, id(DISPID_DEFAULT), helpstring("Setzt eine ausführlichere Beschreibung der Sequenz.")] HRESULT Description ([in] BSTR Description);
+	[propget, id(DISPID_DEFAULT), helpstring("Liefert eine ausführlichere Beschreibung der Sequenz.")] HRESULT Description ([out, retval] BSTR *Description);
+
+	// @property ULONG | DPropertySequence | ActionCount | Die Eigenschaft <op .ActionCount>
+	// liefert die Anzahl der zu dieser Sequenz gehörenden Geokomponenten.
+	// @comm Die Eigenschaft <op .ActionCount> kann nicht gesetzt werden.
+	// @supby <o PropertySequence>, <o PropertyChoice>
+	// @xref <i DPropertySequence>
+	[propget, id(1), helpstring("Liefert die Anzahl der zu dieser Sequenz gehörenden Geokomponenten.")] HRESULT ActionCount ([out, retval] ULONG *Count);
+
+	// @method HRESULT | DPropertySequence | AddAction | Die Methode <om .AddAction> fügt eine 
+	// Geokomponente zur Sequenz hinzu.
+	// @parm VARIANT | TypeOrObject | Der Parameter <p TypeOrObject> enthält entweder den Typ des 
+	// hinzuzufügenden Objektes (als ProgId oder ClsId in der Form {...}) oder das hinzuzufügende
+	// Objekt selbst.
+	// @parm VARIANT | InitData | Der (optionale) Parameter <p InitData> kann zusätzliche Initialisierungs-
+	// Informationen enthalten, die dem neu erzeugten Objekt in Form eines <i IPropertyBag> übergeben werden.
+	// Die Initialisierungsinformationen müssen in Form einer Zeichenkette mit folgendem Format gegeben
+	// sein: ';Key1=Value1;...;KeyN=ValueN' (ohne Apostrophe).
+	// @parm VARIANT_BOOL * | Success | Der Parameter <p Success> liefert, ob das Objekt erfolgreich zur
+	// Sequenz hinzugefügt wurde.
+	// @supby <o PropertySequence>, <o PropertyChoice>
+	// @xref <i DPropertySequence>
+	[id(100), helpstring("Fügt eine Geokomponente zu der Sequenz hinzu.")] HRESULT AddAction ([in] VARIANT TypeOrObject, [in, optional] VARIANT InitData, [out, retval] VARIANT_BOOL *Success);
+
+	// @method HRESULT | DPropertySequence | DoActions | Die Methode <om .DoActions> 
+	// @supby <o PropertySequence>, <o PropertyChoice>
+	// @xref <i DPropertySequence>
+	[id(101), helpstring("")] HRESULT DoActions ([in, optional] VARIANT ObjsIn, [in, optional] VARIANT ProgressIndicator, [out, retval] DGeoObjects **ObjsOut);
+
+	// @method HRESULT | DPropertySequence | RedoActions | Die Methode <om .RedoActions> 
+	// @supby <o PropertySequence>, <o PropertyChoice>
+	// @xref <i DPropertySequence>
+	[id(102), helpstring("")] HRESULT RedoActions ([in, optional] VARIANT ObjsIn, [in, optional] VARIANT ProgressIndicator, [out, retval] DGeoObjects **ObjsOut);
+
+	// @method HRESULT | DPropertySequence | Load | Die Methode <om .Load> 
+	// @supby <o PropertySequence>, <o PropertyChoice>
+	// @xref <i DPropertySequence>
+	[id(103), helpstring("")] HRESULT Load ([in] BSTR Stream);
+
+	// @method HRESULT | DPropertySequence | Save | Die Methode <om .Save> 
+	// @supby <o PropertySequence>, <o PropertyChoice>
+	// @xref <i DPropertySequence>
+	[id(104), helpstring("")] HRESULT Save ([in] BSTR Stream);
+};
+cpp_quote("#endif // _DPROPERTYSEQUENCE_DEFINED")
+
+#endif // !defined(_GEOCOMPONENTS_IDL__FDC3E866_A660_4976_89CB_D6E2D1DD5EB8__INCLUDED_)

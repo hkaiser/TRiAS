@@ -1,0 +1,3 @@
+@echo Release build ...
+set CL=/D_TRiAS_VER=%TRiAS_VER%
+nmake -i -a -nologo -f Makefile.mak CONF=NDEBUG TRiAS_VER=%TRiAS_VER% %1 > Release.log

@@ -1,0 +1,292 @@
+'\"t
+.TH BINQMACHINE 3BIN "July 1990" "SDSC" "BINARY I/O"
+.SH NAME
+BinQMachine  -  query the host machine's characteristics
+.SH SYNOPSIS
+.if t \fB
+.nf
+#include "sdsc.h"
+
+BinMachineInfo *BinQMachine( )
+.fi
+.if t \fR
+.SH DESCRIPTION
+\fIBinQMachine\fR queries the binary I/O package for attributes of the
+host machine.
+A pointer to a statically allocated \fIBinMachineInfo\fR structure is
+returned:
+.LP
+.in +0.5i
+.nf
+.ta 1i 2i
+typedef struct BinMachineInfo
+{
+	char	*bin_vendorName;
+	char	*bin_machineName;
+	char	*bin_cpuName;
+	char	*bin_osName;
+
+	int	bin_byteOrder;
+	char	*bin_byteOrderName;
+	int	bin_floatFormat;
+	char	*bin_floatFormatName;
+
+	int	*bin_typeSize;
+	boolean	*bin_typeSigned;
+	int	*bin_typeRes;
+	int	*bin_typePad;
+	char	**bin_typeName;
+
+	int	bin_reserved[10];
+} BinMachineInfo;
+.in -0.5i
+.fi
+.LP
+\fIbin_vendorName\fR contains a NULL-terminated character string giving the
+name of the machine's manufacturer.
+This value is obtained from the \fIVENDOR_NAME\fR defined constant
+in "sdscconfig.h".
+If \fIVENDOR_NAME\fR is not defined, \fIbin_vendorName\fR is the
+string "Unknown".
+.LP
+\fIbin_machineName\fR contains a NULL-terminated character string giving the
+name of the machine, such as "VAX", "CRAY X-MP", or "Iris 4D".
+This value is obtained from the \fIMACHINE_NAME\fR defined constant
+in "sdscconfig.h".
+If \fIMACHINE_NAME\fR is not defined, \fIbin_machineName\fR is the
+string "Unknown".
+.LP
+\fIbin_cpuName\fR contains a NULL-terminated character string giving the
+name of the CPU, such as "MIPS", "SPARC", or "68030".
+This value is obtained from the \fICPU_NAME\fR defined constant
+in "sdscconfig.h".
+If \fICPU_NAME\fR is not defined, \fIbin_cpuName\fR is the
+string "Unknown".
+.LP
+\fIbin_osName\fR contains a NULL-terminated character string giving the
+name of the operating system, such as "UNIX", "IRIX", "ULTRIX", or "VMS".
+This value is obtained from the \fIOS_NAME\fR defined constant
+in "sdscconfig.h".
+If \fIOS_NAME\fR is not defined, \fIbin_osName\fR is the
+string "Unknown".
+.LP
+\fIbin_byteOrder\fR indicates the byte order of the host machine and is
+one of the values:
+.LP
+.ne 5
+.in +0.5i
+.TS
+l l.
+\fIorder\fR	\fBMeaning\fR
+BINLBF	least-significant byte first
+BINMBF	most-significant byte first
+.TE
+.in -0.5i
+.LP
+\fIbin_byteOrderName\fR contains a NULL-terminated character string giving
+the name of the byte order, "MBF" or "LBF".
+.LP
+\fIbin_floatFormat\fR indicates the floating-point format of the host machine
+and is one of the values:
+.LP
+.ne 5
+.in +0.5i
+.TS
+l l.
+\fIformat\fR	\fBMeaning\fR
+BINIEEE	IEEE formats
+BINVAX	VAX formats (f, d, and h)
+BINVAXG	VAX formats (f, g, and h)
+BINCRAYMP	Cray X-MP/Y-MP formats
+.TE
+.in -0.5i
+.LP
+\fIbin_floatFormatName\fR contains a NULL-terminated character string giving
+the name of the floating-point format, such as "IEEE", "VAX", "VAXG", or
+"CRAYMP".
+.LP
+\fIbin_typeSize\fR, \fIbin_typeSigned\fR, \fIbin_typeRes\fR, \fIbin_typePad\fR,
+and \fIbin_typeName\fR are each pointers to the first entry in an array of
+\fIBINNTYPE\fR entries.
+Each entry indicates an attribute of a variable type recognized by the
+binary I/O package.
+The known types and their defined constant names
+may vary from site to site and may be found
+in the include file "bin.h" (automatically included by "sdsc.h").
+The following types are considered standard and should be available at
+all sites:
+.LP
+.ne 5
+.in +0.5i
+.TS
+l l.
+Type	\fBMeaning\fR
+BOOLEAN	boolean
+CHAR	signed character
+DOUBLE	double-percision floating point
+FLOAT	single-percision floating point
+INT	signed int
+INT16	signed 16-bit (or greater) integer
+INT32	signed 32-bit (or greater) integer
+INT64	signed 64-bit (or greater) integer
+INT8	signed 8-bit (or greater) integer
+LONG	signed long
+SHORT	signed short
+UCHAR	unsigned character
+UINT	unsigned int
+UINT16	unsigned 16-bit (or greater) integer
+UINT32	unsigned 32-bit (or greater) integer
+UINT64	unsigned 64-bit (or greater) integer
+UINT8	unsigned 8-bit (or greater) integer
+ULONG	unsigned long
+USHORT	unsigned short
+.TE
+.in -0.5i
+.LP
+INT64 and UINT64 are only available on systems supporting integer types of
+at least 64-bits in length.
+.LP
+\fIbin_typeSize\fR contains the storage size in bytes of each type.
+For instance, on a VAX, an INT is 4 bytes, a SHORT 2 bytes, and a FLOAT 4 bytes.
+On a CRAY Y-MP, INT, SHORT, and FLOAT are each stored in 8 bytes.
+.LP
+\fIbin_typeSigned\fR contains a \fITRUE\fR or \fIFALSE\fR value indicating
+if the type is signed or not.
+.LP
+\fIbin_typeRes\fR contains the resolution (precision) in bytes of each type.
+The resolution is the number of bytes actually available for storage of data
+within the storage size for the type.
+On most systems the type size and resolution are identical.
+On a CRAY Y-MP, however, a SHORT is stored in 8 bytes, but only has a
+resolution of 3 bytes.
+.LP
+\fIbin_typePad\fR contains the padding or alignment boundary in bytes
+required for the type when stored within a struct.
+In a C structure like the following:
+.LP
+.ne 5
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+struct thing
+{
+	char byte;
+	int  integer;
+};
+.in -0.5i
+.fi
+.LP
+there may or may not be empty storage space between the \fIbyte\fR
+field and the \fIinteger\fR field.
+Some CPUs can only access integers or floats at word boundaries.
+On such CPUs the \fIinteger\fR field's address must be advanced to the
+next legal boundary.
+On a SPARC processor, \fIint\fRs must be aligned to 4-byte boundaries,
+forcing the addition of 3-padding bytes between the \fIbyte\fR and
+\fIinteger\fR fields in the structure above.
+On a VAX running VMS, the C compiler does not require \fIint\fRs to be
+at any boundary so there would be no padding bytes added in the above
+structure. 
+.LP
+\fIbin_typePad\fR contains the alignment boundary for each type.
+On a SPARC, the \fIbin_typePad\fR entry for INT would be 4.
+On a VAX/VMS machine, the same entry would be 1.
+By definition, the entry for CHAR is 1.
+.LP
+\fIbin_typeName\fR contains pointers to NULL-terminated strings giving the
+lower-case C type names for each of the types.
+.LP
+\fIbin_reserved\fR is reserved for future expansion of the data within
+the \fIBinMachineInfo\fR structure.
+.SH RETURNS
+\fIBinQMachine\fR returns a pointer to a statically allocated
+\fIBinQMachineInfo\fR structure initialized to information about the host
+machine.
+\fIBinQMachine\fR never returns an error.
+.SH NOTES
+The type arrays are used by the binary I/O package to determine how to read
+and write values of various types and when and how much to sign-extend
+integers.
+The type array pointers in the returned \fIBinMachineInfo\fR structure point
+to the actual arrays of information used by the binary I/O package.
+These arrays should not be altered by the caller.
+.LP
+\fIBinQMachine\fR returns a pointer to space statically allocated within
+the binary I/O package.
+The space should not be deallocated using \fIfree\fR(3).
+.ne 5
+.SH EXAMPLES
+.SS "Example 1"
+Query and print the vendor, machine, CPU, and operating system names
+for the host. 
+.LP
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+BinMachineInfo *info;
+
+info = BinQMachine( );
+
+.TS
+l l.
+printf( "Vendor	= %s\\\\n", info->bin_vendorName );
+printf( "Machine	= %s\\\\n", info->bin_machineName );
+printf( "CPU	= %s\\\\n", info->bin_cpuName );
+printf( "OS	= %s\\\\n", info->bin_osName );
+.TE
+.in -0.5i
+.fi
+.SS "Example 2"
+Get the number of bytes of precision (not storage size) of a LONG.
+.LP
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+BinMachineInfo *info;
+int long_bytes;
+
+info = BinQMachine( );
+long_bytes = info->bin_typeRes[LONG];
+.in -0.5i
+.fi
+.SS "Example 3"
+Print the name of the byte order and floating-point format used by the
+host.
+.LP
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+BinMachineInfo *info;
+
+info = BinQMachine( );
+
+.TS
+l l.
+printf( "Byte Order	= %s\\\\n", info->bin_byteOrderName );
+printf( "Floating-Point Format	= %s\\\\n", info->bin_floatFormatName );
+.TE
+.SH "SEE ALSO"
+BinByteOrder(3BIN),
+BinErrorHandler(3BIN),
+BinFRead(3BIN),
+BinFReadStruct(3BIN),
+BinFWrite(3BIN),
+BinFWriteStruct(3BIN),
+BinFloatFormat(3BIN),
+BinPError(3BIN),
+BinQByteOrder(3BIN),
+BinQFloatFormat(3BIN),
+BinRead(3BIN),
+BinReadStruct(3BIN),
+BinSRead(3BIN),
+BinSWrite(3BIN),
+BinWrite(3BIN),
+BinWriteStruct(3BIN)
+.br
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

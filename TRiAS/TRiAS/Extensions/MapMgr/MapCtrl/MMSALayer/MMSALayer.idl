@@ -1,0 +1,41 @@
+// MMSALayer.idl : IDL-Quellcode für MMSALayer.dll
+//
+
+// Diese Datei wird mit dem MIDL-Tool bearbeitet,
+// um den Quellcode für die Typbibliothek (MMSALayer.tlb)und die Abruffunktionen zu erzeugen.
+
+import "oaidl.idl";
+import "ocidl.idl";
+	
+
+[
+	uuid(5F311061-B950-11D4-A9C5-00104BAF20DA),
+	version(1.0),
+	helpstring("MMSALayer 1.0 Typbibliothek")
+]
+library MMSALAYERLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	
+	[
+		object,
+		uuid(5F311072-B950-11D4-A9C5-00104BAF20DA),
+		dual,
+		helpstring("IMapSALayer Interface"),
+		pointer_default(unique)
+	]
+	interface IMapSALayer : IDispatch
+	{
+	};
+
+	[
+		uuid(5F311073-B950-11D4-A9C5-00104BAF20DA),
+		helpstring("MapSALayer Class")
+	]
+	coclass MapSALayer
+	{
+		[default] interface IMapSALayer;
+	};
+};

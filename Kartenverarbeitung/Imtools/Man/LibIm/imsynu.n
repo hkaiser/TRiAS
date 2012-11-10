@@ -1,0 +1,108 @@
+'\"t
+.if t .TH IMSYNU 3IM "August 24, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY" 
+.if n .TH IMSYNU 3IM "August 24, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+imsynu \- SDSC Synu (Synthetic Universe) file translation
+.SH SYNOPSIS
+.nf
+\fB
+#include <stdio.h>
+#include "sdsc.h"
+#include "im.h"
+.sp 1
+int ImFileRead( fd, "synu", flagsTable, dataTable )
+	int         fd;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileFRead( fp, "synu", flagsTable, dataTable )
+	FILE         *fp;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileWrite( fd, "synu", flagsTable, dataTable )
+	int         fd;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileFWrite( fp, "synu", flagsTable, dataTable )
+	FILE         *fp;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+\fR
+.fi
+.SH DESCRIPTION
+\fBsynu\fR is the image file format output by SDSC's \fBsynu\fR (Synthetic
+Universe) portable renderer.
+.SH "FILE RECOGNITION"
+\fBsynu\fR files are recognized only by the following filename suffix: .synu 
+.SH NOTES
+SDSC image library support of the SDSC \fBsynu\fR format does not require
+use of any other SDSC tools and contains no proprietary code.  SDSC
+\fBsynu\fR format handling is available on any machine for which the
+SDSC image library is available. 
+.LP
+\fBsynu\fR files contain "objects" of many types, such as grayscale
+images, RGB images, and various forms of geometry.  SDSC image library
+translation of \fBsynu\fR files is limited to the handling of
+grayscale and RGB objects.  All other \fBsynu\fR objects are ignored
+during reads and cannot be generated during writes. 
+.LP
+.SS "Reading Synu files"
+The SDSC image library reads one or more uncompressed, 8-bit,
+grayscale and 24-bit, RGB \fBsynu\fR images and maps them to
+\fBIMVFBINDEX8\fR and \fBIMVFBRGB\fR VFBs, respectively, both without color lookup tables.
+.SS "Writing Synu files"
+Image library \fBIMVFBINDEX8\fR VFBs without color lookup tables are
+written as 8-bit grayscale \fBsynu\fR files.  IMVFBRGB VFBs without
+color lookup tables are written as 24-bit RGB \fBsynu\fR files.  Both
+image types are uncompressed.   RGB images are noninterlaced.
+Scanline- and plane-interlaced modes are not supported by \fBsynu\fR
+image files. 
+.LP
+Other image library VFB types are converted to \fBIMVFBINDEX8\fR or
+\fBIMVFBRGB\fR VFBs without color lookup tables prior to being written
+out.  See the \fBImFileWrite\fR(3IM) \fBman\fP page for details.
+.SH ERRORS
+In addition to those listed for \fBImFileRead\fR(3IM),
+\fBsynu\fR file reading returns the following error codes: 
+.ne 4
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEMALLOC	Cannot allocate enough memory
+IMESYS	System call error in read operation
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+In addition to those listed for \fBImFileWrite\fR(3IM),
+\fBsynu\fR file writing returns the following error codes: 
+.ne 2
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEMALLOC	Cannot allocate enough memory
+IMESYS	System call error in write operation
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH DOCUMENTATION
+\fISynu Reference Manual\fR, San Diego Supercomputer Center
+.SH "SEE ALSO"
+\fBImIntro\fR(3IM),
+\fBImErrNo\fR(3IM),
+\fBimconv\fR(1IM),
+\fBimfile\fR(1IM),
+\fBimformats\fR(1IM)
+.SH AUTHORS
+Phil Mercurio and Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

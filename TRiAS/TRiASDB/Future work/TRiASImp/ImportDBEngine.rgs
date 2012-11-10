@@ -1,0 +1,22 @@
+HKCR
+{
+	TRiASImport.DBEngine.1 = s 'ImportDBEngine Class'
+	{
+		CLSID = s '{7BACA173-8C1B-11D1-A00E-0060975566B4}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {7BACA173-8C1B-11D1-A00E-0060975566B4} = s 'ImportDBEngine Class'
+		{
+			ProgID = s 'TRiASImport.DBEngine.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'both'
+			}
+			'Implemented Categories'
+			{
+				{079639C6-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+}

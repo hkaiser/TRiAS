@@ -1,0 +1,188 @@
+
+CHANGES since version 2.1 of the SDSC Image Tools and Image Library
+
+---------
+New Tools
+---------
+	imkey
+	  - Composite one image against another by keying on fields of the 
+	  foreground image.
+
+	imlighten 
+	  - Lighten or darken an image.
+
+	imstoryboard 
+	  - Create a storyboard.  i.e. Place several images next to each other.
+
+	imdissolve
+	  - Dissolve one image into another one.
+
+
+--------------------
+Changes to Old Tools
+--------------------
+
+Global Changes
+
+	- Changed the method of selecting the format for a file.
+	  Instead of -ras, -gif or -tiff, we now use -informat ras
+	  or -outformat ras as flags for indicating the format of
+	  incoming or outgoing files.
+	- Added support for file compression.  A specific compression
+	  scheme may be specified using an option such as -infilecompression
+	  or -outfilecompression, to indicate compression of the incoming
+	  or outgoing file, respectively.
+	- Added help for individual flags. For instance, 'imcomp -help -over' 
+	  will tell you what the -over option of imcomp does.
+	- Added capability to permute channels when reading or writing
+	  a file.  For instance, 'imconv -inmap red=blue -inmap blue=red 
+	  infile.ras outfile.ras' will switch the red and the blue in your 
+	  image immediately after reading it.
+	- Added '-outtransparency', '-outtransparencyrgb', and 
+	  '-outtransparenyindex'  for specifying a transparency field for an 
+	  image.  (GIF and XPM.)
+	- Added '-outquality' to specify the quality of compression. (JPEG)
+	- Added '-outgroup' to group pixels by scanlines or tiles. (TIFF)
+	- Added '-inpagewidth', '-inpageheight', '-indpi' to specify
+	  the width, height, and dpi of non-raster images.  (PostScript)
+	- Added values for '-outcompress'.  We now support ascii compression,
+	  (PBM) and discrete cosine transform compression (JPEG, TIFF).
+
+Tool-Specific Changes
+
+	imadjust - Added capability to adjust monochrome, write protect,
+	    	   Z-buffer, integer data, and float data fields.
+	  	 - Fixed bug with ramping of hue, saturation, and intensity
+	imcat 	 - Fixed bug with reading stdin
+	  	 - Fixed bug when -frames x-x is specified
+	  	 - The flag '-outfile' must now be used do distinguish
+	  	   the output file from the input files.
+	imcomp 	 - Added '-inalpha' option.  It's now possible to use the alpha
+		   channel from another file when compositing.  Using this 
+		   option with the '-inalphamap' option will allow you to 
+		   specify which channel of the file should be considered the 
+		   alpha channel.  (See '-inmap' above.)
+	imcopy 	 - Fixed bug with multiple-image files.
+	imfile 	 - Added ability to recognize compressed files.
+	imfill 	 - Fixed bug with ramping of hue, saturation and intensity 
+		   values.
+	imflip 	 - Made flipping optional.
+	immono 	 - Added Floyd-Steinberg dithering ('-dither' option).
+	imrotate - Fixed bug with putting an alpha channel in the background.
+		 - Fixed bug with hue, saturation, intensity ramping in the 
+		   background.
+	imscale  - Fixed bug with multiple image files.
+	imshear  - Fixed bug with hue, saturation, intensity ramping in the 
+		   background.
+
+
+-------------
+Image Formats
+-------------
+
+New Formats
+
+	si 	- SoftImage image file format
+	jpeg 	- JPEG image file format
+	miff	- ImageMagick's image file format
+	xpm	- X11 PixMap 
+
+Changes To Old Formats
+
+	cur	- Fixed bug with hot spots.
+	gif	- Added support for a transparency field.  
+		- Changed to write version 89 instead of 87.
+	ico	- Fixed reading of alpha channels
+	pbm	- Combined with pgm, pnm, ppm, rppm, rpbm, rpgm, rpnm.
+		  The -outcompression ascii option will create
+		  the latter four types.
+	pict	- Added support for 16 and 32 bit images.
+	pix	- Added support for Alias Matte files
+	ps	- Fixed bug with images being cut off.
+		- Added read support (using ghostscript)
+	rgb	- Added support for alpha channels.
+	tga 	- Fixed bad rle encoding algorithm.
+	tiff	- Rewrote to use Sam Leffler's TIFF library.
+		  We now support a much wider variety of TIFF variants.
+	xbm	- Fixed bug with hot spots.
+
+
+--------------------
+Compresssion Schemes
+--------------------
+
+Version 3.0 supports compression of image files.  The following
+compression schemes are supported (along with the executables that
+are used for compression/decompression).
+
+	Z  -	Lempel-Ziv Encoding (compress)
+	z  -	Huffman encoding (pack/unpack)
+	gz - 	Gnu Lempel-Ziv Encoding (gzip/gunzip)
+	uu - 	uuencoded files (uuencode/uudecode)
+
+
+----------------
+Internal Changes
+----------------
+
+imtools.h changes
+	- Removed ImToolsBuildFlagsTable which created a single flags table for
+	  all incoming or outgoing image files.  We now have a seperate flags
+	  table for each incoming or outgoing file.
+	- Added ImToolsMakeStandardFlagsTable and ImToolsAddReadWriteFlags 
+	  for just this purpose.
+	- Added ImToolsGetNameAndFormat to facilitate finding a file's name
+	  and format.
+
+im.h changes
+	Changes to old functions:
+	 - ImFileRead and ImFileFRead can now receive NULL as the format
+	   name.  In such cases, the format will be determined by the library.
+	 - ImVfbTrans, ImCltGamma, ImCltToGray have been removed.
+
+	New typedef's and structures:
+	 - ImCompressScheme - describes a compression scheme
+
+
+	New functions:
+	 - ImVfbFSDitherToMono dithers a vfb to mono via Floyd/Steinberg
+	 - ImVfbPrint prints the contents of a vfb
+	 - ImGetFileFormats gets the master list of formats
+	 - ImGetCompressSchemes gets the master list of compression schemes
+	 - ImFileQCompression identifies compression of file/stream
+	 - ImVfbCopyChannel copies one channel from one vfb to another
+	 - ImVfbSameRGB, ImVfbSameRGBA, ImVfbSameIndex8, ImVfbSameIndex16 
+	   compare values at two vfb pointers.
+	 - ImFileFindFormat looks up a format in the master table.
+	 - ImFileFindCompressScheme looks up a compression scheme in the
+	   master table.
+	 - ImVfbFade fades a vfb towards 0.
+	 - ImVfbMix mix colors in two vfb's based on weights.
+	 - ImVfb90Rotate efficiently rotates a vfb 90 degrees counterclockwise
+
+	New defines:
+	 - IMGROUPMASK, IMGROUPSCANLINES, IMGROUPTILES for grouping requests.
+	 - IMCOMPASCII, IMCOMPDCT for ascii, discrete cosine transform 
+	   compression
+	 - IMQUALITYYES, IMQUALITYNO indicate whether a format supports quality
+	   control.
+	 - IMVFBPRINTFLOAT, IMVFBPRINTINT tell ImVfbPrint how to print.
+	 - IMEBADCHANNEL - error indicating a bad channel map request
+	 - IMEBADCHANNELS - error indicating conflicting map requests
+	 - IMEVALOUTOFRANGE - error indicating a value out of range
+	 - IMEFORMATUNKNOWN - error indicating an unrecognizable file format
+	 - IMMULTI, IMNOMULTI - can a format support multiple images?
+	 - IMPIPE, IMNOPIPE - can a format support pipes?
+
+
+BUGS
+	 - Adding a transparency request, a hot spot request, a dpi request,
+	   a pagewidth request, or a pageheight request to the flags table,
+	   when using an image format that is not capable of handling that
+	   type of request will result in the request being ignored.  No errors
+	   will be given.
+
+
+
+
+

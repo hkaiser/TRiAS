@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASQL.TRiASQLParser.1 = s 'TRiASQLParser Class'
+	{
+		CLSID = s '{98E84F83-24E1-11D3-8579-00104B8CC00A}'
+	}
+	TRiASQL.TRiASQLParser = s 'TRiASQLParser Class'
+	{
+		CLSID = s '{98E84F83-24E1-11D3-8579-00104B8CC00A}'
+		CurVer = s 'TRiASQL.TRiASQLParser.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {98E84F83-24E1-11D3-8579-00104B8CC00A} = s 'TRiASQLParser Class'
+		{
+			ProgID = s 'TRiASQL.TRiASQLParser.1'
+			VersionIndependentProgID = s 'TRiASQL.TRiASQLParser'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{62ECE770-EC1D-4680-9A37-B5CD0BF0C1BC}'
+		}
+	}
+}

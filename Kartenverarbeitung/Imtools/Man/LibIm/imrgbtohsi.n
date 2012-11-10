@@ -1,0 +1,50 @@
+'\"t
+.if t .TH IMRGBTOHSI 3IM "August 7, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY" 
+.if n .TH IMRGBTOHSI 3IM "August 7, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImRgbToHsi - Convert an RGB triplet to an HSI triplet
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+void ImRgbToHsi( rgb, hsi )
+	int	rgb[3];
+	float	hsi[3];
+.fi
+\fR
+.SH DESCRIPTION
+\fBImRgbToHsi\fR converts an RGB triplet in \fIrgb\fR to an HSI triplet
+returned in \fIhsi\fR.
+.LP
+Maximum and minimum values for the different color values are:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c c c
+l l l l.
+\fBChannel	Minimum	Maximum	Type\fP
+_
+\fBred\fR	0	255	Integer
+\fBgreen\fR	0	255	Integer
+\fBblue\fR	0	255	Integer
+\fBhue\fR	0.0	360.0	Integer
+\fBsaturation\fR	0.0	1.0	Float
+\fBintensity\fR	0.0	1.0	Float
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+.SH SEE ALSO
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBImHsiToRgb\fR (3IM)
+.SH AUTHOR
+Mike Bailey 
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

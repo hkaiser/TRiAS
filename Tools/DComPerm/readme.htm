@@ -1,0 +1,275 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>COM+ SDK Sample: DCOM Permissions</title>
+<link rel="stylesheet" type="text/css" href="../../../docs/Styles.css">
+</head>
+
+<body>
+
+<h2>DCOM Permissions</h2>
+<hr>
+<p>The DCOMPERM sample provides source code and several wrapper functions to
+simplify the process of manipulating the access and launch permissions for a COM
+server. Additionally, this sample provides code which demonstrates how to set
+and retrieve the RunAs password for a COM server.</p>
+<hr>
+<h4>ChangeDefaultAccessACL</h4>
+<hr>
+<table BORDER="0" WIDTH="80%" ALIGN="CENTER" BGCOLOR="#EEF0FF">
+  <tr>
+    <td WIDTH="100%" ALIGN="LEFT" VALIGN="MIDDLE"><pre><font face="Verdana">&nbsp;<font SIZE="2"><i><! ---Begin your cited code after this comment--- ><b>DWORD</b></i>
+<b>ChangeDefaultAccessACL</b> (
+<b>LPTSTR</b> Principal,
+<b>BOOL</b> SetPrincipal,
+<b>BOOL</b> Permit
+);</pre>
+
+</font></font>
+    </td>
+  </tr>
+</table>
+
+<p>Description:&nbsp;&nbsp;&nbsp; Modify the default access access control list.
+The system uses the default access ACL to determine if a principal is allowed to
+access the COM server<br>
+if the COM server does not have its own access ACL in the AppID section of the
+registry.</p>
+<p>Parameters:&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<table border="1" width="100%">
+  <tr>
+    <td><b>Principal&nbsp;&nbsp;&nbsp;</b></td>
+    <td>&nbsp;Name of user or group (e.g. &quot;redmond\johndoe&quot;)</td>
+  </tr>
+  <tr>
+    <td><b>SetPrincipal&nbsp;&nbsp;&nbsp;</b></td>
+    <td> TRUE if you want to add/update the principal's
+entry in the ACL,
+FALSE if you want to remove the principal from
+the ACL</td>
+  </tr>
+  <tr>
+    <td><b>Permit&nbsp;&nbsp;&nbsp;</b></td>
+    <td> TRUE if you want to allow the principal to access
+the object,
+FALSE if you want to prevent the principal from
+accessing the object</td>
+  </tr>
+</table>
+<p>(Note that the Permit flag applies only when SetPrincipal is TRUE.)</p>
+<hr>
+<h4>ChangeAppIDAccessACL</h4>
+<hr>
+<table BORDER="0" WIDTH="80%" ALIGN="CENTER" BGCOLOR="#EEF0FF">
+  <tr>
+    <td WIDTH="100%" ALIGN="LEFT" VALIGN="MIDDLE"><pre><font SIZE="2"><b><i><! ---Begin your cited code after this comment--- >DWORD</i></b>
+<b>ChangeAppIDAccessACL</b> (
+<b>LPTSTR</b> AppID,
+<b>LPTSTR</b> Principal,
+<b>BOOL</b> SetPrincipal,
+<b>BOOL</b> Permit
+);</pre>
+</font>
+    </td>
+  </tr>
+</table>
+
+
+<p>Modify an AppID's access access control list. The system uses the AppID access ACL to determine if a principal is allowed to access the COM server
+associated with the AppID.</p>
+
+
+<p>Parameters:</p>
+<table border="1" width="100%">
+  <tr>
+    <td><b>
+AppID&nbsp;&nbsp;&nbsp;&nbsp;</b></td>
+    <td> The Application ID you wish to modify
+(e.g. &quot;{99999999-9999-9999-9999-00AA00BBF7C7}&quot;)</td>
+  </tr>
+  <tr>
+    <td><b>Principal&nbsp;&nbsp;&nbsp;</b></td>
+    <td>&nbsp;Name of user or group (e.g. &quot;redmond\johndoe&quot;)</td>
+  </tr>
+  <tr>
+    <td><b>SetPrincipal&nbsp;&nbsp;&nbsp;</b></td>
+    <td> TRUE if you want to add/update the principal's
+entry in the ACL,
+FALSE if you want to remove the principal from
+the ACL</td>
+  </tr>
+  <tr>
+    <td><b>Permit&nbsp;&nbsp;&nbsp;</b></td>
+    <td> TRUE if you want to allow the principal to access
+the object,
+FALSE if you want to prevent the principal from
+accessing the object</td>
+  </tr>
+</table>
+<p>(Note that the Permit flag applies only when SetPrincipal is TRUE.)</p>
+<hr>
+<h4>ChangeDefaultLaunchACL</h4>
+<hr>
+<table BORDER="0" WIDTH="80%" ALIGN="CENTER" BGCOLOR="#EEF0FF">
+  <tr>
+    <td WIDTH="100%" ALIGN="LEFT" VALIGN="MIDDLE"><pre><font SIZE="2"><b><i><! ---Begin your cited code after this comment--- ></i>DWORD
+ChangeDefaultLaunchACL (
+LPTSTR </b>Principal<b>,
+BOOL </b>SetPrincipal<b>,
+BOOL </b>Permit<b>
+);</b></pre>
+      </font>
+    </td>
+  </tr>
+</table>
+
+
+<p>Modify the default launch access control list. The system uses the default launch ACL to determine if a principal is allowed to launch a
+COM server if the COM server does not have its own launch ACL in the AppID section of the registry.</p>
+<p>Parameters:</p>
+<table border="1" width="100%">
+  <tr>
+    <td><b>Principal&nbsp;&nbsp;&nbsp;</b></td>
+    <td>&nbsp;Name of user or group (e.g. &quot;redmond\johndoe&quot;)</td>
+  </tr>
+  <tr>
+    <td><b>SetPrincipal&nbsp;&nbsp;&nbsp;</b></td>
+    <td> TRUE if you want to add/update the principal's
+entry in the ACL,
+FALSE if you want to remove the principal from
+the ACL</td>
+  </tr>
+  <tr>
+    <td><b>Permit&nbsp;&nbsp;&nbsp;</b></td>
+    <td> TRUE if you want to allow the principal to launch
+the object
+FALSE if you want to prevent the principal from
+launching the object</td>
+  </tr>
+</table>
+<p>(Note that the Permit flag applies only when SetPrincipal is TRUE.)</p>
+<hr>
+<h4>ChangeAppIDLaunchACL&nbsp;</h4>
+<hr>
+<table BORDER="0" WIDTH="80%" ALIGN="CENTER" BGCOLOR="#EEF0FF">
+  <tr>
+    <td WIDTH="100%" ALIGN="LEFT" VALIGN="MIDDLE"><pre><font SIZE="2"><b><i><! ---Begin your cited code after this comment--- ></i>DWORD
+ChangeAppIDLaunchACL (
+LPTSTR </b>AppID<b>,
+LPTSTR </b>Principal<b>,
+BOOL </b>SetPrincipal<b>,
+BOOL </b>Permit<b>
+);</b></pre>
+      </font>
+    </td>
+  </tr>
+</table>
+
+
+<p>Modify an AppID's launch access control list. The system uses the AppID launch ACL to determine if a principal (a user or group of users) is allowed
+to launch the COM server associated with the AppID.</p>
+<p>Parameters:</p>
+<table border="1" width="100%">
+  <tr>
+    <td><b>
+AppID&nbsp;&nbsp;&nbsp;&nbsp;</b></td>
+    <td> The Application ID you wish to modify
+(e.g. &quot;{99999999-9999-9999-9999-00AA00BBF7C7}&quot;)</td>
+  </tr>
+  <tr>
+    <td><b>Principal&nbsp;&nbsp;&nbsp;</b></td>
+    <td>&nbsp;Name of user or group (e.g. &quot;redmond\johndoe&quot;)</td>
+  </tr>
+  <tr>
+    <td><b>SetPrincipal&nbsp;&nbsp;&nbsp;</b></td>
+    <td> TRUE if you want to add/update the principal's
+entry in the ACL,
+FALSE if you want to remove the principal from
+the ACL</td>
+  </tr>
+  <tr>
+    <td><b>Permit&nbsp;&nbsp;&nbsp;</b></td>
+    <td> TRUE if you want to allow the principal to launch
+the object
+FALSE if you want to prevent the principal from
+launching the object</td>
+  </tr>
+</table>
+<p>(Note that the Permit flag applies only when SetPrincipal is TRUE.)</p>
+<hr>
+<h4>GetRunAsPassword</h4>
+<hr>
+<table BORDER="0" WIDTH="80%" ALIGN="CENTER" BGCOLOR="#EEF0FF">
+  <tr>
+    <td WIDTH="100%" ALIGN="LEFT" VALIGN="MIDDLE"><pre><font SIZE="2"><b><i><! ---Begin your cited code after this comment--- ></i>DWORD GetRunAsPassword (
+LPTSTR </b>AppID<b>,
+LPTSTR </b>Password<b>
+);</b></pre>
+      </font>
+    </td>
+  </tr>
+</table>
+
+
+<p>Retrieves the RunAs password for an AppID.</p>
+<p>Parameters:</p>
+<table border="1" width="100%">
+  <tr>
+    <td><b>
+AppID&nbsp;&nbsp;&nbsp;&nbsp;</b></td>
+    <td> The Application ID you wish to modify
+(e.g. &quot;{99999999-9999-9999-9999-00AA00BBF7C7}&quot;)</td>
+  </tr>
+  <tr>
+    <td><b>Password</b>&nbsp;</td>
+    <td> Password of the user you have specified in
+the RunAs named value under the AppID registry
+key.</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<hr>
+<h4>SetRunAsPassword&nbsp;</h4>
+<hr>
+<table BORDER="0" WIDTH="80%" ALIGN="CENTER" BGCOLOR="#EEF0FF">
+  <tr>
+    <td WIDTH="100%" ALIGN="LEFT" VALIGN="MIDDLE"><pre><font SIZE="2"><b><i><! ---Begin your cited code after this comment--- ></i>DWORD SetRunAsPassword (
+LPTSTR </b>AppID<b>,
+LPTSTR </b>Principal<b>,
+LPTSTR </b>Password<b>
+);</b></pre>
+      </font>
+    </td>
+  </tr>
+</table>
+
+
+<p>Sets the RunAs password for an AppID. Note that if you have specified the RunAs named value to &quot;Interactive User&quot; you do not need to set the
+RunAs password.</p>
+<p>Parameters:</p>
+<table border="1" width="100%">
+  <tr>
+    <td><b>
+AppID&nbsp;&nbsp;&nbsp;&nbsp;</b></td>
+    <td> The Application ID you wish to modify
+(e.g. &quot;{99999999-9999-9999-9999-00AA00BBF7C7}&quot;)</td>
+  </tr>
+  <tr>
+    <td><b>Principal&nbsp;&nbsp;&nbsp;</b></td>
+    <td> Name of the principal you have specified in the
+RunAs named value under the AppID registry key</td>
+  </tr>
+  <tr>
+    <td><b>Password</b>&nbsp;</td>
+    <td> Password of the user you have specified in
+the RunAs named value under the AppID registry
+key.</td>
+  </tr>
+</table>
+
+</body>
+
+</html>

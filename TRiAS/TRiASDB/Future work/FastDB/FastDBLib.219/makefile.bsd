@@ -1,0 +1,234 @@
+# -*- makefile -*-
+# Makefile for Generic Unix with GCC compiler
+
+# Place where to copy GastDB header files
+INCSPATH=/usr/local/include/fastdb
+
+#Place where to copy Fastdb library
+LIBSPATH=/usr/local/lib
+
+#Place where to copy Fastdb subsql utility
+BINSPATH=/usr/local/bin
+
+OBJS = class.o compiler.o database.o hashtab.o file.o symtab.o ttree.o \
+	cursor.o query.o wwwapi.o unisock.o sync.o
+
+CLI_OBJS = cli.o unisock.o 
+
+INCS = fastdb.h stdtp.h class.h database.h cursor.h reference.h wwwapi.h \
+	array.h file.h hashtab.h ttree.h sync.h query.h datetime.h 
+
+VERSION=2
+FASTDB_LIB = libfastdb.a 
+FASTDB_SHARED = libfastdb.so.${VERSION}
+CLI_LIB = libcli.a
+CLI_SHARED = libcli.so.${VERSION}
+EXES = subsql
+FASTDB_LIBS=-L. -lfastdb
+CLI_LIBS=-L. -lcli
+
+EXAMPLES = guess testdb testddl testperf testsync testiref testtrav testidx clitest
+
+WEB_EXAMPLES = cgistub bugdb clidb
+
+CC = g++
+#DEFS =-DTHROW_EXCEPTION_ON_ERROR -DPTHREADS -D_REENTRANT -DUSE_QUEUE_MANAGER
+DEFS = -DPTHREADS -D_REENTRANT -DUSE_QUEUE_MANAGER -DUSE_LOCALE_SETTINGS
+
+CFLAGS = -c -Wall -O5 -g $(DEFS) -fPIC
+#CFLAGS = -c -Wall -O0 -g $(DEFS)
+#CFLAGS = -c -Wall -O0 -DDEBUG=DEBUG_TRACE -g $(DEFS)
+SHFLAGS=-shared
+
+
+LD = $(CC)
+LDFLAGS = -g
+
+AR = ar
+ARFLAGS = -cru
+
+RANLIB = true
+
+STDLIBS = -lm -lc_r_p
+
+SOCKLIBS =
+#SOCKLIBS = -lnsl -lsocket 
+
+all: $(FASTDB_SHARED) $(CLI_SHARED) $(FASTDB_LIB) $(CLI_LIB) $(EXES) $(EXAMPLES) 
+
+www: $(FASTDB_SHARED) $(WEB_EXAMPLES)
+
+
+class.o: class.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) class.cpp
+
+compiler.o: compiler.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) compiler.cpp
+
+query.o: query.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) query.cpp
+
+database.o: database.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) database.cpp
+
+cursor.o: cursor.cpp compiler.h compiler.d $(INCS)
+	$(CC) $(CFLAGS) cursor.cpp
+
+hashtab.o: hashtab.cpp $(INCS)
+	$(CC) $(CFLAGS) hashtab.cpp
+
+file.o: file.cpp $(INCS)
+	$(CC) $(CFLAGS) file.cpp
+
+sync.o: sync.cpp $(INCS)
+	$(CC) $(CFLAGS) sync.cpp
+
+symtab.o: symtab.cpp symtab.h $(INCS)
+	$(CC) $(CFLAGS) symtab.cpp
+
+ttree.o: ttree.cpp $(INCS)
+	$(CC) $(CFLAGS) ttree.cpp
+
+wwwapi.o: wwwapi.cpp wwwapi.h sockio.h stdtp.h
+	$(CC) $(CFLAGS) wwwapi.cpp
+
+unisock.o: unisock.cpp unisock.h sockio.h stdtp.h
+	$(CC) $(CFLAGS) unisock.cpp
+
+cli.o: cli.cpp cli.h cliproto.h
+	$(CC) $(CFLAGS) cli.cpp
+
+libfastdb.a: $(OBJS)
+	rm -f libfastdb.a
+	$(AR) $(ARFLAGS) libfastdb.a $(OBJS)
+	$(RANLIB) libfastdb.a
+
+libfastdb.so.$(VERSION): $(OBJS)
+	rm -f libfastdb.so.$(VERSION)
+	$(CC) $(SHFLAGS) -o libfastdb.so.$(VERSION) $(OBJS)
+	ln -s libfastdb.so.$(VERSION) libfastdb.so
+
+libcli.a: $(CLI_OBJS)
+	rm -f libcli.a
+	$(AR) $(ARFLAGS) libcli.a $(CLI_OBJS)
+	$(RANLIB) libcli.a
+
+libcli.so.$(VERSION): $(CLI_OBJS)
+	rm -f libcli.so.$(VERSION)
+	$(CC) $(SHFLAGS) -o libcli.so.$(VERSION) $(CLI_OBJS)
+	ln -s libcli.so.$(VERSION) libcli.so
+
+
+clitest.o: clitest.c cli.h
+	$(CC) $(CFLAGS) clitest.c
+
+clitest: clitest.o $(CLI_LIB)
+	$(LD) $(LDFLAGS) -o clitest clitest.o $(CLI_LIBS) $(STDLIBS) $(SOCKLIBS)
+
+subsql.o: subsql.cpp subsql.h compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) subsql.cpp
+
+server.o: server.cpp server.h cli.h cliproto.h subsql.h compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) server.cpp
+
+subsql: subsql.o server.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o subsql subsql.o server.o $(FASTDB_LIBS) $(STDLIBS) $(SOCKLIBS)
+
+bugdb.o: bugdb.cpp bugdb.h $(INCS)
+	$(CC) $(CFLAGS) bugdb.cpp
+
+bugdb: bugdb.o  $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o bugdb bugdb.o $(FASTDB_LIBS) $(STDLIBS) $(SOCKLIBS)
+
+clidb.o: clidb.cpp clidb.h $(INCS)
+	$(CC) $(CFLAGS) clidb.cpp
+
+clidb: clidb.o  $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o clidb clidb.o $(FASTDB_LIBS) $(STDLIBS) $(SOCKLIBS)
+
+cgistub.o: cgistub.cpp stdtp.h sockio.h
+	$(CC) $(CFLAGS) cgistub.cpp 
+
+cgistub: cgistub.o
+	$(LD) $(LDFLAGS) -o cgistub cgistub.o $(FASTDB_LIBS) $(STDLIBS) $(SOCKLIBS)
+
+guess.o: guess.cpp $(INCS)
+	$(CC) $(CFLAGS) guess.cpp 
+
+guess: guess.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o guess guess.o $(FASTDB_LIBS) $(STDLIBS)
+
+testdb.o: testdb.cpp $(INCS)
+	$(CC) $(CFLAGS) testdb.cpp 
+
+testdb: testdb.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o testdb testdb.o $(FASTDB_LIBS) $(STDLIBS)
+
+testddl.o: testddl.cpp $(INCS)
+	$(CC) $(CFLAGS) testddl.cpp 
+
+testddl: testddl.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o testddl testddl.o $(FASTDB_LIBS) $(STDLIBS)
+
+testperf.o: testperf.cpp $(INCS)
+	$(CC) $(CFLAGS) testperf.cpp 
+
+testperf: testperf.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o testperf testperf.o $(FASTDB_LIBS) $(STDLIBS)
+
+testidx.o: testidx.cpp $(INCS)
+	$(CC) $(CFLAGS) testidx.cpp 
+
+testidx: testidx.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o testidx testidx.o $(FASTDB_LIBS) $(STDLIBS)
+
+testsync.o: testsync.cpp $(INCS)
+	$(CC) $(CFLAGS) testsync.cpp 
+
+testsync: testsync.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o testsync testsync.o $(FASTDB_LIBS) $(STDLIBS)
+
+testiref.o: testiref.cpp $(INCS)
+	$(CC) $(CFLAGS) testiref.cpp 
+
+testiref: testiref.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o testiref testiref.o $(FASTDB_LIBS) $(STDLIBS)
+
+testtrav.o: testtrav.cpp $(INCS)
+	$(CC) $(CFLAGS) testtrav.cpp 
+
+testtrav: testtrav.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o testtrav testtrav.o $(FASTDB_LIBS) $(STDLIBS)
+
+
+
+install: subsql $(FASTDB_LIB)
+	mkdir -p $(INCSPATH)
+	cp $(INCS) $(INCSPATH)
+	mkdir -p $(LIBSPATH)
+	cp $(FASTDB_LIB) $(CLI_LIB) $(FASTDB_SHARED) $(CLI_SHARED) $(LIBSPATH)
+	cp -P libcli.so $(LIBSPATH)
+	ln -fs $(LIBSPATH)/$(FASTDB_SHARED) $(LIBSPATH)/libfastdb.so
+	ln -fs $(LIBSPATH)/$(CLI_SHARED) $(LIBSPATH)/libcli.so
+	mkdir -p $(BINSPATH)
+	strip subsql
+	cp subsql  $(BINSPATH)
+
+
+
+cleanobj:
+	rm -fr *.o *.tgz core *~ cxx_repository
+
+cleandbs:
+	rm -f *.fdb
+
+
+clean: cleanobj cleandbs
+	rm -f *.a $(EXAMPLES) $(WEB_EXAMPLES) $(EXES) \
+	*.so $(FASTDB_SHARED) $(CLI_SHARED)
+
+tgz:	clean
+	cd ..; tar cvzf fastdb.tgz fastdb
+
+copytgz: tgz
+	mcopy -o ../fastdb.tgz a:

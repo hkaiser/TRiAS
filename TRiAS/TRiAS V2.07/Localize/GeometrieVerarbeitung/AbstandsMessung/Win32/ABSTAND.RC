@@ -1,0 +1,243 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "abstanda.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "dlgs.h"
+#include "resstrg.h"
+#include "abstand.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABSTAND DIALOG DISCARDABLE  0, 0, 218, 97
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Abstandsmessung"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "&Datei ...",IDB_DATEI,177,82,40,14
+    LTEXT           "Abstand:",-1,3,53,31,8
+    PUSHBUTTON      "&Speichern",IDB_SPEICHERN,177,2,40,14
+    EDITTEXT        IDE_ERGEBNIS,2,3,172,45,ES_MULTILINE | ES_AUTOHSCROLL | 
+                    WS_VSCROLL
+    CONTROL         "",-1,"Static",SS_BLACKFRAME,48,50,45,14
+    RTEXT           "",IDT_ABSTAND,50,53,40,8
+    PUSHBUTTON      "S&tatistik",IDB_STATISTIK,177,50,40,14
+    PUSHBUTTON      "&Löschen",IDB_LOESCHEN,177,34,40,14
+    PUSHBUTTON      "&Minus",IDB_VORZEICHEN,177,18,40,14
+    LTEXT           "S&chrittweite:",-1,3,70,42,8
+    EDITTEXT        IDE_SCHRITT,48,68,45,12,ES_AUTOHSCROLL
+    LTEXT           "&Winkel:",-1,101,70,27,8
+    EDITTEXT        IDE_WINKEL,130,68,32,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Automatik",IDB_AUTOMAT,177,66,40,14
+    EDITTEXT        IDE_ZUWACHS,130,84,32,12,ES_AUTOHSCROLL
+    LTEXT           "&Zuwachs für Zeilennumerierung:",-1,3,86,112,8
+END
+
+IDD_DATEI DIALOG PRELOAD DISCARDABLE  7, 19, 319, 132
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Datei auswählen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Datei&name:",1090,6,6,115,9
+    EDITTEXT        1152,6,16,115,12,ES_AUTOHSCROLL | ES_OEMCONVERT
+    LISTBOX         1120,6,32,115,69,LBS_SORT | LBS_OWNERDRAWFIXED | 
+                    LBS_HASSTRINGS | LBS_DISABLENOSCROLL | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "&Verzeichnisse:",-1,135,6,115,9
+    LTEXT           "",1088,135,18,115,10,SS_NOPREFIX
+    LISTBOX         1121,135,32,115,68,LBS_SORT | LBS_OWNERDRAWFIXED | 
+                    LBS_HASSTRINGS | LBS_DISABLENOSCROLL | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Datei&format:",1089,6,106,44,9
+    COMBOBOX        1136,6,116,115,36,CBS_DROPDOWNLIST | CBS_AUTOHSCROLL | 
+                    WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Laufwerke:",1091,135,106,38,9
+    COMBOBOX        1137,135,116,115,68,CBS_DROPDOWNLIST | 
+                    CBS_OWNERDRAWFIXED | CBS_AUTOHSCROLL | CBS_SORT | 
+                    CBS_HASSTRINGS | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "&OK",IDOK,268,5,44,14,WS_GROUP
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,268,24,44,14,WS_GROUP
+    CONTROL         "Ü&berschreiben",IDR_UEBERSCHREIBEN,"Button",
+                    BS_AUTORADIOBUTTON,257,72,58,10
+    CONTROL         "An&hängen",IDR_ANHAENGEN,"Button",BS_AUTORADIOBUTTON,
+                    257,83,46,10
+    GROUPBOX        " Speicherform: ",-1,254,62,64,35
+END
+
+IDD_KILOMETR DIALOG DISCARDABLE  62, 135, 174, 178
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Kilometrierung"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " Vorgaben ",-1,6,6,110,103
+    LTEXT           "Anfangspunkt:",-1,12,17,43,8
+    LTEXT           "&X:",-1,12,29,8,8
+    EDITTEXT        IDE_XKOORDA,20,27,40,13,ES_AUTOHSCROLL
+    LTEXT           "&Y:",-1,64,29,8,8
+    EDITTEXT        IDE_YKOORDA,72,27,40,13,ES_AUTOHSCROLL
+    LTEXT           "Endpunkt:",-1,12,45,35,8
+    LTEXT           "&X:",-1,12,58,8,8
+    EDITTEXT        IDE_XKOORDE,20,55,40,13,ES_AUTOHSCROLL
+    LTEXT           "&Y:",-1,64,58,8,8
+    EDITTEXT        IDE_YKOORDE,72,55,40,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "A&nfangs/Endpunkt tauschen",IDB_TAUSCH,20,73,92,12
+    LTEXT           "&Distanz  (in Meter):",-1,12,95,59,8
+    EDITTEXT        IDE_DISTANZ,72,93,40,13,ES_AUTOHSCROLL
+    GROUPBOX        " Ergebnisse ",-1,6,115,162,57
+    CONTROL         "    &Teilabschnitte erzeugen",IDC_TEILABSCHNITTE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,127,121,10
+    LTEXT           "Objekt&klasse für Kilometrierungspunkte:",-1,12,142,149,
+                    8
+    COMBOBOX        IDL_OBJKLASSE,12,153,150,49,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "&OK",IDOK,120,10,50,14
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,120,41,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+ENTF                    BITMAP  MOVEABLE PURE   "entf.bmp"
+IDB_TOOLBARABSTAND      BITMAP  DISCARDABLE     "Abstand.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDB_TOOLBARABSTAND TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      1
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "abstanda.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""dlgs.h""\r\n"
+    "#include ""resstrg.h""\r\n"
+    "#include ""abstand.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""abstand.rcv""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MESSEN              "&Abstandsmessung"
+    IDS_BOXANZEIGEN         "A&bstandsmessung"
+    IDS_FILESPEC            "Abstände (*.abs)|*.abs"
+    IDS_SELECTCAPTION       "Datei auswählen"
+    IDS_BOXCAPTION1         "Ungesicherte Meßergebnisse"
+    IDS_BOXTEXT1            "Wollen Sie die restlichen Daten noch abspeichern?"
+    IDS_BOXTEXT2            "%s\nbesteht bereits.\n\nMöchten Sie, daß diese Datei überschrieben wird?"
+    IDS_BOXCAPTION2         "Achtung:"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_BOXTEXT3            "Der Textpuffer ist voll. Ein Teil des Textes wird abgespeichert."
+    IDS_LONGCLASSNAME       "Abstandsmessung"
+    IDS_NOTOPOREL           "Das Zusatzmodul ""toporel.ext"" wurde nicht gefunden. Deshalb kann nicht überprüft werden, ob sich die beiden Objekte, deren Abstand ermittelt werden soll, berühren. Für diesen Fall würde als Abstand 0 m ausgegeben werden."
+    IDS_KILOMETRIERUNG      "&Kilometrierung ..."
+    IDS_NOKANTE             "Die Kilometrierung wird zur Zeit nur an Linienobjekten vorgenommen."
+    IDS_GEOFEHLER           "Das erzeugte Teilobjekt enthält einen Geometriefehler\r\nund wird deshalb nicht abgespeichert."
+    IDS_GEOREIN             "TRiAS.Bereinigung.1"
+    IDS_KPUNKTLOESCHEN      "Kilometrierungs&punkte löschen"
+    IDS_TEILLOESCHEN        "&Teilabschnitte löschen"
+    IDS_DEBUGSECTION        "TriasFramework"
+    IDS_DEBUGENTRY          "debugmessageoutput"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXEXTENSIONPROC    "DEXEXTENSIONPROC"
+    IDS_DEXXEXTENSIONPROC   "DEXXEXTENSIONPROC"
+    IDS_DEXNOTIFICATIONPROC "DEXNOTIFICATIONPROCEX"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UIFORMAT            "ABSTAND_EXT_%ld"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_TOOLBARWERKZEUG     "Werkzeuge"
+    ID_TOOL_ABSTAND         "Wählt das Hilfsmittel zum Messen von Entfernungen und zur Kilometrierung aus.\nAbstandsmessung"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "abstand.rcv"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

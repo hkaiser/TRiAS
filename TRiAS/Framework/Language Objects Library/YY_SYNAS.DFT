@@ -1,0 +1,54 @@
+/* yy_synas.dft:  default syntax assists for Yacc++.  DO NOT DELETE!! */
+  0 Optional OUTPUT declarations followed by a series of one or more:\n\tCLASS declaration\n\tLEXER\n\t\tlexer statements\n\tPARSER\n\t\tparser statements
+  1 OUTPUT LEXER HEADER "filename" ;
+  2 OUTPUT LEXER SOURCE "filename" ;
+  3 OUTPUT PARSER HEADER "filename" ;
+  4 OUTPUT PARSER SOURCE "filename" ;
+  5 PREFIX identifier or string ;
+  6 VIRTUAL? CLASS  identifier  (FROM  identifier)? ;
+  7 #INCLUDE  list of one or more quoted filenames ;
+  8 :: one or more class fields ;
+  9 BASE  { C++ class names to derive abstract base class from }
+ 10 MEMBER  { C++ class member declarations for abstract base class }
+ 11 BASE  { C++ class names to derive class from }
+ 12 NAME  { C++ class name }
+ 13 MEMBER  { additional C++ class member declarations for class }
+ 14 CONSTRUCTOR INITIALIZER { C++ code for constructor initializer list }
+ 15 CONSTRUCTOR BODY { C++ code for constructor body }
+ 16 DESTRUCTOR { C++ code for destructor }
+ 17 DUMP { C++ code for dump member function }
+ 18 BASE CONSTRUCT identifier :: one or more base_class_fields ;
+ 19 CONSTRUCT identifier+ :: (DEFAULT | KEYWORD | STRING | SYMBOL) class_field* ;
+ 20 GLOBAL?  { C++ declarations within matching braces } ;?
+ 21 LOCAL  { 0 or more C declarations within matching braces } ;?
+ 22 CHARSET (ASCII7 | ASCII8 | DBCS) ;
+ 23 TOKEN  list of one or more token name identifiers optionally numbered ;
+ 24 DISCARD TOKEN  list of one or more token name identifiers ;
+ 25 (INSENSITIVE | SENSITIVE)  KEYWORD ;
+ 26 SUBSTR? KEYWORD list of one or more keyword spelling identifiers optionally numbered ;
+ 27 DISCARD SUBSTR? KEYWORD list of one or more keyword spelling identifiers ;
+ 28 FROM identifier (: list of one or more token and lexer non-terminals names)? ;
+ 29 identifier  : lex_compound  ;  { semantic_actions } ?
+ 30 lex_stream (| lex_stream)*
+ 31 series of one or more lex_op_items
+ 32 { semantic_actions } or lex_item optionally followed by a * or + or ?
+ 33 ( lex_compound )  or  STRING  or  STRING .. STRING  or  identifier  or  @
+ 34 CONSTRUCT (identifier *?)+ :: (ALL | DEFAULT | INFIX | LEAF | PREFIX | SUFFIX) class_field* ;
+ 35 UNION  { C++ declarations within matching braces } ;?
+ 36 START identifier ;  where identifier is a parser non-terminal
+ 37 PUBLIC list of one or more parser non-terminals ;
+ 38 IGNORE list of one or more tokens or parser non-terminals ;
+ 39 REMOVE list of one or more tokens or parser non-terminals ;
+ 40 LEFT list of one or more identifiers ;
+ 41 NONASSOC list of one or more identifiers ;
+ 42 RIGHT list of one or more identifiers ;
+ 43 FROM identifier (: list of one or more parser non-terminals names)? ;
+ 44 identifier  :  psr_alternative?  ;  { semantic_actions } ?
+ 45 top_psr_stream  (|  top_psr_stream)*
+ 46 <syntax assist NUMBER>?  psr_stream  (%PREC identifier)?\n\t(:: (ALL | DEFAULT | INFIX | LEAF | PREFIX | SUFFIX) class_field*)? ;
+ 47 psr_stream (| psr_stream)*
+ 48 series of one or more psr_op_items
+ 49 { semantic_actions } or psr_item optionally followed by a * or + or ?
+ 50 (psr_compound)  or  identifier  or  STRING
+ 51 identifier name or keyword used as an identifier
+

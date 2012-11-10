@@ -1,0 +1,363 @@
+// Visinfo.odl : type library source for VisObj.ext
+//
+
+/////////////////////////////////////////////////////////////////////////
+// NOTE -- Make sure and edit the VisInfo.idl file as well when you make 
+// changes to this file
+/////////////////////////////////////////////////////////////////////////
+
+[
+	uuid(0796385C-3123-101C-BB62-00AA0018497C),
+	version(1.0),
+	helpstring("TRiAS VisInfo Type Library")
+]
+library VisInfoLib
+{
+	importlib("stdole32.tlb");
+
+// Typdefinitionen
+	typedef long TRIASCOLOR;
+
+///////////////////////////////////////////////////////////////////////////////
+// Basisklasse für alle Visualisierungsinformationen
+[
+	uuid(07963865-3123-101C-BB62-00AA0018497C),
+	odl, oleautomation,
+	helpstring("Basisinterface für alle Visualisierungsinformationen"),
+]
+interface IVisInfo : IUnknown
+{
+	// _TRiASBaseClass properties
+	[propget] HRESULT isA ([out, retval]LONG *plRTTI);		// ObjektTyp (RTTI)
+	[propget] HRESULT Parent ([out, retval]IDispatch **ppIBase);	// übergeordnetes Objekt
+	[propput] HRESULT Parent ([in]IDispatch *pIBase);
+	[propget] HRESULT Application ([out, retval]IDispatch **ppIApp);	// Anwendung
+	[propput] HRESULT Application ([in]IDispatch *pIApp);	// Anwendung
+
+	// base properties
+	[propget] HRESULT Style ([out, retval] int *piStyle);
+	[propput] HRESULT Style ([in]int iStyle);
+	[propget] HRESULT Priority ([out, retval] int *piPrio);
+	[propput] HRESULT Priority ([in]int iPrio);
+	[propget] HRESULT Name ([out, retval] BSTR *pbstrDesc);
+	[propput] HRESULT Name ([in]BSTR bstrDesc);
+	[propget] HRESULT MainColor ([out, retval]TRIASCOLOR *pocMain);
+	[propput] HRESULT MainColor ([in]TRIASCOLOR ocMain);
+};
+
+// Initialisierungs-Interface für alle VisualisierungsObjekte
+[
+	uuid(07963866-3123-101C-BB62-00AA0018497C),
+	odl, oleautomation,
+	helpstring("Initialisierungs-Interface für alle Visualisierungsinformationen"),
+]
+interface IUpdateVisInfo : IUnknown
+{
+// methods
+	[helpstring("Laden der Visinfo von einem Objekt")]
+	HRESULT FromObject ([in]long lONr, [in, optional]VARIANT bstrView);
+	[helpstring("Setzen der Visinfo an einem Objekt")]
+	HRESULT UpdateObject ([in]long lONr, [in, optional]VARIANT bstrView);
+	[helpstring("Laden der Visinfo von einer Objektklasse")]
+	HRESULT FromClass ([in]long lIdent, [in, optional]VARIANT bstrView);
+	[helpstring("Setzen der Visinfo an einer Objektklasse")]
+	HRESULT UpdateClass ([in]long lIdent, [in, optional]VARIANT bstrView);
+};
+
+// VisualisierungsInfo für ein Punktobjekt
+[
+	uuid(0796385E-3123-101C-BB62-00AA0018497C),
+	odl, oleautomation,
+	helpstring("VisualisierungsInfo für ein Punktobjekt"),
+]
+interface IPointVisInfo : IVisInfo
+{
+	[propget] HRESULT SizeX ([out, retval] int *piX);
+	[propput] HRESULT SizeX ([in]int iX);
+	[propget] HRESULT SizeY ([out, retval] int *piY);
+	[propput] HRESULT SizeY ([in]int iY);
+	[propget] HRESULT Rotate ([out, retval] int *piRot);
+	[propput] HRESULT Rotate ([in]int iRot);
+	[propget] HRESULT BkColor ([out, retval]TRIASCOLOR *pocBack);
+	[propput] HRESULT BkColor ([in]TRIASCOLOR ocBack);
+};
+
+// VisualisierungsInfo für ein Linienobjekt
+[
+	uuid(07963860-3123-101C-BB62-00AA0018497C),
+	odl, oleautomation,
+	helpstring("VisualisierungsInfo für ein Linienobjekt"),
+]
+interface ILineVisInfo : IVisInfo
+{
+	[propget] HRESULT Width ([out, retval]int *piWidth);
+	[propput] HRESULT Width ([in]int iWidth);
+};
+
+// VisualisierungsInfo für ein Flächenobjekt
+[
+	uuid(07963862-3123-101C-BB62-00AA0018497C),
+	odl, oleautomation,
+	helpstring("VisualisierungsInfo für ein Flächenobjekt"),
+]
+interface IAreaVisInfo : IVisInfo
+{
+	[propget] HRESULT Width ([out, retval]int *piWidth);
+	[propput] HRESULT Width ([in]int iWidth);
+	[propget] HRESULT Opaque ([out, retval]int *pfOpaque);
+	[propput] HRESULT Opaque ([in]int fOpaque);
+	[propget] HRESULT BkContour ([out, retval]int *pfBkContour);
+	[propput] HRESULT BkContour ([in]int fBkContour);
+	[propget] HRESULT BkColor ([out, retval]TRIASCOLOR *pocBack);
+	[propput] HRESULT BkColor ([in]TRIASCOLOR ocBack);
+};
+
+// typedefs for AlignStyle
+	typedef enum tagALIGNSTYLE {
+		ALIGNSTYLE_Left = 0,
+		ALIGNSTYLE_Centre = 1,
+		ALIGNSTYLE_Right = 2,
+		ALIGNSTYLE_Full = 3,
+	} ALIGNSTYLE;
+
+// typedef für FrameStyle
+	typedef enum tagFRAMESTYLE {
+		FRAMESTYLE_NoFrame = 0x0000,
+		FRAMESTYLE_SimpleFrame = 0x0001,
+		FRAMESTYLE_Rounded = 0x0002,
+		FRAMESTYLE_TargetColor = 0x0004,
+	} FRAMESTYLE;
+
+// VisualisierungsInfo für ein Textobjekt
+[
+	uuid(07963864-3123-101C-BB62-00AA0018497C),
+	odl, oleautomation,
+	helpstring("VisualisierungsInfo für ein Textobjekt"),
+]
+interface ITextVisInfo : IVisInfo
+{
+	[propget] HRESULT SizeX ([out, retval] int *piX);
+	[propput] HRESULT SizeX ([in]int iX);
+	[propget] HRESULT SizeY ([out, retval] int *piY);
+	[propput] HRESULT SizeY ([in]int iY);
+	[propget] HRESULT Bold ([out, retval]int *pfBold);
+	[propput] HRESULT Bold ([in]int fBold);
+	[propget] HRESULT Italic ([out, retval]int *pfItalic);
+	[propput] HRESULT Italic ([in]int fItalic);
+	[propget] HRESULT Underline ([out, retval]int *pfUnderline);
+	[propput] HRESULT Underline ([in]int fUnderline);
+	[propget] HRESULT StrikeThrough ([out, retval]int *pfStrikeThrough);
+	[propput] HRESULT StrikeThrough ([in]int fStrikeThrough);
+	[propget] HRESULT FrameStyle ([out, retval]FRAMESTYLE *prgFrameStyle);
+	[propput] HRESULT FrameStyle ([in]FRAMESTYLE rgFrameStyle);
+	[propget] HRESULT AlignStyle ([out, retval]ALIGNSTYLE *prgAlign);
+	[propput] HRESULT AlignStyle ([in]ALIGNSTYLE rgAlign);
+	[propget] HRESULT Rotate ([out, retval] int *piRot);
+	[propput] HRESULT Rotate ([in]int iRot);
+	[propget] HRESULT Slant ([out, retval] int *piSlant);
+	[propput] HRESULT Slant ([in]int iSlant);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Dispatch-Interfaces
+[
+	uuid(0796386B-3123-101C-BB62-00AA0018497C), 
+	odl, oleautomation, dual,
+	helpstring("DispInterface von VisualisierungsInfo für ein Punktobjekt")
+]  
+interface DVisInfo : IDispatch 
+{
+// _TRiASBaseClass properties
+	[id(7), propget] 
+	HRESULT isA ([out, retval]LONG *plRTTI);		// ObjektTyp (RTTI)
+	[id(1), propget, hidden] 
+	HRESULT Parent ([out, retval]IDispatch **ppIBase);	// übergeordnetes Objekt
+	[id(1), propput, hidden] 
+	HRESULT Parent ([in]IDispatch *pIBase);
+	[id(2), propget, hidden] 
+	HRESULT Application ([out, retval]IDispatch **ppIApp);	// Anwendung
+	[id(2), propput, hidden] 
+	HRESULT Application ([in]IDispatch *pIApp);	// Anwendung
+
+// IVisInfo base properties
+	[id(10), propget, helpstring("Darstellungsstil")]
+	HRESULT Style ([out, retval] int *piStyle);
+	[id(10), propput, helpstring("Darstellungsstil")]
+	HRESULT Style ([in]int iStyle);
+
+	[id(11), propget, helpstring("Darstellungsreihenfolge")]
+	HRESULT Priority ([out, retval] int *piPrio);
+	[id(11), propput, helpstring("Darstellungsreihenfolge")]
+	HRESULT Priority ([in]int iPrio);
+
+	[id(12), propget, helpstring("Zusätzliche Beschreibungsinformation")]
+	HRESULT Name ([out, retval] BSTR *pbstrDesc);
+	[id(12), propput, helpstring("Zusätzliche Beschreibungsinformation")]
+	HRESULT Name ([in]BSTR bstrDesc);
+
+	[id(13), propget, helpstring("Vordergrundfarbe")]
+	HRESULT MainColor ([out, retval]TRIASCOLOR *pocMain);
+	[id(13), propput, helpstring("Vordergrundfarbe")]
+	HRESULT MainColor ([in]TRIASCOLOR ocMain);
+};
+
+[
+	uuid(07963867-3123-101C-BB62-00AA0018497C), 
+	odl, oleautomation, dual,
+	helpstring("DispInterface von VisualisierungsInfo für ein Punktobjekt")
+]  
+interface DPointVisInfo : DVisInfo 
+{
+	[id(20), propget, helpstring("Größe (horizontal) des Punktsymboles")]
+	HRESULT SizeX ([out, retval] int *piX);
+	[id(20), propput, helpstring("Größe (horizontal) des Punktsymboles")]
+	HRESULT SizeX ([in]int iX);
+
+	[id(21), propget, helpstring("Größe (vertikal) des Punktsymboles")]
+	HRESULT SizeY ([out, retval] int *piY);
+	[id(21), propput, helpstring("Größe (vertikal) des Punktsymboles")]
+	HRESULT SizeY ([in]int iY);
+
+	[id(22), propget, helpstring("Drehwinkel des Punktsymboles")]
+	HRESULT Rotate ([out, retval] int *piRot);
+	[id(22), propput, helpstring("Drehwinkel des Punktsymboles")]
+	HRESULT Rotate ([in]int iRot);
+
+	[id(23), propget, helpstring("Hintergrundfarbe")]
+	HRESULT BkColor ([out, retval]TRIASCOLOR *pocBack);
+	[id(23), propput, helpstring("Hintergrundfarbe")]
+	HRESULT BkColor ([in]TRIASCOLOR ocBack);
+};
+
+[
+	uuid(07963868-3123-101C-BB62-00AA0018497C), 
+	odl, oleautomation, dual,
+	helpstring("DispInterface von VisualisierungsInfo für ein Linienobjekt")
+]  
+interface DLineVisInfo : DVisInfo 
+{
+	[id(30), propget, helpstring("Breite der Liniensignatur")]
+	HRESULT Width ([out, retval]int *piWidth);
+	[id(30), propput, helpstring("Breite der Liniensignatur")]
+	HRESULT Width ([in]int iWidth);
+};
+
+[
+	uuid(07963869-3123-101C-BB62-00AA0018497C), 
+	odl, oleautomation, dual,
+	helpstring("DispInterface von VisualisierungsInfo für ein Flächenobjekt")
+]  
+interface DAreaVisInfo : DVisInfo 
+{
+	[id(40), propget, helpstring("Breite der Kontursignatur")]
+	HRESULT Width ([out, retval]int *piWidth);
+	[id(40), propput, helpstring("Breite der Kontursignatur")]
+	HRESULT Width ([in]int iWidth);
+
+	[id(41), propget, helpstring("Hintergrundmode des Füllmusters")]
+	HRESULT Opaque ([out, retval]int *pfOpaque);
+	[id(41), propput, helpstring("Hintergrundmode des Füllmusters")]
+	HRESULT Opaque ([in]int fOpaque);
+
+	[id(42), propget, helpstring("Konturlinie mit Hintergrundfarbe")]
+	HRESULT BkContour ([out, retval]int *pfBkContour);
+	[id(42), propput, helpstring("Konturlinie mit Hintergrundfarbe")]
+	HRESULT BkContour ([in]int fBkContour);
+
+	[id(43), propget, helpstring("Hintergrundfarbe")]
+	HRESULT BkColor ([out, retval]TRIASCOLOR *pocBack);
+	[id(43), propput, helpstring("Hintergrundfarbe")]
+	HRESULT BkColor ([in]TRIASCOLOR ocBack);
+};
+
+[
+	uuid(0796386A-3123-101C-BB62-00AA0018497C), 
+	odl, oleautomation, dual,
+	helpstring("DispInterface von VisualisierungsInfo für ein Textobjekt")
+]  
+interface DTextVisInfo : DVisInfo 
+{
+	[id(50), propget, helpstring("Größe (horizontal) einer Buchstabenzelle")]
+	HRESULT SizeX ([out, retval] int *piX);
+	[id(50), propput, helpstring("Größe (horizontal) einer Buchstabenzelle")]
+	HRESULT SizeX ([in]int iX);
+
+	[id(51), propget, helpstring("Größe (vertikal) einer Buchstabenzelle")]
+	HRESULT SizeY ([out, retval] int *piY);
+	[id(51), propput, helpstring("Größe (vertikal) einer Buchstabenzelle")]
+	HRESULT SizeY ([in]int iY);
+
+	[id(52), propget]HRESULT Bold ([out, retval]int *pfBold);
+	[id(52), propput]HRESULT Bold ([in]int fBold);
+	[id(53), propget]HRESULT Italic ([out, retval]int *pfItalic);
+	[id(53), propput]HRESULT Italic ([in]int fItalic);
+	[id(54), propget]HRESULT Underline ([out, retval]int *pfUnderline);
+	[id(54), propput]HRESULT Underline ([in]int fUnderline);
+	[id(55), propget]HRESULT StrikeThrough ([out, retval]int *pfStrikeThrough);
+	[id(55), propput]HRESULT StrikeThrough ([in]int fStrikeThrough);
+
+	[id(56), propget]HRESULT FrameStyle ([out, retval]FRAMESTYLE *prgFrameStyle);
+	[id(56), propput]HRESULT FrameStyle ([in]FRAMESTYLE rgFrameStyle);
+	[id(57), propget]HRESULT AlignStyle ([out, retval]ALIGNSTYLE *prgAlign);
+	[id(57), propput]HRESULT AlignStyle ([in]ALIGNSTYLE rgAlign);
+	
+	[id(58), propget, helpstring("Drehwinkel des Textes")]
+	HRESULT Rotate ([out, retval] int *piRot);
+	[id(58), propput, helpstring("Drehwinkel des Textes")]
+	HRESULT Rotate ([in]int iRot);
+	[id(59), propget, helpstring("Neigungswinkel des Textes")]
+	HRESULT Slant ([out, retval] int *piSlant);
+	[id(59), propput, helpstring("Neigungswinkel des Textes")]
+	HRESULT Slant ([in]int iSlant);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Exportierte Objekte
+[
+	uuid(0796385D-3123-101C-BB62-00AA0018497C),
+	helpstring("PointVisInfo Class")
+]
+	coclass PointVisInfo
+	{
+		interface IPointVisInfo;
+		[default] interface DPointVisInfo;
+		interface IVisInfo;
+		[restricted] interface IUpdateVisInfo;
+	};
+
+[
+	uuid(0796385F-3123-101C-BB62-00AA0018497C),
+	helpstring("LineVisInfo Class")
+]
+	coclass LineVisInfo
+	{
+		interface ILineVisInfo;
+		[default] interface DLineVisInfo;
+		interface IVisInfo;
+		[restricted] interface IUpdateVisInfo;
+	};
+
+[
+	uuid(07963861-3123-101C-BB62-00AA0018497C),
+	helpstring("AreaVisInfo Class")
+]
+	coclass AreaVisInfo
+	{
+		interface IAreaVisInfo;
+		[default] interface DAreaVisInfo;
+		interface IVisInfo;
+		[restricted] interface IUpdateVisInfo;
+	};
+
+[
+	uuid(07963863-3123-101C-BB62-00AA0018497C),
+	helpstring("TextVisInfo Class")
+]
+	coclass TextVisInfo
+	{
+		interface ITextVisInfo;
+		[default] interface DTextVisInfo;
+		interface IVisInfo;
+		[restricted] interface IUpdateVisInfo;
+	};
+};

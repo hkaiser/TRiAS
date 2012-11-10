@@ -1,0 +1,38 @@
+GBM-TRiAS Versionsinformationen
+-------------------------------
+
+2.00.022
+
+- Analog zur Definition der Texte für die Bescheide, kann jetzt auch für
+  die Druckblätter, welche einen Lageplan enthalten, per Datei festgelegt
+  werden, welche TRiAS-Ansicht ausgedruckt werden soll.
+  In der Datei 'GBM.INI' verweist im Abschnitt '[Texte]' der Eintrag '1='
+  beispielsweise auf die zu Erfassungsblatt 1 gehörende Beschreibungsdatei.
+  Diese Datei enthält derzeit nur einen auswertbaren Eintrag:
+
+  #Ansicht=xxx
+
+  Dabei steht 'xxx' für den Namen der zu verwendenden TRiAS-Ansicht.
+  Das erscheint auf den ersten Blick sicher etwas umständlich, hält jedoch
+  die Möglichkeit offen, auch diese Druckblätter zukünftig variabler zu
+  gestalten.
+
+- Mit dieser Version wurde die Option des Druckens über mehrere TRiAS-Projekte
+  (automatischer Projektwechsel während des Druckens) in Ordnung gebracht.
+
+- Die Access-Datenbank benötigt jetzt für die Tabellen 'ZW_xxx' jeweils einen
+  benannten Index, damit die Flächenberechnung funktioniert. Die Definition der
+  Indizes erfolgt im Entwurfmodus der jeweiligen Tabelle im Fenster 'Index'
+  (über Menü 'Ansicht', Option 'Indizes' aktivieren).
+  Die Definition für die einzelnen Tabellen lautet:
+
+                Indexname   Feldname    Sortierreihenfolge
+
+  ZW_PG1GB:     nfpg1gb     NFP1_IDE    Aufsteigend
+                            NFP1_GNR    Aufsteigend
+
+  ZW_PG2D:      nfpg2d      NFP2_IDE    Aufsteigend
+                            NFP2_FLN    Aufsteigend
+
+  ZW_PG2H:      nfpg2h      NFP2_IDE    Aufsteigend
+                            NFP2_FLN    Aufsteigend

@@ -1,0 +1,36 @@
+'\"t
+.if t .TH IMVFBFREE 3IM "August 24, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY" 
+.if n .TH IMVFBFREE 3IM "August 24, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImVfbFree - Free the storage for a virtual frame buffer
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+void ImVfbFree( srcVfb )
+	ImVfb *srcVfb ;
+.fi
+\fR
+.SH DESCRIPTION
+\fBImVfbFree\fR frees the dynamic storage for a virtual frame buffer.
+.LP
+\fIsrcVfb\fR is the Vfb whose storage is to be freed.
+\fIsrcVfb\fR is no longer valid after this call.
+.SH NOTES
+\fBImVfbFree\fR does not free the storage of any
+\fBImClt\fR that might be attached to it.
+.SH SEE ALSO
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBImCltAlloc\fR (3IM),
+\fBImCltFree\fR (3IM),
+\fBImVfbAlloc\fR (3IM)
+.SH AUTHOR
+Mike Bailey
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

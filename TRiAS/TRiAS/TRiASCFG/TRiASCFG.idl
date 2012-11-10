@@ -1,0 +1,43 @@
+// TRiASCFG.idl : IDL source for atldll.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (TRiASCFG.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(7936AEC8-E1AD-408C-8240-89B62071CEC5),
+	dual,
+	helpstring("ILoadXmlService Interface"),
+	pointer_default(unique)
+]
+interface ILoadXmlService : IDispatch
+{
+	[propget, id(1)] HRESULT ResourceModule ([out, retval] BSTR *Module);
+	[propput, id(1)] HRESULT ResourceModule ([in] BSTR Module);
+	[id(100), helpstring("Laden einer Xml Resource")] HRESULT LoadXmlFromResource ([in] BSTR Rsc, [out, retval] IDispatch **ppIXmlDoc);
+	[id(101), helpstring("Laden einer Xml Datei")] HRESULT LoadXmlFromFile ([in] BSTR File, [out, retval] IDispatch **ppIXmlDoc);
+}
+
+[
+	uuid(327C14E1-B6B3-4014-B30E-B7850AD66CA2),
+	version(1.0),
+	helpstring("TRiAS® Konfigurationsresourcen Type Library V1.0")
+]
+library TRiASCFG
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(56CE2E72-6C9F-469D-93EA-C0D9FB51A019),
+		helpstring("LoadXmlService Class")
+	]
+	coclass LoadXmlService
+	{
+		[default] interface ILoadXmlService;
+	};
+};

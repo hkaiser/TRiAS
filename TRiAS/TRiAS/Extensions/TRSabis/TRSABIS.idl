@@ -1,0 +1,105 @@
+// TRSabis.idl : IDL source for TRSabis.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (TRSabis.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#include "idl/ChildWindow.idl"
+
+[
+	object,
+	uuid(BE75E828-DAE5-4D0B-965F-F20FB36680A4),
+	dual,
+	helpstring("IDummyUIOwner Interface"),
+	pointer_default(unique)
+]
+interface IDummyUIOwner : IDispatch
+{
+	[propget, id(1), helpstring("property DebugMode")] HRESULT DebugMode([out, retval] VARIANT_BOOL *pVal);
+	[propput, id(1), helpstring("property DebugMode")] HRESULT DebugMode([in] VARIANT_BOOL newVal);
+	[propputref, id(2), helpstring("property TargetUIOwner")] HRESULT TargetUIOwner([in] IDispatch *newVal);
+};
+	[
+		object,
+		uuid(26BD503C-B5E1-43B6-9660-EC86B37B8A8E),
+		dual,
+		helpstring("ISabisTabChildWindowCallback Interface"),
+		pointer_default(unique)
+	]
+	interface ISabisTabChildWindowCallback : IDispatch
+	{
+	};
+
+[
+	uuid(139DED23-68CD-11D2-8CBD-006097A8F384),
+	version(1.0),
+	helpstring("TRSabis 1.0 Type Library")
+]
+library TRSABiS
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+///////////////////////////////////////////////////////////////////////////////
+// TRiAS Extension
+	[
+		uuid(2623CEF0-68CF-11d2-8CBD-006097A8F384),
+		helpstring("TRiASSabis Extension Class")
+	]
+	coclass TRiASSabis
+	{
+		[default] interface IUnknown;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// Simple Child Window
+	[
+		uuid(139DED31-68CD-11D2-8CBD-006097A8F384),
+		helpstring("SabisChildWindow Class")
+	]
+	coclass SabisChildWindow
+	{
+		[default] interface CommonChildWindow2;
+	};
+
+// Moniker für TabChildWindows
+	[
+		uuid(A9878E76-76ED-4D68-8A0D-BE097618AD8D),
+		helpstring("MkSabisTabChildWindow Class")
+	]
+	coclass MkSabisTabChildWindow
+	{
+		[default] interface IMoniker;
+	};
+
+// Tab Child Window
+	[ 
+		uuid(BB13C0B4-04B6-4895-A507-CD190BDA9A2F), 
+		helpstring("SabisTabChildWindow Object") 
+	]
+	coclass SabisTabChildWindow
+	{
+		[default] interface CommonChildWindow2;
+	};
+
+// Wrapper für DToolbarUIOwner, um Debugging in VB6 IDE zu erleichtern
+	[
+		uuid(15884654-4F69-41FB-8A00-06829EDE1FD8),
+		helpstring("DummyUIOwner Class")
+	]
+	coclass DummyUIOwner
+	{
+		[default] interface IDummyUIOwner;
+	};
+	[
+		uuid(D2ECA49F-666B-4D14-9112-451144F01412),
+		helpstring("SabisTabChildWindowCallback Class")
+	]
+	coclass SabisTabChildWindowCallback
+	{
+		[default] interface ISabisTabChildWindowCallback;
+	};
+};

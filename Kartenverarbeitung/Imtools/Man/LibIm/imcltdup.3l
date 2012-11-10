@@ -1,0 +1,66 @@
+
+
+
+IMCLTDUP(3IM)          SDSC IMAGE LIBRARY           IMCLTDUP(3IM)
+
+
+
+NAME
+     ImCltDup - duplicate a color lookup table
+
+SYNOPSIS
+     #include "im.h"
+
+     ImClt *ImCltDup( srcClt )
+          ImClt *srcClt ;
+
+
+DESCRIPTION
+     ImCltDup duplicates a color lookup table _s_r_c_C_l_t and  returns
+     a  pointer  to  the new ImClt.  The _s_r_c_C_l_t is not changed by
+     this operation.
+
+RETURNS
+     Upon success, ImCltDup returns a  new  ImClt.   On  failure,
+     IMCLTNULL  is returned and ImErrNo set to one of the follow-
+     ing:
+
+          IMEMALLOC   Cannot allocate enough memory for the new ImClt
+
+SEE ALSO
+     ImIntro (3IM), ImErrNo (3IM),  ImCltAlloc  (3IM),  ImCltFree
+     (3IM),  ImCltGrayRamp  (3IM),  ImCltQBlue (3IM), ImCltQFirst
+     (3IM), ImCltQGreen (3IM),  ImCltQLast  (3IM),  ImCltQNColors
+     (3IM),  ImCltQNext (3IM), ImCltQPrev (3IM), ImCltQPtr (3IM),
+     ImCltQRed  (3IM),   ImCltRoll   (3IM),   ImCltSBlue   (3IM),
+     ImCltSDec   (3IM),   ImCltSGreen   (3IM),  ImCltSInc  (3IM),
+     ImCltSRed (3IM), ImVfbQClt (3IM), ImVfbSClt (3IM), ImVfbQDup
+     (3IM)
+
+AUTHOR
+     Mike Bailey
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SDSC              Last change: August 19, 1992                  1
+
+
+

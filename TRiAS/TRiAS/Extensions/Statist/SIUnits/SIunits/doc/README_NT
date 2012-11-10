@@ -1,0 +1,135 @@
+SIunits used under Visual C++ is different than the same package used in
+Unix in two key ways:
+
+  * Because VC++ does not cope with template specializations well, the
+    SIunits package has limited functionality:  All proper code using
+    the features of SIunits will work under VC++, but the checks for
+    improper dimensions in calculations are not done under VC++.  This
+    consideration leads to changes in some of the source and header files
+    for SIunits in the VC++ case.  In consequence, this version does not
+    automatically attach unit labels (e.g., m) to output representing
+    dimensioned values.
+
+  * The package is most valuable when used from the Developers Studio
+    IDE.  So the NT version of the SIunits package comes with a workspace
+    SIunitsWorkspace, to automate builds under Developer Studio on NT.
+
+The following instructions are specific for installation and use on
+Windows NT with Visual C++.
+
+Files
+-----
+
+The base directory of the product is assumed to be SIunits.
+
+This package includes all files normally needed for SIunits.  These are
+organized into:
+
+  * The SIunits subdirectory, containing product copies of the headers
+    and files defininig physical constants and such.
+
+  * The src subdirectory, with sources for any .cc code.  This is split
+    into a directory for each model.
+
+  * The test subdirectory, with sources for several test programs.
+
+Beyond these files, there are the following files needed specifically
+for the VC++ version on NT:
+
+  * NT specific versions of most of the headers and each of the model
+    .cc files.  These are all prefaced by the letters NT_, as in
+    NT_stdModel.h, and are kept in the same product directory as the
+    corresponding Unix files (stdModel.h).
+
+  * A DSW workspace SIunitsWorkspace/SIunitsWorkspace.dsw.  Double-clicking
+    on this brings up the workspace.
+
+Finally, there are the include and lib subdirectories, which hold the files
+relevant to building user applications:  headers and libraries.
+
+include and lib directories
+---------------------------
+
+User programs which include SIunits header files, such as stdModel.h or
+anyModel.h, should put SIunits\include as an include path.  In the settings
+on your user project, go to C/C++, select pre-processor options, and enter
+the additional include path whichever\SIunits\include.
+
+The files in the include directory are copied from the SIunits\SIunits
+directory.  This allows the package to contain NT-specific versions of
+files where necessary, while presenting to the user program the identical
+file names on Unix and NT systems.
+
+If a program includes anyModel.h, you may select the model used purely in
+the setting for the project:  In the C/C++ tab, choose the preprocessor
+directives option, and under preprocessor definitions add USEstdModel (or
+whichever model is desired.
+
+User programs using any of the SIunits code must link with the appropriate
+library.  In the settings on your user project, go to Link, select input,
+and enter the additional library path whichever\SIunits\lib.  Also, on the
+library/object models line on that screen, add libstdModel.lib (for the
+standard model), or libhepModel.lib, or whichever of the libraries is to be
+used.
+
+Project Workspace
+-----------------
+
+The SIunits workspace comes packaged as a subdirectory of the base SIunits
+directory.  If you bring this up in Developers Studio, you will see about 31
+projects.  The important ones are the five library projects libhepModel,
+libnatModel, libqtmModel, librelModel, and libstdModel.
+
+Once you build these five libraries, users can use the libraries and thus the
+full SIunits package.
+
+Each project has one target output, but building the llibraries will cause
+all necessary other builds to be executed.  The remainder of the projects are:
+
+ * Nine projects that move the header files into the include directory.
+   These are allModel_H, allModel_cc, anyModel, calibration, consts, dims,
+   elements, si, and wv.
+
+ * Five projects that move the headers used by the user:  stdModel, relModel,
+   hepModel, qtmModel, and natModel.
+
+ * Eleven projects that create test programs.  Five of these are testConsts,
+   which test for consistency in the physical constants in a model.  Five
+   are fullTest, whcih exercise all features of the package.  In the std model,
+   there is also RadLen, an example of using the package.
+
+ * One recalibration project, explained below.
+
+Recalibration
+-------------
+
+Each of the models other than the standard model is based on specific physical
+constants having the value 1.  This is accomplished by rescaling what is meant
+by 1 unit of length, mass, time, and so forth.  Based on the values found in
+consts.dat, it is possible to compute what these scales need to be to make
+each model internally consistent and correct.
+
+These computations are done by the program calibrate, found in the SIunits\src
+area, which is compiled and run when the recalibrate project is built.
+
+** YOU PROBABLY NEVER NEED TO BUILD THE RECALIBRATE PROJECT. **
+
+This includes when the package is first installed; it comes with a correct
+calibration file that will be installed in the right places.
+
+The only circumstance where recalibration is needed is if the value (in
+consts.dat) of a key physical constant -- c, hBar, G_N, or k -- changes.
+If that happens, building recalibrate uses the old calibration header and
+the standard model (which does not depend on any number in the calibration
+file), and writes out a new calibration file based on the new values of c,
+hBar, G_N and k.  (Since consts.dat in the SIunits\SIunits area will have
+changed, the standard model library automatically gets rebuilt first.)
+
+The output of the calibrate program goes into SIunits\include and is
+\SIunits\include\calibration.  The recalibrate project does not alter
+SIunits\SIunits\calibration because if that file were ruined such that
+it would no longer compile, then you could no longer build any of the
+libraries -- the bootstrap would be broken.
+(Once you have built things using the new calibration file, you are free
+to copy that back into SIunits\SIunits if you so choose; however, this
+is not recommended.)

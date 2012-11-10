@@ -1,0 +1,330 @@
+// $Header: $
+// Copyright© 1999-2001 TRiAS GmbH Potsdam, All rights reserved
+// Created: 10.05.2001 08:18:43 
+//
+// @doc
+// @module TRiASQLCoClasses.idl | Definition of the TRiASQL coclasses
+
+#if !defined(_TRIASQLCOCLASSES_IDL__96477CF4_B72F_440C_BABB_BC9F8D70A9A2__INCLUDED_)
+#define _TRIASQLCOCLASSES_IDL__96477CF4_B72F_440C_BABB_BC9F8D70A9A2__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+
+// Header include diagnostics
+#if defined(_TRIAS_DBG_HEADER_DIAGNOSTICS)
+#pragma message(__TIME__": include " __FILE__ )
+#endif
+
+[
+	uuid(62ECE790-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("Parser Class")
+]
+coclass Parser
+{
+	[default] interface IParser;
+};
+
+[
+	uuid(62ECE791-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("SelectStmt Class"),
+	noncreatable
+]
+coclass SelectStmt
+{
+	[default] interface ISelectStmt;
+};
+
+[
+	uuid(62ECE792-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("TableIdent Class"),
+	noncreatable
+]
+coclass TableIdent
+{
+	[default] interface ITableIdent;
+};
+
+[
+	uuid(62ECE793-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("TableIdentList Class"),
+	noncreatable
+]
+coclass TableIdentList
+{
+	[default] interface ITableIdentList;
+};
+
+[
+	uuid(62ECE794-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("ColumnIdent Class"),
+	noncreatable
+]
+coclass ColumnIdent
+{
+	[default] interface IColumnIdent;
+	interface IExpressionItem;
+};
+
+[
+	uuid(62ECE795-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("ColumnIdentList Class"),
+	noncreatable
+]
+coclass ColumnIdentList
+{
+	[default] interface IColumnIdentList;
+};
+
+[
+	uuid(62ECE796-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("OrderByObj Class"),
+	noncreatable
+]
+coclass OrderByObj
+{
+	[default] interface IOrderByObj;
+};
+
+[
+	uuid(62ECE797-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("OrderByList Class"),
+	noncreatable
+]
+coclass OrderByObjList
+{
+	[default] interface IOrderByObjList;
+};
+
+[
+	uuid(62ECE798-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("UpdateStmt Class"),
+	noncreatable
+]
+coclass UpdateStmt
+{
+	[default] interface IUpdateStmt;
+};
+
+[
+	uuid(62ECE79A-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("UpdateItem Class"),
+	noncreatable
+]
+coclass UpdateItem
+{
+	[default] interface IUpdateItem;
+};
+
+[
+	uuid(62ECE79B-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("UpdateItemList Class"),
+	noncreatable
+]
+coclass UpdateItemList
+{
+	[default] interface IUpdateItemList;
+};
+
+[
+	uuid(62ECE79C-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("GenericColl Class"),
+	noncreatable
+]
+coclass GenericColl
+{
+	[default] interface IGenericColl;
+};
+
+[
+	uuid(62ECE79D-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("GenericStack Class"),
+	noncreatable
+]
+coclass GenericStack
+{
+	[default] interface IGenericStack;
+};
+
+[
+	uuid(62ECE79E-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("GenericStackList Class"),
+	noncreatable
+]
+coclass GenericStackList
+{
+	[default] interface IGenericStackList;
+};
+
+[
+	uuid(62ECE79F-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("LiteralValue Class"),
+	noncreatable
+]
+coclass LiteralValue
+{
+	[default] interface ILiteralValue;
+	interface IExpressionItem;
+};
+
+[
+	uuid(62ECE7A0-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("AggregateFunction Class"),
+	noncreatable
+]
+coclass AggregateFunction
+{
+	[default] interface IAggregateFunction;
+	interface IExpressionItem;
+};
+
+[
+	uuid(62ECE7A1-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("NullExpression Class"),
+	noncreatable
+]
+coclass NullExpression
+{
+	[default] interface INullExpression;
+	interface IExpressionItem;
+};
+
+[
+	uuid(62ECE7A2-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("SelectStarExpression Class"),
+	noncreatable
+]
+coclass SelectStarExpression
+{
+	[default] interface ISelectStarExpression;
+	interface IExpressionItem;
+};
+
+[
+	uuid(62ECE7A3-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("AritOperator Class"),
+	noncreatable
+]
+coclass AritOperator
+{
+	[default] interface IAritOperator;
+	interface IExpressionItem;
+};
+
+[
+	uuid(62ECE7A4-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("CompareOperator Class"),
+	noncreatable
+]
+coclass CompareOperator
+{
+	[default] interface ICompareOperator;
+	interface IExpressionItem;
+};
+
+[
+	uuid(62ECE7A5-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("BoolOperator Class"),
+	noncreatable
+]
+coclass BoolOperator
+{
+	[default] interface IBoolOperator;
+	interface IExpressionItem;
+};
+
+[
+	uuid(62ECE7A6-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("MathFunction Class"),
+	noncreatable
+]
+coclass MathFunction
+{
+	[default] interface IMathFunction;
+	interface IExpressionItem;
+};
+
+[
+	uuid(62ECE7A7-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("DateFunction Class"),
+	noncreatable
+]
+coclass DateFunction
+{
+	[default] interface IDateFunction;
+	interface IExpressionItem;
+};
+
+[
+	uuid(5FAE7849-2B3F-4907-907B-943D490166D7),
+	helpstring("GeometryFunction Class"),
+	noncreatable
+]
+coclass GeometryFunction
+{
+	[default] interface IGeometryFunction;
+	interface IExpressionItem;
+};
+
+[
+	uuid(62ECE7A8-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("InsertStmt Class"),
+	noncreatable
+]
+coclass InsertStmt
+{
+	[default] interface IInsertStmt;
+};
+
+[
+	uuid(62ECE7A9-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("DeleteStmt Class"),
+	noncreatable
+]
+coclass DeleteStmt
+{
+	[default] interface IDeleteStmt;
+};
+
+[
+	uuid(62ECE7AA-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("CreateTableStmt Class"),
+	noncreatable
+]
+coclass CreateTableStmt
+{
+	[default] interface ICreateTableStmt;
+};
+
+[
+	uuid(62ECE7AB-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("CreateTableItem Class"),
+	noncreatable
+]
+coclass CreateTableItem
+{
+	[default] interface ICreateTableItem;
+};
+
+[
+	uuid(62ECE7AC-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("CreateTableItemList Class"),
+	noncreatable
+]
+coclass CreateTableItemList
+{
+	[default] interface ICreateTableItemList;
+};
+
+[
+	uuid(62ECE7AD-EC1D-4680-9A37-B5CD0BF0C1BC),
+	helpstring("DropStmt Class"),
+	noncreatable
+]
+coclass DropStmt
+{
+	[default] interface IDropStmt;
+};
+
+#endif // !defined(_TRIASQLCOCLASSES_IDL__96477CF4_B72F_440C_BABB_BC9F8D70A9A2__INCLUDED_)

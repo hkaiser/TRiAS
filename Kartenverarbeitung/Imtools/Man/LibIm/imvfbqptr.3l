@@ -1,0 +1,198 @@
+
+
+
+IMVFBQPTR(3IM)         SDSC IMAGE LIBRARY          IMVFBQPTR(3IM)
+
+
+
+NAME
+     ImVfbQPtr - Query the pointer to a pixel location in a  vir-
+     tual frame buffer
+     ImVfbQFirst - Query the pointer to the first pixel  location
+     in a virtual frame buffer
+     ImVfbQLast - Query the pointer to the last pixel location in
+     a virtual frame buffer
+     ImVfbQLeft - Query the pointer to the next pixel to the left
+     in a virtual frame buffer
+     ImVfbQRight - Query the pointer to the  next  pixel  to  the
+     right in a virtual frame buffer
+     ImVfbQUp - Query the pointer to the next pixel up in a  vir-
+     tual frame buffer
+     ImVfbQDown - Query the pointer to the next pixel down  in  a
+     virtual frame buffer
+     ImVfbQNext - Query the pointer to the next pixel in  a  vir-
+     tual frame buffer
+     ImVfbQPrev - Query the pointer to the previous  pixel  in  a
+     virtual frame buffer
+     ImVfbSInc - Increment the pointer to point to the next pixel
+     in a virtual frame buffer
+     ImVfbSDec - Decrement the pointer to point to  the  previous
+     pixel in a virtual frame buffer
+
+SYNOPSIS
+     #include "im.h"
+
+     ImVfbPtr ImVfbQPtr( srcVfb, x, y )
+          ImVfb *srcVfb ;
+          int x, y ;
+
+     ImVfbPtr ImVfbQFirst( srcVfb )
+          ImVfb *srcVfb ;
+
+     ImVfbPtr ImVfbQLast( srcVfb )
+          ImVfb *srcVfb ;
+
+     ImVfbPtr ImVfbQLeft( srcVfb, p )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+
+     ImVfbPtr ImVfbQRight( srcVfb, p )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+
+     ImVfbPtr ImVfbQUp( srcVfb, p )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+
+     ImVfbPtr ImVfbQDown( srcVfb, p )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+
+
+
+SDSC              Last change: August 25, 1992                  1
+
+
+
+
+
+
+IMVFBQPTR(3IM)         SDSC IMAGE LIBRARY          IMVFBQPTR(3IM)
+
+
+
+     ImVfbPtr ImVfbQNext( srcVfb, p )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+
+     ImVfbPtr ImVfbQPrev( srcVfb, p )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+
+     void ImVfbSInc( srcVfb, p )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+
+     void ImVfbSDec( srcVfb, p )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+
+
+DESCRIPTION
+     ImVfbQPtr returns the pointer to the _s_r_c_V_f_b pixel at coordi-
+     nate (_x,_y).  (0,0) is the upper left corner of the image.
+
+     ImVfbQFirst returns the pointer to the first  pixel  in  the
+     _s_r_c_V_f_b and is equivalent to ImVfbQPtr( srcVfb, 0, 0 ).
+
+     ImVfbQLast returns the pointer to  the  last  pixel  in  the
+     _s_r_c_V_f_b  and is equivalent to ImVfbQPtr( srcVfb, ImVfbQWidth(
+     srcVfb ), ImVfbQHeight( srcVfb ) ).
+
+     ImVfbQLeft returns the pointer to the pixel in  the  _s_r_c_V_f_b,
+     just  to the left of the pixel pointed to by _p.  If _p points
+     to the left-most  pixel  of  a  scanline,  ImVfbQLeft  wraps
+     around to the end of the previous scanline.
+
+     ImVfbQRight returns the pointer to the pixel in the  _s_r_c_V_f_b,
+     just to the right of the pixel pointed to by _p.  If _p points
+     to the right-most pixel of  a  scanline,  ImVfbQRight  wraps
+     around to the start of the next scanline.
+
+     ImVfbQUp returns the pointer to the  pixel  in  the  _s_r_c_V_f_b,
+     which is just above the pixel pointed to by _p.
+
+     ImVfbQDown returns the pointer to the pixel in  the  _s_r_c_V_f_b,
+     which is just below the pixel pointed to by _p.
+
+     ImVfbQNext returns the pointer to the pixel  in  the  _s_r_c_V_f_b
+     just to the right of the pixel pointed to by _p (identical to
+     ImVfbQRight).
+
+     ImVfbQPrev returns the pointer to the pixel  in  the  _s_r_c_V_f_b
+     just  to the left of the pixel pointed to by _p (identical to
+     ImVfbQLeft).
+
+
+
+
+2                 Last change: August 25, 1992               SDSC
+
+
+
+
+
+
+IMVFBQPTR(3IM)         SDSC IMAGE LIBRARY          IMVFBQPTR(3IM)
+
+
+
+     ImVfbSInc increments pointer _p by one and is equivalent to p
+     = ImVfbQNext( srcVfb, p ).
+
+     ImVfbSDec decrements pointer _p by one and is equivalent to p
+     = ImVfbQPrev( srcVfb, p ).
+
+NOTES
+     The pixel just to the ImVfbQRight of the right-most pixel in
+     a scanline is the left-most pixel in the next scanline down.
+     The pixel just to the ImVfbQLeft of the left-most pixel in a
+     scanline is the last pixel in the previous scanline.
+
+     No automatic wraparound occurs between the  last  pixel  and
+     the first pixel in the frame buffer.
+
+     All are C macros.
+
+SEE ALSO
+     ImIntro (3IM), ImErrNo (3IM), ImCltQFirst (3IM),  ImCltQLast
+     (3IM),  ImCltQNext (3IM), ImCltQPrev (3IM), ImCltQPtr (3IM),
+     ImCltSDec (3IM), ImCltSInc (3IM)
+
+AUTHOR
+     Mike Bailey
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SDSC              Last change: August 25, 1992                  3
+
+
+

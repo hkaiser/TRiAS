@@ -1,0 +1,282 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#include "afxres.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "ver.h"
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Deutsch (Deutschland) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#include ""afxres.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""ver.h""\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.rc""\r\n"
+    "#include ""linver.rcv""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_LINVERFOLGUNG DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Erzeugen von Flächen- und Linienobjekten"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Parameter",IDC_STATIC,4,0,34,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,42,7,229,1
+    LTEXT           "&Fangbereich zweier Stützpunkte (in Meter):",IDC_STATIC,
+                    10,16,136,8
+    EDITTEXT        IDE_FUZZY,148,14,56,14,ES_AUTOHSCROLL | WS_GROUP
+    CONTROL         "Spin1",IDB_FUZZY,"msctls_updown32",UDS_WRAP | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,203,14,7,14
+    LTEXT           "Optionen",IDC_STATIC,4,34,30,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,39,39,233,1
+    CONTROL         "Flächenobjekte &erzeugen",IDB_MASCHEN_UNION,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,10,48,120,10
+    CONTROL         "&Linienobjekte erzeugen",IDB_LINES_UNION,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,10,62,120,10
+    CONTROL         "&Merkmale der Ursprungsobjekte übernehmen",
+                    IDB_OUTPUT_MERKMAL,"Button",BS_AUTOCHECKBOX | BS_TOP | 
+                    BS_MULTILINE | WS_TABSTOP,136,48,131,19
+    CONTROL         "U&rsprungsobjekte löschen",IDB_DELETE_LINES,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,10,82,120,10
+    CONTROL         "Ursprungsobjekte &markieren",IDC_MARK_OBJECTS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,136,82,131,10
+    LTEXT           "Beschreibung",IDC_STATIC,4,96,44,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,53,101,219,1
+    LTEXT           "",IDT_DESCRIPTION,4,107,268,28
+END
+
+IDD_OBJEKT_STATISTIK DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Anzeige der Objektstatistik"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "Text-Objekte:",IDC_STATIC,54,33,96,8,NOT WS_GROUP
+    RTEXT           "Punkt-Objekte:",IDC_STATIC,54,44,96,8,NOT WS_GROUP
+    RTEXT           "Linien-Objekte:",IDC_STATIC,54,55,96,8,NOT WS_GROUP
+    RTEXT           "Flächen-Objekte:",IDC_STATIC,54,66,96,8,NOT WS_GROUP
+    LTEXT           "0",IDT_TEXTCNT,154,33,64,8,NOT WS_GROUP
+    LTEXT           "0",IDT_PKTCNT,154,44,64,8,NOT WS_GROUP
+    LTEXT           "0",IDT_LINCNT,154,55,64,8,NOT WS_GROUP
+    LTEXT           "0",IDT_FLCNT,154,66,64,9,NOT WS_GROUP
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,54,81,167,1
+    RTEXT           "Objekte insgesamt:",IDC_STATIC,59,99,91,8
+    LTEXT           "0",IDT_SUMME,154,99,64,8,NOT WS_GROUP
+    RTEXT           "Objekte mit Geometriefehlern:",IDC_STATIC,54,88,96,8
+    LTEXT           "0",IDT_GEO_ERROR,154,88,64,8
+END
+
+IDD_VERSCHNITT_PAGE DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Verschneiden geometrischer Objekte"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Parameter",IDC_STATIC,4,1,33,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,41,7,231,1
+    LTEXT           "&Fangbereich zweier Stützpunkte (in Meter):",IDC_STATIC,
+                    26,19,138,8
+    EDITTEXT        IDE_FUZZY,166,17,56,14,ES_AUTOHSCROLL | WS_GROUP
+    CONTROL         "Spin1",IDB_FUZZY,"msctls_updown32",UDS_WRAP | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,221,17,7,14
+    LTEXT           "&Minimale Länge einer Linie (in Meter):",IDC_STATIC,26,
+                    38,138,8
+    EDITTEXT        IDE_DANGLE_LEN,166,36,56,14,ES_AUTOHSCROLL | WS_GROUP
+    CONTROL         "Spin1",IDB_DANGLE_LEN,"msctls_updown32",UDS_WRAP | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,221,36,7,14
+    LTEXT           "Optionen",IDC_STATIC,4,56,30,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,39,61,233,1
+    CONTROL         "U&rsprungsobjekte löschen",IDB_DELETE_LINES,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,26,70,119,10
+    CONTROL         "Ursprunsobjekte &markieren",IDC_MARK_OBJECTS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,155,70,115,10
+    LTEXT           "Beschreibung",IDC_STATIC,4,96,44,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,53,101,219,1
+    LTEXT           "",IDT_DESCRIPTION,4,107,268,28
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_LINVERFOLGUNG, DIALOG
+    BEGIN
+        HORZGUIDE, 107
+    END
+
+    IDD_OBJEKT_STATISTIK, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 269
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 133
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_MASCHEN_INTERFACE   REGISTRY DISCARDABLE    "Imaschen.rgs"
+IDR_DOPPELTE_PROPACT_RGS REGISTRY DISCARDABLE    "Doppelt3.rgs"
+IDR_MASCHEN_PROPACT_RGS REGISTRY DISCARDABLE    "Maschen3.rgs"
+IDR_RESULT_PROPACT_RGS  REGISTRY DISCARDABLE    "Result3.rgs"
+IDR_VERSCHNITT_PROPACT_RGS REGISTRY DISCARDABLE    "VERSCHNT3.RGS"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// TYPELIB
+//
+
+IDR_TYPELIB             TYPELIB DISCARDABLE     "Imaschen.tlb"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDM_UNITINGMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Vereinigung"
+    BEGIN
+        MENUITEM "Linien&verschnitt",           IDM_LINESPLITTING
+        MENUITEM "&Linienvereinigung",          IDM_LINEUNITING
+        MENUITEM "&Flächenbildung",             IDM_AREAFORMING
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Linienvereinigung, Maschenbildung"
+    IDS_MARKOBJECT_PBD      "Kennzeichen/Geometrieoperation"
+    IDS_HELPDESC_LINVER     "Vereinigung/Verschnitt von Linien zu Flächen- und Linienobjekten über eine vorgebbare Toleranz."
+    IDS_VEREINIGTE_IDENTS   "Unique Ident der Ursprungsobjekte"
+    IDS_CAPTION_STATUS_MASCH "Erzeugen von Flächenobjekten"
+    IDS_STATUS_STAND        "Es wurden bereits %ld%% der Objekte bearbeitet ..."
+    IDS_CAPTION_DELETE_MASCH "Zur Flächenerzeugung benutzte Linien löschen"
+    IDS_CAPTION_DELETE_LINES "Zur Linienvereinigung benutzte Linien löschen"
+    IDS_CAPTION_STATUS_LINES "Vereinigen von Linienobjekten"
+    IDS_FANG_BEREICH        "Fangbereich ist der Bereich in Metern, innerhalb dessen der Anfangs- bzw. Endpunkt zweier Linien liegt."
+    IDS_UNION_LINES         "Linienobjekte, deren Koordinaten im Fangbereich liegen, werden durch fortlaufende Vereinigung erzeugt."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UNION_LINES_NOT     "Linienobjekte werden nicht erzeugt."
+    IDS_UNION_MASCHEN       "Flächenobjekte werden durch fortlaufende Vereinigung von Linienobjekten, deren Koordinaten im Fangbereich liegen und die geschlossen werden können, erzeugt.  "
+    IDS_UNION_MASCHEN_NOT   "Flächenobjekte werden nicht erzeugt."
+    IDS_DELETE_LINES        "Alle Urspungslinien, die entweder für die Erzeugung von Linien- oder Flächenobjekten verwendet wurden, werden gelöscht."
+    IDS_DELETE_LINES_NOT    "Ursprungsobjekte werden nicht gelöscht."
+    IDS_OUTPUT_MERKMAL      "Jedes erzeugte Objekt erhält als Objekteigenschaft die Liste der Merkmale seiner Ursprungsobjekte."
+    IDS_OUTPUT_MERKMAL_NOT  "Die erzeugten Objekte erhalten keine zusätzlichen Objekteigenschaften."
+    IDS_HELPDESC_RESULT     "Objektstatistik über Anzahl der Flächen-, Linien-, Punkte- und Textobjekte."
+    IDS_HELPDESC_DOPPGEO    "Suchen von Objekten gleicher Geometrie."
+    IDS_COMPARE_AREAS       "Suchen doppelter Flächenobjekte"
+    IDS_COMPARE_LINES       "Suchen doppelter Linienobjekte"
+    IDS_COMPARE_TEXTE       "Suchen doppelter Textobjekte"
+    IDS_COMPARE_POINTS      "Suchen doppelter Punktobjekte"
+    IDS_UNDO_TEXT_UNION     "Erzeugen von Linien- und Flächenobjekten"
+    IDS_MARK_OBJECTS        "Alle Urspungslinien, die entweder für die Erzeugung von Linien- oder Flächenobjekten verwendet wurden, werden mit einem Attribut gekennzeichnet."
+    IDS_FANG_BEREICH_VER    "Ist der Abstand zweier Objekte innerhalb des Fangbereichs, erfolgt ein Verschnitt zwischen diesen Objekten."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_VERSCHNITT_CAPTION  "Verschneiden geometrischer Objekte"
+    IDS_CAPTION_DEL_VERSCHN "Zum Verschnitt benutzte Linien löschen"
+    IDS_DANGLE_DESCR        "Ist die minimale Länge einer durch den Verschnitt gebildeten Linie kleiner oder gleich einem von 0 verschiedenen einzugebenden  Wert, wird diese Linie nicht gespeichert."
+    IDS_DELETE_VER_OBJS     "Für den Verschnitt verwendete Objekte werden gelöscht."
+    IDS_UNDO_TEXT_VER       "Verschneiden von Linien/Flächenobjekten"
+    IDS_OBJECT_UNDO_LINIE   "%ld. vereinigte Linie"
+    IDS_OBJECT_UNDO_AREA    "%ld. vereinigte Fläche"
+    IDS_MARK_OBJECTS_NOT    "Ursprungsobjekte werden nicht gekennzeichnet."
+    IDS_CAPTION_MARK_OBJECTS "Ursprungsobjekte kennzeichnen"
+    IDS_MARK_OBJECT         "1"
+    IDS_MARKOBJECT_HDR      "MarkObjectMCode "
+    IDS_MARK_OBJECTS_NOT_LIN "Ursprungsobjekte werden nicht markiert:"
+    IDS_MARK_OBJECTS_LIN    "Für den Verschnitt verwendete Objekte werden markiert."
+    IDS_MARK_OBJECT_LINK    "2"
+    IDS_BEARB_OBJEKT        "Objekt: %ld"
+    IDS_COMPARE_GEOMETRIES  "Suchen doppelter Geometrien"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ERRORCODEFEATURE    "ErrorcodeFeature"
+END
+
+#endif    // Deutsch (Deutschland) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "afxres.rc"
+#include "linver.rcv"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

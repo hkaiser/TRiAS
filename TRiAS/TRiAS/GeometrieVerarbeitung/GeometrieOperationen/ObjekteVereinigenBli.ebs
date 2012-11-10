@@ -1,0 +1,288 @@
+' $Header: $
+' Copyright© 1998 TRiAS GmbH, All rights reserved
+' Created: 09/22/1998 05:53:05 PM
+'
+' @doc
+' @module ObjekteVereinigen.ebs | Vereinigen aller Objekt der übergebenen Objektmenge
+
+Option Explicit
+
+' ---------------------------------------------------
+' FunktionsDeklarationen
+Declare Private Function GeometryUnion (Objs As GeoObjects, Cls As GeoClass) As GeoObjects
+
+Declare Private Sub InitStatus (lCount As Long)
+Declare Private Function IncrementStatus() As Boolean
+Declare Private Sub FreeStatus()
+
+' ---------------------------------------------------
+' Globale Variablen
+Private Status As StatusIndicator
+Private TempCls As GeoClass
+Private lGlobalCnt As Long
+
+Const NewObjectClass As String = "Vereinigte Objekte"
+
+' -----------------------------------------------------------------------------
+' "BeginAction" wird gerufen, bevor die erste Objektmenge verarbeitet werden soll
+Function BeginAction() As Boolean
+
+' Hier notwendige Initialisierungen durchführen
+	Set TempCls = GetActiveDocument().GetClass (NewObjectClass)
+	If (TempCls Is Nothing) Then
+		Set TempCls = GetActiveDocument().AddClass(NewObjectClass)
+	End If
+	If (TempCls Is Nothing) Then
+		BeginAction = False
+		Exit Function
+	End If
+
+	Set Status = Nothing
+	BeginAction = True
+End Function
+
+' 2. Variante, wenn StatusIndicator von außen kommt
+Function BeginActionEx (Stat As StatusIndicator) As Boolean
+
+	Set TempCls = GetActiveDocument().GetClass (NewObjectClass)
+	If (TempCls Is Nothing) Then
+		Set TempCls = GetActiveDocument().AddClass(NewObjectClass)
+	End If
+	If (TempCls Is Nothing) Then
+		BeginActionEx = False
+		Exit Function
+	End If
+
+	Set Status = Stat
+	BeginActionEx = True
+
+End Function
+
+' -----------------------------------------------------------------------------
+' "DoAction" wird für jede der zu verarbeitenden Objektmengen gerufen
+Function DoAction (Objs As GeoObjects) As GeoObjects
+
+	If (Objs Is Nothing) Then	' irgend ein blöder Fehler (snh)
+		Set DoAction = Nothing
+		Exit Function
+	End If
+
+	If (Objs.Count = 1) Then	' nur ein Objekt
+		Set DoAction = Objs
+		Exit Function
+	End If
+
+Dim ObjsOrg As New GeoObjects
+Dim o As GeoObject
+
+	For Each o In Objs 
+		ObjsOrg.Add o
+	Next o
+			
+' Objektmenge bearbeiten
+Dim ObjsOut As GeoObjects
+
+	Set ObjsOut = GeometryUnion (Objs, TempCls)	' Resultatsmenge
+	If (ObjsOut Is Nothing) Then
+		Set DoAction = Nothing
+		Exit Function
+	End If
+
+' alle angefaßten Objekte wieder löschen, dazu zu löschende Objekte rauskriegen
+Dim ToDelObjs As GeoObjects
+
+	Set ToDelObjs = ObjsOrg.Difference (ObjsOut)
+	For Each o In ToDelObjs 
+		GetActiveDocument.RemoveObject o
+	Next o
+
+' Neu gebildete Objekte weiterreichen
+	Set DoAction = ObjsOut
+
+End Function
+
+' ---------------------------------------------------
+' "EndAction" wird nach der Verarbeitung der
+' letzten Objektmenge gerufen
+Sub EndAction()
+' Hier notwendige Aufräumarbeiten durchführen
+	Set TempCls = Nothing
+	Set Status = Nothing
+End Sub
+
+' -----------------------------------------------------------------------------
+' Jedes Objekt mit jedem vereinigen
+Private Function GeometryUnion (Objs As GeoObjects, Cls As GeoClass) As GeoObjects
+Dim fFound As Boolean
+
+' Variablen der Outer-Schleife
+Dim i As Long
+
+' Variablen der Inner-Schleife
+Dim Inner As Long
+Dim OuterObj As GeoObject
+Dim ObjsT As GeoObjects
+
+Dim InnerObj As GeoObject
+Dim NewObjs As GeoObjects
+Dim FakeObjs As GeoObjects
+
+Dim lNewObjsCnt As Long
+
+Dim o As GeoObject
+Dim ResultObjs As New GeoObjects
+
+Dim IsCanceled As Boolean
+
+	lGlobalCnt = 0
+	InitStatus Objs.Count
+
+' Äußere Schleife
+	Do
+	' Flag rücksetzen
+		fFound = False
+
+	' nächstes Bezugsobjekt setzen
+		If (OuterObj Is Not Nothing) Then
+			OuterObj.UnHilight
+		End If
+		Set OuterObj = Objs(1)
+		If (OuterObj Is Nothing) Then
+			Exit Do
+		End If
+
+		OuterObj.Hilight &HFF0000		' Blau kennzeichnen
+
+	' Neue Objektmenge für nächsten Durchlauf			
+ 		Set ObjsT = New GeoObjects
+
+	' Innere Schleife
+		For Inner = 2 To Objs.Count
+
+		' Status weiterschalten
+			If (IncrementStatus() = False) Then
+				Set GeometryUnion = Nothing
+				FreeStatus
+				Exit Function
+			End If
+				
+		' nächstes Vergleichsobjekt
+			Set InnerObj = Objs(Inner)
+			InnerObj.Hilight &HFFFFFF		' Weiß kennzeichnen
+
+		' Versuchen, die beiden zu vereinigen
+			Set FakeObjs = New GeoObjects
+			FakeObjs.Add OuterObj
+			FakeObjs.Add InnerObj
+			Set NewObjs = FakeObjs.GeometryUnion (Cls)
+			Set FakeObjs = Nothing
+
+			If (NewObjs Is Not Nothing) Then
+				lNewObjsCnt = NewObjs.Count
+			Else
+				lNewObjsCnt = 0
+			End If
+
+		' Resultat der Vereinigung auswerten
+			If (NewObjs Is Not Nothing And lNewObjsCnt > 0) Then
+			' wirklich was vereinigt, neue Objekte übenehmen
+				For Each o In NewObjs
+					ObjsT.Add o		' neu gebildete Objekte hinzufügen
+				Next o
+
+			' restliche Objekte übernehmen
+				For i = Inner+1 To Objs.Count
+					ObjsT.Add Objs(i)
+					IsCanceled = IncrementStatus()	' Status weiterschalten
+				Next i
+
+			' Bezugsobjekt wird nicht mehr gebraucht
+				OuterObj.UnHilight
+				If (OuterObj.ObjClass.Name = NewObjectClass) Then
+				' bereits vereinigtes Objekt aus GeoDB löschen
+					GetActiveDocument.RemoveObject OuterObj
+				End If
+				Set OuterObj = Nothing
+
+			' neue Objektmenge ist fertig
+				fFound = True
+				
+				InnerObj.UnHilight
+				If (InnerObj.ObjClass.Name = NewObjectClass) Then
+				' auch hier bereits vereinigtes Objekt aus GeoDB löschen
+					GetActiveDocument.RemoveObject InnerObj
+				End If
+				Set InnerObj = Nothing
+
+				Exit For ' Inner
+			Else 
+			' es konnte nichts vereinigt werden
+				ObjsT.Add InnerObj
+				InnerObj.UnHilight
+			End If
+		Next Inner
+
+	' Ergebnis dieser Runde setzen
+		Set Objs = ObjsT
+
+		If (fFound = False) Then
+			ResultObjs.Add OuterObj
+		ElseIf (Objs.Count = 1) Then
+		' evtl. ist das letzte Objekt auch noch ein vereinigtes
+			If (InnerObj Is Not Nothing) Then
+				If (InnerObj.ObjClass.Name = NewObjectClass) Then
+				' bereits vereinigtes Objekt aus GeoDB löschen
+					GetActiveDocument.RemoveObject InnerObj
+				End If
+			End If
+			Set InnerObj = Nothing
+
+			ResultObjs.Add Objs(1)
+			Exit Do
+		End If
+	Loop 
+
+	FreeStatus
+	Set GeometryUnion = ResultObjs
+
+End Function 
+
+'------------------------------------------------------------------------------
+' StatusAnzeige verwalten
+Private Sub InitStatus (lCount As Long)
+
+' ggf. bereits existierenden StatusIndicator verwenden	
+	If (Status Is Nothing) Then
+		Set Status = New StatusIndicator
+		if (Status Is Nothing) Then
+			Exit Sub
+		End If
+	End If
+
+	Status.Restart 0, (lCount*(lCount-1))/2, STATUS_ShowAllFields
+	Status.Caption = "Vereinigen der selektierten Objekte"
+	Status.Field(1) = "Anzahl:"
+	Status.Field(2) = Str$(lCount) + " Objekte"
+	Status.Field(3) = "Es wurden bereits %d%% der Objekte vereinigt"
+
+End Sub
+
+Private Function IncrementStatus() As Boolean
+	If (Status Is Not Nothing) Then
+		lGlobalCnt = lGlobalCnt + 1
+		Status.SetPosition lGlobalCnt
+		If (Status.WasCanceled()) Then
+		' abgebrochen
+			IncrementStatus = False
+			Exit Function
+		End If
+	End If
+	IncrementStatus = True
+End Function
+
+Private Sub FreeStatus()
+
+	If (Status Is Not Nothing) Then
+		Set Status = Nothing
+	End If
+End Sub

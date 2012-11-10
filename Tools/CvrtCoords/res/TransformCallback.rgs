@@ -1,0 +1,26 @@
+HKCR
+{
+	CvrtCoords.TransformCallback.1 = s 'TransformCallback Class'
+	{
+		CLSID = s '{E58ADCF7-DFE3-491E-8084-A063FB01B764}'
+	}
+	CvrtCoords.TransformCallback = s 'TransformCallback Class'
+	{
+		CLSID = s '{E58ADCF7-DFE3-491E-8084-A063FB01B764}'
+		CurVer = s 'CvrtCoords.TransformCallback.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {E58ADCF7-DFE3-491E-8084-A063FB01B764} = s 'TransformCallback Class'
+		{
+			ProgID = s 'CvrtCoords.TransformCallback.1'
+			VersionIndependentProgID = s 'CvrtCoords.TransformCallback'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{A7B6385D-D3F9-40F3-A183-C0021E5333CE}'
+		}
+	}
+}

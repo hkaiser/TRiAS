@@ -1,0 +1,11 @@
+#define COLORCONTROLDLG             600
+#define IDSB_RELBRIGHTNESS          601
+#define IDSB_ABSSAT                 602
+#define IDE_ABSSAT                  605
+#define IDB_COLORCONTROLHELP        603
+#define IDE_RELBRIGHTNESS           604
+#define IDR_NEGBRIGHTNESS            606
+#define IDR_BRIGHTNESS              607
+#define IDR_ALLSAT                  609
+#define IDR_SMALLERSAT              610
+#define IDR_BIGGERSAT               611

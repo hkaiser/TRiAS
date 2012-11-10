@@ -1,0 +1,132 @@
+
+
+
+     AAAARRRRGGGGPPPPEEEERRRRRRRROOOORRRR((((3333AAAARRRRGGGG))))       SSSSDDDDSSSSCCCC ((((SSSSeeeepppptttteeeemmmmbbbbeeeerrrr 1111999999991111))))       AAAARRRRGGGGPPPPEEEERRRRRRRROOOORRRR((((3333AAAARRRRGGGG))))
+
+
+
+     NNNNAAAAMMMMEEEE
+          ArgPError, ArgQError, ArgErrNo  -  argument parsing package
+          error messages
+
+     SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+          #include "sdsc.h"
+
+          extern int ArgErrNo;
+          extern int ArgNErr;
+          exter char *ArgErrList[ ];
+
+          void ArgPError( leader )
+               char *leader;
+
+          char *ArgQError( )
+
+     DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+          _A_r_g_P_E_r_r_o_r produces a short error message on _s_t_d_e_r_r
+          describing the last error encountered during a call to an
+          argument parsing package function.
+
+          If _l_e_a_d_e_r is not a NULL pointer and does not point to an
+          empty string, the string it points to is printed, followed
+          by a colon and one space, followed by the error message and
+          a NEWLINE.  If _l_e_a_d_e_r is a NULL pointer or an empty string,
+          just the error message and NEWLINE are printed.  The leader
+          string is typically the name of the program.
+
+          The error number is taken from the global variable _A_r_g_E_r_r_N_o,
+          which is set when errors occur in argument parsing package
+          routines but not cleared when non-erroneous calls are made.
+
+          To allow programs to display error message texts in other
+          ways, _A_r_g_E_r_r_L_i_s_t provides an array of error message strings.
+          _A_r_g_E_r_r_N_o may be used as an index into this table to get the
+          message string without the NEWLINE.
+
+          _A_r_g_N_E_r_r is the number of error messages provided for in the
+          table.  _A_r_g_E_r_r_N_o should be checked against _A_r_g_N_E_r_r prior to
+          indexing into _A_r_g_E_r_r_L_i_s_t because new error codes may be
+          added to the system before they are available in the error
+          message table.
+
+          _A_r_g_Q_E_r_r_o_r may be used to query the error message list and
+          return a pointer to the error text associated with the error
+          value of _A_r_g_E_r_r_N_o.
+
+     RRRREEEETTTTUUUURRRRNNNNSSSS
+          _A_r_g_P_E_r_r_o_r returns nothing.
+
+          _A_r_g_Q_E_r_r_o_r returns the character string message for the
+          current value of _A_r_g_E_r_r_N_o, or "Unknown error" if there is no
+
+
+
+     Page 1                                          (printed 6/30/95)
+
+
+
+
+
+
+     AAAARRRRGGGGPPPPEEEERRRRRRRROOOORRRR((((3333AAAARRRRGGGG))))       SSSSDDDDSSSSCCCC ((((SSSSeeeepppptttteeeemmmmbbbbeeeerrrr 1111999999991111))))       AAAARRRRGGGGPPPPEEEERRRRRRRROOOORRRR((((3333AAAARRRRGGGG))))
+
+
+
+          message for the error number.
+
+     NNNNOOOOTTTTEEEESSSS
+          If _A_r_g_E_r_r_N_o is _A_R_G_E_S_Y_S, which indicates a system call error
+          occurred, _A_r_g_P_E_r_r_o_r calls _p_e_r_r_o_r(3) to print the system
+          call's error message text instead of the text for _A_R_G_E_S_Y_S
+          and _A_r_g_Q_E_r_r_o_r returns the error text associated with _e_r_r_n_o.
+
+     SSSSEEEEEEEE AAAALLLLSSSSOOOO
+          ArgFeedback(3ARG), ArgIntro(3ARG), ArgParse(3ARG),
+          ArgRegister(3ARG), errno(2), perror(3)
+
+     AAAAUUUUTTTTHHHHOOOORRRRSSSS
+          Dave Nadeau
+          San Diego Supercomputer Center
+
+     CCCCOOOONNNNTTTTAAAACCCCTTTT
+          SDSC consultants, (619)534-5100, ccccoooonnnnssssuuuulllltttt@@@@yyyy1111....ssssddddsssscccc....eeeedddduuuu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Page 2                                          (printed 6/30/95)
+
+
+

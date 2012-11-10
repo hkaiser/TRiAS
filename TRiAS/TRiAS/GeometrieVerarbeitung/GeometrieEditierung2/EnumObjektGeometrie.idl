@@ -1,0 +1,36 @@
+// Enumerator für IObjektGeometrie
+// File: EnumObjGeometry.idl
+
+
+///////////////////////////////////////////////////////////////////////////////
+interface IEnumObjGeometry;
+
+#ifndef _ENUMOBJGEOMETRY_DEFINED
+#define _ENUMOBJGEOMETRY_DEFINED
+
+[
+	object,
+	uuid(456C27F0-D22C-11d2-8852-00104BAF1F6B),
+	helpstring("IEnumObjGeometry Interface"),
+	pointer_default(unique)
+]
+
+interface IEnumObjektGeometrie : IUnknown
+{
+	import "unknwn.idl";
+
+// normales Enumeratorinterface
+	[local] HRESULT Next([in] ULONG celt, [out, size_is(celt), length_is(*pCeltFetched)] IUnknown **ppIObj, [out] ULONG *pCeltFetched);
+//	[call_as(Next)] HRESULT RemoteNext([in] ULONG celt, [out, size_is(celt), length_is(*pCeltFetched)] IUnknown **ppIObj, [out] ULONG *pCeltFetched);
+
+	HRESULT Skip ([in] ULONG celt);
+	HRESULT Reset (void);
+	HRESULT Clone ([out] IEnumObjektGeometrie **ppenum);
+
+// erweiterte Funktionalität
+	HRESULT GetCount ([out] ULONG *pclCount);
+	HRESULT AddItem ([in] IUnknown *item);
+	HRESULT Clear (void);
+};
+
+#endif // _ENUMOBJGEOMETRY_DEFINED

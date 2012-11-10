@@ -1,0 +1,49 @@
+// BnaImo.idl : IDL source for BnaImp.Ext
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (BnaImp.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(7E4FFCC3-6CF0-4634-BD86-1E5F6DD83AF5),
+	version(1.0),
+	helpstring("BNAIMP 1.0 Type Library")
+]
+library BNAIMP
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+// ImpBnaExtension Class
+	[ 
+		uuid(BD3CCC43-270A-4A7A-9339-0E6A1353773C),
+		helpstring("ImpBnaExtension Object") 
+	]
+	coclass ImpBnaExtension
+	{
+		[default] interface IUnknown;
+	};
+
+// ImpDatExtension Class
+	[ 
+		uuid(2741b4aa-fd0d-44aa-b956-48d4b93f652e),
+		helpstring("ImpDatExtension Object") 
+	]
+	coclass ImpDatExtension
+	{
+		[default] interface IUnknown;
+	};
+
+// BNAImportConfig Class
+	[ 
+		uuid(A8582C68-5310-426E-8926-8C941A29D85E), 
+		helpstring("BNAImportConfig Object") 
+	]
+	coclass BNAImportConfig
+	{
+		[default] interface IUnknown;
+	};
+};

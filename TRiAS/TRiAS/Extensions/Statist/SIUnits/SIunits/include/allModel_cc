@@ -1,0 +1,59 @@
+// ----------------------------------------------------------------------
+//
+// allModel_cc -- provide definition code common to all models
+//
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\\
+//                                                                     \\
+// NOTICE:                                                             \\
+//   This file is part of "The SI Library of Unit-Based Computation."  \\
+//   See "doc/README" for copyright, license, and other information.   \\
+//                                                                     \\
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\\
+//
+// History:
+//   17-Aug-1998  WEB  Extracted from stdModel.cc
+//   24-Aug-1998  WEB  Improved internal documentation
+//   27-Aug-1998  WEB  Changed PeriodicTableEntry to Element
+//
+// ----------------------------------------------------------------------
+
+
+using namespace si;
+using namespace si::abbreviations;
+using namespace si::elements;
+
+
+// -----  Define the standard units and constants:
+//
+#define u( type, name, value )		\
+  si::type const si::name( value );
+#define a( type, abbr, value )		\
+  si::type const si::abbreviations::abbr( value );
+#include "consts.dat"
+#undef a
+#undef u
+
+
+// -----  Define elements' data:
+//
+// .....  First, the entire periodic table, as an array
+// .....  named periodictable[] indexed by an element's atomic number:
+//
+Element const si::elements::periodictable[] = {
+      { 0,     AtomicWeight(  0  * atomicmassunit/molecule) }
+  #define e( atnum, abbr, name, atwt )	\
+    , { atnum, AtomicWeight(atwt * atomicmassunit/molecule) }
+  #include "elements.dat"
+  #undef e
+};  // periodictable
+//
+// .....  Now, two per-element synonyms for periodictable[] so that,
+// .....  e.g., both hydrogen and element1 refer to periodictable[1]:
+//
+#define e( atnum, abbr, name, atwt )				\
+  Element const &						\
+    si::elements::name            ( periodictable[atnum] );	\
+  Element const &						\
+    si::elements::element ## atnum( periodictable[atnum] );
+#include "elements.dat"
+#undef e

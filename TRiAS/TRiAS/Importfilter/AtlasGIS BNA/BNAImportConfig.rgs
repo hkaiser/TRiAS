@@ -1,0 +1,50 @@
+HKCR
+{
+	TRiAS.BNAImportConfig.1 = s 'BNAImportConfig Object'
+	{
+		CLSID = s '{A8582C68-5310-426E-8926-8C941A29D85E}'
+	}
+	TRiAS.BNAImportConfig = s 'BNAImportConfig Object'
+	{
+		CLSID = s '{A8582C68-5310-426E-8926-8C941A29D85E}'
+		CurVer = s 'TRiAS.BNAImportConfig.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {A8582C68-5310-426E-8926-8C941A29D85E} = s 'BNAImportConfig Object'
+		{
+			ProgID = s 'TRiAS.BNAImportConfig.1'
+			VersionIndependentProgID = s 'TRiAS.BNAImportConfig'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{7E4FFCC3-6CF0-4634-BD86-1E5F6DD83AF5}'
+			'Version' = s '1.0'
+		}
+	}
+}
+HKCU
+{
+	NoRemove Software
+	{
+		NoRemove TRiAS
+		{
+			NoRemove TRiAS
+			{
+				NoRemove Extensions
+				{
+					TRiAS.AtlasGisBNAImport.1
+					{
+						ImportFormat
+						{
+							val ConfigPage = s '{A8582C68-5310-426E-8926-8C941A29D85E}'
+						}
+					}
+					Delete TRiAS.PolygisBNAImport.1
+				}
+			}
+		}
+	}
+}

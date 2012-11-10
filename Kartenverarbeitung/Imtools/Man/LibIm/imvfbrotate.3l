@@ -1,0 +1,132 @@
+
+
+
+IMVFBROTATE(1IM)           IMAGE TOOLS           IMVFBROTATE(1IM)
+
+
+
+NAME
+     ImVfbRotate  -  rotate an image
+
+     ImVfb90Rotate - rotate an image 90 degrees counterclockwise
+
+SYNOPSIS
+     #include "im.h"
+
+     ImVfb *ImVfbRotate( srcVfb, degree, dstVfb )
+             ImVfb   *srcVfb;
+             float    degree;
+             ImVfb   *dstVfb;
+
+     ImVfb *ImVfb90Rotate( srcVfb, dstVfb)
+          ImVfb* srcVfb;
+          ImVfb* dstVfb;
+
+
+DESCRIPTION
+     ImVfbRotate rotates the _s_r_c_V_f_b about an axis  orthogonal  to
+     the  image  plane and positioned at the center of the image.
+     The resulting rotated image is returned in _d_s_t_V_f_b, a pointer
+     to which is returned as the function value.
+
+     The image  rotation  angle  _d_e_g_r_e_e  is  measured  using  the
+     right-hand  rule:  positive angles rotate counter-clockwise,
+     while negative angles rotate clockwise.
+
+     If _d_s_t_V_f_b is IMVFBNEW a new destination VFB will be automat-
+     ically  allocated  with  the proper size, the same fields as
+     _s_r_c_V_f_b, and initialized to zeroes in all fields.  A  pointer
+     to the new _d_s_t_V_f_b is returned by ImVfbRotate.
+
+     If _d_s_t_V_f_b is not IMVFBNEW, the VFB must have  at  least  the
+     same  fields  as _s_r_c_V_f_b and must be large enough to hold the
+     rotated image.  Rotation VFB sizes  may  be  computed  based
+     upon the rotation angle using:
+          Width = fabs( sin(_d_e_g_r_e_e) * ImVfbQHeight(_s_r_c_V_f_b)) +
+               fabs( cos(_d_e_g_r_e_e) * ImVfbQWidth(_s_r_c_V_f_b))
+
+          Height = fabs( sin(_d_e_g_r_e_e) * ImVfbQWidth(_s_r_c_V_f_b)) +
+               fabs( cos(_d_e_g_r_e_e) * ImVfbQHeight(_s_r_c_V_f_b))
+
+     _d_s_t_V_f_b contents will be overwritten  by  those  pixels  from
+     _s_r_c_V_f_b that constitute the rotated image.  Pixels outside of
+     the image (four corner  triangles)  will  be  unmodified  in
+     _d_s_t_V_f_b.
+
+     ImVfb90Rotate rotates a  vfb  90  degrees  counterclockwise.
+     This routine can be used to avoid unnecessary time-consuming
+     calculations which would otherwise be done by ImVfbRotate.
+
+
+
+
+SDSC               Last change: June 16, 1995                   1
+
+
+
+
+
+
+IMVFBROTATE(1IM)           IMAGE TOOLS           IMVFBROTATE(1IM)
+
+
+
+NOTES
+     Providing a _d_s_t_V_f_b  to  ImVfbRotate  is  appropriate  for  a
+     variety  of  effects.   In the simplest case, the _d_s_t_V_f_b may
+     contain a background color that matches  the  background  of
+     the  _s_r_c_V_f_b.   When  rotated, the _s_r_c_V_f_b's pixels will blend
+     seamlessly into the  _d_s_t_V_f_b  background  rather  than  leave
+     empty black triangular corners.
+
+     In a more complex use of a _d_s_t_V_f_b, the _d_s_t_V_f_b may be intial-
+     ized to a transparent alpha channel value.  The _s_r_c_V_f_b, com-
+     plete with its own variety of transparent and  opaque  alpha
+     values,  will  be  rotated  and  placed into the transparent
+     background of _d_s_t_V_f_b.  The combination can then be used with
+     ImVfbComp  to  digitally  composite  the  rotated image atop
+     another image.
+
+     Finally, a _d_s_t_V_f_b could contain a complete image atop  which
+     the  rotated  image  is  to be placed.  This is usually less
+     satisfying that using  an  alpha-channel  based  compositing
+     approach  because the entire rectangle of the rotated _s_r_c_V_f_b
+     will be pasted atop the _d_s_t_V_f_b, leaving you a rotated  image
+     with _d_s_t_V_f_b only showing through in the corners.
+
+     _s_r_c_V_f_b is unaltered by this operation.
+
+RETURNS
+     Upon success, ImVfbRotate returns a pointer to the  destina-
+     tion  VFB.  Upon failure, IMVFBNULL is returned, and ImErrNo
+     set to one of the following:
+
+          IMEFIELD    _s_r_c_V_f_b and dstVfb fields aren't compatible
+          IMEHEIGHT   Height not the right size for the resulting shear
+          IMEMALLOC   Cannot allocate enough memory for the new VFB
+          IMENOVFB    NULL _s_r_c_V_f_b
+          IMEWIDTH    Width  not the right size for the resulting shear
+
+SEE ALSO
+     ImIntro    (3IM),     ImErrNo     (3IM),     ImVfbComp(3IM),
+     ImVfbXShear(3IM), ImVfbYShear(3IM)
+
+AUTHOR
+     Dave Nadeau
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+2                  Last change: June 16, 1995                SDSC
+
+
+

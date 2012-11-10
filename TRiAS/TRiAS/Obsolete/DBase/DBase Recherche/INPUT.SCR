@@ -1,0 +1,41 @@
+/# include <stdio.h>/ {
+i\
+#if defined(__cplusplus) \
+extern "C" \{ \
+#endif
+a\
+#if defined(__cplusplus) \
+\} \
+#endif
+}
+/fprintf(yyout,"bad switch yylook %d",nstr);/ s/fprintf(yyout,/r_error(/
+/yyout/         s/yyout/_yyout/g
+/yyprevious/    s/yyprevious/_yyprevious/g
+/yybgin/        s/yybgin/_yybgin/g
+/yysvec/        s/yysvec/_yysvec/g
+/yyestate/      s/yyestate/_yyestate/g
+/yytchar/       s/yytchar/_yytchar/g
+/yysptr/        s/yysptr/_yysptr/g
+/yysbuf/        s/yysbuf/_yysbuf/g
+/yyin/          s/yyin/input_file/g
+/input_fileput/ s/input_fileput/_yyinput/g
+/yylineno/      s/yylineno/_yylineno/g
+/yymorfg/       s/yymorfg/_yymorfg/g
+/yytext/        s/yytext/_yytext/g
+/yysvf/         s/yysvf/_yysvf/g
+/yylex/         s/yylex/_yylexin/g
+/yyvstop/       s/yyvstop/_yyvstop/g
+/yywork/        s/yywork/_yywork/g
+/yycrank/       s/yycrank/_yycrank/g
+/yytop/         s/yytop/_yytop/g
+/yymatch/       s/yymatch/_yymatch/g
+/yyextra/       s/yyextra/_yyextra/g
+/yylstate/      s/yylstate/_yylstate/g
+/yylsp/         s/yylsp/_yylsp/g
+/yyolsp/        s/yyolsp/_yyolsp/g
+/yyfnd/         s/yyfnd/_yyfnd/g
+/yylook/        s/yylook/_yylook/g
+/yylen/         s/yylen/_yylen/g
+/yyunput/	s/yyunput/_yyunput/g
+/yyback/	s/yyback/_yyback/g
+/yywrap/	s/yywrap/_yywrap/g

@@ -1,0 +1,17 @@
+DLGINCLUDE RCDATA DISCARDABLE
+BEGIN
+    "VSTATUS.H\0"
+END
+
+IMPEXPORTSTATUS DIALOG 50, 51, 181, 64
+STYLE DS_MODALFRAME | WS_POPUP | WS_CLIPSIBLINGS | WS_CAPTION | WS_SYSMENU
+CAPTION "Status des aktuellen Exports"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Anteil der bereits exportierten Informationen:", 
+                    IDT_COMMENT, 5, 10, 169, 10
+    DEFPUSHBUTTON   "&Abbrechen", IDCANCEL, 63, 45, 55, 14
+    CONTROL         "%3d%% ", IDG_STATUSGAUGE, "GaugeBox", 0x0000, 4, 23, 
+                    173, 14
+    CONTROL         "", -1, "Static", SS_GRAYFRAME, 2, 21, 177, 18
+END

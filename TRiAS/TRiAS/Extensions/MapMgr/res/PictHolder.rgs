@@ -1,0 +1,24 @@
+HKCR
+{
+	PictHolder.PictHolder.1 = s 'PictHolder Class'
+	{
+		CLSID = s '{B6A2F4A9-1AF7-11D2-8F7D-0060085FC1CE}'
+	}
+	PictHolder.PictHolder = s 'PictHolder Class'
+	{
+		CurVer = s 'PictHolder.PictHolder.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {B6A2F4A9-1AF7-11D2-8F7D-0060085FC1CE} = s 'PictHolder Class'
+		{
+			ProgID = s 'PictHolder.PictHolder.1'
+			VersionIndependentProgID = s 'PictHolder.PictHolder'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

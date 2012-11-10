@@ -1,0 +1,176 @@
+'\"t
+.if t .TH IMVFBRESIZE 3IM "August 25, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMVFBRESIZE 3IM "August 25, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImVfbResize - Change the resolution of a virtual frame buffer
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+ImVfb *ImVfbResize( srcVfb, algorithm, dstVfb, width, height )
+	ImVfb *srcVfb ;
+	int algorithm ;
+	ImVfb *dstVfb ;
+	int width, height ;
+.fi
+\fR
+.SH DESCRIPTION
+\fBImVfbResize\fR increases or decreases the
+width and height of a virtual frame buffer
+and returns a pointer to the resized destination VFB.
+.LP
+\fIsrcVfb\fR is the VFB to be copied and resized.  \fIsrcVfb\fR
+is unaltered by the operation.
+.LP
+\fIwidth\fR and \fIheight\fR are the dimensions of the destination
+resized VFB.
+.LP
+\fIalgorithm\fR is what algorithm to use to change the resolution.
+Legal values of \fIalgorithm\fR are:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.ne 1i
+.TS
+c c
+l l.
+Value	Meaning
+_
+\fBIMVFBBILINEAR\fR	Perform bilinear interpolation
+\fBIMVFBPIXELREP\fR	Perform pixel replication
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+\fIdstVfb\fR is the VFB to contain the resized image.  If \fIdstVfb\fR is
+the constant \fBIMVFBNEW\fR, a new VFB is allocated as \fIwidth x height\fR
+pixels with the same fields as the \fIsrcVfb\fR.  The new VFB is returned.
+.LP
+If \fIdstVfb\fR is not \fBIMVFBNEW\fR, it must be \fIwidth x height\fR
+in size and have the same fields as \fIsrcVfb\fR. 
+.SH NOTES
+.SS "Increasing Image Size"
+.LP
+Increasing the size of an image increases the number of pixels in the image,
+obviously.  The colors used by the new additional pixels are determined by
+the resolution change algorithm used.
+.LP
+\fBIMVFBPIXELREP\fR performs the pixel replication, a simple form of
+resolution change.
+Using pixel replication, doubling an image's size fills
+in new pixels by copying, or replicating, adjacent pixels.  For instance,
+an input image has the following scanline:
+.LP
+.in +0.5i
+\fBA C E G I K M\fR
+.in -0.5i
+.LP
+Each letter is a different color in the image.  When this
+image is doubled in size using pixel replication, each pixel on the
+scanline becomes two pixels, both with the same color.  The resized
+scanline will be:
+.LP
+.in +0.5i
+\fBA A C C E E G G I I K K M M\fR
+.in -0.5i
+.LP
+This has an effect similar to looking at the image with a magnifying glass.
+Small pixels become big pixels.  Small jaggies become big jaggies.
+.LP
+\fBIMVFBPIXELREP\fR may only be used when the new image width and
+height are each multiples of the source image width and height.  If the
+input \fIwidth\fR or \fIheight\fR are not multiples, \fBImVfbResize\fR
+returns \fBIMVFBNULL\fR and sets \fBImVfbErrNo\fR to an error code.
+.LP
+\fBIMVFBBILINEAR\fR performs bilinear interpolation to increase the image
+size.  This method resamples the source image by
+overlaying atop the source image a mathematical grid with \fIwidth x height\fR
+points.  This gives one
+grid point for each pixel in the destination image.  The source image is
+then sampled at each grid point to determine the destination image's
+pixel colors.  Where grid points lie directly over the center of a source
+pixel, the grid point's color is that of the source pixel.  Where grid points
+lie between source pixel centers, the grid point's color is determined by
+linearly interpolating between adjacent pixel colors (vertically and
+horizontally).  For instance, an input image has the following scanline:
+.LP
+.in +0.5i
+\fBA C E G I K M\fR
+.in -0.5i
+.LP
+Each letter is a different color in the image.  To double this image's size
+a mathematical grid will be overlayed.  Grid points will fall on the center
+of pixel 'A', half way between pixel 'A' and 'C', on the center of
+pixel 'C', and so on.  Destination image pixels for grid points centered
+on 'A', 'C', 'E', etc, will have those pixel's colors.  Destination image
+pixels for grid points in between 'A', 'C', 'E', etc, will have colors
+interpolated between 'A' and 'C', 'C' and 'E', and so on.  The resized
+scanline will be:
+.LP
+.in +0.5i
+\fBA B C D E F G H I J K L M N\fR
+.in -0.5i
+.LP
+When using bilinear interpolation, the resized larger image will appear
+blury.  Hard edges become softer and jaggies less obvious.
+.LP
+\fBIMVFBBILINEAR\fR may be used for scaling an image up by any arbitrary
+scaling factor.  It is not limited to multiples of the source image size,
+as is \fBIMVFBPIXELREP\fR.
+.SS "Decreasing Image Size"
+.LP
+Decreasing the size of an image decreases the number of pixels in the
+image, of course.  The choice of how to color the pixels that remain
+depends upon the resizing algorithm chosen.
+.LP
+\fBIMVFBPIXELREP\fR is only applicable to increasing image size.  The
+algorithm may not be used when the image size is being decreased.  If
+selected and \fIwidth\fR or \fIheight\fR are less than that of the
+source image,
+\fBImVfbResize\fR returns \fBIMVFBNULL\fR and sets \fBImVfbErrNo\fR
+to an error code.
+.LP
+\fBIMVFBBILINEAR\fR may be used to decrease an image's size using
+bilinear interpolation.  Pixel values in the resulting smaller image will
+be determined by interpolating between pixel values in the source image
+in much the same way used when increasing an image's size.
+.SH RETURNS
+Upon success, \fBImVfbResize\fR returns a pointer to the destination VFB.
+Upon failure, \fBIMVFBNULL\fR is returned, and \fBImErrNo\fR set
+to one of the following:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEBADALGORITHM	A legal algorithm was not specified
+IMEHEIGHT	Height less than source VFB on PIXELREP
+IMEMALLOC	Cannot allocate enough memory for the new VFB
+IMEPIXELREP	New size not exact multiple of source on PIXELREP
+IMEWIDTH	Width less than source VFB on PIXELREP
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH SEE ALSO
+\fBImIntro\fR (3M),
+\fBImErrNo\fR (3M),
+\fBimflip\fR (1IM),
+\fBimresize\fR (1IM),
+\fBimroll\fR (1IM),
+\fBimrotate\fR (1IM),
+\fBimshear\fR (1IM),
+\fBimscale\fR (1IM),
+\fBImVfbFlip\fR (3IM),
+\fBImVfbRoll\fR (3IM),
+\fBImVfbRotate\fR (3IM),
+\fBImVfbXShear\fR (3IM),
+\fBImVfbYShear\fR (3IM)
+.SH AUTHORS
+Mike Bailey, Dave Nadeau, and Chris Groening
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

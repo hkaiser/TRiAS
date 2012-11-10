@@ -1,0 +1,350 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Deutsch (Deutschland) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#if defined(_DEBUG)\r\n"
+    "1 TYPELIB ""Debug\\LineTools.tlb""\r\n"
+    "#else\r\n"
+    "1 TYPELIB ""Release\\LineTools.tlb""\r\n"
+    "#endif // defined(_DEBUG)\r\n"
+    "#include ""LineTools.rcv""\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_CODECHECK           REGISTRY DISCARDABLE    "CodeCheck.rgs"
+IDR_CCODESTAT           REGISTRY DISCARDABLE    "CCodeStat.rgs"
+IDR_CODELINE            REGISTRY DISCARDABLE    "CodeLine.rgs"
+IDR_CLSFYBYCODE         REGISTRY DISCARDABLE    "ClsfyByCode.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CCODESTAT_OPTIONS DIALOG DISCARDABLE  0, 0, 279, 144
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " Fehlerqualitätskontrolle ",IDC_STATIC,4,2,272,139
+    CONTROL         "Fehlender Code",IDC_NOKEY,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,19,78,71,10
+    CONTROL         "Falscher Code",IDC_SYNTAXERROR,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,19,89,65,10
+    CONTROL         "Doppelter Code",IDC_DUPLICATEKEY,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,19,100,80,10
+    CONTROL         "Falscher PolyGIS-Key [Originalcode]",IDC_OTHERFEATURE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,52,61,137,10
+    CONTROL         "Überlappung",IDC_MULTIGEOMETRY,"Button",BS_AUTOCHECKBOX | 
+                    WS_DISABLED | WS_TABSTOP,118,93,57,10
+    LTEXT           "Zu prüfender Code : ",IDC_STATIC,31,25,78,8
+    EDITTEXT        IDC_CONTROLCODE,124,24,143,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    EDITTEXT        IDC_CONTROLERROR,124,38,143,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "Fehlerattribut :",IDC_STATIC,32,38,54,8
+    CONTROL         "Mehrfache Geometrie",IDC_DUPLGEOMETRY,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,117,80,84,10
+    CONTROL         "UND",IDC_UNDVERKNUEPFUNG,"Button",BS_AUTORADIOBUTTON,
+                    215,69,32,10
+    CONTROL         "ODER",IDC_ODERVERKNUEPFUNG,"Button",BS_AUTORADIOBUTTON,
+                    215,82,37,10
+    GROUPBOX        " Fehlerart ",IDC_STATIC,9,50,261,64
+    GROUPBOX        "Verknüpfung",IDC_STATIC,205,57,57,37
+    EDITTEXT        IDC_ERRBESCHREIBUNG,10,117,258,20,ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
+    EDITTEXT        IDC_CONTROLORIGINAL,124,10,143,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "Originalcode",IDC_STATIC,31,13,70,8
+    CONTROL         "Fehlerstatistik",IDC_ERRORSTATIST,"Button",
+                    BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,206,100,59,10
+END
+
+IDD_CODELINE_OPTIONS DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " Strassenkontrolle ",IDC_STATIC,6,0,262,89
+    CONTROL         "&Nicht referenzierte Strassen ",IDC_CHECKFIRSTCTRL,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,39,102,10
+    CONTROL         "&Atrributkontrolle [Bemerkung_Außendienst,Bemerkung_Datenbank]",
+                    IDC_CHECKFEATURE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    18,56,239,10
+    CONTROL         "&Interne Strassen [ 90..., 99...]",IDC_CHECKINTERN,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,73,146,10
+    EDITTEXT        IDC_LINEDESCRIPTION,6,91,267,49,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_READONLY | NOT WS_BORDER
+    LTEXT           "GCS-Identifikation :",IDC_STATIC,29,18,66,8
+    EDITTEXT        IDC_LINEGCSCONTROL,121,15,92,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+END
+
+IDD_CLSFYBYCODE_OPTIONS DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " Punkt-Selektion",IDC_SELECTCAPTION,4,7,266,97
+    CONTROL         "Selektion nach Ortsteil",IDC_AREACONSTRUCTION,"Button",
+                    BS_AUTORADIOBUTTON,23,65,95,10
+    CONTROL         "Selektion nach Strassencode",IDC_LINECONSTRUCTION,
+                    "Button",BS_AUTORADIOBUTTON,139,65,114,10
+    EDITTEXT        IDC_HELPCONSTRUCTION,7,111,260,25,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | NOT 
+                    WS_BORDER
+    LTEXT           "GCO-Identifikation :",IDC_STATIC,41,29,78,8
+    EDITTEXT        IDC_GCOIDENT,128,27,111,14,ES_AUTOHSCROLL | ES_READONLY
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// HTML
+//
+
+CODECHECKDATAOKS.XML    HTML    DISCARDABLE     "Res\\CodeCheckDataOKS.xml"
+CODECHECKDATAORWND.XML  HTML    DISCARDABLE     "Res\\CodeCheckDataORWnd.xml"
+GEOCOMPONENTSEQUENCE.DTD HTML    DISCARDABLE     "Res\\GeoComponentSequence.dtd"
+CODECHECKGIOKS.XML      HTML    DISCARDABLE     "Res\\CodeCheckGIOKS.xml"
+CODECHECKGIORWND.XML    HTML    DISCARDABLE     "Res\\CodeCheckGIORWnd.xml"
+CODECHECKMULTIOKS.XML   HTML    DISCARDABLE     "Res\\CodeCheckMultiOKS.xml"
+CODECHECKMULTIORWND.XML HTML    DISCARDABLE     "Res\\CodeCheckMultiORWnd.xml"
+LINECHECKDATAOKS.XML    HTML    DISCARDABLE     "Res\\LineCheckDataOKS.xml"
+LINECHECKDATAORWND.XML  HTML    DISCARDABLE     "Res\\lineCheckdataORWnd.xml"
+CLASSIFYDATAOKS.XML     HTML    DISCARDABLE     "Res\\ClassifyDataOKS.xml"
+CLASSIFYDATAORWND.XML   HTML    DISCARDABLE     "Res\\ClassifyDataORWnd.xml"
+CLASSIFYWINDOWOKS.XML   HTML    DISCARDABLE     "Res\\ClassifyWindowOKS.xml"
+CLASSIFYWINDOWORWND.XML HTML    DISCARDABLE     "Res\\ClassifyWindowORWnd.xml"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU1 MENU DISCARDABLE 
+BEGIN
+    POPUP "GCO-Test"
+    BEGIN
+        MENUITEM "Sachdaten-Test ...",          IDM_CODECHECK
+        MENUITEM "Globaler Test ( Code und Geometrie) ...", 
+                                                IDM_CODECHECKMULTI
+        MENUITEM "Geometrietest ...",           IDM_CHECKGEOMETRIE
+        MENUITEM SEPARATOR
+        MENUITEM "&Strassentest ...",           IDM_LINECHECK
+        MENUITEM "GCA-Gebiete ...",             IDM_CLASSIFY
+        MENUITEM "GCA-&Klassifizierung ...",    IDM_CLASSIFYWINDOW
+    END
+END
+
+IDR_MENU2 MENU DISCARDABLE 
+BEGIN
+    POPUP "GCO-Test"
+    BEGIN
+        MENUITEM "Sachdaten-Test ...",          IDM_CODECHECK
+        MENUITEM "Globaler Test ( Code und Geometrie) ...", 
+                                                IDM_CODECHECKMULTI
+        MENUITEM "Geometrietest ...",           IDM_CHECKGEOMETRIE
+        MENUITEM SEPARATOR
+        MENUITEM "&Strassentest ...",           IDM_LINECHECK
+        MENUITEM "GCA-Gebiete ...",             IDM_CLASSIFY
+        MENUITEM "GCA-Klassifizierung ...",     IDM_CLASSIFYWINDOW
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_CCODESTAT_OPTIONS, DIALOG
+    BEGIN
+        RIGHTMARGIN, 276
+        BOTTOMMARGIN, 140
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PROJNAME            "LineTools"
+    IDS_LONGCLASSNAME       "Prüfroutinen zum GCO-Test"
+    IDS_DESCRIPTION_CCODESTAT "Ausweis der Fehlerarten"
+    IDS_DESCRIPTION_CODELINE "Strassentest"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DESCRIPTION_CODECHECK "GCO-Test"
+    IDS_DESCRIPTION_CLSFYBYCODE "GCA-Hüllen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MENUENTRY           "&GCO-Test"
+    IDS_ORMENUENTRY         "G&CO-Test"
+    IDS_SHOWXMLERROR_CAP    "Fehler beim Datenexport"
+    IDS_NOXMLDOMPARSER      "Die für die Schlüsselprüfung notwendigen Komponenten konnten nicht gefunden werden.\nÜberprüfen und wiederholen Sie gegebenenfalls die Installation von %s."
+    IDS_CODECHECKDATA       "GCO-Test"
+    IDS_CODECHECKCAP        "Prüfung des GCO-Codes"
+    IDS_ORCODECHECKCAP      "Prüfung von GCO-Codes"
+    IDS_NOWORKING           "Beim Laden der Prüfroutinen traten Fehler auf."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_OBJECTGCSCODE       "GCO-Code"
+    IDS_DBUSERNAME          "TRiASUserName"
+    IDS_GCOERRORCODE        "GCO-Fehler"
+    IDS_CODECHECKMULTICAP   "Globaler GCO-Test "
+    IDS_ORCODECHECKMULTICAP "Globaler GCO-Test"
+    IDS_CHECKGEOMETRIECAP   "GCO-Geometrietest"
+    IDS_ORCHECKGEOMETRIECAP "GCO-Geometrietest"
+    IDS_CODECHECKXML        "CodeCheckDataOKS.xml"
+    IDS_ORCODECHECKXML      "CodeCheckDataORWnd.xml"
+    IDS_CHECKGEOMETRIEXML   "CodeCheckGIOKS.xml"
+    IDS_ORCHECKGEOMETRIEXML "CodeCheckGIORWnd.xml"
+    IDS_CODECHECKMULTIXML   "CodeCheckMultiOKS.xml"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ORCODECHECKMULTIXML "CodeCheckMultiORWnd.xml"
+    IDS_LINKFEATURE         "LinkFeature"
+    IDS_ERRORCODEFEATURE    "ErrorcodeFeature"
+    IDS_LINKFEATUREKEY      "GCO-Code"
+    IDS_ERRORCODEFEATUREKEY "GCO-Fehler"
+    IDS_GCAVORSPANN         "GCA-Vorspann"
+    IDS_GCOCODE             "GCOCode"
+    IDS_GCOCODEKEY          "GCO-Code"
+    IDS_PROJECTLAYER        "TRiAS Technology"
+    IDS_UNDBESCHREIBUNG     "Alle markierten Fehlerarten treten in einem Objekt gleichzeitig auf !"
+    IDS_CODEWIDERSPRUCH     "UND-Verknüpfung : Die ausgewählten Fehlerarten haben sich widersprochen !"
+    IDS_ODERBESCHREIBUNG    "Alle Objekte, die wenigstens eine dieser markierten Fehlerarten enthalten !"
+    IDS_ERRORKEY01          "Fehlender Code"
+    IDS_ERRORKEY02          "Falscher Code"
+    IDS_ERRORKEY03          "Doppelter Code"
+    IDS_ERRORKEY04          "Falscher PolyGIS-Key"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ERRORKEY05          "Mehrfache Geometrie"
+    IDS_ERRORKEY06          "Überlappung"
+    IDS_ERRORCODESTRING     "_Text"
+    IDS_GCORIGINAL          "GCO-Rohdaten"
+    IDS_GCORIGINALKEY       "GCO-Code Original"
+    IDS_LINEFEATBEMA        "Bemerkung_Außendienst"
+    IDS_LINEFEATBEMD        "Bemerkung_Datenbank"
+    IDS_LINECHECKCAP        "Prüfung der Strassen"
+    IDS_ORLINECHECKCAP      "Prüfung von Strassen"
+    IDS_LINECHECKXML        "LineCheckDataOKS.xml"
+    IDS_ORLINECHECKXML      "LineCheckDataORWnd.xml"
+    IDS_HELPNOTCTRL         "Alle ausgewählten Objekte werden auf nicht referenzierte Objekte (*_nr,*_nrb,*_Kontrolle)  untersucht.                                                                   "
+    IDS_HELPFEATURE         "Kontrolle aller ausgewählten Objekte, ob diese noch die Attribute ""Bemerkung_Außendienst"" und/oder ""Bemerkung_Datenbank"" besitzen.                  "
+    IDS_CLASSIFYCAP         "Bilden von GCA-Hüllen"
+    IDS_ORCLASSIFYCAP       "Bilden von GCA-Hüllen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_HELPINTERN          "Recherche nach intern geschlüsselten Straßen (nach allen angegebenen Linienobjekten, die beim Straßencode mir '90' bzw. '99' beginnen).                                                               "
+    IDS_CLASSIFYWINDOWXML   "ClassifyWindowOKS.xml"
+    IDS_ORCLASSIFYWINDOWXML "ClassifyWindowORWnd.xml"
+    IDS_CLASSIFYWINDOWCAP   "GCA-Klassifikation"
+    IDS_ORCLASSIFYWINDOWCAP "GCA-Klassifikation"
+    IDS_HELPAREACTRL        "Punkte mit gleichem Ortsteilcode werden klassifiziert."
+    IDS_HELPLINECTRL        "Punkte mit gleichem Straßencode werden klassifiziert."
+    IDS_TESTUNREF           "Noch weitere unreferenzierte Straßen sind im Projekt vorhanden!"
+    IDS_LINECAPTION         "Linien-Selektion"
+    IDS_MULTICAPTION        "Punkt/Linien-Selektion"
+    IDS_HELPLINEAREACTRL    "Straßen mit gleichem Ortsteilcode werden klassifiziert."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CLASSIFYXML         "ClassifyDataOKS.xml"
+    IDS_ORCLASSIFYXML       "ClassifyDataORWnd.xml"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_HELPLINELINECTRL    "Straßen mit gleichem Straßencode werden klassifiziert."
+    IDS_HELPMULTIAREACTRL   "Punkte/Straßen mit gleichem Ortsteilcode werden klassifiziert."
+    IDS_HELPMULTILINECTRL   "Punkte/Straßen mit gleichem Straßenlcode werden klassifiziert."
+    IDS_ERRORLINE           " %20s :\t%ld Objekte\n"
+    IDS_HEADERLINE          "Gesamtanzahl der durchsuchten Objekte :\t%ld\n\n"
+    IDS_EXITLINE            "Keine Objekte mit Fehlern gefunden !"
+END
+
+#endif    // Deutsch (Deutschland) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#if defined(_DEBUG)
+1 TYPELIB "Debug\LineTools.tlb"
+#else
+1 TYPELIB "Release\LineTools.tlb"
+#endif // defined(_DEBUG)
+#include "LineTools.rcv"
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

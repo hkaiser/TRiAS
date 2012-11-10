@@ -1,0 +1,163 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""UnRegTRiAS.rcv""\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_REGISTRYPROGRESSEND DIALOG DISCARDABLE  0, 0, 257, 63
+STYLE DS_SYSMODAL | DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | 
+    WS_CAPTION
+CAPTION "%s - Aktualisierung der Systemregistrierung"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDCANCEL,188,39,55,14
+    CTEXT           "Die Registrierung von %s wurde erfolgreich abgeschlossen.",
+                    IDC_REGISTERENDTEXT,48,10,195,18
+    CONTROL         108,IDC_STATIC,"Static",SS_BITMAP,14,10,26,24
+END
+
+IDD_REGISTRYPROGRESS_AVI DIALOG DISCARDABLE  0, 0, 257, 63
+STYLE DS_SYSMODAL | DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | 
+    WS_CAPTION
+CAPTION "%s - Aktualisierung der Systemregistrierung"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Progress1",IDC_PROGRESS,"msctls_progress32",PBS_SMOOTH,
+                    14,41,229,8
+    CTEXT           "Die Systemeinträge für %s und die installierten Zusatzmodule werden aktualisiert.",
+                    IDC_REGISTERTEXT,48,10,195,17
+    CTEXT           "Dieser Prozeß kann einige Minuten dauern. Bitte warten Sie.",
+                    IDC_REGISTERTEXT2,48,28,195,8
+    LTEXT           "",IDC_ACTFILENAME,14,51,229,8
+    CONTROL         "Animate1",IDC_ANIMATE_GLOBE,"SysAnimate32",
+                    ACS_TRANSPARENT | ACS_AUTOPLAY,14,12,26,23
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_REGISTRYPROGRESSEND, DIALOG
+    BEGIN
+        LEFTMARGIN, 3
+        RIGHTMARGIN, 253
+        VERTGUIDE, 14
+        VERTGUIDE, 40
+        VERTGUIDE, 48
+        VERTGUIDE, 243
+        TOPMARGIN, 4
+        BOTTOMMARGIN, 59
+        HORZGUIDE, 10
+        HORZGUIDE, 53
+    END
+
+    IDD_REGISTRYPROGRESS_AVI, DIALOG
+    BEGIN
+        LEFTMARGIN, 4
+        RIGHTMARGIN, 253
+        VERTGUIDE, 14
+        VERTGUIDE, 40
+        VERTGUIDE, 48
+        VERTGUIDE, 243
+        TOPMARGIN, 4
+        BOTTOMMARGIN, 59
+        HORZGUIDE, 10
+        HORZGUIDE, 41
+        HORZGUIDE, 49
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AVI
+//
+
+IDR_AVI_REGISTER        AVI     DISCARDABLE     "RES\\RegServer.avi"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_REGSERVER           BITMAP  DISCARDABLE     "RES\\RegServer.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_DEINSTALL           ICON    DISCARDABLE     "RES\\Deinstal.ico"
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "UnRegTRiAS.rcv"
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

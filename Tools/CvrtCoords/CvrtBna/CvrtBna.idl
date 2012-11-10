@@ -1,0 +1,31 @@
+// CvrtBna.idl : IDL source for CvrtBna.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (CvrtBna.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#define _NO_LIBRARY
+#include "../CvrtCoords.idl"
+
+[
+	uuid(35BF8356-1570-44C7-AAB4-8830576D7302),
+	version(1.0),
+	helpstring("CvrtBna 1.0 Type Library")
+]
+library CvrtBna
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(6CD362C8-AD9E-4A03-818C-830ED299F5BF),
+		helpstring("ConvertBnaCoords Class")
+	]
+	coclass ConvertBnaCoords
+	{
+		[default] interface ITransformLineOfText;
+	};
+};

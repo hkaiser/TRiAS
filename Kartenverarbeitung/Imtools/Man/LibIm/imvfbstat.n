@@ -1,0 +1,88 @@
+'\"t
+.if t .TH IMVFBSTAT 3IM "December 2, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY" 
+.if n .TH IMVFBSTAT 3IM "December 2, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImVfbStat - compute image color statistics
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+float *ImVfbStat( vfb, fieldMask, stats )
+	ImVfb *vfb;
+	int fieldMask;
+	float stats[IMMAXNUMSTATS];
+.fi
+\fR
+.SH DESCRIPTION
+\fBImVfbData\fR computes a variety of simple statistics on pixels in
+the \fIvfb\fR.  Statistics are returned as an array of values in \fIstats\fR,
+a pointer to which is returned by the function.
+.LP
+Statistics are computed on the single field of the image selected
+by \fIfieldMask\fR.  Legal values of \fIfieldMask\fR include:
+.RS 0.5i
+.LP
+.TS
+l l.
+\fIfieldMask\fR	\fBMeaning\fR
+_
+\fBIMALPHA\fR	Compute for the alpha field
+\fBIMMONO\fR	Compute for the monochrome field
+\fBIMGRAY\fR	Compute for the grayscale field
+\fBIMINDEX8\fR	Compute for the index8 field
+\fBIMINDEX16\fR	Compute for the index16 field
+_
+\fBIMRED\fR	Compute for the red field
+\fBIMGREEN\fR	Compute for the green field
+\fBIMBLUE\fR	Compute for the blue field
+_
+\fBIMHUE\fR	Compute for the virtual hue field
+\fBIMSATURATION\fR	Compute for the virtual saturation field
+\fBIMINTENSITY\fR	Compute for the virtual intensity field
+.TE
+.RE
+.LP
+Other VFB fields are currently not supported.
+.LP
+The image must have the field selected by \fIfieldMask\fR or \fBImVfbStat\fR
+will return an error.  Statistics on HSI virtual fields, however, may be
+computed for any RGB image.
+.LP
+\fBImVfbStat\fR computes the following statistics and returns them in the
+\fIstats\fR array:
+.RS 0.5i
+.LP
+.TS
+l l.
+\fBArray Index	Meaning\fR
+_
+\fBIMMAXIMUM\fR	Maximum field value
+\fBIMMINIMUM\fR	Minimum field value
+\fBIMUNIQUEVAL\fR	Number of unique field values
+.TE
+.RE
+.SH NOTES
+Additional statistics are planned for the future.  Users of \fBImVfbStat\fR
+should allocate the incomming \fIstats\fR array as having at least
+\fBIMMAXNUMSTATS\fR entries in order to support future statistics and
+avoid core dumps.
+.LP
+Extensive color usage information may be had by calling \fBImVfbHist\fR(3IM)
+to compute a field histogram of the image.  See the \fBImVfbHist\fR(3IM)
+man page for more details.
+.SH SEE ALSO
+\fBimhist\fR(1IM),
+\fBImIntro\fR(3IM),
+\fBImErrNo\fR(3IM),
+\fBImVfbAlloc\fR(3IM),
+\fBImVfbHist\fR(3IM),
+\fBImVfbQFields\fR(3IM)
+.SH AUTHOR
+Chris Groening and Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

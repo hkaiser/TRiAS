@@ -1,0 +1,53 @@
+[Header]
+Version=1.01
+Anmerkung=Neue Materialien für den TKV-Import
+Typ=ADF_NEU
+[Header_Ende]
+
+; Hier wird definiert, welche Felder in dieser Schnittstelle vorkommen
+[Felder]
+Tabelle=Material
+AnzFelder= 5
+Name1=Name
+Name2=NameLang
+Name3=ZBRBF
+Name4=Typ
+Name5=Schluessel
+
+; erstes Feld ist der Name des Materials
+; Dies ist als ID Feld definiert, damit bei gleichlattendem Namen der Datensatz abgewiesen wird
+; Das Namensfeld steht in Spalte 1-25
+[Feld_Name]
+Name=Name
+IDFeld=Ja
+PosAnfang=1
+PosLänge=25
+
+[Feld_NameLang]
+Name=NameLang
+IDFeld=Nein
+PosAnfang=25
+PosLänge=50
+
+[Feld_Schluessel]
+Name=Schluessel
+IDFeld=Nein
+PosAnfang=1
+PosLänge=10
+
+; Der Typ gibt an, um welche Art Datensatz es sich handelt. 2 bedeutet anwenderdefiniert.
+; Der Eintrag Fixedvalue gibt an, daß der Inhalt nicht unten in den Datenspelten zu suchen ist, sondern der konstante Wert 2 benutzt werden soll.
+[Feld_Typ]
+Name=IDTYP
+IDFeld=Nein
+FIXEDVALUE=2
+
+[Feld_ZBRBF]
+Name=ZBRBF
+IDFeld=Nein
+FIXEDVALUE=1.0
+
+; hier kommen die Daten
+[Daten]
+0                        z.Z unbekannt             
+[Daten_Ende]

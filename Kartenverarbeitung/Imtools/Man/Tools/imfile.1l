@@ -1,0 +1,198 @@
+
+
+
+IMFILE(1IM)                IMAGE TOOLS                IMFILE(1IM)
+
+
+
+NAME
+     imfile  -  Discerns the image format of a file or files
+
+SYNOPSIS
+     imfile [_o_p_t_i_o_n_s] _f_i_l_e_n_a_m_e_1 _f_i_l_e_n_a_m_e_2 ...
+
+DESCRIPTION
+     imfile attempts to discern the image  format  of  each  file
+     listed on the command line, much like the UNIX file(1) util-
+     ity.  imfile outputs the name of the file and its image file
+     format to stdout.
+
+OPTIONS
+     Invoke imfile with one or more  filenames,  optionally  pre-
+     ceded by the -infile argument:
+
+          imfile -infile picture.pix newpic.ras
+              or
+          imfile picture.pix newpic.ras
+
+     imfile checks each file for a magic  number  and  file  name
+     extension,  then  prints to stdout its conclusions about the
+     file's format.  When the -long option is given, imfile reads
+     in  each image file and prints to stdout additional informa-
+     tion about the file.  -long information includes the  file's
+     format  and  format  version  (if applicable), the number of
+     images contained in the file, image resolution,  image  type
+     (color  indexed,  RGB, etc), the size of its color table (if
+     any), the type of image compression used by  the  file,  and
+     other data relevant to the particular image file format.
+
+     If the file being queried is compressed (e.g. with .Z,  .gz,
+     or   .z  compression),  then  imfile  will  not  attempt  to
+     uncompress it.   Instead it will realize that  the  file  is
+     compressed,  (by  using  the file's magic number or filename
+     suffix),  and  then  announce  that  you  are   querying   a
+     compressed  file.  If you wish to uncompress a file and dis-
+     cern its format, then the  -long option must be used.
+
+     imfile also recognizes the following standard SDSC options:
+
+     -feedback
+          Creates a software feedback (bug report)  form  in  the
+          file imfile.fbk.0.
+
+     -fullhelp
+          Displays a detailed list of the arguments  and  how  to
+          use imfile.
+
+     -help
+          Displays an abbreviated list of the arguments  and  how
+          to use imfile.
+
+
+
+SDSC               Last change: June 27, 1995                   1
+
+
+
+
+
+
+IMFILE(1IM)                IMAGE TOOLS                IMFILE(1IM)
+
+
+
+     -register
+          Creates a software-user registration form in  the  file
+          imfile.reg.0.
+
+     -version
+          Displays the version number and copyright for imfile.
+
+     All options can be abbreviated to the first few unique char-
+     acters.
+
+NOTES
+     imfile discerns the type of a file  first  by  checking  the
+     file's  magic  number  against a magic number list for known
+     image formats and file compression formats.   If  the  magic
+     number  doesn't match any of those in the list, imfile looks
+     at the filename's suffix (the characters following the  last
+     period  in  the  filename)  and  checks it against a list of
+     known image filename suffixes and file compression suffixes.
+
+     If imfile cannot determine the format of a file, it  outputs
+     the string "Unknown image file format."
+
+EXAMPLES
+     Determine the types of three files:
+
+          imfile thing1.pix thing2.hdf dr.who
+
+     The above command outputs:
+
+          thing1.pix:   'pix', Alias image file, Alias Research, Inc.
+          thing2.hdf:   'hdf', Hierarchical Data File, NCSA
+          dr.who:       Unknown image file format
+
+
+     Display specific information about  two  image  files  using
+     -long:
+
+          imfile walking.pict dolphin.pix
+
+     The above command outputs:
+
+          walking.pict:   'pict', Apple Macintosh QuickDraw/PICT file, Apple Computer, Inc.
+                          Version:                              2 (32-bit QuickDraw PICT2)
+                          Byte Order:                           Most Significant Byte First
+                          Resolution:                           646 x 470
+                          Type:                                 8-bit Color Indexed
+                          Color Table:                          237 Entries
+                          Compression Type:                     Apple Macintosh PackBits
+          dolphin.pix:    'pix', Alias image file, Alias Research, Inc.
+                          Byte Order:                           Most Significant Byte First
+                          Resolution:                           420 x 420
+                          Type:                                 24-bit RGB
+
+
+
+2                  Last change: June 27, 1995                SDSC
+
+
+
+
+
+
+IMFILE(1IM)                IMAGE TOOLS                IMFILE(1IM)
+
+
+
+                          Compression Type:                     Run Length Encoded (RLE)
+
+
+SEE ALSO
+     imformats (1IM)
+
+     For information on SDSC's image library, see imintro(3IM).
+
+AUTHOR
+     Dave Nadeau, Brian Duggan
+     San Diego Supercomputer Center
+
+     See the individual file format man pages for the authors  of
+     the  underlying  format  read  and write code.  The names of
+     these man pages begin with the letters "im" followed by  the
+     format  name.  For example, the name of the TIFF man page is
+     imtiff.  To display it, enter man imtiff.
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SDSC               Last change: June 27, 1995                   3
+
+
+

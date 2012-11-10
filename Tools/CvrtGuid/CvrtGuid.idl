@@ -1,0 +1,42 @@
+// CvrtGuid.idl : IDL source for CvrtGuid.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (CvrtGuid.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(9DA6B9BD-CF11-46BD-8C88-5460E1FE6A5E),
+	dual,
+	helpstring("IConvertGuid Interface"),
+	pointer_default(unique)
+]
+interface IConvertGuid : IDispatch
+{
+		[id(1), helpstring("method CreateGuid32String")] HRESULT CreateGuid32String([out, retval] BSTR *GuidStr);
+		[id(2), helpstring("method GuidToGuid32String")] HRESULT GuidToGuid32String([in] BSTR Guid, [out, retval] BSTR *GuidStr);
+		[id(3), helpstring("method Guid32StringToGuid")] HRESULT Guid32StringToGuid([in] BSTR GuidStr, [out, retval] BSTR *Guid);
+};
+
+[
+	uuid(06C1774B-EDF4-4872-B090-806AFA9D8EA7),
+	version(1.0),
+	helpstring("CvrtGuid 1.0 Type Library")
+]
+library ConvertGuid
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(0237BF15-6F66-4C18-9D92-5C408C0492CE),
+		helpstring("ConvertGuid Class")
+	]
+	coclass ConvertGuid
+	{
+		[default] interface IConvertGuid;
+	};
+};

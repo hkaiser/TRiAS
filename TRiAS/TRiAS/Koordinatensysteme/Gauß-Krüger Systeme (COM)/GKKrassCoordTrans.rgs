@@ -1,0 +1,24 @@
+HKCR
+{
+	TRiASCTF.GKKrassCoordTrans.1 = s 'Gauß-Krüger Koordinatentransformation Krassovsky-Ellipsoid'
+	{
+		CLSID = s '{4EDBD3A4-AFA2-11d2-8CEC-006097A8F384}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {4EDBD3A4-AFA2-11d2-8CEC-006097A8F384} = s 'Gauß-Krüger Koordinatentransformation Krassovsky-Ellipsoid'
+		{
+			ProgID = s 'TRiASCTF.GKKrassCoordTrans.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C3-3123-101C-BB62-00AA0018497C}
+			}
+			ForceRemove OldName = s 'KRASSGK'
+		}
+	}
+}

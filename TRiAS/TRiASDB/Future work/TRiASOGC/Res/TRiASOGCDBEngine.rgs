@@ -1,0 +1,30 @@
+HKCR
+{
+	TRiASDB.TRiASOGC.DBEngine.1 = s 'OGC kompatibler Datenzugriff'
+	{
+		CLSID = s '{FBDABADD-4C2B-42B1-B6E0-C21F7CB6FDBF}'
+	}
+	TRiASDB.TRiASOGC.DBEngine = s 'OGC kompatibler Datenzugriff'
+	{
+		CLSID = s '{FBDABADD-4C2B-42B1-B6E0-C21F7CB6FDBF}'
+		CurVer = s 'TRiASDB.TRiASOGC.DBEngine.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove '{FBDABADD-4C2B-42B1-B6E0-C21F7CB6FDBF}' = s 'OGC kompatibler Datenzugriff'
+		{
+			ProgID = s 'TRiASDB.TRiASOGC.DBEngine.1'
+			VersionIndependentProgID = s 'TRiASDB.TRiASOGC.DBEngine'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C6-3123-101C-BB62-00AA0018497C}
+			}
+			'TypeLib' = s '{73CA6784-8733-40E6-9E4D-8936D3763ABC}'
+		}
+	}
+}

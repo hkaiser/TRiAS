@@ -1,0 +1,211 @@
+# -*- makefile -*-
+# Makefile for Generic Unix with GCC compiler
+
+# Place where to copy GastDB header files
+INCSPATH=/usr/local/gigabase/inc 
+
+#Place where to copy Gigabase library
+LIBSPATH=/usr/local/gigabase/lib
+
+#Place where to copy Gigabase subsql utility
+BINSPATH=/usr/local/gigabase/bin
+
+OBJS = class.o compiler.o database.o hashtab.o file.o symtab.o btree.o \
+	cursor.o query.o pagepool.o wwwapi.o unisock.o
+
+CLI_OBJS = cli.o unisock.o 
+
+INCS = gigabase.h stdtp.h class.h database.h cursor.h reference.h wwwapi.h \
+	array.h file.h hashtab.h btree.h sync.h query.h datetime.h pagepool.h
+
+GB_LIB = libgigabase.a 
+CLI_LIB = libcli.a
+EXES = subsql
+
+EXAMPLES = guess testdb testddl testperf testsync testiref testtrav testidx clitest
+
+WEB_EXAMPLES = cgistub bugdb clidb
+
+CC = g++
+#DEFS =-DTHROW_EXCEPTION_ON_ERROR -DPTHREADS -D_REENTRANT -DUSE_QUEUE_MANAGER
+DEFS = -DPTHREADS -D_REENTRANT -DUSE_QUEUE_MANAGER
+
+CFLAGS = -c -Wall -O5 -g $(DEFS)
+#CFLAGS = -c -Wall -O0 -g $(DEFS)
+#CFLAGS = -c -Wall -O0 -DDEBUG=DEBUG_TRACE -g $(DEFS)
+
+LD = $(CC)
+LDFLAGS = -g
+
+AR = ar
+ARFLAGS = -cru
+
+RANLIB = true
+
+STDLIBS = -lm -lpthread
+#STDLIBS = -lm
+
+SOCKLIBS =
+#SOCKLIBS = -lnsl -lsocket 
+
+all: $(GB_LIB) $(CLI_LIB) $(EXES) $(EXAMPLES)
+
+www: $(GB_LIB) $(WEB_EXAMPLES)
+
+class.o: class.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) class.cpp
+
+compiler.o: compiler.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) compiler.cpp
+
+query.o: query.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) query.cpp
+
+database.o: database.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) database.cpp
+
+cursor.o: cursor.cpp compiler.h compiler.d $(INCS)
+	$(CC) $(CFLAGS) cursor.cpp
+
+hashtab.o: hashtab.cpp $(INCS)
+	$(CC) $(CFLAGS) hashtab.cpp
+
+pagepool.o: pagepool.cpp $(INCS)
+	$(CC) $(CFLAGS) pagepool.cpp
+
+file.o: file.cpp $(INCS)
+	$(CC) $(CFLAGS) file.cpp
+
+symtab.o: symtab.cpp symtab.h $(INCS)
+	$(CC) $(CFLAGS) symtab.cpp
+
+btree.o: btree.cpp $(INCS)
+	$(CC) $(CFLAGS) btree.cpp
+
+wwwapi.o: wwwapi.cpp wwwapi.h sockio.h stdtp.h
+	$(CC) $(CFLAGS) wwwapi.cpp
+
+unisock.o: unisock.cpp unisock.h sockio.h stdtp.h
+	$(CC) $(CFLAGS) unisock.cpp
+
+cli.o: cli.cpp cli.h cliproto.h
+	$(CC) $(CFLAGS) cli.cpp
+
+libgigabase.a: $(OBJS)
+	rm -f libgigabase.a
+	$(AR) $(ARFLAGS) libgigabase.a $(OBJS)
+	$(RANLIB) libgigabase.a
+
+libcli.a: $(CLI_OBJS)
+	rm -f libcli.a
+	$(AR) $(ARFLAGS) libcli.a $(CLI_OBJS)
+	$(RANLIB) libcli.a
+
+clitest.o: clitest.c cli.h
+	$(CC) $(CFLAGS) clitest.c
+
+clitest: clitest.o $(CLI_LIB)
+	$(LD) $(LDFLAGS) -o clitest clitest.o $(CLI_LIB) $(STDLIBS) $(SOCKLIBS)
+
+subsql.o: subsql.cpp subsql.h compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) subsql.cpp
+
+server.o: server.cpp server.h cli.h cliproto.h subsql.h compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) server.cpp
+
+subsql: subsql.o server.o $(GB_LIB)
+	$(LD) $(LDFLAGS) -o subsql subsql.o server.o $(GB_LIB) $(STDLIBS) $(SOCKLIBS)
+
+bugdb.o: bugdb.cpp bugdb.h $(INCS)
+	$(CC) $(CFLAGS) bugdb.cpp
+
+bugdb: bugdb.o  $(GB_LIB)
+	$(LD) $(LDFLAGS) -o bugdb bugdb.o $(GB_LIB) $(STDLIBS) $(SOCKLIBS)
+
+clidb.o: clidb.cpp clidb.h $(INCS)
+	$(CC) $(CFLAGS) clidb.cpp
+
+clidb: clidb.o  $(GB_LIB)
+	$(LD) $(LDFLAGS) -o clidb clidb.o $(GB_LIB) $(STDLIBS) $(SOCKLIBS)
+
+cgistub.o: cgistub.cpp stdtp.h sockio.h
+	$(CC) $(CFLAGS) cgistub.cpp 
+
+cgistub: cgistub.o
+	$(LD) $(LDFLAGS) -o cgistub cgistub.o $(GB_LIB) $(STDLIBS) $(SOCKLIBS)
+
+guess.o: guess.cpp $(INCS)
+	$(CC) $(CFLAGS) guess.cpp 
+
+guess: guess.o $(GB_LIB)
+	$(LD) $(LDFLAGS) -o guess guess.o $(GB_LIB) $(STDLIBS)
+
+testdb.o: testdb.cpp $(INCS)
+	$(CC) $(CFLAGS) testdb.cpp 
+
+testdb: testdb.o $(GB_LIB)
+	$(LD) $(LDFLAGS) -o testdb testdb.o $(GB_LIB) $(STDLIBS)
+
+testddl.o: testddl.cpp $(INCS)
+	$(CC) $(CFLAGS) testddl.cpp 
+
+testddl: testddl.o $(GB_LIB)
+	$(LD) $(LDFLAGS) -o testddl testddl.o $(GB_LIB) $(STDLIBS)
+
+testperf.o: testperf.cpp $(INCS)
+	$(CC) $(CFLAGS) testperf.cpp 
+
+testperf: testperf.o $(GB_LIB)
+	$(LD) $(LDFLAGS) -o testperf testperf.o $(GB_LIB) $(STDLIBS)
+
+testidx.o: testidx.cpp $(INCS)
+	$(CC) $(CFLAGS) testidx.cpp 
+
+testidx: testidx.o $(GB_LIB)
+	$(LD) $(LDFLAGS) -o testidx testidx.o $(GB_LIB) $(STDLIBS)
+
+testsync.o: testsync.cpp $(INCS)
+	$(CC) $(CFLAGS) testsync.cpp 
+
+testsync: testsync.o $(GB_LIB)
+	$(LD) $(LDFLAGS) -o testsync testsync.o $(GB_LIB) $(STDLIBS)
+
+testiref.o: testiref.cpp $(INCS)
+	$(CC) $(CFLAGS) testiref.cpp 
+
+testiref: testiref.o $(GB_LIB)
+	$(LD) $(LDFLAGS) -o testiref testiref.o $(GB_LIB) $(STDLIBS)
+
+testtrav.o: testtrav.cpp $(INCS)
+	$(CC) $(CFLAGS) testtrav.cpp 
+
+testtrav: testtrav.o $(GB_LIB)
+	$(LD) $(LDFLAGS) -o testtrav testtrav.o $(GB_LIB) $(STDLIBS)
+
+
+
+install: subsql $(GB_LIB)
+	mkdir -p $(INCSPATH)
+	cp $(INCS) $(INCSPATH)
+	mkdir -p $(LIBSPATH)
+	cp $(GB_LIB) $(CLI_LIB) $(LIBSPATH)
+	mkdir -p $(BINSPATH)
+	cp subsql  $(BINSPATH)
+
+
+
+cleanobj:
+	rm -fr *.o *.tgz core *~ cxx_repository
+
+cleandbs:
+	rm -f *.dbs
+
+
+clean: cleanobj cleandbs
+	rm -f *.a $(EXAMPLES) $(WEB_EXAMPLES) $(EXES)
+
+tgz:	clean
+	cd ..; tar cvzf gigabase.tgz gigabase
+
+copytgz: tgz
+	mcopy -o ../gigabase.tgz a:

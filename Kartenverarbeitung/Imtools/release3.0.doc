@@ -1,0 +1,724 @@
+
+
+
+
+
+
+                      San Diego Supercomputer Center
+
+                                Image Tools
+
+                               Release Notes
+
+                                Release 3.0
+                                August 1995
+
+
+
+1.  Introduction
+
+These notes describe the August 1995 binary and source release  of  version
+3.0 of the San Diego Supercomputer Center (SDSC) Image Tools.
+
+The SDSC Image Tools are a suite of portable image manipulation tools  cou-
+pled  with  extensive support for a wide range of image file formats.  Tool
+functionality and file format support are implemented  within  a  portable,
+user-callable function library.  All tools, image file formats, and library
+functions are fully documented.
+
+
+
+2.  Image Tools
+
+Release 3.0 includes the following command-line tools:
+
+
+     imadjust       Adjust image colors, desaturate, brighten, etc.
+     imcat          Concatenate images into multi-image files
+     imcltroll      Cycle a color lookup table
+     imcomp         Digitally composite images
+     imconv         Convert between all supported image file formats
+     imcopy         Copy a portion of an image into a new file
+     imdissolve     Dissolve between two images
+     imfile         Display image attributes
+     imfill         Fill a region of an image with a color or gradient
+     imflip         Flip an image horizontally or vertically
+     imformats      Describe image file format support
+     imgray         Convert to grayscale
+     imhist         Compute an image histogram
+     imkey          Chroma key two images together
+     imlighten      Lighten or darken an image
+     immono         Convert to monochrome
+     impaste        Paste an image into another
+     imroll         Cycle an image horizontally or vertically
+     imrotate       Free rotate an image
+     imscale        Scale an image up or down
+     imshear        Shear an image horizontally or vertically
+     imsplit        Split apart multi-image files
+     imstoryboard   Build a storyboard grid of images
+
+
+
+
+
+                              October 3, 1995
+
+
+
+
+
+                                   - 2 -
+
+
+Source code and man pages for all tools are included.
+
+
+
+3.  Image File Formats
+
+Release 3.0 includes support for the following image file formats:
+
+
+     bmp    Microsoft Windows bitmap image file
+     cur    Microsoft Windows cursor image file
+     eps    Adobe Encapsulated PostScript file
+     gif    Compuserve Graphics image file
+     hdf    Hierarchical Data File
+     ico    Microsoft Windows icon image file
+     icon   Sun Icon and Cursor file
+     iff    Sun TAAC Image File Format
+     jpeg   JPEG image file format
+     miff   ImageMagick's image file format
+     mpnt   Apple Macintosh MacPaint file
+     pbm    PBM Portable Bit, Gray, and Pixel Map files
+     pcx    ZSoft IBM PC Paintbrush file
+     pic    PIXAR picture file
+     pict   Apple Macintosh QuickDraw/PICT file
+     pix    Alias image file
+     ps     Adobe PostScript file
+     ras    Sun Rasterfile
+     rgb    SGI RGB image file
+     rla    Wavefront raster image file
+     rle    Utah Run length encoded image file
+     synu   SDSC Synu image file
+     tga    Truevision Targa image file
+     tiff   Tagged image file
+     viff   Khoros Visualization image file
+     x      AVS X image file
+     xbm    X11 bitmap file
+     xpm    X11 pixmap file
+     xwd    X Window System window dump image file
+
+
+Formats with multiple variants for  handling  different  image  depths  and
+compression  schemes are supported (see exceptions later in this document).
+You can obtain information on  the  supported  variants  by  executing  the
+imformats tool with the -long option.  For instance:
+9
+     %  imformats -long -hdf
+     hdf     Hierarchical Data File
+             a.k.a.:         df, ncsa
+             Creator:        NCSA
+             Read support:
+               8-bit color index images, un- and RLE-compressed.  16-, 24-,
+               and  32-bit  color index images, un-compressed.  24-bit RGB,
+               un-  and  RLE-  compressed,  un-,   scanline-   and   plane-
+               interleaved.   Raster image groups as well as older Raster-8
+
+
+9                              October 3, 1995
+
+
+
+
+
+                                   - 3 -
+
+
+               files.
+             Write support:
+               8-bit color index images, un-  and  RLE-compressed.   16-bit
+               color    index    images,    un-compressed.    24-bit   RGB,
+               uncompressed, un-, scanline-, and plane-interleaved.  Raster
+               image group and older Raster-8 tags included.
+
+
+Release 3.0 includes  support  for  the  integration  of  additional  site-
+specific image file formats.
+
+Source code and man pages  on  each  of  the  supported  file  formats  are
+included.
+
+
+
+4.  Image Library Functions.
+
+Release 3.0 includes a function library providing features for image  mani-
+pulation  and image file format I/O.  Library calls may be made from K&R C,
+ANSI C, or C++.  A complete list of library functionality  is  provided  in
+the imintro(3IM) man page.
+
+Source code and man pages for all library functions are included.
+
+
+
+5.  Documentation
+
+Man pages are included that describe the tools, library functions, and  all
+supported  image  file  formats.  nroff source is provided in files with .n
+filename suffixes and should be processed through tbl and nroff.  For exam-
+ple:
+
+     tbl imconv.n | nroff -man > imconv.1l
+             or
+     tbl imtiff.n | nroff -man > imtiff.3l
+             or
+     tbl imintro.n | nroff -man > imintro.3l
+
+A Makefile is provided to build man pages using nroff and tbl.
+
+For sites without access to nroff and tbl, post-processed text versions  of
+all man pages are included in files with .1l and .3l filename suffixes.
+
+For sites with PostScript laserprinters, PostScript versions of the  manual
+pages are provided in files with .ps filename suffixes.
+
+
+
+6.  Binary and Source Releases
+
+Release 3.0 of the SDSC Image Tools is available as both a  binary  release
+for  selected  architectures,  and  a  full  source  code  release.  Binary
+
+
+
+                              October 3, 1995
+
+
+
+
+
+                                   - 4 -
+
+
+releases are available for the following architectures:
+
+
+     Cray Research Inc.        C-90 supercomputers, UNICOS
+     Digital Equipment Corp.   Alpha workstations, OSF/1
+     Silicon Graphics Inc.     R3000 and R4000 workstations, IRIX 5.x and IRIX 6.x
+     Sun Microsystems Inc.     SPARC workstations, SunOS
+
+
+The same source code has been built and verified  on  additional  architec-
+tures, including the following:
+
+
+     Alliant Computer Systems   FX/80 and FX/2800 minisupercomputers
+     Cray Research Inc.         X-MP and Y-MP supercomputers, UNICOS
+     Digital Equipment Corp.    DECStation workstations, ULTRIX
+     Digital Equipment Corp.    DEC VAX and VAXStation workstations, ULTRIX
+     IBM                        RS/6000 workstations, AIX
+     NeXT Computers             NeXTStation workstations
+     Sun Microsystems Inc.      Sun3 workstations
+
+
+We believe that the source code is  fully  portable  to  32-bit  or  64-bit
+architectures of any byte order or word size.
+
+Use of the SDSC Image Tools library requires  the  companion  SDSC  Utility
+Library libsdsc.a.  libsdsc.a includes C packages to handle portable binary
+I/O, command-line argument parsing, and the tag table data  structure  used
+by  the  SDSC  Image Tools.  The SDSC Utility Library and its documentation
+may be separately uploaded via anonymous ftp from ftp.sdsc.edu.
+
+
+
+7.  Changes since the last release
+
+The SDSC Image Tools have been expanded to include a variety of new library
+routines  and  command-line  tools, as well as support for additional image
+file formats and additional variants of previously supported file formats.
+
+7.1.  Image Tools.
+
+New Tools:
+
+     o+imdissolve.  Dissolve two images together.
+
+     o+imkey.  Composite one image atop another by keying  on  fields  of  a
+      foreground image.
+
+     o+imlighten.  Lighten or darken an image.
+
+     o+imstoryboard.  Create a storyboard grid of images.
+
+Tool Enhancements:
+
+
+
+
+                              October 3, 1995
+
+
+
+
+
+                                   - 5 -
+
+
+     o+all tools.  Changed the method of selecting the format  for  a  file.
+      Instead of -ras, -gif, or -tiff, we now use -informat ras, -outformat
+      gif flags to more clearly choose the format to use for input or  out-
+      put files.
+
+     o+all tools.  Added support for file compression.  A specific  compres-
+      sion  scheme  may be specified using the -infilecompression and -out-
+      filecompression options.
+
+     o+all tools.  Added help for individual flags.   For  instance,  imcomp
+      -help -over gives you help on what the -over option on imcomp does.
+
+     o+all tools.  Added the capability to permute channels when reading  or
+      writing a file.  For instance, imconv -inmap red=blue -inmap blue=red
+      infile.ras outfile.ras will switch the red and the blue  channels  in
+      your image immediately after reading it in.
+
+     o+all tools.  Added -outtransparency,  -outtransparencyrgb,  and  -out-
+      transparencyindex options for specifying a transparency color for GIF
+      and XPM images.
+
+     o+all tools.  Added the -outquality option to specify  the  quality  of
+      compression for JPEG images.
+
+     o+all tools.  Added the -outgroup option to  select  whether  to  group
+      pixels by scanlines or tiles for TIFF images.
+
+     o+all tools.  Added the -inpagewidth, -inpageheight, and -indpi options
+      to select the width, height, and dpi for PostScript images rasterized
+      by GhostScript (available from Gnu).
+
+     o+all  tools.   Added  values  for  -outcompress   to   support   ASCII
+      uncompressed  output  (for  PBM images) and discrete cosine transform
+      compression (for JPEG and TIFF images).
+
+     o+imadjust.  Added the capability to adjust monochrome, write  protect,
+      Z-buffer, integer data, and floating point data fields.
+
+     o+imcomp.  Added the -inalpha option  to  use  an  alpha  channel  from
+      another file when compositing.  Using this option with the inalphamap
+      option will allow you to specify which  channel  of  the  input  file
+      should be considered the alpha channel.
+
+     o+immono.  Added the -dither option to do Floyd-Steinberg dithering.
+
+Tool Compression Schemes:
+     All tools now recognize compressed files and automatically compress or
+     decompress  if  you have the compression/decompression tools installed
+     from Gnu or your computer manufacturer.   Compression  schemes  recog-
+     nized include:
+
+     o+Z.  Lempel-Ziv Encoding (UNIX compress/uncompress).
+
+     o+z.  Huffman encoding (UNIX pack/unpack).
+
+
+
+                              October 3, 1995
+
+
+
+
+
+                                   - 6 -
+
+
+     o+gz.  Gnu Lempel-Ziv Encoding (Gnu gzip/gunzip).
+
+     o+uu.  UU Encoding (UNIX uuencode/uudecode).
+
+Tool Bug Fixes:
+
+     o+imadjust.  Fixed problems with ramping of hue, saturation, and inten-
+      sity.
+
+     o+imcat.  Fixed problems with  reading  from  stdin,  and  use  of  the
+      -frames option.
+
+     o+imcopy.  Fixed handling of multi-image files.
+
+     o+imadjust.  Fixed problems with ramping of hue, saturation, and inten-
+      sity.
+
+     o+imrotate.  Fixed bug with putting alpha channel  in  the  background.
+      Also fixed problems with ramping of hue, saturation, and intensity.
+
+     o+imscale.  Fixed handling of multi-image files.
+
+     o+imshear.  Fixed bug with putting alpha  channel  in  the  background.
+      Also fixed problems with ramping of hue, saturation, and intensity.
+
+Functions removed from imtools.c:
+
+     o+ImToolsBuildFlagsTable.  This function created a single  flags  table
+      for  all  incoming  or  outgoing image files.  There are now separate
+      flags tables for each incoming and outgoing file.
+
+Functions added to imtools.c:
+
+     o+ImToolsMakeStandardFlagsTable.  Make a standard flags table.
+
+     o+ImToolsAddReadWriteflags.  Add the reading and writing flags  to  the
+      flags table.
+
+     o+ImToolsGetNameAndFormat.  Get a file's name and format.
+
+
+
+7.2.  Image File Formats.
+
+New Image File Formats:
+
+     o+si.  Microsoft SoftImage image file format.
+
+     o+jpeg.  JPEG image file format.
+
+     o+miff.  ImageMagick's image file format.
+
+     o+xpm.  X11 PixMap file format.
+
+
+
+
+                              October 3, 1995
+
+
+
+
+
+                                   - 7 -
+
+
+Image File Format Enhancements:
+
+     o+gif.  Added support for the transparency field.  Updated to 89a  ver-
+      sion.
+
+     o+pict.  Added support for 16- and 32-bit images.
+
+     o+pix.  Added support for Alias matte files.
+
+     o+pbm.  Combined the pgm, pnm, ppm, rppm, rpbm, rpgm, and rpnm  formats
+      together  in  to  one  collective  format.  The -outcompression ascii
+      option will create the ascii variants of these formats.
+
+     o+ps.  Added support for reading PostScript files  if  you  have  Gnu's
+      GhostScript installed.
+
+     o+rgb.  Added support for alpha channels.
+
+     o+tiff.  Rewritten to use Sam Leffler's TIFF library.  This  adds  sup-
+      port for a much wider variety of TIFF file variants.
+
+Image File Format Bug Fixes:
+
+     o+cur.  Fixed a bug with hot spots.
+
+     o+ico.  Fixed reading of alpha channels.
+
+     o+ps. Fixed a bug that caused the sides of images to sometimes  be  cut
+      off.
+
+     o+tga.  Fixed a problem with the RLE encoding algorithm.
+
+     o+xbm.  Fixed a bug with hot spots.
+
+
+7.3.  Image Library.
+
+New Library Functions:
+
+     o+ImVfbFSDitherToMono.   Dither  a  VFB  to  monochrome  using   Floyd-
+      Steinberg dithering.
+
+     o+ImVfbPrint.  Print's a VFB as ascii for debugging.
+
+     o+ImGetFileFormats.  Get's the master list of file formats.
+
+     o+ImGetCompressSchemes.  Get's the master list of compression schemes.
+
+     o+ImFileQCompression.  Queries the compression scheme used by a file or
+      stream.
+
+     o+ImVfbCopyChannel.  Copies a selected channel from one VFB to another.
+
+     o+ImVfbSameRGB, ImVfbSameRGBA, ImVfbSameIndex8,  and  ImVfbSameIndex16.
+
+
+
+                              October 3, 1995
+
+
+
+
+
+                                   - 8 -
+
+
+      Compare values in two VFBs to see if they are the same.
+
+     o+ImFileFindFormat.  Looks up the file's format in the master list.
+
+     o+ImFileFindCompressScheme.  Looks up the file's compression scheme  in
+      the master list.
+
+     o+ImVfbFade.  Fades a VFB's colors towards zero.
+
+     o+ImVfbMix.  Mixes the colors in two VFB's based upon weights.
+
+     o+ImVfb90Rotate.  Efficiently rotates a VFB  90  degrees  counterclock-
+      wise.
+
+Library Function Enhancements:
+
+     o+ImFileRead and ImFileFRead.  A NULL format name causes both functions
+      to automatically determine the file's format.
+
+     o+
+
+
+7.4.  General.
+
+Removed Library Functions:
+
+     o+ImCltGamma.
+
+     o+ImCltToGray.
+
+Removed Architectures:
+
+     o+Alliant, NeXT, and Sun3 systems are no longer supported.
+
+
+
+8.  Items that may cause confusion
+
+The following features of the SDSC Image Tools may confuse some users.
+
+     o+IFF format files are Sun's TAAC images, not Amiga images.   Both  Sun
+      and Commodore used the same mnemonic for their image files.
+
+     o+PICT handles PICT2 as well.
+
+     o+PICT files are always mapped to RGB images during  conversion.   This
+      is  an artifact made necessary by support of multi-image, multi-color
+      map features of the PICT and PICT2 formats.  A command line like  the
+      following  will  result  in  an  RGB HDF file instead of the expected
+      color index HDF file:
+9                           imconv image.pict image.hdf
+
+     o+PICT support does not handle many drawing operations.  To do so would
+      require  reimplementing  Apple's QuickDraw and is beyond the scope of
+
+
+9                              October 3, 1995
+
+
+
+
+
+                                   - 9 -
+
+
+      an image handling package.  PICT files containing drawing  operations
+      should be converted to bitmaps on the Macintosh, then uploaded to the
+      UNIX host.  Bitmap conversion may be accomplished with a  variety  of
+      tools, including SuperPaint, PhotoShop, and others.
+
+     o+PICT support does not handle fonts.   Text  stored  in  a  PICT  file
+      references  a  font,  but  does  not include the font's bitmap.  When
+      uploaded to a UNIX host, the font bitmaps are  no  longer  available.
+      This makes it impossible to support PICT text operations.  PICT files
+      containing text should be converted to bitmaps on the Macintosh, then
+      uploaded  to  the  UNIX  host.  Bitmap conversion may be accomplished
+      with a variety of tools, including SuperPaint, PhotoShop, and others.
+
+     o+Wavefront RLA handles RLB as well.
+
+     o+The Image Tools support PostScript and EPS  image  writing  directly.
+      To  read PostScript and EPS files, the Image Tools invoke GhostScript
+      if you have it installed.
+
+
+
+9.  Known Problems
+
+The following are known problems present in the 3.0  release  of  the  SDSC
+Image Tools:
+
+     o+XWD files stored in the XY format (instead of Z format) are not  sup-
+      ported yet.
+
+
+
+10.  Bug Reports and User Registration
+
+This software is developed and supported by  the  San  Diego  Supercomputer
+Center, and we want to hear from you.  If you find bugs (heaven forbid), or
+want to be put on our mailing list for  future  software  releases,  please
+fill  out  and  send  us a bug report and/or user registration form.  These
+forms may be obtained by executing any one of our tools with the  -feedback
+or -register options.
+
+For instance, to generate a bug report feedback form for imconv, type:
+
+     % imconv -feedback
+
+The feedback (bug report) form is written to a file named  imconv.fbk.0  in
+the  current  directory.   When generating a feedback form, the tool writes
+the form and exits without executing further.
+
+To generate a user registration form for imconv, type:
+
+     % imconv -register
+
+Like the feedback form, the registration form is written to  a  file  named
+imconv.reg.0  in  the  current  directory.   When generating a registration
+
+
+
+                              October 3, 1995
+
+
+
+
+
+                                  - 10 -
+
+
+form, the tool writes the form and exits without executing further.
+
+User registration is not required, but we'd like to hear from  you  anyway.
+We'll put you on a mailing list for notification of future releases of SDSC
+software tools, and read with interest who you are and what you  are  doing
+with our software.
+
+After you have filled out the form, please send the form,  and  any  accom-
+panying data, source fragments, sample output, or whatever, to SDSC:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                              October 3, 1995
+
+
+
+
+
+                                  - 11 -
+
+
+     E-mail:         info@sdsc.edu
+
+     Surface mail:   Software Products Information
+                     San Diego Supercomputer Center
+                     P.O. Box 85608
+                     San Diego, CA  92186-9784
+
+     FAX:            (619) 534-5113
+
+
+If you have questions about this form or  any  of  our  software  products,
+please contact us via any of the above methods or call us at:
+
+     (619) 534-5100  M-F, 8am-5pm, Pacific time
+
+
+
+11.  Copyright
+
+Users and possessors of the files of this  release  are  hereby  granted  a
+nonexclusive,  royalty-free copyright and design patent license to use this
+code in individual software.  License is not granted for commercial resale,
+in  whole  or  in  part,  without prior written permission from SDSC.  This
+release is provided "AS IS" without express  or  implied  warranty  of  any
+kind.
+
+We ask that the following message be included in all derived  works:   _P_o_r_-
+_t_i_o_n_s _d_e_v_e_l_o_p_e_d _a_t _t_h_e _S_a_n _D_i_e_g_o _S_u_p_e_r_c_o_m_p_u_t_e_r _C_e_n_t_e_r.
+
+Please do not redistribute this software.  We would prefer that  interested
+parties  upload the software directly from our anonymous ftp account.  This
+guarantees that they get the latest release, and helps us to keep track  of
+roughly how many sites out there are using our software.
+
+
+
+12.  Conclusion
+
+Please use these tools and send us feedback:  let us know what you like and
+what  you  don't  like  about this software.  Tell us how you are using the
+SDSC Image Tools and what you would like to see  in  the  future,  both  as
+enhancements to this product, and as additional products from SDSC.
+
+We encourage you to cite in your publications the use  of  the  SDSC  Image
+Tools,  and any other SDSC software you have used.  Your publication refer-
+ences and your feedback support are what makes this project work, and  what
+gives  us  the  opportunity to continue to develop portable free tools like
+the SDSC Image Tools, and our other products.  We look forward  to  hearing
+from you!
+
+
+
+
+
+
+
+
+                              October 3, 1995
+
+

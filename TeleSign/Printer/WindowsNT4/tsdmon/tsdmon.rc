@@ -1,0 +1,91 @@
+/*++
+
+Copyright (c) 1990-1994  Microsoft Corporation
+All rights reserved
+
+Module Name:
+
+    tsdmon.rc
+
+Abstract:
+
+
+Author:
+
+Environment:
+
+    User Mode -Win32
+
+Revision History:
+
+--*/
+
+#include <windows.h>
+#include "tsdmon.h"
+#include "dialogs.h"
+
+#include "tsdmon.dlg"
+
+STRINGTABLE
+{
+    IDS_LOCALMONITORNAME        "TeleSign Monitor"
+    IDS_LOCALMONITOR            "TeleSign Port"
+    IDS_INVALIDPORTNAME_S       "'%s' is an invalid port name."
+    IDS_PORTALREADYEXISTS_S     "Port %s already exists."
+    IDS_NOTHING_TO_CONFIGURE    "There is nothing to configure for this port."
+    IDS_COULD_NOT_OPEN_FILE     "Could not open the file: %s"
+    IDS_UNKNOWN_ERROR           "Unknown error."
+    IDS_OVERWRITE_EXISTING_FILE "The output file already exists.  Click OK to overwrite."
+}
+
+
+#ifdef INTERNAL
+#include <ntverp.h>
+#endif
+
+#define VER_FILETYPE    VFT_DLL
+#define VER_FILESUBTYPE VFT2_UNKNOWN
+#define VER_FILEDESCRIPTION_STR     "Local Monitor DLL"
+#define VER_INTERNALNAME_STR        "localmon.dll"
+#define VER_ORIGINALFILENAME_STR    "localmon.dll"
+
+#ifdef INTERNAL
+#include "common.ver"
+#endif
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,1,0,1
+ PRODUCTVERSION 1,1,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x7L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040704b0"
+        BEGIN
+            VALUE "Comments", "Portmonitor für digitale Signatur\0"
+            VALUE "CompanyName", "FJE-Software\0"
+            VALUE "FileDescription", "tsdmon\0"
+            VALUE "FileVersion", "1, 1, 0, 1\0"
+            VALUE "InternalName", "tsdmon\0"
+            VALUE "LegalCopyright", "Copyright © 2000 FJE-Software\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "tsdmon.dll\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "FJE-Portmonitor\0"
+            VALUE "ProductVersion", "1, 1, 0, 1\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x407, 1200
+    END
+END

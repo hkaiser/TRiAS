@@ -1,0 +1,135 @@
+Quelldateiname:   idtdbc.011
+Includedateiname: idtdb.h
+Steuerdateiname : idtdb.dbd
+
+Datenbankstruktur: idtdb
+Sun Jan 07 16:11:43 1996
+
+DATEI: IDENTIFIKATOREN
+   Nummer: 0
+   Typ   : Data
+   Groesse der Record-slots : 140
+   Record-slots je Page     : 7
+   Ungenutzte Bytes je Page : 36
+
+DATEI: MERKMALSCODES
+   Nummer: 1
+   Typ   : Data
+   Groesse der Record-slots : 140
+   Record-slots je Page     : 7
+   Ungenutzte Bytes je Page : 36
+
+DATEI: RELATIONSCODES
+   Nummer: 2
+   Typ   : Data
+   Groesse der Record-slots : 140
+   Record-slots je Page     : 7
+   Ungenutzte Bytes je Page : 36
+
+DATEI: IDENTKEY
+   Nummer: 3
+   Typ   : BTreeKey
+   Groesse der Record-slots : 12
+   Record-slots je Page     : 84
+   Ungenutzte Bytes je Page : 8
+
+DATEI: MCODEKEY
+   Nummer: 4
+   Typ   : BTreeKey
+   Groesse der Record-slots : 12
+   Record-slots je Page     : 84
+   Ungenutzte Bytes je Page : 8
+
+DATEI: RCODEKEY
+   Nummer: 5
+   Typ   : BTreeKey
+   Groesse der Record-slots : 12
+   Record-slots je Page     : 84
+   Ungenutzte Bytes je Page : 8
+
+RECORD: MID
+   Nummer : 0
+   Datei  : IDENTIFIKATOREN [0]
+   Recordgroesse            : 116
+   Ungenutzte Bytes je Slot : 24
+   Keynummer                : 0
+
+RECORD: MIF
+   Nummer : 1
+   Datei  : IDENTIFIKATOREN [0]
+   Recordgroesse            : 140
+   Ungenutzte Bytes je Slot : 0
+   Recordkette              : 0
+
+RECORD: MMK
+   Nummer : 2
+   Datei  : MERKMALSCODES [1]
+   Recordgroesse            : 140
+   Ungenutzte Bytes je Slot : 0
+   Keynummer                : 1
+
+RECORD: MKF
+   Nummer : 3
+   Datei  : MERKMALSCODES [1]
+   Recordgroesse            : 140
+   Ungenutzte Bytes je Slot : 0
+   Recordkette              : 2
+
+RECORD: MMW
+   Nummer : 4
+   Datei  : MERKMALSCODES [1]
+   Recordgroesse            : 88
+   Ungenutzte Bytes je Slot : 52
+   Recordkette              : 3
+
+RECORD: MMF
+   Nummer : 5
+   Datei  : MERKMALSCODES [1]
+   Recordgroesse            : 140
+   Ungenutzte Bytes je Slot : 0
+   Recordkette              : 4
+
+RECORD: MRL
+   Nummer : 6
+   Datei  : RELATIONSCODES [2]
+   Recordgroesse            : 118
+   Ungenutzte Bytes je Slot : 22
+   Keynummer                : 2
+
+RECORD: MRF
+   Nummer : 7
+   Datei  : RELATIONSCODES [2]
+   Recordgroesse            : 140
+   Ungenutzte Bytes je Slot : 0
+   Recordkette              : 6
+
+KEYFELD: IDS
+   Nummer : 0
+   Targetdatei: IDENTIFIKATOREN [0]
+   Keydatei   : IDENTKEY [3]
+   Feldtyp    : Long_Integer
+   Feldoffset : 0
+   Feldlaenge : 4
+   Keytyp     : Unique Key
+
+KEYFELD: MKS
+   Nummer : 1
+   Targetdatei: MERKMALSCODES [1]
+   Keydatei   : MCODEKEY [4]
+   Feldtyp    : Long_Integer
+   Feldoffset : 0
+   Feldlaenge : 4
+   Keytyp     : Unique Key
+
+KEYFELD: PRIREL
+   Nummer : 2
+   Targetdatei: RELATIONSCODES [2]
+   Keydatei   : RCODEKEY [5]
+   Feldtyp    : Long_Integer
+   Feldoffset : 0
+   Feldlaenge : 4
+   Keytyp     : Unique Key
+
+Versionsnummer:   05.00.00.011
+
+Pagegr”áe: 1024

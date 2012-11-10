@@ -1,0 +1,23 @@
+HKCR
+{
+	TRiASPP98.TRiASPP98.1 = s 'PropertyActionPP Class'
+	{
+		CLSID = s '{32922FFC-F66D-11D2-9BF4-568920524153}'
+	}
+	TRiASPP98.TRiASPP98 = s 'PropertyActionPP Class'
+	{
+		CLSID = s '{32922FFC-F66D-11D2-9BF4-568920524153}'
+		CurVer = s 'TRiASPP98.TRiASPP98.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {32922FFC-F66D-11D2-9BF4-568920524153} = s 'PropertyActionPP Class'
+		{
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

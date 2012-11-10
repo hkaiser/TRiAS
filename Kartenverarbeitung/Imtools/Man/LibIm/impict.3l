@@ -1,0 +1,132 @@
+
+
+
+IMPICT(3IM)            SDSC IMAGE LIBRARY             IMPICT(3IM)
+
+
+
+NAME
+     impict - Apple Macintosh PICT translation
+
+SYNOPSIS
+     #include <stdio.h>
+     #include "sdsc.h"
+     #include "im.h"
+
+     int ImFileRead( fd, "pict", flagsTable, dataTable )
+          int         fd;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileFRead( fp, "pict", flagsTable, dataTable )
+          FILE         *fp;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileWrite( fd, "pict", flagsTable, dataTable )
+          int         fd;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileFWrite( fp, "pict", flagsTable, dataTable )
+          FILE         *fp;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+DESCRIPTION
+     The PICT file is the standard  Apple  Macintosh  image  file
+     format.   It  can  be  read by almost any Macintosh graphics
+     application. Most Macintosh  applications  that  can  export
+     graphics do so in the PICT file format.
+
+FILE RECOGNITION
+     pict files are recognized by these filename suffixes:  .pict
+     and .pict2.
+
+NOTES
+     SDSC image library support of the Apple pict format does not
+     require  use  of  Apple  tools  or  hardware and contains no
+     proprietary code.  Apple pict format handling  is  available
+     on  any  machine  for which the SDSC image library is avail-
+     able.
+
+  Reading Apple PICT files
+     The SDSC image library reads 1-, 2-,  4-,  and  8-bit  color
+     index  images  with  a  CLUT (Color LookUp Table) as well as
+     16-,  and  32-bit  direct  color  images,  compressed  using
+     Apple's PackBits.
+
+
+
+
+
+SDSC              Last change: August 19, 1992                  1
+
+
+
+
+
+
+IMPICT(3IM)            SDSC IMAGE LIBRARY             IMPICT(3IM)
+
+
+
+     Note that all pict images are read into IMVFBRGB VFBs.  This
+     is  necessary  because  of  a  pict feature that allows each
+     piece of an image to have its  own  CLT.   This  can  easily
+     exceed  any  reasonable  size  color  index  image  CLT very
+     quickly.  To avoid this, incoming image  pieces  in  a  pict
+     file are always converted and stored into an RGB VFB.
+
+     Both type 1 (monochrome and "old" color) and  type  2  (full
+     color) pict files are handled.
+
+  Writing Apple PICT files
+     SDSC image library IMVFBINDEX8 VFBs are written out to Apple
+     pict  files  as  8-bit  color  index  images  with a CLT and
+     compressed  using  Apple's  PackBits  compression.   Written
+     images  are  always  type  2 pict files.  SDSC image library
+     IMVFBRGB VFBs are written out to Apple pict files as  32-bit
+     direct  color  images and are compressed using Apple's Pack-
+     Bits compression.  Written images are  always  type  2  pict
+     files.
+
+ERRORS
+     In addition to those listed for ImFileRead(3IM), Apple  pict
+     file reading returns the following error codes:
+
+          IMEMALLOC        Cannot allocate enough memory
+          IMESYNTAX        Syntax error
+          IMESYS           System call error in read operation
+          IMEUNSUPPORTED   Unsupported opcode
+
+     In addition to those listed for ImFileWrite(3IM), Apple pict
+     file writing returns the following error codes:
+
+          IMEMALLOC   Cannot allocate enough memory
+          IMESYS      System call error in write operation
+
+DOCUMENTATION
+     _I_n_s_i_d_e _M_a_c_i_n_t_o_s_h, _V_o_l_u_m_e_s _I-_V, Apple Computer, Inc.
+
+SEE ALSO
+     ImIntro(3IM),   ImErrNo(3IM),   imconv(1IM),    imfile(1IM),
+     imformats(1IM), immpnt(3IM), imtiff(3IM)
+
+AUTHOR
+     John Moreland
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+2                 Last change: August 19, 1992               SDSC
+
+
+

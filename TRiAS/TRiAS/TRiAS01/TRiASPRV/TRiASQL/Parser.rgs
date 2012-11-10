@@ -1,0 +1,31 @@
+HKCR
+{
+	TRiAS.TRiASDB.SQLParser.1 = s 'TRiAS SQLParser Class'
+	{
+		CLSID = s '{62ECE790-EC1D-4680-9A37-B5CD0BF0C1BC}'
+	}
+	TRiAS.TRiASDB.SQLParser = s 'TRiAS SQLParser Class'
+	{
+		CLSID = s '{62ECE790-EC1D-4680-9A37-B5CD0BF0C1BC}'
+		CurVer = s 'TRiAS.TRiASDB.SQLParser.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {62ECE790-EC1D-4680-9A37-B5CD0BF0C1BC} = s 'TRiAS SQLParser Class'
+		{
+			ProgID = s 'TRiAS.TRiASDB.SQLParser.1'
+			VersionIndependentProgID = s 'TRiAS.TRiASDB.SQLParser'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Both'
+			}
+			'TypeLib' = s '{A69A6AD4-5AB7-4E36-86DD-708911E84229}'
+			'Version' = s '1.0'
+			ExtendedErrors = s 'Extended Error Service'
+			{
+				{F6DB2422-31E0-40E7-8ACB-E3651C282CF0} = s 'TRiAS Ole DB ErrorLookup Object'
+			}
+		}
+	}
+}

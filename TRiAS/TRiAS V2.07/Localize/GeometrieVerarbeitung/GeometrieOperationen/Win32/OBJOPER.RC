@@ -1,0 +1,262 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "objopera.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resstrg.h"
+#include "objoper.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_OPERATAUSWAHL DIALOG DISCARDABLE  140, 104, 349, 212
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Parametereinstellung für Objektoperationen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " Operationen ",-1,4,3,157,205,WS_GROUP
+    LTEXT           "> Blinkendes Objekt (""Messer"") schneidet",-1,6,14,134,
+                    8,NOT WS_GROUP
+    CONTROL         "  Jedes markierte O&bjekt",IDR_SELEKTOBJEKTE,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,10,23,145,10
+    CONTROL         "  Jedes Objekt der Objektk&lassen",IDR_KLASSEN,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,10,34,142,10
+    LTEXT           "> Zusammenfassung aller markierten Objekte",-1,6,116,
+                    147,9,NOT WS_GROUP
+    CONTROL         "  &Durchschnitt (nur Flächen)",IDR_DURCHSCHNITT,
+                    "Button",BS_AUTORADIOBUTTON | WS_TABSTOP,10,125,142,10
+    CONTROL         "  &Vereinigung",IDR_VEREINIGUNG,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,10,136,143,10
+    LTEXT           "Objektkla&sse für Durchschnitts- oder Vereinigungsobjekt:",
+                    -1,10,149,129,16,NOT WS_GROUP
+    COMBOBOX        IDL_IDENTIFIKATOR,10,167,146,96,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "> Exklusiv-Oder der blinkenden Fläche",-1,6,185,134,8,
+                    NOT WS_GROUP
+    CONTROL         "  Mit jeder markierten &Fläche",IDR_EXKLUSIV,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,10,194,144,10
+    GROUPBOX        " Nur für Schnitt mit Fläche  ",-1,167,3,115,71,WS_GROUP
+    LTEXT           "Neue Objekte liegen",-1,173,15,97,8,NOT WS_GROUP
+    CONTROL         "  &Innerhalb",IDC_INNERHALB,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,173,27,97,10
+    CONTROL         "  Auf dem &Rand",IDC_RAND,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,173,38,97,10
+    CONTROL         "  A&ußerhalb",IDC_AUSSERHALB,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,173,49,98,10
+    GROUPBOX        " Neue Objekte ",IDG_SPEICHERFORM,167,76,115,37,WS_GROUP
+    CONTROL         "  &Temporär erzeugen",IDR_TEMPORAER,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,173,88,88,9
+    CONTROL         "  &Permanent erzeugen",IDR_PERMANENT,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,173,99,94,10
+    GROUPBOX        " Ergebnisanzeige ",-1,167,115,115,39,WS_GROUP
+    CONTROL         "  &Fenster mit neuen Objekten",IDC_LISTEANZ,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,172,127,108,10
+    CONTROL         "  F&enster mit Ursprungsobjekten",IDC_ORIGLISTE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,172,138,108,10
+    DEFPUSHBUTTON   "&OK",IDOK,289,7,55,14,WS_GROUP
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,289,29,55,14
+    PUSHBUTTON      "Alle &Klassen",IDB_ALLEKLASSEN,289,59,55,14
+    GROUPBOX        " Beschreibung ",-1,167,156,177,52,WS_GROUP
+    LTEXT           "",IDT_KOMMENTAR,172,165,168,42,NOT WS_GROUP
+    LISTBOX         IDL_IDLISTE1,10,47,146,64,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_GROUP | WS_TABSTOP
+    LTEXT           "der schneidenden Fläche",-1,173,61,91,8
+    PUSHBUTTON      "",IDC_BUTTON1,167,80,115,33,WS_DISABLED | NOT 
+                    WS_TABSTOP
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "objopera.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""resstrg.h""\r\n"
+    "#include ""objoper.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""objoper.rcv""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Objektoperationen"
+    IDS_GEOREIN             "TRiAS.Bereinigung.1"
+    IDS_OPERATIONEN         "&Objektoperationen auswählen ..."
+    IDS_OPLOESCHEN          "&Neu erzeugte Objekte löschen"
+    IDS_OPORIGLOESCHEN      "&Ursprungsobjekte löschen"
+    IDS_NEUEOBJ             "Neu erzeugte Objekte"
+    IDS_ALTEOBJ             "Ursprungsobjekte"
+    IDS_BOXTEXT1            "Für diese Objektauswahl sind keine Operationen vorgesehen."
+    IDS_BOXTEXT2            "Die markierten Flächen haben keinen gemeinsamen\nDurchschnitt bzw. Abbruch durch den Anwender."
+    IDS_BOXTEXT3            "Die markierten Objekte lassen sich nicht vereinigen\nbzw. Abbruch durch den Anwender."
+    IDS_BOXTEXT6            "Die Operation hat kein Ergebnis geliefert\nbzw. Abbruch durch den Anwender."
+    IDS_KOMM1               "Alle markierten Objekte werden durch das blinkende Objekt geschnitten. Als Ergebnis können bei Schnitt mit einer Fläche sowohl die innerhalb, außerhalb als auch auf dem Rand dieser Fläche liegenden Teilobjekte erzeugt werden."
+    IDS_KOMM2               "Alle Objekte der ausgewählten Objektklassen werden durch das blinkende Objekt geschnitten. Als Ergebnis können bei Schnitt mit einer Fläche sowohl die innerhalb, außerhalb als auch auf deren Rand liegenden Teilobjekte erzeugt werden."
+    IDS_KOMM3               "Alle Objekte der aktuellen Sicht werden durch das blinkende Objekt geschnitten. Als Ergebnis können bei Schnitt mit einer Fläche sowohl die innerhalb, außerhalb als auch auf deren Rand liegenden Teilobjekte erzeugt werden."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_KOMM4               "Aus dem gemeinsamen Bereich aller markierten Flächen wird eine neue Fläche bzw. werden neue Flächen gebildet."
+    IDS_KOMM5               "Alle markierten Flächen werden zu einer neuen Fläche zusammengefaßt. Sind hingegen 2 Linienobjekte markiert, wird aus beiden eine neue Linie gebildet. Eine Lücke wird dabei ausgefüllt."
+    IDS_KOMM6               "Aus allen Bereichen der markierten Flächen, die nicht zur blinkenden Fläche gehören, und aus den Bereichen der blinkenden Fläche, die zu keiner der markierten Flächen gehören, werden neue Flächen gebildet."
+    IDS_KOMM7               "Die neu zu bildenden Objekte entstehen aus den Teilen der zu schneidenden Objekte, die innerhalb der blinkenden (d. h. der schneidenden) Fläche liegen."
+    IDS_KOMM8               "Die neu zu bildenden Objekte entstehen aus den Teilen der zu schneidenden Objekte, die auf dem äußeren Rand der blinkenden (d. h. der schneidenden) Fläche liegen. Diese Vorgabe ist nur beim Schneiden von Linien sinnvoll."
+    IDS_KOMM9               "Die neu zu bildenden Objekte entstehen aus den Teilen der zu schneidenden Objekte, die außerhalb der blinkenden (d. h. der schneidenden) Fläche liegen."
+    IDS_KOMM10              "Die neu zu bildenden Objekte werden nur für das augenblickliche Arbeiten erzeugt. Durch einen Wechsel der Sicht werden sie gelöscht."
+    IDS_KOMM11              "Die neu zu bildenden Objekte werden dauerhaft in der Datenbank abgespeichert und sind damit nach dem Schließen und einem erneuten Öffnen des Projektes weiterhin vorhanden."
+    IDS_KOMM12              "Die neu gebildeten Objekte werden in einem Recherchefenster angezeigt."
+    IDS_KOMM13              "Die Objekte, die zur Bildung der neuen Objekte beigetragen haben, werden in einem Recherchefenster angezeigt."
+    IDS_GEOFEHL1            "Das blinkende Objekt (Objekt-Nr. %ld) enthält einen Geometriefehler.\r\nDeshalb kann es bei keiner Operation verwendet  werden."
+    IDS_GEOFEHL2            "Das Objekt %ld enthält einen Geometriefehler.\r\nDeshalb kann die ausgewählte Operation nicht\r\nausgeführt werden."
+    IDS_SCHNITT_CAPTION     "Schnitt geometrischer Objekte"
+    IDS_DURCHSCHNITT_CAPTION "Durchschnitt von Flächenobjekten"
+    IDS_VEREINIGUNG_CAPTION "Vereinigung geometrischer Objekte"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_EXKLUSIVODER_CAPTION "Exklusiv-Oder von Flächenobjekten"
+    IDS_GEMKONTUR_CAPTION   "Ermittlung der gemeinsamen Kontur"
+    IDS_VERSCHNITT_CAPTION  "Verschnitt geometrischer Objekte"
+    IDS_BEARB_OBJEKT        "Objekt: %ld"
+    IDS_STATUS_STAND        "Es wurden bereits %ld%% bearbeitet"
+    IDS_DELOBJECTS          "Objekte löschen"
+    IDS_DELETE_STATUS       "Es wurden bereits %ld%% der Objekte gelöscht"
+    IDS_NOMASCHBLD          "Das Zusatzmodul ""maschbld.ext"" wurde nicht gefunden.\r\nDeshalb kann die Linienvereinigung nicht durchgeführt werden."
+    IDS_TOLERANZ            "Fangbereich"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UNIQUEIDENT         "Unique Ident    "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UIFORMAT            "/OBJOPER_EXT_%ld"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXEXTENSIONPROC    "DEXEXTENSIONPROC"
+    IDS_DEXXEXTENSIONPROC   "DEXXEXTENSIONPROC"
+    IDS_DEXNOTIFICATIONPROC "DEXNOTIFICATIONPROCEX"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_OLE_PROPPAGE_LARGE DIALOG DISCARDABLE  0, 0, 250, 110
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "TODO: layout OLE  property page",IDC_STATIC,71,51,108,8
+    CONTROL         "Tab1",IDC_OPERATIONEN,"SysTabControl32",0x0,45,31,157,
+                    55
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_OLE_PROPPAGE_LARGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 103
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "objoper.rcv"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

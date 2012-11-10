@@ -1,0 +1,51 @@
+# Genrieren der Versionsinfo's fr FILLMODE.VMD
+
+# Generierungsdatum (yymmdd) und Version
+DATE=970121
+VERSION = 1
+RELEASE = 00
+BUILD = 014
+
+COPYRIGHT = HK$(DATE)
+
+PNAME = "Version f\xfcr den internen Gebrauch"
+PADDRESS = "uve GmbH Fernerkundungszentrum Potsdam"
+
+STUB = rights
+RIGHTS = $(STUB).exe
+REPLACE = ersetz
+NAME = fillmode
+DEF = $(NAME).def
+
+ASM = masm
+ASMF = /D?PLM=0 /D?WIN=1
+LINK = link16.exe
+
+# Alles neubilden
+all:	formake 
+
+$(STUB).exe:	$(STUB).asm
+	$(ASM) $(ASMF) $(STUB) 
+	$(LINK) /NOLOGO /KNOWEAS $(STUB);
+
+# -----------------------------------------------------------------------------
+# CopyrightEintraege Generieren 
+new:
+	@del $(DEF) > nul
+	@del $(STUB).asm
+	@del $(NAME).rcv
+
+formake:	$(STUB).exe $(NAME).rcv $(DEF)
+
+$(DEF):		$(NAME).tpl 
+	ersetz $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) $(NAME).tpl $(DEF)
+
+$(STUB).asm:	$(STUB).tpl 
+	$(REPLACE) $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) $(STUB).tpl $(STUB).asm
+
+# Personalisierungsinformation
+$(NAME).rcv:	fillmodv.rc
+	$(REPLACE) $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) @A @B fillmodv.rc tmp.rcv
+	$(REPLACE) $(PNAME) $(PADDRESS) tmp.rcv $(NAME).rcv
+	@del tmp.rcv > nul
+

@@ -1,0 +1,24 @@
+HKCR
+{
+	TRiASDB.TRiASProjectCTF.1 = s 'TRiASProjectCTF Class'
+	{
+		CLSID = s '{97993C76-5FE6-11D1-B9E6-080036D63803}'
+	}
+	TRiASDB.TRiASProjectCTF = s 'TRiASProjectCTF Class'
+	{
+		CurVer = s 'TRiASDB.TRiASProjectCTF.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {97993C76-5FE6-11D1-B9E6-080036D63803} = s 'TRiASProjectCTF Class'
+		{
+			ProgID = s 'TRiASDB.TRiASProjectCTF.1'
+			VersionIndependentProgID = s 'TRiASDB.TRiASProjectCTF'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

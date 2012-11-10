@@ -1,0 +1,28 @@
+HKCU 
+{ 
+	NoRemove Software 
+	{
+		NoRemove %COMPANY% 
+		{
+			NoRemove %PRODUCT%
+			{
+				NoRemove Extensions
+				{
+					ForceRemove %PROGID% = s '%LONGNAME%'
+					{
+						CLSID = s '{07963840-3123-101C-BB62-00AA0018497C}'
+						UnRegister = s '{07963841-3123-101C-BB62-00AA0018497C}'
+						Config
+						{
+							Val Visible = d %VISIBLE%
+							Val UnLoadable = d %UNLOADABLE%
+							Val FileProgID = s '%TARGET%'
+							Val ToolboxBitmap32 = d %TOOLBOX%
+							Val NotPrimary = d 1
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,10 @@
+# Makefile für AscBNa Yacc/Lex 
+
+ascbnal.cpp:	ascbna.lx ascbnay.h ascbna.h
+	pclex -s -l ascbna.lx
+	@del ascbnal.c
+	@ren ascbna.c ascbnal.c
+
+ascbnay.h ascbnay.cpp:	ascbna.y
+	cmd /c pcyacc -Dascbnay.h -Cascbnay.cpp -n -s ascbna.y
+

@@ -1,0 +1,283 @@
+'\"et
+.if t .TH IMFILL 1IM "June 27, 1995" "San Diego Supercomputer Center" "IMAGE TOOLS" 
+.if n .TH IMFILL 1IM "June 27, 1995" "SDSC" "IMAGE TOOLS"
+.SH NAME
+imfill  -  fills pixels in part or all of an image
+.SH SYNOPSIS
+\fBimfill\fR [\fIoptions\fR] [\fIinfilename\fR] \fIoutfilename\fR
+.SH DESCRIPTION
+\fBimfill\fR fills an area of each image in the input file
+with a color or alpha value and stores the
+results to the output file.  The input and output image file formats may
+be different.
+.LP
+If no input file is given, \fBimfill\fR creates a new image, filled as
+directed, and stores the result in the output file.
+.SH OPTIONS
+\fBimfill\fR has a variety of options in the following five categories:
+.LP
+.RS +0.5i
+.TS
+l l.
+File Selection	What input and output files to use
+Format Selection	What image file format to use
+Format Control	What variant of a file format to generate
+Standard	Standard generic options on all SDSC tools
+Filling	How the image will be filled
+.TE
+.RE
+.LP
+\fIFile Selection\fR, \fIFormat Selection\fR, \fIFormat Control\fR, and
+\fIStandard\fR options are common to all SDSC image tools and are
+discussed in depth in the \fBman\fP page for \fBimconv\fR(1IM).
+.LP
+All options can be abbreviated to the first few unique characters.
+.LP
+.SS "Filling Options"
+The region of the input image to be filled is defined by six arguments:
+.RS 0.5i
+.LP
+.TS
+l l.
+\fB-xposition \fIx\fR	Left edge of region
+\fB-yposition \fIy\fR	Top edge of position
+\fB-xsize \fIw\fR	Width of region
+\fB-ysize \fIh\fR	Height of region
+\fB-inside\fR	Fill the inside of the region (default)
+\fB-outside\fR	Fill the outside of the region
+.TE
+.RE
+.LP
+\fB-xposition\fR and \fB-yposition\fR specify the fill region position and
+are constrained to be within the bounds of the input image. Both
+\fB-xposition\fR and \fB-yposition\fR default to a value of 0, where
+(0,0) is the upper-left corner of the image.  
+.LP
+\fB-xsize\fR and \fB-ysize\fR give the size of the fill region and are
+constrained to fit within the bounds of the input image.  If these options
+are not given, the fill region defaults to a rectangle whose upper left
+corner is at the given fill region position, and which extends to the right
+and bottom edges of the input image.
+.LP
+\fB-inside\fR and \fB-outside\fR select whether pixels inside or outside
+the fill region are to be filled.  \fB-inside\fR is the default and causes
+the specified rectangular area of the image to be filled.  Pixels outside
+of this area are copied from the input image to the output image.
+\fB-outside\fR instead fills the area outside of the fill rectangle.  Pixels
+inside the fill area are copied from the input image to the output image.
+.LP
+Fill values are selected using one or more of the following fill options:
+.RS 0.5i
+.LP
+.ne 2.0i
+.TS
+l l.
+\fBOption	Fill each pixel's\fR
+_
+\fB-red \fIrange	\fRred component
+\fB-green \fIrange	\fRgreen component
+\fB-blue \fIrange	\fRblue component
+_
+\fB-mono \fIrange	\fRmonochrome component
+\fB-index \fIrange	\fRcolor index component
+_
+\fB-hue \fIrange	\fRhue component
+\fB-saturation \fIrange	\fRsaturation component
+\fB-intensity \fIrange	\fRintensity component
+_
+\fB-alpha \fIrange	\fRalpha compoent
+.TE
+.RE
+.LP
+Multiple fill options may be given, as long as color spaces are not mixed.
+For instance, \fB-index\fR for filling color indexes is incompatible with
+\fB-red\fR for filling the red component of RGB triplets.  Likewise,
+\fB-hue\fR for filling pixels based upon an HSI color space
+hue value is incompatible
+with \fB-blue\fR for filling with blue in the RGB color space.
+See the \fBimintro\fR(3IM) \fBman\fR page for a description of the RGB
+and HSI color spaces.
+.LP
+If \fBimfill\fR is directed to fill the alpha component of an image that
+does not have an alpha channel, an alpha channel is created and initialized
+to 0s (transparent).
+.LP
+If \fBimfill\fR is directed to fill a pixel component that does not exist
+in the input image (except for alpha), an error is reported.
+.LP
+Input image components not selected for filling by a fill option are copied
+to the output image untouched.  For instance, an image's alpha plane may
+be initialized to \fB255\fR (opaque) without affecting RGB or color index
+components of pixels.  Likewise, an image's RGB red channel may be filled
+without its green and blue components being affected.
+.LP
+Each of the fill options can accept an argument giving a single value, or
+range of values with which to fill.
+Value \fIrange\fR syntax takes any one of the following forms:
+.RS 0.5i
+.LP
+.TS
+l l.
+\fIrange\fR	\fBFill with values of\fR
+_
+\fIn\fR	\fIn\fR only.
+\fIn-\fR	\fIn\fR through the maximum legal value for the component.
+\fIn-m\fR	\fIn\fR through \fIm\fR.
+.TE
+.RE
+.LP
+There is no space between \fIn\fR, the dash, and \fIm\fR.  \fIn\fR need not
+be a value less than \fIm\fR.
+.LP
+When filling with a single value, the entire fill region is set to the same
+value.
+.LP
+When a range of fill values are given, such as \fB-red 0-255\fR
+or \fB-intensity 0.6-0.2\fR, the fill region will be filled with a
+gradation, or ramp, as selected by the \fB-graduate\fR option's argument:
+.RS 0.5i
+.LP
+.TS
+l l.
+\fBoption\fR	\fBMeaning\fR
+_
+\fB-graduate none\fR	Fill with a constant value
+\fB-graduate horizontal\fR	Fill with a horizontal ramp (default)
+\fB-graduate vertical\fR	Fill with a vertical ramp
+.TE
+.RE
+.LP
+\fBnone\fR, \fBhorizontal\fR, and \fBvertical\fR may each be abbreviated
+to the fewest unique letters.
+.LP
+The horizontal ramp for a graduated fill starts from the first fill 
+value at the left edge of the fill area and goes to the second fill 
+value at the right edge.  The vertical ramp for a graduated fill 
+goes from the first fill value at the top edge of the fill area to 
+the second fill value at the bottom edge.
+.LP
+.SH NOTES
+.LP
+Error messages are reported to \fBstderr\fR.
+.LP
+For notes regarding file format conversion and standard image tool
+options, see the \fBman\fP page for \fBimconv\fR(1IM).
+.LP
+If the output file format cannot support the storage of an alpha channel
+(many cannot), any alpha channel created or filled by \fBimfill\fR will be
+silently discarded when the output file is written. 
+\fBimformats\fR(1IM) may be used to review a list of file format attributes
+in order to choose an image file format that supports alpha channel storage.
+.LP
+With no fill options, the actions of \fBimfill\fR default to the
+same as the SDSC image format conversion tool \fBimconv\fR(1IM), but
+they take a little longer.
+.LP
+\fBimfill\fR is useful for filling rectangular areas of images to a constant
+or ramped color.  To change only selected pixels of an image, such as all
+black pixels, or all pixels with saturation values over 0.8, use the
+pixel value adjustment tool \fBimadjust\fR(1IM).
+.LP
+Different pixel components have different types and different minimum
+and maximum values.
+.LP
+.RS 0.5i
+.TS
+l l l l.
+\fBValue	Type	Minimum	Maximum\fP
+_
+\fB-red\fR	Integer	0	255
+\fB-green\fR	Integer	0	255
+\fB-blue\fR	Integer	0	255
+_
+\fB-mono\fR	Integer	0	1
+\fB-index\fR	Integer	0	255 or 65535
+_
+\fB-hue\fR	Float	0.0	360.0
+\fB-saturation\fR	Float	0.0	1.0
+\fB-intensity\fR	Float	0.0	1.0
+_
+\fB-alpha\fR	Integer	0	255
+.TE
+.RE
+.SH EXAMPLES
+Create a 640 x 480 RGB Sun raster file filled with black:
+.RS 0.5i
+.LP
+\fBimfill -xsize 640 -ysize 480 -red 0 -green 0 -blue 0 rgbblack.ras\fR
+.RE
+.LP
+Add an alpha channel to an Alias PIX image, initialize it to 255s, and
+save it to an HDF file:
+.RS 0.5i
+.LP
+\fBimfill image.pix -alpha 255 image_alpha.hdf\fR
+.RE
+.LP
+Fill a rectangle in a Sun raster file with white, and store
+the result as a Silicon Graphics RGB file:
+.RS 0.5i
+.LP
+\fBimfill map.ras mapwhite.rgb -xposition 50 -yposition 50 -xsize 50 -ysize 50 -red 255 -blue 255 -green 255\fR
+.RE
+.LP
+Fill outside the rectangle instead of inside it:
+.RS 0.5i
+.LP
+\fBimfill map.ras mapwhite.rgb -xposition 50 -yposition 50 -xsize 50 -ysize 50 -red 255 -blue 255 -green 255 -outside\fR
+.RE
+.LP
+Create a new image with a horizontal ramp shading from blue to red:
+.RS 0.5i
+.LP
+\fBimfill -xsize 200 -ysize 200 -red 20-120 -blue 150-50 purple.rgb
+.RE
+.LP
+Create a new image with a vertical ramp shading from dark grey to light grey:
+.RS 0.5i
+.LP
+\fBimfill -xsize 200 -ysize 200 -intensity .2-.6 -graduate vertical grey.rgb
+.RE
+.LP
+Fill an image with a ramp in hue, while leaving pixel saturation and
+intensity the same (this creates a neat effect!):
+.RS 0.5i
+.LP
+\fBimfill face.rgb -hue 0.0-360.0 colorface.rgb\fR
+.RE
+.LP
+Fill a portion of a color indexed Sun raster file
+image with index values of 0 (often set to black),
+and save the result as an RGB Sun raster file:
+.RS 0.5i
+.LP
+\fBimfill -xpos 10 -ypos 20 -xsize 100 -ysize 12 -index 0 -outrgb in.ras out.ras\fB
+.RE
+.LP
+Fill a Silicon Graphics RGB image file with a ramp in green, then save the
+image as a color index Sun raster file:
+.RS 0.5i
+.LP
+\fBimfill rgbimage.rgb -green 0-255 -outindex indeximage.ras\fR
+.RE
+.LP
+.SH "SEE ALSO"
+\fBimadjust\fR (1IM),
+\fBimcomp\fR (1IM),
+\fBimdissolve\fR (1IM),
+\fBImVfbFill\fR (3IM)
+.sp 1
+For information on SDSC's image library, see \fBimintro\fR(3IM). 
+.SH AUTHORS
+Chris Groening, Dave Nadeau, Brian Duggan
+.br
+San Diego Supercomputer Center
+.LP
+See the individual file format \fBman\fR pages for the authors of the underlying
+format read and write code.  The names of these \fBman\fR pages begin
+with the letters "im," followed by the format name.
+For example, the name of the TIFF \fBman\fR page is \fBimtiff\fR.
+To display it, enter \fBman imtiff\fR.
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

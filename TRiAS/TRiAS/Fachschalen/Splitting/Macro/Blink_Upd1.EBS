@@ -1,0 +1,120 @@
+' -----------------------------------------------------------------------------
+' $DESCRIPTION: Alle Objekte einer Selektionsmenge vereinigen
+' -----------------------------------------------------------------------------
+'	'GrundstückeBilden.ebs'	TRiAS-MakroErweiterung
+' -----------------------------------------------------------------------------
+'	(c)	FEZ Potsdam GmbH, 13. Oktober 1998, K.Kurth
+' -----------------------------------------------------------------------------
+'	Bildet Grundstücke aus Flurstücken.
+'	Spezielle Makroerweiterung für das Berlin (GBM)-Projekt.
+' -----------------------------------------------------------------------------
+
+Option Explicit
+
+' -----------------------------------------------------------------------------
+' Globale Variablen
+Private docGD As GeoDocument		' aktuelles Projekt
+
+Private Status As StatusIndicator 
+
+
+' -----------------------------------------------------------------------------
+' Beschreibungs-Strings
+Const NL = Chr$(13) + Chr$(10)		' Zeilenwechsel
+Const strBoxTitel As String = "Update/Grundstücke bilden"
+Const strToolSearch As String = "Update/Grundstücke bilden"
+Const strToolSearchLong As String = "Auswahl der Flurstücke [11111123]-Update"
+
+
+
+Const strFlur = "Flurstück"
+Const strFlur1 = "Flurstück bereits bearbeitet"
+
+' -----------------------------------------------------------------------------
+' Deklaration aller verwendeten Routinen
+' -----------------------------------------------------------------------------
+' "BeginScript()" wird immer vor der Script-Abarbeitung gerufen
+Sub BeginScript()
+
+	Set docGD = GetActiveDocument()
+
+End Sub
+
+' -----------------------------------------------------------------------------
+
+' -----------------------------------------------------------------------------
+' "EndScript()" wird immer nach Beendigung der Script-Abarbeitung gerufen
+Sub EndScript()
+
+	Set docGD = Nothing
+
+' Jetzt wird der Script wirklich abgebrochen
+'	SetBreakScript (True)
+End Sub
+
+' -----------------------------------------------------------------------------
+' "OnDocumentToClose()" wird bei Schließen des aktuellen Projektes gerufen
+Sub OnDocumentToClose (Doc As GeoDocument)
+	Set docGD = Nothing
+End Sub
+
+' "OnDocumentOpened()" wird bei Öffnen eines Projektes gerufen
+Sub OnDocumentOpened (Doc As GeoDocument)
+	Set docGD = GetActiveDocument()
+End Sub
+
+' -----------------------------------------------------------------------------
+' Hier gehts los
+Const strSelectIdent As String = "TRiASEx.SelectIdentObjTyp.1"
+Const strSelectFromORWnd As String = "TRiASEx.SelectFromObjectWindow.1"
+Const strClassify As String = "TRiASEx.ClassifyByObjProp.1"
+Const strCopyObjects As String = "TRiASEx.CopyObjects.1"
+Const strUnionObjects As String = "TRiASEx.UnionObjects.1"
+Const strModifyIdent As String = "TRiASEx.ModifyIdent.1"
+
+Const strNoShow As String = "NoShow=1"
+
+Sub Blink_Upd1()
+
+	Set docGD = GetActiveDocument()
+
+
+' neu
+	Dim clsFlur As GeoClass
+	Dim objsFlur As GeoObjects
+
+	Set clsFlur = docGD.GetClass (strFlur)
+
+	If (clsFlur Is Nothing) Then
+		MsgBox "Im Projekt wurden keine Flurstücke gefunden!", _
+			ebInformation, strBoxTitel
+		Exit Sub
+	End If
+
+	Set objsFlur = clsFlur.GetObjects (OT_Area)
+
+	If (objsFlur.Count = 0) Then
+		MsgBox "Im Projekt wurden keine Flurstücke gefunden!", _
+			ebInformation, strBoxTitel
+		Exit Sub
+	End If
+
+
+' Operation durchführen
+	Dim Seq As New PropertySequence
+	Seq.Description = strToolSearchLong
+
+	Seq.AddAction strClassify, strNoShow + ";ClassifyBy=Grundstücksnummer;UseAll=0"
+	Seq.AddAction strCopyObjects, strNoShow
+	Seq.AddAction strUnionObjects, strNoShow
+	Seq.AddAction strModifyIdent, strNoShow + ";ModifyTo=[1124]"
+
+	Seq.DoActions objsFlur
+
+	Beep
+	MsgBox "Und tschüß!", ebInformation, strBoxTitel
+
+End Sub
+
+' -----------------------------------------------------------------------------
+  

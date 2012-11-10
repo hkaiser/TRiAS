@@ -1,0 +1,484 @@
+/*********************************************************************
+
+ ----  R O T B M P  -------- MS-Windows Application -----------------
+                             ### Bitmap Rotation Algorithm ###
+
+======================================================================
+
+### Fast Version ###
+
+----------------------------------------------------------------------
+
+Copyright 1989 by
+          Marcellus Buchheit, Buchheit software research
+          Zaehringerstrasse 47, D-7500 Karlsruhe 1
+          Phone (0) 721/37 67 76    (West Germany)
+
+Release 1.00 of 89-Nov-16 --- All rights reserved.
+
+*********************************************************************/
+
+#include "trias03p.hxx"
+
+#include <stdlib.h>		// include all common declarations
+#include <stdarg.h>
+#include <math.h>
+
+#include <funcs03.h>
+
+// type of bitmap offset
+typedef struct tagBMOFFS {
+	WORD *pu;		// pointer to current bitmap WORD
+	int iW;			// relative index of bit within WORD (0..15)
+} BMOFFS;
+
+
+/*********************************************************************
+	R o t a t e B i t m a p
+======================================================================
+
+This function creates a new bitmap object and copies the contents of
+bitmap <hbmSrc> into this bitmap with a rotation by the gradient
+vector <gradRot>. If the destination bitmap is created completely its
+handle is returned. Otherwise all allocated data is removed and NULL
+is returned.
+
+Parameters
+ hbmSrc .... is the handle of the bitmap which is to be rotated.
+ gradRot ... contains the gradient vector values.
+ sGradBase   is the base of the gradiant values (0..32767).
+
+Return
+ If the rotated bitmap is completely created, its handle is returned.
+ Otherwise NULL is returned.
+
+Comments
+ Following conditions are TRUE (nearly)
+  1) sin(rot-angle)=gradRot.y/usGradBase
+  2) cos(rot-angle)=gradRot.x/usGradBase
+
+*********************************************************************/
+
+HBITMAP PASCAL RotateBitmap (HDC hTargetDC, HBITMAP hbmSrc, GRADIENT gradRot, 
+			     int sGradBase, CoOrd *pX, CoOrd *pY)
+{
+BITMAP bmSrc;
+HDC hdcDest;
+HBITMAP hbmDest = NULL;
+BITMAP bmDest;
+int cxSrc, cySrc, cxDest, cyDest;	// bitmap rectangle size values
+
+DWORD cbSrc, cbDest;			// size of bitmap data
+
+POINT aptSrc[4], aptDest[4];
+LONG lRound = sGradBase / 2;		// round factor
+
+LPSTR lpbSrcBlk = NULL;			// long pointer to bitmap source data block
+LPSTR lpbSrcLine;			// pointer to start of source bitmap line
+LPSTR lpbDestBlk = NULL;		// pointer to bitmap destination data block
+GRADIENT grad1;				// gradient of line (0 -> 2)
+GRADIENT grad2;				// gradient of line (0 -> 1) and parallel
+int iGrad1, iGrad2;			// gradient index for line 1 and 2
+BMOFFS bmoffs1, bmoffs2;		// point within line 1 and line 2
+int i1, i2, c1, c2, s1, s2;		// Bresenhan variables
+int sR1, sR2;				// ratio factors between source and destination lines
+int csRow;				// numer of WORDs per destination bitmap row
+LONG l;
+int i;
+
+// bitmap word selection mask
+static WORD auMask[] = {
+		0x0080, 0x0040, 0x0020, 0x0010, 0x0008, 0x0004, 0x0002, 0x0001,
+		0x8000, 0x4000, 0x2000, 0x1000, 0x0800, 0x0400, 0x0200, 0x0100
+	};
+
+	GetObject (hbmSrc, sizeof(BITMAP), &bmSrc);
+
+// determine source corner points (index difference => round down)
+	cxSrc = bmSrc.bmWidth;
+	cySrc = bmSrc.bmHeight;
+	cbSrc = (LONG) bmSrc.bmWidthBytes * bmSrc.bmHeight;
+	if (HIWORD (cbSrc) != 0)
+		goto labelRETERR;	// too complex
+
+	aptSrc[0].x = -(cxSrc / 2);
+	aptSrc[0].y = (cySrc - 1) / 2;
+	aptSrc[1].x = (cxSrc - 1) / 2;
+	aptSrc[1].y = aptSrc[0].y;
+	aptSrc[2].x = aptSrc[0].x;
+	aptSrc[2].y = -(cySrc / 2);
+	aptSrc[3].x = aptSrc[1].x;
+	aptSrc[3].y = aptSrc[2].y;
+
+// calculate destination corner points
+	for (i = 0; i < 4; i++) {
+		l = (LONG) aptSrc[i].x * gradRot.x - (LONG) aptSrc[i].y * gradRot.y;
+
+	// add absolute round factor, divide by gradient base
+		aptDest[i].x = (int) ((l >= 0 ? l + lRound : l - lRound) / sGradBase);
+		l = (LONG) aptSrc[i].y * gradRot.x + (LONG) aptSrc[i].x * gradRot.y;
+
+	// add absolute round factor, divide by gradient base
+		aptDest[i].y = (int) ((l >= 0 ? l + lRound : l - lRound) / sGradBase);
+	}			/* for */
+
+// determine size of destination bitmap (rectangle)
+	{
+	static BYTE miGrad2To1[] = { 5, 4, 1, 0, 7, 6, 3, 2 };
+
+		iGrad2 = 2 * (gradRot.y < 0) + (gradRot.x < 0);	// set quadrant value
+
+		switch (iGrad2) {
+		case 0:
+		// 0..90 degree
+			cxDest = aptDest[3].x - aptDest[0].x;
+			cyDest = aptDest[1].y - aptDest[2].y;
+			iGrad2 = 2 * iGrad2 + (gradRot.y > gradRot.x);
+			grad1.x = aptDest[2].x - aptDest[0].x;
+			grad1.y = aptDest[0].y - aptDest[2].y;
+			grad2.x = aptDest[1].x - aptDest[0].x;
+			grad2.y = aptDest[1].y - aptDest[0].y;
+			break;
+		case 1:
+		// 90..180 degree
+			cxDest = aptDest[2].x - aptDest[1].x;
+			cyDest = aptDest[3].y - aptDest[0].y;
+			iGrad2 = 2 * iGrad2 + (gradRot.y > -gradRot.x);
+			grad1.x = aptDest[2].x - aptDest[0].x;
+			grad1.y = aptDest[2].y - aptDest[0].y;
+			grad2.x = aptDest[0].x - aptDest[1].x;
+			grad2.y = aptDest[1].y - aptDest[0].y;
+			break;
+		case 2:
+		// 270..360 degree
+			cxDest = aptDest[1].x - aptDest[2].x;
+			cyDest = aptDest[0].y - aptDest[3].y;
+			iGrad2 = 2 * iGrad2 + (-gradRot.y > gradRot.x);
+			grad1.x = aptDest[0].x - aptDest[2].x;
+			grad1.y = aptDest[0].y - aptDest[2].y;
+			grad2.x = aptDest[1].x - aptDest[0].x;
+			grad2.y = aptDest[0].y - aptDest[1].y;
+			break;
+		case 3:
+		// 180..270 degree
+			cxDest = aptDest[0].x - aptDest[3].x;
+			cyDest = aptDest[2].y - aptDest[1].y;
+			iGrad2 = 2 * iGrad2 + (-gradRot.y > -gradRot.x);
+			grad1.x = aptDest[0].x - aptDest[2].x;
+			grad1.y = aptDest[2].y - aptDest[0].y;
+			grad2.x = aptDest[0].x - aptDest[1].x;
+			grad2.y = aptDest[0].y - aptDest[1].y;
+			break;
+		}		/* switch */
+		cxDest++;
+		cyDest++;	// one more because index difference
+
+		iGrad1 = miGrad2To1[iGrad2];	// rotation by -90 degree
+
+	// iGrad1 and iGrad2 are now octant values:
+	// 0:  0..45   2:  90..135   4: 315..360   6: 225..270
+	// 1: 45..90   3: 135..180   5: 270..315   7: 180..225
+	}			/* block */
+
+// create destination bitmap
+	hbmDest = CreateBitmap (cxDest, cyDest, 1, 1, NULL);
+	if (hbmDest == NULL)
+		goto labelRETERR;	// memory too small
+
+	GetObject (hbmDest, sizeof (BITMAP), (LPSTR) & bmDest);
+	cbDest = (LONG) bmDest.bmWidthBytes * bmDest.bmHeight;
+	if (HIWORD (cbDest) != 0)
+		goto labelRETERR;	// too complex
+
+// create memory object for source and destination bitmap
+	lpbSrcBlk = new char[cbSrc];
+	if (NULL == lpbSrcBlk)
+		goto labelRETERR;	// memory too small
+
+	lpbDestBlk = new char[cbDest];
+	if (NULL == lpbDestBlk)
+		goto labelRETERR;	// memory too small
+
+// get bitmap data
+	GetBitmapBits (hbmSrc, cbSrc, lpbSrcBlk);
+
+// create memory display context for destination bitmap
+	hdcDest = CreateCompatibleDC (hTargetDC);
+	SelectObject (hdcDest, hbmDest);
+
+// set destination bitmap to black color
+	{
+	WORD *lpuDest = (WORD *) lpbDestBlk;
+	WORD cWord = (WORD) cbDest / 2;
+
+		for (i = 0; i < cWord; i++)
+			*lpuDest++ = 0; // 0xFFFF;
+	}			/* block */
+
+// start Bresenhan algorithm for line (0->2)
+	lpbSrcLine = lpbSrcBlk;
+	csRow = bmDest.bmWidthBytes / 2;
+	{
+	WORD xRow;
+
+	// calculate memory location of <aptDest[0]>,
+	// start with row offset
+		bmoffs1.pu = ((WORD *) lpbDestBlk) + csRow * (cyDest / 2 - aptDest[0].y);
+		xRow = WORD(cxDest / 2 + aptDest[0].x);
+
+		bmoffs1.pu += xRow / 16;	// WORD offset
+		bmoffs1.iW = xRow & 15;		// bit offset within byte
+
+	}
+
+// calculate Bresenhan algorithm values for (0->2) and (0->1)
+	if (iGrad1 & 1) {
+	// leader is y direction
+		c1 = grad1.y;
+		s1 = 2 * grad1.x - grad1.y;
+	} else {
+	// leader is x direction
+        	c1 = grad1.x;
+		s1 = 2 * grad1.y - grad1.x;
+	}			/* if */
+
+	if (iGrad2 & 1) {
+	// leader is y direction
+		c2 = grad2.y;
+		s2 = 2 * grad2.x - grad2.y;
+	} else {
+	// leader is x direction
+		c2 = grad2.x;
+		s2 = 2 * grad2.y - grad2.x;
+	}			/* if */
+	c1++;
+	c2++;			// one more because index difference
+
+// calculate ratio start factors for line(0,2) and line(0,1)
+	sR1 = 2 * c1 - cySrc;
+	sR2 = 2 * c2 - cxSrc;
+
+	for (i1 = 0; i1 < cySrc; i1++) {
+	// determine line from bmoffs1 into grad2-direction
+	WORD *lpuSrc = (WORD *) lpbSrcLine;	// start of source line
+	WORD uSrcWord;		// current source word
+	int iSrcBit = 16;	// current source bit within word
+	int s2T = s2;
+
+		bmoffs2 = bmoffs1;
+		for (i2 = 0; i2 < cxSrc; i2++) {
+		// determine if point <bmoffs2> is black in source bitmap
+			if (iSrcBit > 15) {
+			// get next source bitmap word
+				uSrcWord = *lpuSrc++;
+				iSrcBit = 0;	// reset counter
+			}	/* if */
+
+			if ((uSrcWord & auMask[iSrcBit++])) {
+			// next source bitmap bit black => set pixel in dest. bitmap
+//				*bmoffs2.pu &= ~auMask[bmoffs2.iW];
+				*bmoffs2.pu |= auMask[bmoffs2.iW];	// set to white
+			}	/* if */
+
+			if (sR2 > 0) {
+			// draw next source point to next destination point
+				sR2 += 2 * (c2 - cxSrc);
+			} else {
+			// draw next source point to same  destination point
+				sR2 += 2 * c2;
+				continue;
+			}	/* if */
+
+		// determine next point of line(0,1)
+			switch (iGrad2) {
+			case 0:
+				bmoffs2.iW++;
+				if (s2T > 0) {
+					bmoffs2.pu -= csRow;
+					s2T -= 2 * grad2.x;
+				}
+				s2T += 2 * grad2.y;
+				break;
+			case 1:
+				bmoffs2.pu -= csRow;
+				if (s2T > 0) {
+					bmoffs2.iW++;
+					s2T -= 2 * grad2.y;
+				}
+				s2T += 2 * grad2.x;
+				break;
+			case 2:
+				bmoffs2.iW--;
+				if (s2T > 0) {
+					bmoffs2.pu -= csRow;
+					s2T -= 2 * grad2.x;
+				}
+				s2T += 2 * grad2.y;
+				break;
+			case 3:
+				bmoffs2.pu -= csRow;
+				if (s2T > 0) {
+					bmoffs2.iW--;
+					s2T -= 2 * grad2.y;
+				}
+				s2T += 2 * grad2.x;
+				break;
+			case 4:
+				bmoffs2.iW++;
+				if (s2T > 0) {
+					bmoffs2.pu += csRow;
+					s2T -= 2 * grad2.x;
+				}
+				s2T += 2 * grad2.y;
+				break;
+			case 5:
+				bmoffs2.pu += csRow;
+				if (s2T > 0) {
+					bmoffs2.iW++;
+					s2T -= 2 * grad2.y;
+				}
+				s2T += 2 * grad2.x;
+				break;
+			case 6:
+				bmoffs2.iW--;
+				if (s2T > 0) {
+					bmoffs2.pu += csRow;
+					s2T -= 2 * grad2.x;
+				}
+				s2T += 2 * grad2.y;
+				break;
+			case 7:
+				bmoffs2.pu += csRow;
+				if (s2T > 0) {
+					bmoffs2.iW--;
+					s2T -= 2 * grad2.y;
+				}
+				s2T += 2 * grad2.x;
+				break;
+			}	/* switch */
+
+			if (bmoffs2.iW < 0) {
+			// underflow: one word less
+				bmoffs2.iW += 16;
+				bmoffs2.pu--;
+			} else if (bmoffs2.iW > 15) {
+			// overflow: one word more
+				bmoffs2.iW -= 16;
+				bmoffs2.pu++;
+			}	/* if */
+		}		/* for */
+
+	// set source pointer to next line
+		lpbSrcLine += bmSrc.bmWidthBytes;
+		if (sR1 > 0) {
+		// draw next source line to next destination row
+			sR1 += 2 * (c1 - cySrc);
+		} else {
+		// draw next source line to same destination row
+			sR1 += 2 * c1;
+			continue;
+		}		/* if */
+
+	// determine next point of line(0,2)
+		switch (iGrad1) {
+		case 0:
+			bmoffs1.iW++;
+			if (s1 > 0) {
+				bmoffs1.pu -= csRow;
+				s1 -= 2 * grad1.x;
+			}
+			s1 += 2 * grad1.y;
+			break;
+		case 1:
+			bmoffs1.pu -= csRow;
+			if (s1 > 0) {
+				bmoffs1.iW++;
+				s1 -= 2 * grad1.y;
+			}
+			s1 += 2 * grad1.x;
+			break;
+		case 2:
+			bmoffs1.iW--;
+			if (s1 > 0) {
+				bmoffs1.pu -= csRow;
+				s1 -= 2 * grad1.x;
+			}
+			s1 += 2 * grad1.y;
+			break;
+		case 3:
+			bmoffs1.pu -= csRow;
+			if (s1 > 0) {
+				bmoffs1.iW--;
+				s1 -= 2 * grad1.y;
+			}
+			s1 += 2 * grad1.x;
+			break;
+		case 4:
+			bmoffs1.iW++;
+			if (s1 > 0) {
+				bmoffs1.pu += csRow;
+				s1 -= 2 * grad1.x;
+			}
+			s1 += 2 * grad1.y;
+			break;
+		case 5:
+			bmoffs1.pu += csRow;
+			if (s1 > 0) {
+				bmoffs1.iW++;
+				s1 -= 2 * grad1.y;
+			}
+			s1 += 2 * grad1.x;
+			break;
+		case 6:
+			bmoffs1.iW--;
+			if (s1 > 0) {
+				bmoffs1.pu += csRow;
+				s1 -= 2 * grad1.x;
+			}
+			s1 += 2 * grad1.y;
+			break;
+		case 7:
+			bmoffs1.pu += csRow;
+			if (s1 > 0) {
+				bmoffs1.iW--;
+				s1 -= 2 * grad1.y;
+			}
+			s1 += 2 * grad1.x;
+			break;
+		}		/* switch */
+		if (bmoffs1.iW < 0) {
+		// underflow: one word less
+			bmoffs1.iW += 16;
+			bmoffs1.pu--;
+		} else if (bmoffs1.iW > 15) {
+		// overflow: one word more
+			bmoffs1.iW -= 16;
+			bmoffs1.pu++;
+		}		/* if */
+	}			/* for */
+
+// set destination bitmap data
+	SetBitmapBits (hbmDest, cbDest, lpbDestBlk);
+
+// free allocated memory objects
+	DeleteDC (hdcDest);
+	goto labelRETURN;
+	
+labelRETERR:
+// memory too small: free allocated objects
+	if (hbmDest) {
+		DeleteObject (hbmDest);
+		hbmDest = NULL;
+	}
+	
+labelRETURN:
+	DELETE(lpbSrcBlk);
+	DELETE(lpbDestBlk);
+
+// Maﬂe der neuen Bitmap liefern
+	if (NULL != pX) *pX = cxDest;
+	if (NULL != pY) *pY = cyDest;
+
+return hbmDest;
+}				/* RotateBitmap() */
+

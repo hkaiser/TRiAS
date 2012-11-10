@@ -1,0 +1,89 @@
+# Erzeuge dBase-Erweiterung fr TRIAS
+# Windows/DLL-Version
+# J. Benkenstein 1. September 1993
+
+.SUFFIXES:
+.SUFFIXES: .cxx .obj .rc .res .c
+
+NAME = DBASEEXT
+DEF = $(NAME).def
+DEBUG = 1
+COPY = 1
+VERS_FILE = VERS32.H
+
+# Generierungsdatum (yymmdd) und Version
+DATE=980105
+VERSION = 2
+RELEASE = 04
+BUILD = 026
+COPYRIGHT = JB$(DATE)
+
+PNAME = "Version für den internen Gebrauch"
+PADDRESS = "uve GmbH Fernerkundungszentrum Potsdam"
+
+LIBD = f:\triasdev\lib.32
+WINDIR = c:\trias\trias
+
+LINK = f:\c8\bin\link
+ASMFLAGS =
+ASM =asm
+
+STUB = rights
+RIGHTS = $(STUB).exe
+
+#!include "dbaseext.mak"
+
+copy:
+!IF $(COPY)
+	copy $(NAME).dll $(WINDIR)\$(NAME).ext
+!ENDIF
+
+# Versionskontrolle -----------------------------------------------------------
+new:
+	@del $(STUB).asm > nul
+	@del $(NAME).rcv > nul
+        @del $(DEF) > nul
+        @del $(VERS_FILE) > nul
+
+
+formake:  $(STUB).exe $(NAME).rcv $(DEF) $(VERS_FILE)
+
+$(VERS_FILE):    version.tpl 
+        ersetz $(VERSION) $(RELEASE) version.tpl $(VERS_FILE)
+
+$(DEF): $(NAME).tpl
+        ersetz $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) $(NAME).tpl $(DEF)        
+
+$(STUB).exe:    $(STUB).asm
+	masm rights;
+        $(LINK) /KNOWEAS rights;
+
+$(STUB).asm:    $(STUB).tpl 
+	ersetz $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) $(STUB).tpl $(STUB).asm
+
+# Personalisierungsinformation
+$(NAME).rcv:    dbasev.tpl
+	ersetz $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) @A @B dbasev.tpl tmp.rcv
+	ersetz $(PNAME) $(PADDRESS) tmp.rcv $(NAME).rcv
+	@del tmp.rcv > nul
+
+# archivieren ---------------------------------------------------------------
+store:
+	@echo off
+	del *.bak
+	del *.dmp
+	del *.tmp
+	del *.zip
+	del *.map
+	del *.sym
+	del *.sts
+	del *.lst
+	del *.aps
+	del *.pch
+	del *.bnd
+	del *.pdb
+	del *.sbr
+	del *.bsc 
+	del *.map
+        zip -m -x*.ncb $(NAME)
+

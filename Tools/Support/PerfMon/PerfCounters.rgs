@@ -1,0 +1,19 @@
+HKCR
+{
+	PerfMon.PerfCounters.1 = s 'PerfCounters Class'
+	{
+		CLSID = s '{467452A6-9CBA-11D2-9F09-006008447800}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {467452A6-9CBA-11D2-9F09-006008447800} = s 'PerfCounters Class'
+		{
+			ProgID = s 'PerfMon.PerfCounters.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

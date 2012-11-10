@@ -1,0 +1,206 @@
+/* Scanner fuer Eingabe der objektbezogenen Visualisierungsinformationen */
+/* File: VISOBJL.LX 							 */
+
+%{
+
+extern "C" {
+	#include <windows.h>
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <string.h>
+	#include <ctype.h>
+
+	#include "yvisobj.h"
+}
+
+#include <commonvu.hxx>
+
+#include <errcodes.hxx>
+#include <attribs.hxx>
+
+#include "yystype.hxx"
+
+#if defined(_MSC_VER)
+#pragma warning (disable: 4102)		// unreferenced label
+#endif
+
+#if !defined(true)
+#define true (1)
+#endif
+
+
+// Neudefinition der LEX - I/O Routinen für WINIO
+# undef output
+# undef input
+# undef ECHO
+
+# define output(c) /*fputchar(c)*/
+# define input() (yytchar=yysptr>yysbuf?U(*--yysptr): \
+		  (pActChar<pBuffEnd?*pActChar++:0))
+
+extern YYSTYPE yylval;
+void yyerror (ErrCode, ...);
+void yyerror (const char *, ...);
+
+char *pActChar;
+char *pBuffEnd;
+
+struct keyentry {               /* Tabelleneintrag fuer reservierte Worte */
+	int  lx;
+	char *id;
+};
+
+/* reservierte Worte, die vom Scanner identifiziert werden */
+static struct keyentry keywords[] = {
+	{	T_PRIORITY, "PRIORITY"	},
+	{	T_TYPE, "TYPE"		},
+	{	T_MAINCOLOR, "MAINCOLOR"	},
+	{	T_SIZE, "SIZE"		},
+	{	T_WIDTH, "WIDTH"	},
+	{	T_FILLCOLOR, "FILLCOLOR"	},
+	{	T_PUNKT, "COORDPAIR"	},
+	{	T_LINIE, "LINE"		},
+	{	T_FLAECHE, "AREA"	},
+	{	T_TEXT, "X"	},
+	{	T_TTYP, "Y"	},
+	{	T_TROT, "ROTATION"	},
+	{	T_TAGGED, "KENNZEICHEN"	},
+	{	T_TESC,	"ORIENTATION"	},
+	{	T_TVCS, "Z"		},
+	{	T_LOCATABLE, "LOCATABLE" },
+	{	T_VISIBLE, "VISIBLE" },
+	{	0, NULL	},
+};
+
+#undef YYLMAX		// max. StringLaenge
+#define YYLMAX	2048
+
+%}
+
+S               [-+]?
+D               [0-9]
+X		[0-9A-Fa-f]
+ID              [a-zA-Z_]([a-zA-Z0-9_])*
+
+%start TextTyp 
+
+%%
+
+\{			|
+\}			|
+\=			|
+\,			|
+\;			|
+\%			|
+\:			{
+				return *yytext;
+			}
+
+\"			|
+\'			{
+			int scope_char = yytext[0];
+			int inchar;
+			char *cptr = new char [YYLMAX];
+			char *pBuff = cptr;
+			
+				if (cptr == NULL)
+					yyerror (EC_NOMEMORY);
+				else {
+					inchar = input();
+					while (inchar != 0 && inchar != scope_char) {
+						if (inchar == '\\') {
+							inchar = input();
+							if (0 == inchar)
+								break;
+						}
+						*cptr++ = inchar;
+						inchar = input();
+					}
+					*cptr = '\0';
+				}
+
+				BEGIN 0;
+
+				OemToAnsi (pBuff, pBuff);
+				LEXSTACK (pBuff, YYString, yylineno);
+				return T_STRING;
+			}
+
+{S}{D}+                 {       /* Integerzahl */
+			long *pLNum = new long (atol (yytext));
+
+				LEXSTACK (pLNum, YYLong, yylineno);
+				return (T_NUMBER);
+			}
+
+<TextTyp>0x{X}+		|
+<TextTyp>0X{X}+		{		/* HexZahl */
+			long *pLNum = new long (strtoul (yytext, NULL, 16));
+
+				BEGIN 0;
+				LEXSTACK (pLNum, YYLong, yylineno);
+				return T_NUMBER;
+			}
+
+[ \t]*                  ;               /* ignorieren */
+
+{ID}                    {	/* Keyword */
+			short iLen = strlen (yytext);
+			char *pIdent = new char [iLen+1];
+
+				if (pIdent != NULL) {
+					strcpy (pIdent, yytext);
+					strupr (pIdent);
+				}
+				
+			/* ist ID ein reserviertes Wort ? */
+				for (short i = 0; keywords[i].lx ; i++) {
+					if (!strncmp (keywords[i].id, pIdent, iLen))
+						break;
+				}
+				if (keywords[i].lx) {   /* ID ist Schluesselwort */
+				// Besonderheit fuer T_TTYP
+					if (keywords[i].lx == T_TTYP)
+						BEGIN TextTyp;
+
+					LEXSTACK (pIdent, YYString, yylineno);
+					return (keywords[i].lx);
+				} 
+				else {          /* kein Keyword --> Fehler */
+					if (pIdent) delete pIdent;
+					LEXSTACK (NULL, YYLong, yylineno);
+					return (T_IDENT);
+				}
+			}
+
+\/\*			{	/* Kommentar */
+			register int ch;
+
+                                for (;;) {
+                                        while ((ch = input()) != '*') {
+                                                if (ch == '\n')
+                                                        ++yylineno;
+                                        }
+                                        if ( (ch = input()) == '/')
+                                                break;
+                                        else
+                                                unput(ch);
+                                }
+                        }
+
+\/\/			{	/* Kommentar */
+			register int ch;
+
+				while ((ch = input()) != '\n')
+					;
+				unput(ch);
+			}
+
+\n                      {       /* Zeilen zaehlen */
+				yylineno++;
+			}
+
+.                       ;       /* alles andere schlicht ignorieren */
+
+%%
+

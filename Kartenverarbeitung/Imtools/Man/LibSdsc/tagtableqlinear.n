@@ -1,0 +1,59 @@
+'\"t
+.TH TAGTABLEQLINEAR 3TAG "July 1990" "SDSC" "TAG TABLE"
+.SH NAME
+TagTableQLinear - query a tag table as a linear list of entries
+.SH SYNOPSIS
+\fB
+.nf
+#include "sdsc.h"
+
+extern int TagErrNo;
+
+TagEntry *TagTableQLinear( tagTable, nthEntry )
+	TagTable *tagTable;
+	int nthEntry;
+.fi
+\fR
+.SH DESCRIPTION
+\fITagTableQLinear\fR returns the \fInthEntry\fR tag table entry in the
+\fItagTable\fR.
+.SH NOTES
+Tag table entries are numbered from 0 for the first entry, 1 for the second,
+and so on.
+Entries may be appended to, inserted into, replaced within, and deleted
+from tag tables using \fITagTableAppend\fR(3TAG), \fITagTableInsert\fR(3TAG),
+\fITagTableReplace\fR(3TAG), and \fITagTableDelete\fR(3TAG).
+.LP
+Entries may be looked up based on their tag and occurrence number using
+\fITagTableQDirect\fR(3TAG).
+.LP
+\fITagTableQLinear\fR(3TAG) is typically used to search a tag table in the
+order in which it was built.
+.SH RETURNS
+On success, \fITagTableQLinear\fR returns the tag table entry found.
+On failure, \fITAGENTRYNULL\fR is returned and \fITagErrNo\fR set to:
+.sp
+.ta 2i
+.nf
+TAGEBADNTHENTRY	The nth entry argument is < 0 or >
+	the size of the table
+TAGENULLTAGTABLE	The tag table argument is bad
+.SH SEE ALSO
+TagTableAppend(3TAG),
+TagTableDelete(3TAG),
+TagTableInsert(3TAG),
+TagTableQDirect(3TAG),
+TagEntryQNthEntry(3TAG),
+TagEntryQNthOccur(3TAG),
+TagEntryQTag(3TAG),
+TagEntryQValue(3TAG),
+TagEntryQValueType(3TAG),
+TagTableQNEntry(3TAG),
+TagTableReplace(3TAG)
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

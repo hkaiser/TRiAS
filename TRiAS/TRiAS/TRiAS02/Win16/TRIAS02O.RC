@@ -1,0 +1,28 @@
+#include <windows.h>
+#include <resstrg.h>
+
+#include "trias02.rcv"
+
+/* Stringtabelle */
+STRINGTABLE     LOADONCALL      MOVEABLE        DISCARDABLE
+BEGIN
+	IDS_STBEXT,     	"*.stb"
+	IDS_PBDEXT,		"*.pbd"			// neue PBDErweiterung
+	IDS_PBDENTRY    	"PBD-NAME        "
+	IDS_DBASEINFO		"DBase"
+	IDS_PROFID      	"Id"
+	IDS_STANDARD    	"Standard"              // Standardansicht
+	IDS_DIRISEDENTRY	"TriasED"		// Sektion
+	IDS_DIRISEDKEY		"EditorName"		// EditorName
+	IDS_DIRISED		"triased"		// Standardname
+	IDS_PROFILE		"trias.ini"		// zentrale INI
+	IDS_PBDSUBDIR		"identsdb"		// Unterverzeichnis fÅr PBD
+	IDS_TEXTOBJMCODE	"TextObjMCode    "
+	IDS_HDRUNIQUEICODE	"NextUniqueICode "
+	IDS_HDRUNIQUEMCODE	"NextUniqueMCode "
+	IDS_HDRUNIQUERCODE	"NextUniqueRCode "
+	IDS_HDRUNIQUETEMPON	"NextUniqueTempON"
+END
+
+#include "fontsel.h"
+#include "fontsel.dlg"

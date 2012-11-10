@@ -1,0 +1,72 @@
+// @doc
+// @module ConfigObjectProperty.Idl | IDL source for configuration of object
+// properties
+// @group In diesem Modul definierte Interfaces
+// @index | INTERFACE
+// @end
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declarations
+interface IConfigObjectProperty;
+interface IConfigSequenceForObjectProperty;
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc	INTERFACE 
+// @interface IConfigObjectProperty | Über das <i IConfigObjectProperty> -Interface können
+// Objekteigenschaften aufgefordert werden, ihr Konfigurations-Nutzerinterface anzuzeigen.
+// @group Methoden und Eigenschaften von <i IConfigObjectProperty> 
+// @index | ICONFIGOBJECTPROPERTY
+// @doc ICONFIGOBJECTPROPERTY
+	[
+		object,
+		uuid(101228D6-D0B0-41D3-8F95-370E888F0446),
+		helpstring("IConfigObjectProperty Interface"),
+		pointer_default(unique)
+	]
+	interface IConfigObjectProperty : IUnknown
+	{
+		import "oaidl.idl";
+		import "ocidl.idl";
+
+		[helpstring("Anzeige des Konfigurations-Nutzerinterfaces.")] HRESULT ConfigObjectProperty (HWND hWnd);
+		[propget, helpstring("Liefert, ob Objekteigenschaft konfiguriert ist.")] HRESULT IsConfigured ([out, retval] VARIANT_BOOL *ConfigState);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc	INTERFACE 
+// @interface IConfigSequenceForObjectProperty | Über das <i IConfigSequenceForObjectProperty> -Interface wird
+// eine Objekteigenschaft vom Typ <o StatisticObjectProperty> initialisiert.
+// @group Methoden und Eigenschaften von <i IConfigSequenceForObjectProperty> 
+// @index | ICONFIGSEQUENCEFOROBJECTPROPERTY
+// @doc ICONFIGSEQUENCEFOROBJECTPROPERTY
+	[
+		object,
+		uuid(F7D428CF-8D5A-4B93-A129-F1D7C1EDE597),
+		helpstring("IConfigSequenceForObjectProperty Interface"),
+		pointer_default(unique)
+	]
+	interface IConfigSequenceForObjectProperty : IUnknown
+	{
+		import "oaidl.idl";
+		import "ocidl.idl";
+
+	///////////////////////////////////////////////////////////////////////////////
+	// counted array of CLSID's
+cpp_quote("#if !defined(_CALCLSID_DATA)")
+cpp_quote("#define _CALCLSID_DATA")
+		typedef [hidden, restricted] struct tagCALPCLSID {
+			ULONG cElems;						// Anzahl der CLSID's/PropActs
+			const CLSID **ppElems;				// Feld von Pointern auf CLSID's
+			const IUnknown **ppActions;			// Feld von bereits instantiierten PropertyActions
+			const VARIANT **ppvData;			// evtl. Initialisierungsdaten für PropertyActions
+			const BSTR *ppMkData;				// evtl. zusätzliche Monikerdaten
+			const BSTR *ppHeaderTitle;			// evtl. zusätzliche HeaderTitle's
+			const BSTR *ppHeaderSubTitle;		// evtl. zusätzliche HeaderSubTitle's
+		} CALPCLSID;
+cpp_quote("#endif // !defined(_CALCLSID_DATA)")
+
+		[helpstring("Hinzufügen einer GeoKomponente für die Konfiguration der Objekteigenschaft.")] HRESULT AddAction (IUnknown *pIAct);
+		[helpstring("Hinzufügen mehrerer GeoKomponenten für die Konfiguration der Objekteigenschaft.")] HRESULT AddActionsByCLSID (CALPCLSID *pcsClsId);
+		[helpstring("Abschluß der Konfiguration und Parametrisierung der Objekteigenschaft.")] HRESULT PrepareActions (HWND hParent, IDataObject *pIData);
+	};
+

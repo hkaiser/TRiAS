@@ -1,0 +1,517 @@
+' $Header: $
+' Copyright© 1998 Fernerkundungszentrum Potsdam GmbH, All rights reserved
+' Created: 09/12/1998 05:53:05 PM
+'
+' @doc
+' @module CopyObjects.ebs | Kopieren aller Objekt der übergebenen Objektmenge
+
+Option Explicit
+
+' -----------------------------------------------------------------------------
+' Funktionsdeklarationen
+Declare Private Function CopyGeoObjects (Objs As GeoObjects) As GeoObjects
+Declare Private Function CopyGeoObjectHelper (Obj As GeoObject) As GeoObject
+Declare Private Function CopyPointObject (NewObj As GeoObject, Obj As GeoObject) As Boolean
+Declare Private Function CopyLineObject (NewObj As GeoObject, Obj As GeoObject) As Boolean
+Declare Private Function CopyAreaObject (NewObj As GeoObject, Obj As GeoObject) As Boolean
+Declare Private Function CopyTextObject (NewObj As GeoObject, Obj As GeoObject) As Boolean
+
+Declare Private Function CopyObjectProperties (NewObj As GeoObject, Obj As GeoObject) As Boolean
+
+Declare Private Sub InitStatus (Objs As GeoObjects)
+Declare Private Sub FreeStatus()
+
+' -----------------------------------------------------------------------------
+' Variablen
+Const cbDoppel As String = "COPYOBJ_"
+Private Doc As GeoDocument
+Private Status As StatusIndicator 
+
+' -----------------------------------------------------------------------------
+' "BeginAction" wird gerufen, bevor die erste  Objektmenge verarbeitet werden soll
+Function BeginAction() As Boolean
+
+	Set Doc = GetActiveDocument()
+	Set Status = Nothing
+	BeginAction = True
+
+End Function
+
+' 2. Variante, wenn StatusIndicator von außen kommt
+Function BeginActionEx (Stat As StatusIndicator) As Boolean
+
+	Set Doc = GetActiveDocument()
+	Set Status = Stat
+	BeginActionEx = True
+
+End Function
+
+' -----------------------------------------------------------------------------
+' "DoAction" wird für jede der zu verarbeitenden Objektmengen gerufen
+Function DoAction (Objs As GeoObjects) As GeoObjects
+Dim ObjsOut As GeoObjects
+Dim o As GeoObject
+
+	Set DoAction = CopyGeoObjects (Objs)
+
+End Function
+
+' -----------------------------------------------------------------------------
+' "EndAction" wird nach der Verarbeitung der letzten Objektmenge gerufen
+Sub EndAction()
+
+	FreeStatus			' bei Runtime-Fehler hier freigeben
+	Set Doc = Nothing
+
+End Sub
+
+' -----------------------------------------------------------------------------
+' Hier gehen die eigenlichen (funktionalen) Einsprungpunkte los
+' -----------------------------------------------------------------------------
+
+' -----------------------------------------------------------------------------
+' Kopieren aller Objekte einer ObjektMenge 
+Const cbErrCaption As String = "Fehler beim Kopieren eines Objektes"
+Const cbErrNumber As String = " (Fehlernummer: "
+Const cbObject As String = "Objekt: "
+
+Private Function CopyGeoObjects (Objs As GeoObjects) As GeoObjects
+
+	Set CopyGeoObjects = Nothing		' profilaktisch
+	On Error GoTo labelError
+
+#If VIEWPORT = 1 Then
+	Viewport.Open
+#Else
+' in Releasevariante RTTI nicht ständig testen
+	Call SetDebug(DebugOff)		
+#End If
+
+' StatusAnzeige initialisieren
+	InitStatus Objs
+
+' Einfach alle Objekte der Menge durchgehen
+Dim ObjCurr As GeoObject
+Dim NewObj As GeoObject
+Dim ObjsOut As New GeoObjects
+
+	If (ObjsOut Is Nothing) Then
+#If VIEWPORT = 1 Then
+		Print "CopyGeoObjects: Kann Ausgabeobjektmenge nicht erzeugen!"
+#End If
+		Exit Function
+	End If
+
+#If VIEWPORT = 1 Then
+	Print "CopyGeoObjects: Anzahl der zu kopierenden Objekte " + Str$(Objs.Count)
+#End If
+
+Dim i As Integer 
+
+	i% = 0
+	For Each ObjCurr In Objs
+
+#If VIEWPORT = 1 Then
+		Print "CopyGeoObjects: Objekt: " + Str$(ObjCurr.Value)
+#End If
+		Set NewObj = CopyGeoObjectHelper(ObjCurr)
+		If (NewObj Is Nothing) Then
+		Dim iRet As Integer 
+
+			iRet% = MsgBox ("Soll die Operation aufgrund des Fehlers abgebrochen werden ?" + _
+							Err.Description + cbErrNumber + Str$(Err.Number) + ")", _
+							ebYesNo+ebQuestion,  cbErrCaption)
+			If (iRet% = ebYes) Then
+				FreeStatus
+				Exit Function
+			End If
+		End If
+		ObjsOut.Add NewObj	' zur Ausgabemenge hinzufügen
+
+	' Status weiterschalten
+		i% = i% + 1
+		If (Status Is Not Nothing) Then
+			Status.SetPosition i%
+			If (Status.WasCanceled()) Then		' abgebrochen
+				FreeStatus
+				Exit Function
+			End If
+		End if
+
+	Next ObjCurr
+	
+'Resultat setzen
+	Set CopyGeoObjects = ObjsOut
+	FreeStatus
+	Exit Function
+
+' Fehlerbehandlung
+labelError:
+	MsgBox	"Die Operation wird auf Grund eines Fehlers abgebrochen!" + _
+			Err.Description + cbErrNumber + Str$(Err.Number) + ")", _
+			ebOk+ebExclamation, cbErrCaption
+	FreeStatus
+	Exit Function
+
+End Function
+
+' -----------------------------------------------------------------------------
+' Kopieren eines einzelnen Objektes zwischen zwei Projekten (Helper)
+Private Function CopyGeoObjectHelper (Obj As GeoObject) As GeoObject
+
+	Set CopyGeoObjectHelper = Nothing	' Rückkehrwert initialisieren
+	On Error GoTo labelError
+
+' Überprüfen, ob dieses Objekt bereits existiert
+Dim NewObj As GeoObject
+
+' Erzeugen des neuen Objektes
+Dim ObjName As String
+
+	ObjName = Obj.Name$			' ObjektName
+	Set NewObj = Doc.AddObject (ObjName)
+	If (NewObj Is Nothing) Then
+#If VIEWPORT = 1 Then
+		Print "CopyGeoObjectHelper: failed: could not create new object !"
+#End If
+		Exit Function
+	End If
+
+' Status richten
+	If (Status Is Not Nothing) Then
+		Status.Field(4) = cbObject + Str$(NewObj.Value)
+	End If
+
+' Objektklasse zuweisen
+Dim Cls As GeoClass
+
+	Set Cls = Obj.ObjClass
+	If (Cls Is Nothing) Then
+#If VIEWPORT = 1 Then
+		Print "CopyGeoObjectHelper: failed: could not retrieve object class !"
+#End If
+		Doc.RemoveObject NewObj
+		Exit Function
+	End If
+	Cls.AddObject NewObj 
+
+' je nach ObjektTyp verfahren
+Dim iObjType As Integer
+Dim iRet As Boolean
+
+	iObjType% = Obj.ObjType
+	If (iObjType% = OBJTYPE_Point) Then
+	' Punktobjekt kopieren
+		iRet = CopyPointObject(NewObj, Obj)
+		If (iRet <> True) Then
+#If VIEWPORT = 1 Then
+			Print "CopyGeoObjectHelper: CopyPointObject fehlgeschlagen!"
+#End If
+			Doc.RemoveObject NewObj
+			Exit Function
+		End If
+#If VIEWPORT = 1 Then
+		Print "CopyGeoObjectHelper: CopyPointObject " + Str$(Obj.Value)
+#End If
+	ElseIf (iObjType% = OBJTYPE_Line) Then
+	' Linienobjekt kopieren
+		iRet = CopyLineObject(NewObj, Obj)
+		If (iRet <> True) Then
+#If VIEWPORT = 1 Then
+			Print "CopyGeoObjectHelper: CopyLineObject fehlgeschlagen!"
+#End If
+			Doc.RemoveObject NewObj
+			Exit Function
+		End If
+#If VIEWPORT = 1 Then
+		Print "CopyGeoObjectHelper: CopyLineObject " + Str$(Obj.Value)
+#End If
+	ElseIf (iObjType% = OBJTYPE_Area) Then
+	' Flächenobjekt kopieren
+		iRet = CopyAreaObject(NewObj, Obj)
+		If (iRet <> True) Then
+#If VIEWPORT = 1 Then
+			Print "CopyGeoObjectHelper: CopyAreaObject fehlgeschlagen!"
+#End If
+			Doc.RemoveObject NewObj
+			Exit Function
+		End If
+#If VIEWPORT = 1 Then
+		Print "CopyGeoObjectHelper: CopyAreaObject " + Str$(Obj.Value)
+#End If
+	ElseIf (iObjType% = OBJTYPE_Text) Then
+	' TextObjekt kopieren
+		iRet = CopyTextObject(NewObj, Obj)
+		If (iRet <> True) Then
+#If VIEWPORT = 1 Then
+			Print "CopyGeoObjectHelper: CopyTextObject fehlgeschlagen!"
+#End If
+			Doc.RemoveObject NewObj
+			Exit Function
+		End If
+#If VIEWPORT = 1 Then
+		Print "CopyGeoObjectHelper: CopyTextObject " + Str$(Obj.Value)
+#End If
+	End If
+
+	Set CopyGeoObjectHelper = NewObj	' Rückkehrwert setzen
+	Exit Function
+
+'Fehlerbehandlung
+labelError:
+	Exit Function
+
+End Function
+
+' -----------------------------------------------------------------------------
+' Kopieren der Geometrie einer Fläche
+Private Function CopyAreaObject (NewObj As GeoObject, Obj As GeoObject) As Boolean
+
+Dim X() As Double
+Dim Y() As Double
+Dim lCnt As Long
+Dim iKCnt As Integer
+Dim Conts() As Long
+
+	ReDim X(0)
+	ReDim Y(0)
+	ReDim Conts(0)
+
+' Geometrie vom BezugsObjekt abfragen
+Dim iObjType As Integer 
+
+	iObjType% = Obj.GetGeometry (lCnt, X, Y, iKCnt, Conts)
+	If (iObjType% <> OBJTYPE_Area) Then
+#If VIEWPORT = 1 Then
+		Print "CopyAreaObject: SNH: Objekttyp stimmt nicht überein!"
+#End If
+		CopyAreaObject = False
+		Exit Function
+	End If
+
+' Geometrie am neuen Objekt setzen, GeoRein nicht verwenden
+	CopyAreaObject = NewObj.PutGeometry (iObjType%, X, Y, _
+			MODGEOMETRY_ModObject+MODGEOMETRY_ForceGeometry+ _
+			MODGEOMETRY_AddToView, Conts)
+
+' Objekteigenschaften kopieren
+Dim iRet As Integer 
+
+	iRet% = CopyObjectProperties(NewObj, Obj)
+
+' ObjectGuid ersetzen
+	NewObj.OldUniqueID = Obj.UniqueID
+	NewObj.UniqueID = cbDoppel + Trim$(Str$(NewObj.Value))
+
+End Function
+
+' -----------------------------------------------------------------------------
+' Kopieren der Geometrie eines Punktes
+Private Function CopyPointObject (NewObj As GeoObject, Obj As GeoObject) As Boolean
+
+Dim X As Double
+Dim Y As Double
+
+' Geometrie vom BezugsObjekt abfragen
+Dim iObjType As Integer 
+
+	iObjType% = Obj.GetGeometry (X, Y)
+	If (iObjType% <> OBJTYPE_Point) Then
+#If VIEWPORT = 1 Then
+		Print "CopyPointObject: SNH: Objekttyp stimmt nicht überein!"
+#End If
+		CopyPointObject = False
+		Exit Function
+	End If
+
+' Geometrie am neuen Objekt setzen, GeoRein nicht verwenden
+	CopyPointObject = NewObj.PutGeometry (iObjType%, X, Y, _
+			MODGEOMETRY_ModObject+MODGEOMETRY_ForceGeometry+ _
+			MODGEOMETRY_AddToView)
+
+' Objekteigenschaften kopieren
+Dim iRet As Integer 
+
+	iRet% = CopyObjectProperties(NewObj, Obj)
+
+' ObjectGuid ersetzen
+	NewObj.OldUniqueID = Obj.UniqueID
+	NewObj.UniqueID = cbDoppel + Str$(NewObj.Value)
+
+End Function
+
+' -----------------------------------------------------------------------------
+' Kopieren der Geometrie einer Linie
+Private Function CopyLineObject (NewObj As GeoObject, Obj As GeoObject) As Boolean
+
+Dim X() As Double
+Dim Y() As Double
+Dim lCnt As Long
+
+	ReDim X(0)
+	ReDim Y(0)
+
+' Geometrie vom BezugsObjekt abfragen
+Dim iObjType As Integer 
+
+	iObjType% = Obj.GetGeometry (lCnt, X, Y)
+	If (iObjType% <> OBJTYPE_Line) Then
+#If VIEWPORT = 1 Then
+		Print "CopyLineObject: SNH: Objekttyp stimmt nicht überein!"
+#End If
+		CopyLineObject = False
+		Exit Function
+	End If
+
+' Geometrie am neuen Objekt setzen, GeoRein nicht verwenden
+	CopyLineObject = NewObj.PutGeometry (iObjType%, X, Y, _
+			MODGEOMETRY_ModObject+MODGEOMETRY_ForceGeometry+ _
+			MODGEOMETRY_AddToView)
+
+' Objekteigenschaften kopieren
+Dim iRet As Integer 
+
+	iRet% = CopyObjectProperties(NewObj, Obj)
+
+' ObjectGuid ersetzen
+	NewObj.OldUniqueID = Obj.UniqueID
+	NewObj.UniqueID = cbDoppel + Str$(NewObj.Value)
+
+End Function
+
+' -----------------------------------------------------------------------------
+' Kopieren der Geometrie eines Textes
+Private Function CopyTextObject (NewObj As GeoObject, Obj As GeoObject) As Boolean
+
+Dim X As Double
+Dim Y As Double
+
+' Geometrie vom BezugsObjekt abfragen
+Dim iObjType As Integer 
+
+	iObjType% = Obj.GetGeometry(X, Y)
+	If (iObjType% <> OBJTYPE_Text) Then
+#If VIEWPORT = 1 Then
+		Print "CopyTextObject: SNH: Objekttyp stimmt nicht überein!"
+#End If
+		CopyTextObject = False
+		Exit Function
+	End If
+
+' Geometrie am neuen Objekt setzen, GeoRein nicht verwenden
+Dim iRet As Integer 
+
+	iRet% = NewObj.PutGeometry (iObjType%, X, Y, _
+			MODGEOMETRY_ModObject+MODGEOMETRY_ForceGeometry+ _
+			MODGEOMETRY_AddToView)
+	If (iRet% <> True) Then
+		CopyTextObject = False
+		Exit Function
+	End If
+
+' eigentlichen Text auch noch kopieren
+Dim StrText As String
+
+	StrText = Obj.GetText()
+	Obj.PutText StrText
+	
+' Objekteigenschaften kopieren
+	iRet% = CopyObjectProperties(NewObj, Obj)
+
+' ObjectGuid ersetzen
+	NewObj.OldUniqueID = Obj.UniqueID
+	NewObj.UniqueID = cbDoppel + Str$(NewObj.Value)
+
+	CopyTextObject = True
+
+End Function
+
+' -----------------------------------------------------------------------------
+' Kopieren aller Objekteigenschaften des Bezugsobjektes
+Private Function CopyObjectProperties (NewObj As GeoObject, Obj As GeoObject) As Boolean
+
+' Merkmale des Ursprungsobjektes kopieren
+Dim Fts As GeoFeatures
+Dim FtLoop As GeoFeature
+
+	Set Fts = Obj.GetFeatures()
+
+Dim FtsCount As Long
+
+	FtsCount = Fts.Count
+#If VIEWPORT = 1 Then
+	Print "CopyObjectProperties: Anzahl der Objekteigenschaften: ", Str$(FtsCount)
+#End If
+
+Dim Ft As GeoFeature
+
+	For Each FtLoop In Fts
+	' Neues Merkmal erzeugen ...
+	Dim Flags As Long
+		
+		Flags& = FtLoop.Flags
+#If VIEWPORT = 1 Then
+		Print "CopyObjectProperties: Feature " + FtLoop.Name + ", Flags: ", Str$(Flags&)
+#End If
+		If (Flags& And FEATURETYPE_System) Then
+		' Systeminterne Merkmale nicht kopieren
+#If VIEWPORT = 1 Then
+			Print "CopyObjectProperties: " + FtLoop.Name + _
+				  " not touched (system feature)"
+#End If
+		Else
+		' Merkmal erzeugen, erstmal beschreibbar machen
+			Set Ft = NewObj.AddFeature (FtLoop.Name, Flags& Or FEATURETYPE_WriteAble, FtLoop.ConfigData)
+		
+		' ... und Wert kopieren
+			If (Ft Is Not Nothing) Then
+				Ft.Feature = FtLoop.Feature
+				Ft.Flags = Flags&	' Flags richten
+#If VIEWPORT = 1 Then
+				Print "CopyObjectProperties: " + FtLoop.Name + ": " _
+					  + FtLoop.Feature + " set"
+			Else
+				Print "CopyObjectProperties: " + FtLoop.Name + " not set"
+#End If
+			End If	' Ft Not Nothing
+		End If	' !FEATURETYPE_System
+	Next FtLoop
+
+	CopyObjectProperties = True
+
+End Function
+
+'------------------------------------------------------------------------------
+' StatusAnzeige verwalten
+Private Sub InitStatus (Objs As GeoObjects)
+
+	If (Objs Is Nothing) Then
+		Exit Sub
+	End If
+
+' ggf. bereits existierenden StatusIndicator verwenden	
+	If (Status Is Nothing) Then
+		Set Status = New StatusIndicator
+		if (Status Is Nothing) Then
+			Exit Sub
+		End If
+	End If
+
+Dim lCnt As Long
+
+	lCnt = Objs.Count
+
+	Status.Restart 0, lCnt, STATUS_CopyAVI Or STATUS_ShowAllFields
+	Status.Caption = "Doppeln von Objekten"
+	Status.Field(1) = "Anzahl:"
+	Status.Field(2) = Str$(lCnt) + " Objekte"
+	Status.Field(3) = "Es wurden bereits %d%% der Objekte gedoppelt"
+
+End Sub
+
+Private Sub FreeStatus()
+
+	If (Status Is Not Nothing) Then
+		Set Status = Nothing
+	End If
+End Sub

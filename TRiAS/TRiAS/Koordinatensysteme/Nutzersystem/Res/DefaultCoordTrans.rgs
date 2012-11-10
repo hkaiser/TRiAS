@@ -1,0 +1,24 @@
+HKCR
+{
+	TRiASCTF.DefaultCoordTrans.1 = s 'DefaultCoordTrans Class'
+	{
+		CLSID = s '{0BDC3C19-503F-11D1-96F0-00A024D6F582}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {0BDC3C19-503F-11D1-96F0-00A024D6F582} = s 'DefaultCoordTrans Class'
+		{
+			ProgID = s 'TRiASCTF.DefaultCoordTrans.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C3-3123-101C-BB62-00AA0018497C}
+			}
+			ForceRemove OldName = s 'DEFAULT'
+		}
+	}
+}

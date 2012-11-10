@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiASDB.OpenWizPropExt.1 = s 'OpenWizPropExt Class'
+	{
+		CLSID = s '{C81DD8C5-A235-11D1-BA2A-080036D63803}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {C81DD8C5-A235-11D1-BA2A-080036D63803} = s 'OpenWizPropExt Class'
+		{
+			ProgID = s 'TRiASDB.OpenWizPropExt.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

@@ -1,0 +1,132 @@
+
+
+
+IMVFBROLL(3IM)         SDSC IMAGE LIBRARY          IMVFBROLL(3IM)
+
+
+
+NAME
+     ImVfbRoll - Roll a virtual frame  buffer  vertically  and/or
+     horizontally
+
+SYNOPSIS
+     #include "im.h"
+
+     ImVfb *ImVfbRoll( srcVfb, xPixels, yPixels, dstVfb )
+          ImVfb     *srcVfb ;
+          int  xPixels;
+          int  yPixels;
+          ImVfb     *dstVfb ;
+
+
+DESCRIPTION
+     ImVfbRoll rolls a _s_r_c_V_f_b virtual frame buffer by _x_P_i_x_e_l_s  in
+     the  X  direction, and _y_P_i_x_e_l_s in the Y direction and stores
+     the result in _d_s_t_V_f_b.   A  pointer  to  the  rolled  VFB  is
+     returned.
+
+     Rolling   an   image   copies   pixel   (0,0)    to    pixel
+     (_x_P_i_x_e_l_s,_y_P_i_x_e_l_s),  pixel  (1,0) to (_x_P_i_x_e_l_s+1,_y_P_i_x_e_l_s), and
+     pixel (2,0) to (_x_P_i_x_e_l_s+2,_y_P_i_x_e_l_s), and so on.  Pixels  that
+     fall  off  the image edges wrap around to the opposite edge.
+     The effect is to slide an image horizontally  and/or  verti-
+     cally, wrapping around in a cyclical fashion.
+
+     _d_s_t_V_f_b is the VFB to contain the rolled image.  If _d_s_t_V_f_b is
+     the  constant IMVFBNEW, a new VFB is allocated with the same
+     size as _s_r_c_V_f_b.  A pointer to the new VFB is returned.
+
+     Otherwise, pixels in  _s_r_c_V_f_b  are  rolled  and  copied  into
+     _d_s_t_V_f_b.   _d_s_t_V_f_b  must have the same image fields and dimen-
+     sions as _s_r_c_V_f_b.
+
+     Positive values of _x_P_i_x_e_l_s roll the image towards the right,
+     negative  values  roll it towards the left.  Likewise, posi-
+     tive values of _y_P_i_x_e_l_s roll the image  towards  the  bottom,
+     negative values roll it towards the top.
+
+NOTES
+     _s_r_c_V_f_b and _d_s_t_V_f_b may be the  same  VFB  without  unpleasant
+     side-effects.
+
+     Image rolling may be  used  for  a  variety  of  simple  pan
+     effects,  such  as  cyclical  backgrounds  for cartoon chase
+     sequence animations.
+
+     Image rolling may also be used in the processing of  scanned
+     or  generated  texture images prior to repeated side-by-side
+     texture mapping, such as for grassy planes, carpetted areas,
+     or  brick  or  stone  walls.   In  each  of these cases, the
+
+
+
+SDSC             Last change: September 2, 1992                 1
+
+
+
+
+
+
+IMVFBROLL(3IM)         SDSC IMAGE LIBRARY          IMVFBROLL(3IM)
+
+
+
+     original texture image will be repeated over  a  large  area
+     with  the left edge of one copy butting up against the right
+     edge of the next copy, and the top edge of one copy  butting
+     up  against  the bottom edge of the next.  In order to avoid
+     obvious grid lines in texturing it  is  important  that  the
+     left  and  right edges, and top and bottom edges of the tex-
+     ture match each other.  This may be  done  by  bringing  the
+     image  into  a paint system and adjusting the pixels to make
+     them match.
+
+     However, it is hard to visually match the left  edge  of  an
+     image  with  its  right edge when those edges aren't next to
+     each other.  ImVfbRoll may be used to  bring  them  next  to
+     each  other.   Roll  the  image  half  the image's width and
+     height.  This places the  left-right  and  top-bottom  edges
+     next  to  each other in the middle of the image.  Now, bring
+     the image into a paint system and smear  the  joining  line.
+     The  image will then be ready for seamless side-by-side tex-
+     ture mapping.
+
+RETURNS
+     Upon success, ImVfbRoll returns a pointer to the destination
+     Vfb.  Upon failure, IMVFBNULL is returned and ImErrNo set to
+     one of the following:
+
+          IMEFIELD    _d_s_t_V_f_b's fields aren't the same as the _s_r_c_V_f_b
+          IMEMALLOC   Cannot allocate enough memory for the new Vfb
+          IMENOVFB    _s_r_c_V_f_b is IMVFBNULL
+
+SEE ALSO
+     ImIntro (3M), ImErrNo (3M), ImCltRoll (3IM),  imflip  (1IM),
+     imresize (1IM), imroll (1IM), imrotate (1IM), imshear (1IM),
+     imscale (1IM), ImVfbFlip (3IM), ImVfbResize (3IM),  ImVfbRo-
+     tate (3IM), ImVfbXShear (3IM), ImVfbYShear (3IM)
+
+AUTHORS
+     Chris Groening and Dave Nadeau
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2                Last change: September 2, 1992              SDSC
+
+
+

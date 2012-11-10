@@ -1,0 +1,50 @@
+// TSPrint.idl : IDL-Quellcode für TSPrint.dll
+//
+
+// Diese Datei wird mit dem MIDL-Tool bearbeitet,
+// um den Quellcode für die Typbibliothek (TSPrint.tlb)und die Abruffunktionen zu erzeugen.
+
+import "oaidl.idl";
+import "ocidl.idl";
+	[
+		object,
+		uuid(3432B621-F342-11D2-983C-08003616D303),
+		dual,
+		helpstring("ITSPrinter-Schnittstelle"),
+		pointer_default(unique)
+	]
+	interface ITSPrinter : IDispatch
+	{
+		[id(1), helpstring("Methode AddMonitor")] HRESULT AddTSMonitor([out,retval] long* pResult);
+		[id(2), helpstring("Methode AddPort")] HRESULT AddTSPort([in] long hWnd, [out,retval] long* pResult);
+		[id(3), helpstring("Methode AddTSPrinterDriver")] HRESULT AddTSPrinterDriver([out,retval] long* pResult);
+		[id(4), helpstring("Methode AddTSPrinter")] HRESULT AddTSPrinter([out,retval] long* pResult);
+		[id(5), helpstring("Methode DeleteTSMonitor")] HRESULT DeleteTSMonitor([out,retval] long* pResult);
+		[id(6), helpstring("Methode DeleteTSPort")] HRESULT DeleteTSPort([in] long hWnd, [out,retval] long* pResult);
+		[id(7), helpstring("Methode DeleteTSPrinterDriver")] HRESULT DeleteTSPrinterDriver([out,retval]long* pResult);
+		[id(8), helpstring("Methode DeleteTSPrinter")] HRESULT DeleteTSPrinter([out,retval]long* pResult);
+		[id(9), helpstring("Methode TSFormatMessage")] HRESULT TSFormatMessage([in] long lError, [out] BSTR* strMessage, [out,retval]long* pResult);
+		[id(10), helpstring("Methode LoadPrinterOutput")] HRESULT LoadPrinterOutput([in]BSTR strFileName, [out,retval]long* pResult);
+		[id(11), helpstring("Methode SavePage")] HRESULT SavePage([in]BSTR strFileName, [out,retval]long* pResult);
+		[id(12), helpstring("Methode spezial1")] HRESULT spezial1();
+	};
+
+[
+	uuid(EB19E401-F341-11D2-983C-08003616D303),
+	version(1.0),
+	helpstring("TSPrint 1.0 Typbibliothek")
+]
+library TSPRINTLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(3432B622-F342-11D2-983C-08003616D303),
+		helpstring("TSPrinter Class")
+	]
+	coclass TSPrinter
+	{
+		[default] interface ITSPrinter;
+	};
+};

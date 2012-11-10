@@ -1,0 +1,396 @@
+
+
+
+IMVFBQRED(3IM)         SDSC IMAGE LIBRARY          IMVFBQRED(3IM)
+
+
+
+NAME
+     ImVfbQRed - Query the red value of  a  pixel  in  a  virtual
+     frame buffer
+     ImVfbQGreen - Query the green value of a pixel in a  virtual
+     frame buffer
+     ImVfbQBlue - Query the blue value of a pixel  in  a  virtual
+     frame buffer
+     ImVfbQAlpha - Query the alpha value of a pixel in a  virtual
+     frame buffer
+     ImVfbQMono - Query the monochrome value of a pixel in a vir-
+     tual frame buffer
+     ImVfbQIndex8 - Query the 8-bit index value of a pixel  in  a
+     virtual frame buffer
+     ImVfbQIndex16 - Query the 32-bit index value of a pixel in a
+     virtual frame buffer
+     ImVfbQIndex - Query the index value of a pixel in a  virtual
+     frame buffer
+     ImVfbQZ - Query the z-buffer value of a pixel in  a  virtual
+     frame buffer
+     ImVfbQGray, ImVfbQGrey - Query the gray  scale  value  of  a
+     pixel in a virtual frame buffer
+     ImVfbQFData - Query the floating-point data value of a pixel
+     in a virtual frame buffer
+     ImVfbQIData - Query the integer data value of a pixel  in  a
+     virtual frame buffer
+     ImVfbSRed - Set the red value of a pixel in a virtual  frame
+     buffer
+     ImVfbSGreen - Set the green value of a pixel  in  a  virtual
+     frame buffer
+     ImVfbSBlue - Set the blue value of  a  pixel  in  a  virtual
+     frame buffer
+     ImVfbSAlpha - Set the alpha value of a pixel  in  a  virtual
+     frame buffer
+     ImVfbSMono - Set the monochrome value of a pixel in  a  vir-
+     tual frame buffer
+     ImVfbSIndex8 - Set the 8-bit index value of  a  pixel  in  a
+     virtual frame buffer
+     ImVfbSIndex16 - Set the 32-bit index value of a pixel  in  a
+     virtual frame buffer
+     ImVfbSIndex - Set the index value of a pixel  in  a  virtual
+     frame buffer
+     ImVfbSZ - Set the z-buffer value of a  pixel  in  a  virtual
+     frame buffer
+     ImVfbSGray, ImVfbSGrey - Set the gray scale value of a pixel
+     in a virtual frame buffer
+     ImVfbSFData - Set the floating-point data value of  a  pixel
+     in a virtual frame buffer
+     ImVfbSIData - set the integer data value of  a  pixel  in  a
+     virtual frame buffer
+     ImVfbSameRGB - Determine whether the red,  green,  and  blue
+     values corresponding to two vfb pointers are the same
+     ImVfbSameRGBA - Determine whether the red, green, blue,  and
+
+
+
+SDSC              Last change: August 25, 1992                  1
+
+
+
+
+
+
+IMVFBQRED(3IM)         SDSC IMAGE LIBRARY          IMVFBQRED(3IM)
+
+
+
+     alpha values corresponding to two vfb pointers are the same
+     ImVfbSameIndex8  -  Determine  whether  the  index8   values
+     corresponding to two vfb pointers are the same
+     ImVfbSameIndex16  -  Determine  whether  the  index16  value
+     corresponding to two vfb pointers are the same
+
+SYNOPSIS
+     #include "im.h"
+
+     int ImVfbQRed( srcVfb, p )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+
+     int ImVfbQGreen( srcVfb, p )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+
+     int ImVfbQBlue( srcVfb, p )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+
+     int ImVfbQAlpha( srcVfb, p )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+
+     int ImVfbQMono( srcVfb, p )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+
+     int ImVfbQIndex8( srcVfb, p )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+
+     int ImVfbQIndex16( srcVfb, p )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+
+     int ImVfbQIndex( srcVfb, p )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+
+     int ImVfbQZ( srcVfb, p )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+
+     int ImVfbQGray( srcVfb, p )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+
+     int ImVfbQGrey( srcVfb, p )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+
+
+
+2                 Last change: August 25, 1992               SDSC
+
+
+
+
+
+
+IMVFBQRED(3IM)         SDSC IMAGE LIBRARY          IMVFBQRED(3IM)
+
+
+
+     float ImVfbQFData( srcVfb, p )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+          float f ;
+
+     int ImVfbQIData( srcVfb, p )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+
+     void ImVfbSRed( srcVfb, p, r )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+          int r ;
+
+     void ImVfbSGreen( srcVfb, p, g )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+          int g ;
+
+     void ImVfbSBlue( srcVfb, p, b )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+          int b ;
+
+     void ImVfbSAlpha( srcVfb, p, a )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+          int a ;
+
+     void ImVfbSMono( srcVfb, p, m )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+          int m ;
+
+     void ImVfbSIndex8( srcVfb, p, i8 )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+          int i8 ;
+
+     void ImVfbSIndex16( srcVfb, p, i32 )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+          int i32 ;
+
+     void ImVfbSIndex( srcVfb, p, i )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+          int i ;
+
+     void ImVfbSZ( srcVfb, p, z )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+
+
+
+SDSC              Last change: August 25, 1992                  3
+
+
+
+
+
+
+IMVFBQRED(3IM)         SDSC IMAGE LIBRARY          IMVFBQRED(3IM)
+
+
+
+          int z ;
+
+     void ImVfbSGray( srcVfb, p, g )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+          int g ;
+
+     void ImVfbSGrey( srcVfb, p, g )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+          int g ;
+
+     void ImVfbSFData( srcVfb, p, f )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+          float f ;
+
+     void ImVfbSIData( srcVfb, p, i )
+          ImVfb *srcVfb ;
+          ImVfbPtr p ;
+          int i ;
+
+     void ImVfbSameRGB( vfb, p1, p2)
+          ImVfb* vfb;
+          ImVfbPtr p1;
+          ImVfbPtr p2;
+
+     void ImVfbSameRGBA( vfb, p1, p2)
+          ImVfb* vfb;
+          ImVfbPtr p1;
+          ImVfbPtr p2;
+
+     void ImVfbSameIndex8( vfb, p1, p2)
+          ImVfb* vfb;
+          ImVfbPtr p1;
+          ImVfbPtr p2;
+
+     void ImVfbSameIndex16( vfb, p1, p2)
+          ImVfb* vfb;
+          ImVfbPtr p1;
+          ImVfbPtr p2;
+
+
+
+
+DESCRIPTION
+     These routines store information into and query  information
+     from a pixel (pointed to by _p) in Vfb _s_r_c_V_f_b.
+
+     ImVfbSRed, ImVfbSGreen, and ImVfbSBlue set  RGB  information
+     into a Vfb.  They are only valid if the Vfb was ImVfbAlloced
+     with IMVFBRGB in the field  mask.   ImVfbQRed,  ImVfbQGreen,
+
+
+
+4                 Last change: August 25, 1992               SDSC
+
+
+
+
+
+
+IMVFBQRED(3IM)         SDSC IMAGE LIBRARY          IMVFBQRED(3IM)
+
+
+
+     and ImVfbQBlue query the RGB information.
+
+     ImVfbSAlpha sets an alpha-channel value.  It is  only  valid
+     if  the  Vfb  was  ImVfbAlloced with IMVFBALPHA in the field
+     mask.  ImVfbQAlpha queries the alpha-channel value.
+
+     ImVfbSMono sets an monochrome ImClt value.  It is only valid
+     if  the  Vfb  was  ImVfbAlloced  with IMVFBMONO in the field
+     mask.  ImVfbQMono queries the monochrome ImClt value.
+
+     ImVfbSIndex8 sets an 8-bit ImClt index.  It is only valid if
+     the Vfb was ImVfbAlloced with IMVFBINDEX8 in the field mask.
+     ImVfbQIndex8 queries the 8-bit ImClt index.
+
+     ImVfbSIndex16 sets a 16-bit ImClt index.  It is  only  valid
+     if  the  Vfb was ImVfbAlloced with IMVFBINDEX16 in the field
+     mask.  ImVfbQIndex16 queries the 16-bit ImClt index.
+
+     ImVfbSIndex sets an 8- or 16-bit ImClt index.   It  is  only
+     valid  if  the  Vfb  was  ImVfbAlloced  with  IMVFBINDEX8 or
+     IMVFBINDEX16 in the field mask.  ImVfbSIndex uses  whichever
+     type  of index is being used in _s_r_c_V_f_b.  ImVfbQIndex queries
+     the ImClt index.
+
+     ImVfbSZ sets the z-buffer value.  It is only  valid  if  the
+     Vfb was ImVfbAlloced with IMVFBZ in the field mask.  ImVfbQZ
+     queries the z-buffer value.
+
+     ImVfbSGray and ImVfbSGrey are identical to ImVfbSIndex8, and
+     ImVfbQGray and ImVfbQGrey are identical to ImVfbQIndex8.
+
+     ImVfbSFData sets an arbitrary floating-point value.   It  is
+     only  valid  if  the Vfb was ImVfbAlloced with IMVFBFDATA in
+     the field  mask.   ImVfbQFData  queries  the  floating-point
+     value.
+
+     ImVfbSIData sets an arbitrary integer  value.   It  is  only
+     valid  if  the  Vfb  was ImVfbAlloced with IMVFBIDATA in the
+     field mask.  ImVfbQIData queries the integer value.
+
+     ImVfbSameRGB queries the red, green, and blue values associ-
+     ated with the vfb pointers, compares the values, and returns
+     a nonzero value if and only if all three values are the same
+     for  both  pointers.   This  routine may be used on pointers
+     that point to different vfbs.  In such  a  case,  the  first
+     parameter is irrelevant.
+
+     ImVfbSameRGBA queries the red, green, blue and alpha  values
+     associated  with  the vfb pointers, compares the values, and
+     returns a nonzero value if and only if all four  values  are
+     the  same  for  both  pointers.  This routine may be used on
+     pointers that point to different vfbs.  In such a case,  the
+
+
+
+SDSC              Last change: August 25, 1992                  5
+
+
+
+
+
+
+IMVFBQRED(3IM)         SDSC IMAGE LIBRARY          IMVFBQRED(3IM)
+
+
+
+     first parameter is irrelevant.
+
+     ImVfbSameIndex8 queries the index8 value associated with the
+     vfb  pointers,  compares  the  values, and returns a nonzero
+     value if and only if the index8 values are the same for  the
+     two  pointers.   This  routine  may be used on pointers that
+     point to different vfbs.  In such a case, the first  parame-
+     ter is irrelevant.
+
+     ImVfbSameIndex16 queries the index16 value  associated  with
+     the vfb pointers, compares the values, and returns a nonzero
+     value if and only if the index16 values are the same for the
+     two  pointers.   This  routine  may be used on pointers that
+     point to different vfbs.  In such a case, the first  parame-
+     ter is irrelevant.
+
+NOTES
+     All of these routines are C macros.
+
+SEE ALSO
+     ImIntro (3IM), ImErrNo (3IM), ImCltQBlue (3IM),  ImCltQGreen
+     (3IM), ImCltQRed (3IM), ImCltSBlue (3IM), ImCltSGreen (3IM),
+     ImCltSRed (3IM)
+
+AUTHOR
+     Mike Bailey
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+6                 Last change: August 25, 1992               SDSC
+
+
+

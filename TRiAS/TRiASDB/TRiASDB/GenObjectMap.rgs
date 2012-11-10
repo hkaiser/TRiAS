@@ -1,0 +1,20 @@
+HKCR
+{
+	TRiASDB.GenObjectMap.1 = s 'GenObjectMap Class'
+	{
+		CLSID = s '{4BCCE404-ACEC-11D1-8591-00600875138A}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {4BCCE404-ACEC-11D1-8591-00600875138A} = s 'GenObjectMap Class'
+		{
+			ProgID = s 'TRiASDB.GenObjectMap.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{1CB3AB53-2E87-11D1-969D-00A024D6F582}'
+		}
+	}
+}

@@ -1,0 +1,47 @@
+HKCR
+{
+	TRiAS.MapMgr.Import.PolyGIS.1 = s 'TRiAS - Import von PolyGIS Hintergrundrasterbildern'
+	{
+		CLSID = s '{BAC8C309-9478-466E-8CC5-5E3EEB8A398C}'
+	}
+	TRiAS.MapMgr.Import.PolyGIS = s 'TRiAS - Import von PolyGIS Hintergrundrasterbildern'
+	{
+		CLSID = s '{BAC8C309-9478-466E-8CC5-5E3EEB8A398C}'
+		CurVer = s 'TRiAS.MapMgr.Import.PolyGIS.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {BAC8C309-9478-466E-8CC5-5E3EEB8A398C} = s 'TRiAS - Import von PolyGIS Hintergrundrasterbildern'
+		{
+			ProgID = s 'TRiAS.MapMgr.Import.PolyGIS.1'
+			VersionIndependentProgID = s 'TRiAS.MapMgr.Import.PolyGIS'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}
+HKCU
+{
+	NoRemove Software 
+	{
+		NoRemove TRiAS 
+		{
+			NoRemove TRiAS 
+			{
+				NoRemove Extensions 
+				{
+					NoRemove TRiAS.MapMgr.Import.1
+					{
+						NoRemove ImportEngines
+						{
+							'{BAC8C309-9478-466E-8CC5-5E3EEB8A398C}' = s ''
+						}
+					}
+				}
+			}
+		}
+	}
+}

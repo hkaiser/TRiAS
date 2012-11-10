@@ -1,0 +1,38 @@
+HKCR
+{
+	TRiASEx.PropertyOperation.1 = s 'Logische Operationen über Objektmengen'
+	{
+		CLSID = s '{28585AF2-53A2-42D8-A92F-358AEC11D99E}'
+	}
+	TRiASEx.PropertyOperation = s 'Logische Operationen über Objektmengen'
+	{
+		CLSID = s '{28585AF2-53A2-42D8-A92F-358AEC11D99E}'
+		CurVer = s 'TRiASEx.PropertyOperation.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {28585AF2-53A2-42D8-A92F-358AEC11D99E} = s 'Logische Operationen über Objektmengen'
+		{
+			ProgID = s 'TRiASEx.PropertyOperation.1'
+			VersionIndependentProgID = s 'TRiASEx.PropertyOperation'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiASEx.PropertyOperation.1' = s '{28585AF2-53A2-42D8-A92F-358AEC11D99E}'
+			}
+		}
+	}
+}

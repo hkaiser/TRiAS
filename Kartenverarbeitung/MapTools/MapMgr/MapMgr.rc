@@ -1,0 +1,886 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+#include "lmfcx/Lmfcx42Res.h"
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Deutsch (Deutschland) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "#include ""lmfcx/Lmfcx42Res.h""\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.rc""  \t// Standard components\r\n"
+    "#include ""Version.h""\r\n"
+    "#include ""lmfcx/lmfcx42Res.rc""\r\n"
+    "#include ""libTopoMap/libTopoMap.rc""\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "RES\\IDR_GEOM.ICO"
+IDI_WIZARD              ICON    DISCARDABLE     "res\\wizard.ico"
+IDI_OPEN                ICON    DISCARDABLE     "res\\open.ico"
+IDI_LAST                ICON    DISCARDABLE     "res\\last.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&Datei"
+    BEGIN
+        MENUITEM "&Neu\tCtrl+N",                ID_FILE_NEW
+        MENUITEM "&Öffnen...\tCtrl+O",          ID_FILE_OPEN
+        MENUITEM "&Speichern\tCtrl+S",          ID_FILE_SAVE
+        MENUITEM "Speichern &Als...",           ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "Ei&genschaften...\tAlt+Enter", ID_FILE_PROPERTIES
+        MENUITEM SEPARATOR
+        POPUP "E&xport"
+        BEGIN
+            MENUITEM "Te&xt",                       ID_EXPORT_TEXT
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "B&eenden",                    ID_APP_EXIT
+    END
+    POPUP "&Bearbeiten"
+    BEGIN
+        MENUITEM "&Rückgängig\tCtrl+Z",         ID_EDIT_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "&Ausschneiden\tCtrl+X",       ID_EDIT_CUT
+        MENUITEM "&Kopieren\tCtrl+C",           ID_EDIT_COPY
+        MENUITEM "&Einfügen\tCtrl+V",           ID_EDIT_PASTE
+        MENUITEM SEPARATOR
+        MENUITEM "neu &zeichnen\tF3",           ID_REDRAW
+    END
+    POPUP "&Karte"
+    BEGIN
+        MENUITEM "&Hinzufügen",                 ID_ADD_MAP
+        MENUITEM "&Entfernen",                  ID_DEL_MAP
+        MENUITEM "&Nomenklatur",                ID_MAP_MODIFY_IDENT
+        MENUITEM "&Datei",                      ID_MAP_MODIFY_FILENAME
+        MENUITEM SEPARATOR
+        MENUITEM "Ei&genschaften...",           ID_MAP_PROPERTIES
+        MENUITEM "&Farbtabelle",                ID_MAP_PROPCOLORS
+    END
+    POPUP "&Hilfe"
+    BEGIN
+        MENUITEM "&Über den Kartenmanager...",  ID_APP_ABOUT
+    END
+END
+
+IDR_MENU1 MENU DISCARDABLE 
+BEGIN
+    POPUP "Modus"
+    BEGIN
+        MENUITEM "Add",                         ID_MODE_ADD
+        MENUITEM "Del",                         ID_MODE_DEL
+        MENUITEM "Edit",                        ID_MODE_EDT
+    END
+    POPUP "Objekt"
+    BEGIN
+        MENUITEM "GCP",                         ID_GCP
+        MENUITEM "BL",                          ID_GCP_BL
+        MENUITEM "BR",                          ID_GCP_BR
+        MENUITEM "TL",                          ID_GCP_TL
+        MENUITEM "TR",                          ID_GCP_TR
+        MENUITEM "Punkt",                       ID_OBJ_POINT
+        MENUITEM "Linie",                       ID_OBJ_LINE
+    END
+    POPUP "Aktionen"
+    BEGIN
+        MENUITEM "neuZeichnen",                 ID_REDRAW
+    END
+    POPUP "2"
+    BEGIN
+        MENUITEM "",                            ID_APPSTART
+    END
+END
+
+IDR_COLORCMDS MENU DISCARDABLE 
+BEGIN
+    POPUP "1"
+    BEGIN
+        POPUP "RGB"
+        BEGIN
+            MENUITEM "RGB",                         ID_COLORCMD_SHOWRGB
+            MENUITEM SEPARATOR
+            MENUITEM "Rot",                         ID_COLORCMD_SHOWR
+            MENUITEM "Grün",                        ID_COLORCMD_SHOWG
+            MENUITEM "Blau",                        ID_COLORCMD_SHOWB
+        END
+        POPUP "HSB"
+        BEGIN
+            MENUITEM "Hue",                         ID_COLORCMD_SHOWHUE
+            MENUITEM "Saturation",                  ID_COLORCMD_SHOWSAT
+            MENUITEM "Brightness",                  ID_COLORCMD_SHOWBRI
+        END
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE 
+BEGIN
+    "A",            ID_ADD_MAP,             VIRTKEY, CONTROL, NOINVERT
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    "D",            ID_DEL_MAP,             VIRTKEY, CONTROL, NOINVERT
+    "M",            ID_MAP_MODIFY_IDENT,    VIRTKEY, CONTROL, NOINVERT
+    "M",            ID_MAP_MODIFY_FILENAME, VIRTKEY, SHIFT, CONTROL, 
+                                                    NOINVERT
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
+    VK_F3,          ID_REDRAW,              VIRTKEY, NOINVERT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    VK_RETURN,      ID_FILE_PROPERTIES,     VIRTKEY, ALT, NOINVERT
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  34, 22, 217, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "MapManager"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,18,20
+    LTEXT           "MapManager Version 1.0",IDC_STATIC,40,10,124,8
+    LTEXT           "Copyright © 1996, uve GmbH, FEZ Potsdam",IDC_STATIC,40,
+                    25,124,8
+    DEFPUSHBUTTON   "OK",IDOK,176,6,32,14,WS_GROUP
+END
+
+IDD_DLG_MAPSELECT DIALOG DISCARDABLE  0, 0, 185, 208
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,130,186,50,14
+    PUSHBUTTON      "Abbruch",IDCANCEL,5,186,50,14
+    CONTROL         "Generic1",IDC_TREE_OF_MAPS,"SysTreeView32",
+                    TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | 
+                    WS_BORDER | WS_TABSTOP,5,5,175,141
+    LTEXT           "",IDC_MAPDESCR,5,156,175,23
+    PUSHBUTTON      "Übern&ehmen",IDC_BTN_APPLY,70,186,50,14
+END
+
+IDD_DLG_MAPNAME DIALOG DISCARDABLE  0, 0, 217, 78
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Kartenname"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Name",IDC_STATIC,5,5,110,10
+    EDITTEXT        IDC_EDIT_MAPNAME,5,20,130,12,ES_AUTOHSCROLL | 
+                    ES_NOHIDESEL
+    PUSHBUTTON      "&Baum",IDC_BTN_TREE,10,55,55,15
+    CONTROL         "A&S",IDC_MAP_AS,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
+                    WS_TABSTOP,145,5,25,8
+    CONTROL         "A&V",IDC_MAP_AV,"Button",BS_AUTORADIOBUTTON,145,15,25,8
+    CONTROL         "&N",IDC_MAP_N,"Button",BS_AUTORADIOBUTTON,145,25,25,8
+    PUSHBUTTON      "Abbruch",IDCANCEL,95,55,50,15
+    DEFPUSHBUTTON   "OK",IDOK,150,55,50,15
+END
+
+IDD_FORM_MAPLIST DIALOG DISCARDABLE  0, 0, 200, 105
+STYLE WS_CHILD | WS_BORDER
+FONT 8, "MS Sans Serif"
+BEGIN
+    LISTBOX         IDC_MAPLIST,5,5,190,95,LBS_USETABSTOPS | WS_VSCROLL | 
+                    WS_HSCROLL | WS_TABSTOP
+END
+
+IDD_PG_HDRVISDATA DIALOG DISCARDABLE  0, 0, 250, 110
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Kopfdaten - Visualisierung"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "ASC - Version &5",IDC_VERSION_5,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,5,5,80,10
+    CONTROL         "ASC - bis Version &4",IDC_VERSION_4,"Button",
+                    BS_AUTORADIOBUTTON,5,20,80,10
+    LTEXT           "I&dentifikator - Basis",IDC_STATIC,100,5,69,8
+    CONTROL         "dez",IDC_IDENT_DEC,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,175,5,25,10
+    CONTROL         "hex",IDC_IDENT_HEX,"Button",BS_AUTORADIOBUTTON,203,5,25,
+                    10
+    LTEXT           "M&Code - Basis",IDC_STATIC,100,20,50,8
+    CONTROL         "dez",IDC_MCODE_DEC,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,175,20,25,10
+    CONTROL         "hex",IDC_MCODE_HEX,"Button",BS_AUTORADIOBUTTON,203,20,
+                    25,10
+    LTEXT           "&Identifikator",IDC_STATIC,5,48,90,8
+    EDITTEXT        IDC_IDENT,100,48,144,12,ES_AUTOHSCROLL
+    LTEXT           "M-Code &Karteninformationen",IDC_STATIC,5,78,90,8
+    EDITTEXT        IDC_MAPMCODE,100,78,144,12,ES_AUTOHSCROLL
+    LTEXT           "M-Code &Sichtmerkmal",IDC_STATIC,5,93,90,8
+    EDITTEXT        IDC_MAPVCODE,100,93,144,12,ES_AUTOHSCROLL
+    LTEXT           "&Unique Ident",IDC_STATIC,5,63,90,8
+    EDITTEXT        IDC_MAPICODE,100,63,144,12,ES_AUTOHSCROLL
+END
+
+IDD_PG_HDRGEODATA DIALOG DISCARDABLE  0, 0, 250, 110
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Kopfdaten - Geometrie"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Blattschnitt",IDC_STATIC,5,5,60,8
+    COMBOBOX        IDC_MAPTYPE,100,5,145,55,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Offsets",IDC_STATIC,5,63,45,10
+    LTEXT           "&X",IDC_STATIC,100,63,20,8
+    EDITTEXT        IDC_OFFSET_X,124,63,45,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "&Y",IDC_STATIC,178,63,20,8
+    EDITTEXT        IDC_OFFSET_Y,199,63,45,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "&Skalierung",IDC_STATIC,5,78,60,8
+    LTEXT           "a11",IDC_STATIC,100,78,20,10
+    EDITTEXT        IDC_S11,124,78,45,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "a12",IDC_STATIC,178,78,20,10
+    EDITTEXT        IDC_S12,199,78,45,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "a21",IDC_STATIC,100,93,20,10
+    EDITTEXT        IDC_S21,124,93,45,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "a22",IDC_STATIC,178,93,20,10
+    EDITTEXT        IDC_S22,199,93,45,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "&Koordinatentransformation",IDC_TEXT_COORDTRANS,100,23,
+                    145,12
+END
+
+IDD_PG_MAPTYPE DIALOG DISCARDABLE  0, 0, 300, 150
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Einen neuen Kartensatz erstellen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    COMBOBOX        IDC_DROP_MAPTYPESTYPES,140,17,155,105,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_LIST_MAPDIRS,140,37,155,88,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Blattschnitt",IDC_STATIC,140,5,144,9
+    CONTROL         142,IDC_STATIC,"Static",SS_BITMAP | SS_SUNKEN | 
+                    WS_BORDER,5,5,95,140
+    CONTROL         "nach Karten suchen",IDC_SEARCHMAPS,"Button",
+                    BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_DISABLED | 
+                    WS_TABSTOP,140,133,79,10
+    EDITTEXT        IDC_EDIT_SEARCHMASK,220,133,75,12,ES_AUTOHSCROLL | NOT 
+                    WS_VISIBLE
+END
+
+IDD_PG_FINISHDOCNEW DIALOG DISCARDABLE  0, 0, 300, 150
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Dokument erzeugen..."
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT_MAPPARAM,125,5,170,140,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_NOHIDESEL | 
+                    ES_READONLY | WS_VSCROLL | WS_HSCROLL
+    CONTROL         142,IDC_STATIC,"Static",SS_BITMAP | SS_SUNKEN | 
+                    WS_BORDER,5,5,95,140
+END
+
+IDD_PG_DOCSTART DIALOG DISCARDABLE  0, 0, 300, 150
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Willkommen zu Mapmanager"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDI_OPEN,IDC_STATIC,115,30,21,20
+    ICON            IDI_LAST,IDC_STATIC,115,55,21,20
+    ICON            IDI_WIZARD,IDC_STATIC,115,80,21,20
+    CONTROL         "Einen &anderen Kartensatz bearbeiten",IDC_BTN_MAPOTHER,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,145,35,130,10
+    CONTROL         "Den &letzen Kartensatz bearbeiten",IDC_BTN_MAPLAST,
+                    "Button",BS_AUTORADIOBUTTON,145,60,130,10
+    CONTROL         "Einen &neuen Kartensatz erstellen",IDC_BTN_PRJNEW,
+                    "Button",BS_AUTORADIOBUTTON,145,85,130,10
+    CONTROL         142,IDC_STATIC,"Static",SS_BITMAP | SS_REALSIZEIMAGE | 
+                    SS_SUNKEN | WS_BORDER,5,5,95,140
+END
+
+IDD_PG_DOSEARCH DIALOG DISCARDABLE  0, 0, 300, 150
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Suchen nach topographischen Karten"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Animate1",IDC_ANIMATE,"SysAnimate32",ACS_AUTOPLAY | 
+                    WS_BORDER | WS_TABSTOP,5,5,95,140
+    LISTBOX         IDC_LIST_MAPS,120,5,175,140,LBS_USETABSTOPS | 
+                    LBS_NOINTEGRALHEIGHT | LBS_DISABLENOSCROLL | WS_VSCROLL | 
+                    WS_HSCROLL | WS_TABSTOP
+END
+
+IDD_PG_FILEOPT DIALOG DISCARDABLE  0, 0, 250, 110
+STYLE WS_CHILD | WS_CAPTION | WS_SYSMENU
+CAPTION "Bearbeiten"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Standardsprung",IDC_STATIC,5,5,85,10
+    EDITTEXT        IDC_EDIT1,148,5,35,12,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT2,210,5,35,12,ES_AUTOHSCROLL
+    LTEXT           "&Y",IDC_STATIC,193,5,10,15
+    LTEXT           "&X",IDC_STATIC,138,5,10,10
+END
+
+IDD_DLG_MAPSPECIAL DIALOG DISCARDABLE  0, 0, 225, 123
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,171,105,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,115,105,50,14
+    CONTROL         "",IDC_BMP1,"Static",SS_BITMAP,10,5,90,90
+    CONTROL         "",IDC_BMP2,"Static",SS_BITMAP,125,5,90,90
+    EDITTEXT        IDC_EDIT_X,5,105,50,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_Y,60,105,50,12,ES_AUTOHSCROLL
+END
+
+IDD_PG_MAPPROP_COMMON DIALOG DISCARDABLE  0, 0, 250, 110
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Karte"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Eckpunkt links unten",IDC_STATIC,5,5,79,11
+    LTEXT           "&X",IDC_STATIC,103,5,8,12
+    CONTROL         "",IDC_EDIT_X_BTM,"{51BB3DDF-0C38-11D2-8F6B-0060085FC1CE}",
+                    WS_TABSTOP,113,5,55,11
+    LTEXT           "&Y",IDC_STATIC,177,5,8,12
+    CONTROL         "",IDC_EDIT_Y_BTM,"{51BB3DDF-0C38-11D2-8F6B-0060085FC1CE}",
+                    WS_TABSTOP,189,5,55,11
+    LTEXT           "Eckpunkt rechts oben",IDC_STATIC,5,20,79,11
+    LTEXT           "&X",IDC_STATIC,104,20,8,12
+    CONTROL         "",IDC_EDIT_X_TOP,"{51BB3DDF-0C38-11D2-8F6B-0060085FC1CE}",
+                    WS_TABSTOP,113,20,55,11
+    LTEXT           "&Y",IDC_STATIC,177,20,8,12
+    CONTROL         "",IDC_EDIT_Y_TOP,"{51BB3DDF-0C38-11D2-8F6B-0060085FC1CE}",
+                    WS_TABSTOP,189,20,55,11
+    GROUPBOX        "Referenzpunkte",IDC_STATIC,5,35,240,70
+    CONTROL         "List1",IDC_LIST_GCP,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_EDITLABELS | WS_BORDER | WS_TABSTOP,
+                    7,50,236,53
+END
+
+IDD_PG_MAPPROP_PICT DIALOG DISCARDABLE  0, 0, 250, 110
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Bilddatei"
+FONT 8, "MS Sans Serif"
+BEGIN
+END
+
+IDD_PG_INVALIDDOC DIALOG DISCARDABLE  0, 0, 250, 110
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Fehler"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LISTBOX         IDC_LST_ERRORS,7,7,236,96,NOT LBS_NOTIFY | LBS_NOSEL | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_PG_OPT_VIEW DIALOG DISCARDABLE  0, 0, 250, 110
+STYLE WS_CHILD | WS_CAPTION | WS_SYSMENU
+CAPTION "Ansicht"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT_LINE_X,165,25,35,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN_LINE_X,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,189,25,11,9
+    EDITTEXT        IDC_EDIT_LINE_Y,210,25,35,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_LINE_Y,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,234,25,11,9
+    EDITTEXT        IDC_EDIT_PAGE_X,165,46,35,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN_PAGE_X,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,189,46,11,12
+    EDITTEXT        IDC_EDIT_PAGE_Y,210,46,35,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_PAGE_Y,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,234,46,11,12
+    LTEXT           "Zeile",IDC_STATIC,136,25,25,9
+    LTEXT           "Seite",IDC_STATIC,136,46,23,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// COLORPARAM
+//
+
+HIST_COMPR              COLORPARAM DISCARDABLE  "RES\\DEFAULT.$IF"
+HIST_UNCOMPR            COLORPARAM DISCARDABLE  "RES\\IDR_DEFA.BIN"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_DLG_MAPNAME, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 210
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 71
+    END
+
+    IDD_FORM_MAPLIST, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 193
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 98
+    END
+
+    IDD_PG_HDRVISDATA, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 244
+        VERTGUIDE, 95
+        VERTGUIDE, 100
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 105
+    END
+
+    IDD_PG_HDRGEODATA, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 245
+        VERTGUIDE, 100
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 105
+    END
+
+    IDD_PG_MAPTYPE, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 295
+        VERTGUIDE, 100
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 145
+    END
+
+    IDD_PG_FINISHDOCNEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 295
+        VERTGUIDE, 100
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 145
+    END
+
+    IDD_PG_DOCSTART, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 295
+        VERTGUIDE, 100
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 145
+    END
+
+    IDD_PG_DOSEARCH, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 295
+        VERTGUIDE, 100
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 145
+    END
+
+    IDD_PG_FILEOPT, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 245
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 105
+    END
+
+    IDD_DLG_MAPSPECIAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 218
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 116
+    END
+
+    IDD_PG_MAPPROP_COMMON, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 245
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 105
+    END
+
+    IDD_PG_MAPPROP_PICT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 103
+    END
+
+    IDD_PG_INVALIDDOC, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 103
+    END
+
+    IDD_PG_OPT_VIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 245
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 105
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+ID_GCP                  CURSOR  DISCARDABLE     "RES\\GCP.CUR"
+ID_GCP_BL               CURSOR  DISCARDABLE     "RES\\GCP_BL.CUR"
+ID_GCP_BR               CURSOR  DISCARDABLE     "RES\\GCP_BR.CUR"
+ID_GCP_TL               CURSOR  DISCARDABLE     "RES\\GCP_TL.CUR"
+ID_GCP_TR               CURSOR  DISCARDABLE     "RES\\GCP_TR.CUR"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDW_TB_MODES            BITMAP  DISCARDABLE     "res\\bitmap1.bmp"
+IDW_TB_OBJECTS          BITMAP  DISCARDABLE     "res\\bmp00001.bmp"
+IDB_BMPSTART            BITMAP  DISCARDABLE     "res\\bitmap2.bmp"
+IDW_TB_MAPS             BITMAP  DISCARDABLE     "res\\idw_tb_m.bmp"
+IDB_COLORRGB            BITMAP  DISCARDABLE     "res\\colorrgb.bmp"
+IDB_COLORPAL            BITMAP  DISCARDABLE     "res\\colorpal.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_PG_MAPPROP_COMMON DLGINIT
+BEGIN
+    IDC_EDIT_X_BTM, 0x376, 50, 0
+0x0000, 0x0000, 0x0202, 0x0000, 0x0894, 0x0000, 0x01dc, 0x0000, 0x0008, 
+0x001c, 0x0000, 0x0036, 0x002d, 0x0039, 0x0039, 0x0039, 0x002e, 0x0039, 
+0x0039, 0x0039, 0x002c, 0x0039, 0x0039, 0x0039, 0x0000, 
+    IDC_EDIT_Y_BTM, 0x376, 50, 0
+0x0000, 0x0000, 0x0202, 0x0000, 0x0894, 0x0000, 0x01dc, 0x0000, 0x0008, 
+0x001c, 0x0000, 0x0036, 0x002d, 0x0039, 0x0039, 0x0039, 0x002e, 0x0039, 
+0x0039, 0x0039, 0x002c, 0x0039, 0x0039, 0x0039, 0x0000, 
+    IDC_EDIT_X_TOP, 0x376, 50, 0
+0x0000, 0x0000, 0x0202, 0x0000, 0x0894, 0x0000, 0x01dc, 0x0000, 0x0008, 
+0x001c, 0x0000, 0x0036, 0x002d, 0x0039, 0x0039, 0x0039, 0x002e, 0x0039, 
+0x0039, 0x0039, 0x002c, 0x0039, 0x0039, 0x0039, 0x0000, 
+    IDC_EDIT_Y_TOP, 0x376, 50, 0
+0x0000, 0x0000, 0x0202, 0x0000, 0x0894, 0x0000, 0x01dc, 0x0000, 0x0008, 
+0x001c, 0x0000, 0x0036, 0x002d, 0x0039, 0x0039, 0x0039, 0x002e, 0x0039, 
+0x0039, 0x0039, 0x002c, 0x0039, 0x0039, 0x0039, 0x0000, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "Kartenverwaltung\nMapMgr\nMapMgr Document\nASC - Dateien (*.asc)\n.asc\nMapMgr.Document\nMapMgr Document"
+END
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "Kartenverwaltung"
+    AFX_IDS_IDLEMESSAGE     "Bereit"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_NEW             "Erstellt ein neues Dokument.\nNeu"
+    ID_FILE_OPEN            "Öffnet ein bestehendes Dokument.\nÖffnen"
+    ID_FILE_CLOSE           "Schließt das aktuelle Dokument.\nSchließen"
+    ID_FILE_SAVE            "Speichert das aktuelle Dokument.\nSpeichern"
+    ID_FILE_SAVE_AS         "Speichert das aktuelle Dokument unter neuem Namen.\nSpeichern unter"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_APP_ABOUT            "Zeigt Programm-Informationen, Versionsnummer und Copyright an.\nInfo"
+    ID_APP_EXIT             "Verläßt die Anwendung; fragt, ob Dokumente gespeichert werden sollen.\nBeenden"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "Öffnet dieses Dokument."
+    ID_FILE_MRU_FILE2       "Öffnet dieses Dokument."
+    ID_FILE_MRU_FILE3       "Öffnet dieses Dokument."
+    ID_FILE_MRU_FILE4       "Öffnet dieses Dokument."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Löscht die markierten Daten.\nLöschen"
+    ID_EDIT_CLEAR_ALL       "Löscht alles.\nAlles löschen"
+    ID_EDIT_COPY            "Kopiert die markierten Daten und überträgt sie in die Zwischenablage.\nKopieren"
+    ID_EDIT_CUT             "Entfernt die markierten Daten und überträgt sie in die Zwischenablage.\nAusschneiden"
+    ID_EDIT_FIND            "Sucht den angegebenen Text.\nSuchen"
+    ID_EDIT_PASTE           "Fügt den Inhalt der Zwischenablage ein.\nEinfügen"
+    ID_EDIT_REPEAT          "Wiederholt die letzte Aktion.\nWiederholen"
+    ID_EDIT_REPLACE         "Ersetzt einen bestimmten Text durch einen anderen.\nErsetzen"
+    ID_EDIT_SELECT_ALL      "Markiert das gesamte Dokument.\nAlles markieren"
+    ID_EDIT_UNDO            "Macht die letzte Aktion rückgängig.\nRückgängig"
+    ID_EDIT_REDO            "Wiederholt die vorher rückgängig gemachte Aktion.\nWiederherstellen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_NEXT_PANE            "Wechselt zum nächsten Fensterausschnitt.\nNächster Ausschnitt"
+    ID_PREV_PANE            "Springt zum vorherigen Fensterausschnitt zurück.\nVorheriger Ausschnitt"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Ändert die Fenstergröße."
+    AFX_IDS_SCMOVE          "Ändert die Position des Fensters."
+    AFX_IDS_SCMINIMIZE      "Verkleinert das Fenster zu einem Symbol."
+    AFX_IDS_SCMAXIMIZE      "Vergrößert das Fenster zu voller Größe."
+    AFX_IDS_SCNEXTWINDOW    "Wechselt zum nächsten Dokumentfenster."
+    AFX_IDS_SCPREVWINDOW    "Wechselt zum vorherigen Dokumentfenster."
+    AFX_IDS_SCCLOSE         "Schließt das aktive Fenster und fragt zum Speichern der Dokumente an."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Stellt das Fenster in seiner normalen Größe wieder her."
+    AFX_IDS_SCTASKLIST      "Aktiviert die Task-Liste."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_STS_PERCENT          "000%"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PICTTYPE_ALL        "*.tif,*.bmp\nBild-Dateien (*.tif;*.bmp)|*.tif;*.bmp||"
+    IDS_PICTTYPE_BMP        "*.bmp\nBitmap - Dateien (*.bmp)|*.bmp||"
+    IDS_PICTTYPE_TIFF       "*.tif\nTIFF-Dateien (*.tif)|*.tif||"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ERR_WRONGVERSION    "Unbekannte Dokumentenversion"
+    IDS_MAPTYPES            "topographische Karte AS\ntopographische Karte AV\ntopographisch Karte N\nnutzerdef. Koordinaten (z.B. Luftbilder)\nSöllner-Koordinatensystem (Berlin)"
+    IDS_NEWDOC              "Es wird ein Kartensatz ""%1"" erzeugt.\r\n\r\n%2"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_STS_TIME             "Time"
+    ID_STS_PICTCOORD        "000000 x 000000"
+    ID_STS_PICTSIZE         "000000 x 000000"
+    IDS_DEFAULT_FONT        "MS Sans Serif"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_MODE_DEL             "Löschmodus\nObjekte löschen"
+    ID_MODE_EDT             "Bearbeitungsmodus\nObjekte bearbeiten"
+    ID_GCP                  "Bearbeitet einen Geo-Referenzpunkt\nGCP"
+    ID_GCP_BL               "Bearbeitet den linken unteren Referenzpunkt\nGCP unten links"
+    ID_GCP_BR               "Bearbeitet den rechten unteren Referenzpunkt\nGCP unten rechts"
+    ID_GCP_TR               "Bearbeitet den rechten oberen Referenzpunkt\nGCP oben rechts"
+    ID_GCP_TL               "Bearbeitet den linken oberen Referenzpunkt\nGCP oben links"
+    ID_OBJ_POINT            "Bearbeitet ein Punktobjekt\nPunkt"
+    ID_OBJ_LINE             "Bearbeitet ein Linienobjekt\nLinie"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_BL                   "unten links\nzeigt unteren linken Referenzpunkt"
+    ID_BR                   "unten rechts\nzeigt unteren rechten Referenzpunkt"
+    ID_TR                   "oben rechts\nzeigt oberen rechten Referenzpunkt"
+    ID_TL                   "oben links\nzeigt oberen linken Referenzpunkt"
+    ID_MAP_SELECT           "wählt eine Karte aus\nKarte auswählen"
+    IDW_TB_MAPS             "topographische Karten verwalten\nKarten verwalten"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_FILETYPE_ASC        "*.asc\nASC-Datei (*.asc)|*.asc||"
+    IDS_FILETYPE_TXT        "*.txt\nTXT-Datei (*.txt)|*.txt||"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_OPT_SELECTDIALOG     "wählt zwischen Ausawhldialog und Direkteingabe"
+    ID_OPT_AS               "Es werden AS-Karten bearbeitet"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_ADD_MAP              "Fügt eine neue Karte zum Kartesnsatz hinzu\nKarte hinzufügen"
+    ID_DEL_MAP              "Löscht die aktuelle Karte aus dem Kartensatz\nKarte löschen"
+    ID_REDRAW               "zeichnet Karte neu"
+    ID_MAP_MODIFY_IDENT     "bearbeitet Nomenklatur der Karte"
+    ID_MAP_MODIFY_FILENAME  "bearbeitet Dateinamen der Karte"
+    ID_COLORCMD_SHOWPALETTE "zeigt die Farbpalette der Bilddatei"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_MODE_ADD             "Einfügemodus\nObjekte hinzufügen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NOSRCHDIR           "Es wurde(n) kein(e) Suchverzeichnis(se) angegeben."
+    IDS_SRCHDIR             "Die Karten befinden sich in den Suchverzeichnissen\r\n%1."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDD_DLG_DOCNEWDIALOG    "Erstellen eines neuen Kartensatzes"
+    IDD_PG_DOCSTART         "Willkommen zu Mapmanager"
+    IDD_DLG_DOCPROPERTIES   "Eigenschaften des Kartensatzes"
+    IDD_DLG_MAPPROPERTIES   "Karteneigenschaften"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDW_TB_OBJECTS          "Objekte\nObjekte"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDW_TB_MODES            "Bearbeitungsmodus\nBearbeitungsmodus"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_MAP_PROPERTIES       "Bearbeitet / zeigt die Karteneigenschaften an\nKarteneigenschaften"
+    ID_MAP_SPECIAL          "eine ganz spezielle Operation"
+    ID_COLORCMD_SHOWR       "zeigt nur Rot, blendet Grün und Blau aus"
+    ID_COLORCMD_SHOWG       "zeigt nur Grün, blendet Rot und Blau aus"
+    ID_COLORCMD_SHOWB       "zeigt nur Blau, blendet Rot und Grün aus"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_INI_SECTION         "Startup"
+    IDS_INI_WNDPOS          "Position"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_INVALID_DOCUMENT    "Fehlerhafter Kartensatz"
+    IDS_INVALID_BTMLEFT     "%d: %s: unterer linker Eckpunt nicht angegeben"
+    IDS_INVALID_TOPRIGHT    "%d: %s: obererer rechter Eckpunkt nicht angegeben"
+    IDS_INVALID_OFFSETX1    "%d: Dokument: X-Offset ist kleiner als die kleinste X-Koordinate: %ld"
+    IDS_INVALID_OFFSETY1    "%d: Dokument: Y-Offset ist kleiner als die kleinste Y-Koordinate: %ld"
+    IDS_INVALID_OFFSETX2    "%d: Dokument: Abstand zwischen X-Offset und kleinster X-Koordinate ist zu groß: %ld"
+    IDS_INVALID_OFFSETY2    "%d: Dokument: Abstand zwischen Y-Offset und kleinster Y-Koordinate ist zu groß: %ld"
+    IDS_INVALID_PICTPATH    "%d: %s: kein Dateiname angegeben"
+    IDS_INVALID_OFFSETX0    "%d: Dokument: X-Offset null"
+    IDS_INVALID_OFFSETY0    "%d: Dokument: Y-Offset null"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ERRORS              "Fehler"
+    IDS_WARNINGS            "Warnungen"
+END
+
+#endif    // Deutsch (Deutschland) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "afxres.rc"  	// Standard components
+#include "Version.h"
+#include "lmfcx/lmfcx42Res.rc"
+#include "libTopoMap/libTopoMap.rc"
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

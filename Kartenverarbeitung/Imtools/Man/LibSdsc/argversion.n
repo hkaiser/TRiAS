@@ -1,0 +1,70 @@
+'\"t
+.TH ARGVERSION 3ARG "September 1991" "SDSC" "ARGUMENT PARSING"
+.SH NAME
+ArgVersion  -  output a help message
+.SH SYNOPSIS
+.if t \fB
+.nf
+#include "sdsc.h"
+
+int ArgVersion( )
+.fi
+.if t \fR
+.SH DESCRIPTION
+\fIArgVersion\fR uses information about the command as passed into an
+earlier call to \fIArgParse(3ARG)\fR.
+.LP
+\fIArgVersion\fR prints to \fIstderr\fR a standard version number
+message of the form:
+.LP
+.in +0.5i
+.nf
+version_message
+copyright
+.TS
+l l.
+Invoked as:	invokename
+Written as:	commandname
+Version:	major.minor.subminor
+.TE
+.fi
+.in -0.5i
+.LP
+\fIversion_message\fR is a message about the command or the package of
+which the command is a part.  Typical version messages name the package
+and the release date.  The \fIversion_message\fR is printed from
+the \fIarg_version\fR field of the \fIArgCommand\fR structure
+passed to \fIArgParse\fR(3ARG).  If \fIarg_version\fR is a NULL pointer,
+no version message is output.
+.LP
+\fIcopyright\fR is a copyright message for the command.  The message text
+is printed from the \fIarg_copyright\fR field of the \fIArgCommand\fR
+structure.  If \fIarg_copyright\fR is a NULL pointer, no copyright message
+is output.
+.LP
+\fIinvokename\fR is \fIargv[0]\fR from the commandline, while
+\fIcommandname\fR is the name of the command as given
+by the \fIarg_name\fR field of the \fIArgCommand\fR structure.
+.LP
+The \fImajor\fR, \fIminor\fR, and \fIsubminor\fR version numbers are printed
+from the
+\fIarg_major\fR, \fIarg_minor\fR, and \fIarg_subminor\fR fields of the
+\fIArgCommand\fR structure.
+.SH RETURNS
+\fIArgVersion\fR always succeeds and returns 0.
+.SH NOTES
+\fIArgVersion\fR is used by \fIArgParse\fR(3ARG) to print version number
+text for the standard \fB-version\fR option.
+.SH "SEE ALSO"
+ArgFeedback(3ARG),
+ArgIntro(3ARG),
+ArgParse(3ARG),
+ArgRegister(3ARG)
+.br
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

@@ -1,0 +1,27 @@
+HKCR 
+{
+	TRiASGDO.DBEngine.1 = s 'TRiAS GDO-Datenbankengine' 
+	{
+		CLSID = s '{B063A0A1-13FB-11d2-8F77-0060085FC1CE}'
+	}
+	TRiASGDO.DBEngine = s 'TRiAS GDO-Datenbankengine' 
+	{
+		CurVer = s 'TRiASGDO.DBEngine.1'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {B063A0A1-13FB-11d2-8F77-0060085FC1CE} = s 'TRiAS GDO-Datenbankengine' 
+		{
+			ProgID = s 'TRiASGDO.DBEngine.1'
+			VersionIndependentProgID = s 'TRiASGDO.DBEngine'
+			InprocServer32 = s '%MODULE%' 
+			{
+				val ThreadingModel = s 'both'
+			}
+			'Implemented Categories' 
+			{
+				{079639C6-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+}

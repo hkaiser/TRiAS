@@ -1,0 +1,129 @@
+// Konvertierung RGB <-> HSB --------------------------------------------------
+// File: RGB_HSB.CXX
+
+#include "triaspre.hxx"
+
+#include <rgb_hsb.hxx>
+
+// Konvertierung HSB --> RGB --------------------------------------------------
+Color HSBtoRGB (unsigned long hsb) 
+{
+	return HSBtoRGB (GetHValue (hsb), GetSValue (hsb), GetVValue (hsb));
+}
+
+Color HSBtoRGB (short iHue, short iSat, short iBright)
+{
+double dHue = (double)iHue;
+double dSat = (double)iSat / 100.0;
+double dBright = (double)iBright / 100.0;
+double dRed = 0.0;
+double dGreen = 0.0;
+double dBlue = 0.0;
+
+	HSBtoRGBService (dHue, dSat, dBright, dRed, dGreen, dBlue);
+
+return Color ((ColorVal)((255.0 * dRed)+0.5), (ColorVal)((255.0 * dGreen)+0.5),
+	      (ColorVal)((255.0 * dBlue)+0.5));
+}
+
+void HSBtoRGBService (double dHue, double dSat, double dBright,
+		      double &rdRed, double &rdGreen, double &rdBlue)
+{
+double f, j, k, l;
+short i;
+
+	if (dHue >= 360.0) dHue -= 360.0;
+	dHue /= 60.0;
+
+	i = (short)floor (dHue);	// gebrochener Teil
+	f = dHue - i;
+
+	j = dBright * (1 - dSat);
+	k = dBright * (1 - (dSat * f));
+	l = dBright * (1 - (dSat * (1 - f)));
+
+	switch (i) {
+	case 0:
+		rdRed = dBright; rdGreen = l; rdBlue = j;
+		break;
+
+	case 1:
+		rdRed = k; rdGreen = dBright; rdBlue = j;
+		break;
+
+	case 2:
+		rdRed = j; rdGreen = dBright; rdBlue = l;
+		break;
+
+	case 3:
+		rdRed = j; rdGreen = k; rdBlue = dBright;
+		break;
+
+	case 4:
+		rdRed = l; rdGreen = j; rdBlue = dBright;
+		break;
+
+	case 5:
+		rdRed = dBright; rdGreen = j; rdBlue = k;
+		break;
+	}
+}
+
+// Konvertierung RGB --> HSB --------------------------------------------------
+unsigned long RGBtoHSB (Color C) 
+{
+	return RGBtoHSB (C.Red(), C.Green(), C.Blue());
+}
+
+unsigned long RGBtoHSB (short iRed, short iGreen, short iBlue)
+{
+double dHue = 0.0;
+double dSat = 0.0;
+double dBright = 0.0;
+double dRed = (double)iRed / 255.0;
+double dGreen = (double)iGreen / 255.0;
+double dBlue = (double)iBlue / 255.0;
+
+	RGBtoHSBService (dRed, dGreen, dBlue, dHue, dSat, dBright);
+
+return HSB ((short)((dSat*100.0)+0.5), (short)((dBright*100.0)+0.5), (short)(dHue+0.5));
+}
+
+// HilfsFunktionen ------------------------------------------------------------
+inline double fmax (double d1, double d2) 
+{
+	return d1 > d2 ? d1 : d2;
+}
+
+inline double fmin (double d1, double d2) 
+{
+	return d1 < d2 ? d1 : d2;
+}
+
+void RGBtoHSBService (double dRed, double dGreen, double dBlue,
+		      double &rdHue, double &rdSat, double &rdBright)
+{
+double min, delta;
+
+	rdBright = fmax (fmax (dRed, dGreen), dBlue);
+	min = fmin (fmin (dRed, dGreen), dBlue);
+	delta = rdBright - min;
+
+	if (rdBright > 0.0) 
+		rdSat = delta / rdBright;
+	else
+		rdSat = 0.0;
+
+	if (rdSat == 0.0 || delta == 0.0) 
+		rdHue = 0.0;
+	else {
+		if (dRed == rdBright) 
+			rdHue = (dGreen - dBlue) / delta;
+		else if (dGreen == rdBright) 
+			rdHue = (dBlue - dRed) / delta + 2.0;
+		else // if (dBlue == rdBright)
+			rdHue = (dRed - dGreen) / delta + 4.0;
+		rdHue *= 60.0;
+		if (rdHue < 0) rdHue += 360.0;
+	}
+}

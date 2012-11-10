@@ -1,0 +1,113 @@
+
+##############################################################################
+#
+#    Copyright (c) 1992-95, Compiler Resources, Inc.
+#
+#    FILENAME:           makefile.vc
+#
+#                        **  Microsoft C++ version -- 32 bit **
+#
+#    FILE DESCRIPTION:   builds the examples for tutorial START
+#
+#                        tutorial START tables are built with the options
+#                        -table fast and -no_debug
+#                    
+#    MODIFICATION HISTORY:
+#
+#     06/12/95   cc      Changed to .vc suffix for 32 bit version.
+#     09/15/93   bz      changed to use esricfgl.cpp and esricfgy.cpp,
+#                        and load yy_lol.lib.
+#     06/14/93   bz      Changed directory name from c7 to c8 to reflect
+#                        compiler upgrade.
+#     10/23/92   bz      Initial coding.
+#
+##############################################################################
+
+#
+#  change "YY_MYDIR" to point to your current working directory
+#
+
+YY_MYDIR=.
+YY_MYLIB=$(YY_MYDIR)\lib.vc
+YY_MYINC=$(YY_MYDIR)\inc.vc
+
+#
+#  change "YXXDIR" or "YY_LIB" and "YY_INC" to point to the yxx sources
+#
+
+YXXDIR=d:\yxx20
+YY_LIB=$(YXXDIR)\lib.c8
+YY_INC=$(YXXDIR)\inc.c8
+YY_LIBRARY=$(YY_LIB)\yy_lol.lib
+
+#
+#  change "YXX", "YY_ETBL", and "YY_STBL" to point to the yxx executables
+#
+
+YXX=yxx
+YY_ETBL=yy_etbl
+YY_STBL=yy_stbl
+
+#
+#  Compilation options.
+#
+
+YXXFLAGS= -no_debug -table fast -mph
+DBG_YXXFLAGS= -debug -table fast
+DEFINES= /D__export=
+INCLUDES= -I$(YY_MYDIR) -I$(YY_MYINC) -I$(YY_INC)
+CXXFLAGS= /c /GB /Od /W4 /Za $(DEFINES) $(INCLUDES)
+DBG_CXXFLAGS= /Zi $(CXXFLAGS)
+CXX=cl
+
+#
+# commands
+#
+
+ECHO=echo
+CD=cd
+CP=cp
+MV=ren
+RM=del
+DEL=del
+GREP=#
+MKDIR=mkdir
+TOUCH=touch
+
+#
+#  Dependency rules.
+#
+
+.cpp.obj:
+    echo $(CXXFLAGS) >$*.OPT
+    -$(CXX) /Fo$@ @$*.OPT $*.CPP >$*.ERR
+    TYPE $*.ERR
+
+#
+#  Rules for building the tutorial START primary output files
+#
+
+all:	esricfg
+    echo All examples for tutorial START made.
+
+#
+#  uses the default "yy_err.tbl" in the include directory of the LOL
+#
+
+esricfg:  esricfg.yxx $(YY_LIBRARY)
+    $(YXX) esricfg.yxx $(YXXFLAGS)
+    echo $(CXXFLAGS) >$*.OPT
+    -$(CXX) /Foesricfgm.obj @$*.OPT esricfgm.cpp
+    -$(CXX) /Foesricfgl.obj @$*.OPT esricfgl.cpp
+    -$(CXX) /Foesricfgy.obj @$*.OPT esricfgy.cpp
+    CL @<<
+esricfgm.obj esricfgl.obj esricfgy.obj
+ $(YY_LIBRARY)
+/link /out:esricfg.exe
+<<
+    -$(RM) esricfgl.obj
+    -$(RM) esricfgy.obj
+    -$(RM) esricfgm.obj
+
+yxx:  esricfg.yxx $(YY_LIBRARY)
+    $(YXX) esricfg.yxx $(YXXFLAGS)

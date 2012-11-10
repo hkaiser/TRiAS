@@ -1,0 +1,24 @@
+HKCR
+{
+	TRiASCSPointEnum.TRiASCSPointEnum.1 = s 'TRiASCSPointEnum Class'
+	{
+		CLSID = s '{67B5B598-3BFB-11D2-8C6C-080036D63803}'
+	}
+	TRiASCSPointEnum.TRiASCSPointEnum = s 'TRiASCSPointEnum Class'
+	{
+		CurVer = s 'TRiASCSPointEnum.TRiASCSPointEnum.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {67B5B598-3BFB-11D2-8C6C-080036D63803} = s 'TRiASCSPointEnum Class'
+		{
+			ProgID = s 'TRiASCSPointEnum.TRiASCSPointEnum.1'
+			VersionIndependentProgID = s 'TRiASCSPointEnum.TRiASCSPointEnum'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

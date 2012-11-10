@@ -1,0 +1,246 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "dxfimp.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Deutsch (Deutschland) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "dxfimp.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""dxfimp.rcv""\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_RECHERCHESTATUS DIALOG DISCARDABLE  60, 60, 195, 72
+STYLE DS_MODALFRAME | WS_POPUP | WS_CLIPSIBLINGS | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Sans Serif"
+BEGIN
+    CTEXT           "",IDT_ACTIONTEXT,0,8,195,11
+    DEFPUSHBUTTON   "&Abbrechen",IDCANCEL,70,49,55,16
+    CONTROL         "%3d%%",IDG_EXPORTSTATUS,"GaugeBox32",0x2,3,25,190,14
+END
+
+IDD_IMPORTRESULT DIALOG DISCARDABLE  60, 60, 176, 130
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "Anzahl der importierten",-1,7,3,82,8,NOT WS_GROUP
+    RTEXT           "Text-Objekte:",-1,5,14,99,8,NOT WS_GROUP
+    RTEXT           "Punkt-Objekte:",-1,9,25,95,8,NOT WS_GROUP
+    RTEXT           "Linien-Objekte:",-1,9,36,95,8,NOT WS_GROUP
+    RTEXT           "Flächen-Objekte:",-1,9,47,95,8,NOT WS_GROUP
+    LTEXT           "0",IDT_TEXTCNT,108,14,64,8,NOT WS_GROUP
+    LTEXT           "0",IDT_PKTCNT,108,25,64,8,NOT WS_GROUP
+    LTEXT           "0",IDT_LINCNT,108,36,64,8,NOT WS_GROUP
+    LTEXT           "0",IDT_FLCNT,108,47,64,9,NOT WS_GROUP
+    CONTROL         "",-1,"Static",SS_BLACKRECT,4,69,167,1
+    RTEXT           "importierte Objekte:",-1,9,74,95,8
+    DEFPUSHBUTTON   "&OK",-1,61,111,55,14
+    LTEXT           "0",IDT_SUMME,108,75,64,8,NOT WS_GROUP
+    RTEXT           "Importzeit:",-1,9,97,95,8
+    LTEXT           "0",IDT_IMPORTTIME,108,97,64,8
+    RTEXT           "nicht importierte Objekte:",-1,9,86,95,8
+    LTEXT           "0",IDT_NOTIMPORTED,108,86,64,8
+    RTEXT           "Objekte mit Geometriefehlern:",-1,4,56,100,8
+    LTEXT           "0",IDT_GEO_ERROR,108,56,62,8
+END
+
+IDD_OPTPARAMS DIALOG DISCARDABLE  60, 20, 207, 198
+STYLE DS_MODALFRAME | WS_POPUP | WS_CLIPSIBLINGS | WS_CAPTION | WS_SYSMENU
+CAPTION "DXF-Import-Parameter"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " &Koordinaten ",IDC_STATIC,5,3,85,77,WS_GROUP
+    LTEXT           "&X-Verschiebung:",IDC_OFFSETX,11,16,74,8,NOT WS_GROUP
+    EDITTEXT        IDE_XOFFSET,10,27,75,12,ES_AUTOHSCROLL
+    LTEXT           "&Y-Verschiebung:",IDC_OFFSETY,10,47,75,8,NOT WS_GROUP
+    EDITTEXT        IDE_YOFFSET,10,59,75,12,ES_AUTOHSCROLL
+    CONTROL         "&Linien schließen",IDB_CLOSE_LINES,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,95,5,110,10
+    CONTROL         "&Texthöhen importieren",IDB_HOEHE_IMP,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,95,15,110,10
+    CONTROL         "Textdreh&winkel importieren",IDB_WINKEL_IMP,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,95,25,110,10
+    CONTROL         "&Symboldrehwinkel importieren",IDB_IMP_SYM_DREHWI,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,95,35,110,10
+    CONTROL         "&Kommentare importieren",IDB_IMPORT_COMMENT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,95,45,110,10
+    CONTROL         "&Blöcke zerlegen",IDB_IMPORT_BLOCKS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,95,55,110,10
+    CONTROL         "S&ystemblöcke zerlegen",IDB_IMPORT_SYSTEM_BLOCKS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,95,65,110,10
+    LTEXT           "&Ebenen-Auswahl:",IDC_STATIC,5,86,115,8
+    EDITTEXT        IDE_LAYERS,5,98,198,23,ES_MULTILINE | ES_AUTOHSCROLL | 
+                    ES_WANTRETURN | WS_VSCROLL
+    DEFPUSHBUTTON   "&OK",IDOK,47,178,55,14,WS_GROUP
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,105,178,55,14,NOT WS_TABSTOP
+    GROUPBOX        " Beschreibung ",IDC_STATIC,5,125,198,38
+    LTEXT           "",IDT_DESCRIPTION,10,134,188,25,NOT WS_GROUP
+    CONTROL         "Diesen Dialog künftig nicht mehr anzeigen",
+                    IDB_SHOWOFFSET,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,
+                    165,153,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_OPTPARAMS, DIALOG
+    BEGIN
+        RIGHTMARGIN, 159
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Import aus dem AutoCAD-Austauschformat"
+    IDS_FORMATDESCRIPTION   "AutoCAD-Austauschformat"
+    IDS_DEFAULTEXTENSION    "dxf"
+    IDS_PARSERERRORCAP      "Importfehler"
+    IDS_PARSERERROR         "Fehler in Datei %s: ""%s"" in Zeile "
+    IDS_SYSERROR            "Interner Fehler"
+    IDS_SYNTAXERR           "Syntaxfehler"
+    IDS_NOMEMORY            "Nicht genügend Hauptspeicher vorhanden"
+    IDS_OPENERROR           "Fehler beim Öffnen einer Datei"
+    IDS_STATCAPTION         "DXF-Datei: %s"
+    IDS_RESULTCAPT          "Ergebnis des DXF-Imports"
+    IDS_NO_IDENT            "Kann Objekt-Klasse nicht erzeugen"
+    IDS_NOTEXTIMPORT        "DXFIMP: Text wurde nicht importiert."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NOLINEIMPORT        "DXFIMP: Linie wurde nicht importiert."
+    IDS_NOPUNKTIMPORT       "DXFIMP: Punkt wurde nicht importiert."
+    IDS_NOAREAIMPORT        "DXFIMP: Fläche wurde nicht importiert."
+    IDS_ST_ID_KT            "Objekt-Klasse"
+    IDS_IMPORTTEXT          "Prozentualer Anteil der bereits importierten Datei:"
+    IDS_CHECKTEXT           "Prozentualer Anteil der bereits geprüften Datei:"
+    IDS_BILDM_ERR           "Fehlerhafte Bildmaße (X/Y- Ausdehnung) "
+    IDS_FATALERR            "Fataler Fehler"
+    IDS_ST_MK_KT            "Merkmal"
+    IDS_ARIALTEXT           "Arial"
+    IDS_DEBUGSECTION        "TriasFrameWork"
+    IDS_DEBUGENTRY          "DebugMessageOutput"
+    IDS_XOFFSET             "Die gesamte Zeichnung wird um den angegebenen Wert in X-Richtung verschoben."
+    IDS_YOFFSET             "Die gesamte Zeichnung wird um den angegebenen Wert in Y-Richtung verschoben."
+    IDS_CLOSE_LINES         "Linien werden in Flächen konvertiert, wenn diese mehr als 3 Stützpunkte haben und Anfangs- und Endpunkt identisch sind."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NOT_CLOSE_LINES     "Linien werden auch bei identischem Anfangs- und Endpunkt nicht in Flächen konvertiert."
+    IDS_TEXTOBJWINKEL       "TextWinkel      "
+    IDS_TEXTOBJHOEHE        "TextHoehe       "
+    IDS_POSTEXTATBASELINE   "PosTxtAtBaseLine"
+    IDS_HOEHE_IMP           "Texthöhen werden als Merkmal importiert."
+    IDS_WINKEL_IMP          "Textdrehwinkel werden als Merkmal  importiert."
+    IDS_NOT_WINKEL_IMP      "Textdrehwinkel werden nicht importiert."
+    IDS_NOT_HOEHE_IMP       "Texthöhen werden nicht importiert."
+    IDS_SWINKEL_IMP         "Symboldrehwinkel werden als Merkmal importiert."
+    IDS_NOT_SWINKEL_IMP     "Symboldrehwinkel werden nicht importiert."
+    IDS_SYMBOLOBJWINKEL     "SymbolWinkel"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LAYERSEL_DESCR      "Nur die angebenen Ebenen werden importiert (z.B. STRASSEN,SEEN). Kein Eintrag bedeutet, daß alle Ebenen importiert werden."
+    IDS_COMMENT_IMP         "Kommentare an geometrischen Objekten werden als Merkmal importiert."
+    IDS_NOT_COMMENT_IMP     "Kommentare werde nicht importiert."
+    IDS_COMMENTKODE         "ObjektKommentar"
+    IDS_BLOCKS_IMP          "Nutzerdefinierte Blöcke werden importiert und in ihre urspünglichen Objekte zerlegt."
+    IDS_NOT_BLOCKS_IMP      "Nutzerdefinierte  Blöcke werden als Punktobjekte importiert und nicht (!) zerlegt."
+    IDS_SYSTEM_BLOCKS_IMP   "Systemblöcke (z.B. Schraffuren von Flächen) werden importiert und in ihre ursprünglichen Objekte zerlegt."
+    IDS_NOT_SYSTEM_BLOCKS_IMP 
+                            "Systemblöcke (z.B. Schraffuren von Flächen)  werden nicht importiert."
+    IDS_BLOCK_NAME          "Blockname"
+    IDS_PARAM_ERROR         "Allgemeiner Parameterfehler beim Aufruf einer Funktion !"
+    IDS_CAN_NOT_IMP_NETZ    "Vielflächennetze werden nicht importiert !"
+    IDS_ACAD_VERSION        "Die DXF-Datei liegt nicht im Format der AutoCAD-Version 12 vor. Der Import der Daten kann deshalb zu Datenverlusten führen. Möchten Sie trotzdem fortfahren ?"
+    IDS_TEXTOFFSETX         "X-Eingabe(Minimum) : "
+    IDS_TEXTOFFSETY         "Y-Eingabe(Minimum) : "
+    IDS_TEXTQUELLE          "Datenquellen-Offset\n\t OffsetX : %s \n\t OffsetY : %s"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_TEXTDBQUELLE        "Datenbank-Offset\n\tOffsetX:%s\n\tOffsetY:%s"
+    IDS_TEXTWIDER           "\t- Widerspruch !!!"
+    IDS_TEXTCAPTION         "DXF-Import %s.DXF"
+    IDS_NOENDEKENNZEICHEN   "Kein Dateiendekennzeichen - File ist unvollständig - Abbruch!"
+    IDS_HEADERDEGREE        "CoordUnitOfAngle"
+    IDS_DEGREE              "Degree"
+    IDS_NOTEXTFIELD         "leeres Textfeld in Zeile"
+    IDS_NOWORKING           "Abbruch der Verarbeitung bei Zeile "
+END
+
+#endif    // Deutsch (Deutschland) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "dxfimp.rcv"
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

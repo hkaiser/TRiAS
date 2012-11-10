@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiAS.StatusProgress.1 = s 'StatusProgress Class'
+	{
+		CLSID = s '{59574E42-E4CE-11D1-8610-00600875138A}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {59574E42-E4CE-11D1-8610-00600875138A} = s 'StatusProgress Class'
+		{
+			ProgID = s 'TRiAS.StatusProgress.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

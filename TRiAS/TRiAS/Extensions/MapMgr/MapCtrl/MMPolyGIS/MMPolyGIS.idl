@@ -1,0 +1,39 @@
+// MMPolyGIS.idl : IDL source for MMPolyGIS.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (MMPolyGIS.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(4F8FEE13-945B-41A6-9A40-5934E3EB0971),
+	version(1.0),
+	helpstring("MMPolyGIS 1.0 Type Library")
+]
+library MMPOLYGISLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		object,
+		uuid(C51008D6-0FDD-4477-87BD-04EF7EEC0451),
+		dual,
+		helpstring("IMapPolyGIS Interface"),
+		pointer_default(unique)
+	]
+	interface IMapPolyGIS : IDispatch
+	{
+	};
+
+	[
+		uuid(BAC8C309-9478-466E-8CC5-5E3EEB8A398C),
+		helpstring("MapPolyGIS Class")
+	]
+	coclass MapPolyGIS
+	{
+		[default] interface IMapPolyGIS;
+	};
+};

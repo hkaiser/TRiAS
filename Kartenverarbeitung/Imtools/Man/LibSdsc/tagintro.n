@@ -1,0 +1,220 @@
+'\"t
+.de Cb		\" Courier Begin
+.in +0.25i
+.ft CW
+\s-1
+.nf
+..
+.de Ce		\" Courier End
+.ft R
+.fi
+\s+1
+.in -0.25i
+..
+.TH TAGINTRO 3TAG "July 1990" "SDSC" "TAG TABLE"
+.SH NAME
+TagIntro  -  general information on the tag table package
+.SH SYNOPSIS
+.if t \fB
+#include "sdsc.h"
+.if t \fR
+.SH DESCRIPTION
+The tag table package creates and manipulates a generic data-holding
+data structure known as a "tag table."
+Each entry in the table is a tag-value pair.
+The tag is a NULL-terminated character string label of arbitrary length
+and content.
+The value is any of the standard C types.
+Multiple entries may have the same tag.
+.LP
+Entries are ordered in two ways:  linearly and as a direct-access hash table.
+Linear ordering allows a tag table to be searched from start to finish in
+the order in which it was created (or later edited).
+Hash table ordering allows a tag table to be queried directly, such as to
+search for the Nth occurrence of an entry with tag "hello world".
+.LP
+Tag tables may be used in any application that keeps track of a list
+of related but differently typed items, such as
+images, lookup tables, label strings, dates, host names, arrays of
+science data, and so on.  Any of the items may not occur or may
+occur more than once.  Tag tables are extensively used by the SDSC
+image manipulation library 'libim' (see \fIImIntro\fR(3IM)).
+.SH GOALS
+The tag table package was designed to:
+.IP \(bu 0.25i
+Accept any C type as a value.
+.IP \(bu 0.25i
+Be flexible and easy to use.
+.IP \(bu 0.25i
+Provide a variety of ways of accessing the list of tags and values.
+.IP \(bu 0.25i
+Provide quick linear and direct access searching methods.
+.SH "ALLOCATING AND FREEING TAG TABLES"
+An empty tag table is allocated with a call to:
+.Cb
+TagTable *tagTable;
+ ...
+tagTable = TagTableAlloc( );
+.Ce
+.LP
+A tag table can be freed with a call to:
+.Cb
+TagTable *tagTable;
+ ...
+TagTableFree( tagTable );
+.Ce
+.SH "ALLOCATING AND FREEING TAG ENTRIES"
+Entries for tag tables are created before they are added into a table.
+Tag table entries may be allocated with a call to:
+.Cb
+TagEntry *tagEntry;
+ ...
+tagEntry = TagEntryAlloc( tag, type, pValue );
+.Ce
+.LP
+where \fItag\fR is the tag string for the entry, \fItype\fR is the C type
+for the value, and \fIpValue\fR is a pointer to the value to copy into
+the entry.
+.LP
+Note that \fIpValue\fR is not the value itself but a pointer to it.
+For example, the following code creates two table entries, one for the
+tag "image name" and its string value, and the other for the tag "gamma" and
+its floating point gamma-correction factor:
+.Cb
+TagEntry *tagEntry1;
+TagEntry *tagEntry2;
+char *stringValue;
+float floatValue;
+ ...
+stringValue = "SDSC Logo";
+tagEntry1   = TagEntryAlloc( "image name", POINTER, &stringValue );
+floatValue  = 2.8;
+tagEntry2   = TagEntryAlloc( "gamma", FLOAT, &floatValue );
+.Ce
+.LP
+To create an entry holding a string, a pointer to a string must be passed.
+The type in this case is \fIPOINTER\fR.
+If \fICHAR\fR was used instead, only the low-order byte of \fIstringValue\fR
+is stored in the entry, instead of the entire pointer value of
+\fIstringValue\fR (4 bytes on most hosts).
+.LP
+When a tag entry is not needed (is not a part of any existing tag
+table), it may be freed using:
+.Cb
+TagEntry *tagEntry;
+ ...
+TagEntryFree( tagEntry );
+.Ce
+.SH "QUERYING ATTRIBUTES OF A TAG ENTRY"
+Information in a tag table entry may be \fBQ\fRueried by:
+.sp 1
+.TS
+center,box;
+c c
+l l.
+Call	Meaning
+_
+TagEntryQNthEntry	Query the entry number for an entry
+TagEntryQNthOccur	Query the tag occurrence count for an entry
+TagEntryQTag	Query the tag for an entry
+TagEntryQType	Query the value type for an entry
+TagEntryQValue	Query the value for an entry
+.TE
+.SH "EDITING A TAG TABLE"
+After allocated, a tag-table entry may be appended to a tag table,
+inserted into it, or used to replace an entry already in the table.
+Tag-table entries already in the table may be deleted and copied.
+.sp 1
+.ne 9
+.TS
+center,box;
+c c
+l l.
+Call	Meaning
+_
+TagAppend	Append a tag entry to a tag table
+TagCopy	Copy a tag table to another tag table
+TagDelete	Delete a tag entry from a tag table
+TagInsert	Insert a tag entry into a tag table
+TagReplace	Replace a tag entry within a tag table
+.TE
+.SH "SEARCHING A TAG TABLE"
+Tag table entries in a table may be looked for by searching the table
+linearly (in edit order) or directly (by tag string):
+.sp 1
+.ne 9
+.TS
+center,box;
+c c
+l l.
+Call	Meaning
+_
+TagQDirect	Query a tag table to find an entry with a given tag
+TagQLinear	Query a tag table to find an entry at a given location
+TagQNEntries	Query the number of entries in a tag table
+.TE
+.SH "RETURNS"
+All tag-table package calls that can return errors do so by returning
+-1 or NULL pointer on failure and 0, valid number, or valid pointer on
+success (per UNIX system call convention).  The global variable
+\fITagErrNo\fR is set to an error code describing the error (also per
+UNIX convention).  The error text associated with the error code may
+be retrieved from the global \fITagErrList\fR by array lookup from
+\fITagQError\fR(3TAG) by a routine call or printed to \fIstderr\fR
+using \fITagPError\fR(3TAG).
+.SH "SUMMARY OF TAG TABLE ROUTINES"
+.nf
+.TS
+l l.
+TagEntry *	TagEntryAlloc( tag, type, pValue )
+TagEntry *	TagEntryDup( tagEntry )
+void	TagEntryFree( tagEntry )
+int	TagEntryQNthEntry( tagEntry )
+int	TagEntryQNthOccur( tagEntry )
+char *	TagEntryQTag( tagEntry )
+int	TagEntryQType( tagEntry )
+int	TagEntryQValue( tagEntry, pValue )
+void	TagPError( leader )
+char *	TagQError( )
+TagTable *	TagTableAlloc( )
+int	TagTableAppend( tagTable, tagEntry )
+int	TagTableDelete( tagTable, nthEntry )
+void	TagTableFree( tagTable )
+int	TagTableInsert( tagTable, afterNthEntry, tagEntry )
+TagEntry *	TagTableQDirect( tagTable, tag, nthOccur )
+TagEntry *	TagTableQLinear( tagTable, nthEntry )
+int	TagTableQNEntry( tagTable, tag )
+int	TagTableReplace( tagTable, nthEntry, tagEntry )
+.TE
+.fi
+.SH "SEE ALSO"
+errno(2),
+ImIntro(3IM),
+perror(3),
+TagEntryAlloc(3TAG),
+TagEntryDup(3TAG),
+TagEntryFree(3TAG),
+TagEntryQNthEntry(3TAG),
+TagEntryQNthOccur(3TAG),
+TagEntryQTag(3TAG),
+TagEntryQType(3TAG),
+TagEntryQValue(3TAG),
+TagPError(3TAG),
+TagQError(3TAG),
+TagTableAlloc(3TAG),
+TagTableAppend(3TAG),
+TagTableDelete(3TAG),
+TagTableFree(3TAG),
+TagTableInsert(3TAG),
+TagTableQDirect(3TAG),
+TagTableQLinear(3TAG),
+TagTableQNEntry(3TAG),
+TagTableReplace(3TAG)
+.br
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

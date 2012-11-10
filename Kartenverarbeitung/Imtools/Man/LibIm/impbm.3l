@@ -1,0 +1,198 @@
+
+
+
+IMPBM(3IM)             SDSC IMAGE LIBRARY              IMPBM(3IM)
+
+
+
+NAME
+     impbm - PBM+ suite PBM file translation
+
+SYNOPSIS
+     #include <stdio.h>
+     #include "sdsc.h"
+     #include "im.h"
+
+     int ImFileRead( fd, "pbm", flagsTable, dataTable )
+          int         fd;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileFRead( fp, "pbm", flagsTable, dataTable )
+          FILE         *fp;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileWrite( fd, "pbm", flagsTable, dataTable )
+          int         fd;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileFWrite( fp, "pbm", flagsTable, dataTable )
+          FILE         *fp;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+
+DESCRIPTION
+     pbm image files are used by various tools in Jef Poskanzer's
+     PBM+  tool suite.  See the PBM documentation set for details
+     on how to use these tools.
+
+FILE RECOGNITION
+     pbm files are recognized by the  filename  suffixes:   .pbm.
+     .pgm, .pnm, .rpbm, .rpgm, .rpnm, .rppm
+
+NOTES
+     SDSC image library  support  of  the  pbm  format  does  not
+     require  use  of  the PBM+ libraries and tools.  It does not
+     contain proprietary code or any code  from  Jef  Poskanzer's
+     original  PBM+  suite.   pbm format handling is available on
+     any machine for which the SDSC image library is available.
+
+     PBM (Portable Bit Map) started with support for 1-bit  mono-
+     chrome  images.   Support  was  added  for  8-bit  grayscale
+     images, and 24-bit rgb images/
+
+     The original file formats were ASCII.  To  reduce  the  disk
+     space  required  to store such files, three additional "raw"
+     formats were defined.   The  raw  formats  stored  the  same
+
+
+
+SDSC              Last change: August 19, 1992                  1
+
+
+
+
+
+
+IMPBM(3IM)             SDSC IMAGE LIBRARY              IMPBM(3IM)
+
+
+
+     information  as  their  ASCII  counterparts  but  in binary,
+     reducing the disk space requirement by around 60%.
+
+     The image library will create the ASCII version of this for-
+     mat  when the compression type 'ASCII' is indicated.  Other-
+     wise, we create the binary version.
+
+     Today the PBM+ suite contains six related file formats:
+
+          PBM    ASCII 1-bit bitmaps
+          PGM    ASCII 8-bit grayscale pixel maps
+          PPM    ASCII 24-bit RGB color pixel maps
+          RPBM   Raw binary 1-bit bitmaps
+          RPGM   Raw binary 8-bit grayscale pixel maps
+          RPPM   Raw binary 24-bit RGB color pixel maps
+
+     The original PBM suite included several tools.  Some handled
+     PBM files but not PGM or PPM.  Others handled PGM files, but
+     not PBM or PPM.  Then the newer PBM+ distribution introduced
+     a  set of tools that recognized all six file formats.  These
+     tools generically referred to image files as  PNM  (Portable
+     aNy Map) files.
+
+     The SDSC image library treats  the  six  PBM+  file  formats
+     separately.   This man page only discusses the PBM file for-
+     mat (ASCII monochrome).   The  remaining  file  formats  are
+     disucussed in their own man pages.
+
+  Reading PBM image files
+     For compatibility  with  the  PBM+  suite,  the  SDSC  image
+     library  can  read any of the PBM+ file formats when the pbm
+     format name is used.  PBM+ files are read in and  mapped  to
+     VFBs as follows:
+
+          File format   Depth/color         Mapped to VFB
+          PBM           1-bit monochrome    IMVFBMONO without a CLT
+          PGM           8-bit color index   IMVFBINDEX8 without a CLT
+          PPM           24-bit RGB          IMVFBRGB without a CLT
+          RPBM          1-bit monochrome    IMVFBMONO without a CLT
+          RPGM          8-bit color index   IMVFBINDEX8 without a CLT
+          RPPM          24-bit RGB          IMVFBRGB without a CLT
+
+     White space and comments (lines starting with # and  extend-
+     ing  to  the  end of the line) are ignored.  White space and
+     comments are not allowed within the raw binary image body.
+
+  Writing PBM image files
+     The SDSC image library writes IMVFBMONO VFBs  as  pbm  mono-
+     chrome ASCII bitmap files.
+
+     pbm files support no compression schemes.
+
+
+
+
+2                 Last change: August 19, 1992               SDSC
+
+
+
+
+
+
+IMPBM(3IM)             SDSC IMAGE LIBRARY              IMPBM(3IM)
+
+
+
+     Other image library VFB types  are  converted  to  IMVFBMONO
+     VFBs  prior  to being written out.  See the ImFileWrite(3IM)
+     man page for details.
+
+ERRORS
+     In addition to those listed for  ImFileRead(3IM),  pbm  file
+     reading returns the following error codes:
+
+          IMEMAGIC    Bad magic number in image file
+          IMEMALLOC   Cannot allocate enough memory
+          IMESYNTAX   Premature EOF
+          IMESYS      System call error in read operation
+
+     In addition to those listed for ImFileWrite(3IM),  pbm  file
+     writing returns the following error codes:
+
+          IMEMALLOC   Cannot allocate enough memory
+          IMESYS      System call error in write operation
+
+DOCUMENTATION
+     pbm(5), pgm(5), and ppm(5) from the PBM+ man page set.
+
+SEE ALSO
+     ImIntro(3IM),   ImErrNo(3IM),   imconv(1IM),    imfile(1IM),
+     imformats(1IM),    impgm(3IM),    impnm(3IM),    imppm(3IM),
+     imrpbm(3IM), imrpgm(3IM), imrpnm(3IM), imrppm(3IM)
+
+AUTHORS
+     Dave Nadeau and Don Doering
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SDSC              Last change: August 19, 1992                  3
+
+
+

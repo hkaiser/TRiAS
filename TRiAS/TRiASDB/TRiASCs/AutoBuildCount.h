@@ -1,0 +1,6 @@
+// 726
+#ifndef AUTOBUILDCOUNT_H
+#define AUTOBUILDCOUNT_H
+#define BUILDCOUNT_NUM 726
+#define BUILDCOUNT_STR "726"
+#endif

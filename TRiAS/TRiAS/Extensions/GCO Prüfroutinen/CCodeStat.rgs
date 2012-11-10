@@ -1,0 +1,39 @@
+HKCR
+{
+	TRiASEx.CodeStatistik.1 = s 'CodeStatPropertyAction Class'
+	{
+		CLSID = s '{5C31EB85-952F-484F-8EF6-E9564C012837}'
+	}
+	TRiASEx.CodeStatistik = s 'CodeStatPropertyAction Class'
+	{
+		CLSID = s '{5C31EB85-952F-484F-8EF6-E9564C012837}'
+		CurVer = s 'TRiASEx.CodeStatistik.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {5C31EB85-952F-484F-8EF6-E9564C012837} = s 'CodeStatPropertyAction Class'
+		{
+			ProgID = s 'TRiASEx.CodeStatistik.1'
+			VersionIndependentProgID = s 'TRiASEx.CodeStatistik'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{46537618-3D6B-4E6A-B438-7EB64BF92E53}'
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiASEx.CodeStatistik.1' = s '{5C31EB85-952F-484F-8EF6-E9564C012837}'
+			}
+		}
+	}
+}

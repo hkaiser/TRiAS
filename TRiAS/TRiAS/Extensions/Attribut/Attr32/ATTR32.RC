@@ -1,0 +1,298 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resstrg.h"
+#include "about.h"
+#include "attribut.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+ATTRIBUTICON            ICON    DISCARDABLE     "LUPE.ICO"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+ATTRIBUTEXTENSIONMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "A&ttributverarbeitung"
+    BEGIN
+        MENUITEM "Merkmalsverarbeitung (&Gesamtsicht) ...", 
+                                                IDM_SICHTATTRIBUT
+        MENUITEM "Merkmalsverarbeitung (&Sichtausschnitt) ...", 
+                                                IDM_CONTATTRIBUT
+        MENUITEM SEPARATOR
+        MENUITEM "&Bilden von Merkmalen (Gesamtsicht) ...", 
+                                                IDM_CREATESICHTATTRIBUT
+        MENUITEM "B&ilden von Merkmalen (Sichtausschnitt) ...", 
+                                                IDM_CREATECONTATTRIBUT
+        MENUITEM SEPARATOR
+        MENUITEM "&Umklassifizieren ...",       IDM_ATTRIBUTCLASSIFY
+        MENUITEM SEPARATOR
+        MENUITEM "&Info ...",                   IDM_ABOUT
+    END
+END
+
+ATTRIBUTORMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&Sachdaten"
+    BEGIN
+        MENUITEM "&Merkmalsverarbeitung ...",   IDM_ORWINATTRIBUT
+        MENUITEM "&Merkmalsbildung ...",        IDM_CREATEORWINATTRIBUT
+        MENUITEM "&Kopieren von Merkmalen ...", IDM_ORWINCOPYATTRIBUT
+        MENUITEM SEPARATOR
+        MENUITEM "&Meine Sorge ( Zwischenablage)", IDM_ORWINMEINESORGE
+    END
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""resstrg.h""\r\n"
+    "#include ""about.h""\r\n"
+    "#include ""attribut.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""attr32.rcv""\r\n"
+    "#include ""about.src""\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+ATTRIBUTAUSWAHL DIALOG DISCARDABLE  100, 100, 255, 257
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Objektklassenauswahl-Merkmalzuordnung"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Kopieren",IDOK,195,4,50,14
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,194,21,50,14
+    LISTBOX         IDLB_ATTOBJCLASS1,10,95,109,59,LBS_SORT | 
+                    LBS_EXTENDEDSEL | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDLB_ATTOBJCLASS2,133,95,107,58,LBS_SORT | WS_VSCROLL | 
+                    WS_TABSTOP
+    LISTBOX         IDLB_ATTMCLASS1,11,165,108,46,LBS_SORT | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Merkmal",-1,11,155,95,7
+    EDITTEXT        IDT_ATTINTERVALLWERT,74,56,25,12,ES_AUTOHSCROLL
+    LTEXT           "Objektcontainer +",IDS_ATTCONTTEXT,13,57,60,10
+    LTEXT           " [ % ]",-1,101,57,17,9
+    CONTROL         "ObjektContainer",IDB_ATTIDENTCONT,"Button",
+                    BS_AUTORADIOBUTTON,17,15,63,11
+    CONTROL         "Merkmal",IDB_ATTIDENTMCODE,"Button",BS_AUTORADIOBUTTON,
+                    124,15,54,10
+    GROUPBOX        " Zuordnung über ",-1,5,5,183,29
+    COMBOBOX        IDCB_ATTMCODEIDENT,133,56,106,35,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL
+    LTEXT           "Merkmal :",IDS_ATTMERKMALTEXT,134,46,90,9,NOT WS_GROUP
+    LISTBOX         IDLB_ATTMCLASS2,133,167,106,39,LBS_SORT | WS_VSCROLL | 
+                    WS_TABSTOP
+    GROUPBOX        " Zu modifizierende Objektklasse ",-1,6,84,120,130
+    GROUPBOX        " Zu vergleichende Objektklasse ",-1,127,84,118,130
+    GROUPBOX        " Vergleichsbegriff ",-1,5,39,240,41
+    COMBOBOX        IDCB_ATTZUORDNUNG,8,238,236,42,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL
+    LTEXT           "Zuordnungstabelle :",-1,9,222,83,10
+    PUSHBUTTON      "&Zuordnen",IDB_ATTZUORDNEN,186,218,50,15
+    PUSHBUTTON      "&Löschen",IDB_ATTLOESCHEN,131,218,51,15
+END
+
+ATTRIBUTZUORDNUNG DIALOG DISCARDABLE  100, 100, 187, 117
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Recherche nach den Merkmalen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Start",IDOK,133,7,50,14
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,133,24,50,14
+    PUSHBUTTON      "&Zuordnen",IDB_ATTSTOREMWERT,133,93,46,14
+    LISTBOX         IDLB_ATTSELMCLASS,5,4,122,54,LBS_SORT | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDT_ATTMERKMALSWERT,7,68,173,12,ES_AUTOHSCROLL
+    GROUPBOX        " Suchbegriff ",-1,2,58,182,55
+    COMBOBOX        IDCB_ATTSELMODUS,7,94,122,47,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Recherchemodus :",-1,9,85,61,7
+END
+
+OBJECTATTRIBUTAUSWAHL DIALOG DISCARDABLE  100, 100, 185, 138
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Merkmalsauswahl"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,129,42,50,14
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,129,59,50,14
+    LISTBOX         IDLB_OBJATTMCLASS,5,42,119,51,LBS_SORT | LBS_EXTENDEDSEL | 
+                    WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDT_OBJATTROOT,5,14,173,12,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Objekt :",-1,5,3,50,9
+    EDITTEXT        IDT_OBJATTMERKMALSWERT,5,106,174,30,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "Merkmalswert :",-1,7,95,53,7
+    LTEXT           "Merkmal :",-1,7,30,35,8
+END
+
+AUSWAHLMODUS DIALOG DISCARDABLE  100, 100, 307, 127
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "  Auswahl der Sachdatenverarbeitung"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Recherchieren",IDOK,14,102,53,14
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,252,4,50,14
+    LISTBOX         IDLB_AUSWOBJCLASS,7,27,147,59,LBS_SORT | LBS_EXTENDEDSEL | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Objektklasse :",-1,7,12,104,10
+    GROUPBOX        " Funktion ",-1,5,90,294,33
+    PUSHBUTTON      "&Löschen",IDB_AUSWDELETE,159,102,55,14
+    PUSHBUTTON      "&Modifizieren",IDB_AUSWMODIFY,102,102,53,14
+    LISTBOX         IDLB_AUSWMCLASS,165,27,134,52,LBS_SORT | LBS_EXTENDEDSEL | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Merkmalskode :",-1,167,13,61,8
+    PUSHBUTTON      "&Vergleichen",IDB_AUSWVERGLEICH,239,102,51,14
+END
+
+ATTGAUGEBOX DIALOG DISCARDABLE  60, 60, 190, 56
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION " Objektrecherche"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Abbrechen",IDCANCEL,71,39,50,14,NOT WS_TABSTOP
+    CONTROL         "%3d%%",IDG_SHOWSTATUSGAUGE,"GaugeBox32",0x0,9,19,171,14
+    LTEXT           "Anteil der bereits recherchierten Informationen :",-1,
+                    10,6,162,9
+END
+
+OBJECTATTRIBUTBILDUNG DIALOG DISCARDABLE  100, 100, 235, 173
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Bilden von Merkmalen durch Texteinfügen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Ausführen",IDOK,178,12,50,14
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,178,34,50,14
+    LISTBOX         IDLB_CFOBJCLASS,6,17,160,53,LBS_SORT | LBS_EXTENDEDSEL | 
+                    WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDLB_CFMCLASS,7,88,160,53,LBS_SORT | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Objektklasse :",IDC_STATIC,6,5,79,10
+    LTEXT           "Merkmalskode :",IDC_STATIC,7,75,74,9
+    EDITTEXT        IDS_CFNEWTEXT,6,152,161,14,ES_AUTOHSCROLL
+    LTEXT           "Einzufügender Text",IDC_STATIC,8,141,117,9
+    CONTROL         "vorsetzen",IDB_CFVORSATZ,"Button",BS_AUTORADIOBUTTON,
+                    179,130,45,10
+    CONTROL         "anfügen",IDB_CFANHANG,"Button",BS_AUTORADIOBUTTON,179,
+                    148,45,10
+    GROUPBOX        " Text ",IDC_STATIC,173,114,56,52
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ATTNODEFMERKMAL     "Fehlende Merkmalcodedefinition."
+    IDS_ATTNODEFOBJCLASS    "Fehlende Objektklassendefinition."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_STARTRECHERCHE      " - Vorbereitung der Recherche -"
+    IDS_OBJEKTRECHERCHE     " Objektrecherche - ( %5d Objekte )"
+    IDS_GAUGEBOX            "%%3d%%%% - %s"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_EXISTIERT           "Merkmal vorhanden"
+    IDS_NOEXIST             "Merkmal nicht vorhanden"
+    IDS_EXAKT               "Zeichenfolge exakt"
+    IDS_TEILMENGE           "Zeichenfolge als Teilmenge"
+    IDS_INVERS              "Zeichenfolge nicht enthalten"
+    IDS_ANFANG              "Zeichenfolge am Anfang"
+    IDS_ENDE                "Zeichenfolge am Ende"
+    IDS_LAENGE              "Länge der Zeichenfolge"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Attributverarbeitung"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "attr32.rcv"
+#include "about.src"
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

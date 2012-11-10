@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASDB.TRiASMetaDataMap.1 = s 'TRiASMetaDataMap Class'
+	{
+		CLSID = s '{733F03EE-CECA-4E3B-ACEF-0920F7DB996F}'
+	}
+	TRiASDB.TRiASMetaDataMap = s 'TRiASMetaDataMap Class'
+	{
+		CLSID = s '{733F03EE-CECA-4E3B-ACEF-0920F7DB996F}'
+		Curver = s 'TRiASDB.TRiASMetaDataMap.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {733F03EE-CECA-4E3B-ACEF-0920F7DB996F} = s 'TRiASMetaDataMap Class'
+		{
+			ProgID = s 'TRiASDB.TRiASMetaDataMap.1'
+			VersionIndependentProgID = s 'TRiASDB.TRiASMetaDataMap'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{D582400D-E1C2-4C19-A504-4AE47EAE46DF}'
+		}
+	}
+}

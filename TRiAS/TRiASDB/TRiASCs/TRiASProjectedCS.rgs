@@ -1,0 +1,25 @@
+HKCR 
+{
+	TRiAS.CS_PCS.1 = s 'TRiAS® Koordinatensystem, projektiv' 
+	{
+		CLSID = s '{4E1A7104-E993-11D1-8F48-0060085FC1CE}'
+	}
+	TRiAS.CS_PCS = s 'TRiAS® Koordinatensystem, projektiv' 
+	{
+		CurVer = s 'TRiAS.CS_PCS.1'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {4E1A7104-E993-11D1-8F48-0060085FC1CE} = s 'TRiAS® Koordinatensystem, projektiv' 
+		{
+			ProgID = s 'TRiAS.CS_PCS.1'
+			VersionIndependentProgID = s 'TRiAS.CS_PCS'
+			ForceRemove 'Programmable'
+			ToolboxBitmap32 = s '%MODULE%,1'
+			InprocServer32 = s '%MODULE%' 
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

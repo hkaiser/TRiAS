@@ -1,0 +1,56 @@
+HKCR
+{
+	TRiAS.Workspace.1 = s 'TRiAS® Projekt'
+	{
+		CLSID = s '{1CB3AB64-2E87-11D1-969D-00A024D6F582}'
+		DefaultIcon = s '%MODULE%,2'
+		shell 
+		{
+			open = s '&Projekt öffnen'
+			{
+				command = s '%MAINMODULE% "%%1"'
+			}
+		}
+		Insertable = s ''
+		protocol
+		{
+			StdFileEditing
+			{
+				server = s '%MAINMODULE%'
+				verb
+				{
+					0 = s '&Bearbeiten,0,2'
+				}
+			}
+		}
+	}
+	.riw = s 'TRiAS.Workspace.1'
+	{
+		'ShellNew'
+		{
+			val command = s '%MAINMODULE% /Init:NoShortcut "%%2"'
+		}
+	}
+	TRiAS.Workspace = s 'TRiAS® Projekt'
+	{
+		CLSID = s '{1CB3AB64-2E87-11D1-969D-00A024D6F582}'
+		CurVer = s 'TRiAS.Workspace.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {1CB3AB64-2E87-11D1-969D-00A024D6F582} = s 'TRiAS® Projekt'
+		{
+			ProgID = s 'TRiAS.Workspace.1'
+			VersionIndependentProgID = s 'TRiAS.Workspace'
+			ForceRemove 'Programmable'
+			LocalServer32 = s '%MAINMODULE%' 
+			Insertable = s ''
+			MiscStatus = s '0'
+			Verb
+			{
+				0 = s '&Bearbeiten,0,2'
+				1 = s '&Projekt öffnen,0,2'
+			}
+		}
+	}
+}

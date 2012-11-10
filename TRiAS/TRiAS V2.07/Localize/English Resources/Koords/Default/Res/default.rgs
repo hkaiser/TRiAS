@@ -1,0 +1,30 @@
+HKCU { NoRemove Software { NoRemove uve { NoRemove TRiAS { NoRemove CoordSystems 
+{
+	ForceRemove TRiAS.CoordDefault.1 = s 'General coordinates systems'
+	{
+		Val Toolbar32 = d 0
+		User coordinates system = s 'Any right-angled system of coordinates (without measuring unit)'
+		{
+			Val CoordPrecision = d 0
+			Val CoordScaling = s '1.0'
+		}
+		'User coordinates system [m]' = s 'Any right-angled system of coordinates [meter coordinates]' 
+		{
+			Val CoordPrecision = d 2
+			Val CoordScaling = s '1.0'
+			Val Koeff11 = s '1.0'
+		}
+		'User coordinates system [dm]' = s 'Any right-angled system of coordinates [Decimeter coordinates]'
+		{
+			Val CoordPrecision = d 3
+			Val CoordScaling = s '10.0'
+			Val Koeff11 = s '1.0'
+		}
+		'User coordinates system [cm]' = s 'Any right-angled system of coordinates [centimeter coordinates]'
+		{
+			Val CoordPrecision = d 3
+			Val CoordScaling = s '100.0'
+			Val Koeff11 = s '1.0'
+		}
+	}
+} } } } }

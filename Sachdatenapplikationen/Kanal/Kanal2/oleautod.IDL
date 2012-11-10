@@ -1,0 +1,2230 @@
+// Generated .IDL file (by the OLE/COM Object Viewer)
+// 
+// typelib filename: oleautod.ext
+
+[
+  uuid(8DE4E3C0-4D53-101B-AAE1-E7E7E7E7E7E7),
+  version(3.0),
+  helpstring("TRiAS Application Type Library"),
+  helpfile("TRIASMP.HLP"),
+  helpcontext(00000000)
+]
+library TRiAS
+{
+    // TLib :     // TLib : OLE Automation : {00020430-0000-0000-C000-000000000046}
+    importlib("StdOle2.Tlb");
+
+    // Forward declare all types defined in this typelib
+    interface DTRiASBaseClass;
+    interface DApplication;
+    interface DTRiASProperties;
+    interface DTRiASCollection;
+    interface DTRiASProperty;
+    interface DDocuments;
+    interface DDocument;
+    interface DViews;
+    interface DView;
+    interface DGeoClasses;
+    interface DGeoClass;
+    interface DGeoObjects;
+    interface DGeoObjectWin;
+    interface DGeoObject;
+    interface DGeoFeatures;
+    interface DGeoFeature;
+    interface DVisInfo;
+    interface ITRiASConnection;
+    interface ITRiASBase;
+    interface ITRiASDatabase;
+    interface DGeoObjectWins;
+    interface ITRiASConnections;
+    interface DControlToolBars;
+    interface DControlToolBar;
+    interface DControlToolBarButtons;
+    interface DControlToolBarButton;
+    interface DToolBarUIOwner;
+    interface DTRiASCmdUI;
+    interface DObjectProperty;
+    interface DWriteAbleObjectProperty;
+    interface IManageDocumentContext;
+    interface ITRiASNotificationSink;
+    interface ITRiASSysNotificationSink;
+    interface IInitDTRiASExtension;
+    interface DTRiASExtension;
+
+    typedef [helpstring("Laufzeitidentifikation für TRiAS®-Datenobjekte."), helpcontext(0x0000002e)public]
+    _tagRTTI RTTI;
+
+    typedef [helpstring("Laufzeitidentifikation für TRiAS®-Datenobjekte."), helpcontext(0x0000002e)]
+    enum {
+        RTTI_Unknown = 0,
+        RTTI_Application = 1,
+        RTTI_Document = 2,
+        RTTI_Documents = 3,
+        RTTI_GeoView = 4,
+        RTTI_GeoViews = 5,
+        RTTI_GeoClass = 6,
+        RTTI_GeoClasses = 7,
+        RTTI_GeoObject = 8,
+        RTTI_GeoObjects = 9,
+        RTTI_GeoFeature = 10,
+        RTTI_GeoFeatures = 11,
+        RTTI_GeoObjectWin = 12,
+        RTTI_GeoObjectWins = 13,
+        RTTI_VisInfo = 14,
+        RTTI_PointVisInfo = 65550,
+        RTTI_LineVisInfo = 131086,
+        RTTI_AreaVisInfo = 196622,
+        RTTI_TextVisInfo = 262158,
+        RTTI_ToolBar = 15,
+        RTTI_ToolBars = 16,
+        RTTI_ToolBarButton = 17,
+        RTTI_ToolBarButtons = 18,
+        RTTI_Property = 19,
+        RTTI_Properties = 20
+    } _tagRTTI;
+
+    typedef [helpstring("Modi für 'GetDocument'")public]
+    _tagDOCMODE DOCMODE;
+
+    typedef [helpstring("Modi für 'GetDocument'")]
+    enum {
+        DOCMODE_Get = 0,
+        DOCMODE_Replace = 1,
+        DOCMODE_Add = 2,
+        DOCMODE_Remove = 3
+    } _tagDOCMODE;
+
+    typedef [helpstring("Modi für 'GetView'")public]
+    _tagVIEWMODE VIEWMODE;
+
+    typedef [helpstring("Modi für 'GetView'")]
+    enum {
+        VIEWMODE_Get = 0,
+        VIEWMODE_Replace = 1,
+        VIEWMODE_Add = 2,
+        VIEWMODE_Remove = 3
+    } _tagVIEWMODE;
+
+    typedef [helpstring("Modi für 'GetClass'")public]
+    _tagGEOCLASSMODE GEOCLASSMODE;
+
+    typedef [helpstring("Modi für 'GetClass'")]
+    enum {
+        GEOCLASSMODE_Get = 0,
+        GEOCLASSMODE_Replace = 1,
+        GEOCLASSMODE_Add = 2,
+        GEOCLASSMODE_Remove = 3
+    } _tagGEOCLASSMODE;
+
+    typedef [helpstring("Modi für 'GetObject'")public]
+    _tagGEOOBJECTMODE GEOOBJECTMODE;
+
+    typedef [helpstring("Modi für 'GetObject'")]
+    enum {
+        GEOOBJECTMODE_Get = 0,
+        GEOOBJECTMODE_Replace = 1,
+        GEOOBJECTMODE_Add = 2,
+        GEOOBJECTMODE_Remove = 3
+    } _tagGEOOBJECTMODE;
+
+    typedef [helpstring("Modi für 'GetObjectWin'")public]
+    _tagGEOOBJWINMODE GEOOBJWINMODE;
+
+    typedef [helpstring("Modi für 'GetObjectWin'")]
+    enum {
+        GEOOBJWINMODE_Get = 0,
+        GEOOBJWINMODE_Replace = 1,
+        GEOOBJWINMODE_Add = 2,
+        GEOOBJWINMODE_Remove = 3
+    } _tagGEOOBJWINMODE;
+
+    typedef [helpstring("Modi für 'GetFeature'")public]
+    _tagFEATUREMODE FEATUREMODE;
+
+    typedef [helpstring("Modi für 'GetFeature'")]
+    enum {
+        FEATUREMODE_Get = 0,
+        FEATUREMODE_Replace = 1,
+        FEATUREMODE_Add = 2,
+        FEATUREMODE_Remove = 3
+    } _tagFEATUREMODE;
+
+    typedef [helpstring("Modi für das Erzeugen eines Objekt-Recherchefensters")public]
+    _tagCREATEOBJECTWIN CREATEOBJECTWIN;
+
+    typedef [helpstring("Modi für das Erzeugen eines Objekt-Recherchefensters")]
+    enum {
+        CREATEOBJECTWIN_HideObjNr = 1,
+        CREATEOBJECTWIN_HideIdent = 2,
+        CREATEOBJECTWIN_HideObjTyp = 4,
+        CREATEOBJECTWIN_HideText = 8,
+        CREATEOBJECTWIN_SortObjNr = 16,
+        CREATEOBJECTWIN_SortIdent = 32,
+        CREATEOBJECTWIN_SortObjTyp = 64,
+        CREATEOBJECTWIN_SortText = 128
+    } _tagCREATEOBJECTWIN;
+
+    typedef [helpstring("Modi zum modifizieren der Geometrie eines Objektes ('PutGeometry').")public]
+    _tagMODGEOMETRYMODE MODGEOMETRYMODE;
+
+    typedef [helpstring("Modi zum modifizieren der Geometrie eines Objektes ('PutGeometry').")]
+    enum {
+        MODGEOMETRY_ModObject = 4,
+        MODGEOMETRY_ForceGeometry = 32,
+        MODGEOMETRY_AddToView = 64,
+        MODGEOMETRY_NoMemoryObject = 16384
+    } _tagMODGEOMETRYMODE;
+
+    [
+      odl,
+      uuid(8DE4E3E0-4D53-101B-AAE1-E7E7E7E7E7E7),
+      helpstring("Basisklasse für alle TRiAS®-Datenobjekte."),
+      helpcontext(0x000000b0),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface DTRiASBaseClass : IDispatch {
+        [id(0x00000007), propget, helpcontext(0x00000038)]
+        HRESULT isA([out, retval] long* RTTI);
+        [id(0x00000001), propget, hidden, helpcontext(0x00000039)]
+        HRESULT Parent([out, retval] IDispatch** Base);
+        [id(0x00000001), propput, hidden, helpcontext(0x00000039)]
+        HRESULT Parent([in] IDispatch* Base);
+        [id(0x00000002), propget, hidden, helpcontext(0x0000003a)]
+        HRESULT Application([out, retval] IDispatch** App);
+        [id(0x00000002), propput, hidden, helpcontext(0x0000003a)]
+        HRESULT Application([in] IDispatch* App);
+    };
+
+    [
+      odl,
+      uuid(8DE4E3C4-4D53-101B-AAE1-E7E7E7E7E7E7),
+      helpstring("TRiAS® Applikations-Datenobjekt."),
+      helpcontext(0x00000006),
+      dual,
+      oleautomation
+    ]
+    interface DApplication : DTRiASBaseClass {
+        [id(0x00000009), propget]
+        HRESULT Properties([out, retval] DTRiASProperties** Props);
+        [id(0x0000000a)]
+        HRESULT CreateProperty(
+                        [in, optional] VARIANT PropName, 
+                        [in, optional] VARIANT PropType, 
+                        [in, optional] VARIANT Value, 
+                        [out, retval] DTRiASProperty** Prop);
+        [id(00000000), propget, helpstring("Liefert den Namen der Applikation (immer 'TRiAS')."), helpcontext(0x00000082)]
+        HRESULT Value([out, retval] BSTR* Value);
+        [id(0x00000003), propget, helpstring("Liefert den Dateinamen der Applikation (ohne Pfad)"), helpcontext(0x00000083)]
+        HRESULT Name([out, retval] BSTR* Value);
+        [id(0x00000064), propget, helpstring("Liefert das Verzeichnis, aus dem Applikation gestartet wurde."), helpcontext(0x00000084)]
+        HRESULT StartupPath([out, retval] BSTR* Path);
+        [id(0x00000065), propget, helpstring("Liefert den aktuellen Standard-DatenPfad."), helpcontext(0x0000008e)]
+        HRESULT DefaultFilePath([out, retval] BSTR* Path);
+        [id(0x00000065), propput, helpstring("Liefert den aktuellen Standard-DatenPfad."), helpcontext(0x0000008e)]
+        HRESULT DefaultFilePath([in] BSTR Path);
+        [id(0x00000066), propget, helpstring("Liefert den vollen Namen der Applikation."), helpcontext(0x0000008f)]
+        HRESULT FullName([out, retval] BSTR* Value);
+        [id(0x00000067), propget, helpstring("Liefert den Anzeigestatus des TRiAS-Hauptfensters."), helpcontext(0x0000008d)]
+        HRESULT Visible([out, retval] VARIANT_BOOL* IsVisible);
+        [id(0x00000067), propput, helpstring("Liefert den Anzeigestatus des TRiAS-Hauptfensters."), helpcontext(0x0000008d)]
+        HRESULT Visible([in] VARIANT_BOOL IsVisible);
+        [id(0x0000006a), propget, helpstring("Liste der geöffneten Projekte"), helpcontext(0x000000d3)]
+        HRESULT Documents([out, retval] DDocuments** Docs);
+        [id(0x0000006c), propget, helpstring("Liefert das aktive Projekt."), helpcontext(0x000000d4)]
+        HRESULT ActiveDocument([out, retval] DDocument** Doc);
+        [id(0x00000070), propget, helpstring("Liefert die linke Koordinate des Hauptfensters."), helpcontext(0x000000cc)]
+        HRESULT Left([out, retval] long* Left);
+        [id(0x00000070), propput, helpstring("Liefert die linke Koordinate des Hauptfensters."), helpcontext(0x000000cc)]
+        HRESULT Left([in] long Left);
+        [id(0x00000071), propget, helpstring("Obere Koordinate des Hauptfensters."), helpcontext(0x000000ce)]
+        HRESULT Top([out, retval] long* Top);
+        [id(0x00000071), propput, helpstring("Obere Koordinate des Hauptfensters."), helpcontext(0x000000ce)]
+        HRESULT Top([in] long Top);
+        [id(0x00000072), propget, helpstring("Breite des Hauptfensters."), helpcontext(0x000000cf)]
+        HRESULT Width([out, retval] long* Width);
+        [id(0x00000072), propput, helpstring("Breite des Hauptfensters."), helpcontext(0x000000cf)]
+        HRESULT Width([in] long Width);
+        [id(0x00000073), propget, helpstring("Höhe des Hauptfensters."), helpcontext(0x000000d0)]
+        HRESULT Height([out, retval] long* Height);
+        [id(0x00000073), propput, helpstring("Höhe des Hauptfensters."), helpcontext(0x000000d0)]
+        HRESULT Height([in] long Height);
+        [id(0x00000074), propget, helpstring("Aktuell in Statusbar angezeigter Text."), helpcontext(0x000000d1)]
+        HRESULT StatusBar([out, retval] BSTR* Text);
+        [id(0x00000074), propput, helpstring("Aktuell in Statusbar angezeigter Text."), helpcontext(0x000000d1)]
+        HRESULT StatusBar([in] BSTR Text);
+        [id(0x00000075), propget, helpstring("Abfrage des Interaktionsstatus des Hauptfensters"), helpcontext(0x000000ca)]
+        HRESULT Interactive([out, retval] VARIANT_BOOL* IsInteractive);
+        [id(0x00000075), propput, helpstring("Abfrage des Interaktionsstatus des Hauptfensters"), helpcontext(0x000000ca)]
+        HRESULT Interactive([in] VARIANT_BOOL IsInteractive);
+        [id(0x00000076), propget, helpstring("Aktuell in Caption angezeigter Text."), helpcontext(0x000000d2)]
+        HRESULT Caption([out, retval] BSTR* Text);
+        [id(0x00000076), propput, helpstring("Aktuell in Caption angezeigter Text."), helpcontext(0x000000d2)]
+        HRESULT Caption([in] BSTR Text);
+        [id(0x00000068), helpstring("Neues Projekt erzeugen und zur Liste der geöffneten Projekte hinzufügen"), helpcontext(0x00000085)]
+        HRESULT NewDocument(
+                        [in] BSTR FileName, 
+                        [in, optional] VARIANT UserName, 
+                        [in, optional] VARIANT PassWord, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DDocument** Doc);
+        [id(0x00000069), helpstring("Existierendes Projekt öffnen und zur Liste der geöffneten Projekte hinzufügen."), helpcontext(0x00000086)]
+        HRESULT OpenDocument(
+                        [in] BSTR FileName, 
+                        [in, optional] VARIANT UserName, 
+                        [in, optional] VARIANT PassWord, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DDocument** Doc);
+        [id(0x0000006b), helpstring("Liefert ein bereits eröffnetes Projekt."), helpcontext(0x00000088)]
+        HRESULT GetDocument(
+                        [in] VARIANT Document, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DDocument** Doc);
+        [id(0x0000006d), helpstring("Schließen der Applikation."), helpcontext(0x0000016e)]
+        HRESULT Quit(
+                        [in, optional] VARIANT CleanUp, 
+                        [out, retval] int* Result);
+        [id(0x0000006e), helpstring("Anmelden eines NotificationSinks"), helpcontext(0x0000012d)]
+        HRESULT Advise(
+                        [in] IDispatch* AdviseSink, 
+                        [out, retval] long* Cookie);
+        [id(0x0000006f), helpstring("Abmelden eines NotificationSinks"), helpcontext(0x0000012e)]
+        HRESULT UnAdvise([in] long Cookie);
+        [id(0x00000077), helpstring("Anmelden einer Objekteigenschaft."), helpcontext(0x0000012f)]
+        HRESULT AddObjectProperty(
+                        [in] IDispatch* ObjProp, 
+                        [out, retval] long* Cookie);
+        [id(0x00000078), helpstring("Abmelden einer Objekteigenschaft."), helpcontext(0x00000130)]
+        HRESULT RemoveObjectProperty([in] long Cookie);
+        [id(0x00000079), propget, helpstring("Liefert die volle Versionsbezeichnung der Applikation."), helpcontext(0x0000016f)]
+        HRESULT Version([out, retval] BSTR* Version);
+        [id(0x0000007a), propget, helpstring("Liefert die Sammlung aller existierenden Toolbars.")]
+        HRESULT ToolBars([out, retval] DControlToolBars** ToolBars);
+        [id(0x0000007b), helpstring("Liefert ein Toolbarobjekt aus der Sammlung der existierenden Toolbars.")]
+        HRESULT GetToolBar(
+                        [in] BSTR Name, 
+                        [out, retval] DControlToolBar** ToolBar);
+        [id(0x0000007c), helpstring("Fügt eine neue Toolbar zur Sammlung der existierenden Toolbars hinzu.")]
+        HRESULT AddToolBar(
+                        [in] BSTR Name, 
+                        [in, optional] VARIANT Style, 
+                        [out, retval] DControlToolBar** ToolBar);
+        [id(0x0000007d), helpstring("Entfernt eine Toolbar aus der Sammlung der existierenden Toolbars.")]
+        HRESULT RemoveToolBar([in] BSTR Name);
+        [id(0x0000007e), helpstring("Startet den gegebenen BasicScript.")]
+        HRESULT RunScript([in] BSTR Name);
+        [id(0x0000007f), helpstring("Stopt die Ausführung des gegebenen BasicScripts.")]
+        HRESULT StopScript([in] BSTR Name);
+        [id(0x00000080), helpstring("Erzeugt ein COM-Objekt im Kontext der aktuellen Instanz.")]
+        HRESULT CreateInstance(
+                        [in] BSTR ProgID, 
+                        [out, retval] IDispatch** ComObj);
+        [id(0x00000081), propget, helpstring("Liefert die Versionsnummer von TRiAS als Zahl.")]
+        HRESULT VersionLong([out, retval] long* Version);
+        [id(0x00000082), helpstring("Lädt einen TRiAS Zusatzmodul.")]
+        HRESULT LoadExtension(
+                        [in] BSTR ProgID, 
+                        [in, optional] VARIANT Mode, 
+                        [in, optional] VARIANT Xtension);
+        [id(0x00000083), helpstring("Entlädt einen TRiAS Zusatzmodul.")]
+        HRESULT UnloadExtension([in] BSTR ProgID);
+    };
+
+    [
+      odl,
+      uuid(079638C2-3123-101C-BB62-00AA0018497C),
+      helpstring("Eine Sammlung von Eigenschaften von TRiAS®-Datenobjekten."),
+      dual,
+      oleautomation
+    ]
+    interface DTRiASProperties : DTRiASCollection {
+    };
+
+    [
+      odl,
+      uuid(8DE4E3DF-4D53-101B-AAE1-E7E7E7E7E7E7),
+      helpstring("BasisKlasse für alle Sammlungen von TRiAS®-Datenobjekten."),
+      helpcontext(0x00000066),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface DTRiASCollection : DTRiASBaseClass {
+        [id(0x00000004), propget, helpcontext(0x00000155)]
+        HRESULT Count([out, retval] long* Count);
+        [id(00000000), helpcontext(0x00000156)]
+        HRESULT Item(
+                        [in, optional] VARIANT Which, 
+                        [out, retval] IDispatch** Item);
+        [id(0xfffffffc), restricted]
+        HRESULT _NewEnum([out, retval] IUnknown** NewEnum);
+        [id(0x00000005), helpcontext(0x00000157)]
+        HRESULT Add(
+                        [in] VARIANT ToAdd, 
+                        [out, retval] IDispatch** NewItem);
+        [id(0x00000006), helpcontext(0x00000158)]
+        HRESULT Remove([in] VARIANT ToRemove);
+        [id(0x00000008)]
+        HRESULT Refresh();
+    };
+
+    [
+      odl,
+      uuid(079638C1-3123-101C-BB62-00AA0018497C),
+      helpstring("Eine Eigenschaft eines TRiAS®-Datenobjektes."),
+      dual,
+      oleautomation
+    ]
+    interface DTRiASProperty : DTRiASBaseClass {
+        [id(00000000), propget]
+        HRESULT Value([out, retval] VARIANT* Value);
+        [id(00000000), propput]
+        HRESULT Value([in] VARIANT Value);
+        [id(0x00000003), propget]
+        HRESULT Name([out, retval] BSTR* Name);
+        [id(0x00000003), propput]
+        HRESULT Name([in] BSTR Name);
+        [id(0x000006a4), propget]
+        HRESULT Inherited([out, retval] VARIANT_BOOL* IsInherited);
+        [id(0x000006a5), propget]
+        HRESULT Type([out, retval] PROPERTYTYPE* PropType);
+        [id(0x000006a5), propput]
+        HRESULT Type([in] PROPERTYTYPE PropType);
+    };
+
+    typedef [helpstring("Typ einer Objekteigenschaft.")public]
+    _tagPROPERTYTYPE PROPERTYTYPE;
+
+    typedef [helpstring("Typ einer Objekteigenschaft.")]
+    enum {
+        PROPERTYTYPE_INTEGER = 3,
+        PROPERTYTYPE_DOUBLE = 5,
+        PROPERTYTYPE_BSTR = 8,
+        PROPERTYTYPE_DISPATCH = 9,
+        PROPERTYTYPE_VARIANT = 12,
+        PROPERTYTYPE_UNKNOWN = 13
+    } _tagPROPERTYTYPE;
+
+    [
+      odl,
+      uuid(8DE4E3C6-4D53-101B-AAE1-E7E7E7E7E7E7),
+      helpstring("Sammlung von TRiAS® Documenten."),
+      dual,
+      oleautomation
+    ]
+    interface DDocuments : DTRiASCollection {
+        [id(0x000000c8), helpstring("Neues Projekt erzeugen und zu dieser Sammlung hinzufügen.")]
+        HRESULT New(
+                        [in] BSTR FileName, 
+                        [in, optional] VARIANT UserName, 
+                        [in, optional] VARIANT PassWord, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DDocument** Doc);
+        [id(0x000000c9), helpstring("Ein existierendes Projekt zu dieser Sammlung hinzufügen.")]
+        HRESULT Open(
+                        [in] BSTR FileName, 
+                        [in, optional] VARIANT UserName, 
+                        [in, optional] VARIANT PassWord, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DDocument** Doc);
+    };
+
+    [
+      odl,
+      uuid(8DE4E3C8-4D53-101B-AAE1-E7E7E7E7E7E7),
+      helpstring("Ein TRiAS® Dokument."),
+      dual,
+      oleautomation
+    ]
+    interface DDocument : DTRiASBaseClass {
+        [id(0x00000009), propget]
+        HRESULT Properties([out, retval] DTRiASProperties** Props);
+        [id(0x0000000a)]
+        HRESULT CreateProperty(
+                        [in, optional] VARIANT PropName, 
+                        [in, optional] VARIANT PropType, 
+                        [in, optional] VARIANT Value, 
+                        [out, retval] DTRiASProperty** Prop);
+        [id(00000000), propget]
+        HRESULT Value([out, retval] BSTR* Value);
+        [id(0x00000003), propget]
+        HRESULT Name([out, retval] BSTR* Value);
+        [id(0x00000065), propget]
+        HRESULT Path([out, retval] BSTR* Path);
+        [id(0x00000066), propget]
+        HRESULT FullName([out, retval] BSTR* Value);
+        [id(0x00000136), propget, helpstring("Liefert aktive Ansicht")]
+        HRESULT ActiveViewName([out, retval] BSTR* ViewName);
+        [id(0x00000136), propput, helpstring("Liefert aktive Ansicht")]
+        HRESULT ActiveViewName([in] BSTR ViewName);
+        [id(0x00000070), propget, helpstring("Anzahl der Objekte in diesem Dokument.")]
+        HRESULT ObjectCount([out, retval] long* Objs);
+        [id(0x00000071), propget, helpstring("Anzahl der Ansichten in diesem Dokument.")]
+        HRESULT ViewCount([out, retval] long* Views);
+        [id(0x00000072), propget, helpstring("Anzahl der Objektklassen in diesem Dokument.")]
+        HRESULT ClassCount([out, retval] long* Classes);
+        [id(0x00000137), propget, helpstring("Author des Dokumentes.")]
+        HRESULT Author([out, retval] BSTR* Value);
+        [id(0x00000137), propput, helpstring("Author des Dokumentes.")]
+        HRESULT Author([in] BSTR Value);
+        [id(0x00000138), propget, helpstring("Kommentare zu diesem Dokument.")]
+        HRESULT Comments([out, retval] BSTR* Value);
+        [id(0x00000138), propput, helpstring("Kommentare zu diesem Dokument.")]
+        HRESULT Comments([in] BSTR Value);
+        [id(0x00000139), propget, helpstring("Stichworte zu diesem Dokument.")]
+        HRESULT Keywords([out, retval] BSTR* Value);
+        [id(0x00000139), propput, helpstring("Stichworte zu diesem Dokument.")]
+        HRESULT Keywords([in] BSTR Value);
+        [id(0x0000013a), propget, helpstring("Subject zu diesem Dokument.")]
+        HRESULT Subject([out, retval] BSTR* Value);
+        [id(0x0000013a), propput, helpstring("Subject zu diesem Dokument.")]
+        HRESULT Subject([in] BSTR Value);
+        [id(0x0000013b), propget, helpstring("Titel dieses Dokumentes.")]
+        HRESULT Title([out, retval] BSTR* Value);
+        [id(0x0000013b), propput, helpstring("Titel dieses Dokumentes.")]
+        HRESULT Title([in] BSTR Value);
+        [id(0x0000013c), propget, helpstring("Speicherstatus des Dokumentes.")]
+        HRESULT Saved([out, retval] VARIANT_BOOL* IsSaved);
+        [id(0x0000013d), propget, helpstring("Schreibschutz des Dokumentes.")]
+        HRESULT ReadOnly([out, retval] VARIANT_BOOL* IsReadOnly);
+        [id(0x0000012c), helpstring("Dokument schließen.")]
+        HRESULT CloseIt(
+                        [in, optional] VARIANT SaveIt, 
+                        [in, optional] VARIANT FileName);
+        [id(0x0000012d), helpstring("Dokument speichern.")]
+        HRESULT Save();
+        [id(0x0000012e), helpstring("Dokument speichern unter.")]
+        HRESULT SaveAs([in] BSTR FileName);
+        [id(0x0000013e), helpstring("Änderungen am Dokument verwerfen.")]
+        HRESULT RevertToSaved();
+        [id(0x000003e8), helpstring("Ansichten dieses Projektes")]
+        HRESULT GetViews([out, retval] DViews** Views);
+        [id(0x0000044c), helpstring("Aktuelle Ansicht dieses Projektes")]
+        HRESULT GetView(
+                        [in] BSTR ViewName, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DView** View);
+        [id(0x00000190), helpstring("Liste aller Objektklassen dieses Projektes")]
+        HRESULT GetClasses(
+                        [in, optional] VARIANT Classes, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoClasses** Clss);
+        [id(0x000001f4), helpstring("Eine Objektklasse dieses Projektes")]
+        HRESULT GetClass(
+                        [in] VARIANT Class, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoClass** Cls);
+        [id(0x00000258), helpstring("Liste von Objekten dieses Projektes ")]
+        HRESULT GetObjects(
+                        [in, optional] VARIANT ObjTypes, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x000002bc), helpstring("Objekt dieses Projektes")]
+        HRESULT GetObject(
+                        [in] VARIANT GeoObj, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoObject** Obj);
+        [id(0x0000012f), helpstring("Headereintrag dieses Projektes lesen")]
+        HRESULT GetHeaderEntry(
+                        [in] BSTR HeaderKey, 
+                        [out, retval] BSTR* HeaderText);
+        [id(0x00000130), helpstring("Headereintrag dieses Projektes schreiben")]
+        HRESULT SetHeaderEntry(
+                        [in] BSTR HeaderKey, 
+                        [in, optional] VARIANT HeaderText);
+        [id(0x00000131), helpstring("Aktuelle Ansicht (Auschnitt) neu zeichnen.")]
+        HRESULT RePaint(
+                        [in, optional] VARIANT Left, 
+                        [in, optional] VARIANT Bottom, 
+                        [in, optional] VARIANT Right, 
+                        [in, optional] VARIANT Top);
+        [id(0x00000132), helpstring("Aktuelle Ansicht neu generieren.")]
+        HRESULT ReBuild([in, optional] VARIANT FullRebuild);
+        [id(0x00000133), helpstring("Liefert die Sammlung von Objekt-Recherchefenster dieses Projektes ")]
+        HRESULT GetGeoObjectWins(
+                        [in, optional] VARIANT ObjWins, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoObjectWins** Wins);
+        [id(0x00000134), helpstring("Liefert ein Objekt-Recherchefenster.")]
+        HRESULT GetGeoObjectWin(
+                        [in] VARIANT Window, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoObjectWin** Win);
+        [id(0x00000135), helpstring("Generiert leere GeoObjects-Collection.")]
+        HRESULT CreateGeoObjectsCollection([out, retval] DGeoObjects** Objs);
+        [id(0x0000013f), propget, helpstring("Liefert Bezugsmaßstab dieses Projektes.")]
+        HRESULT RefScale([out, retval] long* RefScale);
+        [id(0x0000013f), propput, helpstring("Liefert Bezugsmaßstab dieses Projektes.")]
+        HRESULT RefScale([in] long RefScale);
+        [id(0x00000140), helpstring("Liefert den aktuell dargestellten Bildausschnitt der aktuellen Ansicht.")]
+        HRESULT GetViewRect(
+                        [out] double* X, 
+                        [out] double* Y, 
+                        [out, optional] VARIANT* XMax, 
+                        [out, optional] VARIANT* YMax);
+        [id(0x00000141), helpstring("Setzt  den aktuell dargestellten Bildausschnitt der aktuellen Ansicht.")]
+        HRESULT SetViewRect(
+                        [in] double X, 
+                        [in] double Y, 
+                        [in, optional] VARIANT XMax, 
+                        [in, optional] VARIANT YMax);
+        [id(0x00000142), propget, helpstring("Liefert, ob Dokument gespeichert werden muß.")]
+        HRESULT IsDirty([out, retval] VARIANT_BOOL* Value);
+        [id(0x00000142), propput, helpstring("Liefert, ob Dokument gespeichert werden muß.")]
+        HRESULT IsDirty([in] VARIANT_BOOL Value);
+        [id(0x00000143), propget, helpstring("Liefert, ob Dokument neugezeichnet wird.")]
+        HRESULT PreventRepaint([out, retval] VARIANT_BOOL* Value);
+        [id(0x00000143), propput, helpstring("Liefert, ob Dokument neugezeichnet wird.")]
+        HRESULT PreventRepaint([in] VARIANT_BOOL Value);
+        [id(0x000002bd), helpstring("Fügt ein Objekt zu diesem Projekt hinzu.")]
+        HRESULT AddObject(
+                        [in] VARIANT GeoObj, 
+                        [in, optional] VARIANT GeoCls, 
+                        [out, retval] DGeoObject** Obj);
+        [id(0x000001f5), helpstring("Fügt eine Objektklasse zu diesem Projekt hinzu (aus einer definierten Datenquelle).")]
+        HRESULT AddClass(
+                        [in] VARIANT Class, 
+                        [in, optional] VARIANT DataSource, 
+                        [out, retval] DGeoClass** Cls);
+        [id(0x000001f6), helpstring("Liefert eine Objektklasse dieses Projektes (aus einer definierten Datenquelle).")]
+        HRESULT GetClassEx(
+                        [in] VARIANT Class, 
+                        [in, optional] VARIANT DataSource, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoClass** Cls);
+        [id(0x000007d0), propget, helpstring("Liefert sämtliche Connections, die derzeit zu diesem Projekt gehören.")]
+        HRESULT Connections([out, retval] ITRiASConnections** Conns);
+    };
+
+    [
+      odl,
+      uuid(8DE4E3CE-4D53-101B-AAE1-E7E7E7E7E7E7),
+      helpstring("Sammlung von TRiAS® Ansichten."),
+      dual,
+      oleautomation
+    ]
+    interface DViews : DTRiASCollection {
+        [id(0x00002710), restricted, hidden]
+        HRESULT Dummy();
+    };
+
+    [
+      odl,
+      uuid(8DE4E3D0-4D53-101B-AAE1-E7E7E7E7E7E7),
+      helpstring("Eine TRiAS® Ansicht."),
+      dual,
+      oleautomation
+    ]
+    interface DView : DTRiASBaseClass {
+        [id(0x00000009), propget]
+        HRESULT Properties([out, retval] DTRiASProperties** Props);
+        [id(0x0000000a)]
+        HRESULT CreateProperty(
+                        [in, optional] VARIANT PropName, 
+                        [in, optional] VARIANT PropType, 
+                        [in, optional] VARIANT Value, 
+                        [out, retval] DTRiASProperty** Prop);
+        [id(00000000), propget, helpstring("Name der Ansicht")]
+        HRESULT Value([out, retval] BSTR* Value);
+        [id(0x00000003), propget, helpstring("Name der Ansicht")]
+        HRESULT Name([out, retval] BSTR* Value);
+        [id(0x00000003), propput, helpstring("Name der Ansicht")]
+        HRESULT Name([in] BSTR Value);
+        [id(0x00000190), helpstring("Liste aller Objektklassen dieser Ansicht")]
+        HRESULT GetClasses(
+                        [in, optional] VARIANT Classes, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoClasses** Clss);
+        [id(0x000001f4), helpstring("Eine Objektklasse dieser Ansicht")]
+        HRESULT GetClass(
+                        [in] VARIANT Class, 
+                        [in, optional] VARIANT ObjTypes, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoClass** Cls);
+        [id(0x00000258), helpstring("Liefert die Liste aller Objekte dieser Ansicht.")]
+        HRESULT GetObjects(
+                        [in, optional] VARIANT ObjTypes, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x00000262), helpstring("Liefert die Liste aller Objekte dieser Ansicht in einem Bereich.")]
+        HRESULT GetObjectsInRect(
+                        [in] double X, 
+                        [in] double Y, 
+                        [in, optional] VARIANT XMax, 
+                        [in, optional] VARIANT YMax, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x000002bc), helpstring("Ein Objekt dieser Ansicht")]
+        HRESULT GetObject(
+                        [in] VARIANT GeoObj, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoObject** Obj);
+        [id(0x00000320), helpstring("Liste aller Eigenschaften dieser Ansicht")]
+        HRESULT GetFeatures(
+                        [in, optional] VARIANT Features, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoFeatures** Feats);
+        [id(0x00000384), helpstring("Eine Eigenschaft dieser Ansicht")]
+        HRESULT GetFeature(
+                        [in] VARIANT Feature, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoFeature** Feat);
+        [id(0x000006a4), helpstring("Clipping Objekt der Ansicht")]
+        HRESULT GetClipObject([out, retval] DGeoObject** ClipObj);
+        [id(0x000006a5), helpstring("Clipping Objekt der Ansicht ändern")]
+        HRESULT SetClipObject([in] DGeoObject* ClipObj);
+        [id(0x000006a6), helpstring("Clipping Objekt der Ansicht rücksetzen")]
+        HRESULT ResetClipObject();
+        [id(0x000006a7), propget, helpstring("Liefert Bezugsmaßstab dieser Ansicht.")]
+        HRESULT RefScale([out, retval] long* RefScale);
+        [id(0x000006a7), propput, helpstring("Liefert Bezugsmaßstab dieser Ansicht.")]
+        HRESULT RefScale([in] long RefScale);
+        [id(0x000006a8), propget, helpstring("Liefert Darstellungsmaßstab dieser Ansicht.")]
+        HRESULT Scale([out, retval] long* Scale);
+        [id(0x000006a8), propput, helpstring("Liefert Darstellungsmaßstab dieser Ansicht.")]
+        HRESULT Scale([in] long Scale);
+        [id(0x000006a9), propget, helpstring("Liefert Beschreibungstext der Ansicht.")]
+        HRESULT Description([out, retval] BSTR* ViewDesc);
+        [id(0x000006a9), propput, helpstring("Liefert Beschreibungstext der Ansicht.")]
+        HRESULT Description([in] BSTR ViewDesc);
+        [id(0x00000140), helpstring("Liefert den aktuell eingestellten Sichtausschnitt.")]
+        HRESULT GetConstraintRect(
+                        [out] double* X, 
+                        [out] double* Y, 
+                        [out, optional] VARIANT* XMax, 
+                        [out, optional] VARIANT* YMax);
+        [id(0x00000141), helpstring("Setzt den aktuell eingestellten Sichtausschnitt.")]
+        HRESULT SetConstraintRect(
+                        [in] double X, 
+                        [in] double Y, 
+                        [in, optional] VARIANT XMax, 
+                        [in, optional] VARIANT YMax);
+        [id(0x00000142), helpstring("Liefert den aktuell dargestellten Bildausschnitt der aktuellen Ansicht.")]
+        HRESULT GetActRect(
+                        [out] double* X, 
+                        [out] double* Y, 
+                        [out, optional] VARIANT* XMax, 
+                        [out, optional] VARIANT* YMax);
+        [id(0x00000143), helpstring("Setzt den aktuell dargestellten Bildausschnitt der aktuellen Ansicht.")]
+        HRESULT SetActRect(
+                        [in] double X, 
+                        [in] double Y, 
+                        [in, optional] VARIANT XMax, 
+                        [in, optional] VARIANT YMax);
+    };
+
+    [
+      odl,
+      uuid(8DE4E3CA-4D53-101B-AAE1-E7E7E7E7E7E7),
+      helpstring("Sammlung von TRiAS® Objektklassen."),
+      dual,
+      oleautomation
+    ]
+    interface DGeoClasses : DTRiASCollection {
+        [id(0x00002710), restricted, hidden]
+        HRESULT Dummy();
+    };
+
+    [
+      odl,
+      uuid(8DE4E3CC-4D53-101B-AAE1-E7E7E7E7E7E7),
+      helpstring("Eine TRiAS® Objektklasse."),
+      dual,
+      oleautomation
+    ]
+    interface DGeoClass : DTRiASBaseClass {
+        [id(0x00000009), propget]
+        HRESULT Properties([out, retval] DTRiASProperties** Props);
+        [id(0x0000000a)]
+        HRESULT CreateProperty(
+                        [in, optional] VARIANT PropName, 
+                        [in, optional] VARIANT PropType, 
+                        [in, optional] VARIANT Value, 
+                        [out, retval] DTRiASProperty** Prop);
+        [id(00000000), propget, helpstring("Objektklassenschlüssel")]
+        HRESULT Value([out, retval] BSTR* Value);
+        [id(0x00000003), propget, helpstring("Kurzbezeichner der Objektklasse")]
+        HRESULT Name([out, retval] BSTR* Value);
+        [id(0x00000003), propput, helpstring("Kurzbezeichner der Objektklasse")]
+        HRESULT Name([in] BSTR Value);
+        [id(0x000001f5), propget, helpstring("Voller Bezeichner der Objektklasse")]
+        HRESULT FullName([out, retval] BSTR* Value);
+        [id(0x000001f5), propput, helpstring("Voller Bezeichner der Objektklasse")]
+        HRESULT FullName([in] BSTR Value);
+        [id(0x000003e8), helpstring("Ansichten in denen diese Klasse vertreten ist")]
+        HRESULT GetViews(
+                        [in, optional] VARIANT ObjType, 
+                        [out, retval] DViews** Views);
+        [id(0x00000258), helpstring("Liefert die Liste aller Objekte dieser Objektklasse.")]
+        HRESULT GetObjects(
+                        [in, optional] VARIANT ObjTypes, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x00000262), helpstring("Liefert die Liste aller Objekte dieser Objektklasse in einem Bereich.")]
+        HRESULT GetObjectsInRect(
+                        [in] double X, 
+                        [in] double Y, 
+                        [in, optional] VARIANT XMax, 
+                        [in, optional] VARIANT YMax, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x000002bc), helpstring("Objekt dieser Objektklasse")]
+        HRESULT GetObject(
+                        [in] VARIANT GeoObj, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoObject** Obj);
+        [id(0x00000320), helpstring("Liste von Features dieser Objektklasse")]
+        HRESULT GetFeatures(
+                        [in, optional] VARIANT Features, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoFeatures** Feats);
+        [id(0x00000384), helpstring("Feature dieser Objektklasse")]
+        HRESULT GetFeature(
+                        [in] VARIANT Feature, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoFeature** Feat);
+        [id(0x000001f6), helpstring("Visualisierung eines Objekttyps dieser Objektklasse in einer Ansicht")]
+        HRESULT GetVisInfo(
+                        [in] OBJECTTYPE ObjType, 
+                        [in, optional] VARIANT View, 
+                        [out, retval] DVisInfo** VisInfo);
+        [id(0x000001f7), helpstring("Modifizieren der Visualisierung eines Objekttyps dieser Objektklasse in einer Ansicht")]
+        HRESULT SetVisInfo(
+                        [in] DVisInfo* VisInfo, 
+                        [in, optional] VARIANT View);
+        [id(0x000001f8), propget, helpstring("Identifikator")]
+        HRESULT Code([out, retval] long* Ident);
+        [id(0x000001f9), helpstring("Rücksetzen der Visualisierung dieser Objektklasse in einer Ansicht.")]
+        HRESULT ResetVisInfo(
+                        [in] OBJECTTYPE ObjType, 
+                        [in, optional] VARIANT View);
+        [id(0x000007d1), propget, helpstring("Liefert die Connection, aus der dieses Objekt geladen wurde.")]
+        HRESULT Connection([out, retval] ITRiASConnection** Conn);
+    };
+
+    [
+      odl,
+      uuid(8DE4E3D2-4D53-101B-AAE1-E7E7E7E7E7E7),
+      helpstring("Sammlung von TRiAS® GeoObjekten."),
+      dual,
+      oleautomation
+    ]
+    interface DGeoObjects : DTRiASCollection {
+        [id(0x00000259), helpstring("Generiert Objekt-Recherchefenster")]
+        HRESULT CreateGeoObjectWin(
+                        [in, optional] VARIANT Flags, 
+                        [out, retval] DGeoObjectWin** Win);
+        [id(0x0000025a), helpstring("Bildet den Durchschnitt der Flächen dieser Collection und liefert alle Resultierenden Objekte.")]
+        HRESULT GeometryIntersection(
+                        [in] DGeoClass* Class, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x0000025b), helpstring("Bildet die Vereinigung der Flächen dieser Collection und liefert alle Resultierenden Objekte.")]
+        HRESULT GeometryUnion(
+                        [in] DGeoClass* Class, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x0000025c), helpstring("Generiert Collection mit allen Objekten, die in beiden Folgen enthalten sind.")]
+        HRESULT Intersection(
+                        [in] DGeoObjects* Objects, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x0000025d), helpstring("Generiert Collection mit allen Objekten, die in wenigstens einer der beiden Folgen enthalten sind.")]
+        HRESULT Union(
+                        [in] DGeoObjects* Objects, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x0000025e), helpstring("Generiert Collection mit allen Objekten, die in unserer, jedoch nicht der gegebenen Folge enthalten sind.")]
+        HRESULT Difference(
+                        [in] DGeoObjects* Objects, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x0000025f), helpstring("Generiert Collection mit allen Objekten, die nicht in beiden Folgen enthalten sind.")]
+        HRESULT SymmetricDifference(
+                        [in] DGeoObjects* Objects, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x00000260), hidden, helpstring("Linienvereinigung der Objekte dieser Sammlung (nicht mehr verwenden, veraltet!)")]
+        HRESULT _GeometryLinesUnion(
+                        [in] DGeoClass* Class, 
+                        [in, optional] VARIANT FillGap, 
+                        [in, optional] VARIANT AsArea, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x00000262), helpstring("Liefert die Liste aller Objekte dieser Sammlung in einem Geometrie-Bereich.")]
+        HRESULT GetObjectsInRect(
+                        [in] double X, 
+                        [in] double Y, 
+                        [in, optional] VARIANT XMax, 
+                        [in, optional] VARIANT YMax, 
+                        [out, retval] DGeoObjects** Objs);
+    };
+
+    [
+      odl,
+      uuid(8DE4E3DE-4D53-101B-AAE1-E7E7E7E7E7E7),
+      helpstring("Ein TRiAS® Objektrecherchefenster."),
+      dual,
+      oleautomation
+    ]
+    interface DGeoObjectWin : DTRiASBaseClass {
+        [id(0x00000009), propget]
+        HRESULT Properties([out, retval] DTRiASProperties** Props);
+        [id(0x0000000a)]
+        HRESULT CreateProperty(
+                        [in, optional] VARIANT PropName, 
+                        [in, optional] VARIANT PropType, 
+                        [in, optional] VARIANT Value, 
+                        [out, retval] DTRiASProperty** Prop);
+        [id(00000000), propget, helpstring("Fensterhandle")]
+        HRESULT Value([out, retval] long* Handle);
+        [id(0x00000003), propget, helpstring("Caption des Objekt-Recherchefensters")]
+        HRESULT Name([out, retval] BSTR* Name);
+        [id(0x00000003), propput, helpstring("Caption des Objekt-Recherchefensters")]
+        HRESULT Name([in] BSTR Name);
+        [id(0x00000640), propget, helpstring("Anzeigestatus des Objekt-Recherchefensters")]
+        HRESULT Visible([out, retval] VARIANT_BOOL* IsVisible);
+        [id(0x00000640), propput, helpstring("Anzeigestatus des Objekt-Recherchefensters")]
+        HRESULT Visible([in] VARIANT_BOOL IsVisible);
+        [id(0x00000643), helpstring("Liefert aktiviertes Objekt dieses Objekt-Recherchefensters.")]
+        HRESULT GetActObject([out, retval] DGeoObject** Obj);
+        [id(0x00000644), helpstring("Setzt aktiviertes Objekt dieses Objekt-Recherchefensters.")]
+        HRESULT SetActObject([in] DGeoObject* GeoObj);
+        [id(0x00000190), helpstring("Liste von Objektklassen in diesem Objekt-Rechrechefensters")]
+        HRESULT GetClasses(
+                        [in, optional] VARIANT Classes, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoClasses** Clss);
+        [id(0x000001f4), helpstring("Eine Objektklasse aus diesem Objekt-Rechrechefensters")]
+        HRESULT GetClass(
+                        [in] VARIANT Class, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoClass** Cls);
+        [id(0x00000258), helpstring("Liefert die Liste aller Objekte dieses Objekt-Rechrechefensters.")]
+        HRESULT GetObjects(
+                        [in, optional] VARIANT ObjTypes, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x000002bc), helpstring("Aktiviertes Objekt des Objekt-Recherchefensters")]
+        HRESULT GetObject(
+                        [in] VARIANT GeoObj, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoObject** Obj);
+        [id(0x00000641), helpstring("Fügt Menupunkt in alle Objekt-Recherchefenster ein")]
+        HRESULT AddMenuItem(
+                        [in] int IsSubMenu, 
+                        [in] int Position, 
+                        [in] BSTR Text, 
+                        [in, optional] VARIANT HelpText);
+        [id(0x00000642), helpstring("Liefert selektierte Objekte dieses Fensters")]
+        HRESULT GetSelectedObjects([out, retval] DGeoObjects** Objs);
+        [id(0x00000645), helpstring("Anzuzeigende Objekteigenschaft setzen.")]
+        HRESULT SetShownFeature([in] BSTR FeatName);
+        [id(0x00000070), propget, helpstring("Linke Koordinate des Objekt-Recherchefenster.")]
+        HRESULT Left([out, retval] long* Left);
+        [id(0x00000070), propput, helpstring("Linke Koordinate des Objekt-Recherchefenster.")]
+        HRESULT Left([in] long Left);
+        [id(0x00000071), propget, helpstring("Obere Koordinate des Objekt-Recherchefenster.")]
+        HRESULT Top([out, retval] long* Top);
+        [id(0x00000071), propput, helpstring("Obere Koordinate des Objekt-Recherchefenster.")]
+        HRESULT Top([in] long Top);
+        [id(0x00000072), propget, helpstring("Breite des Objekt-Recherchefenster.")]
+        HRESULT Width([out, retval] long* Width);
+        [id(0x00000072), propput, helpstring("Breite des Objekt-Recherchefenster.")]
+        HRESULT Width([in] long Width);
+        [id(0x00000073), propget, helpstring("Höhe des Objekt-Recherchefenster.")]
+        HRESULT Height([out, retval] long* Height);
+        [id(0x00000073), propput, helpstring("Höhe des Objekt-Recherchefenster.")]
+        HRESULT Height([in] long Height);
+        [id(0x00000074), helpstring("Ist aktiviertes Recherchefenster.")]
+        HRESULT IsActive([out, retval] VARIANT_BOOL* IsActWin);
+        [id(0x00000075), helpstring("Setzt aktiviertes Recherchefenster.")]
+        HRESULT SetActive();
+    };
+
+    [
+      odl,
+      uuid(8DE4E3D4-4D53-101B-AAE1-E7E7E7E7E7E7),
+      helpstring("Ein TRiAS® GeoObjekt."),
+      dual,
+      oleautomation
+    ]
+    interface DGeoObject : DTRiASBaseClass {
+        [id(0x00000009), propget]
+        HRESULT Properties([out, retval] DTRiASProperties** Props);
+        [id(0x0000000a)]
+        HRESULT CreateProperty(
+                        [in, optional] VARIANT PropName, 
+                        [in, optional] VARIANT PropType, 
+                        [in, optional] VARIANT Value, 
+                        [out, retval] DTRiASProperty** Prop);
+        [id(00000000), propget, helpstring("Liefert die ObjektNummer dieses Objektes.")]
+        HRESULT Value([out, retval] long* Value);
+        [id(0x00000003), propget, helpstring("Liefert den Objektnamen dieses Objektes.")]
+        HRESULT Name([out, retval] BSTR* Name);
+        [id(0x00000003), propput, helpstring("Liefert den Objektnamen dieses Objektes.")]
+        HRESULT Name([in] BSTR Name);
+        [id(0x000002bd), propget, helpstring("Liefert den Typ dieses Objektes.")]
+        HRESULT ObjType([out, retval] OBJECTTYPE* ObjType);
+        [id(0x000002be), propget, helpstring("Liefert die Objektklasse dieses Objektes.")]
+        HRESULT ObjClass([out, retval] DGeoClass** Cls);
+        [id(0x000002bf), helpstring("Berechnet Abstand zum gegebenen Objekt.")]
+        HRESULT ObjDistance(
+                        [in] DGeoObject* GeoObj, 
+                        [in, optional] VARIANT Mode, 
+                        [in, optional] VARIANT MinMax, 
+                        [out, retval] double* Dist);
+        [id(0x000002c0), helpstring("Berechnet die Abstände zum den Objekten der gegebenen Objektklasse.")]
+        HRESULT ClassDistance(
+                        [in] DGeoClass* Class, 
+                        [out, optional] VARIANT* GeoObj, 
+                        [in, optional] VARIANT Mode, 
+                        [in, optional] VARIANT MinMax, 
+                        [out, retval] double* Dist);
+        [id(0x000002c1), helpstring("Liefert die Geometrie (den Schwerpunkt) des Objektes.")]
+        HRESULT GetGeometryPt(
+                        [out] double* X, 
+                        [out] double* Y, 
+                        [out, retval] OBJECTTYPE* ObjType);
+        [id(0x000002c2), helpstring("Liefert die Geometrie des Objektes.")]
+        HRESULT GetGeometry(
+                        [out] long* Cnt, 
+                        [out, optional] VARIANT* X, 
+                        [out, optional] VARIANT* Y, 
+                        [out, optional] VARIANT* ContCnt, 
+                        [out, optional] VARIANT* Conture, 
+                        [out, retval] OBJECTTYPE* ObjType);
+        [id(0x000002c3), helpstring("Modifiziert die Geometrie (den Schwerpunkt) des Objektes.")]
+        HRESULT PutGeometryPt(
+                        [in] OBJECTTYPE ObjType, 
+                        [in] double X, 
+                        [in] double Y, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] VARIANT_BOOL* Result);
+        [id(0x000002c4), helpstring("Modifiziert die Geometrie des Objektes.")]
+        HRESULT PutGeometry(
+                        [in] OBJECTTYPE ObjType, 
+                        [in] VARIANT X, 
+                        [in] VARIANT Y, 
+                        [in] VARIANT Conture, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] VARIANT_BOOL* Result);
+        [id(0x000002c5), helpstring("Liefert den Text eines Text-Objektes.")]
+        HRESULT GetText([out, retval] BSTR* Text);
+        [id(0x000002c6), helpstring("Modifiziert den Text für ein Text-Objekt.")]
+        HRESULT PutText([in] BSTR Text);
+        [id(0x00000320), helpstring("Liefert die Liste von Objekteigenschaften dieses Objektes.")]
+        HRESULT GetFeatures(
+                        [in, optional] VARIANT __MIDL_0015, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoFeatures** Feats);
+        [id(0x00000384), helpstring("Liefert eine Objekteigenschaft dieses Objektes.")]
+        HRESULT GetFeature(
+                        [in] VARIANT Feature, 
+                        [in, optional] VARIANT Mode, 
+                        [in, optional] VARIANT Props, 
+                        [out, retval] DGeoFeature** Feat);
+        [id(0x000002c7), helpstring("Objekt neu zeichnen.")]
+        HRESULT RePaint([in, optional] VARIANT Complete);
+        [id(0x000002c8), helpstring("Topologische Relationen zu einem anderen Objekt bestimmen.")]
+        HRESULT TOPRELATION(
+                        [in] DGeoObject* GeoObj, 
+                        [out, retval] TOPRELATION* RelType);
+        [id(0x000002c9), helpstring("Alle Objekte liefern, die eine topologische Relation zu uns haben.")]
+        HRESULT GetTopRelationObjects(
+                        [in] TOPRELATION RelType, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x000002ca), helpstring("Buffer für dieses Objekt generieren.")]
+        HRESULT GetBufferObjects(
+                        [in] double Width, 
+                        [in, optional] VARIANT Count, 
+                        [in, optional] VARIANT FullCircle, 
+                        [in, optional] VARIANT Class, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x000002cb), helpstring("Kreisförmige Buffer für dieses Objekt generieren.")]
+        HRESULT GetCircleBufferObjects(
+                        [in] double dblWidth, 
+                        [in, optional] VARIANT Count, 
+                        [in, optional] VARIANT FullCircle, 
+                        [in, optional] VARIANT Class, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x000002cc), helpstring("Objektverschnitt: Dieses Objekt als schneidendes verwenden.")]
+        HRESULT GetIntersectObjects(
+                        [in] DGeoObject* GeoObj, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x000002cd), helpstring("Objektverschnitt: Dieses Objekt als schneidendes für die Objektmenge verwenden.")]
+        HRESULT GetIntersectObjectsCollection(
+                        [in] DGeoObjects* Objects, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x000002ce), helpstring("Objektverschnitt: Dieses Objekt als schneidendes für alle Objekte einer Objektklasse verwenden.")]
+        HRESULT GetIntersectObjectsClass(
+                        [in] DGeoClass* Class, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x000002cf), helpstring("Durchschnitt dieser Fläche mit der gegebenen.")]
+        HRESULT GeometryIntersection(
+                        [in] DGeoObject* GeoObj, 
+                        [in, optional] VARIANT Class, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x000002d0), helpstring("Vereinigung dieser Fläche mit der gegebenen.")]
+        HRESULT GeometryUnion(
+                        [in] DGeoObject* GeoObj, 
+                        [in, optional] VARIANT Class, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x000002d1), helpstring("Visualisierung dieses Objektes in einer Ansicht.")]
+        HRESULT GetVisInfo(
+                        [in, optional] VARIANT View, 
+                        [out, retval] DVisInfo** VisInfo);
+        [id(0x000002d2), helpstring("Modifizieren der Visualisierung dieses Objektes in einer Ansicht.")]
+        HRESULT SetVisInfo(
+                        [in] DVisInfo* VisInfo, 
+                        [in, optional] VARIANT View);
+        [id(0x000002d3), helpstring("Liefert Objekte mit gemeinsamen Konturabschnitten mit diesem Objekt.")]
+        HRESULT GetCommonContourObjects(
+                        [in] DGeoObjects* Objects, 
+                        [in, optional] VARIANT Class, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x000002d4), helpstring("Liefert umschließendes Rechteck des Objektes")]
+        HRESULT GetGeometryRect(
+                        [out] double* XMin, 
+                        [out] double* YMin, 
+                        [out] double* XMax, 
+                        [out] double* YMax, 
+                        [out, retval] OBJECTTYPE* ObjType);
+        [id(0x000002d5), propget, helpstring("Liefert, ob dieses Objekt im GeoObjectWin selektiert ist.")]
+        HRESULT Selected(
+                        [in, optional] VARIANT ObjWin, 
+                        [out, retval] VARIANT_BOOL* IsSelected);
+        [id(0x000002d5), propput, helpstring("Liefert, ob dieses Objekt im GeoObjectWin selektiert ist.")]
+        HRESULT Selected(
+                        [in, optional] VARIANT ObjWin, 
+                        [in] VARIANT_BOOL IsSelected);
+        [id(0x000002d6), propget, helpstring("Liefert, ob dieses Objekt im GeoObjectWin aktiviert ist.")]
+        HRESULT Activated(
+                        [in, optional] VARIANT ObjWin, 
+                        [out, retval] VARIANT_BOOL* IsActivated);
+        [id(0x000002d6), propput, helpstring("Liefert, ob dieses Objekt im GeoObjectWin aktiviert ist.")]
+        HRESULT Activated(
+                        [in, optional] VARIANT ObjWin, 
+                        [in] VARIANT_BOOL IsActivated);
+        [id(0x00000385), helpstring("Erzeugt eine neue Eigenschaft für dieses Objekt.")]
+        HRESULT AddFeature(
+                        [in] VARIANT Feature, 
+                        [in, optional] VARIANT Props, 
+                        [in, optional] VARIANT OptData, 
+                        [out, retval] DGeoFeature** Feat);
+        [id(0x00000386), helpstring("Löscht eine Eigenschaft dieses Objektes.")]
+        HRESULT RemoveFeature([in] VARIANT Feature);
+        [id(0x000002d7), propget, helpstring("Liefert den Wert einer Objekteigenschaft dieses Objektes.")]
+        HRESULT Feature(
+                        [in] BSTR Name, 
+                        [out, retval] VARIANT* Value);
+        [id(0x000002d7), propput, helpstring("Liefert den Wert einer Objekteigenschaft dieses Objektes.")]
+        HRESULT Feature(
+                        [in] BSTR Name, 
+                        [in] VARIANT Value);
+        [id(0x000002d8), helpstring("Rücksetzen der Visualisierung dieses Objektes in einer Ansicht.")]
+        HRESULT ResetVisInfo([in, optional] VARIANT View);
+        [id(0x000002d9), helpstring("Legt fest, das dieses Objekt im Hauptfenster gekennzeichnet ist.")]
+        HRESULT Hilight([in] TRIASCOLOR crAct);
+        [id(0x000002da), helpstring("Legt fest, das dieses Objekt im Hauptfenster nicht mehr gekennzeichnet ist.")]
+        HRESULT UnHilight();
+        [id(0x000002db), helpstring("Verschiebt eine Teilgeometrie des Objektes bis selbige den gegebenen Punkt schneidet.")]
+        HRESULT ShiftGeometrySegment(
+                        [in] double DestX, 
+                        [in] double DestY, 
+                        [in, optional] VARIANT TargetBeginX, 
+                        [in, optional] VARIANT TargetBeginY, 
+                        [in, optional] VARIANT TargetEndX, 
+                        [in, optional] VARIANT TargetEndY, 
+                        [in, optional] VARIANT MoveDir, 
+                        [in, optional] VARIANT ContinueBegin, 
+                        [in, optional] VARIANT ContinueEnd, 
+                        [in, optional] VARIANT Eps, 
+                        [in, optional] VARIANT ClipXMin, 
+                        [in, optional] VARIANT ClipYMin, 
+                        [in, optional] VARIANT ClipXMax, 
+                        [in, optional] VARIANT ClipYMax, 
+                        [out, retval] DGeoObject** NewObj);
+        [id(0x000002dc), propget, helpstring("Liefert den 'unique ident (GUID)' dieses Objektes.")]
+        HRESULT Guid([out, retval] BSTR* Ident);
+        [id(0x000002dc), propput, restricted, helpstring("Liefert den 'unique ident (GUID)' dieses Objektes.")]
+        HRESULT Guid([in] BSTR Ident);
+        [id(0x000002dd), helpstring("Exklusives Oder dieser Fläche mit den gegebenen.")]
+        HRESULT GeometryXOR(
+                        [in] DGeoObjects* Objects, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x000002de), helpstring("Rechtwinkligkeit für ein Objekt herstellen.")]
+        HRESULT MakeRectangular(
+                        [in, optional] VARIANT vRefLine, 
+                        [in, optional] VARIANT vEps90, 
+                        [in, optional] VARIANT vEps180, 
+                        [in, optional] VARIANT vEpsCom, 
+                        [in, optional] VARIANT vEnumCommon, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x000002df), helpstring("Liefert ein abhängiges (Text-)Objekt.")]
+        HRESULT GetRelatedObject([out, retval] DGeoObject** Obj);
+        [id(0x000002e0), helpstring("Erzeugt eine Relation zu einem (Text-)Objekt.")]
+        HRESULT CreateObjectRelation([in] DGeoObject* ObjIn);
+        [id(0x000002e1), helpstring("Löscht eine Relation zu einem abhängiges (Text-)Objekt.")]
+        HRESULT RemoveObjectRelation([out, retval] DGeoObject** Obj);
+        [id(0x000002e2), helpstring("Prüft die Geometrie des Objektes auf Geometriefehler.")]
+        HRESULT AnalyzeGeometry([out, retval] VARIANT_BOOL* Success);
+        [id(0x000002e3), helpstring("Prüft die Geometrie des Objektes im Zusammenhang mit der Geoemtrie des übergebenen Objektes.")]
+        HRESULT AnalyzeGeometryObject(
+                        [in] DGeoObject* ObjIn, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] VARIANT_BOOL* Success);
+        [id(0x000002e4), helpstring("Einen Buffer für dieses Objekt generieren (mit zusätzlichen Parametern).")]
+        HRESULT GetBufferObjectEx(
+                        [in] double Width, 
+                        [in, optional] VARIANT FullCircle, 
+                        [in, optional] VARIANT Side, 
+                        [in, optional] VARIANT ConvexMode, 
+                        [in, optional] VARIANT Precision, 
+                        [out, retval] DGeoObject** Obj);
+        [id(0x000002e5), propget, helpstring("Liefert, ob dieses Objekt in einer Ansicht ausgeblendet ist.")]
+        HRESULT Visible(
+                        [in] VARIANT ViewName, 
+                        [out, retval] VARIANT_BOOL* IsShown);
+        [id(0x000002e5), propput, helpstring("Liefert, ob dieses Objekt in einer Ansicht ausgeblendet ist.")]
+        HRESULT Visible(
+                        [in] VARIANT ViewName, 
+                        [in] VARIANT_BOOL IsShown);
+        [id(0x000002e6), propget, helpstring("Liefert den 'unique ident (GUID)' dieses Objektes.")]
+        HRESULT UniqueID([out, retval] BSTR* Ident);
+        [id(0x000002e6), propput, restricted, helpstring("Liefert den 'unique ident (GUID)' dieses Objektes.")]
+        HRESULT UniqueID([in] BSTR Ident);
+        [id(0x000002e7), propget, helpstring("Liefert den 'unique ident (GUID)' der Ursprungsobjekte, aus denen dieses Objekt hervorgegangen ist.")]
+        HRESULT OldUniqueID([out, retval] BSTR* Ident);
+        [id(0x000002e7), propput, restricted, helpstring("Liefert den 'unique ident (GUID)' der Ursprungsobjekte, aus denen dieses Objekt hervorgegangen ist.")]
+        HRESULT OldUniqueID([in] BSTR Ident);
+        [id(0x000007d1), propget, helpstring("Liefert die Connection, aus der dieses Objekt geladen wurde.")]
+        HRESULT Connection([out, retval] ITRiASConnection** Conn);
+    };
+
+    typedef [helpstring("Mögliche Objekttypen")public]
+    _tagOBJECTTYPE OBJECTTYPE;
+
+    typedef [helpstring("Mögliche Objekttypen")]
+    enum {
+        OBJECTTYPE_Point = 1,
+        OBJECTTYPE_Line = 2,
+        OBJECTTYPE_Area = 4,
+        OBJECTTYPE_Circle = 4,
+        OBJECTTYPE_Text = 8,
+        OBJECTTYPE_Complex = 16,
+        OBJECTTYPE_Unknown = 0,
+        OBJECTTYPE_All = 31
+    } _tagOBJECTTYPE;
+
+    [
+      odl,
+      uuid(8DE4E3D6-4D53-101B-AAE1-E7E7E7E7E7E7),
+      helpstring("Sammlung von Eigenschaften eines TRiAS® Objektes, einer TRiAS® Objektklasse oder einer TRiAS® Ansicht."),
+      dual,
+      oleautomation
+    ]
+    interface DGeoFeatures : DTRiASCollection {
+        [id(0x00002710), restricted, hidden]
+        HRESULT Dummy();
+    };
+
+    [
+      odl,
+      uuid(8DE4E3D8-4D53-101B-AAE1-E7E7E7E7E7E7),
+      helpstring("Eine Eigenschaft eines TRiAS® Objektes, einer TRiAS® Objektklasse oder einer TRiAS® Ansicht."),
+      dual,
+      oleautomation
+    ]
+    interface DGeoFeature : DTRiASBaseClass {
+        [id(0x00000009), propget]
+        HRESULT Properties([out, retval] DTRiASProperties** Props);
+        [id(0x0000000a)]
+        HRESULT CreateProperty(
+                        [in, optional] VARIANT PropName, 
+                        [in, optional] VARIANT PropType, 
+                        [in, optional] VARIANT Value, 
+                        [out, retval] DTRiASProperty** Prop);
+        [id(00000000), propget, helpstring("Merkmalscode (falls internes Merkmal)")]
+        HRESULT Value([out, retval] BSTR* Value);
+        [id(0x00000003), propget, helpstring("Name der Objekteigenschaft.")]
+        HRESULT Name([out, retval] BSTR* Value);
+        [id(0x00000003), propput, helpstring("Name der Objekteigenschaft.")]
+        HRESULT Name([in] BSTR Value);
+        [id(0x000002bc), propget, helpstring("FullName der Objekteigenschaft.")]
+        HRESULT FullName([out, retval] BSTR* FullName);
+        [id(0x000002bc), propput, helpstring("FullName der Objekteigenschaft.")]
+        HRESULT FullName([in] BSTR FullName);
+        [id(0x00000385), propget, helpstring("Wert der Objekteigenschaft.")]
+        HRESULT Feature([out, retval] BSTR* Value);
+        [id(0x00000385), propput, helpstring("Wert der Objekteigenschaft.")]
+        HRESULT Feature([in] BSTR Value);
+        [id(0x00000386), propget, helpstring("Eigenschaften des GeoFeature-Datenobjektes.")]
+        HRESULT Flags([out, retval] PROPERTYCAPS* Props);
+        [id(0x00000386), propput, helpstring("Eigenschaften des GeoFeature-Datenobjektes.")]
+        HRESULT Flags([in] PROPERTYCAPS Props);
+        [id(0x000003e8), helpstring("Liste von Ansichten mit dieser Eigenschaft.")]
+        HRESULT GetViews([out, retval] DViews** Views);
+        [id(0x00000190), helpstring("Liste von Objektklassen mit dieser Eigenschaft.")]
+        HRESULT GetClasses(
+                        [in, optional] VARIANT Classes, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoClasses** Clss);
+        [id(0x00000258), helpstring("Liefert die Liste aller Objekte mit dieser Objekteigenschaft.")]
+        HRESULT GetObjects(
+                        [in, optional] VARIANT ObjTypes, 
+                        [in, optional] VARIANT Mode, 
+                        [out, retval] DGeoObjects** Objs);
+        [id(0x00000387), propget, helpstring("Liefert zusätzliche (interne) Informationen über diese Objekteigenschaft.")]
+        HRESULT ConfigData([out, retval] VARIANT* OptData);
+    };
+
+    typedef [helpstring("Mögliche Typen einer Objekteigenschaft.")public]
+    _tagPROPERTYCAPS PROPERTYCAPS;
+
+    typedef [helpstring("Mögliche Typen einer Objekteigenschaft.")]
+    enum {
+        PROPERTYCAPS_NONE = 0,
+        PROPERTYCAPS_NOTREADONLY = 1,
+        PROPERTYCAPS_RESTRICTED = 2,
+        PROPERTYCAPS_USEABLEASTEMPLATE = 4,
+        PROPERTYCAPS_INTERACTIVE = 8,
+        PROPERTYCAPS_INTERACTIVE_INIT = 16,
+        PROPERTYCAPS_OBJPROPTYPE_STRING = 0,
+        PROPERTYCAPS_OBJPROPTYPE_INTEGER = 65536,
+        PROPERTYCAPS_OBJPROPTYPE_DOUBLE = 131072,
+        PROPERTYCAPS_OBJPROPTYPE_BOOL = 262144,
+        PROPERTYCAPS_OBJPROPTYPE_DATE = 524288,
+        PROPERTYCAPS_OBJPROPTYPE_UNKNOWN = 8388608,
+        PROPERTYCAPS_UNKNOWN = -1
+    } _tagPROPERTYCAPS;
+
+    typedef [helpstring("Mögliche topologische Relationen zwischen zwei Objekten.")public]
+    _tagTOPRELATION TOPRELATION;
+
+    typedef [helpstring("Mögliche topologische Relationen zwischen zwei Objekten.")]
+    enum {
+        TOPRELATION_InnerObject = 0,
+        TOPRELATION_OuterObject = 1,
+        TOPRELATION_InnerOuterObject = 2,
+        TOPRELATION_Unknown = 3
+    } _tagTOPRELATION;
+
+    [
+      odl,
+      uuid(0796386B-3123-101C-BB62-00AA0018497C),
+      helpstring("Basisinterface für Visualisierungsinformationen"),
+      dual,
+      oleautomation
+    ]
+    interface DVisInfo : DTRiASBaseClass {
+        [id(0x0000000a), propget, helpstring("Darstellungsstil")]
+        HRESULT Style([out, retval] int* Style);
+        [id(0x0000000a), propput, helpstring("Darstellungsstil")]
+        HRESULT Style([in] int Style);
+        [id(0x0000000b), propget, helpstring("Darstellungsreihenfolge")]
+        HRESULT Priority([out, retval] int* Prio);
+        [id(0x0000000b), propput, helpstring("Darstellungsreihenfolge")]
+        HRESULT Priority([in] int Prio);
+        [id(0x0000000c), propget, helpstring("Zusätzliche Beschreibungsinformation")]
+        HRESULT Name([out, retval] BSTR* Desc);
+        [id(0x0000000c), propput, helpstring("Zusätzliche Beschreibungsinformation")]
+        HRESULT Name([in] BSTR Desc);
+        [id(0x0000000d), propget, helpstring("Vordergrundfarbe")]
+        HRESULT MainColor([out, retval] TRIASCOLOR* Main);
+        [id(0x0000000d), propput, helpstring("Vordergrundfarbe")]
+        HRESULT MainColor([in] TRIASCOLOR Main);
+        [id(0x0000000e), propget, helpstring("Statusbits dieser VisInfo")]
+        HRESULT Changed([out, retval] int* Flags);
+        [id(0x0000000e), propput, helpstring("Statusbits dieser VisInfo")]
+        HRESULT Changed([in] int Flags);
+        [id(0x0000000f), propget, helpstring("Textliche Repräsentation der gesamten VisInfo.")]
+        HRESULT VisString([out, retval] BSTR* Desc);
+        [id(0x00000010), propget, helpstring("Die mit dieser VisInfo verbundenen Objekte sind recherchierbar")]
+        HRESULT Locatable([out, retval] int* Flags);
+        [id(0x00000010), propput, helpstring("Die mit dieser VisInfo verbundenen Objekte sind recherchierbar")]
+        HRESULT Locatable([in] int Flags);
+        [id(0x00000011), propget, helpstring("Die mit dieser VisInfo verbundenen Objekte sind sichtbar")]
+        HRESULT Visible([out, retval] int* Flags);
+        [id(0x00000011), propput, helpstring("Die mit dieser VisInfo verbundenen Objekte sind sichtbar")]
+        HRESULT Visible([in] int Flags);
+        [id(0x00000012), propget, helpstring("Name des anzuzeigenden Geometriefeldes")]
+        HRESULT GeometryName([out, retval] BSTR* Desc);
+        [id(0x00000012), propput, helpstring("Name des anzuzeigenden Geometriefeldes")]
+        HRESULT GeometryName([in] BSTR Desc);
+    };
+
+    typedef [public]
+    long TRIASCOLOR;
+
+    [
+      odl,
+      uuid(191A9AF4-37FE-11D1-96B6-00A024D6F582),
+      helpstring("ITRiASConnection Interface"),
+      dual,
+      oleautomation
+    ]
+    interface ITRiASConnection : ITRiASBase {
+        [id(00000000), propget, helpstring("Liefert den Namen der Connection.")]
+        HRESULT Name([out, retval] BSTR* pVal);
+        [id(00000000), propput, helpstring("Liefert den Namen der Connection.")]
+        HRESULT Name([in] BSTR pVal);
+        [id(0x00000004), propget, helpstring("Liefert zusätzliche Beschreibungsinfos zu dieser Connection.")]
+        HRESULT Description([out, retval] BSTR* pVal);
+        [id(0x00000004), propput, helpstring("Liefert zusätzliche Beschreibungsinfos zu dieser Connection.")]
+        HRESULT Description([in] BSTR pVal);
+        [id(0x00000005), propget, helpstring("Liefert die ConnectInfo dieser Connection.")]
+        HRESULT ConnectInfo([out, retval] BSTR* pVal);
+        [id(0x00000005), propput, helpstring("Liefert die ConnectInfo dieser Connection.")]
+        HRESULT ConnectInfo([in] BSTR pVal);
+        [id(0x00000006), propget, helpstring("Liefert, ob die Connection geöffnet ist oder nicht (CONNECTSTATUS).")]
+        HRESULT Status([out, retval] CONNECTSTATUS* pVal);
+        [id(0x00000007), propget, helpstring("Liefert den Mode, in dem die Verbindung hergestellt/getrennt werden soll (CONNECTMODE).")]
+        HRESULT Mode([out, retval] CONNECTMODE* pVal);
+        [id(0x00000007), propput, helpstring("Liefert den Mode, in dem die Verbindung hergestellt/getrennt werden soll (CONNECTMODE).")]
+        HRESULT Mode([in] CONNECTMODE pVal);
+        [id(0x00000008), propget, helpstring("Liefert den Typ der angebundenen Datenbank.")]
+        HRESULT Type([out, retval] BSTR* pVal);
+        [id(0x00000008), propput, helpstring("Liefert den Typ der angebundenen Datenbank.")]
+        HRESULT Type([in] BSTR pVal);
+        [id(0x00000009), propget, helpstring("Liefert den Dateinamen der angebundenen Datenbank.")]
+        HRESULT Location([out, retval] BSTR* pVal);
+        [id(0x00000009), propput, helpstring("Liefert den Dateinamen der angebundenen Datenbank.")]
+        HRESULT Location([in] BSTR pVal);
+        [id(0x0000000a), propget, helpstring("Liefert die Dateinamen der angebundenen Datenbank.")]
+        HRESULT Locations([out, retval] IUnknown** pVal);
+        [id(0x0000000a), propput, helpstring("Liefert die Dateinamen der angebundenen Datenbank.")]
+        HRESULT Locations([in] IUnknown* pVal);
+        [id(0x0000000b), propget, helpstring("Liefert die angebundene Datenbank.")]
+        HRESULT Database([out, retval] ITRiASDatabase** pVal);
+        [id(0x0000000c), propget, helpstring("Liefert, ob die angebundenen Datenbank beschreibbar ist (nicht schreibgeschützt).")]
+        HRESULT Updatable([out, retval] VARIANT_BOOL* pVal);
+        [id(0x0000000d), propget, helpstring("Liefert, ob die Struktur der angebundenen Datenbank modifiziert werden kann.")]
+        HRESULT SchemaUpdatable([out, retval] VARIANT_BOOL* pVal);
+        [id(0x0000000e), propget, helpstring("Liefert, ob die angebundene Datenbank Transaktionen unterstützt.")]
+        HRESULT Transactions([out, retval] VARIANT_BOOL* pVal);
+        [id(0x0000000f), propget, helpstring("Liefert die Version der angebundenen Datenbank.")]
+        HRESULT Version([out, retval] BSTR* pVal);
+        [id(0x00000010), propget, restricted, hidden, helpstring("Liefert die Versionsnummer der angebundenen Datenbank.")]
+        HRESULT VersionLong([out, retval] long* pVal);
+        [id(0x00000011), propget, helpstring("Liefert einen eindeutigen Guid als Zeichenkette.")]
+        HRESULT GuidPath([out, retval] BSTR* pVal);
+        [id(0x00000064), helpstring("Stellt die Verbindung zu einer Datenbank entsprechend den eingestellten Parametern her.")]
+        HRESULT Connect([in, optional, defaultvalue(-1)] CONNECTMODE rgMode);
+        [id(0x00000065), helpstring("Trennt die Verbindung zur angebundenen Datenbank.")]
+        HRESULT Disconnect([in, optional, defaultvalue(-1)] CONNECTMODE rgMode);
+    };
+
+    [
+      odl,
+      uuid(710B2C36-890F-11D2-9EFB-006008447800),
+      helpstring("ITRiASBase Interface"),
+      dual,
+      oleautomation
+    ]
+    interface ITRiASBase : IDispatch {
+        [id(0x00002711), propget, helpstring("Application.")]
+        HRESULT Application([out, retval] IDispatch** pVal);
+        [id(0x00002711), propput, restricted, hidden, helpstring("Application.")]
+        HRESULT Application([in] IDispatch* pVal);
+        [id(0x00002712), propget, helpstring("Parent.")]
+        HRESULT Parent([out, retval] IDispatch** pVal);
+        [id(0x00002712), propput, restricted, hidden, helpstring("Parent.")]
+        HRESULT Parent([in] IDispatch* pVal);
+    };
+
+    typedef [helpstring("Status der Verbindung.")public]
+    _tagCONNECTSTATUS CONNECTSTATUS;
+
+    typedef [helpstring("Status der Verbindung.")]
+    enum {
+        CONNECTSTATUS_Closed = 0,
+        CONNECTSTATUS_Opened = 1
+    } _tagCONNECTSTATUS;
+
+    typedef [helpstring("Mode der zur Datenbank herzustellenden Verbindung.")public]
+    _tagCONNECTMODE CONNECTMODE;
+
+    typedef [helpstring("Mode der zur Datenbank herzustellenden Verbindung.")]
+    enum {
+        CONNECTMODE_UseDefaultMode = -1,
+        CONNECTMODE_ConnectAfterLoadIfApplicable = 32768,
+        CONNECTMODE_OpenReadOnly = 0,
+        CONNECTMODE_OpenReadWrite = 1,
+        CONNECTMODE_OpenNoResolution = 0,
+        CONNECTMODE_OpenUserResolves = 256,
+        CONNECTMODE_OpenAutoResolution = 512,
+        CONNECTMODE_OpenFlags = 1,
+        CONNECTMODE_OpenResolutionFlags = 768,
+        CONNECTMODE_CloseNoResolution = 0,
+        CONNECTMODE_CloseUserResolves = 4096,
+        CONNECTMODE_CloseAutoResolution = 8192,
+        CONNECTMODE_CloseResolutionFlags = 12288,
+        CONNECTMODE_ResolutionFlags = 13056
+    } _tagCONNECTMODE;
+
+    [
+      odl,
+      uuid(6ACC24A3-3969-11D1-96B8-00A024D6F582),
+      helpstring("ITRiASDatabase Interface"),
+      dual,
+      oleautomation
+    ]
+    interface ITRiASDatabase : ITRiASBase {
+        [id(0x00000003), propget, helpstring("Liefert die Versionsnummer dieser Datenbank.")]
+        HRESULT VersionLong([out, retval] long* pVal);
+        [id(0x00000004), propget, restricted, hidden, helpstring("Liefert eine eindeutige Zugriffsnummer für diese Datenbank.")]
+        HRESULT Handle([out, retval] long* pVal);
+        [id(0x00000005), propget, helpstring("Liefert, ob diese Datenbank gespeichert werden muß.")]
+        HRESULT IsDirty([out, retval] VARIANT_BOOL* pVal);
+        [id(0x00000005), propput, helpstring("Liefert, ob diese Datenbank gespeichert werden muß.")]
+        HRESULT IsDirty([in] VARIANT_BOOL pVal);
+        [id(0x00000006), propget, helpstring("Liefert, ob diese Datenbank als Kopie geöffnet worden ist.")]
+        HRESULT OpenedAsCopy([out, retval] VARIANT_BOOL* pVal);
+        [id(0x00000007), propget, helpstring("Liefert ob die Bezugsdatenbank jetzt ohne Konflikte geöffnet werden könnte.")]
+        HRESULT CouldOpenTarget([out, retval] VARIANT_BOOL* pVal);
+        [id(0x00000008), propget, helpstring("Liefert ob Veränderungen der Tabellendefinitionen der Datenbank zulässig sind.")]
+        HRESULT SchemaUpdatable([out, retval] VARIANT_BOOL* pVal);
+        [id(00000000), propget, helpstring("Liefert den Dateinamen der Datenbank.")]
+        HRESULT Name([out, retval] BSTR* pVal);
+        [id(0x0000000a), propget, helpstring("Liefert die Versionsnummer der Datenbank als Zeichenkette.")]
+        HRESULT Version([out, retval] BSTR* pVal);
+        [id(0x0000000b), propget, helpstring("Liefert die Sortierreihenfolge von Zeichenketten in dieser Datenbank.")]
+        HRESULT CollatingOrder([out, retval] long* pVal);
+        [id(0x0000000c), propget, helpstring("Liefert die Zeichenkette, die bei Opendatabase als Source übergeben wurde.")]
+        HRESULT Connect([out, retval] BSTR* pVal);
+        [id(0x0000000d), propget, helpstring("Liefert, ob durch diese Datenbank Transaktionen unterstützt werden.")]
+        HRESULT Transactions([out, retval] VARIANT_BOOL* pVal);
+        [id(0x0000000e), propget, helpstring("Liefert ob Veränderungen der Datenbank zulässig sind.")]
+        HRESULT Updatable([out, retval] VARIANT_BOOL* pVal);
+        [id(0x0000000f), propget, helpstring("Liefert, ob die Datenbank nach dem Schließen gelöscht werden soll.")]
+        HRESULT Temporary([out, retval] VARIANT_BOOL* pVal);
+        [id(0x0000000f), propput, helpstring("Liefert, ob die Datenbank nach dem Schließen gelöscht werden soll.")]
+        HRESULT Temporary([in] VARIANT_BOOL pVal);
+        [id(0x00000010), propget, helpstring("Liefert den Namen der Datenbank auch, wenn diese temporär erzeugt worden ist.")]
+        HRESULT TemporaryName([out, retval] BSTR* pVal);
+        [id(0x00000011), propget, helpstring("Liefert den Typ (ProgID) des Targetobjektes dieser Datenbank.")]
+        HRESULT Type([out, retval] BSTR* pVal);
+        [id(0x00000064), helpstring("Erzeugen einer neuen Datenbank.")]
+        HRESULT CreateDatabase(
+                        [in] BSTR Name, 
+                        [in] BSTR Locale, 
+                        [in] BSTR Source);
+        [id(0x00000065), helpstring("Erzeugen einer neuen Datenbank aus den übergebenen Dateien.")]
+        HRESULT CreateDatabaseFromFiles(
+                        [in] IUnknown* FileNames, 
+                        [in] BSTR Locale, 
+                        [in] BSTR Source);
+        [id(0x00000066), helpstring("Öffnen einer Datenbank.")]
+        HRESULT OpenDatabase(
+                        [in] BSTR Name, 
+                        [in, optional, defaultvalue(-1)] VARIANT_BOOL Exclusive, 
+                        [in, optional, defaultvalue(0)] VARIANT_BOOL ReadOnly, 
+                        [in, optional, defaultvalue(0)] VARIANT_BOOL ModTrack, 
+                        [in, optional, defaultvalue("")] BSTR Source);
+        [id(0x00000067), helpstring("Öffnen der übergebenen Dateien als eine Datenbank.")]
+        HRESULT OpenFilesAsDatabase(
+                        [in] IUnknown* FileNames, 
+                        [in, optional, defaultvalue(-1)] VARIANT_BOOL Exclusive, 
+                        [in, optional, defaultvalue(0)] VARIANT_BOOL ReadOnly, 
+                        [in, optional, defaultvalue(0)] VARIANT_BOOL ModTrack, 
+                        [in, optional, defaultvalue("")] BSTR Source);
+        [id(0x00000068), helpstring("Speichern der Datenbank.")]
+        HRESULT Save();
+        [id(0x00000069), helpstring("Speichern der Datenbank unter neuem Namen.")]
+        HRESULT SaveAs([in] BSTR NewName);
+        [id(0x0000006a), helpstring("Schließen der Datenbank.")]
+        HRESULT Close();
+        [id(0x0000006b), helpstring("Beginnen einer Transaktion.")]
+        HRESULT BeginTrans();
+        [id(0x0000006c), helpstring("Löschen des Änderungsprotokolls.")]
+        HRESULT ClearModificationLog([in, optional, defaultvalue(-1)] long Entry);
+        [id(0x0000006d), helpstring("Bestätigen aller Änderungen aller Transaktionen.")]
+        HRESULT CommitTrans();
+        [id(0x0000006e), helpstring("Rückgängigmachen einer Transaktion.")]
+        HRESULT Rollback();
+        [id(0x0000006f), helpstring("Neu einlesen von Datenbank-Parametern.")]
+        HRESULT ReLoad([in] RELOADDATABASE ToReLoad);
+    };
+
+    typedef [helpstring("Neu einzulesender Datenbank-Parameter")public]
+    _tagRELOADDATABASE RELOADDATABASE;
+
+    typedef [helpstring("Neu einzulesender Datenbank-Parameter")]
+    enum {
+        RELOADDATABASE_Envelope = 1,
+        RELOADDATABASE_Objects = 2,
+        RELOADDATABASE_All = 3
+    } _tagRELOADDATABASE;
+
+    [
+      odl,
+      uuid(8DE4E3DC-4D53-101B-AAE1-E7E7E7E7E7E7),
+      helpstring("Sammlung von TRiAS® Objektrecherchefenstern."),
+      dual,
+      oleautomation
+    ]
+    interface DGeoObjectWins : DTRiASCollection {
+        [id(0x000005dc), propget, helpstring("Liefert aktiviertes Objekt-Recherchefensters")]
+        HRESULT ActGeoObjectWin([out, retval] DGeoObjectWin** Win);
+    };
+
+    [
+      odl,
+      uuid(191A9AF7-37FE-11D1-96B6-00A024D6F582),
+      helpstring("ITRiASConnections Interface"),
+      dual,
+      oleautomation
+    ]
+    interface ITRiASConnections : ITRiASBase {
+        [id(0x00000003), propget, helpstring("Number of connections.")]
+        HRESULT Count([out, retval] long* pVal);
+        [id(00000000), helpstring("Get the connection by name or by index number.")]
+        HRESULT Item(
+                        [in] VARIANT Index, 
+                        [out, retval] ITRiASConnection** Connection);
+        [id(0xfffffffc), hidden]
+        HRESULT _NewEnum([out, retval] IUnknown** ppIEnum);
+        [id(0x00000064), helpstring("Create and add a new connection.")]
+        HRESULT Add(
+                        [in] BSTR Name, 
+                        [out, retval] ITRiASConnection** Connection);
+        [id(0x00000065), helpstring("Remove a Connection")]
+        HRESULT Remove([in] VARIANT Index);
+        [id(0x00000066), hidden, helpstring("Add an existing connection.")]
+        HRESULT _Add(
+                        [in] ITRiASConnection* Connection, 
+                        [in, optional, defaultvalue(-1)] VARIANT_BOOL FullAdd);
+        [id(0x00000067), hidden, helpstring("Erzeugt eine neue Sammlung von Datenquellen, die der vorliegenden identisch ist.")]
+        HRESULT _Clone([out, retval] ITRiASConnections** Conns);
+        [id(0x00000068), restricted, hidden, helpstring("Zuordnen des Targetobjektes zur Eventbehandlung.")]
+        HRESULT SetEventSink(
+                        [in] IUnknown* Unk, 
+                        [in] VARIANT_BOOL fAdvise);
+        [id(0x00000069), hidden, helpstring("Remove an existing connection.")]
+        HRESULT RemoveConnection([in] ITRiASConnection* Connection);
+    };
+
+    [
+      odl,
+      uuid(07963876-3123-101C-BB62-00AA0018497C),
+      helpstring("Eine Sammlung von Schaltflächenleisten."),
+      dual,
+      oleautomation
+    ]
+    interface DControlToolBars : DTRiASCollection {
+        [id(0x00000032), helpstring("Speichert den aktuellen Zustand der Toolbars unter dem angegebenen Namen.")]
+        HRESULT SaveState(
+                        [in, optional] VARIANT vKey, 
+                        [in, optional] VARIANT vProject);
+        [id(0x00000033), helpstring("Liest den Zustand der Toolbars unter dem angegebenen Namen ein.")]
+        HRESULT LoadState(
+                        [in, optional] VARIANT vKey, 
+                        [in, optional] VARIANT vProject);
+    };
+
+    [
+      odl,
+      uuid(07963871-3123-101C-BB62-00AA0018497C),
+      helpstring("Einer Schaltflächenleiste."),
+      dual,
+      oleautomation
+    ]
+    interface DControlToolBar : DTRiASBaseClass {
+        [id(0x00000009), propget]
+        HRESULT Properties([out, retval] DTRiASProperties** ppIProps);
+        [id(0x0000000a)]
+        HRESULT CreateProperty(
+                        [in, optional] VARIANT vName, 
+                        [in, optional] VARIANT vType, 
+                        [in, optional] VARIANT vValue, 
+                        [out, retval] DTRiASProperty** ppIProp);
+        [id(00000000), propget, helpstring("Liefert den Bezeichner dieser Schaltflächenleiste.")]
+        HRESULT Name([out, retval] BSTR* pbstrName);
+        [id(00000000), propput, helpstring("Liefert den Bezeichner dieser Schaltflächenleiste.")]
+        HRESULT Name([in] BSTR pbstrName);
+        [id(0x0000000b), propget, helpstring("Liefert die Breite dieser Schaltflächenleiste.")]
+        HRESULT Width([out, retval] long* piWidth);
+        [id(0x0000000b), propput, helpstring("Liefert die Breite dieser Schaltflächenleiste.")]
+        HRESULT Width([in] long piWidth);
+        [id(0x0000000c), propget, helpstring("Liefert die Höhe dieser Schaltflächenleiste.")]
+        HRESULT Height([out, retval] long* piHeight);
+        [id(0x0000000c), propput, helpstring("Liefert die Höhe dieser Schaltflächenleiste.")]
+        HRESULT Height([in] long piHeight);
+        [id(0x0000000d), propget, helpstring("Liefert die linke Position dieser Schaltflächenleiste.")]
+        HRESULT Left([out, retval] long* piLeft);
+        [id(0x0000000d), propput, helpstring("Liefert die linke Position dieser Schaltflächenleiste.")]
+        HRESULT Left([in] long piLeft);
+        [id(0x0000000e), propget, helpstring("Liefert die obere Position dieser Schaltflächenleiste.")]
+        HRESULT Top([out, retval] long* piTop);
+        [id(0x0000000e), propput, helpstring("Liefert die obere Position dieser Schaltflächenleiste.")]
+        HRESULT Top([in] long piTop);
+        [id(0x0000000f), propget, helpstring("Liefert den Positionierungsmode dieser Schaltflächenleiste.")]
+        HRESULT DOCKSTATE([out, retval] DOCKSTATE* prgState);
+        [id(0x0000000f), propput, helpstring("Liefert den Positionierungsmode dieser Schaltflächenleiste.")]
+        HRESULT DOCKSTATE([in] DOCKSTATE prgState);
+        [id(0x00000010), propget, helpstring("Liefert, ob diese Schaltflächenleiste sichtbar ist.")]
+        HRESULT Visible([out, retval] VARIANT_BOOL* pfVisible);
+        [id(0x00000010), propput, helpstring("Liefert, ob diese Schaltflächenleiste sichtbar ist.")]
+        HRESULT Visible([in] VARIANT_BOOL pfVisible);
+        [id(0x00000011), propget, helpstring("Liefert den Darstellungsmode dieser Schaltflächenleiste.")]
+        HRESULT Style([out, retval] long* pdwStyle);
+        [id(0x00000011), propput, helpstring("Liefert den Darstellungsmode dieser Schaltflächenleiste.")]
+        HRESULT Style([in] long pdwStyle);
+        [id(0x00000012), helpstring("Liefert die Sammlung aller Schaltflächen dieser Schaltflächenleiste.")]
+        HRESULT ToolBarButtons([out, retval] DControlToolBarButtons** ppIBttns);
+        [id(0x00000013)]
+        HRESULT Reset();
+        [id(0x00000014), hidden]
+        HRESULT InsertButton(
+                        [in] int iIndex, 
+                        [in] DControlToolBarButton* pIBttn, 
+                        [in] DToolBarUIOwner* pUIOwner, 
+                        [in] IUnknown* pReserved2);
+        [id(0x00000015), helpstring("Löscht die Schaltfläche an der angegebenen Position der Schaltflächenleiste.")]
+        HRESULT DeleteButton([in] int iIndex);
+        [id(0x00000016), helpstring("Löscht die Schaltflächenleiste.")]
+        HRESULT Remove();
+        [id(0x00000017), helpstring("Liefert die Schaltfläche an der angegebenen Position der Schaltflächenleiste.")]
+        HRESULT GetButton(
+                        [in] int iIndex, 
+                        [out, retval] DControlToolBarButton** ppIBttn);
+        [id(0x00000018), helpstring("Erzeugt eine neue Schaltfläche an der angegebenen Position der Schaltflächenleiste.")]
+        HRESULT AddButton(
+                        [in] int iIndex, 
+                        [in] DToolBarUIOwner* pUIOwner, 
+                        [in, optional] VARIANT vBttn, 
+                        [out, retval] DControlToolBarButton** ppIBttn);
+        [id(0x00000020), propget, helpstring("Liefert den Ident dieser Schaltflächenleiste.")]
+        HRESULT CtrlID([out, retval] int* piCtrlID);
+        [id(0x00000020), propput, helpstring("Liefert den Ident dieser Schaltflächenleiste.")]
+        HRESULT CtrlID([in] int piCtrlID);
+        [id(0x00000021), propget, helpstring("Liefert den erweiterten Darstellungsmode dieser Schaltflächenleiste.")]
+        HRESULT StyleEx([out, retval] long* pdwStyleEx);
+        [id(0x00000021), propput, helpstring("Liefert den erweiterten Darstellungsmode dieser Schaltflächenleiste.")]
+        HRESULT StyleEx([in] long pdwStyleEx);
+    };
+
+    typedef [helpstring("Positionierungsmode einer Toolbar.")public]
+    _tagDOCKSTATE DOCKSTATE;
+
+    typedef [helpstring("Positionierungsmode einer Toolbar.")]
+    enum {
+        DOCKSTATE_FLOATING = 0,
+        DOCKSTATE_DOCKEDLEFT = 1,
+        DOCKSTATE_DOCKEDRIGHT = 2,
+        DOCKSTATE_DOCKEDTOP = 3,
+        DOCKSTATE_DOCKEDBOTTOM = 4
+    } _tagDOCKSTATE;
+
+    [
+      odl,
+      uuid(07963878-3123-101C-BB62-00AA0018497C),
+      helpstring("Eine Sammlung von Schaltflächen einer Schaltflächenleiste."),
+      dual,
+      oleautomation
+    ]
+    interface DControlToolBarButtons : DTRiASCollection {
+    };
+
+    [
+      odl,
+      uuid(07963873-3123-101C-BB62-00AA0018497C),
+      helpstring("Eine Schaltfläche einer Schaltflächenleiste."),
+      dual,
+      oleautomation
+    ]
+    interface DControlToolBarButton : DTRiASBaseClass {
+        [id(0x00000009), propget]
+        HRESULT Properties([out, retval] DTRiASProperties** ppIProps);
+        [id(0x0000000a)]
+        HRESULT CreateProperty(
+                        [in, optional] VARIANT vName, 
+                        [in, optional] VARIANT vType, 
+                        [in, optional] VARIANT vValue, 
+                        [out, retval] DTRiASProperty** ppIProp);
+        [id(00000000), propget]
+        HRESULT Name([out, retval] BSTR* pbstrName);
+        [id(00000000), propput]
+        HRESULT Name([in] BSTR pbstrName);
+        [id(0x0000001e), propget, helpstring("Liefert die Breite dieser Schaltfläche.")]
+        HRESULT Width([out, retval] long* piWidth);
+        [id(0x0000001e), propput, helpstring("Liefert die Breite dieser Schaltfläche.")]
+        HRESULT Width([in] long piWidth);
+        [id(0x0000001f), propget, helpstring("Liefert den Beschreibungstext dieser Schaltfläche.")]
+        HRESULT HelpText([out, retval] BSTR* pbstrHelpText);
+        [id(0x0000001f), propput, helpstring("Liefert den Beschreibungstext dieser Schaltfläche.")]
+        HRESULT HelpText([in] BSTR pbstrHelpText);
+        [id(0x00000020), propget, helpstring("Liefert den Kommando-Ident dieser Schaltfläche.")]
+        HRESULT CmdID([out, retval] int* piCmdID);
+        [id(0x00000020), propput, helpstring("Liefert den Kommando-Ident dieser Schaltfläche.")]
+        HRESULT CmdID([in] int piCmdID);
+        [id(0x00000021), propget, helpstring("Liefert den Darstellungsstil dieser Schaltfläche.")]
+        HRESULT Style([out, retval] BUTTONSTYLE* pdwStyle);
+        [id(0x00000021), propput, helpstring("Liefert den Darstellungsstil dieser Schaltfläche.")]
+        HRESULT Style([in] BUTTONSTYLE pdwStyle);
+        [id(0x00000022), propget, helpstring("Liefert den Status dieser Schaltfläche.")]
+        HRESULT State([out, retval] BUTTONSTATE* pdwState);
+        [id(0x00000022), propput, helpstring("Liefert den Status dieser Schaltfläche.")]
+        HRESULT State([in] BUTTONSTATE pdwState);
+        [id(0x00000023), helpstring("Liefert die zu dieser Schaltfläche zugeordnete Bitmap.")]
+        HRESULT GetImage(
+                        [in, out] long* phBitmap, 
+                        [in, out] int* piCnt, 
+                        [out, retval] int* piOffsetInBmp);
+        [id(0x00000024), helpstring("Ornet dieser Schaltfläche eine neue Bitmap zu.")]
+        HRESULT AttachImage(
+                        [in] VARIANT vPicture, 
+                        [in, optional] VARIANT iIndex, 
+                        [in, optional] VARIANT vSizeX);
+        [id(0x00000025), propput, helpstring("Löst das zu der Schaltfläche zugeornete Kommando aus.")]
+        HRESULT Value([in] VARIANT_BOOL rhs);
+    };
+
+    typedef [helpstring("Typ und Darstellungsstil eines ToolBarButtons.")public]
+    _tagBUTTONSTYLE BUTTONSTYLE;
+
+    typedef [helpstring("Typ und Darstellungsstil eines ToolBarButtons.")]
+    enum {
+        BUTTONSTYLE_BUTTON = 0,
+        BUTTONSTYLE_SEPARATOR = 1,
+        BUTTONSTYLE_CHECK = 4,
+        BUTTONSTYLE_GROUP = 8,
+        BUTTONSTYLE_CHECKGROUP = 12,
+        BUTTONSTYLE_NOKICKIDLE = 32768
+    } _tagBUTTONSTYLE;
+
+    typedef [helpstring("Status eines ToolBarButtons.")public]
+    _tagBUTTONSTATE BUTTONSTATE;
+
+    typedef [helpstring("Status eines ToolBarButtons.")]
+    enum {
+        BUTTONSTATE_CHECKED = 1,
+        BUTTONSTATE_PRESSED = 2,
+        BUTTONSTATE_ENABLED = 4,
+        BUTTONSTATE_HIDDEN = 8,
+        BUTTONSTATE_INDETERMINATE = 16,
+        BUTTONSTATE_WRAP = 32,
+        BUTTONSTATE_ELLIPSES = 64,
+        BUTTONSTATE_NOKICKIDLE = 32768
+    } _tagBUTTONSTATE;
+
+    [
+      odl,
+      uuid(0796387B-3123-101C-BB62-00AA0018497C),
+      helpstring("Callback-Interface für eine Schaltfläche."),
+      dual,
+      oleautomation
+    ]
+    interface DToolBarUIOwner : IDispatch {
+        [id(0x0000001e), helpstring("Wird gerufen, um dem Steuerelement die Schaltflächenleiste zuzuordnen.")]
+        HRESULT SetToolBarUIOwnerSite(
+                        [in] int uiID, 
+                        [in] DControlToolBar* pIToolBar);
+        [id(0x0000001f), helpstring("Wird gerufen, wenn das Nutzerinterface des Steuerelementes beeinflußt werden muß.")]
+        HRESULT UpdateUI([in] DTRiASCmdUI* pICmdUI);
+        [id(0x00000020), helpstring("Wird gerufen, wenn der Beschreibungstext des Steuerelementes benötigt wird.")]
+        HRESULT GetDescription(
+                        [in] int uiID, 
+                        [out, retval] BSTR* pbstrDesc);
+        [id(00000000), helpstring("Wird gerufen, wenn das zum Steueelement gehörige Kommando ausgelöst wurde.")]
+        HRESULT FireCommand(
+                        [in] int uiID, 
+                        [in] int nCode);
+    };
+
+    [
+      odl,
+      uuid(0796387C-3123-101C-BB62-00AA0018497C),
+      helpstring("Ein Steuerobjekt zur Modifikation des aktuellen Darstellungszustandes einer Schaltfläche."),
+      dual,
+      oleautomation
+    ]
+    interface DTRiASCmdUI : IDispatch {
+        [id(00000000), propput, helpstring("Legt fest, ob das zugeordnete Steuerelement bedienbar ist.")]
+        HRESULT IsEnabled([in] VARIANT_BOOL rhs);
+        [id(0x00000028), propput, helpstring("Legt fest, ob wie zugeordnete Steuerelement aktiviert ist.")]
+        HRESULT CheckState([in] int rhs);
+        [id(0x00000029), propput, helpstring("Legt fest, ob das zugeordnete Steuerelement zugeschaltet ist.")]
+        HRESULT IsOn([in] VARIANT_BOOL rhs);
+        [id(0x0000002a), propput, helpstring("Legt den Beschreibungstext für das zugeordnete Steuerelement fest.")]
+        HRESULT Text([in] BSTR rhs);
+        [id(0x0000002b), propget, helpstring("Liefert den Kommando-Ident des zugeordneten Steuerelementes.")]
+        HRESULT CmdID([out, retval] int* puiID);
+    };
+
+    [
+      odl,
+      uuid(079638B6-3123-101C-BB62-00AA0018497C),
+      helpstring("Eine externe TRiAS® Objekteigenschaft (read-only)."),
+      dual,
+      oleautomation
+    ]
+    interface DObjectProperty : IDispatch {
+        [id(0x000007d0), propget, helpstring("Berechnet den kumulativen Index für diese Objekteigenschaft.")]
+        HRESULT Cumulation([out, retval] VARIANT* Value);
+        [id(0x000007d1), propget, helpstring("Liefert Zähler, wie oft Objekteigenschaft seit dem letztem Reset berechnet wurde.")]
+        HRESULT Count([out, retval] long* Count);
+        [id(0x000007d2), propget, helpstring("Liefert Namen dieser Objekteigenschaft.")]
+        HRESULT PropertyName([out, retval] BSTR* Info);
+        [id(0x000007d3), propget, helpstring("Liefert Eigenschaften dieser Objekteigenschaft.")]
+        HRESULT PropertyFlags([out, retval] PROPERTYCAPS* Flags);
+        [id(0x000007d4), helpstring("Liefert Info zu Helpdatei und Helpkontext.")]
+        HRESULT HelpInfo(
+                        [optional] VARIANT* HelpFile, 
+                        [optional] VARIANT* HelpCtx, 
+                        [out, retval] BSTR* HelpInfo);
+        [id(0x000007d5), helpstring("Setzt interne Datenstrukturen der Objekteigenschaft zurück.")]
+        HRESULT Reset();
+        [id(0x000007d6), helpstring("Liefert die Objekteigenschaft für ein bestimmtes Objekt.")]
+        HRESULT GetProperty(
+                        [in] DGeoObject* GeoObj, 
+                        [out, retval] VARIANT* Value);
+        [id(0x000007d7), helpstring("Wird nach Laden der Objekteigenschaft gerufen.")]
+        HRESULT Init(
+                        [in] DApplication* App, 
+                        [out, retval] VARIANT_BOOL* Success);
+    };
+
+    [
+      odl,
+      uuid(079638D8-3123-101C-BB62-00AA0018497C),
+      helpstring("Zusätzliches Interface für eine externe TRiAS® Objekteigenschaft (writeable)."),
+      dual,
+      oleautomation
+    ]
+    interface DWriteAbleObjectProperty : IDispatch {
+        [id(0x000007e4), helpstring("Modifiziert die Objekteigenschaft für ein bestimmtes Objekt.")]
+        HRESULT SetProperty(
+                        [in] DGeoObject* GeoObj, 
+                        [in] VARIANT Value);
+    };
+
+    typedef [public]
+    DTRiASBaseClass* _DTRiASBaseClass;
+
+    typedef [public]
+    DTRiASCollection* _DTRiASCollection;
+
+    typedef [public]
+    DTRiASProperty* _DTRiASProperty;
+
+    typedef [public]
+    DTRiASProperties* _DTRiASProperties;
+
+    typedef [public]
+    DApplication* _DApplication;
+
+    typedef [public]
+    DDocuments* _DDocuments;
+
+    typedef [public]
+    DDocument* _DDocument;
+
+    typedef [public]
+    DViews* _DViews;
+
+    typedef [public]
+    DView* _DView;
+
+    typedef [public]
+    DGeoClasses* _DGeoClasses;
+
+    typedef [public]
+    DGeoClass* _DGeoClass;
+
+    typedef [public]
+    DGeoObjects* _DGeoObjects;
+
+    typedef [public]
+    DGeoObject* _DGeoObject;
+
+    typedef [public]
+    DGeoFeatures* _DGeoFeatures;
+
+    typedef [public]
+    DGeoFeature* _DGeoFeature;
+
+    typedef [public]
+    DGeoObjectWins* _DGeoObjectWins;
+
+    typedef [public]
+    DGeoObjectWin* _DGeoObjectWin;
+
+    typedef [public]
+    DDocuments* GeoDocuments;
+
+    typedef [public]
+    DViews* GeoViews;
+
+    typedef [public]
+    DView* GeoView;
+
+    typedef [public]
+    DGeoClasses* GeoClasses;
+
+    typedef [public]
+    DGeoClass* GeoClass;
+
+    typedef [public]
+    DGeoObjects* GeoObjects;
+
+    typedef [public]
+    DGeoObject* GeoObject;
+
+    typedef [public]
+    DGeoFeatures* GeoFeatures;
+
+    typedef [public]
+    DGeoFeature* GeoFeature;
+
+    typedef [public]
+    DGeoObjectWins* GeoObjectWins;
+
+    typedef [public]
+    DGeoObjectWin* GeoObjectWin;
+
+    [
+      odl,
+      uuid(C671F833-FCC9-11D2-9BFC-F46020524153),
+      helpstring("IManageDocumentContext Interface")
+    ]
+    interface IManageDocumentContext : IUnknown {
+        HRESULT _stdcall GetCtxHandle(long* Ctx);
+        HRESULT _stdcall SetCtxHandle(long Ctx);
+    };
+
+    [
+      uuid(8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7),
+      helpstring("TRiAS® Applikations-Datenobjekt."),
+      helpcontext(0x00000006)
+    ]
+    coclass Application {
+        [default] interface DApplication;
+        [source, restricted] interface ITRiASNotificationSink;
+        [source, restricted] interface ITRiASSysNotificationSink;
+    };
+
+    [
+      odl,
+      uuid(0796385A-3123-101C-BB62-00AA0018497C),
+      helpstring("TRiAS® Connectionpoint, sendet TRiAS® Datenobjekt-spezifische Events."),
+      hidden,
+      oleautomation
+    ]
+    interface ITRiASNotificationSink : IUnknown {
+        HRESULT _stdcall ServerEvent([in] SERVEREVT Event);
+        HRESULT _stdcall ProjectEvent(
+                        [in] long Proj, 
+                        [in] PROJECTEVT Event, 
+                        [in, optional] VARIANT Data);
+        HRESULT _stdcall GeoViewEvent(
+                        [in] long Proj, 
+                        [in] GEOVIEWEVT Event, 
+                        [in] VARIANT Data);
+        HRESULT _stdcall GeoClassEvent(
+                        [in] long Proj, 
+                        [in] GEOCLASSEVT Event, 
+                        [in] long Ident);
+        HRESULT _stdcall GeoObjectEvent(
+                        [in] long Proj, 
+                        [in] GEOOBJECTEVT Event, 
+                        [in] long ObjNr);
+        HRESULT _stdcall GeoFeatureEvent(
+                        [in] long Proj, 
+                        [in] GEOFEATUREEVT Event, 
+                        [in] long MCode);
+        HRESULT _stdcall GeoRelationEvent(
+                        [in] long Proj, 
+                        [in] GEORELATIONEVT Event, 
+                        [in] long RCode);
+        HRESULT _stdcall ObjectWindowEvent(
+                        [in] OBJWNDEVT Event, 
+                        [in] long ObjWind);
+    };
+
+    typedef [helpstring("Events, die Statusänderungen von TRiAS® melden")public]
+    _tagSERVEREVT SERVEREVT;
+
+    typedef [helpstring("Events, die Statusänderungen von TRiAS® melden")]
+    enum {
+        SERVEREVT_ClosingServer = 0,
+        SERVEREVT_ServerToClose = 1,
+        SERVEREVT_InitializedServer = 2,
+        SERVEREVT_ExtensionsLoaded = 3,
+        SERVEREVT_ShowToolTips = 4,
+        SERVEREVT_ShowNoMoreToolTips = 5
+    } _tagSERVEREVT;
+
+    typedef [helpstring("Events, die Statusänderungen eines Projektes melden")public]
+    _tagPROJECTEVT PROJECTEVT;
+
+    typedef [helpstring("Events, die Statusänderungen eines Projektes melden")]
+    enum {
+        PROJECTEVT_ProjectOpened = 10,
+        PROJECTEVT_ClosingProject = 11,
+        PROJECTEVT_ProjectClosed = 12,
+        PROJECTEVT_ProjectIsDirty = 13,
+        PROJECTEVT_ProjectIsNotDirty = 14,
+        PROJECTEVT_ProjectToClose = 15,
+        PROJECTEVT_ChangedCoordFormat = 16,
+        PROJECTEVT_ReReadHeader = 17,
+        PROJECTEVT_RenamingFile = 18,
+        PROJECTEVT_FileRenamed = 19,
+        CONNECTIONEVT_CreatingConnection = 200,
+        CONNECTIONEVT_ConnectionToCreate = 201,
+        CONNECTIONEVT_ConnectionCreated = 202,
+        CONNECTIONEVT_OpeningConnection = 203,
+        CONNECTIONEVT_ConnectionToOpen = 204,
+        CONNECTIONEVT_ConnectionOpened = 205,
+        CONNECTIONEVT_ClosingConnection = 206,
+        CONNECTIONEVT_ConnectionToClose = 207,
+        CONNECTIONEVT_ConnectionClosed = 208,
+        CONNECTIONEVT_DeletingConnection = 209,
+        CONNECTIONEVT_ConnectionToDelete = 210,
+        CONNECTIONEVT_ConnectionDeleted = 211,
+        PROJECTEVT_ObjectSplitted = 100
+    } _tagPROJECTEVT;
+
+    typedef [helpstring("Events, die Statusänderungen einer Ansicht melden")public]
+    _tagGEOVIEWEVT GEOVIEWEVT;
+
+    typedef [helpstring("Events, die Statusänderungen einer Ansicht melden")]
+    enum {
+        GEOVIEWEVT_SelectingView = 20,
+        GEOVIEWEVT_ViewSelected = 21,
+        GEOVIEWEVT_DeletingView = 22,
+        GEOVIEWEVT_ViewDeleted = 23,
+        GEOVIEWEVT_ViewCreated = 24,
+        GEOVIEWEVT_ZoomChanged = 26,
+        GEOVIEWEVT_PaintingView = 27,
+        GEOVIEWEVT_ViewPainted = 28,
+        GEOVIEWEVT_ScrollingHorz = 29,
+        GEOVIEWEVT_ScrollingVert = 25
+    } _tagGEOVIEWEVT;
+
+    typedef [helpstring("Events, die Statusänderungen einer Objektklasse melden")public]
+    _tagGEOCLASSEVT GEOCLASSEVT;
+
+    typedef [helpstring("Events, die Statusänderungen einer Objektklasse melden")]
+    enum {
+        GEOCLASSEVT_DrawingClass = 30,
+        GEOCLASSEVT_ClassChanged = 31,
+        GEOCLASSEVT_ClassesChanged = 32,
+        GEOCLASSEVT_DeletingClass = 33,
+        GEOCLASSEVT_ClassDeleted = 34
+    } _tagGEOCLASSEVT;
+
+    typedef [helpstring("Events, die Statusänderungen eines Objektes melden")public]
+    _tagGEOOBJECTEVT GEOOBJECTEVT;
+
+    typedef [helpstring("Events, die Statusänderungen eines Objektes melden")]
+    enum {
+        GEOOBJECTEVT_DrawingObject = 40,
+        GEOOBJECTEVT_InquiringObject = 41,
+        GEOOBJECTEVT_ObjectSelected = 42,
+        GEOOBJECTEVT_ObjectUnSelected = 43,
+        GEOOBJECTEVT_DeletingObject = 44,
+        GEOOBJECTEVT_ObjectDeleted = 45,
+        GEOOBJECTEVT_ObjectActivated = 46,
+        GEOOBJECTEVT_ObjectDeActivated = 47,
+        GEOOBJECTEVT_ChangingGeometry = 48,
+        GEOOBJECTEVT_GeometryChanged = 49,
+        GEOOBJECTEVT_ObjectToDelete = 50,
+        GEOOBJECTEVT_ObjectCreated = 51
+    } _tagGEOOBJECTEVT;
+
+    typedef [helpstring("Events, die Statusänderungen eines Merkmales melden")public]
+    _tagGEOFEATUREEVT GEOFEATUREEVT;
+
+    typedef [helpstring("Events, die Statusänderungen eines Merkmales melden")]
+    enum {
+        GEOFEATUREEVT_FeatureChanged = 60,
+        GEOFEATUREEVT_FeaturesChanged = 61
+    } _tagGEOFEATUREEVT;
+
+    typedef [helpstring("Events, die Statusänderungen einer Relation melden")public]
+    _tagGEORELATIONEVT GEORELATIONEVT;
+
+    typedef [helpstring("Events, die Statusänderungen einer Relation melden")]
+    enum {
+        GEORELATIONEVT_RelationChanged = 70,
+        GEORELATIONEVT_RelationsChanged = 71
+    } _tagGEORELATIONEVT;
+
+    typedef [helpstring("Events, die Status-Änderungen eines Objektrecherchefensters melden.")public]
+    _tagOBJWNDEVT OBJWNDEVT;
+
+    typedef [helpstring("Events, die Status-Änderungen eines Objektrecherchefensters melden.")]
+    enum {
+        OBJWNDEVT_WindowCreated = 80,
+        OBJWNDEVT_GotFocus = 81,
+        OBJWNDEVT_LostFocus = 82,
+        OBJWNDEVT_WindowDestroyed = 83
+    } _tagOBJWNDEVT;
+
+    [
+      odl,
+      uuid(0796386E-3123-101C-BB62-00AA0018497C),
+      helpstring("TRiAS® Connectionpoint, sendet Windows-spezifische Events."),
+      hidden,
+      oleautomation
+    ]
+    interface ITRiASSysNotificationSink : IUnknown {
+        HRESULT _stdcall WindowsMessage(
+                        [in] long hWnd, 
+                        [in] long uiMsg, 
+                        [in] long wParam, 
+                        [in] long lParam);
+    };
+
+    [
+      uuid(937EEB40-2234-101B-AAE1-E7E7E7E7E7E7),
+      helpstring("Ein TRiAS® Projekt.")
+    ]
+    coclass GeoDocument {
+        [default] interface DDocument;
+        [restricted] interface IManageDocumentContext;
+    };
+
+    [
+      uuid(ED9655EA-3122-101C-BB62-00AA0018497C),
+      helpstring("Wrapper für externe Erweiterungen"),
+      hidden
+    ]
+    coclass WrapperExtension {
+        [default] interface IInitDTRiASExtension;
+        [source, restricted] interface DTRiASExtension;
+    };
+
+    [
+      odl,
+      uuid(079638D6-3123-101C-BB62-00AA0018497C),
+      helpstring("Initialisierung einer externen TRiAS® Erweiterung."),
+      hidden
+    ]
+    interface IInitDTRiASExtension : IUnknown {
+        HRESULT _stdcall InitDTRiASExtension(
+                        [in] IUnknown* pIExt, 
+                        [in] long hPr);
+        HRESULT _stdcall InitDTRiASExtensionRegKey(
+                        [in] BSTR bstrRegKey, 
+                        [in] long hPr);
+    };
+
+    [
+      odl,
+      uuid(079638D3-3123-101C-BB62-00AA0018497C),
+      helpstring("Eine TRiAS® Erweiterung."),
+      dual,
+      oleautomation
+    ]
+    interface DTRiASExtension : IDispatch {
+        [id(0x00000bb8), helpstring("Wird nach erfolgreichem Laden der Erweiterung gerufen.")]
+        HRESULT LoadExtension(
+                        [in] DApplication* pIApp, 
+                        [in, optional] VARIANT vDocDisp);
+        [id(0x00000bb9), helpstring("Wird gerufen, um nachzufragen, ob die Erweiterung entladen werden darf.")]
+        HRESULT UnloadingExtension(
+                        [in] VARIANT_BOOL fMayDeny, 
+                        [out, retval] VARIANT_BOOL* pfUnload);
+        [id(0x00000bba), helpstring("Wird vor Entladen der Erweiterung gerufen.")]
+        HRESULT UnloadExtension();
+    };
+};

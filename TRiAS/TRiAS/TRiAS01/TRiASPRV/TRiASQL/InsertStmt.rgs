@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASQL.InsertStmt.1 = s 'InsertStmt Class'
+	{
+		CLSID = s '{9A523298-2A4E-11D3-8581-00104B8CC00A}'
+	}
+	TRiASQL.InsertStmt = s 'InsertStmt Class'
+	{
+		CLSID = s '{9A523298-2A4E-11D3-8581-00104B8CC00A}'
+		CurVer = s 'TRiASQL.InsertStmt.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {9A523298-2A4E-11D3-8581-00104B8CC00A} = s 'InsertStmt Class'
+		{
+			ProgID = s 'TRiASQL.InsertStmt.1'
+			VersionIndependentProgID = s 'TRiASQL.InsertStmt'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{62ECE770-EC1D-4680-9A37-B5CD0BF0C1BC}'
+		}
+	}
+}

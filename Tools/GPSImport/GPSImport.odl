@@ -1,0 +1,44 @@
+// GPSImport.odl : type library source for GPSImport.exe
+
+// This file will be processed by the MIDL compiler to produce the
+// type library (GPSImport.tlb).
+
+[ uuid(58D4A228-377D-4665-9767-61DBF05D2D04), version(1.0) ]
+library GPSImport
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+
+	//  Primary dispatch interface for CGPSImportDoc
+	
+	[ uuid(4F5C7448-666A-455e-8567-1720211CD6FE) ]
+	dispinterface IGPSImport
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CGPSImportDlgAutoProxy)
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CGPSImportDlgAutoProxy)
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  Class information for CGPSImportDoc
+
+
+	
+	[ uuid(7F951599-25B0-480b-B0C9-419B1336A0F5) ]
+	coclass GPSImport
+	{
+		[default] dispinterface IGPSImport;
+	};
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};

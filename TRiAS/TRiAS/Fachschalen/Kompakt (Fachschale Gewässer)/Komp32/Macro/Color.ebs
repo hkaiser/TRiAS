@@ -1,0 +1,22 @@
+'=====================================================
+Private docGD As GeoDocument		'Projekt
+
+'===================================================
+'===================================================
+'Visualisierung für ein LinienObjekt
+Sub COLOR (obj As GeoObject)
+
+  	Set docGD = GetActiveDocument()			'Zugriff auf aktuelles Projekt
+	Dim aviAVis As LineVisInfo
+	Set aviAVis = obj.GetLineVisInfo()
+	If (aviAVis Is Not Nothing) Then
+		aviAVis.Style = 1
+		aviAVis.Priority = 800
+		aviAVis.MainColor = RGB (255, 255, 0)
+		aviAVis.Width = 100
+	  	obj.SetVisInfo aviAVis
+	End If
+'	docGD.Rebuild
+End Sub 'COLOR
+
+'/////////////////////////////////////////////////////////////

@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiAS.SimpleStatistics.1 = s 'SimpleStatistics Class'
+	{
+		CLSID = s '{0CB3A699-E5CE-11D2-9BD9-586A20524153}'
+	}
+	TRiAS.SimpleStatistics = s 'SimpleStatistics Class'
+	{
+		CLSID = s '{0CB3A699-E5CE-11D2-9BD9-586A20524153}'
+		CurVer = s 'TRiAS.SimpleStatistics.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {0CB3A699-E5CE-11D2-9BD9-586A20524153} = s 'SimpleStatistics Class'
+		{
+			ProgID = s 'TRiAS.SimpleStatistics.1'
+			VersionIndependentProgID = s 'TRiAS.SimpleStatistics'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{0CB3A67B-E5CE-11D2-9BD9-586A20524153}'
+		}
+	}
+}

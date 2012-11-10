@@ -1,0 +1,47 @@
+HKCR
+{
+	TRiAS.MapMgr.Import.SALayer.1 = s 'TRiAS - Import von SA-Layer-Hintergrundrasterbildern'
+	{
+		CLSID = s '{5F311073-B950-11D4-A9C5-00104BAF20DA}'
+	}
+	TRiAS.MapMgr.Import.SALayer = s 'TRiAS - Import von SA-Layer-Hintergrundrasterbildern'
+	{
+		CurVer = s 'TRiAS.MapMgr.Import.SALayer.1'
+	}
+
+	NoRemove CLSID
+	{
+		ForceRemove {5F311073-B950-11D4-A9C5-00104BAF20DA} = s 'TRiAS - Import von SA-Layer-Hintergrundrasterbildern'
+		{
+			ProgID = s 'TRiAS.MapMgr.Import.SALayer.1'
+			VersionIndependentProgID = s 'TRiAS.MapMgr.Import.SALayer'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}
+HKCU
+{
+	NoRemove Software 
+	{
+		NoRemove TRiAS 
+		{
+			NoRemove TRiAS 
+			{
+				NoRemove Extensions 
+				{
+					NoRemove TRiAS.MapMgr.Import.1
+					{
+						NoRemove ImportEngines
+						{
+							'{5F311073-B950-11D4-A9C5-00104BAF20DA}' = s ''
+						}
+					}
+				}
+			}
+		}
+	}
+}

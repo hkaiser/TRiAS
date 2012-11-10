@@ -1,0 +1,18 @@
+HKCR
+{
+	TRiASGM.PointVisInfo.1 = s 'Visualisierungsinformation für Punktobjekte'
+	{
+		CLSID = s '{429906A1-B83F-11D1-85B5-00600875138A}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {429906A1-B83F-11D1-85B5-00600875138A} = s 'Visualisierungsinformation für Punktobjekte'
+		{
+			ProgID = s 'TRiASGM.PointVisInfo.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+}

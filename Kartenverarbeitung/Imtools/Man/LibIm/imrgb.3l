@@ -1,0 +1,132 @@
+
+
+
+IMRGB(3IM)             SDSC IMAGE LIBRARY              IMRGB(3IM)
+
+
+
+NAME
+     imrgb - Silicon Graphics RGB file translation
+
+SYNOPSIS
+     #include <stdio.h>
+     #include "sdsc.h"
+     #include "im.h"
+
+     int ImFileRead( fd, "rgb", flagsTable, dataTable )
+          int         fd;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileFRead( fp, "rgb", flagsTable, dataTable )
+          FILE         *fp;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileWrite( fd, "rgb", flagsTable, dataTable )
+          int         fd;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileFWrite( fp, "rgb", flagsTable, dataTable )
+          FILE         *fp;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+
+DESCRIPTION
+     rgb image files are generated  by  Silicon  Graphics,  Inc.,
+     software  such  as icut(1) and snapshot(1).  See the Silicon
+     Graphics documentation for information on how to  use  these
+     and other Silicon Graphics programs.
+
+FILE RECOGNITION
+     Silicon Graphics rgb files are recognized by  the  following
+     filename suffixes:  .rgb, .iris, and .sgi.
+
+NOTES
+     SDSC image library support of the Silicon Graphics rgb  for-
+     mat  does not require use of any Silicon Graphics library or
+     hardware and contains no proprietary code. Silicon  Graphics
+     rgb  format  handling  is available on any machine for which
+     the SDSC image library is available.
+
+  Reading Silicon Graphics RGB files
+     The SDSC image library  reads  uncompressed  and  runlength-
+     encoded  (RLE) 8-bit grayscale and 24-bit RGB Silicon Graph-
+     ics rgb images and stores  them  as  IMVFBRGB  VFBs  without
+     CLTs.
+
+
+
+
+SDSC              Last change: August 24, 1992                  1
+
+
+
+
+
+
+IMRGB(3IM)             SDSC IMAGE LIBRARY              IMRGB(3IM)
+
+
+
+  Writing Silicon Graphics RGB files
+     Image library IMVFBRGB VFBs are written to  uncompressed  or
+     runlength-encoded  8-bit  grayscale  and  24-bit RGB Silicon
+     Graphics  rgb  files.   Noninterlaced  and  plane-interlaced
+     modes are not available in the Silicon Graphics rgb format.
+
+     Other image library VFB types are converted to IMVFBRGB VFBs
+     prior  to  being  written out.  See the ImFileWrite(3IM) man
+     page for details.
+
+ERRORS
+     In addition to those  listed  for  ImFileRead(3IM),  Silicon
+     Graphics rgb file reading returns the following error codes:
+
+          IMEDEPTH    Image depth not supported
+          IMEMAGIC    Bad magic number in header
+          IMEMALLOC   Cannot allocate enough memory
+          IMEPLANES   Number of bytes per plane not supported
+          IMESYS      System call error in read operation
+
+     In addition to those listed  for  ImFileWrite(3IM),  Silicon
+     Graphics rgb file writing returns the following error codes:
+
+          IMEDEPTH    Image depth not supported
+          IMEMALLOC   Cannot allocate enough memory
+          IMESYS      System call error in write operation
+
+DOCUMENTATION
+     _S_i_l_i_c_o_n _G_r_a_p_h_i_c_s _R_G_B _S_p_e_c_i_f_i_c_a_t_i_o_n, Silicon Graphics Inc.
+
+SEE ALSO
+     ImIntro(3IM),   ImErrNo(3IM),   imconv(1IM),    imfile(1IM),
+     imformats(1IM)
+
+AUTHOR
+     Jesus Ferrer, T. Todd Elvins, and Toan-Vinh Le
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2                 Last change: August 24, 1992               SDSC
+
+
+

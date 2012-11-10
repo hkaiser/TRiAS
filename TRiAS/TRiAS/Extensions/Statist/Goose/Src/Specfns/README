@@ -1,0 +1,30 @@
+I've butchered the probability function part of the cephes library by:
+
+(a) Turning everything into a C++ program.  Besides just changing the file
+    extensions, I had to change all of the function definitions from old
+    K&R "int foo(x,y) int x, y;" style over to ANSI "int foo(int x, int y)"
+    style.  Hadn't seen one of those K&R-type ones for quite a while...
+
+(b) Horror of horrors, took the cephes mtherr function and replace it with
+    something that throws a MathException.
+
+(c) Removed a lot of function prototypes inside the code itself.  Created a
+    new specfns_protos.h file for all of the public functions.  Added some
+    prototypes to mconf.h for "private" functions.
+
+(d) Added the factorial, log_factorial, choose, and log_choose functions.
+
+(e) Took out a few things, like the random # generator.
+
+(f) Turned the polynomial evaluation routines into inline functions, 
+    moved them from their own source file into mconf.h.
+
+(g) Added "verbose names" for many of the functions in specfns.h.
+
+(h) Took some unused stuff out.  (Mostly things relating to other pieces of
+    cephes.)
+
+Apologies to Stephen L. Moshier, the Copyright holder, for trampling
+all over his source code.
+
+    

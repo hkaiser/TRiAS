@@ -1,0 +1,811 @@
+' **************************************************************************************
+' *                                                                                    *
+' *  Test auf Überschneidung von Grundstücken und                                      *
+' *  Teilen der versiegelten Flächen an den Grundstücksgrenzen sowie                   *
+' *  der Dachteilflächen an den Flurstücksgrenzen                                      *
+' *  W. Mörtl   (30. 12. 98)                                                           *
+' *                                                                                    *
+' **************************************************************************************
+
+
+Option Explicit
+
+' ======================================================================================
+' anwendungsspezifische Konstanten
+Const strGrund = "Grundstück"
+Const strFlur = "Flurstück"
+Const strSiegel = "versiegelte Fläche"
+Const strDach = "Dachteilfläche"
+Const strStrasse = "Straße (allg.)"
+Const dblFlMin = 0.5					' Mindest-Flächeninhalt (in m²)
+Const dblOhne = 0.99					' Prozentwert für Suche nach Teilen der
+										' versiegelten bzw. Dachteilflächen, unter denen
+										' kein Grund- bzw. Flurstück liegt
+
+' ======================================================================================
+' Programmkonstanten
+Const NL = Chr$(13) + Chr$(10)			' NewLine
+Const strBoxTitel = "Flächenteilung"	' Titel der Message-Boxen
+Const strErrTopRelation = "TopRelation"	' Fehlerausschrift
+Const strErrGetIntersectObjects = "GetIntersectObjects"
+
+' ======================================================================================
+' globale Variable
+Private docGD As GeoDocument		' Projekt
+Private clsGrund As GeoClass		' Objektklasse (Grundstücke)
+Private clsFlur As GeoClass			' Objektklasse (Flurstücke)
+Private clsSiegel As GeoClass		' Objektklasse (versiegelte Flächen)
+Private clsDach As GeoClass			' Objektklasse (Dachteilflächen)
+Private objsOrigin As GeoObjects	' GeometrieObjekte (Originalobjekte von geteilten
+									' versiegelten bzw. Dachteilflächen)
+Private objsNeuSiegel As GeoObjects ' GeometrieObjekte (versiegelte Flächen)
+Private objsNeuDach As GeoObjects 	' GeometrieObjekte (Dachteilflächen)
+Private objsUnklar As GeoObjects 	' GeometrieObjekte (Teilflächen, die nur teilweise
+									' auf einer allg. Straße liegen)
+
+' ======================================================================================
+' Subroutine's-Deklarationen
+Declare Sub Overlapping (objsGrund As GeoObjects)
+Declare Sub AreaClipping (clsArea As GeoClass, clsKnife As GeoClass, _
+						  objsNewArea As GeoObjects, strText As String)
+Declare Sub CutAreas (Status As StatusIndicator, objCake As GeoObject, _
+					  clsKnife As GeoClass, objsNewArea As GeoObjects)
+Declare Sub MinimumTest (objsTeil As GeoObjects)
+Declare Sub DanglingAreas (objCake As GeoObject, objsAlleTeil As GeoObjects, _
+						   dblPartSum As Double, objsNewArea As GeoObjects)
+Declare Sub StreetCleaning
+Declare Sub DeleteOriginObjects ()
+Declare Sub AbbruchBeiFehler (lngFehlerNr As Long)
+Declare Sub TRiASFehler (strFehlerText As String, Optional lngONr1 As Variant, _
+						 Optional lngONr2 As Variant)
+Declare Sub StatistikFehler (Optional lngONr As Variant)
+Declare Sub DeleteInTRiAS (objsGO As GeoObjects)
+
+
+' Function's-Deklarationen
+Declare Function AreaPartialSum (objsTeil As GeoObjects) As Double
+Declare Function FlaechenInhalt (objGO As GeoObject) As Double
+Declare Function MasseinheitAbtrennen (MWert$, MZahl#) As String
+
+
+
+' ======================================================================================
+Sub FTeil()
+
+' Reaktion bei Runtime-Error
+	On Error GoTo CheckError
+
+' Eingangsbild
+	Msg.Open NL & "   Routine: Flächenteilen" & NL &  _
+			 "   Bitte etwas Geduld - die Abarbeitung wird vorbereitet!   " & NL, , _
+			 False, False
+
+' Initialisierungen
+  	Set docGD = GetActiveDocument
+
+	Set clsGrund = docGD.GetClass (strGrund)
+	Set clsFlur = docGD.GetClass (strFlur)
+	Set clsSiegel = docGD.GetClass (strSiegel)
+	Set clsDach = docGD.GetClass (strDach)
+
+	If (clsGrund Is Nothing) Then
+		MsgBox "Im Projekt wurden keine Grundstücke gefunden!", _
+				ebInformation, strBoxTitel
+		Exit Sub
+	End If
+
+	If (clsFlur Is Nothing) Then
+		MsgBox "Im Projekt wurden keine Flurstücke gefunden!", _
+				ebInformation, strBoxTitel
+		Exit Sub
+	End If
+
+	Dim intAnsw As Integer
+	If (clsSiegel Is Nothing) Then
+		MsgBox "Im Projekt wurden keine versiegelten Flächen gefunden!", _
+				ebInformation, strBoxTitel
+   		intAnsw = MsgBox ("Soll trotzdem weitergearbeitet werden?", _
+						  ebYesNoCancel Or ebDefaultButton1 Or ebQuestion, strBoxTitel)
+		If intAnsw = 2 Then	AbbruchBeiFehler 18	' Cancel
+   		If intAnsw = 7 Then Exit Sub			' nein
+	End If
+
+	If (clsDach Is Nothing) Then
+		MsgBox "Im Projekt wurden keine Dachteilflächen gefunden!", _
+			   ebInformation, strBoxTitel
+   		intAnsw = MsgBox ("Soll trotzdem weitergearbeitet werden?", _
+						  ebYesNoCancel Or ebDefaultButton1 Or ebQuestion, strBoxTitel)
+		If intAnsw = 2 Then	AbbruchBeiFehler 18	' Cancel
+   		If intAnsw = 7 Then Exit Sub			' nein
+	End If
+
+' Test, ob Statistik-Erweiterung geladen ist durch den Versuch, von einem beliebigen
+' Grundstück den Flächeninhalt zu ermitteln
+	Dim objsGrund As GeoObjects		' GeometrieObjekte (Grundstück)
+	Set objsGrund = clsGrund.GetObjects (OT_Area)
+	If (objsGrund Is Nothing) Then
+		MsgBox "Im Projekt wurden keine flächenförmigen Grundstücke gefunden!", _
+				ebInformation, strBoxTitel
+	End If
+
+	Dim objsFlur As GeoObjects		' GeometrieObjekte (Flurstück)
+	Set objsFlur = clsFlur.GetObjects (OT_Area)
+	If (objsFlur Is Nothing) Then
+		MsgBox "Im Projekt wurden keine flächenförmigen Flurstücke gefunden!", _
+				ebInformation, strBoxTitel
+	End If
+
+	Dim ft As GeoFeature
+	If objsGrund.Count > 0 Then
+		Set ft = objsGrund(1).GetFeature ("Flächeninhalt")
+	ElseIf objsFlur.Count > 0 Then
+		Set ft = objsFlur(1).GetFeature ("Flächeninhalt")
+	Else
+		MsgBox "Im Projekt wurden weder flächenförmigen Grundstücke" & NL & _
+				"noch flächenförmigen Flurstücke gefunden!", _
+				ebInformation, strBoxTitel
+		Exit Sub
+	End If
+	If (ft Is Nothing) Then StatistikFehler
+
+' weitere Initialisierungen
+	Set objsOrigin = docGD.CreateGeoObjectsCollection()
+	Set objsUnklar = docGD.CreateGeoObjectsCollection()
+	Set objsNeuSiegel = Nothing
+	Set objsNeuDach = Nothing
+
+	Msg.Close
+
+' Test auf Überschneidung der Grundstücke
+	Overlapping objsGrund
+
+' Zeichnen abschalten
+	docGD.PreventRepaint = 1
+
+' Ermittlung und Teilung der versiegelten Flächen
+	AreaClipping clsSiegel, clsGrund, objsNeuSiegel, strSiegel+"n" + " im Reißwolf"
+
+' Ermittlung und Teilung der Dachteilflächen
+	AreaClipping clsDach, clsFlur, objsNeuDach, strDach+"n" + " im Reißwolf"
+
+' Zeichnen wieder ermöglichen
+	docGD.PreventRepaint = 0
+	docGD.Repaint				' Veränderungen zeichnen
+
+' Löschung der versiegelten Flächen und Dachteilflächen, die auf einer allgemeinen
+' Straße liegen
+	StreetCleaning
+
+' Löschung der überzähligen Ursprungsobjekte
+	DeleteOriginObjects
+
+' Ergebnisanzeige in Recherchefenstern
+	Dim gowRWin1 As GeoObjectWin, gowRWin2 As GeoObjectWin, gowRWin3 As GeoObjectWin
+
+	If (objsNeuSiegel Is Not Nothing) Then
+		If objsNeuSiegel.Count > 0 Then
+			Set gowRWin1 = objsNeuSiegel.CreateGeoObjectWin()
+			gowRWin1.Name = "Neue versiegelte Flächen"
+			gowRWin1.Top = 1
+			gowRWin1.Visible = 1
+		End If
+	End If
+
+	If (objsNeuDach Is Not Nothing) Then
+		If objsNeuDach.Count > 0 Then
+			Set gowRWin2 = objsNeuDach.CreateGeoObjectWin()
+			gowRWin2.Name = "Neue Dachteilflächen"
+			If (gowRWin1 Is Not Nothing) Then
+				gowRWin2.Top = gowRWin1.Top + gowRWin1.Height
+			Else
+				gowRWin2.Top = 1
+			End If
+			gowRWin2.Visible = 1
+		End If
+	End If
+
+	If objsUnklar.Count > 0 Then
+		Set gowRWin3 = objsUnklar.CreateGeoObjectWin()
+		gowRWin3.Name = "Teilweise auf allg. Straße liegend"
+		If (gowRWin2 Is Not Nothing) Then
+			gowRWin3.Top = gowRWin2.Top + gowRWin2.Height
+		ElseIf (gowRWin1 Is Not Nothing) Then
+			gowRWin3.Top = gowRWin1.Top + gowRWin1.Height
+		Else
+			gowRWin3.Top = 1
+		End If
+		gowRWin3.Visible = 1
+	End If
+
+	Beep
+	MsgBox "Was müssen die Wasserwerke durch diese Aktion für einen Gewinn" & NL & _
+		   " machen, wenn auch noch für uns Millionen rausspringen?", _
+		   ebQuestion, strBoxTitel
+
+	Exit Sub
+
+
+' Abbruch bei Runtime-Error
+CheckError:
+	AbbruchBeiFehler Err.Number
+
+End Sub ' Main
+
+
+' ======================================================================================
+' Subroutine's
+' --------------------------------------------------------------------------------------
+' "OnDocumentToClose()" wird nach dem Schließen des Projektes gerufen
+Sub OnDocumentToClose (Doc As GeoDocument)
+	docGD.PreventRepaint = 0	' Zeichnen wieder ermöglichen
+'	SetBreakScript(true)		' den laufenden Script anhalten
+End Sub
+
+
+' --------------------------------------------------------------------------------------
+' Test auf Überschneidung der Grundstücke
+Sub Overlapping (objsGrund As GeoObjects)
+
+	Dim lngCnt As Long
+	lngCnt = objsGrund.Count		' Anzahl der Grundstücke
+	If lngCnt < 2 Then Exit Sub
+
+	Dim intAnsw As Integer
+	intAnsw = MsgBox ("Sollen die Grundstücke auf Überschneidung getestet werden?", _
+					  ebYesNoCancel Or ebDefaultButton1 Or ebQuestion, strBoxTitel)
+
+	If intAnsw = 2 Then	AbbruchBeiFehler 18	' Cancel
+	If intAnsw = 7 Then Exit Sub			' nein
+
+	Dim i As Long, k As Long		' Zähler für Grundstücke
+	Dim j As Long					' Zähler für Geduldsanzeige
+	Dim intRel As Integer			' Rückkehrwert von TopRelation()
+	Dim objDummy As GeoObject		' Rückkehrwert von Add()
+	Dim objsOverlap As GeoObjects	' sich überlappende Grundstücke
+	Set objsOverlap = docGD.CreateGeoObjectsCollection()
+
+	Dim Status As New StatusIndicator	' Geduldsanzeige 
+	If (Status Is Not Nothing) Then
+		Status.Restart 1, lngCnt*(lngCnt-1)/2+1, STATUS_ShowAllFields
+		Status.Field(1) = Str$(lngCnt)
+		Status.Field(2) = "Grundstücke werden getestet"
+		Status.Field(3) = "Bearbeitungsstand:  %d %%"
+		Status.Caption = "Test auf Grenzstreitigkeiten bei Grundstücken"
+	End If
+
+	j = 0
+
+	For i = 1 To lngCnt - 1
+		For k = i + 1 To lngCnt
+
+			If (Status Is Not Nothing) Then	' Status weiterschalten
+				j = j + 1
+				Status.SetPosition j
+				If Status.WasCanceled() Then
+					Set Status = Nothing	' Geduldsanzeige abschalten
+					AbbruchBeiFehler 18		' Cancel
+				End If
+			End If
+
+			If objsGrund(i).ObjType = OT_Area And objsGrund(k).ObjType = OT_Area Then
+				If (Status Is Not Nothing) Then
+					Status.Field(4) = objsGrund(i).Value & " mit " & objsGrund(k).Value
+				End If
+
+				intRel = objsGrund(i).TopRelation (objsGrund(k))
+				If intRel = 0 Or intRel = 2 Then	' innerhalb oder inner/außerhalb
+					Set objDummy = objsOverlap.Add(objsGrund(i).Value)
+					Set objDummy = objsOverlap.Add(objsGrund(k).Value)
+				End If
+			End If
+
+		Next k
+	Next i
+
+	Set Status = Nothing	' Geduldsanzeige abschalten
+
+	If objsOverlap.Count > 0 Then
+		Dim orwOverlap As GeoObjectWin
+		Set orwOverlap = objsOverlap.CreateGeoObjectWin()
+		orwOverlap.Name = "Überlappende Grundstücke"
+		orwOverlap.Visible = 1
+
+		Beep
+		MsgBox "Das Projekt enthält sich überlappende Grundstücke." & NL & _
+			   "Deshalb wird das Programm erst einmal abgebrochen." & NL & _
+			   "Viel Spaß und eine ruhige Hand beim Korrigieren.", _
+			   ebInformation, strBoxTitel
+		End
+	End If
+
+End Sub ' Overlapping
+
+
+' ---------------------------------------------------------------------------------------
+' clsArea-Flächen durch die clsKnife-Flächen schneiden, die Schnittergebnise werden in
+' objsNewArea gesammelt
+Sub AreaClipping (clsArea As GeoClass, clsKnife As GeoClass, objsNewArea As GeoObjects, _
+				  strText As String)
+	If (clsArea Is Nothing) Then Exit Sub
+
+	Dim objsArea As GeoObjects
+	Set objsArea = clsArea.GetObjects (OT_Area)
+	If (objsArea Is Nothing) Then Exit Sub
+
+	Dim objArea As GeoObject
+	Set objsNewArea = docGD.CreateGeoObjectsCollection()
+
+	Dim lngCnt As Long, j As Long
+	lngCnt = objsArea.Count
+	j = 0
+
+	Dim Status As New StatusIndicator	' Geduldsanzeige 
+	If (Status Is Not Nothing) Then
+		Status.Restart 1, lngCnt+1, STATUS_ShowAllFields
+		Status.Field(1) = Str$(lngCnt)
+		Status.Field(2) = strText
+		Status.Field(3) = "Bearbeitungsstand:  %d %%"
+		Status.Caption = "Teile und herrsche!"
+	End If
+
+	For Each objArea In objsArea
+		If (Status Is Not Nothing) Then	' Status weiterschalten
+			If Status.WasCanceled() Then
+				Set Status = Nothing	' Geduldsanzeige abschalten
+				AbbruchBeiFehler 18		' Cancel
+			End If
+			j = j + 1
+			Status.SetPosition j
+			Status.Field(4) = ""
+		End If
+
+		' zugehörige clsKnife-Flächen ermitteln und an diesen teilen
+		If objArea.ObjType = OT_Area Then
+			CutAreas Status, objArea, clsKnife, objsNewArea
+		End If
+	Next objArea
+
+End Sub ' AreaClipping
+
+
+' ---------------------------------------------------------------------------------------
+' Die Fläche objCake wird durch die zur Klasse clsKnife (Grund- bzw. Flurstücke)
+' gehörenden Objekte geschnitten
+Sub CutAreas (Status As StatusIndicator, objCake As GeoObject, clsKnife As GeoClass, _
+			  objsNewArea As GeoObjects)
+
+	Dim xmin As Double, ymin As Double, xmax As Double, ymax As Double
+	objCake.GetGeometryRect xmin, ymin, xmax, ymax
+	Dim objsKnife As GeoObjects		' im umschließenden Rechteck von objCake liegende
+									' Objekte der Klasse clsKnife
+	Set objsKnife = clsKnife.GetObjectsInRect (xmin, ymin, xmax, ymax)
+	If objsKnife.Count = 0 Then Exit Sub
+
+	Dim intRel As Integer			' Rückkehrwert von TopRelation()
+	Dim objDummy As GeoObject		' Rückkehrwert von Add()
+	Dim objKnife As GeoObject		' ein einzelnes objsKnife-Objekt
+	Dim objsTeil As GeoObjects		' Teilobjekte von objCake, die in EINEM
+									' objKnife-Objekt liegen
+	Dim objsAlleTeil As GeoObjects	' Teilobjekte von objCake bez.
+									' ALLER objKnife-Objekte
+	Set objsAlleTeil = docGD.CreateGeoObjectsCollection()
+	Dim dblPartSum As Double
+	dblPartSum = 0.
+	Dim bCut As Boolean
+	bCut = False					' es wurde geschnitten (True)
+
+	For Each objKnife In objsKnife
+		If objKnife.ObjType <> OT_Area Then GoTo Continue1
+
+		If (Status Is Not Nothing) Then
+			Status.Field(4) = objCake.Value & " mit " & objKnife.Value
+		End If
+
+		' Relation der objCake-Fläche bez. der objKnife-Fläche
+		' Rückgabewert kann sein: innerhalb (0), außerhalb (1), inner/außerhalb (2) oder
+		' unklar (3)
+		intRel = objKnife.TopRelation (objCake)
+
+		If intRel = 2 Then
+			Set objsTeil = objKnife.GetIntersectObjects (objCake)
+			If (objsTeil Is Not Nothing) Then
+ 				Set objsAlleTeil = objsAlleTeil.Union(objsTeil)
+				dblPartSum = dblPartSum + AreaPartialSum (objsTeil)
+				MinimumTest objsTeil
+				If objsTeil.Count > 0 Then
+  					Set objsNewArea = objsNewArea.Union(objsTeil)
+					bCut = True
+  				End If
+			Else
+				TRiASFehler strErrGetIntersectObjects, objKnife.Value, objCake.Value
+  			End If
+		ElseIf intRel = 3 Then
+			TRiASFehler strErrTopRelation
+		End If
+
+Continue1:
+	Next objKnife
+
+	If bCut = True Then Set objDummy = objsOrigin.Add(objCake.Value)
+
+	' noch die Teile der objCake-Fläche ermitteln, unter denen kein Objekt der
+	' clsKnife-Klasse liegt
+	DanglingAreas objCake, objsAlleTeil, dblPartSum, objsNewArea
+
+End Sub ' CutAreas
+
+
+' --------------------------------------------------------------------------------------
+' Test, ob der Flächeninhalt der übergebenen Flächen objsTeil den vorgegebenen
+' Mindest-Flächeninhalt dblFlMin haben; wenn nicht, werden diese Flächen gelöscht
+Sub MinimumTest (objsTeil As GeoObjects)
+
+	Dim objTeil As GeoObject
+	Dim dblFlInh As Double		' Flächeninhalt einer Teilfläche
+
+	For Each objTeil In objsTeil
+
+		If objTeil.ObjType = OT_Area Then
+			dblFlInh = FlaechenInhalt (objTeil)
+			If dblFlInh < dblFlMin Then
+				docGD.RemoveObject objTeil	' zu kleine Fläche löschen
+			End If
+		Else	' Schnittergebnis ist gar keine Fläche 
+			docGD.RemoveObject objTeil		' entartete Fläche löschen
+		End If
+
+	Next objTeil
+
+	objsTeil.Refresh
+
+End Sub ' MinimumTest
+
+
+' --------------------------------------------------------------------------------------
+' noch die Teile der objCake-Fläche ermitteln, unter denen kein Objekt der
+' clsKnife-Klasse liegt
+Sub DanglingAreas (objCake As GeoObject, objsAlleTeil As GeoObjects, _
+				   dblPartSum As Double, objsNewArea As GeoObjects)
+
+	If dblPartSum = 0 Or dblPartSum > dblOhne * FlaechenInhalt (objCake) Then
+		Exit Sub
+	End If
+
+	Dim objsTeil As GeoObjects			' Rückkehrwert von GetIntersectObjects()
+	Dim objDummy As GeoObject			' Rückkehrwert von Add()
+	Dim objsRestCake As GeoObjects		' Restflächen der objCake-Fläche nach Abzug
+										' aller objsAlleTeil-Flächen
+	Set objsRestCake = docGD.CreateGeoObjectsCollection()
+	Set objDummy = objsRestCake.Add(objCake.Value)	' Startwert für iterativen Abzug der
+													' objsAlleTeil-Flächen
+	Dim objAlleTeil As GeoObject		' einzelne objsAlleTeil-Fläche
+	Dim objRestCake As GeoObject		' einzelne objsRestCake-Fläche
+	Dim objsSammeln As GeoObjects		' Zwischenergebnis
+
+	For Each objAlleTeil In objsAlleTeil
+
+		Set objsSammeln = docGD.CreateGeoObjectsCollection()
+
+		For Each objRestCake In objsRestCake
+			Set objsTeil = objAlleTeil.GetIntersectObjects (objRestCake, OP_OuterParts)
+			If (objsTeil Is Not Nothing) Then
+				If objsTeil.Count = 0 Then
+					' mit der nachfolgenden TopRelation-Operation wird bezweckt, daß nur
+					' die objRestCake-Objekte gesammelt werden, die AUßERHALB des
+					' aktuellen objAlleTeil-Objektes liegen, d.h. es werden die
+					' objRestCake-Objekte ausgeschlossen, die mit dem aktuellen
+					' objAlleTeil-Objekt identisch sind (auch in diesem Fall ergibt sich
+					' nämlich objsTeil.Count = 0)
+					If objAlleTeil.TopRelation (objRestCake) = 1 Then
+						Set objDummy = objsSammeln.Add(objRestCake.Value)
+					End If
+				ElseIf objsTeil.Count > 0 Then
+					MinimumTest objsTeil
+					Set objsSammeln = objsSammeln.Union(objsTeil)
+				End If
+			Else
+				TRiASFehler strErrGetIntersectObjects, objAlleTeil.Value, objRestCake.Value
+			End If
+		Next objRestCake
+
+		' mit der nachfolgenden Difference-Operation wird bezweckt, daß die
+		' objsSammeln-Objekte, die schon zu den bisherigen objsRestCake-Objekten
+		' gehörten und auch wieder zu den neuen objsRestCake-Objekte gehören werden,
+		' nicht mit gelöscht werden
+		Set objsRestCake = objsRestCake.Difference(objsSammeln)
+		objsRestCake.Remove objCake.Value	' objCake wird bei den Originalobjekten gelöscht
+		DeleteInTRiAS objsRestCake
+		Set objsRestCake = objsSammeln
+
+	Next objAlleTeil
+
+	If objsRestCake.Count > 0 Then
+		Set objsNewArea = objsNewArea.Union(objsRestCake)
+	End If
+
+End Sub ' DanglingAreas
+
+
+' --------------------------------------------------------------------------------------
+' Löschung der neuen versiegelten Flächen, die auf einer allgemeinen Straße liegen
+Sub StreetCleaning
+
+	Dim clsStrasse As GeoClass		' Objektklasse (allgemeine Straßen)
+	Set clsStrasse = docGD.GetClass (strStrasse)
+	If (clsStrasse Is Nothing) Then
+		MsgBox "Das Projekt enthält keine allgemeinen Straßen", ebQuestion, strBoxTitel
+		Exit Sub
+	End If
+
+	Dim objsStrasse As GeoObjects	' GeometrieObjekte (allgemeine Straßen)
+	Set objsStrasse = clsStrasse.GetObjects (OT_Area)
+	If objsStrasse.Count = 0 Then
+		MsgBox "Das Projekt enthält keine flächenförmigen allgemeinen Straßen", _
+				ebQuestion, strBoxTitel
+		Exit Sub
+	End If
+
+	Dim bNeuSiegel As Boolean
+	bNeuSiegel = True
+
+	If (objsNeuSiegel Is Not Nothing) Then
+		If objsNeuSiegel.Count = 0 Then bNeuSiegel = False
+	Else
+		bNeuSiegel = False
+	End If
+
+	If bNeuSiegel = False Then
+		MsgBox "Es wurden keine neuen versiegelten Flächen gebildet.", _
+				ebQuestion, strBoxTitel
+		Exit Sub
+	End If
+
+	Dim xmin As Double, ymin As Double, xmax As Double, ymax As Double
+	Dim objsTest As GeoObjects			' im umschließenden Rechteck von objStrasse
+										' liegende neue versiegelte Flächen
+	Dim objStrasse As GeoObject, objTest As GeoObject
+	Dim intRel As Integer				' Rückkehrwert von TopRelation()
+	Dim objDummy As GeoObject			' Rückkehrwert von Add()
+
+	Dim lngCnt As Long, j As Long
+	lngCnt = objsStrasse.Count			' Anzahl der allgemeinen Straßen
+	j = 0
+
+	Dim Status As New StatusIndicator	' Geduldsanzeige 
+	If (Status Is Not Nothing) Then
+		Status.Restart 1, lngCnt+1, STATUS_ShowAllFields
+		Status.Field(1) = Str$(lngCnt)
+		Status.Field(2) = "allgemeine Straßen werden gefegt"
+		Status.Field(3) = "Bearbeitungsstand:  %d %%"
+		Status.Caption = "Löschung auf der Straße liegender versiegelter Flächen"
+	End If
+
+' Abarbeitung aller allgemeinen	Straßen
+	For Each objStrasse In objsStrasse
+
+		If (Status Is Not Nothing) Then	' Status weiterschalten
+			j = j + 1
+			Status.SetPosition j
+			If Status.WasCanceled() Then
+				Set Status = Nothing	' Geduldsanzeige abschalten
+				AbbruchBeiFehler 18		' Cancel
+			End If
+		End If
+
+		objStrasse.GetGeometryRect xmin, ymin, xmax, ymax
+		Set objsTest = objsNeuSiegel.GetObjectsInRect (xmin, ymin, xmax, ymax)
+
+		For Each objTest In objsTest
+			intRel = objStrasse.TopRelation (objTest)
+
+			Select Case intRel		 ' Relation von objTest zu objStrasse
+				Case 0		' innerhalb
+					docGD.RemoveObject objTest
+				Case 2		' inner/außerhalb
+					Set objDummy = objsUnklar.Add(objTest.Value)
+				Case 3		' unklar
+					TRiASFehler strErrTopRelation
+			End Select
+		Next objTest
+	Next objStrasse
+
+	Set Status = Nothing	' Geduldsanzeige abschalten
+
+End Sub ' StreetCleaning
+
+
+' --------------------------------------------------------------------------------------
+' Löschung der überzähligen Ursprungsobjekte
+Sub DeleteOriginObjects ()
+
+	Dim lngCnt As Long
+	lngCnt = objsOrigin.Count	' Anzahl der zu löschenden Objekte
+
+	If lngCnt = 0 Then
+		objsOrigin.Refresh
+		Set objsOrigin = Nothing
+		Exit Sub
+	End If
+
+	Dim j As Long
+	j = 0
+
+	Dim Status As New StatusIndicator	' Geduldsanzeige
+	If (Status Is Not Nothing) Then
+		Status.Restart 1, lngCnt+1, STATUS_ShowAllFields
+		Status.Field(1) = Str$(lngCnt)
+		Status.Field(2) = "Ursprungsobjekte werden gelöscht"
+		Status.Field(3) = "Bearbeitungsstand:  %d %%"
+		Status.Field(4) = ""
+		Status.Caption = "Löschung der geteilten Ursprungsobjekte"
+	End If
+
+	Dim objOrigin As GeoObject
+
+	For Each objOrigin In objsOrigin	' Ursprungs-GeoObjekte löschen
+		If (Status Is Not Nothing) Then	' Status weiterschalten
+			j = j + 1
+			Status.SetPosition j
+			If Status.WasCanceled() Then
+				Set Status = Nothing	' Geduldsanzeige abschalten
+				AbbruchBeiFehler 18		' Cancel
+			End If
+		End If
+		docGD.RemoveObject objOrigin
+	Next objOrigin
+
+	objsOrigin.Refresh
+	Set objsOrigin = Nothing
+
+	Set Status = Nothing	' Geduldsanzeige abschalten
+
+End Sub ' DeleteOriginObjects
+
+
+' --------------------------------------------------------------------------------------
+' ein Runtime-Error ist aufgetreten
+Sub AbbruchBeiFehler (lngFehlerNr As Long)
+
+	Msg.Close					' Eingangsbild beenden
+	docGD.PreventRepaint = 0	' Zeichnen wieder ermöglichen
+	docGD.Repaint				' Veränderungen zeichnen
+
+	Beep
+	If lngFehlerNr = 18 Then	' User interrupt (z.B. Cancel bei Geduldsanzeige)
+		MsgBox "Die Abarbeitung wurde durch den Anwender vorzeitig beendet!", _
+			   ebExclamation, strBoxTitel
+		End
+	Else
+		MsgBox "Das Programm wurde abgebrochen mit" & NL & _
+			   "Fehler " & lngFehlerNr & " (" & Error(lngFehlerNr) & ")", _
+			   ebCritical, strBoxTitel
+		Resume Next		' für Fehlersuche
+	End If
+
+End Sub ' AbbruchBeiFehler
+
+
+' --------------------------------------------------------------------------------------
+' Fehler bei Abarbeitung einer TRiAS-Routine aufgetreten
+Sub TRiASFehler (strFehlerText As String, Optional lngONr1 As Variant, _
+				 Optional lngONr2 As Variant)
+	Dim strZusatz As String
+	strZusatz = ""
+	If Not isMissing(lngONr1) Then
+		If Not isMissing(lngONr2) Then
+			strZusatz = NL & " (beteiligte Objekte: " & lngONr1 & ", " &  lngONr2 & ")"
+		Else
+			strZusatz = NL & " (beteiligtes Objekt: " & lngONr1 & ")"
+		End If
+	End If
+
+	Beep
+	MsgBox "In der Funktion '" & strFehlerText & "' ist ein Fehler aufgetreten!" & _
+			strZusatz, ebCritical, strBoxTitel
+
+End Sub ' TRiASFehler
+
+
+' --------------------------------------------------------------------------------------
+' Fehler bei Statistik aufgetreten
+Sub StatistikFehler (Optional lngONr As Variant)
+	Beep
+	Dim strZusatz As String
+	strZusatz = "."
+	If Not isMissing(lngONr) Then
+		strZusatz = NL & "(beteiligtes Objekt: " & lngONr & ")."
+	End If
+	MsgBox "Das Programm mußte vorzeitig beendet werden" & strZusatz & NL & _
+		   "Prüfen Sie bitte, ob das Zusatzmodul" & NL & "'Statistische Auswertungen' geladen ist !", _
+		   ebCritical, strBoxTitel
+	End
+End Sub ' StatistikFehler
+
+
+' --------------------------------------------------------------------------------------
+' Löschen aller GeoObjekte einer GeoObjects-Collection und in der TRiAS-Datenbank
+Sub DeleteInTRiAS (objsGO As GeoObjects)
+	If (objsGO Is Nothing) Then Exit Sub
+	Dim objGO As GeoObject
+	For Each objGO In objsGO		' alle GeoObjekte löschen
+		docGD.RemoveObject objGO
+	Next objGO
+	objsGO.Refresh
+	Set objsGO = Nothing
+End Sub ' DeleteInTRiAS
+
+
+
+' ======================================================================================
+' Function's
+' --------------------------------------------------------------------------------------
+' Summe der Flächeninhalte aller objsTeil-Flächen zurückgeben
+Function AreaPartialSum (objsTeil As GeoObjects) As Double
+	AreaPartialSum = 0.
+	If (objsTeil Is Nothing) Then Exit Function
+	If objsTeil.Count = 0 Then Exit Function
+
+	Dim dblPartSum As Double
+	dblPartSum = 0.
+	Dim objTeil As GeoObject
+
+	For Each objTeil in objsTeil
+		If objTeil.ObjType = OT_Area Then
+			dblPartSum = dblPartSum + FlaechenInhalt (objTeil)
+		End If
+	Next objTeil
+	AreaPartialSum = dblPartSum
+End Function ' AreaPartialSum
+
+
+' --------------------------------------------------------------------------------------
+' Flächeninhalt eines GeoObjetktes in m²; im Fehlerfall (unbekannte Maßeinheit) wird -1
+' zurückgegeben
+Function FlaechenInhalt (objGO As GeoObject) As Double
+	Dim ftFlInhalt As GeoFeature	
+	Set ftFlInhalt = objGO.GetFeature("Flächeninhalt")
+	If (ftFlInhalt Is Nothing) Then StatistikFehler objGO.Value
+
+	Dim strFl As String, strME As String
+	strFl = Trim$(ftFlInhalt.Feature$)	' Flächeninhalt und Maßeinheit
+	If strFl = "" Then	' kein Flächenobjekt
+		FlaechenInhalt = 0
+		Exit Function
+	End If
+
+	Dim Flaeche As Double				' Flächeninhalt ohne Maßeinheit
+	strME = MasseinheitAbtrennen (strFl, Flaeche)
+
+	Select Case LCase(Mid(strME,2,1))	' das 1. Zeichen von strME ist "["
+		Case "m"	' m²
+			FlaechenInhalt = Flaeche
+		Case "h"	' ha
+			FlaechenInhalt = 10000 * Flaeche
+		Case "k"	' km²
+			FlaechenInhalt = 1000000 * Flaeche
+		Case Else
+			MsgBox "Die ermittelte Maßeinheit des Flächeninhalts ist unbekannt!", _
+					ebCritical, strBoxTitel
+			FlaechenInhalt = -1
+	End Select
+End Function ' FlaechenInhalt
+
+
+' --------------------------------------------------------------------------------------
+' Maßeinheit aus dem übergebenen String MWert eliminieren und in der Form "[...]"
+' zurückgeben; dabei wird vorausgesetzt, daß die Maßeinheit in eckige Klammern '[]'
+' eingeschlossen ist
+Function MasseinheitAbtrennen (MWert$, MZahl#) As String
+	Dim intPos As Integer
+	intPos = InStr (MWert$,"[")		' Position der öffnenden Klammer "[" suchen
+	If intPos = 0 Then
+		MsgBox "Maßeinheit des Flächeninhalts beginnt nicht mit [", _
+				ebCritical, strBoxTitel
+		MasseinheitAbtrennen = "  "	' Rückgabe bei Fehler
+	End If
+
+	intPos = InStr (MWert$," ")			' Position zwischen Zahlenwert und Dimension
+	MZahl# = Val (Left(MWert$,intPos))	' Dimension abschneiden
+	MasseinheitAbtrennen = Right(MWert$,Len(MWert$)-intPos)	' Maßzahl ohne Maßeinheit als Rückgabewert
+End Function ' MasseinheitAbtrennen
+ 

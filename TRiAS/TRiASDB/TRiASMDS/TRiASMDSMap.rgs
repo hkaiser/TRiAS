@@ -1,0 +1,24 @@
+HKCR 
+{
+	TRiASMDS.MDSMap.1 = s 'TRiAS® - Metadatenservice' 
+	{
+		CLSID = s '{82B90D02-577B-11D2-8FC9-0060085FC1CE}'
+	}
+	TRiASMDS.MDSMap = s 'TRiAS® - Metadatenservice' 
+	{
+		CurVer = s 'TRiASMDS.TRiASMDSMap.1'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {82B90D02-577B-11D2-8FC9-0060085FC1CE} = s 'TRiAS® - Metadatenservice' 
+		{
+			ProgID = s 'TRiASMDS.MDSMap.1'
+			VersionIndependentProgID = s 'TRiASMDS.MDSMap'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%' 
+			{
+				val ThreadingModel = s 'Both'
+			}
+		}
+	}
+}

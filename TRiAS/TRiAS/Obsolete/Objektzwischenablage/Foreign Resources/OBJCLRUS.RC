@@ -1,0 +1,232 @@
+//Microsoft App Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resstrg.h"
+#include "objclip.h"
+#include "objcldlg.h"
+#include "defabout.h"
+#include "ver.h"
+
+/////////////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+DEFIDICON               ICON    DISCARDABLE     "LUPE.ICO"
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+OBJCLPMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&Файл"
+    BEGIN
+        MENUITEM "&Открыть ...",                OBJCLPMENU, GRAYED
+        MENUITEM "&Сохранить",                  IDM_SAVEOBJCLP, GRAYED
+        MENUITEM "Сохранить &Как...",           IDM_SAVEASOBJCLP, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "&Закрыть клиппборд Обьектов", IDM_CLOSEOBJCLP
+    END
+    POPUP "&Редактирование"
+    BEGIN
+        MENUITEM "&Отменить",                   IDM_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "Очистиь &клиппборд",          IDM_DELETEOBJCLP
+        MENUITEM SEPARATOR
+        MENUITEM "&Добавить признак ...",       IDM_ADDMERKMAL
+        MENUITEM "&Редактировать признак ...",  IDM_EDITMERKMAL
+        MENUITEM "&Удалить признак",            IDM_DELMERKMAL
+        MENUITEM "Удалить &значение признака",  IDM_DELMWERT
+    END
+    MENUITEM "\a&?",                        IDM_OBJCLPABOUT
+END
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+OBJCLIPBOARDDLG DIALOG DISCARDABLE  11, 14, 180, 139
+STYLE WS_POPUP | WS_CLIPSIBLINGS | WS_CAPTION | WS_SYSMENU
+CAPTION "Клиппборд Объектов"
+MENU OBJCLPMENU
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "\303\345\356\354\345\362\360\350\377:",-1,4,21,70,8
+    CONTROL         "\317&\356\353\356\346\345\355\350\345",IDCB_OBJLAGE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,78,21,52,10
+    CONTROL         "&\324\356\360\354\340",IDCB_OBJFORM,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,139,21,39,10
+    CONTROL         "&\310\344\345\355\362\350\364\350\352\340\362\356\360:",
+                    IDCB_OBJIDENTIFIKATOR,"Button",BS_AUTOCHECKBOX | 
+                    WS_GROUP | WS_TABSTOP,4,33,70,12
+    COMBOBOX        IDC_OBJIDENTIFIKATOR,4,46,170,93,CBS_DROPDOWNLIST | 
+                    CBS_AUTOHSCROLL | CBS_SORT | CBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "&\317\360\350\347\355\340\352:",IDCB_OBJMERKMALE,
+                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,4,66,53,
+                    10
+    COMBOBOX        IDC_OBJMERKMAL,4,77,170,93,CBS_DROPDOWNLIST | 
+                    CBS_AUTOHSCROLL | CBS_SORT | CBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDL_OBJMERKMALE,4,92,170,41,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "\321\362\340\362\363\361:",-1,4,6,27,8
+    LTEXT           "",IDT_OBJCLPSTATUS,39,6,115,8
+END
+
+OBJMERKMALDLG DIALOG DISCARDABLE  76, 58, 227, 58
+STYLE DS_MODALFRAME | WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | 
+    WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDE_OBJMERKMAL,4,5,159,50,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    WS_GROUP
+    PUSHBUTTON      "\316\362\354\345\355\340",IDCANCEL,168,40,55,14
+    DEFPUSHBUTTON   "OK",IDOK,168,23,55,14,WS_GROUP
+END
+
+OBJCLIPBOARDDLG1 DIALOG DISCARDABLE  11, 14, 159, 218
+STYLE WS_POPUP | WS_CLIPSIBLINGS | WS_CAPTION | WS_SYSMENU
+CAPTION "Objektzwischenablage"
+MENU OBJCLPMENU
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Geometrie:",-1,4,21,70,8
+    CONTROL         "La&ge",IDCB_OBJLAGE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,78,21,37,10
+    CONTROL         "&Form",IDCB_OBJFORM,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,122,21,31,10
+    CONTROL         "&Identifikator:",IDCB_OBJIDENTIFIKATOR,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,4,33,53,12
+    COMBOBOX        IDC_OBJIDENTIFIKATOR,4,46,151,93,CBS_DROPDOWNLIST | 
+                    CBS_AUTOHSCROLL | CBS_SORT | CBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "&Merkmale:",IDCB_OBJMERKMALE,"Button",BS_AUTOCHECKBOX | 
+                    WS_GROUP | WS_TABSTOP,4,66,53,10
+    COMBOBOX        IDC_OBJMERKMAL,4,78,151,93,CBS_DROPDOWNLIST | 
+                    CBS_AUTOHSCROLL | CBS_SORT | CBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDL_OBJMERKMALE,4,92,151,41,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "&Relationen:",IDCB_OBJRELATIONEN,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,4,140,53,10
+    LISTBOX         IDL_OBJRELATIONEN,4,153,151,41,LBS_SORT | 
+                    LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "Relationale &Objekte kopieren",IDCB_COPYRELOBJS,
+                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,4,201,
+                    151,10
+    LTEXT           "Status:",-1,4,6,27,8
+    LTEXT           "",IDT_OBJCLPSTATUS,39,6,115,8
+END
+
+#ifdef APSTUDIO_INVOKED
+//////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""resstrg.h""\r\n"
+    "#include ""objclip.h""\r\n"
+    "#include ""objcldlg.h""\r\n"
+    "#include ""defabout.h""\r\n"
+    "#include ""ver.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""objclip.rcv""\r\n"
+    "#include ""defabout.src""\r\n"
+    "\r\n"
+    "\0"
+END
+
+/////////////////////////////////////////////////////////////////////////////////////
+#endif    // APSTUDIO_INVOKED
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_COPYMENUITEM        "&\312\356\357\350\360\356\342\340\362\374 \316\341\372\345\352\362"
+    IDS_CUTMENUITEM         "\302&\373\360\345\347\340\362\374 \316\341\372\345\352\362"
+    IDS_PASTEMENUITEM       "&\302\361\362\340\342\350\362\374 \316\341\372\345\352\362"
+    IDS_SHOWOBJCLIP         "&\317\356\352\340\347\340\362\374 \352\353\350\357\357\341\356\360\344 \316\341\372\345\352\362\356\342"
+    IDS_NOGEOMETRIE         "\316\341\372\345\352\362 \355\345 \347\340\343\360\363\346\345\355"
+    IDS_PUNKTGEOMETRIE      "\307\340\343\360\363\346\345\355\340 \322\356\367\352\340"
+    IDS_LINIENGEOMETRIE     "\307\340\343\360\363\346\345\355\340 \313\350\355\350\377"
+    IDS_FLAECHENGEOMETRIE   "\307\340\343\360\363\346\345\355\340 \317\353\356\361\352\356\361\362\374"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UNKNOWNGEOMETRIE    "\307\340\343\360\363\346\345\355 \355\345\350\347\342\345\361\362\355\373\351 \316\341\372\345\352\362"
+    IDS_PASTEGLOBAL         "&\302\361\362\340\342\350\362\374 \350\347 \352\353\350\357\357\341\356\360\344\340 \316\341\372\345\352\362\356\342"
+    IDS_HIDEOBJCLIP         "&\321\352\360\373\362\374 \352\353\350\357\357\341\356\360\344 \316\341\372\345\352\362\356\342"
+    IDS_COPYANDPASTE        "\312\356\357\350\360\356\342\340\362\374 &\350 \302\361\362\340\342\350\362\374"
+    IDS_TEXTGEOMETRIE       "\307\340\343\360\363\346\345\355 \322\345\352\361\362"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXEXTENSIONPROC    "DEXEXTENSIONPROC"
+    IDS_DEXXEXTENSIONPROC   "DEXXEXTENSIONPROC"
+    IDS_DEXNOTIFICATIONPROC "DEXNOTIFICATIONPROCEX"
+END
+
+
+#ifndef APSTUDIO_INVOKED
+////////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "objclip.rcv"
+#include "defabout.src"
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

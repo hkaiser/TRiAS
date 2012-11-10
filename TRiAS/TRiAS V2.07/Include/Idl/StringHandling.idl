@@ -1,0 +1,62 @@
+// @doc 
+// @module StringHandling.idl | Interfacedeklarationen für StringParsing und -handling
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declaration of defined interfaces
+interface IParseRegularExpression;
+interface IParseStringPairs;
+interface IComposeStringPairs;
+
+///////////////////////////////////////////////////////////////////////////////
+// Sonstige hier benötigte Konstanten
+#if !defined(VARIANT_TRUE)
+#define VARIANT_TRUE	((VARIANT_BOOL)0xffff)
+#define VARIANT_FALSE	((VARIANT_BOOL)0)
+#endif // !VARIANT_TRUE
+
+///////////////////////////////////////////////////////////////////////////////
+// 
+	[
+		object,
+		uuid(C21AAF92-2DE5-11D1-969A-00A024D6F582),
+		dual,
+		helpstring("IParseRegularExpression Interface"),
+		pointer_default(unique)
+	]
+	interface IParseRegularExpression : IDispatch
+	{
+		[propget, id(1), helpstring("Liefert das aktuelle Suchpattern (Suchmuster).")] HRESULT Pattern([out, retval] BSTR *pVal);
+		[propput, id(1), helpstring("Setzt das aktuelle Suchpattern (Suchmuster).")] HRESULT Pattern([in] BSTR newVal);
+		[propget, id(2), helpstring("Liefert die Anzahl der gefundenen Teilzeichenketten.")] HRESULT Groups([out, retval] long *pVal);
+		[propget, id(3), helpstring("Liefert die gefundene Teilzeichenkette 'Index'.")] HRESULT Group([in] long Index, [out, retval] BSTR *pVal);
+		[id(100), helpstring("Analysiert die übergebene Zeichenkette 'ToMatch' an Hand des aktuellen Suchpatterns.")] HRESULT Match([in] BSTR ToMatch, [in, optional] VARIANT StartAt, [in, optional] VARIANT MatchLen, [out, retval] long *Matched);
+		[id(101), helpstring("Analysiert 'SearchLen' Zeichen der Zeichenkette 'ToSearch' ab Position 'StartAt' an Hand des aktuellen Suchpatterns.")] HRESULT Search([in] BSTR ToSearch, [in, out, optional] VARIANT *StartAt, [in, out, optional] VARIANT *SearchLen, [out, retval] BSTR *Found);
+		[id(102), helpstring("Ersetzt alle gefundenen Teilzeichenketten in 'ToReplace' durch 'NewString'.")] HRESULT Replace([in] BSTR ToReplace, [in] BSTR NewString, [in, optional] VARIANT ToStart, [in, optional] VARIANT ReplaceLen, [in, optional] VARIANT Global, [out, retval] BSTR *Result);
+	};
+	[
+		object,
+		uuid(C21AAF95-2DE5-11D1-969A-00A024D6F582),
+		dual,
+		helpstring("IParseStringPairs Interface"),
+		pointer_default(unique)
+	]
+	interface IParseStringPairs : IDispatch
+	{
+		[propget, id(0), helpstring("Liefert das aktuelle Suchpattern (Suchmuster).")] HRESULT Pattern([out, retval] BSTR *pVal);
+		[propput, id(0), helpstring("Setzt das aktuelle Suchpattern (Suchmuster).")] HRESULT Pattern([in] BSTR newVal);
+		[propget, id(1), helpstring("Liefert die jeweils zweite Zeichenkette des Paares, welches durch 'Key' identifiziert wird.")] HRESULT Value([in] BSTR Key, [out, retval] BSTR *pVal);
+		[id(100), helpstring("Analysiert die Zeichenkette 'ToParse' und speichert zusammengehörige Paare von Teilzeichenketten.")] HRESULT Parse([in] BSTR ToParse, [out, retval] long *Pairs);
+		[id(101), helpstring("Liefert einen Enumerator, der alle ersten Teilzeichenketten der gespeichertten Paare enthält.")] HRESULT GetKeyStrings([out, retval] IUnknown **Keys);
+	};
+	[
+		object,
+		uuid(6B77F344-A121-11D1-BA21-080036D63803),
+		dual,
+		helpstring("IComposeStringPairs Interface"),
+		pointer_default(unique)
+	]
+	interface IComposeStringPairs : IDispatch
+	{
+		[propget, id(0), helpstring("Liefert eine Zeichenkette, die alle enthaltenen Key/Wertpaare enthält.")] HRESULT ComposedData ([out, retval] BSTR *pVal);
+		[id(100), helpstring("Setzt die jeweils zweite Zeichenkette des Paares, welches durch 'Key' identifiziert wird.")] HRESULT SetValue([in] BSTR Key, [in] BSTR Val, [in, optional, defaultvalue(VARIANT_FALSE)] VARIANT_BOOL fCreate);
+	};

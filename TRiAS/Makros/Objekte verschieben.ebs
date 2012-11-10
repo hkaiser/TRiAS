@@ -1,0 +1,399 @@
+' -----------------------------------------------------------------------------
+' $DESCRIPTION: Verschieben von Objekten in einer TRiAS-Datenbank
+' -----------------------------------------------------------------------------
+'	'Objekte verschieben.ebs'	TRiAS-MakroErweiterung
+' -----------------------------------------------------------------------------
+'	(c)	uve GmbH FEZ Potsdam, 25.04.1997 A.Denkewitz
+'	#HK970616: Verschiebung nach NO, NW, SO, SW
+'	#HK970621: Statusanzeige hinzugefügt 
+'	#HK970623: Als TRiAS-Erweiterung verwendbar (s. Endeknopf)
+'	#HK971023: Objekte werden jetzt auch dann bearbeitet, wenn sei nach der
+'			   Verschiebung außerhalb des alten DB-Containers liegen und wenn
+'			   die Verschiebung ausschließlich nach rechts und/oder oben 
+'			   erfolgt.
+' -----------------------------------------------------------------------------
+'	Verschiebt alle in OR-Fenstern markierten Objekte in die
+'	verschiedenen Himmelsrichtungen. Der Betrag der Verschiebung
+'	ist über einen Dialog einstellbar.
+' -----------------------------------------------------------------------------
+
+Option Explicit
+
+' -----------------------------------------------------------------------------
+' Globale Variablen
+Private docGD As GeoDocument		' aktuelles Projekt
+
+' aktuell eingestellte Verschiebungswerte
+Private m_iDiffSN As Double			
+Private m_iDiffOW As Double
+
+' ToolBar und ToolBarKnöfe
+Private tbK As Toolbar
+
+Private tbbNW As ToolbarButton
+Private tbbN As ToolbarButton
+Private tbbNO As ToolbarButton
+Private tbbW As ToolbarButton
+Private tbbOpt As ToolbarButton
+Private tbbO As ToolbarButton
+Private tbbSW As ToolbarButton
+Private tbbS As ToolbarButton
+Private tbbSO As ToolbarButton
+
+' -----------------------------------------------------------------------------
+' Beschreibungs-Strings
+Const strToolNW = "Verschiebt Objekte nach Nord-Westen"
+Const strToolN = "Verschiebt Objekte nach Norden"
+Const strToolNO = "Verschiebt Objekte nach Nord-Osten"
+Const strToolW = "Verschiebt Objekte nach Westen"
+Const strToolOpt = "Einstellungen für die Verschiebung"
+Const strToolO = "Verschiebt Objekte nach Osten"
+Const strToolSW = "Verschiebt Objekte nach Süd-Westen"
+Const strToolS = "Verschiebt Objekte nach Süden"
+Const strToolSO = "Verschiebt Objekte nach Süd-Osten"
+Const strToolEnde = "Beendet das Makro"
+
+Const NL = Chr$(13) + Chr$(10)		' Zeilenwechsel
+
+' -----------------------------------------------------------------------------
+' Deklaration aller verwendeten Routinen
+Declare Function OptDlg(ControlName$, Action%, SuppValue%) As Integer
+
+Declare Private Function AddTool (Tools As ToolBar, iNum As Integer, strName As String, _
+	PictID As Integer, strDesc As String, iState As Integer, iStyle As Integer) As ToolBarButton
+Declare Private Sub MoveObjects (dX As Double, dY As Double, iMode As Long)
+Declare Private Sub EnableButtons()
+Declare Private Sub DisableButtons()
+Declare Private Sub ShowNoObjectsError()
+
+' -----------------------------------------------------------------------------
+' "BeginScript()" wird immer vor der Script-Abarbeitung gerufen
+Sub BeginScript()
+
+Dim tbKLoc As ToolBar
+Dim Style As Long
+
+	Set docGD = GetActiveDocument()
+
+	Style = TOOLBARSTYLE_BorderAny Or TOOLBARSTYLE_Border3d Or _
+			TOOLBARSTYLE_AlignTop Or TOOLBARSTYLE_Tooltips Or _
+			TOOLBARSTYLE_FlyBy  Or TOOLBARSTYLE_SizeFixed
+	Set tbKLoc = TRiAS.AddToolBar ("Geometrie verschieben", Style)
+'	tbKLoc.CtrlID = 12347
+																					   
+' 1. Reihe der Knöpfe
+	Set tbbNW = AddTool (tbKLoc, 0, "NordWest", Tool43, strToolNW, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+	Set tbbN = AddTool (tbKLoc, 1, "Nord", Tool27, strToolN, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+	Set tbbNO = AddTool (tbKLoc, 2, "NordOst", Tool44, strToolNO, BUTTONSTATE_Enabled Or BUTTONSTATE_Wrap, BUTTONSTYLE_Button)
+
+' 2. Reihe der Knöpfe
+	Set tbbW = AddTool (tbKLoc, 3, "West", Tool25, strToolW, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+	Set tbbOpt = AddTool (tbKLoc, 4, "Option", Tool34, strToolOpt, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+	Set tbbO = AddTool (tbKLoc, 5, "Ost", Tool26, strToolO, BUTTONSTATE_Enabled Or BUTTONSTATE_Wrap, BUTTONSTYLE_Button)
+
+' 3. Reihe der Knöpfe
+	Set tbbSW = AddTool (tbKLoc, 6, "SuedWest", Tool45, strToolSW, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+	Set tbbS = AddTool (tbKLoc, 7, "Sued", Tool28, strToolS, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+	Set tbbSO = AddTool (tbKLoc, 8, "SuedOst", Tool46, strToolSO, BUTTONSTATE_Enabled Or BUTTONSTATE_Wrap, BUTTONSTYLE_Button)
+
+' 4. Reihe der Knöpfe: Endebutton, nur, wenn nicht als Zusatzmodul geladen
+'	If (Not IsExtension()) Then
+'	Dim Dummy As ToolBarButton 
+'
+'		Set Dummy = AddTool (tbKLoc, 9, "Ende", Tool48, strToolEnde, BUTTONSTATE_Enabled Or BUTTONSTATE_Wrap, BUTTONSTYLE_Button)
+'	End if
+
+	tbKLoc.DockState = DOCKSTATE_DockedRight	' rechts andocken
+	tbKLoc.Visible = 1
+
+	Set tbK = tbKLoc
+
+	m_iDiffSN = 10
+	m_iDiffOW = 10
+
+End Sub
+
+' -----------------------------------------------------------------------------
+' "Main()" ist der eigentliche Startpunkt des Makroscriptes 
+Sub Main()
+' Dieser Script muß auch nach Main() aktiv bleiben
+	SetBreakScript (False)
+
+' Testen, ob bereits ein Projekt geöffnet ist, dann Knöpfe aktivieren
+	If (docGD Is Nothing) Then
+		DisableButtons
+	End If
+End Sub 
+
+' -----------------------------------------------------------------------------
+' "EndScript()" wird immer nach Beendigung der Script-Abarbeitung gerufen
+Sub EndScript()
+' ToolBar ausblenden
+	If (tbK Is Not Nothing) Then
+		tbK.Visible = False
+	End If
+
+' alle Objekte freigeben
+	Set tbbNW = Nothing
+	Set tbbN = Nothing
+	Set tbbNO = Nothing
+	Set tbbW = Nothing
+	Set tbbOpt = Nothing
+	Set tbbO = Nothing
+	Set tbbSW = Nothing
+	Set tbbS = Nothing
+	Set tbbSO = Nothing
+
+	If (tbK Is Not Nothing) Then
+		tbK.Remove		' ToolBar selbst freigeben
+	End If
+	Set tbK = Nothing
+
+	Set docGD = Nothing
+
+' Jetzt wird der Script wirklich abgebrochen
+	SetBreakScript (True)
+End Sub
+
+' -----------------------------------------------------------------------------
+' Nutzer drückt Knöpfchen
+Sub Ende_Click()
+	SetBreakScript (True)
+End Sub
+
+Sub Option_Click()
+	Begin Dialog OptionDialog ,,254,61,"Optionen für das Verschieben von Objekten",.OptDlg
+		OKButton 192,4,56,14
+		CancelButton 192,22,56,14
+		TextBox 120,14,40,12,.TextBox1
+		Text 8,17,100,8,"Schrittweite vertikal [m]:",.Text1
+		TextBox 120,34,40,12,.TextBox2
+		Text 8,37,100,8,"Schrittweite horizontal [m]:",.Text2
+	End Dialog
+
+' Dialog zur Parametereinstellung anzeigen
+Dim myDialog As OptionDialog
+Dim r%
+
+	r% = Dialog (myDialog)
+
+End Sub
+
+Function OptDlg(ControlName$, Action%, SuppValue%) As Integer
+
+	If Action = 1 Then             ' Aktionen bevor Dialog sichtbar wird
+	' mit aktuellen Werten voreinstellen
+		DlgText "TextBox1", m_iDiffSN
+		DlgText "TextBox2", m_iDiffOW
+	End If
+
+	If Action = 2 Then			' Aktionen bei Click
+		Select Case ControlName$
+			Case "OK"			' OKButton gedrückt
+				OptDlg = 0		'DialogBox schließen
+				m_iDiffSN = DlgText$( "TextBox1" )
+				m_iDiffOW = DlgText$( "TextBox2" )
+				If (m_iDiffSN < 1) Then	m_iDiffSN = 1
+				If (m_iDiffOW < 1) Then	m_iDiffOW = 1
+			
+			Case "Cancel"		' Abbrechen gedrückt
+				OptDlg = 0		'DialogBox schließen
+		End Select
+	End If
+End Function
+
+' -----------------------------------------------------------------------------
+' "OnDocumentToClose()" wird bei Schließen des aktuellen Projektes gerufen
+Sub OnDocumentToClose (Doc As GeoDocument)
+	DisableButtons		' Knöpfe passivieren
+	Set docGD = Nothing
+End Sub
+
+' "OnDocumentOpened()" wird bei Öffnen eines Projektes gerufen
+Sub OnDocumentOpened (Doc As GeoDocument)
+	Set docGD = GetActiveDocument()
+	If (docGD Is Not Nothing) Then
+		EnableButtons		' Knöpfe aktivieren
+	End If
+End Sub
+
+' -----------------------------------------------------------------------------
+' eigentliche VerschiebeRoutinen
+Sub NordWest_Click()
+	MoveObjects -m_iDiffOW, m_iDiffSN, MODGEOMETRY_ModObject Or MODGEOMETRY_ForceGeometry
+End Sub
+
+Sub Nord_Click()
+	MoveObjects 0, m_iDiffSN, MODGEOMETRY_ModObject Or MODGEOMETRY_ForceGeometry
+End Sub
+
+Sub NordOst_Click()
+	MoveObjects m_iDiffOW, m_iDiffSN, MODGEOMETRY_ModObject Or MODGEOMETRY_ForceGeometry
+End Sub
+
+Sub SuedWest_Click()
+	MoveObjects -m_iDiffOW, -m_iDiffSN, MODGEOMETRY_ModObject Or MODGEOMETRY_ForceGeometry
+End Sub
+
+Sub Sued_Click()
+	MoveObjects 0, -m_iDiffSN, MODGEOMETRY_ModObject Or MODGEOMETRY_ForceGeometry
+End Sub
+
+Sub SuedOst_Click()
+	MoveObjects m_iDiffOW, -m_iDiffSN, MODGEOMETRY_ModObject Or MODGEOMETRY_ForceGeometry
+End Sub
+
+Sub Ost_Click()
+	MoveObjects m_iDiffOW, 0, MODGEOMETRY_ModObject Or MODGEOMETRY_ForceGeometry
+End Sub
+
+Sub West_Click()
+	MoveObjects -m_iDiffOW, 0, MODGEOMETRY_ModObject Or MODGEOMETRY_ForceGeometry
+End Sub
+
+' -----------------------------------------------------------------------------
+' Hinzufügen eines Knopfes zur Toolbar
+Function AddTool (Tools As ToolBar, iNum As Integer, strName As String, _
+	PictID As Integer, strDesc As String, iState As Integer, iStyle As Integer) _
+	As ToolBarButton
+
+Dim P As Image
+Dim TB As New ToolBarButton
+
+	Set P = LoadResPicture (PictID, vbResBitmap)
+	If (P Is Not Nothing) Then
+		TB.Name$ = StrName
+		TB.HelpText$ = strDesc
+		TB.State = iState
+		TB.Style = iStyle
+		TB.AttachImage P
+		TB.CmdID = PictID	' CommandID ist PictID (eindeutig ?!)
+
+		Tools.InsertButton iNum, TB
+		Set AddTool = TB
+	Else
+		Set AddTool = Nothing
+	End If
+End Function
+
+' -----------------------------------------------------------------------------
+' HilfsRoutine zum Verschieben aller selektierten Objekte
+Sub MoveObjects (dX As Double, dY As Double, iMode As Long)
+
+Dim objsRWin As GeoObjectWins	' alle Recherchefenster
+Dim objRWin As GeoObjectWin		' ein Recherchefenster
+Dim objsRO As GeoObjects		' alle Geoobjekte eines Recherchefensters
+Dim objRO As GeoObject			' ein Geoobjekt
+Dim otype%, retval%
+Dim XM#, YM#					' Mittelpunkt eines Objektes
+
+	DisableButtons
+
+' Liste der geöffneten Recherchefenster abfragen
+	Set objsRWin = docGD.GetGeoObjectWins()
+	If (objsRWin.Count = 0) Then
+		ShowNoObjectsError	' Kein Fenster da: Fehler melden
+		EnableButtons
+		Exit Sub			' und weiter
+	End If
+
+' Testen, ob überhaupt selektierte Objekte existieren
+Dim SelObjs As Long				' Zähler der selektierten Objekte
+
+	SelObjs = 0
+	For Each objRWin In objsRWin
+		Set objsRO = objRWin.GetSelectedObjects()
+		SelObjs = SelObjs + objsRO.Count
+	Next objRWin
+	If (SelObjs = 0) Then
+		ShowNoObjectsError	' Keine selektierten Objekte da: Fehler melden
+		EnableButtons
+		Exit Sub			' und weiter
+	End If
+
+' StatusAnzeige erzeugen und initialisieren
+Dim Status As New StatusIndicator 
+
+	If (Status Is Not Nothing) Then
+		Status.Restart 0, SelObjs, STATUS_ShowAllFields
+		Status.Caption = "Verschieben von Objekten"
+		Status.Field(1) = Str$(SelObjs)
+		Status.Field(2) = "Objekte werden verschoben."
+		Status.Field(3) = "Es wurden bereits %d%% der selektierten Objekte verschoben."
+	End If
+
+' Jetzt alle selektierten Objekte bearbeiten
+Dim ActCnt As Long		' Zähler der bearbeiteten Objekte
+
+	ActCnt = 0
+	For Each objRWin In objsRWin
+		Set objsRO = objRWin.GetSelectedObjects()
+		For Each objRO In objsRO
+			otype% = objRO.GetGeometry( XM#, YM# )
+			XM# = XM# + dX
+			YM# = YM# + dY
+			retval% = objRO.PutGeometry(otype%, XM#, YM#, iMode)
+
+		' Status weiterschalten
+			If (Status Is Not Nothing) Then
+				ActCnt = ActCnt + 1
+				Status.Field(4) = "Objekt: " + Str$(objRO.Value)
+				If (Status Is Not Nothing) Then
+					Status.SetPosition ActCnt
+					If (Status.WasCanceled()) Then	' Abbrechen gedrückt
+						Exit For					' innere Schleife beenden
+					End If
+				End If
+			End If
+
+		Next objRO
+		If (Status.WasCanceled()) Then	' Abbrechen gedrückt
+			Exit For					' äußere Schleife beenden
+		End If
+	Next objRWin
+
+	Set Status = Nothing	' Geduldsanzeige ausblenden
+	docGD.RePaint			' alles neu zeichnen
+	EnableButtons			' Knöpfchen wieder aktivieren
+
+End Sub
+
+' -----------------------------------------------------------------------------
+' Fehler melden, daß keine selektierten Objekte vorhanden sind
+Const strPrompt = _
+	"Es sind keine Objekte für die Verschiebeoperation ausgewählt. " + NL + _
+	"Selektieren Sie wenigstens ein Objekt in einem Objektrecherchefenster " + _
+	"und versuchen Sie es erneut."
+Const strTitle = "Verschieben von Objekten"
+
+Sub ShowNoObjectsError()
+	MsgBox Prompt:=strPrompt, Title:=strTitle, Buttons:=ebInformation
+End Sub
+
+' -----------------------------------------------------------------------------
+' Sonstiges 
+Sub EnableButtons ()
+	tbbNW.State = BUTTONSTATE_Enabled Or BUTTONSTATE_NoKickIdle
+	tbbN.State = BUTTONSTATE_Enabled Or BUTTONSTATE_NoKickIdle
+	tbbNO.State = BUTTONSTATE_Enabled Or BUTTONSTATE_NoKickIdle
+	tbbW.State = BUTTONSTATE_Enabled Or BUTTONSTATE_NoKickIdle
+	tbbOpt.State = BUTTONSTATE_Enabled Or BUTTONSTATE_NoKickIdle
+	tbbO.State = BUTTONSTATE_Enabled Or BUTTONSTATE_NoKickIdle
+	tbbSW.State = BUTTONSTATE_Enabled Or BUTTONSTATE_NoKickIdle
+	tbbS.State = BUTTONSTATE_Enabled Or BUTTONSTATE_NoKickIdle
+	tbbSO.State = BUTTONSTATE_Enabled
+End Sub
+
+Sub DisableButtons ()
+	tbbNW.State = BUTTONSTATE_Disabled Or BUTTONSTATE_NoKickIdle
+	tbbN.State = BUTTONSTATE_Disabled Or BUTTONSTATE_NoKickIdle
+	tbbNO.State = BUTTONSTATE_Disabled Or BUTTONSTATE_NoKickIdle
+	tbbW.State = BUTTONSTATE_Disabled Or BUTTONSTATE_NoKickIdle
+	tbbOpt.State = BUTTONSTATE_Disabled Or BUTTONSTATE_NoKickIdle
+	tbbO.State = BUTTONSTATE_Disabled Or BUTTONSTATE_NoKickIdle
+	tbbSW.State = BUTTONSTATE_Disabled Or BUTTONSTATE_NoKickIdle
+	tbbS.State = BUTTONSTATE_Disabled Or BUTTONSTATE_NoKickIdle
+	tbbSO.State = BUTTONSTATE_Disabled
+End Sub
+
+   

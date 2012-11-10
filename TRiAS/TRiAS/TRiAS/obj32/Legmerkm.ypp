@@ -1,0 +1,165 @@
+// Grammatik für LegendenEintragsBeschreibungen --------------------------------
+// File: LEGMERKM.YXX
+
+// Dateinamen der Ausgabe (Lexer/Parser) ---------------------------------------
+output lexer 	source "legmerkl.cxx" ;
+output lexer 	header "legmerkl.hxx" ;
+output parser 	source "legmerky.cxx" ;
+output parser 	header "legmerky.hxx" ;
+
+class LegendMerkmal ;
+
+// LexerSection ---------------------------------------------------------------
+lexer
+
+construct	STRING :: STRING 
+	constructor body {
+	// Anführungszeichen ausblenden
+	char cScope = *yy_this_string;
+	short iLen = strlen(yy_this_string) -2;
+	
+	// umkopieren und abschneiden
+		memmove (yy_this_string, yy_this_string+1, iLen);
+		yy_this_string[iLen] = '\0';
+	}
+	;
+	
+construct	INTEGER :: DEFAULT		
+	member	{
+	private:
+		int m_iValue;		// Zahlenwert
+	public:
+		int yy_integer (void) { return m_iValue; }
+		void yy_integer (short iValue) { m_iValue = iValue; }
+	}
+	constructor initializer	{ m_iValue(0) }
+	constructor body {
+	char cbValue[30];
+	
+		memcpy (cbValue, yy_this_lex_ptr->yy_lex_token(),
+			yy_this_lex_ptr->yy_lex_len());
+		cbValue[yy_this_lex_ptr->yy_lex_len()] = '\0';
+		m_iValue = atoi (cbValue);
+	}
+
+	;
+
+charset 	ASCII8;
+
+token		INTEGER, STRING;
+	
+discard token	COMMA, COLON, EQUAL, SEMICOLON, NEWLINE, WHITESPACE;
+
+INTEGER:	"-" ? ("0" .. "9") +;
+	
+STRING:		'"' ("\\\"" | "\\\\" | "\\" @ | @)* '"'
+	|	"'" ("\\'" | "\\\\" | "\\" @ | @)* "'"
+	;
+
+COMMA:		"," ;
+COLON:		":" ;
+SEMICOLON:	";" ;
+EQUAL:		"=" ;
+WHITESPACE:	(" " | "\t")+ ;
+NEWLINE:	"\n" { ++yy_buf_lineno(); } ;
+
+// ParserSection --------------------------------------------------------------
+parser ::
+	member {
+	private:
+		yy_ref_ptr m_pEntries;
+		int m_iEntryCnt;
+		
+	public:
+		void EnterLegEntries (void) 
+		{
+			DeleteAST();	// alten Baum löschen
+			m_pEntries = new yy_ref_obj[yy_psr_last()];
+			if (m_pEntries == NULL) {
+				yy_err_report(406);
+				yy_assert_fail("space unavailable from new", "legmerkm.yxx", 93);
+			}
+			m_iEntryCnt = yy_psr_last();
+			for (short i = 0; i < m_iEntryCnt; i++) 
+				m_pEntries[i] = yy_psr_ref(i+1);
+		}
+		void DeleteAST (void)
+		{
+			if (m_pEntries && m_iEntryCnt > 0) {
+				for (short i = 0; i < m_iEntryCnt; ++i)
+					delete yy_ast_ptr(m_pEntries[i]);
+				delete [] m_pEntries;
+				m_pEntries = NULL;
+				m_iEntryCnt = 0;
+			}
+		}
+		int FCnt (void) { return m_iEntryCnt; }
+		yy_ast_ptr FEntry (int i) { return yy_ast_ptr(m_pEntries[i]); }
+	}
+	constructor initializer {
+		m_pEntries (NULL),
+		m_iEntryCnt (0)
+	}
+	destructor {
+		DeleteAST();
+	}
+	;
+
+remove		MerkmalsInfos ;
+
+construct 
+	MerkmalsInfos :: default
+	constructor body {
+		((yy_psr_LegendMerkmal_obj *)(yy_this_psr_ptr)) -> EnterLegEntries();
+		delete this;	// wird nicht mehr gebraucht
+	}
+	;
+	
+// Die Beschreibungsinfo für verschiedene Objekt-/Identifikatortypen ist 
+// einfach willkürlich anneinandergereiht.
+MerkmalsInfos:	MerkmalsInfo +
+	;
+
+MerkmalsInfo:	PEntryInfo 	// PunktBeschreibung
+	|	LEntryInfo 	// LinienBeschreibung
+	|	FEntryInfo 	// FlächenBeschreibung
+	|	TEntryInfo	// TextBeschreibung (nur für Einzelobjekte)
+	|	HEntryInfo	// Zwischenüberschrift
+	;
+
+		
+// ----------------------------------------------------------------------------
+construct 	PEntryInfo :: prefix 		
+	;
+				
+PEntryInfo:	('P'|'p') INTEGER INTEGER STRING ?
+	;
+	
+// ----------------------------------------------------------------------------
+construct 	LEntryInfo :: prefix		
+	;
+				
+LEntryInfo:	('L'|'l') INTEGER INTEGER STRING ?
+	;
+	
+// ----------------------------------------------------------------------------
+construct 	FEntryInfo :: prefix		
+	;
+			
+FEntryInfo:	('F'|'f') INTEGER INTEGER STRING ?
+	;
+	
+// ----------------------------------------------------------------------------
+construct 	TEntryInfo :: prefix		
+	;
+			
+TEntryInfo:	('T'|'t') INTEGER INTEGER STRING ?
+	;
+
+// ----------------------------------------------------------------------------
+construct 	HEntryInfo :: prefix		
+	;
+			
+HEntryInfo:	('H'|'h') INTEGER INTEGER STRING ?
+	;
+

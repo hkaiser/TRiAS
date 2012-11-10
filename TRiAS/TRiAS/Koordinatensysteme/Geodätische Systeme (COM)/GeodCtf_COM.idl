@@ -1,0 +1,79 @@
+// GeodCtf_COM.idl : IDL source for GeodCtf_COM.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (GeodCtf_COM.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#include "idl/CTFInterfaces.idl"
+#include "idl/CTFEventInterfaces.idl"
+
+///////////////////////////////////////////////////////////////////////////////
+// typelibrary
+[
+	uuid(EA290595-A6A3-11D1-A05D-0060975566B4),
+	version(1.0),
+	helpstring("GeodCtf 1.0 Type Library")
+]
+library GEODCTFLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+// Koordinatentransformationsobjekt für Bessel-Ellipsoid
+	[
+		uuid(EA2905A3-A6A3-11D1-A05D-0060975566B4),
+		helpstring("GeodBesselCoordTrans Class")
+	]
+	coclass GeodBesselCoordTrans
+	{
+		[default] interface ICoordTransform;
+		interface ICoordTransformInit;
+		[source, default] interface ICoordTransformEvents;
+	};
+
+// Koordinatentransformationsobjekt für Krassovsky-Ellipsoid
+	[
+		uuid(A8549CE0-A86D-11D1-A060-0060975566B4),
+		helpstring("GeodKrassCoordTrans Class")
+	]
+	coclass GeodKrassCoordTrans
+	{
+		[default] interface ICoordTransform;
+		interface ICoordTransformInit;
+		[source, default] interface ICoordTransformEvents;
+	};
+
+// Koordinatentransformationsobjekt für ETRS89-Ellipsoid
+	[
+		uuid(085A4E71-A911-11D1-A061-0060975566B4),
+		helpstring("GeodEtrsCoordTrans Class")
+	]
+	coclass GeodEtrsCoordTrans
+	{
+		[default] interface ICoordTransform;
+		interface ICoordTransformInit;
+		[source, default] interface ICoordTransformEvents;
+	};
+
+	[
+		uuid(5FA91F06-A839-11D1-A060-0060975566B4),
+		helpstring("CTFExGeodContext Class")
+	]
+	coclass CTFExContext
+	{
+		[default] interface ICTFExContext;
+	};
+
+// Objekt, welches PropertyPages instantiiert
+	[
+		uuid(D3BFCD43-E31A-11D1-860D-00600875138A),
+		helpstring("GeodCTFPropExt Class"),
+	]
+	coclass GeodCTFPropExt 
+	{
+		[default] interface IUnknown;
+	};
+};

@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiASDB.AscExportWrapper.1 = s 'AscExportWrapper Class'
+	{
+		CLSID = s '{DED33402-CDE6-11D1-85E2-00600875138A}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {DED33402-CDE6-11D1-85E2-00600875138A} = s 'AscExportWrapper Class'
+		{
+			ProgID = s 'TRiASDB.AscExportWrapper.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

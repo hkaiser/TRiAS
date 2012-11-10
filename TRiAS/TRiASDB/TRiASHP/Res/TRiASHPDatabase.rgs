@@ -1,0 +1,51 @@
+HKCR
+{
+	TRiASDB.TRiASHPDatabaseObject.1 = s 'TRiASHPDatabaseObject Class'
+	{
+		CLSID = s '{276A84C8-F3E9-4A2E-9318-1B258A5EC435}'
+	}
+	TRiASDB.TRiASHPDatabaseObject = s 'TRiASHPDatabaseObject Class'
+	{
+		CLSID = s '{276A84C8-F3E9-4A2E-9318-1B258A5EC435}'
+		CurVer = s 'TRiASDB.TRiASHPDatabaseObject.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {276A84C8-F3E9-4A2E-9318-1B258A5EC435} = s 'TRiASHPDatabaseObject Class'
+		{
+			ProgID = s 'TRiASDB.TRiASHPDatabaseObject.1'
+			VersionIndependentProgID = s 'TRiASDB.TRiASHPDatabaseObject'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{D582400D-E1C2-4C19-A504-4AE47EAE46DF}'
+		}
+	}
+	ForceRemove TRiASDB.TRiASHPDatabase = s 'TRiASHPDatabase Class'
+	{
+		CurVer = s 'TRiASDB.TRiASHPDatabase.1'
+	}
+	ForceRemove TRiASDB.TRiASHPDatabase.1 = s 'TRiASHPDatabase Class'
+	{
+		VersionIndependendProgID = s 'TRiASDB.TRiASHPDatabase'
+		TRiASDB
+		{
+			CLSID = s '{276A84C8-F3E9-4A2E-9318-1B258A5EC435}'
+			TypeLib = s '{D582400D-E1C2-4C19-A504-4AE47EAE46DF}'
+			Description 
+			{
+				val LongName = s 'ArcView Shape-Datenquelle (Viewer), Daten können nicht bearbeitet, sondern nur angezeigt werden.'
+				val ShortName = s 'ArcView'
+				val NameDescription = s 'ArcView Shape-Datenquelle'
+				val NameIsDirectory = s '1'
+				val NameIsFile = s '0'
+				val ReadWrite = s '0'
+				val Version = s '1.0'
+				val ToolboxBitmap32 = d 25
+				val NeedsCoordSysExisting = s 1
+			}
+		}
+	}
+}

@@ -1,0 +1,831 @@
+'\"t
+.TH ARGPARSE 3ARG "June 1995" "SDSC" "ARGUMENT PARSING"
+.SH NAME
+ArgParse  -  parse commandline arguments
+.SH SYNOPSIS
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+.if t \fB
+#include "sdsc.h"
+
+int ArgParse( argc, argv, cmnd, noptions, options, nequiv, equiv )
+	int argc;
+	char *argv[];
+	ArgCommand *cmnd;
+	int noptions;
+	ArgOption *options;
+	int nequiv;
+	ArgEquiv *equiv;
+.fi
+.if t \fR
+.SH DESCRIPTION
+\fIArgParse\fR is the primary entry point for the argument parsing
+package of \fIlibsdsc.a\fR.
+.LP
+\fIArgParse\fR provides a simple, easy-to-use and easy-to-set-up, flexible, and
+standard way of parsing commandline arguments.  Tools using this package
+have a standard commandline look and feel that is consistent with UNIX
+conventions. 
+.LP
+\fIArgParse\fR parses a commandline described by \fIargc\fR and
+\fIargv[]\fR, and breaks it down into options (keyword-value combinations)
+using information provided it by the \fIoptions[\ ]\fR and \fIequiv[\ ]\fR
+arrays passed to \fIArgParse\fR.
+While looking for command-specific options, \fIArgParse\fR also watchs for
+and automatically handles standard options like \fB-help\fR, \fB-fullhelp\fR,
+\fB-feedback\fR, \fB-register\fR, and \fB-version\fR.
+.LP
+Parsed commandline information is stored in internal data structures that
+may be queried by later calls to any of the other routines of the
+argument parsing package (see \fBSEE ALSO\fR).
+.SH ARGUMENTS
+.IP "\fIargc\fR and \fIargv[]\fR" 0.5i
+\fIargc\fR and \fIargv[]\fR are the standard argument count and
+argument vector passed to a C program's \fImain\fR.  Per UNIX convention,
+\fIargv[0]\fR is the name of the command as typed in by the user.
+.IP "\fIcmnd\fR \ \ \ \ \ \ \ \ \ \ \ \ \ " 0.5i
+\fIcmnd\fR is a pointer to an \fIArgCommand\fR structure describing attributes
+of the command (see \fBSTRUCTURES\fR).
+.IP "\fInoptions\fR and \fIoptions[\ ]\fR" 0.5i
+\fIoptions[\ ]\fR is an array of \fIArgOption\fR structures, each one describing
+one possible option for the command (see \fBSTRUCTURES\fR).
+\fInoptions\fR is the number of entries in the array.
+.IP "\fInequiv\fR and \fIequiv[\ ]\fR" 0.5i
+\fIequiv[\ ]\fR is an array of \fIArgEquiv\fR structures, each one giving an
+equivalent name (alias) for one of the keywords in the \fIoptions[\ ]\fR array
+(see \fBSTRUCTURES\fR).
+\fInequiv\fR is the number of entries in the \fIequiv[\ ]\fR array.
+.SH STRUCTURES
+.SS "The \fIArgCommand\fB struct"
+The \fIArgCommand\fR structure gives general information about the command.
+\fIArgCommand\fR is defined as follows:
+.LP
+.ne 9
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+.TS
+l s s
+l l l.
+typedef struct ArgCommand
+{
+	char	*arg_name;
+
+	int	arg_major;
+	int	arg_minor;
+	int	arg_subminor;
+
+	char	*arg_help1;
+	char	*arg_help2;
+
+	char	*arg_fullhelp1;
+	char	*arg_fullhelp2;
+
+	int	arg_flags;
+
+	char	*arg_usage;
+	char	*arg_fullusage;
+	char	*arg_version;
+	char	*arg_copyright;
+	char	*arg_register;
+	char	*arg_feedback;
+.TE
+} ArgCommand;
+.fi
+.in -0.5i
+.LP
+While there appear to be many fields, most are set to NULL string pointers.
+\fIArgParse\fR has a reasonable set of default actions.  These fields
+are supplied to let the user override those defaults.
+.LP
+.IP \fIarg_name\fR 0.5i
+\fIarg_name\fR is the name of the command.  Sometimes site administrators
+decide to install commands under different names.  In such cases, the
+name the user types in (\fIargv[0]\fR) may differ from \fIarg_name\fR.
+
+\fIarg_name\fR is used when generating feedback (bug report) and registration
+forms for the standard \fB-feedback\fR and \fB-register\fR options (see the
+\fIArgFeedback(3ARG)\fR and \fIArgRegister\fR(3ARG) \fBman\fP pages).
+
+\fIarg_name\fR is also printed out for the standard \fB-version\fR option
+(see the \fIArgVersion\fR(3ARG) \fBman\fP page).
+.IP "\fIarg_major\fR, \fIarg_minor\fR, and \fIarg_subminor\fR" 0.5i
+\fIarg_major\fR, \fIarg_minor\fR, and \fIarg_subminor\fR are three parts
+to a command version number of the form:  \fImajor.minor.subminor\fR.
+For instance, in a version number like "2.4.1," 2 is the major version number
+(\fIarg_major\fR), 4 is the minor version number (\fIarg_minor\fR), and
+1 is the subminor version number (\fIarg_subminor\fR).
+
+Version numbers are displayed for the standard \fB-version\fR,
+\fB-feedback\fR and \fB-register\fR options (see the
+\fIArgVersion\fR(3ARG),
+\fIArgFeedback(3ARG)\fR, and \fIArgRegister\fR(3ARG) \fBman\fP pages).
+.IP "\fIarg_help1\fR and \fIarg_help2\fR" 0.5i
+\fIarg_help1\fR and \fIarg_help2\fR supply two parts to
+help text printed when the standard \fB-help\fR option is given (see
+the \fIArgHelp\fR(3ARG) \fBman\fP page).
+.IP "\fIarg_fullhelp1\fR and \fIarg_fullhelp2\fR" 0.5i
+These fields are similar to the \fIarg_help1\fR and \fIarg_help2\fR fields,
+but they supply two parts to the full-length help text printed for
+the standard \fB-fullhelp\fR option (see the
+\fIArgFullHelp\fR(3ARG) \fBman\fP page).
+.IP "\fIarg_flags\fR"
+The \fIarg_flags\fR field controls how \fIArgParse\fR handles parsing
+the commandline.  \fIarg_flags\fR is a bitwise OR of any or none of
+the following flags: 
+
+.TS
+l l.
+\fBFlag\fR	\fBMeaning\fR
+ARGFNONE	No flags
+ARGFHELPONERROR	Call \fIArgHelp\fR on commandline errors
+ARGFFULLHELPONERROR	Call \fIArgFullHelp\fR on commandline errors
+.TE
+
+If none of the flags are needed, \fIarg_flags\fR should be set to
+\fIARGFNONE\fR.
+
+By default, \fIArgParse\fR displays a short error message when a user
+types an invalid commandline.  If either \fIARGFHELPONERROR\fR or
+\fIARGFFULLHELPONERROR\fR are set in \fIarg_flags\fR, \fIArgParse\fR
+also invokes \fIArgHelp\fR(3ARG) or \fIArgFullHelp\fR(3ARG) on
+commandline errors.
+.IP "\fIarg_usage\fR"
+The \fIarg_usage\fR field is a text string giving argument
+usage text for a "Usage is" line printed for \fB-help\fR and \fB-fullhelp\fR
+options (see the \fIArgHelp\fR(3ARG) and \fIArgFullHelp\fR(3ARG)
+\fBman\fP pages). 
+A NULL text pointer directs the package
+to generate the "Usage is" line automatically using the option list
+information passed to \fIArgParse\fR.
+.IP "\fIarg_fullusage\fR"
+The \fIarg_fullusage\fR field is a text string giving argument
+usage text for a "Usage is" line printed for the \fB-fullhelp\fR
+option (see the \fIArgFullHelp\fR(3ARG) \fBman\fP page). 
+A NULL text pointer directs the package to default to the value in
+\fIarg_usage\fR.  If that value too is a NULL text pointer, a "Usage is"
+line is automatically generated using the option list
+information passed to \fIArgParse\fR.
+.IP "\fIarg_version\fR"
+The \fIarg_version\fR field is a text string giving a version message
+displayed for the standard \fB-version\fR option (see the
+\fBArgVersion\fR(3ARG) \fBman\fP page).  A NULL text pointer suppresses display
+of a version message.
+.IP "\fIarg_copyright\fR"
+The \fIarg_copyright\fR field is a text string giving the copyright
+message to be displayed for \fB-version\fR, \fB-help\fR, and \fB-fullhelp\fR
+output (see the \fIArgVersion\fR(3ARG), \fIArgHelp\fR(3ARG), and
+\fIArgFullHelpf\R(3ARG)\fR \fBman\fP pages).  A NULL text pointer
+supresses display of a copyright message.
+.IP "\fIarg_register\fR and \fIarg_feedback\fR"
+These fields contain text strings used in printing user registration and
+feedback (bug) forms for the \fB-register\fR and \fB-feedback\fR options (see
+the \fIArgRegister\fR(3ARG) and \fIArgVersion\fR(3ARG) \fBman\fP pages).
+NULL text pointers for these fields disables support for the
+\fB-register\fR and \fB-feedback\fR options.
+.LP
+.SS "The \fIArgOption\fB struct"
+The \fIArgOption\fR structure describes an option that may be accepted
+by the command.
+\fIArgOption\fR is defined as follows:
+.LP
+.ne 10
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+.TS
+l s s
+l l l.
+typedef struct ArgOption
+{
+	char	*arg_keyword;
+	char	*arg_valuenames;
+	char	*arg_help;
+
+	int	arg_flags;
+	int	arg_minvalues;
+	int	arg_maxvalues;
+	int	arg_type;
+.TE
+} ArgOption;
+.fi
+.in -0.5i
+.LP
+.IP \fIarg_keyword\fR 0.5i
+\fIarg_keyword\fR is a text string for the name of an option, such
+as "verbose," "debug," "infile," "files," or "geometry".
+The keyword name should be given \fBWITHOUT A LEADING DASH\fR!
+The leading dash is assumed by \fIArgParse\fR and will be added automatically.
+
+All options must have keywords (see \fIarg_flags\fR for caveats).
+A NULL pointer or empty string for a keyword in the \fIoptions[\ ]\fR array
+causes \fIArgParse(\ )\fR to exit the program with an error message.
+
+\fIarg_keyword\fR is used in commandline parsing and in the printing
+of the usage line and options list portions of help text.
+
+In commandline parsing, any unique abbreviation of the keyword is accepted.
+For instance, if the keyword is "background," any of the following are
+accepted, unless an abbreviation is ambiguous: 
+
+.ne 10
+.in +0.5i
+.nf
+-b
+-ba
+-bac
+-back
+-backg
+-backgr
+-backgro
+-backgrou
+-backgroun
+-background
+.fi
+.in -0.5i
+.IP \fIarg_valuenames\fR 0.5i
+\fIarg_valuenames\fR is a text string describing the values, if any,
+that should follow the keyword in the option.
+If the option has no values after the keyword (see \fIarg_minvalues\fR and
+\fIarg_maxvalues\fR), then \fIarg_valuenames\fR should be a NULL pointer or
+empty string.
+
+For options with more than one value, \fIarg_valuenames\fR should list them
+all within the same string.
+For instance, a "-position" option that takes an X and Y screen location
+might set \fIarg_valuenames\fR to "xscreen yscreen".
+
+\fIarg_valuenames\fR is used in printing the usage line and option
+list of help text.  Per UNIX convention, values that are optional
+should be surrounded by square brackets ('[\ ]').  Where a list of
+values may be given, an ellipses ('...') should be used. 
+.IP \fIarg_help\fR 0.5i
+\fIarg_help\fR contains a brief (40 chars or less) description of this
+option.  This brief description is used when the option-list portion
+of the help text is displayed.
+
+\fIarg_help\fR may also contain a verbose description of the option.
+This verbose description will be displayed when specific help
+is requested about this option.  (i.e. both the -help and the -<option>
+flags are given.)  To include a verbose help message for an option, 
+proceed as follows:  Use the first 40 characters or less of the string
+for the brief message.  Then put the word "%end".  Anything
+following "%end" will be considered option-specific help.  Anything
+before "%end" will be considered to be a brief description of the option.
+
+If the word "%option" is included in the help string for an option, then
+it will be replaced with the name of the option, when the string is
+printed.  If the word "%command" is included in the help string, it will
+be replaced with the name of the executable.
+
+.IP \fIarg_flags\fR 0.5i
+\fIarg_flags\fR controls how this option is parsed.  Flags are a bitwise or
+of any of the following:
+
+.ne 6
+.in +0.5i
+.TS
+l l.
+\fBFlag\fR	\fBMeaning\fR
+ARGFNONE	No flags
+ARGFHIDDEN	Don't show option in help text
+ARGFMULTIPLE	Allow multiple occurrences of option
+ARGFREQUIRED	Print error if option isn't given
+ARGFIMPKEYWORD	Keyword may be implied
+ARGFFULLHELP	Only show in full-length help text
+.TE
+.in -0.5i
+
+If none of the flags are needed, \fIarg_flags\fR should be set to
+\fIARGFNONE\fR.
+
+\fIARGFHIDDEN\fR indicates the option is hidden and should not be listed in
+the automatically generated usage line and option list of help text.
+Typically options like \fB-debug\fR are flagged as hidden.
+
+By default, an error is printed and the program exits
+if the same option occurs more than once on the commandline.
+\fIARGFMULTIPLE\fR indicates that multiple occurrences are OK, and a
+second occurrence of the option \fBdoes not\fR overwrite the values for 
+the first occurrence.
+Each occurrence's values are saved and may be retrieved using separate calls
+to \fIArgQOccur\fR(3ARG) and \fIArgQValue\fR(3ARG).
+
+\fIARGFREQUIRED\fR indicates that the option must be given.
+If not given \fIArgParse\fR issues an error message and exits the program.
+Unless flagged as \fIARGFREQUIRED\fR, options are printed within
+square brackets ('[\ ]') on the automatically generated usage line of
+help text displays.
+
+\fIARGFIMPKEYWORD\fR indicates that the keyword given by \fIarg_keyword\fR
+is implied (optional).  Values that occur on the commandline and are
+not preceded by a keyword are assumed to be for implied keyword
+options and are assigned to options marked \fIARGFIMPKEYWORD\fR, in
+the order in which those options appear in the \fIoptions[ ]\fR array.
+Options for input and output filename lists are typical examples where
+the keyword is dropped.
+
+\fIARGFFULLHELP\fR indicates that the option should only be listed in
+full-length help listings, such as that printed by \fIArgFullHelp\fR(3ARG)
+and not in shorter help listings, such as printed by \fIArgHelp\fR(3ARG).
+By default, options are listed in both short and full-length help listings.
+.IP "\fIarg_minvalues\fR and \fIarg_maxvalues\fR" 0.5i
+\fIarg_minvalues\fR and \fIarg_maxvalues\fR give the minimum and maximum
+number of values that should follow the keyword for the option.
+\fIarg_maxvalues\fR must be greater than, or equal to \fIarg_minvalues\fR.
+
+If the option has no values, both \fIarg_minvalues\fR and \fIarg_maxvalues\fR
+should be set to 0.
+This would be the case, for instance, in
+options whose presence toggles a flag in the command, such
+as \fB-verbose\fR.
+
+If the option has a fixed number of values, both fields should be set to
+the same number.
+
+The special value \fIARGVNOMAX\fR for \fIarg_maxvalues\fR may be used if
+there is no maximum number of values for the option, such as in file lists.
+.IP \fIarg_type\fR 0.5i
+\fIarg_type\fR indicates the value type the option requires.  All values for
+the same option have the same type.  The following types are recognized:
+
+.ne 5
+.in +0.5i
+.TS
+l l.
+\fBType\fR	\fBMeaning\fR
+ARGTNONE	No type
+ARGTINT	Integer values
+ARGTFLOAT	Floating point values
+ARGTSTRING	Character string values
+.TE
+.in -0.5i
+
+If the option has no values, then \fIarg_type\fR should be set to
+\fIARGTNONE\fR.
+
+\fIARGTINT\fR values are integers in decimal, octal,
+or hexidecimal.
+Decimal is the default.
+Numbers with a leading zero are assumed to be in octal.
+Numbers with a leading '0x' are assumed to be in hexidecimal.
+If an illegal octal or hexidecimal value is entered (such as '0xG') or if
+the commandline argument has non-numeric characters in it, an error is
+printed to \fIstderr\fR and the program exits.
+
+\fIARGTFLOAT\fR values are floating-point values with or without an exponent.
+If an illegal value is entered or if the commandline argument has
+non-numeric characters, an error is printed to \fIstderr\fR and
+the program exits.
+
+\fIARGTSTRING\fR values are arbitrary numbers of characters with or
+without white space.  An \fIARGTSTRING\fR value is simply the raw
+\fIargv[\ ]\fR string. 
+
+\fIARGTRANGE\fR may be bitwise OR'ed with \fIARGTINT\fR and \fIARGTFLOAT\fR
+types to indicate that a numeric range may be given as a single value to
+the option.
+The user can enter a numeric range with any of the following forms:
+
+.ne 4
+.in +0.5i
+.TS
+l l.
+\fBForm\fR	\fBMeaning\fR
+n-m	Numbers \fIn\fR through \fIm\fR
+n-	Numbers \fIn\fR through the end
+n	Just the number \fIn\fR
+.TE
+.in -0.5i
+
+The \fIn-m\fR form specifies both a starting and ending value.
+
+The \fIn-\fR form is open-ended in that it extends from \fIn\fR through
+the end of something, as determined by the command.
+If the range refers to line numbers, for instance,
+the end might be the end of the file.
+
+The \fIn\fR form is simply a single number and may be interpreted as the
+one element range \fIn-n\fR.
+
+For integer ranges, the implied increment is by whole numbers.
+
+For floating point ranges, there is no implied increment.
+It is up to the command to establish a default and supply an option to
+specify an alternate increment.
+.LP
+.SS "\fIArgEquiv\fB struct"
+The \fIArgEquiv\fR structure describes an alternate keyword
+name (or alias) for one of the options in the \fIoptions[\ ]\fR array.
+This allows multiple names for the same thing to be supported in an easy
+way.  For instance, a \fB-backwards\fR option might have
+\fB-reverse\fR and \fB-left\fR as equivalent keywords.
+.LP
+\fIArgEquiv\fR is defined as follows:
+.LP
+.ne 5
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+.TS
+l s s
+l l l.
+typedef struct ArgEquiv
+{
+	char	*arg_keyword;
+	char	*arg_equivkeyword;
+.TE
+} ArgEquiv;
+.fi
+.in -0.5i
+.LP
+.IP \fIarg_keyword\fR 0.5i
+\fIarg_keyword\fR is the name of a keyword (without the leading dash),
+as it appears in the \fIArgOption\fR structure of the \fIoptions[\ ]\fR array.
+.IP \fIarg_equivkeyword\fR 0.5i
+\fIarg_equivkeyword\fR is an alternate name for \fIarg_keyword\fR.
+
+As with option names,
+truncation abbreviations of equivalent keywords are also handled
+by \fIArgParse\fR.
+For instance, if a keyword "name" has an equivalent keyword "title," each
+of the following would be accepted for the option (assuming the
+keyword is unambiguous):
+
+.ne 9
+.in +0.5i
+.nf
+-n
+-na
+-nam
+-name
+-t
+-ti
+-tit
+-titl
+-title
+.fi
+.in -0.5i
+.SH RETURNS
+\fIArgParse\fR returns the number of options found on the commandline.
+When counting options, an option is a keyword and its values or just the
+values if the keyword is implied.
+For instance, the following commandline has only two options, though
+there are five arguments, including the command's name:
+.LP
+.in +0.5i
+mycommand -count 34 -infile myfile.hdf
+.in -0.5i
+.LP
+\fB-count 34\fR would be the first option, and \fB-infile myfile.hdf\fR
+would be the second.  \fIArgParse\fR would return 2 after parsing this
+commandline.
+.LP
+\fIArgParse\fR checks the validity of all of its incoming arguments
+before it starts parsing the commandline.
+If anything is wrong with its arguments, it issues an error message to
+\fIstderr\fR and exits the program.
+This prevents programmer errors from getting into released products.
+.LP
+.LP
+The following error messages report user input errors:
+.LP
+.RS 0.5i
+.IP "Extra characters following float value %f for '%s' option."
+The value for an option requiring a float ended with non-numeric characters.
+.IP "Extra characters following integer value %d for '%s' option."
+The value for an option requiring a integer ended with non-numeric characters.
+.IP "Option '%s' may only be given once."
+An option not flagged with \fIARGFMULTIPLE\fR occurred more than once
+on the commandline.
+.IP "Option '%s' must be given."
+The option was flagged as \fIARGFREQUIRED\fR but was not given.
+.IP "Too few values for implied option '%s'; at least %d values required."
+Fewer than the required number of values for an implied option were found.
+.IP "Too few values for option '%s'; at least %d values required."
+Fewer than the required number of values for an option were found.
+.IP "Unknown option '%s'."
+The commandline argument was not recognized as any legal option or a
+value for an implied option.
+.RE
+.LP
+The following error messages report programmer
+errors in the initialization of the \fIArgCommand\fR, \fIArgOption\fR, and
+\fIArgEquiv\fR structures:
+.RS 0.5i
+.LP
+.IP "Out of memory in argument parsing!"
+\fIArgParse\fR could not allocate sufficient host memory while it was
+parsing commandline arguments.
+.IP "ArgCommand:  NULL ArgCommand struct pointer?"
+The \fIcmnd\fR pointer argument to \fIArgParse\fR is NULL.
+This argument must point to an initialized \fIArgCommand\fR struct describing
+the command.
+.IP "ArgCommand:  arg_name == NULL or empty?"
+The \fIarg_name\fR field of the \fIArgCommand\fR structure is a NULL
+pointer or points to an empty string (a NULL character).
+This field must point to a character string giving the name of the command.
+.IP "ArgEquiv[%d]:  arg_keyword %s not found in option list?"
+The keyword %s in the \fIarg_keyword\fR field of the %d-th \fIArgEquiv\fR
+structure is not in any of the \fIArgOption\fR descriptions.
+An equivalent keyword cannot be established for a keyword that doesn't exist.
+.IP "ArgEquiv[%d]:  arg_equivkeyword %s already used?"
+The equivalent keyword %s in the \fIarg_equivkeyword\fR field of the %d-th
+\fIArgEquiv\fR structure is already in use as a keyword or equivalent keyword.
+.IP "ArgEquiv[%d]:  duplicate use of keyword %s"
+The \fIarg_equivkeyword\fR field of the %d-th \fIArgEquiv\fR structure uses
+a keyword that is already in use either by earlier entries in the \fIoptions\fR
+and \fIequiv\fR arrays
+or by one of the standard options \fB-feedback\fR, \fB-help\fR,
+\fB-register\fR, and \fB-version\fR.
+.IP "ArgOption[-]: Too many options and equivalent keywords.  Not enough memory!"
+\fIArgParse\fR could not allocate sufficient host memory while it was
+setting up parsing tables before parsing the commandline arguments.
+.IP "ArgOption[%d]:  arg_keyword == NULL or empty?"
+The \fIarg_keyword\fR field of the %d-th \fIArgOption\fR structure is a
+NULL pointer or points to an empty string (a NULL character).
+This field must point to a character string giving the keyword for the option.
+If the keyword is to be optional (implied),
+\fIARGFIMPKEYWORD\fR can be OR'd into
+the \fIarg_flags\fR field for the option.
+.IP "ArgOption[%d]:  arg_keyword is illegal?"
+The \fIarg_keyword\fR field of the %d-th \fIArgOption\fR structure contains
+control characters or starts with a numeric.
+.IP "ArgOption[%d]:  arg_maxvalues < 0?"
+The \fIarg_maxvalues\fR field of the %d-th \fIArgOption\fR structure is
+less than zero.
+\fIarg_maxvalues\fR must be greater than or equal to zero.
+.IP "ArgOption[%d]:  arg_minvalues < 0?"
+The \fIarg_minvalues\fR field of the %d-th \fIArgOption\fR structure is
+less than zero.
+\fIarg_minvalues\fR must be greater than or equal to zero.
+.IP "ArgOption[%d]:  arg_minvalues > arg_maxvalues?"
+The \fIarg_minvalues\fR field of the %d-th \fIArgOption\fR structure is
+greater than \fIarg_maxvalues\fR.
+\fIarg_minvalues\fR must be less than or equal to \fIarg_maxvalues\fR.
+.IP "ArgOption[%d]:  arg_minvalues == ARGVNOMAX?"
+The \fIarg_minvalues\fR field of the %d-th \fIArgOption\fR structure equals
+\fIARGVNOMAX\fR.
+\fIarg_minvalues\fR must be specified as some minimum number of values to
+follow the keyword.
+.IP "ArgOption[%d]:  arg_type == ARGTNONE, yet arg_minvalues > 0?"
+The \fIarg_type\fR field of the %d-th \fIArgOption\fR structure equals
+\fIARGTNONE\fR, indicating no type for the option's values, and \fIarg_minvalues\fR is greater than zero.
+\fIarg_type\fR should only be set to \fIARGTNONE\fR for options with no values.
+.IP "ArgOption[%d]:  arg_type == (ARGTRANGE|ARGTSTRING)?"
+The \fIarg_type\fR field of the %d-th \fIArgOption\fR structure has
+\fIARGTRANGE\fR set for a base type of \fIARGTSTRING\fR.
+String ranges are not supported.
+.IP "ArgOption[%d]:  can only have one implied keyword option if"
+.nf
+                  that one is allowed multiple times."
+.fi
+If any option has both the \fIARGFMULTIPLE\fR and the \fIARGFIMPKEYWORD\fR
+flags set, then there can only be one implied keyword option in the
+option list.  This error indicates this rule was violated on the %d-th option.
+.IP "ArgOption[%d]:  duplicate use of keyword %s"
+The \fIarg_keyword\fR field of the %d-th \fIArgOption\fR structure uses
+a keyword that is already in use either by earlier entries in the \fIoptions\fR
+array or by one of the standard options \fB-feedback\fR, \fB-help\fR,
+\fB-register\fR, and \fB-version\fR.
+.LP
+.RE
+.SH NOTES
+When handling value lists of variable length, the value list is
+terminated on the following conditions: 
+.in +0.5i
+.LP
+.IP "Numeric values" 0.5i
+First non-numeric argument on the
+commandline, or by the end of the commandline.
+Plus and minus signs before numerics are allowed.
+.IP "String values" 0.5i
+First argument matching one of the
+keywords, equivalent keywords, or truncated abbreviation keywords for
+any of the options or by the end of the commandline.
+.in -0.5i
+.LP
+These conditions imply that numeric implied keyword options are
+difficult  to give after a variable length numeric value list option.
+For instance, if "-color" takes 1 to 3 integers and the implied keyword 
+option "\-count" takes 1 integer, the following input line would parse
+the "34" as part of "-color":
+.LP
+.in +0.5i
+mycommand -color 0 34
+.in -0.5i
+.LP
+To associate "34" with the "-count" option, the
+user could use any of the following:
+.LP
+.in +0.5i
+mycommand -color 0 -count 34
+.br
+mycommand -color 0 0 0 34
+.br
+mycommand 34 -color 0
+.br
+mycommand -count 34 -color 0
+.in -0.5i
+.LP
+Similar problems occur if the user tries to follow a variable length numeric
+value list with an implied keyword's
+string value that looks like a number, such as a
+numeric filename like "3.4".
+Again, the user needs to supply a keyword before the value, rather than
+leaving it implied.
+.LP
+The string value list termination condition implies that
+string values may not be given that match any of the keyword permutations.
+For filenames, the user should enter a "./" preceding filenames that
+start with a dash (very rare).
+For other string values, the user should enter a space or other non-dash
+character preceding the string value (remembering to quote the string with
+the leading space).
+.LP
+Overuse of implied keywords and equivalent keywords
+can make command usage confusing.  Implied keywords should be reserved
+for filename options, and only where the order of filenames is
+obvious, such as "infile" then "outfile".  Equivalent keywords should
+be reserved for common alternate abbreviations rather than
+waiting to chose the term that best fits the option's purpose.
+.LP
+A single dash ('-') as an argument is legal and will be passed on as a
+string value rather than considered a NULL keyword.
+This allows a single dash to be used for an input or output filename to
+indicate \fIstdin\fR or \fIstdout\fR, per UNIX convention.
+.LP
+After all commandline arguments have been parsed, if any required options
+were not given, \fIArgParse\fR issues an error message to \fIstderr\fR
+and exits the program.
+.LP
+\fIArgParse\fR prints help, feedback, registration, and version texts using
+\fIArgHelp\fR(3ARG), \fIArgFullHelp\fR(3ARG), \fIArgFeedback\fR(3ARG),
+\fIArgRegister\fR(3ARG), and \fIArgVersion\fR(3ARG), all of
+which are available to the program when necessary.
+.SH EXAMPLES
+.SS "Example 1"
+A command named "mycommand" with no options other than the standard ones
+initializes its structures as follows:
+.LP
+.ne 5
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+ArgCommand mycommand =
+{
+	/* Command name and version number */
+	"mycommand,"
+	2, 4, 1,
+
+	/* -help text */
+	"%command does whatever it does.,"
+	NULL,
+
+	/* -fullhelp text */
+	NULL,
+	NULL,
+
+	/* Parsing flags * /
+	ARGFNONE,
+
+	/* Usage, version, and copyright message */
+	NULL,
+	"Argument Parsing Package Example, September 1991,"
+	"Copyright (c) 1991 San Diego Supercomputer Center (SDSC), CA, USA,"
+
+	/* Registration and feedback text */
+	NULL,
+	NULL
+};
+.fi
+.in -0.5i
+.LP
+The NULL passed as the \fIarg_help2\fR string prevents
+printing a second part to the help output.
+See \fIArgHelp\fR(3ARG) for details.
+.LP
+The NULLs passed for \fIarg_fullhelp1\fR and \fIarg_fullhelp2\fR cause
+the \fIarg_help1\fR and \fIarg_help2\fR fields to be used instead.
+See \fIArgHelp\fR(3ARG) for details.
+.LP
+\fIARGFNONE\fR just says there are no special parsing flags.
+.LP
+A NULL usage line flags automatic generation of the usage line.
+See \fIArgHelp\fR(3ARG) for details.
+.LP
+The NULLs for the registation and feedback form messages disable these
+options.
+See \fIArgRegister\fR(3ARG) and \fIArgFeedback\fR(3ARG) for more details.
+.LP
+For this command, \fIArgParse\fR would be invoked as follows:
+.LP
+.in +0.5i
+ArgParse( argc, argv, &mycommand, 0, NULL, 0, NULL );
+.in -0.5i
+.LP
+Since the command required no options and no equivalent keywords, the
+\fInoptions\fR and \fInequiv\fR arguments are both 0, and the
+\fIoptions[\ ]\fR and \fIequiv[\ ]\fR arrays are both NULL pointers.
+.SS "Example 2"
+A command named "mycommand" takes the following options in addition to
+the standard ones:
+.LP
+.ne 4
+.in +0.5i
+.TS
+l l.
+-debug level	Turn on debugging messages
+-verbose	Be verbose
+-infile infile	Slect an input file
+-outfile outfile	Select an output file
+.TE
+.in -0.5i
+.LP
+\fB-debug\fR should be hidden.  \fB-verbose\fR should only show up in
+full help listings.
+The \fB-infile\fR and \fB-outfile\fR keywords may be implied, but the options
+as a whole are required inputs (the user must give both an input file and
+an output file).
+.LP
+The \fIArgCommand\fR and \fIArgOption\fR structures are initialized
+as follows:
+.LP
+.ne 8
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+ArgCommand mycommand =
+{
+	"mycommand," 1, 2, 3,
+	"%command converts an input file 'infile' to an output\\n\\
+file 'outfile'.  Options are:,"
+	"A - for 'infile' cause stdin to be read from.  A -\\n\\
+for 'outfile' causes stdout to be written to.,"
+	NULL,
+	NULL,
+	ARGFNONE,
+	"[options] infile outfile,"
+	"Argument Parsing Package Example, September 1991,"
+	"Copyright (c) 1991 San Diego Supercomputer Center (SDSC), CA, USA,"
+	NULL,
+	NULL
+};
+
+.ne 5
+ArgOption options[4] =
+{
+	{ "debug," "level," "turn on debugging messages,"
+	ARGFHIDDEN, 1, 1, ARGINT },
+	{ "verbose," NULL, "be verbose,"
+	ARGFFULLHELP, 0, 0, ARGTNONE },
+	{ "infile," "infile," "select an input file,"
+	ARGFREQUIRED | ARGFIMPKEYWORD, 1, 1, ARGTSTRING },
+	{ "outfile," "outfile," "select an output file,"
+	ARGFREQUIRED | ARGFIMPKEYWORD, 1, 1, ARGTSTRING }
+};
+.fi
+.in -0.5i
+.LP
+Note that the help strings in the \fIArgCommand\fR initialization have
+embedded carriage returns and have been continued on the next line by
+ending the line with a backslash ('\\').
+.LP
+For \fB-verbose\fR, the \fIarg_valuenames\fR field has been set to a NULL
+pointer because the option has no values.
+.LP
+For this command, \fIArgParse\fR would be invoked as follows:
+.LP
+.in +0.5i
+.nf
+ArgParse( argc, argv, &mycommand, 4, options, 0, NULL );
+.fi
+.in -0.5i
+.SH "SEE ALSO"
+ArgFeedback(3ARG),
+ArgFullHelp(3ARG),
+ArgHelp(3ARG),
+ArgIntro(3ARG),
+ArgPError(3ARG),
+ArgQNOccur(3ARG),
+ArgQNOpt(3ARG),
+ArgQOccurOpt(3ARG),
+ArgQOpt(3ARG),
+ArgQNValue(3ARG),
+ArgQValue(3ARG),
+ArgRegister(3ARG),
+ArgVersion(3ARG),
+errno(2),
+perror(3)
+.SH PROBLEMS
+The restriction that string values may not collide with keyword names
+and their abbreviations is annoying.
+This is a common problem among UNIX tools.
+.br
+.SH AUTHORS
+Dave Nadeau, Brian Duggan
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

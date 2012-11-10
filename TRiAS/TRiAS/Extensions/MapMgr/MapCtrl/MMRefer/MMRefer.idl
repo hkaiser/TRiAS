@@ -1,0 +1,38 @@
+// MMRefer.idl : IDL source for MMRefer.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (MMRefer.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+	[
+		object,
+		uuid(B6AFCF05-1A64-11d2-8F7D-0060085FC1CE),
+		dual,
+		helpstring("IMapReferenced Interface"),
+		pointer_default(unique)
+	]
+	interface IMapReferenced : IDispatch
+	{
+	};
+[
+	uuid(97DBC243-1CD6-11D2-8F81-0060085FC1CE),
+	version(1.0),
+	helpstring("MMRefer 1.0 Type Library")
+]
+library MMREFERLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(B6AFCF06-1A64-11d2-8F7D-0060085FC1CE),
+		helpstring("MapReferenced Class")
+	]
+	coclass MapReferenced
+	{
+		[default] interface IMapReferenced;
+	};
+};

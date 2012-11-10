@@ -1,0 +1,26 @@
+// $Header: $
+// Copyright© 1999-2001 TRiAS GmbH Potsdam, All rights reserved
+// Created: 27.01.2001 17:17:45 
+//
+// @doc
+// @module allModel_cc | Compiler dependend wrapper for allModel_cc
+
+#if !defined(_ALLMODEL_CC__5A048217_D155_4764_8E2B_D156B954F6FB__INCLUDED_)
+#define _ALLMODEL_CC__5A048217_D155_4764_8E2B_D156B954F6FB__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+
+// Header include diagnostics
+#if defined(_TRIAS_DBG_HEADER_DIAGNOSTICS)
+#pragma message(__TIME__": include " __FILE__ )
+#endif
+
+#if defined(__ICL)
+#include <SIUnits/Icl/allModel_cc>
+#else
+#include <SIUnits/Msc/allModel_cc>
+#endif // defined(__ICL)
+
+#endif // !defined(_ALLMODEL_CC__5A048217_D155_4764_8E2B_D156B954F6FB__INCLUDED_)

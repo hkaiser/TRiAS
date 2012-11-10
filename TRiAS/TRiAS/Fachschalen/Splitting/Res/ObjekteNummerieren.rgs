@@ -1,0 +1,21 @@
+HKCR
+{
+	TRiASEx.NummerObjects.1 = s 'Objekte nummerieren'
+	{
+
+		CLSID = s '{DDD60A21-8B47-11d2-A7B6-00104BAF20DA}'	
+
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {DDD60A21-8B47-11d2-A7B6-00104BAF20DA} = s 'Objekte nummerieren'
+		{
+			val AppID = s '{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}'
+			ProgID = s 'TRiASEx.NummerObjects.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+}

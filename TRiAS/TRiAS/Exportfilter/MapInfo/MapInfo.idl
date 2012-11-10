@@ -1,0 +1,42 @@
+// $Header: $
+// Copyright© 1999-2001 TRiAS GmbH Potsdam, All rights reserved
+// Created: 23.01.2001 12:43:17 
+//
+// @doc
+// @module MapInfo.idl | Declaration of Interfaces etc.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#include "MapInfo.ver"
+
+[ 
+	uuid(3B4979FA-EA19-42DD-B182-C5C97340B0AB),
+	version(TYPELIB_MapInfo_VERSION),
+	helpstring(TYPELIB_MapInfo_HELPSTRING),
+] 
+library MapInfoExport 
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[ 
+		uuid(93511AB0-458A-43D4-AF7E-D197041E9F1C), 
+		object, 
+		dual, 
+		pointer_default(unique), 
+		helpstring("IMapInfoExport Interface")
+	] 
+	interface IMapInfoExport : IDispatch 
+	{
+	};
+
+	[ 
+		uuid(6FCD5A97-B0A7-4B6C-844D-39B1CD36DB01),
+		helpstring("MapInfoExport Class")
+	] 
+	coclass MapInfoExport 
+	{
+		[default] interface IMapInfoExport;
+	};
+};

@@ -1,0 +1,31 @@
+HKCR
+{
+    TRiASEx.TRiASToolbarCustomizePage.1 = s 'CTRiASToolBarCustomizePage Class'
+    {
+        CLSID = s '{A213557E-B102-11D2-95A2-006008447800}'
+    }
+    NoRemove CLSID
+    {
+        ForceRemove {A213557E-B102-11D2-95A2-006008447800} = s 'CTRiASToolBarCustomizePage Class'
+        {
+            ProgID = s 'TRiASEx.TRiASToolbarCustomizePage.1'
+            'InprocServer32' = s '%MODULE%'
+            {
+                val ThreadingModel = s 'Apartment'
+            }
+        }
+    }
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertySheetHandlers
+			{
+				NoRemove Options
+				{
+					ForceRemove TRiASEx.TRiASToolbarCustomizePage.1 = s '{A213557E-B102-11D2-95A2-006008447800}'
+				}
+			}
+		}
+	}
+}

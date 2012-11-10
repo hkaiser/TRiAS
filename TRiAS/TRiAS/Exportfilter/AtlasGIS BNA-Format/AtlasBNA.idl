@@ -1,0 +1,26 @@
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#include "AtlasBNA.ver"
+
+#define STDINTERFACE(help)	object, dual, pointer_default(unique), helpstring(help)
+
+[ uuid(EC9D9D10-06E9-11d3-995A-0060085FC1CE)
+	, version(TYPELIB_AtlasBNA_VERSION)
+	, helpstring(TYPELIB_AtlasBNA_HELPSTRING)
+] library AtlasBNAExport {
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[ uuid(B8006846-06EF-11D3-995A-0060085FC1CE)
+		, STDINTERFACE("IAtlasBNAExport Interface")
+	] interface IAtlasBNAExport : IDispatch {
+	};
+
+	[ uuid(B8006847-06EF-11D3-995A-0060085FC1CE),
+		helpstring("AtlasBNAExport Class")
+	] coclass AtlasBNAExport {
+		[default] interface IAtlasBNAExport;
+	};
+};

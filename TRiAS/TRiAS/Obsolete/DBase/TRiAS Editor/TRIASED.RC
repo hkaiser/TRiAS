@@ -1,0 +1,157 @@
+//Microsoft App Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+ABORTDLG DIALOG DISCARDABLE  60, 58, 122, 78
+STYLE DS_MODALFRAME | WS_CAPTION | WS_SYSMENU
+CAPTION "Datei drucken"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Abbrechen",IDCANCEL,34,59,55,14,WS_GROUP
+    CTEXT           "sende",-1,0,8,122,8
+    CTEXT           "Datei",IDC_FILENAME,0,20,122,8
+    CTEXT           "zum Drucker-Spooler",-1,0,33,122,8
+END
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+TRIASEDICON             ICON    DISCARDABLE     "TRIASED.ICO"
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+TRIASEDMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&Datei"
+    BEGIN
+        MENUITEM "&Neu",                        IDM_NEW
+        MENUITEM "Ö&ffnen ...\aStrg+F12",       IDM_OPEN
+        MENUITEM "&Schließen",                  IDM_CLOSE
+        MENUITEM SEPARATOR
+        MENUITEM "S&peichern\aUmschalt+F12",    IDM_SAVE
+        MENUITEM "Speichern &unter ...\aF12",   IDM_SAVEAS
+        MENUITEM SEPARATOR
+        MENUITEM "&Drucken ...",                IDM_PRINT
+        MENUITEM SEPARATOR
+        MENUITEM "&Beenden\aAlt+F4",            IDM_EXIT
+        MENUITEM SEPARATOR
+        MENUITEM "&Info über TriasED ...",      IDM_ABOUT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Wiederherstellen\aAlt+RückSchr",IDM_UNDO, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "&Kopieren\aStrg+Einfg",       IDM_COPY, GRAYED
+        MENUITEM "Kopieren &und Löschen\aUmschalt+Entf",IDM_CUT, GRAYED
+        MENUITEM "&Einfügen\aUmschalt+Einfg",   IDM_PASTE, GRAYED
+        MENUITEM "&Löschen\aEntf",              IDM_CLEAR, GRAYED
+    END
+    POPUP "&Suchen"
+    BEGIN
+        MENUITEM "&Finde ...\aF3",              IDM_FIND
+    END
+    POPUP "dBASE-&Recherche"
+    BEGIN
+        MENUITEM "&Parameter\aF5",              IDM_PARAM, GRAYED
+        MENUITEM "P&rüfen\aF6",                 IDM_PARSE, GRAYED
+        MENUITEM "Aus&führen",                  IDM_START, GRAYED
+    END
+END
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+TRIASEDACC ACCELERATORS MOVEABLE PURE 
+BEGIN
+    VK_BACK,        IDM_UNDO,               VIRTKEY,ALT
+    VK_DELETE,      IDM_CUT,                VIRTKEY,SHIFT
+    VK_INSERT,      IDM_COPY,               VIRTKEY,CONTROL
+    VK_INSERT,      IDM_PASTE,              VIRTKEY,SHIFT
+    VK_DELETE,      IDM_CLEAR,              VIRTKEY,SHIFT
+    VK_F12,         IDM_OPEN,               VIRTKEY,CONTROL
+    VK_F12,         IDM_SAVE,               VIRTKEY,SHIFT
+    VK_F12,         IDM_SAVEAS,             VIRTKEY 
+    VK_F4,          IDM_EXIT,               VIRTKEY,ALT
+    VK_F3,          IDM_FIND,               VIRTKEY 
+    VK_F5,          IDM_PARAM,              VIRTKEY 
+    VK_F6,          IDM_PARSE,              VIRTKEY 
+END
+
+#ifdef APSTUDIO_INVOKED
+//////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""defabout.dlg""\r\n"
+    "\0"
+END
+
+/////////////////////////////////////////////////////////////////////////////////////
+#endif    // APSTUDIO_INVOKED
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_FILTERSTRING        "DQL-Scripte (*.dql);*.dql;Alias-Datei (*.als);*.als;Alle Dateien (*.*);*.*;"
+    KE_RECHERCHE            "KomplexRechercheTriasED"
+END
+
+
+#ifndef APSTUDIO_INVOKED
+////////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "defabout.dlg"
+
+/////////////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

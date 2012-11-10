@@ -1,0 +1,78 @@
+HKCR { 
+	TRiASEx.CTFEtrs89GeodExt.1 = s 'Koordinatentransformation (ETRS89 geodätisch) Property Page'
+	{
+		CLSID = s '{079638BC-3123-101C-BB62-00AA0018497C}'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {079638BC-3123-101C-BB62-00AA0018497C} = s 'Koordinatentransformation (ETRS89 geodätisch) Property Page'
+		{
+			val AppID = s '{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}'
+			ProgID = s 'TRiASEx.CTFEtrs89GeodExt.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+	NoRemove TRiAS.Application.2 { NoRemove TRiASEx { NoRemove PropertySheetHandlers 
+	{
+		NoRemove Coordinates
+		{
+			ForceRemove TRiASEx.CTFEtrs89GeodExt.1 = s '{079638BC-3123-101C-BB62-00AA0018497C}'
+		}
+	} } }
+	NoRemove TRiAS.Document.2 { NoRemove TRiASEx { NoRemove PropertySheetHandlers 
+	{
+		NoRemove Coordinates
+	} } }
+}
+
+HKCU { NoRemove Software { NoRemove uve { NoRemove TRiAS 
+{ 
+	NoRemove TRiAS.Document.2 { NoRemove TRiASEx { NoRemove PropertySheetHandlers 
+	{
+		NoRemove Coordinates
+	} } }
+	NoRemove CoordSystems 
+	{
+		Geodetic  = s 'Geodätische Koordinatensysteme'
+		{
+			TRiAS.CoordGeodETRS89.1 = s 'Ellipsoid des ETRS89'
+			{
+				Val Toolbar32 = d 1
+				'Anzeige UTM 6°' = s 'Geodätisch (Ellipsoid des ETRS89), Koordinatenanzeige in UTM, Streifenbreite 6°'
+				{
+					Val CoordTransform = s 'ETRSGEOD'
+					Val CoordMeridian = s 'Autoselect'
+					Val CoordStrBreite = d 6
+					Val CoordPrecision = d 0
+					Val CoordScaling = s '1.0'
+					Val ShowGKCoords = d 2
+					Val OffsetX = s '0.0'
+					Val OffsetY = s '170000.0'
+					Val Koeff11 = s '0.001'
+					Val Koeff12 = s '0.0'
+					Val Koeff21 = s '0.0'
+					Val Koeff22 = s '0.001'
+				}
+				'Anzeige geodätischer Koordinaten' = s 'Geodätisch (Ellipsoid des ETRS89), Koordinatenanzeige geodätisch (Grad, Minute, Sekunde)'
+				{
+					Val CoordTransform = s 'ETRSGEOD'
+					Val CoordMeridian = s 'Autoselect'
+					Val CoordStrBreite = d 6
+					Val CoordPrecision = d 0
+					Val CoordScaling = s '1.0'
+					Val ShowGKCoords = d 0
+					Val OffsetX = s '0.0'
+					Val OffsetY = s '170000.0'
+					Val Koeff11 = s '0.001'
+					Val Koeff12 = s '0.0'
+					Val Koeff21 = s '0.0'
+					Val Koeff22 = s '0.001'
+				}
+			}
+		}
+	}
+} } } }
+

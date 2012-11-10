@@ -1,0 +1,35 @@
+HKCR
+{
+	TRiAS.TRiASDB.OleDB.1 = s 'TRiAS Ole DB Provider'
+	{
+		CLSID = s '{0B12EFD4-9A07-498B-A0A4-1E336569E1D0}'
+	}
+	TRiAS.TRiASDB.OleDB = s 'TRiAS Ole DB Provider'
+	{
+		CLSID = s '{0B12EFD4-9A07-498B-A0A4-1E336569E1D0}'
+		CurVer = s 'TRiAS.TRiASDB.OleDB.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {0B12EFD4-9A07-498B-A0A4-1E336569E1D0} = s 'TRiAS.TRiASDB.OleDB.1'
+		{
+			val 'OLEDB_SERVICES' = d '4294967295'
+			ProgID = s 'TRiAS.TRiASDB.OleDB.1'
+			VersionIndependentProgID = s 'TRiAS.TRiASDB.OleDB'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Both'
+			}
+			'OLE DB Provider' = s 'TRiAS OLE DB Provider'
+			'TypeLib' = s '{A69A6AD4-5AB7-4E36-86DD-708911E84229}'
+			'Implemented Categories' 
+			{
+				{A0690A28-FAF5-11D1-BAF5-080036DB0B03}
+			}
+			ExtendedErrors = s 'Extended Error Service'
+			{
+				{F6DB2422-31E0-40E7-8ACB-E3651C282CF0} = s 'TRiAS Ole DB ErrorLookup Object'
+			}
+		}
+	}
+}

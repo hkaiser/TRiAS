@@ -1,0 +1,538 @@
+
+
+
+IMVFBADJUST(3IM)       SDSC IMAGE LIBRARY        IMVFBADJUST(3IM)
+
+
+
+NAME
+     ImVfbAdjust - adjusts pixel values
+
+SYNOPSIS
+     #include "im.h"
+
+     ImVfb *ImVfbAdjust( srcVfb, keyField, keyStart, keyEnd, operation,
+          adjustField, adjustStart, adjustEnd, dstVfb )
+             ImVfb   *srcVfb;
+             int     keyField;
+             float   keyStart;
+             float   keyEnd;
+             int     operation;
+             int     adjustField;
+             float   adjustStart;
+             float   adjustEnd;
+             ImVfb   *dstVfb;
+
+
+DESCRIPTION
+     ImVfbAdjust adjusts pixel values in the _s_r_c_V_f_b image, saving
+     the adjusted image to _d_s_t_V_f_b.
+
+     ImVfbAdjust can  be  used  to  alter  VFB  field  values  to
+     brighten and darken images, adjust saturation before record-
+     ing images to video, create alpha masks, alter  image  hues,
+     and so on.
+
+     ImVfbAdjust's arguments may be grouped  into  the  following
+     categories:
+
+          Source Image        the VFB to adjust
+          Destination Image   the VFB to contain the adjusted image
+          Pixel Key           which pixels to adjust
+          Operation           how to adjust the pixels
+          Pixel Adjust        what aspect of pixels to adjust
+
+  Source Image and Destination Image
+     Pixels in _s_r_c_V_f_b will be adjusted and the results  saved  to
+     _d_s_t_V_f_b.  _s_r_c_V_f_b is unaltered by ImVfbAdjust.
+
+     If _d_s_t_V_f_b is IMVFBNEW, a new VFB is created by  ImVfbAdjust.
+     The  new  _d_s_t_V_f_b  will have the same fields, dimensions, and
+     initial contents as _s_r_c_V_f_b.
+
+     _d_s_t_V_f_b may be the same VFB as _s_r_c_V_f_b but without undesirable
+     side-effects.
+
+  Pixel Key
+     During adjustment, ImVfbAdjust scans the _s_r_c_V_f_b looking  for
+     pixels  that meet a user-defined selection criteria, or _k_e_y.
+     All pixels that match that key will be adjusted.  All pixels
+
+
+
+SDSC              Last change: August 31, 1992                  1
+
+
+
+
+
+
+IMVFBADJUST(3IM)       SDSC IMAGE LIBRARY        IMVFBADJUST(3IM)
+
+
+
+     that  do  not  match  the  key  are  copied  to  the  _d_s_t_V_f_b
+     untouched.
+
+     Statements like the following are typical key statements:
+
+          o+All pixels with a red component less than 100.
+          o+All pixels with a saturation  component  greater  than
+          0.8.
+          o+All pixels with an alpha channel value of 255.
+          o+All pixels with an intensity component between 0.0 and
+          0.2.
+
+     The _k_e_y is a pixel field given by _k_e_y_F_i_e_l_d, and a  range  of
+     values,  _k_e_y_S_t_a_r_t to _k_e_y_E_n_d, that a pixel must have in order
+     to match the criteria and be adjusted.
+
+     _k_e_y_F_i_e_l_d selects a single pixel field from one of  the  fol-
+     lowing:
+
+          _k_e_y_F_i_e_l_d       Select pixels based on
+8          ___________________________________________________________________
+          IMMONO         1-bit monochrome field value
+8          ___________________________________________________________________
+          IMGRAY         8-bit grayscale index field value (same as IMINDEX8)
+          IMINDEX8       8-bit color index field value
+          IMINDEX16      16-bit color index field value
+8          ___________________________________________________________________
+          IMRED          red field value
+          IMGREEN        green field value
+          IMBLUE         blue field value
+8          ___________________________________________________________________
+          IMALPHA        alpha field value
+          IMWPROT        write-protect field value
+          IMZ            Z-buffer field value
+          IMIDATA        integer data field value
+          IMFDATA        floating point data field value
+8          ___________________________________________________________________
+          IMHUE          hue virtual field value
+          IMSATURATION   saturation virtual field value
+          IMINTENSITY    intensity virtual field value
+
+     In general, selection of a _k_e_y_F_i_e_l_d requires that that field
+     be present in the _s_r_c_V_f_b.  A _k_e_y_F_i_e_l_d value of IMINDEX8, for
+     instance, requires that the _s_r_c_V_f_b have an IMVFBINDEX8 pixel
+     field.   Exceptions  to  this  rule  are the IMRED, IMGREEN,
+     IMBLUE, IMHUE, IMSATURATION, and IMINTENSITY _k_e_y_F_i_e_l_d values
+     as explained below.
+
+     _K_e_y_F_i_e_l_d = IMRED, IMGREEN, or IMBLUE
+          The red, green, or blue value for a pixel is determined
+          differently for different types of VFBs:
+
+          IMVFBRGB
+               The red, green, or blue pixel component is used.
+9
+
+
+2                 Last change: August 31, 1992               SDSC
+
+
+
+
+
+
+IMVFBADJUST(3IM)       SDSC IMAGE LIBRARY        IMVFBADJUST(3IM)
+
+
+
+          IMVFBINDEX8 or IMVFBINDEX16 with a color lookup table
+               The pixel's color index (8-bit or 16-bit) is  used
+               to  index  into the VFB's color lookup table.  The
+               table's red, green, or  blue  pixel  component  is
+               used.
+
+          IMVFBINDEX8 or IMVFBINDEX16 without a color lookup table
+               Color  indexed  images without color lookup tables
+               are  treated  as  grayscale  images  (also  called
+               IMVFBGRAY  images).   The  pixel's grayscale value
+               (8-bit or 16-bit) is considered to have equal red,
+               green,  and blue components and is used as is (16-
+               bit values are divided by 255 first).
+
+          IMVFBMONO
+               Monochrome images are treated as  1-bit  grayscale
+               images.   The  pixel's  monochrome  value  is con-
+               sidered to have equal red, green,  and  blue  com-
+               ponents and is used as is (after first multiplying
+               by 255).
+
+     _K_e_y_F_i_e_l_d = IMHUE, IMSATURATION, or IMINTENSITY
+          Hue,  saturation,  and  intensity  have  no  equivalent
+          storage  fields  in  a VFB.  These values are, instead,
+          computed on a per-pixel basis using the red, green, and
+          blue components of the pixel.  These RGB components are
+          determined differently for different types of VFBs,  as
+          discussed in the paragraphs above about IMRED, IMGREEN,
+          and BLUE _k_e_y_F_i_e_l_d values.
+
+     In each case, if the _k_e_y_F_i_e_l_d's pixel value  is  within  the
+     range  _k_e_y_S_t_a_r_t to _k_e_y_E_n_d, the pixel will be adjusted.  Pix-
+     els outside this range  are  copied  across  to  the  _d_s_t_V_f_b
+     untouched.
+
+     _k_e_y_S_t_a_r_t and _k_e_y_E_n_d may have the same value.  _k_e_y_S_t_a_r_t  need
+     not be less than _k_e_y_E_n_d.
+
+     The following are typical key values:
+
+          _k_e_y_F_i_e_l_d       _k_e_y_S_t_a_r_t   _k_e_y_E_n_d   Adjust all pixels with
+8          _________________________________________________________________
+          IMRED          0          99       red less than 100
+          IMSATURATION   0.8        1.0      saturation between 0.8 and 1.0
+          IMALPHA        255        255      alpha channel of 255 (opaque)
+          IMINTENSITY    0.0        0.2      intensity between 0.0 and 2.0
+
+  Operation
+     Pixels that match the key will be  adjusted  depending  upon
+     the choice of adjustment _o_p_e_r_a_t_i_o_n.
+
+
+9
+
+
+SDSC              Last change: August 31, 1992                  3
+
+
+
+
+
+
+IMVFBADJUST(3IM)       SDSC IMAGE LIBRARY        IMVFBADJUST(3IM)
+
+
+
+          _o_p_e_r_a_t_i_o_n    Action
+8          _______________________________________________________
+          IMADD        Add a value to each matching pixel
+          IMSUBTRACT   Subtract a value from each matching pixel
+          IMMULTIPLY   Multiply each matching pixel by a value
+          IMDIVIDE     Divide each matching pixel by a value
+          IMSET        Set each matching pixel to a new value
+
+  Pixel Adjust
+     Pixels that match the _k_e_y will have their _a_d_j_u_s_t_F_i_e_l_d  pixel
+     field  value modified using _o_p_e_r_a_t_i_o_n.  For instance, state-
+     ments like the following are typical adjustments:
+
+          o+Set red to 200.
+          o+Multiply intensity by 0.5.
+          o+Set alpha to 255.
+          o+Add 4 to the color index.
+          o+Set saturation values to the range 0.0 to 0.8.
+
+     _a_d_j_u_s_t_F_i_e_l_d selects a single pixel field to adjust:
+
+          _a_d_j_u_s_t_F_i_e_l_d    Adjust pixels on
+8          _____________________________________________________________
+          IMMONO         IMVFBMONO 1-bit monochrome field
+8          _____________________________________________________________
+          IMGRAY         IMVFBINDEX8 8-bit grayscale index field
+          IMINDEX8       IMVFBINDEX8 8-bit color index field
+          IMINDEX16      IMVFBINDEX16 16-bit color index field
+8          _____________________________________________________________
+          IMRED          IMVFBRGB red field
+          IMGREEN        IMVFBRGB green field
+          IMBLUE         IMVFBRGB blue field
+8          _____________________________________________________________
+          IMALPHA        IMVFBALPHA alpha field
+          IMWPROT        IMVFBWPROT write-protect field
+          IMZ            IMVFBZ Z-buffer field
+          IMIDATA        IMVFBIDATA integer data field
+          IMFDATA        IMVFBFDATA floating point data field
+8          _____________________________________________________________
+          IMHUE          IMVFBRGB fields using hue virtual field
+          IMSATURATION   IMVFBRGB fields using saturation virtual field
+          IMINTENSITY    IMVFBRGB fields using intensity virtual field
+
+     The _a_d_j_u_s_t_F_i_e_l_d must be present  in  the  _s_r_c_V_f_b,  excepting
+     IMHUE,  IMSATURATION,  and  IMINTENSITY virtual fields which
+     require the IMVFBRGB field in the _s_r_c_V_f_b.
+
+     Hue, saturation, and intensity have  no  equivalent  storage
+     fields  in a VFB.  When used in an _a_d_j_u_s_t_F_i_e_l_d, hue, satura-
+     tion, and intensity values are, instead, computed on  a  per
+     pixel  basis using the red, green, or blue components of the
+     pixel.  The hue, saturation,  or  intensity  value  is  then
+     adjusted,  and  the  HSI  triplet  converted back to RGB and
+     stored in the adjusted pixel.
+
+
+
+
+4                 Last change: August 31, 1992               SDSC
+
+
+
+
+
+
+IMVFBADJUST(3IM)       SDSC IMAGE LIBRARY        IMVFBADJUST(3IM)
+
+
+
+     _a_d_j_u_s_t_S_t_a_r_t and _a_d_j_u_s_t_E_n_d define the range of values  to  be
+     used to adjust pixels that matched the key range _k_e_y_S_t_a_r_t to
+     _k_e_y_E_n_d.  Pixels matching _k_e_y_S_t_a_r_t  will  be  adjusted  using
+     _a_d_j_u_s_t_S_t_a_r_t.   Likewise,  pixels  matching  _k_e_y_E_n_d  will  be
+     adjusted using _a_d_j_u_s_t_E_n_d.  Pixels with values between  _k_e_y_S_-
+     _t_a_r_t  and  _k_e_y_E_n_d will be adjusted using values interpolated
+     between _a_d_j_u_s_t_S_t_a_r_t and _a_d_j_u_s_t_E_n_d.  For instance,
+
+                    key             operation           adjust
+8          _____________________________________________________________
+          IMSATURATION 0.0 to 1.0   IMSET       IMSATURATION 0.0 to 0.8
+
+     remaps all pixels with saturation values between 0.0 and 1.0
+     to the new range 0.0 to 0.8.  Original pixels with values of
+     1.0 will be mapped to values of 0.8, and so on.
+
+     As another example,
+
+               key         operation        adjust
+8          _____________________________________________
+          IMRED 0 to 100   IMADD       IMGREEN 25 to 25
+
+     adds 25 to the green component of all pixels whose red  com-
+     ponents fall between 0 and 100.
+
+     Interesting remappings may be done  by  using  value  ranges
+     where  the  first  value  in  the  range is greater than the
+     second value.  For instance,
+
+                  key            operation           adjust
+8          _________________________________________________________
+          IMINTENSITY 0 to 1.0   IMSET       IMINTENSITY 1.0 to 0.0
+
+     will set intensities from 0.0 to 1.0 to intensities from 1.0
+     to  0.0.   In  other  words,  the  intensity  values will be
+     inverted, creating a pseudo-negative effect.
+
+     _a_d_j_u_s_t_S_t_a_r_t  and  _a_d_j_u_s_t_E_n_d  may  have   the   same   value.
+     _a_d_j_u_s_t_S_t_a_r_t need not be less than _a_d_j_u_s_t_E_n_d.
+
+     In all cases, if the resulting pixel field value is  greater
+     than  the  maximum  or less than the minimum legal value for
+     the field, the value is clamped to the  maximum  or  minimum
+     before being stored in the pixel field.
+
+NOTES
+     Different pixel components have  different  types  and  dif-
+     ferent minimum and maximum values.  This affects how _k_e_y and
+     _a_d_j_u_s_t value ranges will be interpreted.
+
+          Value        Type      Minimum   Maximum
+8          ________________________________________
+          red          Integer   0         255
+          green        Integer   0         255
+
+
+
+SDSC              Last change: August 31, 1992                  5
+
+
+
+
+
+
+IMVFBADJUST(3IM)       SDSC IMAGE LIBRARY        IMVFBADJUST(3IM)
+
+
+
+          blue         Integer   0         255
+8          ________________________________________
+          monochrome   Integer   0         1
+          index 8      Integer   0         255
+          index 16     Integer   0         65535
+8          ________________________________________
+          hue          Float     0.0       360.0
+          saturation   Float     0.0       1.0
+          intensity    Float     0.0       1.0
+8          ________________________________________
+          alpha        Integer   0         255
+          wprot        Integer   0         255
+          z-buffer     Integer   0         maxint
+          idata        Integer   any       any
+          fdata        Float     any       any
+
+     For those comfortable  viewing  pseudo-code,  the  following
+     code  illustrates  the adjustment algorithm used by ImVfbAd-
+     just.  In the algorithm, _k_e_y and  _a_d_j_u_s_t  ranges  have  both
+     been normalized to values between 0.0 and 1.0.
+
+          factor = (_a_d_j_u_s_t_E_n_d - _a_d_j_u_s_t_S_t_a_r_t) / (_k_e_y_E_n_d - _k_e_y_S_t_a_r_t)
+          for each pixel in the input image,
+            if pixel._k_e_y_F_i_e_l_d is between _k_e_y_S_t_a_r_t and _k_e_y_E_n_d,
+              value = (pixel._k_e_y_F_i_e_l_d - _k_e_y_S_t_a_r_t) *
+                factor + _a_d_j_u_s_t_S_t_a_r_t
+              switch on the _o_p_e_r_a_t_i_o_n,
+                add:    pixel._a_d_j_u_s_t_F_i_e_l_d += value
+                subtract: pixel._a_d_j_u_s_t_F_i_e_l_d -= value
+                multiply: pixel._a_d_j_u_s_t_F_i_e_l_d *= value
+                divide: pixel._a_d_j_u_s_t_F_i_e_l_d /= value
+                set:    pixel._a_d_j_u_s_t_F_i_e_l_d = value
+              if pixel._a_d_j_u_s_t_F_i_e_l_d > maximum,
+                pixel._a_d_j_u_s_t_F_i_e_l_d = maximum
+              if pixel._a_d_j_u_s_t_F_i_e_l_d < minimum,
+                pixel._a_d_j_u_s_t_F_i_e_l_d = minimum
+
+EXAMPLES
+  Example #1
+     Vivid, high-saturation images  look  beautiful  on  computer
+     graphics  screens.   Unfortunately the color gamut supported
+     by such screens is wider than that available on  video  dev-
+     ices,  such  as  home  VHS and S-VHS decks.  High-saturation
+     images recorded to video produce undesirable color  effects.
+     To  prevent this, ImVfbAdjust may be used to uniformly desa-
+     turate an image by setting saturation values normally in the
+     range 0.0 to 1.0 to the less-saturated range 0.0 to 0.8.
+
+                    key             operation           adjust
+8          _____________________________________________________________
+          IMSATURATION 0.0 to 1.0   IMSET       IMSATURATION 0.0 to 0.8
+
+  Example #2
+     In order to save image compute time, animators often compute
+
+
+
+6                 Last change: August 31, 1992               SDSC
+
+
+
+
+
+
+IMVFBADJUST(3IM)       SDSC IMAGE LIBRARY        IMVFBADJUST(3IM)
+
+
+
+     a  static  background  once,  without  any moving objects in
+     front of it.  The background objects are then  removed  from
+     the  scene, speeding up scene computation, and the animation
+     computed with the moving objects moving about in front of  a
+     black  background.   To finish the animation, the individual
+     black background frames need to be pasted  atop  the  static
+     background, one frame at a time.  This operation is known as
+     compositing  and  can   be   done   with   imcomp(1IM)   and
+     ImVfbComp(3IM).
+
+     When compositing, the compositing program needs to know what
+     pixels  of  the "front" image are transparent and let pixels
+     in the "back" image show through.  This is  indicated  by  a
+     coverage  mask known as an "alpha" plane.  Alpha values of 0
+     are considered transparent, while values of 255 are opaque.
+
+     In order to composite the  moving  object  frames  atop  the
+     static  background  image,  the  black  pixels of the moving
+     object frames need to be marked as transparent:  their alpha
+     components  need  to  be  set  to 0.  This can be done using
+     ImVfbAdjust by selecting all pixels with  intensities  of  0
+     (black) and setting their alpha values to 0 (transparent).
+
+                   key             operation         adjust
+8          _______________________________________________________
+          IMINTENSITY 0.0 to 0.0   IMSET       IMALPHA 0.0 to 0.0
+
+  Example #3
+     An image may be brightened by increasing the intensity value
+     for all pixels.
+
+                 key           operation           adjust
+8          _______________________________________________________
+          IMRED 0.0 to 255.0   IMADD       IMINTENSITY 0.2 to 0.2
+
+     The key selects all pixels with red  values  between  0  and
+     255.   Since  this  is  the full range of the red component,
+     this effectively selects all pixels in the image.
+
+  Example #4
+     Create a pseudo-negative of an image by inverting its inten-
+     sity  values.   Dark  values  will become light, while light
+     values will become dark.  The hue and saturation will remain
+     the same.
+
+                   key             operation           adjust
+8          ___________________________________________________________
+          IMINTENSITY 0.0 to 1.0   IMSET       IMINTENSITY 1.0 to 0.0
+
+RETURNS
+     Upon success, ImVfbAdjust returns a pointer to the  destina-
+     tion  VFB.   Upon failure, IMVFBNULL is returned and ImErrNo
+     set to one of the following:
+9
+
+
+SDSC              Last change: August 31, 1992                  7
+
+
+
+
+
+
+IMVFBADJUST(3IM)       SDSC IMAGE LIBRARY        IMVFBADJUST(3IM)
+
+
+
+          IMEADJUST        Bad _a_d_j_u_s_t_S_t_a_r_t or _a_d_j_u_s_t_E_n_d
+          IMEADJUSTFIELD   Bad _a_d_j_u_s_t_F_i_e_l_d
+          IMEFIELD         _d_s_t_V_f_s or _s_r_c_V_f_b is lacking a needed field
+          IMEKEY           Bad _k_e_y_S_t_a_r_t or _k_e_y_E_n_d
+          IMEKEYFIELD      Bad _k_e_y_F_i_e_l_d
+          IMEMALLOC        Out of host memory; cannot allocate
+          IMENOVFB         _s_r_c_V_F_b is IMVFBNULL
+          IMEOPERATION     Bad _o_p_e_r_a_t_i_o_n
+
+SEE ALSO
+     ImIntro (3IM), ImErrNo (3IM), imadjust (1IM), imcomp  (1IM),
+     imdissolve  (1IM),  imfill  (1IM),  impaste (1IM), ImVfbComp
+     (3IM), ImVfbFill (3IM), ImVfbMix (3IM)
+
+AUTHOR
+     Chris Groening and Dave Nadeau
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+8                 Last change: August 31, 1992               SDSC
+
+
+

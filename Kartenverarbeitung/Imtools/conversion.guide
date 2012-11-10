@@ -1,0 +1,127 @@
+
+SDSC Image Library conversion guide
+-----------------------------------
+
+Reading an image file:
+----------------------
+
+The following is sample code for reading in image data using the
+image library routines:  (For more detailed code, please refer to
+the source code for any one of the image tools.)
+
+#include "sdsc.h"
+#include "im.h"
+
+FILE* fp;		/* File pointer   */
+char format[1024];	/* Name of format */
+TagTable* flagsTable;	/* Information about how to read the image */
+TagTable* dataTable;	/* The image data */
+ImVfb* vfb;		/* Virtual Frame Buffer */
+ImClt* clt;		/* Color Lookup Table   */
+TagEntry* tagTableEntry; /* Entry into a tag table */
+
+/* Open the file */
+fp = fopen("filename.gif","r");
+
+/* Add the file name to the flags table */
+TagTableAppend( flagsTable,
+	TagEntryAlloc( "file name", POINTER, "filename.gif");
+
+/* Read the file, getting the name of the format */
+format[0] = '\0';
+ImFileFRead(fp, format, flagsTable, dataTable);
+
+/*
+ * The variable 'format' should now contain "gif" if we
+ * read a gif.
+ *
+ * At this point, dataTable should contain the image data.
+ * More specifically, dataTable will contain:
+ *	- a VFB
+ *	  This is the actual array of pixel values.  In the
+ *	  case of GIF's, each pixel value represents an index
+ *	  into the color lookup table.  Hence, to get the actual
+ *	  red green and blue values, one would first get the index
+ *	  value from the vfb, and then get the color value from
+ *	  the color lookup table.
+ *	- a CLT
+ *	  This is the color lookup table.
+ */
+
+ /* Get the vfb */
+ tagEntry = TagTableQDirect( dataTable, "image vfb", 0);
+ TagEntryQValue( tagEntry, &vfb);
+
+ /* Get the clt */
+ tagEntry = TagTableQDirect( dataTable, "image clt", 0);
+ TagEntryQValue( tagEntry, &clt);
+
+ /*
+  * At this point we can use functions such as
+  * ImVfbQPtr, ImVfbQIndex, ImVfb...
+  * ImCltQPtr, ImCltQRed, ImCltQGreen, ImCltQBlue, ...
+  * to examine the values in the image.
+  *
+  */
+
+Please refer to the man pages for more information about each of the
+routines used above.
+
+Writing an image file
+---------------------
+
+The following is sample code for writing out image data using the
+image library routines:
+
+/*
+ * We'll assume that we wish to write a 100x100 image.  The pixel
+ * values are assumed to be in the variables red, green, blue.
+ */
+
+#include "sdsc.h"
+#include "im.h"
+
+int x,y;	 /* loop variables */
+ImVfb* vfb;	 /* Virtual Frame Buffer */
+ImVfbPtr vfbPtr; /* Points into the vfb */
+unsigned char red[100][100];   /* Red values */
+unsigned char blue[100][100];  /* Blue values */
+unsigned char green[100][100]; /* Green values */
+TagTable* dataTable;		/* Image data */
+TagTable* flagsTable;		/* Image write options */
+FILE* fp;			/* file pointer */
+
+
+/*
+ * Set the pixels in the VFB
+ */
+
+/* Put the pointer at the beginning of the image */
+vfbPtr = ImVfbQPtr(vfb, 0, 0);
+
+/* Store the pixels in the vfb */
+for (y=0;y<100;y++)
+	for (x=0;x<100;x++)
+	{
+		ImVfbSRed(vfb, vfbPtr, red[x][y]);
+		ImVfbSGreen(vfb, vfbPtr, green[x][y]);
+		ImVfbSBlue(vfb, vfbPtr, blue[x][y]);
+
+		/* Increment to the next pixel */
+		ImVfbSInc(vfb, vfbPtr);
+	}
+
+/* Add the file name to the flags table */
+TagTableAppend( flagsTable,
+	TagEntryAlloc( "file name", POINTER, "output.jpg");
+
+/* Add the vfb to the data table */
+TagTableAppend( dataTable,
+	TagEntryAlloc( "image vfb", POINTER, &vfb);
+
+/* Write the data out as a JPEG image file */
+fp = fopen("output.jpg","w");
+ImFileFWrite( fp, "jpeg", flagsTable, dataTable);
+fclose(fp);
+
+

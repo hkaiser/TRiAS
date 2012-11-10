@@ -1,0 +1,129 @@
+#
+# GeoTIFF Library source for Makefile
+#
+
+!include <ntwin32.mak>
+
+DEPTH   = .
+
+SRCDIR  = $(DEPTH)
+
+TOP = ..
+TIFFDIR = $(TOP)\\libtiff
+PORT    = $(TOP)\\port
+
+#
+# VERSION:      @VERSION@
+# DATE:         @DATE@
+# TARGET:       @TARGET@
+# CCOMPILER:    @CCOMPILER@
+#
+SHELL   = cmd
+NULL    =
+CD      = cd
+CC      = cl
+AR      = lib
+LINK    = link
+LN      = 
+AROPTS  = -nologo $(DLLLINK)
+RANLIB  = 
+INSTALL = 
+RM      = del /f
+MAKE    = nmake -f Makeexe.vc
+
+BIN=$(SRCDIR)\\bin
+LIB_XTIFF=$(SRCDIR)\\libxtiff
+XTIFF=xtiff.obj
+XTIFFINC= xtiffio.h xtiffiop.h
+
+#
+IPATH   = -I. -I$(TOP) -I$(SRCDIR)  -I$(TIFFDIR)
+#
+CONF_LIBRARY=\
+	$(NULL)
+
+COPTS   = -nologo -DBSDTYPES $(DLLOPTS) $(DLLDEFS)
+
+OPTIMIZER=-O2 -G5
+
+CFLAGS  = $(COPTS) $(OPTIMIZER) $(IPATH) $(CONF_LIBRARY)
+
+#
+SRCS    = \
+	$(NULL)
+OBJS    = \
+	$(XTIFF) \
+	geo_free.obj \
+	geo_get.obj \
+	geo_names.obj \
+	geo_new.obj \
+	geo_print.obj \
+	geo_set.obj \
+	geo_tiffp.obj \
+	geo_write.obj \
+	$(NULL)
+
+TARGETS = libgeotiff.lib libgeog.dll libgeoc.dll
+
+#all:    $(TARGETS) Progs
+
+libgeotiff.lib: $(OBJS)
+	$(AR) $(AROPTS) $? -out:libgeotiff.lib 
+
+	
+# I don't understand why we have to go thru the rigamarole of copying the
+# import libraries to this directory, but I can't get the linker to see
+# them otherwise.  Anyway, this works, so let's go with it.
+libgeog.dll: $(OBJS)
+	copy $(TIFFDIR)\\libgtif.lib .
+	$(LINK) $(AROPTS) $? libgtif.lib $(guilibsdll) -out:libgeog.dll
+	del /f /q libgtif.lib
+
+libgeoc.dll: $(OBJS)
+	copy $(TIFFDIR)\\libctif.lib .
+	$(LINK) $(AROPTS) $? libctif.lib $(conlibsdll) -out:libgeoc.dll
+	del /f /q libctif.lib
+
+
+Progs:
+	$(CD) $(BIN) &&	$(MAKE)
+	
+$(OBJS): $(SRCDIR)\\geotiff.h $(SRCDIR)\\geotiffio.h
+
+$(XTIFFINC):
+	$(RM) $(XTIFFINC)
+	copy $(LIB_XTIFF)\\*.h .
+
+$(XTIFF): $(LIB_XTIFF)\\xtiff.c  $(XTIFFINC)
+	$(CC) -c $(CFLAGS)  $(LIB_XTIFF)\\xtiff.c
+
+geo_free.obj: $(SRCDIR)\\geo_free.c
+	$(CC) -c $(CFLAGS) $(SRCDIR)\\geo_free.c
+
+geo_get.obj: $(SRCDIR)\\geo_get.c
+	$(CC) -c $(CFLAGS) $(SRCDIR)\\geo_get.c
+
+geo_names.obj: $(SRCDIR)\\geo_names.c
+	$(CC) -c $(CFLAGS) $(SRCDIR)\\geo_names.c
+
+geo_new.obj: $(SRCDIR)\\geo_new.c
+	$(CC) -c $(CFLAGS) $(SRCDIR)\\geo_new.c
+
+geo_print.obj: $(SRCDIR)\\geo_print.c
+	$(CC) -c $(CFLAGS) $(SRCDIR)\\geo_print.c
+
+geo_set.obj: $(SRCDIR)\\geo_set.c
+	$(CC) -c $(CFLAGS) $(SRCDIR)\\geo_set.c
+
+geo_tiffp.obj: $(SRCDIR)\\geo_tiffp.c
+	$(CC) -c $(CFLAGS) $(SRCDIR)\\geo_tiffp.c
+
+geo_write.obj: $(SRCDIR)\\geo_write.c
+	$(CC) -c $(CFLAGS) $(SRCDIR)\\geo_write.c
+
+clean:
+	$(RM) $(TARGETS) $(OBJS) $(XTIFFINC)
+
+clean_objs:
+	$(RM) $(OBJS) 
+

@@ -1,0 +1,32 @@
+///////////////////////////////////////////////////////////////////////////////
+// EnumObj.idl: Basis-Interface für Enumerator
+
+// forward declarations
+interface IEnumObjectsByNumber;
+
+cpp_quote("#ifndef _ENUMOBJECTSBYNUMBER_DEFINED")
+cpp_quote("#define _ENUMOBJECTSBYNUMBER_DEFINED")
+[
+	object,
+	oleautomation,
+	uuid(079638C5-3123-101C-BB62-00AA0018497C),
+	helpstring("IEnumObjectsByNumber Interface"),
+	pointer_default(unique)
+]
+interface IEnumObjectsByNumber : IUnknown
+{
+	import "unknwn.idl";
+
+// normales Enumeratorinterface
+	HRESULT Next ([in] ULONG celt, [out] LONG *rgelt, [out] ULONG *pceltFetched);
+	HRESULT Skip ([in] ULONG celt);
+	HRESULT Reset (void);
+	HRESULT Clone ([out] IEnumObjectsByNumber **ppenum);
+
+// erweiterte Funktionalität
+	HRESULT GetCount ([out] ULONG *pclCount);
+	HRESULT AddItem ([in] LONG item);
+	HRESULT Clear (void);
+};
+cpp_quote("#endif // _ENUMOBJECTSBYNUMBER_DEFINED")
+

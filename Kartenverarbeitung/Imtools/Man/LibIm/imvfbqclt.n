@@ -1,0 +1,67 @@
+'\"t
+.if t .TH IMVFBQCLT 3IM "August 25, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY" 
+.if n .TH IMVFBQCLT 3IM "August 25, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImVfbQClt - Query the CLT (color lookup table) that is attached to a virtual frame buffer
+.br
+ImVfbSClt - Set the CLT attached to a virtual frame buffer
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+ImClt *ImVfbQClt( srcVfb )
+	ImVfb *srcVfb ;
+
+void ImVfbSClt( srcVfb, clt )
+	ImVfb *srcVfb ;
+	ImClt *clt ;
+.fi
+\fR
+.SH DESCRIPTION
+\fBImVfbSClt\fR attaches the color lookup table \fIclt\fR to the
+virtual frame buffer \fIsrcVfb\fR.  Thereafter, color index information
+in the virtual frame buffer is looked up in \fIclt\fR to obtain RGB
+color triplets.
+.LP
+\fBImVfbQClt\fR returns a pointer to the color lookup table 
+attached to the \fIsrcVfb\fR.  A return value of \fBIMCLTNULL\fR indicates
+the Vfb currently has no color lookup table.
+.SH NOTES
+Setting a Vfb's CLT to \fBIMCLTNULL\fR unattaches any CLT from the Vfb.
+.LP
+Both \fBImVfbSClt\fR and \fBImVfbQClt\fR are macros.
+.SH RETURNS
+\fBImVfbQClt\fR returns the \fIsrcVfb\fR's CLT.
+.LP
+\fBImVfbSClt\fR returns nothing.
+.SH SEE ALSO
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBImCltAlloc\fR (3IM),
+\fBImCltDup\fR (3IM)
+\fBImCltFree\fR (3IM)
+\fBImCltGrayRamp\fR (3IM),
+\fBImCltQBlue\fR (3IM),
+\fBImCltQFirst\fR (3IM),
+\fBImCltQGreen\fR (3IM),
+\fBImCltQLast\fR (3IM),
+\fBImCltQNColors\fR (3IM),
+\fBImCltQNext\fR (3IM),
+\fBImCltQPrev\fR (3IM),
+\fBImCltQPtr\fR (3IM),
+\fBImCltQRed\fR (3IM),
+\fBImCltRoll\fR (3IM),
+\fBImCltSBlue\fR (3IM),
+\fBImCltSDec\fR (3IM),
+\fBImCltSGreen\fR (3IM),
+\fBImCltSInc\fR (3IM),
+\fBImCltSRed\fR (3IM),
+.SH AUTHOR
+Mike Bailey
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

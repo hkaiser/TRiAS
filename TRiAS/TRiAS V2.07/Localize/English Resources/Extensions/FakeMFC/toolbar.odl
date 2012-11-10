@@ -1,0 +1,321 @@
+
+#define DISPID_VALUE    (0)
+#define DISPID_NEWENUM  (-4)
+
+[ 
+	uuid(07963874-3123-101C-BB62-00AA0018497C),
+	version(1.0),
+	lcid(0x0409), 
+	helpstring("TRiAS ToolBar Type Library")
+]
+library ToolBarLib
+{
+	importlib("stdole32.tlb");
+
+/////////////////////////////////////////////////////////////////////////////// 
+// TypeDefs
+typedef enum tagDOCKSTATE {
+	DOCKSTATE_FLOATING = 0,
+	DOCKSTATE_DOCKEDLEFT = 1,
+	DOCKSTATE_DOCKEDRIGHT = 2,
+	DOCKSTATE_DOCKEDTOP = 3,
+	DOCKSTATE_DOCKEDBOTTOM = 4,
+} DOCKSTATE;
+
+typedef enum tagBUTTONSTYLE {
+	BUTTONSTYLE_BUTTON = 0x00,	// TBSTYLE_BUTTON
+	BUTTONSTYLE_SEPARATOR = 0x01,	// TBSTYLE_SEP
+	BUTTONSTYLE_CHECK = 0x04,	// TBSTYLE_CHECK
+	BUTTONSTYLE_GROUP = 0x08,	// TBSTYLE_GROUP
+	BUTTONSTYLE_CHECKGROUP = 0x0c,  // TBSTYLE_CHECKGROUP 
+} BUTTONSTYLE;
+
+typedef enum tagBUTTONSTATE {
+	BUTTONSTATE_CHECKED = 0x01,	//  TBSTATE_CHECKED
+	BUTTONSTATE_PRESSED = 0x02,	//  TBSTATE_PRESSED
+	BUTTONSTATE_ENABLED = 0x04,	//  TBSTATE_ENABLED
+	BUTTONSTATE_HIDDEN = 0x08,	//  TBSTATE_HIDDEN
+	BUTTONSTATE_INDETERMINATE = 0x10,       //  TBSTATE_INDETERMINATE
+	BUTTONSTATE_WRAP = 0x20,	//  TBSTATE_WRAP
+} BUTTONSTATE;
+
+/////////////////////////////////////////////////////////////////////////////// 
+// CustomInterfaces
+[
+	uuid(07963870-3123-101C-BB62-00AA0018497C), 
+	odl, oleautomation, 
+	helpstring("IControlToolBar")
+]  
+interface IControlToolBar : IUnknown
+{
+// _TRiASBaseClass properties
+	[propget] HRESULT isA ([out, retval]LONG *plRTTI);              // Object type (RTTI) 
+	[propget] HRESULT Parent ([out, retval]IDispatch **ppIBase);    // parent object 
+	[propput] HRESULT Parent ([in]IDispatch *pIBase);
+	[propget] HRESULT Application ([out, retval]IDispatch **ppIApp);        // Application 
+	[propput] HRESULT Application ([in]IDispatch *pIApp);           // Application
+
+// IControlToolbar properties
+	[propget] HRESULT Name ([out, retval]BSTR *pbstrName);
+	[propput] HRESULT Name ([in]BSTR bstrName);
+	[propget] HRESULT Width ([out, retval]int *piWidth);
+	[propput] HRESULT Width ([in]int iWidth);
+	[propget] HRESULT Height ([out, retval]int *piHeight);
+	[propput] HRESULT Height ([in]int iHeight);
+	[propget] HRESULT Left ([out, retval]int *piLeft);
+	[propput] HRESULT Left ([in]int iLeft); 
+	[propget] HRESULT Top ([out, retval]int *piTop); 
+	[propput] HRESULT Top ([in]int iTop);
+	[propget] HRESULT DockState ([out, retval]DOCKSTATE *prgState); 
+	[propput] HRESULT DockState ([in]DOCKSTATE rgState); 
+	[propget] HRESULT Visible ([out, retval]int *pfVisible); 
+	[propput] HRESULT Visible ([in]int fVisible);
+	[propget] HRESULT Style ([out, retval]long *pdwStyle);
+	[propput] HRESULT Style ([in]long dwStyle);
+	HRESULT ToolBarButtons ([out, retval]IDispatch **pIBttns);
+	HRESULT Reset (void);
+	HRESULT InsertButton ([in]int iIndex, [in]IDispatch *pIBttn, [in]IDispatch *pUIOwner, [in]IUnknown *pIInstCtrl);
+	HRESULT DeleteButton ([in]int iIndex);
+	HRESULT Remove (void);
+};
+
+[
+	uuid(07963875-3123-101C-BB62-00AA0018497C), 
+	odl, oleautomation, 
+	helpstring("IControlToolBars")
+]  
+interface IControlToolBars : IUnknown
+{
+// _TRiASBaseClass properties
+	[propget] HRESULT isA ([out, retval]LONG *plRTTI);              // Object type (RTTI) 
+	[propget] HRESULT Parent ([out, retval]IDispatch **ppIBase);    // Parent object 
+	[propput] HRESULT Parent ([in]IDispatch *pIBase);
+	[propget] HRESULT Application ([out, retval]IDispatch **ppIApp);// Application
+	[propput] HRESULT Application ([in]IDispatch *pIApp);           // Application
+	[restricted, propget] HRESULT _NewEnum ([out, retval]IUnknown **pvEnum); 
+	[propget]HRESULT Item ([in]long lIndex, [out, retval]IDispatch **ppIToolBar); 
+	[propget] HRESULT Count ([out, retval]long *plCnt);
+	HRESULT AddItem ([out]IDispatch **ppIToolBar, [in, optional]VARIANT vName); 
+};
+
+[
+	uuid(07963872-3123-101C-BB62-00AA0018497C), 
+	odl, oleautomation, 
+	helpstring("IControlToolBarButton")
+]  
+interface IControlToolBarButton : IUnknown 
+{
+// _TRiASBaseClass properties
+	[propget] HRESULT isA ([out, retval]LONG *plRTTI);              // Object type (RTTI) 
+	[propget] HRESULT Parent ([out, retval]IDispatch **ppIBase);    // Parent object 
+	[propput] HRESULT Parent ([in]IDispatch *pIBase);
+	[propget] HRESULT Application ([out, retval]IDispatch **ppIApp);// Application
+	[propput] HRESULT Application ([in]IDispatch *pIApp);           // Application
+	[propget] HRESULT Name ([out, retval]BSTR *pbstrName);
+	[propput] HRESULT Name ([in]BSTR bstrName);
+	[propget] HRESULT Width ([out, retval]int *piWidth);
+	[propput] HRESULT Width ([in]int iWidth);
+	[propget] HRESULT HelpText ([out, retval]BSTR *pbstrHelpText); 
+	[propput] HRESULT HelpText ([in]BSTR bstrHelpText); 
+	[propget] HRESULT Identifier ([out, retval]int *piCmdID); 
+	[propput] HRESULT Identifier ([in]int iCmdID);
+	[propget] HRESULT Style ([out, retval]BUTTONSTYLE *pdwStyle); 
+	[propput] HRESULT Style ([in]BUTTONSTYLE dwStyle); 
+	[propget] HRESULT State ([out, retval]BUTTONSTATE *pdwState);
+	[propput] HRESULT State ([in]BUTTONSTATE dwState);
+	HRESULT GetImage ([out]long *phBitmap, [out]int *piCnt, [out, retval]int *piOffsetInBmp);
+	HRESULT AttachImage ([in]BSTR bstrName, [in, optional]VARIANT iIndex, [in, optional]VARIANT vSizeX); 
+	[propput] HRESULT Value ([in]boolean fClick);
+};
+
+[
+	uuid(07963877-3123-101C-BB62-00AA0018497C), 
+	odl, oleautomation, 
+	helpstring("IControlToolBarButtons")
+]  
+interface IControlToolBarButtons : IUnknown
+{
+// _TRiASBaseClass properties
+	[propget] HRESULT isA ([out, retval]LONG *plRTTI);              // Object type (RTTI) 
+	[propget] HRESULT Parent ([out, retval]IDispatch **ppIBase);    // Parent object 
+	[propput] HRESULT Parent ([in]IDispatch *pIBase);
+	[propget] HRESULT Application ([out, retval]IDispatch **ppIApp);// Application
+	[propput] HRESULT Application ([in]IDispatch *pIApp);           // Application
+	[restricted, propget] HRESULT _NewEnum ([out, retval]IUnknown **pvEnum); 
+	[propget] HRESULT Item ([in]long lIndex, [out, retval]IDispatch **ppIToolBar); 
+	[propget] HRESULT Count ([out, retval]long *plCnt);
+	HRESULT AddItem ([out]IDispatch **ppIBttn, [in, optional]VARIANT vName);
+};
+
+[
+	uuid(0796387A-3123-101C-BB62-00AA0018497C), 
+	odl, oleautomation, 
+	helpstring("IToolBarUIOwner")
+]  
+interface IToolBarUIOwner : IUnknown {
+// specific methods
+	HRESULT SetToolBarUIOwnerSite ([in]IDispatch *pIToolBar); 
+	HRESULT UpdateUI ([in]IDispatch *pICmdUI);
+	HRESULT GetDescription ([out]BSTR *pbstrDesc);
+	HRESULT FireCommand ([in]int nCode);
+};
+
+/////////////////////////////////////////////////////////////////////////////// 
+// Dispatch(dual)-Interfaces
+[
+	uuid(07963871-3123-101C-BB62-00AA0018497C), 
+	odl, oleautomation, dual,
+	helpstring("DispInterface of IControlToolBar")
+]  
+interface DControlToolBar : IDispatch 
+{
+// _TRiASBaseClass properties
+	[id(7), propget] HRESULT isA ([out, retval]LONG *plRTTI);                // ObjektTyp (RTTI)
+	[id(1), propget, hidden] HRESULT Parent ([out, retval]IDispatch **ppIBase);      // Parent object 
+	[id(1), propput, hidden] HRESULT Parent ([in]IDispatch *pIBase);
+	[id(2), propget, hidden] HRESULT Application ([out, retval]IDispatch **ppIApp);  // Application
+	[id(2), propput, hidden] HRESULT Application ([in]IDispatch *pIApp);     // Application
+
+// IControlToolbar properties
+	[id(DISPID_VALUE), propget] HRESULT Name ([out, retval]BSTR *pbstrName); 
+	[id(DISPID_VALUE), propput] HRESULT Name ([in]BSTR bstrName);
+	[id(10), propget] HRESULT Width ([out, retval]int *piWidth); 
+	[id(10), propput] HRESULT Width ([in]int iWidth);
+	[id(11), propget] HRESULT Height ([out, retval]int *piHeight); 
+	[id(11), propput] HRESULT Height ([in]int iHeight);
+	[id(12), propget] HRESULT Left ([out, retval]int *piLeft);
+	[id(12), propput] HRESULT Left ([in]int iLeft);
+	[id(13), propget] HRESULT Top ([out, retval]int *piTop);
+	[id(13), propput] HRESULT Top ([in]int iTop);
+	[id(14), propget] HRESULT DockState ([out, retval]DOCKSTATE *prgState); 
+	[id(14), propput] HRESULT DockState ([in]DOCKSTATE rgDockState); 
+	[id(15), propget] HRESULT Visible ([out, retval]int *pfVisible); 
+	[id(15), propput] HRESULT Visible ([in]int fVisible);
+	[id(16), propget] HRESULT Style ([out, retval]long *pdwStyle);
+	[id(16), propput] HRESULT Style ([in]long dwStyle);
+	[id(17)] HRESULT ToolBarButtons ([out, retval]IDispatch **ppIBttns); 
+	[id(18)] HRESULT Reset (void);
+	[id(19)] HRESULT InsertButton ([in]int iIndex, [in]IDispatch *pIBttn, [in]IDispatch *pUIOwner, [in]IUnknown *pReserved2);
+	[id(20)] HRESULT DeleteButton ([in]int iIndex);
+	[id(21)] HRESULT Remove (void);
+};
+
+[
+	uuid(07963876-3123-101C-BB62-00AA0018497C), 
+	odl, oleautomation, dual,
+	helpstring("DispInterface of IControlToolBars")
+]  
+interface DControlToolBars : IDispatch 
+{
+// _TRiASBaseClass properties
+	[id(7), propget] HRESULT isA ([out, retval]LONG *plRTTI);                // ObjektTyp (RTTI)
+	[id(1), propget, hidden] HRESULT Parent ([out, retval]IDispatch **ppIBase);      // Parent object [id(1), propput, hidden] 
+	HRESULT Parent ([in]IDispatch *pIBase);
+	[id(2), propget, hidden] HRESULT Application ([out, retval]IDispatch **ppIApp);  // Application
+	[id(2), propput, hidden] HRESULT Application ([in]IDispatch *pIApp);     // Application
+	[id(DISPID_NEWENUM), restricted, propget] HRESULT _NewEnum ([out, retval]IUnknown **pvEnum);
+	[id(DISPID_VALUE), propget] HRESULT Item ([in]long lIndex, [out, retval]IDispatch **ppIToolBar);
+	[id(100), propget] HRESULT Count ([out, retval]long *plCnt);
+	[id(101)] HRESULT AddItem ([out]IDispatch **ppIToolBar, [in, optional]VARIANT vName); 
+};
+
+[
+	uuid(07963873-3123-101C-BB62-00AA0018497C), 
+	odl, oleautomation, dual,
+	helpstring("DispInterface of IControlToolBarButton")
+]  
+interface DControlToolBarButton : IDispatch 
+{
+// _TRiASBaseClass properties
+	[id(7), propget] HRESULT isA ([out, retval]LONG *plRTTI);                // ObjektTyp (RTTI)
+	[id(1), propget, hidden] HRESULT Parent ([out, retval]IDispatch **ppIBase);      // parent object
+	[id(1), propput, hidden] 
+	HRESULT Parent ([in]IDispatch *pIBase);
+	[id(2), propget, hidden] HRESULT Application ([out, retval]IDispatch **ppIApp);  // Application 
+	[id(2), propput, hidden] 
+	HRESULT Application ([in]IDispatch *pIApp);     // Application
+	[id(DISPID_VALUE), propget] HRESULT Name ([out, retval]BSTR *pbstrName); 
+	[id(DISPID_VALUE), propput] HRESULT Name ([in]BSTR bstrName);
+	[id(30), propget] HRESULT Width ([out, retval]int *piWidth);
+	[id(30), propput] HRESULT Width ([in]int iWidth);
+	[id(31), propget] HRESULT HelpText ([out, retval]BSTR *pbstrHelpText); 
+	[id(31), propput] HRESULT HelpText ([in]BSTR bstrHelpText);
+	[id(32), propget] HRESULT Identifier ([out, retval]int *piCmdID);
+	[id(32), propput] HRESULT Identifier ([in]int iCmdID);
+	[id(33), propget] HRESULT Style ([out, retval]BUTTONSTYLE *pdwStyle);
+	[id(33), propput] HRESULT Style ([in]BUTTONSTYLE dwStyle);
+	[id(34), propget] HRESULT State ([out, retval]BUTTONSTATE *pdwState);
+	[id(34), propput] HRESULT State ([in]BUTTONSTATE dwState);
+	[id(35)] HRESULT GetImage ([out]long *phBitmap, [out]int *piCnt, [out, retval]int *piOffsetInBmp);
+	[id(36)] HRESULT AttachImage ([in]BSTR bstrName, [in, optional]VARIANT iIndex, [in, optional]VARIANT vSizeX);
+	[id(37), propput] HRESULT Value ([in]boolean fClick);
+};
+
+[
+	uuid(07963878-3123-101C-BB62-00AA0018497C), 
+	odl, oleautomation, dual,
+	helpstring("DispInterface of IControlToolBarButtons")
+]  
+interface DControlToolBarButtons : IDispatch
+{
+// _TRiASBaseClass properties
+	[id(7), propget] HRESULT isA ([out, retval]LONG *plRTTI);                // ObjektTyp (RTTI)
+	[id(1), propget, hidden] HRESULT Parent ([out, retval]IDispatch **ppIBase);      // Parent object
+	[id(1), propput, hidden] HRESULT Parent ([in]IDispatch *pIBase);
+	[id(2), propget, hidden] HRESULT Application ([out, retval]IDispatch **ppIApp);  // Application
+	[id(2), propput, hidden] HRESULT Application ([in]IDispatch *pIApp);     // Application
+	[id(DISPID_NEWENUM), restricted, propget] HRESULT _NewEnum ([out, retval]IUnknown **pvEnum);
+	[id(DISPID_VALUE), propget] HRESULT Item ([in]long lIndex, [out, retval]IDispatch **ppIToolBar);
+	[id(100), propget] HRESULT Count ([out, retval]long *plCnt);
+	[id(101)] HRESULT AddItem ([out]IDispatch **ppIBttn, [in, optional]VARIANT vName);
+};
+
+[
+	uuid(0796387B-3123-101C-BB62-00AA0018497C), 
+	odl, oleautomation, dual,
+	helpstring("Dispatchinterface of IToolBarUIOwner")
+]  
+interface DToolBarUIOwner : IDispatch {
+// specific methods
+	[id(30)] HRESULT SetToolBarUIOwnerSite ([in]IDispatch *pIToolBar); 
+	[id(31)] HRESULT UpdateUI ([in]IDispatch *pICmdUI);
+	[id(32)] HRESULT GetDescription ([out]BSTR *pbstrDesc); 
+	[id(DISPID_VALUE)] HRESULT FireCommand ([in]int nCode);
+};
+
+[
+	uuid(0796387C-3123-101C-BB62-00AA0018497C), 
+	odl, oleautomation, dual, 
+	helpstring("Dispatchinterface of ITRiASCmdUI")
+]  
+interface DTRiASCmdUI : IDispatch {
+// specific methods
+	[id(DISPID_VALUE)] HRESULT Enable ([in]int fEnable); 
+	[id(40)] HRESULT SetCheck ([in]int iState); 
+	[id(41)] HRESULT SetRadio ([in]int fOn);
+	[id(42)] HRESULT SetText ([in]BSTR bstrNewText); 
+	[id(43)] HRESULT GetID ([out]int *puiID);
+};
+
+[
+	uuid(07963835-3123-101C-BB62-00AA0018497C),
+	helpstring("ToolBar object"), hidden
+]
+coclass TRiASToolBar
+{
+	interface IControlToolBar;
+	[default] interface DControlToolBar;
+};
+
+[
+	uuid(07963879-3123-101C-BB62-00AA0018497C),
+	helpstring("ToolBarButton-Objekt"), hidden
+]
+coclass TRiASToolBarButton
+{
+	interface IControlToolBarButton; 
+	[default] interface DControlToolBarButton; 
+	interface DToolBarUIOwner;
+};
+
+}; // library

@@ -1,0 +1,350 @@
+'\"t
+.TH BINWRITE 3BIN "July 1990" "SDSC" "BINARY I/O"
+.SH NAME
+BinWrite  -  write to a binary file
+.br
+BinFWrite  -  write to a binary file
+.br
+BinSWrite  -  write to a binary string
+.SH SYNOPSIS
+.if t \fB
+.nf
+#include "sdsc.h"
+
+extern int BinErrNo;
+
+int BinWrite( fd, buf, type, nbytes, count )
+.in +0.5i
+int fd;
+? buf[ ];
+int type, nbytes, count;
+.in -0.5i
+
+int BinFWrite( fp, buf, type, nbytes, count )
+.in +0.5i
+FILE *fp;
+? buf[ ];
+int type, nbytes, count;
+.in -0.5i
+
+int BinSWrite( data, buf, type, nbytes, count )
+.in +0.5i
+char datap[ ];
+? buf[ ];
+int type, nbytes, count;
+.in -0.5i
+.fi
+.if t \fR
+.SH DESCRIPTION
+\fIBinWrite\fR, \fIBinFWrite\fR, and
+\fIBinSWrite\fR write multiple \fInbyte\fR quantities from \fIbuf\fR to a
+destination as raw binary data.
+.LP
+\fIBinWrite\fR writes to the open file or stream indicated by the UNIX
+file descriptor \fIfd\fR.
+.LP
+\fIBinFWrite\fR writes to the open file or stream indicated by the UNIX
+buffered I/O \fIFILE\fR pointer \fIfp\fR.
+.LP
+\fIBinSWrite\fR writes to the caller's character string \fIdata\fR.
+When complete, \fIdata\fR will contain raw binary data, possibly
+including NULLs, and other unprintable characters.
+.LP
+All calls write \fIcount\fR items, each of length
+\fInbytes\fR, from the caller's \fIbuf\fR array declared as of type \fItype\fR.
+.LP
+\fIcount\fR and \fInbytes\fR must both be greater than 0.
+.LP
+The known values of \fItype\fR may vary from site to site and may be found
+in the include file "bin.h" (automatically included by "sdsc.h").
+The following types are considered standard and should be available at
+all sites:
+.LP
+.in +0.5i
+.TS
+l l.
+\fItype\fR	\fBMeaning\fR
+BOOLEAN	boolean
+CHAR	signed character
+DOUBLE	double-percision floating point
+FLOAT	single-percision floating point
+INT	signed int
+INT16	signed 16-bit (or greater) integer
+INT32	signed 32-bit (or greater) integer
+INT64	signed 64-bit (or greater) integer
+INT8	signed 8-bit (or greater) integer
+LONG	signed long
+SHORT	signed short
+UCHAR	unsigned character
+UINT	unsigned int
+UINT16	unsigned 16-bit (or greater) integer
+UINT32	unsigned 32-bit (or greater) integer
+UINT64	unsigned 64-bit (or greater) integer
+UINT8	unsigned 8-bit (or greater) integer
+ULONG	unsigned long
+USHORT	unsigned short
+.TE
+.in -0.5i
+.LP
+INT64 and UINT64 are only available on systems supporting integer types of
+at least 64-bits in length.
+.SH RETURNS
+\fIBinWrite\fR, \fIBinFWrite\fR, and \fIBinSWrite\fR
+return the number of bytes written.
+On an error, all calls return -1 and set the global \fIBinErrNo\fR to
+an error code indicating the cause of the error.
+The following error codes may be returned by the calls:
+.LP
+.IP "\fIBINECOUNT\fR = count cannot be <= 0"
+The \fIcount\fR argument was less than or equal to zero.
+.IP "\fIBINEFLOATUNSUPPORTED\fR = unsupported size for file float selection"
+The \fInbytes\fR argument selected a size of floating-point item to be written
+that is undefined for the file floating-point format selected by
+\fIBinFloatFormat\fR(3BIN).
+.IP "\fIBINEMALLOC\fR = Cannot malloc more host memory"
+Dynamic allocation of host memory needed by the write call could not be
+completed.
+.IP "\fIBINENBYTES\fR = nbytes cannot be <= 0"
+The \fInbytes\fR argument was less than or equal to zero.
+.IP "\fIBINESYS\fR = System error:  see errno"
+A system call error occurred when a write was attempted on the file.
+The global \fIerrno\fR, set by UNIX system calls, contains an error code
+indicating the cause of the error (see \fIerrno\fR(2)).
+.IP "\fIBINETYPE\fR = Unknown type selection"
+The \fItype\fR argument did not indicate a type known by the binary I/O
+package.
+The include file "bin.h" includes a list of #defined constants for the names
+of the known types.
+.SH NOTES
+Binary data files and streams are a compact and speedy
+way to store and transfer data.  The binary format of a value can take
+fewer bytes to store than using the equivalent ASCII format.
+For instance, the number "32767" takes 16 bits to represent on a 2's complement
+integer machine.
+When written to a binary file or stream, the number can be stored in 2 bytes.
+The same number written to an ASCII file or stream requires 5
+bytes:  "3", "2", "7", "6", and "7".
+.LP
+While the UNIX \fIread\fR(2) and \fIwrite\fR(2) calls support reading and
+writing binary data, they do not create binary files that can be read in again
+on a machine with a different byte order or larger or smaller word size
+(without additional programing).
+The calls in the binary I/O package provide a portable means of reading and
+writing binary files and streams.
+Application code that calls \fIBinWrite\fR to read in an array of 32-bit
+integers from a binary file remains unchanged whether being compiled for
+a SPARCstation, a VAX running VMS, or a CRAY X-MP.
+Differences in byte ordering, word sizes, and structure-field padding are
+handled by the binary I/O package.
+.LP
+The size (number of bytes) of an item in a binary file may differ from the
+size of the same item when in memory in a C variable.
+This is the case, for instance, when writing a CRAY's 64-bit \fIint\fR into
+a file as a 32-bit integer.
+.LP
+The \fItype\fR argument indicates the declared type of the caller's \fIbuf\fR
+array.
+From the type the write routines determine the number of bytes in \fIbuf\fR
+that are used to form each data item to be written out.
+.LP
+The \fInbytes\fR argument indicates the number of bytes occupied by the item
+\fBIN THE FILE\fR.
+This may be larger or smaller than the size of the item as stored in the
+\fIbuf\fR array.
+.LP
+.ne 5
+\fBInteger Types\fR
+.LP
+.RS 0.5i
+\fInbytes\fR need not be a multiple of 2 or of the word-size of the host.
+Writing out 3- or 11-byte integers is acceptable.
+.LP
+When \fInbytes\fR is larger than the size of \fItype\fR, zero padding and
+sign extension (signed types only) occurs as the data is written out.
+.LP
+When \fInbytes\fR is smaller than the size of \fItype\fR, outgoing data is
+truncated to the least-significant bits.
+If significant bits are lost due to the truncation, the error handling
+function nominated
+by \fIBinErrHandler\fR(3BIN) is called:
+.LP
+.RS 0.5i
+handler( fd, BINOPWRITE, BINEINTEGERTRUNC, data, frombits, tobits )
+.RE
+.LP
+\fIfd\fR is the file's file descriptor.
+\fIdata\fR is \fIuchar\fR pointer to the array of bytes to be written to the
+file that represents the integer that is too large to be stored in the file.
+\fIfrombits\fR is the length in bits of the host integer, and
+\fItobits\fR is the length of an integer in the file.
+.RE
+.LP
+.ne 5
+\fBFloating-Point Types\fR
+.LP
+.RS 0.5i
+\fInbytes\fR is restricted to those sizes supported by the selected file
+floating-point format using \fIBinFloatFormat\fR(3BIN).
+For instance, IEEE floating-point supports only 4- and 8-byte lengths, so
+an \fInbytes\fR value of 5 would be illegal.
+When \fInbytes\fR is inconsistent with any legal size of the current floating
+point format selection, the error \fIBINEFLOATUNSUPPORTED\fR error is returned.
+.LP
+When the file's floating-point format selected by \fIBinFloatFormat\fR(3BIN)
+has a larger exponent and mantissa than the host's floating-point format,
+zero padding of the exponent and mantissa occurs as the data is written out.
+.LP
+When the file's floating-point format has a smaller mantissa than the host's
+format, the least-significant bits of the mantissa are silently truncated,
+causing a reduction in the accuracy of the number.
+.LP
+When the file's floating-point format has a smaller exponent than the host's
+format, then the host's format may be able to represent floating-point
+numbers that are too large (overflow) or too small (underflow) for the file's
+format.
+The error handling function nominated by \fIBinErrHandler\fR(3BIN) is called
+.LP
+.RS 0.5i
+handler( fd, BINOPWRITE, reason, data, frombits, tobits )
+.RE
+.LP
+where \fIreason\fR is \fIBINEFLOATOVERFLOW\fR or \fIBINEFLOATUNDERFLOW\fR.
+.LP
+\fIfd\fR is the file's file descriptor.
+\fIdata\fR is \fIuchar\fR pointer to the array of bytes read from the
+file that represents the float whose exponent is too large or small
+to be stored in the file's format.
+\fIfrombits\fR is the length in bits of the host float exponent,
+and \fItobits\fR is the length of a float's exponent in the file.
+.RE
+.LP
+If the programmer has not indicated an error handling function, the default
+handler prints a warning message to \fIstderr\fR.
+.LP
+To maintain portability of code written using the binary I/O package,
+\fBNEVER\fR use the C construct \fIsizeof()\fR to compute the \fInbytes\fR
+argument.
+If a 32-bit quantity is to be written, pass a "4", not "sizeof(int)".
+The size of an \fIint\fR is only "4" on 32-bit machines.
+Such code will fail to work properly on a CRAY where integers are 64-bits long.
+.LP
+The byte order for data written to the file may be selected by calling
+\fIBinByteOrder\fR(3BIN) prior to making write calls.
+.LP
+Entire C structures may be written using the \fIBinWriteStruct\fR(3BIN)
+and \fIBinFWriteStruct\fR(3BIN) calls.
+.ne 5
+.SH EXAMPLES
+.SS "Example 1"
+Write an array of 6 32-bit integers to a binary file:
+.LP
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+int buf[6];
+int fd;
+
+BinWrite( fd, buf, INT, 4, 6 );
+.in -0.5i
+.fi
+.LP
+The \fItype\fR argument is "INT" because the \fIbuf\fR array was declared
+as of type \fIint\fR.
+.LP
+The \fInbytes\fR argument is "4" to indicate that 4-byte quantities are to
+be written to the file.
+.SS "Example 2"
+Write an array of run-length-encoded pixel values where each encoded pixel
+is stored on the host as 4 consecutive integers.
+The first integer holds an 8-bit count, while the second, third, and fourth
+integers hold 8-bit red (R), green (G), and blue (B) values.
+When written to the binary file, each set of four integers
+are to be compacted to 4 1-byte quantities.
+.LP
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+int scanline[WIDTH][4];
+FILE *fp;
+
+BinFWrite( fp, scanline, INT, 1, WIDTH*4 );
+.in -0.5i
+.fi
+.LP
+The \fItype\fR is "INT", but \fInbytes\fR is only 1.
+Since \fInbytes\fR is less than the size of \fItype\fR (at least on non-8-bit
+machines), each integer will be truncated to 8-bits before being written.
+.SS "Example 3"
+Write an array of 64-bit integers from an \fIint\fR array.
+.LP
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+int data[COUNT];
+int fd;
+
+BinWrite( fd, data, INT, 8, COUNT );
+.in -0.5i
+.fi
+.LP
+The \fItype\fR is "INT" and \fInbytes\fR is 8 (64 bits).
+If the host represents \fIint\fRs in less than 64 bits, integers are
+sign-extended before being written out as a 64-bit quantity.
+.SS "Example 4"
+Write out an array of 3 floats in IEEE single-precision format.
+.LP
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+float numbers[3];
+FILE *fp;
+
+BinFloatFormat( BINIEEE );
+BinFWrite( fp, numbers, FLOAT, 4, 3 );
+.in -0.5i
+.fi
+.LP
+The host's floating-point numbers are automatically converted to
+IEEE single-precision (4 bytes).
+.SS "Example 5"
+Write four double-precision floats into a character array as raw binary data
+representing CRAY 64-bit floating point values.  Write that array to an output
+file using \fIwrite\fR(2).
+.LP
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+double numbers[4];
+char   data[4*8];
+
+BinFloatFormat( BINCRAY );
+BinSWrite( data, numbers, DOUBLE, 8, 4 );
+write( fd, data, 4 * 8 );
+.in -0.5i
+.fi
+.LP
+.SH "SEE ALSO"
+BinByteOrder(3BIN),
+BinErrorHandler(3BIN),
+BinFRead(3BIN),
+BinFReadStruct(3BIN),
+BinFWriteStruct(3BIN),
+BinFloatFormat(3BIN),
+BinPError(3BIN),
+BinQByteOrder(3BIN),
+BinQFloatFormat(3BIN),
+BinQMachine(3BIN),
+BinRead(3BIN),
+BinReadStruct(3BIN),
+BinSRead(3BIN),
+BinWriteStruct(3BIN),
+errno(2),
+perror(3)
+.br
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

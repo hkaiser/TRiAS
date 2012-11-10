@@ -1,0 +1,125 @@
+'\"t
+.TH ARGQNOCCUR 3ARG "September 1991" "SDSC" "ARGUMENT PARSING"
+.SH NAME
+ArgQNOccur  -  query the number of occurrences of an option
+.SH SYNOPSIS
+.if t \fB
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+.nf
+#include "sdsc.h"
+
+int ArgErrNo;
+
+int ArgQNOccur( keyword )
+	char *keyword;
+.fi
+.if t \fR
+.SH DESCRIPTION
+\fIArgQNOccur\fR retrieves information about the commandline, after it
+has been parsed by an earlier call to \fIArgParse(3ARG)\fR. 
+.LP
+\fIArgQNOccur\fR queries the number of times the option \fIkeyword\fR
+with a keyword or equivalent keyword occurred on the commandline,
+returning the number as the function value. 
+.SH RETURNS
+\fIArgQNOccur\fR returns the number of occurrences of an option on the
+user's input commandline.  If \fIArgQNOccur\fR fails to complete, it
+returns -1 and sets the global \fIArgErrNo\fR to an error code
+indicating the cause of the failure.  The following error code may be generated:
+.LP
+.IP "\fIARGEUNKKEYWORD\fR = keyword unknown"
+The keyword is not one of the keywords supplied in the \fIoptions[]\fR or
+\fIequiv[]\fR arrays passed to \fIArgParse(3ARG)\fR and is not one of
+the truncation abbreviations.
+.SH NOTES
+The \fIkeyword\fR argument may be any keyword, equivalent keyword, or
+unique abbreviation-by-truncation of keywords or equivalent keywords.
+For clarity, the full keyword should be used in all \fIArgQNOccur\fR calls.
+.LP
+During commandline parsing in \fIArgParse(3ARG)\fR, any input keyword that
+matches any abbreviation or equivalent keyword for an option is considered
+an occurrence of that option.  It is not possible to determine if a
+particular spelling of a keyword was input by a user.  For instance,
+consider the following commandlines using the "-infile" option: 
+.LP
+.ne 6
+.in +0.5i
+.nf
+mycommand -infile myfile.hdf
+mycommand -infil myfile.hdf
+mycommand -infi myfile.hdf
+mycommand -inf myfile.hdf
+mycommand -in myfile.hdf
+mycommand -i myfile.hdf
+.fi
+.in -0.5i
+.LP
+When querying the number of occurrences of the "infile" option keyword, any
+of the following calls to \fIArgQNOccur\fR reports the number of
+occurrences of any of the above commandline forms:
+.LP
+.ne 6
+.in +0.5i
+.nf
+noccur = ArgQNOccur( "infile" );
+noccur = ArgQNOccur( "infil" );
+noccur = ArgQNOccur( "infi" );
+noccur = ArgQNOccur( "inf" );
+noccur = ArgQNOccur( "in" );
+noccur = ArgQNOccur( "i" );
+.fi
+.in -0.5i
+.LP
+If this example's "infile" option was flagged to allow the keyword to
+be implied
+(the \fIARGFIMPKEYWORD\fR flag in the \fIArgOption\fR struct passed
+to \fIArgParse(3ARG)\fR), then even the following commandline would be
+considered an occurrence of the "infile" option and would be reported by
+any of the \fIArgQNOccur\fR calls above:
+.LP
+.in +0.5i
+mycommand myfile.hdf
+.in -0.5i
+.LP
+For options that have only one occurrance (\fIARGFMULTIPLE\fR not set),
+code typically calls \fIArgQNOccur\fR in an \fIif\fR to see if the
+option was given.  If it was, the body of the \fIif\fR calls
+\fIArgQNValue(3ARG)\fR to get the number of values after the keyword
+and \fIArgQValue(3ARG)\fR to get each of those values:
+.LP
+.in +0.5i
+.nf
+if ( ArgQNOccur( "frames" ) )
+{
+	nframes = ArgQNValue( "frames", 0 );
+	for ( i=0; i<nframes; i++ )
+	{
+		frame = ArgQValue( "frames", 0, i )->arg_i;
+		...
+	}
+}
+.fi
+.in -0.5i
+.LP
+For options that may occur more than one time (\fIARGFMULTIPLE\fR set),
+code typically calls \fIArgQNOccur\fR and then does a \fIfor\fR-loop
+to walk through each occurrence of the option.
+.SH "SEE ALSO"
+ArgIntro(3ARG),
+ArgParse(3ARG),
+ArgPError(3ARG),
+ArgQNOpt(3ARG),
+ArgQOccurOpt(3ARG),
+ArgQOpt(3ARG),
+ArgQNValue(3ARG),
+ArgQValue(3ARG),
+errno(2),
+perror(3)
+.br
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

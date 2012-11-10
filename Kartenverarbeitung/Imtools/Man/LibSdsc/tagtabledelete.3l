@@ -1,0 +1,132 @@
+
+
+
+     TTTTAAAAGGGGTTTTAAAABBBBLLLLEEEEDDDDEEEELLLLEEEETTTTEEEE((((3333TTTTAAAAGGGG))))    SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))     TTTTAAAAGGGGTTTTAAAABBBBLLLLEEEEDDDDEEEELLLLEEEETTTTEEEE((((3333TTTTAAAAGGGG))))
+
+
+
+     NNNNAAAAMMMMEEEE
+          TagTableDelete - delete a tag table entry from a tag table
+
+     SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+          ####iiiinnnncccclllluuuuddddeeee """"ssssddddsssscccc....hhhh""""
+
+          eeeexxxxtttteeeerrrrnnnn iiiinnnntttt TTTTaaaaggggEEEErrrrrrrrNNNNoooo;;;;
+
+          iiiinnnntttt TTTTaaaaggggTTTTaaaabbbblllleeeeDDDDeeeelllleeeetttteeee(((( ttttaaaaggggTTTTaaaabbbblllleeee,,,, nnnntttthhhhEEEEnnnnttttrrrryyyy ))))
+               TTTTaaaaggggTTTTaaaabbbblllleeee ****ttttaaaaggggTTTTaaaabbbblllleeee;;;;
+               iiiinnnntttt nnnntttthhhhEEEEnnnnttttrrrryyyy;;;;
+
+
+     DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+          _T_a_g_T_a_b_l_e_D_e_l_e_t_e deletes the _n_t_h_E_n_t_r_y tag table entry from the
+          _t_a_g_T_a_b_l_e.  The deleted tag entry is deallocated (see
+          _T_a_g_E_n_t_r_y_F_r_e_e(3TAG)) and should not be referenced again.
+
+     NNNNOOOOTTTTEEEESSSS
+          For a description of the fields of a tag table entry, see
+          the mmmmaaaannnn page on _T_a_g_E_n_t_r_y_A_l_l_o_c(3TAG).
+
+          Deleting an entry causes all further entries in the table to
+          move up by one.  This decreases their _n_t_h_E_n_t_r_y fields by one
+          each.
+
+          Deleting an entry also removes it from the list of
+          occurrences of entries with the same tag.  All further
+          entries in the tag's occurrence list are moved up by one.
+          This decreases their _n_t_h_O_c_c_u_r fields by one each.
+
+     RRRREEEETTTTUUUURRRRNNNNSSSS
+          On success, _T_a_g_T_a_b_l_e_D_e_l_e_t_e returns the new total number of
+          entries in the tag table.  On failure, -1 is returned and
+          _T_a_g_E_r_r_N_o set to:
+
+          TAGEBADNTHENTRY     The nth entry argument is < 0 or >
+                              the size of the table
+          TAGENULLTAGTABLE    The tag table argument is bad
+
+     SSSSEEEEEEEE AAAALLLLSSSSOOOO
+          TagTableAppend(3TAG), TagEntryAlloc(3TAG),
+          TagEntryFree(3TAG), TagTableInsert(3TAG),
+          TagTableQDirect(3TAG), TagEntryQNthEntry(3TAG),
+          TagEntryQNthOccur(3TAG), TagTableQLinear(3TAG),
+          TagTableQNEntry(3TAG), TagTableReplace(3TAG),
+          TagTableAlloc(3TAG), TagTableFree(3TAG)
+
+     AAAAUUUUTTTTHHHHOOOORRRRSSSS
+          Dave Nadeau
+          San Diego Supercomputer Center
+
+
+
+
+     Page 1                                          (printed 6/30/95)
+
+
+
+
+
+
+     TTTTAAAAGGGGTTTTAAAABBBBLLLLEEEEDDDDEEEELLLLEEEETTTTEEEE((((3333TTTTAAAAGGGG))))    SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))     TTTTAAAAGGGGTTTTAAAABBBBLLLLEEEEDDDDEEEELLLLEEEETTTTEEEE((((3333TTTTAAAAGGGG))))
+
+
+
+     CCCCOOOONNNNTTTTAAAACCCCTTTT
+          SDSC consultants, (619)534-5100, ccccoooonnnnssssuuuulllltttt@@@@yyyy1111....ssssddddsssscccc....eeeedddduuuu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Page 2                                          (printed 6/30/95)
+
+
+

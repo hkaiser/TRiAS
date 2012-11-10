@@ -1,0 +1,103 @@
+// $Header: $
+// Copyright© 1999-2000 TRiAS GmbH Potsdam, All rights reserved
+// Created: 21.03.2000 10:37:19
+//
+// @doc
+// @module UndoRedo.idl | Definition of Undo/Redo specifics
+
+#if !defined(_UNDOREDO_IDL__CDA2DE53_A0F7_4780_A2A2_5E2B68C58C36__INCLUDED_)
+#define _UNDOREDO_IDL__CDA2DE53_A0F7_4780_A2A2_5E2B68C58C36__INCLUDED_
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declarations
+interface IUndoRedo;
+interface IUndoRedoList;
+interface IPropagateObjectNumber;
+
+///////////////////////////////////////////////////////////////////////////////
+// Eine UndoRedo-Aktion
+cpp_quote("#ifndef _IUNDOREDO_DEFINED")
+cpp_quote("#define _IUNDOREDO_DEFINED")
+[
+	object,
+	uuid(07963808-3123-101C-BB62-00AA0018497C),
+	helpstring("IUndoRedo Interface"),
+	pointer_default(unique)
+]
+interface IUndoRedo : IUnknown
+{
+	import "oaidl.idl";
+
+// Flags, die von Capabilities geliefert werden können 
+cpp_quote("#if !defined(_UNDOREDOCAPS_DEFINED)")
+cpp_quote("#define _UNDOREDOCAPS_DEFINED")
+	typedef [public, v1_enum, helpstring("Flags, die von Capabilities geliefert werden können")] 
+	enum tagUNDOREDOCAPS {
+	// Gruppen der Flags zusammenfassen
+		UNDOREDOCAPS_NOFLAGS = 0x00,
+		UNDOREDOCAPS_ANDFLAGS = 0x03,
+		UNDOREDOCAPS_ORFLAGS = 0x0300,
+
+	// Flags, die mit '&' (AND) zusammengefaßt werden müssen
+		UNDOREDOCAPS_CANUNDO = 0x01,		// kann Undo
+		UNDOREDOCAPS_CANREDO = 0x02,		// kann auch Redo
+
+	// Flags, die mit '|' (OR) zusammengefaßt werden müssen
+		UNDOREDOCAPS_REPAINT = 0x0100,		// nach abgeschlossener Aktion neu zeichnen
+		UNDOREDOCAPS_MULTILEVEL = 0x0200,	// enthält selbst mehrere UndoRedo's
+	} UNDOREDOCAPS;
+cpp_quote("#endif // _UNDOREDOCAPS_DEFINED")
+
+	[helpstring("Fragt die Eigenschaften dieses UndoRedo Objektes ab."), local] DWORD Capabilities ([out] signed char **pDesc);
+	[call_as(Capabilities)] HRESULT remoteCapabilities ([out] signed char **pDesc, [out, retval] DWORD *pdwCaps);
+	[helpstring("Führt die spezifische Undo-Aktion aus.")] HRESULT Undo();
+	[helpstring("Führt die spezifische Redo-Aktion aus.")] HRESULT Redo();
+
+};
+cpp_quote("typedef IUndoRedo * LPUNDOREDO;")
+cpp_quote("#endif // _IUNDOREDO_DEFINED")
+
+///////////////////////////////////////////////////////////////////////////////
+// Eine Liste von UndoRedo Aktionen
+cpp_quote("#ifndef _IUNDOREDOLIST_DEFINED")
+cpp_quote("#define _IUNDOREDOLIST_DEFINED")
+[
+	object,
+	uuid(07963809-3123-101C-BB62-00AA0018497C),
+	helpstring("IUndoRedoList Interface"),
+	pointer_default(unique)
+]
+interface IUndoRedoList : IUndoRedo
+{
+	[helpstring("Liefert die Anzahl der in dieser Liste gespeicherten UndoRedo Aktionen."), local] ULONG Count();
+	[call_as(Count)] HRESULT remoteCount ([out, retval] ULONG *pulCnt);
+	[helpstring("Fügt eine UndoRedo Aktion zu dieser Liste hinzu.")] HRESULT AddUndoRedo ([in] IUndoRedo *pIUndoRedo);
+	[helpstring("Führt die angegebene Anzahl von Undo Aktionen dieser Liste aus."), local] DWORD Undo ([in] long lCnt, [in] IUndoRedoList *pIRedoList);
+	[call_as(Undo)] HRESULT remoteUndo ([in] long lCnt, [in] IUndoRedoList *pIRedoList, [out, retval] DWORD *pdwCaps);
+	[helpstring("Führt die angegebene Anzahl von Redo Aktionen dieser Liste aus."), local] DWORD Redo ([in] long lCnt, [in] IUndoRedoList *pIUndoList);
+	[call_as(Redo)] HRESULT remoteRedo ([in] long lCnt, [in] IUndoRedoList *pIUndoList, [out, retval] DWORD *pdwCaps);
+};
+cpp_quote("typedef IUndoRedoList * LPUNDOREDOLIST;")
+cpp_quote("#endif // _IUNDOREDOLIST_DEFINED")
+
+///////////////////////////////////////////////////////////////////////////////
+// Neue Objektnummer abfragen bzw. weitergeben
+cpp_quote("#ifndef _IPROPAGATEOBJECTNUMBER_DEFINED")
+cpp_quote("#define _IPROPAGATEOBJECTNUMBER_DEFINED")
+[
+	object,
+	uuid(9A55E460-24EB-11D3-94F1-0080C786297B),
+	helpstring("IPropagateObjectNumber Interface"),
+	pointer_default(unique)
+]
+interface IPropagateObjectNumber : IUnknown
+{
+	[helpstring("Liefert Bezugsobjekt für Undo Aktion.")] HRESULT GetUndoObjectNumber ([out, retval] INT_PTR *plONr);
+	[helpstring("Setzt zu verwendendes Bezugsobjekt für Undo Aktion.")] HRESULT SetUndoObjectNumber ([in] INT_PTR lONr);
+	[helpstring("Liefert Bezugsobjekt für Redo Aktion.")] HRESULT GetRedoObjectNumber ([out, retval] INT_PTR *plONr);
+	[helpstring("Setzt zu verwendendes Bezugsobjekt für Redo Aktion.")] HRESULT SetRedoObjectNumber ([in] INT_PTR lONr);
+};
+cpp_quote("#endif // _IPROPAGATEOBJECTNUMBER_DEFINED")
+
+#endif // !defined(_UNDOREDO_IDL__CDA2DE53_A0F7_4780_A2A2_5E2B68C58C36__INCLUDED_)
+

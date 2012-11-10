@@ -1,0 +1,749 @@
+// Created by Microsoft (R) C/C++ Compiler Version 12.00.8964.0 (55dbada4).
+//
+// d:\triasdev.mvc\gmobjects\_debug\PBasic.tlh
+//
+// C++ source equivalent of Win32 type library tlb/PBasic.tlb
+// compiler-generated file created 10/10/02 at 22:51:29 - DO NOT EDIT!
+
+//
+// Cross-referenced type libraries:
+//
+//  #import "D:\PROGRA~1\GEOMED~1\Program\mapview.ocx"
+//
+
+#pragma once
+#pragma pack(push, 8)
+
+#include <comdef.h>
+
+//
+// Forward references and typedefs
+//
+
+struct __declspec(uuid("ce361c90-b00c-11cf-abef-08003601b769"))
+/* dual interface */ _DGMPoint;
+struct __declspec(uuid("ce361c91-b00c-11cf-abef-08003601b769"))
+/* dual interface */ _DGMVector;
+struct __declspec(uuid("ce361c92-b00c-11cf-abef-08003601b769"))
+/* dual interface */ _DGMMatrix;
+struct /* coclass */ Vector;
+struct __declspec(uuid("4dbfc540-b33e-11cf-abef-08003601b769"))
+/* dual interface */ _DGMPoints;
+struct /* coclass */ GMPoint;
+struct __declspec(uuid("37e44e10-555b-11d1-a237-0060973831ce"))
+/* dual interface */ _DGMGeometry;
+struct __declspec(uuid("ee622580-8cce-11cf-abde-08003601b769"))
+/* dual interface */ _DGMPointGeometry;
+struct __declspec(uuid("ee622581-8cce-11cf-abde-08003601b769"))
+/* dual interface */ _DGMLineGeometry;
+struct __declspec(uuid("ee622582-8cce-11cf-abde-08003601b769"))
+/* dual interface */ _DGMPolylineGeometry;
+struct /* coclass */ Points;
+struct __declspec(uuid("ee622583-8cce-11cf-abde-08003601b769"))
+/* dual interface */ _DGMPolygonGeometry;
+struct __declspec(uuid("ee622585-8cce-11cf-abde-08003601b769"))
+/* dual interface */ _DGMBoundaryGeometry;
+struct /* coclass */ GeometryCollection;
+struct __declspec(uuid("ee622586-8cce-11cf-abde-08003601b769"))
+/* dual interface */ _DGMGeometryCollection;
+struct __declspec(uuid("ee622587-8cce-11cf-abde-08003601b769"))
+/* dual interface */ _DGMRectangleGeometry;
+struct __declspec(uuid("ee622588-8cce-11cf-abde-08003601b769"))
+/* dual interface */ _DGMOrientedPointGeometry;
+struct __declspec(uuid("ee622589-8cce-11cf-abde-08003601b769"))
+/* dual interface */ _DGMTextPointGeometry;
+struct __declspec(uuid("ee62258a-8cce-11cf-abde-08003601b769"))
+/* dual interface */ _DGMArcGeometry;
+struct __declspec(uuid("ee62258b-8cce-11cf-abde-08003601b769"))
+/* dual interface */ _DGMCompositePolylineGeometry;
+struct __declspec(uuid("ee62258c-8cce-11cf-abde-08003601b769"))
+/* dual interface */ _DGMCompositePolygonGeometry;
+struct __declspec(uuid("30103c12-cf7f-11cf-8b2f-08003649fd01"))
+/* dual interface */ IGMError;
+struct __declspec(uuid("228f0581-9ec6-11cf-9e47-08003601e012"))
+/* interface */ IGMSmartLocateServer;
+struct __declspec(uuid("2675cfc4-e227-11cf-8653-08003601b01f"))
+/* dual interface */ _DGMEventServer;
+struct /* coclass */ Matrix;
+struct /* coclass */ PointGeometry;
+struct /* coclass */ LineGeometry;
+struct /* coclass */ PolylineGeometry;
+struct /* coclass */ PolygonGeometry;
+struct /* coclass */ BoundaryGeometry;
+struct /* coclass */ RectangleGeometry;
+struct /* coclass */ OrientedPointGeometry;
+struct /* coclass */ TextPointGeometry;
+struct /* coclass */ ArcGeometry;
+struct /* coclass */ CompositePolylineGeometry;
+struct /* coclass */ CompositePolygonGeometry;
+struct /* coclass */ GMError;
+struct /* coclass */ EventServer;
+typedef struct IGMSmartLocateServer * LPIGMSMARTLOCATESERVER;
+struct __declspec(uuid("228f0582-9ec6-11cf-9e47-08003601e012"))
+/* dispinterface */ DGMSmartLocateServer;
+struct /* coclass */ SmartLocateService;
+
+//
+// Smart pointer typedef declarations
+//
+
+_COM_SMARTPTR_TYPEDEF(_DGMPoint, __uuidof(_DGMPoint));
+_COM_SMARTPTR_TYPEDEF(_DGMVector, __uuidof(_DGMVector));
+_COM_SMARTPTR_TYPEDEF(_DGMMatrix, __uuidof(_DGMMatrix));
+_COM_SMARTPTR_TYPEDEF(_DGMPoints, __uuidof(_DGMPoints));
+_COM_SMARTPTR_TYPEDEF(_DGMGeometry, __uuidof(_DGMGeometry));
+_COM_SMARTPTR_TYPEDEF(_DGMPointGeometry, __uuidof(_DGMPointGeometry));
+_COM_SMARTPTR_TYPEDEF(_DGMLineGeometry, __uuidof(_DGMLineGeometry));
+_COM_SMARTPTR_TYPEDEF(_DGMPolylineGeometry, __uuidof(_DGMPolylineGeometry));
+_COM_SMARTPTR_TYPEDEF(_DGMPolygonGeometry, __uuidof(_DGMPolygonGeometry));
+_COM_SMARTPTR_TYPEDEF(_DGMBoundaryGeometry, __uuidof(_DGMBoundaryGeometry));
+_COM_SMARTPTR_TYPEDEF(_DGMGeometryCollection, __uuidof(_DGMGeometryCollection));
+_COM_SMARTPTR_TYPEDEF(_DGMRectangleGeometry, __uuidof(_DGMRectangleGeometry));
+_COM_SMARTPTR_TYPEDEF(_DGMOrientedPointGeometry, __uuidof(_DGMOrientedPointGeometry));
+_COM_SMARTPTR_TYPEDEF(_DGMTextPointGeometry, __uuidof(_DGMTextPointGeometry));
+_COM_SMARTPTR_TYPEDEF(_DGMArcGeometry, __uuidof(_DGMArcGeometry));
+_COM_SMARTPTR_TYPEDEF(_DGMCompositePolylineGeometry, __uuidof(_DGMCompositePolylineGeometry));
+_COM_SMARTPTR_TYPEDEF(_DGMCompositePolygonGeometry, __uuidof(_DGMCompositePolygonGeometry));
+_COM_SMARTPTR_TYPEDEF(IGMError, __uuidof(IGMError));
+_COM_SMARTPTR_TYPEDEF(IGMSmartLocateServer, __uuidof(IGMSmartLocateServer));
+_COM_SMARTPTR_TYPEDEF(_DGMEventServer, __uuidof(_DGMEventServer));
+_COM_SMARTPTR_TYPEDEF(DGMSmartLocateServer, __uuidof(IDispatch));
+
+//
+// Type library items
+//
+
+struct __declspec(uuid("ce361c90-b00c-11cf-abef-08003601b769"))
+_DGMPoint : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall get_X (
+        double * returnValue ) = 0;
+    virtual HRESULT __stdcall put_X (
+        double returnValue ) = 0;
+    virtual HRESULT __stdcall get_Y (
+        double * returnValue ) = 0;
+    virtual HRESULT __stdcall put_Y (
+        double returnValue ) = 0;
+    virtual HRESULT __stdcall get_Z (
+        double * returnValue ) = 0;
+    virtual HRESULT __stdcall put_Z (
+        double returnValue ) = 0;
+    virtual HRESULT __stdcall GetPoint (
+        double * GMPoint ) = 0;
+    virtual HRESULT __stdcall SetPoint (
+        double * GMPoint ) = 0;
+};
+
+struct __declspec(uuid("ce361c91-b00c-11cf-abef-08003601b769"))
+_DGMVector : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall get_I (
+        double * returnValue ) = 0;
+    virtual HRESULT __stdcall put_I (
+        double returnValue ) = 0;
+    virtual HRESULT __stdcall get_J (
+        double * returnValue ) = 0;
+    virtual HRESULT __stdcall put_J (
+        double returnValue ) = 0;
+    virtual HRESULT __stdcall get_K (
+        double * returnValue ) = 0;
+    virtual HRESULT __stdcall put_K (
+        double returnValue ) = 0;
+    virtual HRESULT __stdcall GetVector (
+        double * v ) = 0;
+    virtual HRESULT __stdcall SetVector (
+        double * v ) = 0;
+};
+
+struct __declspec(uuid("ce361c92-b00c-11cf-abef-08003601b769"))
+_DGMMatrix : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall get_Row0 (
+        struct _DGMVector * * returnValue ) = 0;
+    virtual HRESULT __stdcall putref_Row0 (
+        struct _DGMVector * returnValue ) = 0;
+    virtual HRESULT __stdcall get_Row1 (
+        struct _DGMVector * * returnValue ) = 0;
+    virtual HRESULT __stdcall putref_Row1 (
+        struct _DGMVector * returnValue ) = 0;
+    virtual HRESULT __stdcall get_Row2 (
+        struct _DGMVector * * returnValue ) = 0;
+    virtual HRESULT __stdcall putref_Row2 (
+        struct _DGMVector * returnValue ) = 0;
+    virtual HRESULT __stdcall get_Column0 (
+        struct _DGMVector * * returnValue ) = 0;
+    virtual HRESULT __stdcall putref_Column0 (
+        struct _DGMVector * returnValue ) = 0;
+    virtual HRESULT __stdcall get_Column1 (
+        struct _DGMVector * * returnValue ) = 0;
+    virtual HRESULT __stdcall putref_Column1 (
+        struct _DGMVector * returnValue ) = 0;
+    virtual HRESULT __stdcall get_Column2 (
+        struct _DGMVector * * returnValue ) = 0;
+    virtual HRESULT __stdcall putref_Column2 (
+        struct _DGMVector * returnValue ) = 0;
+    virtual HRESULT __stdcall get_Translation (
+        struct _DGMVector * * returnValue ) = 0;
+    virtual HRESULT __stdcall putref_Translation (
+        struct _DGMVector * returnValue ) = 0;
+    virtual HRESULT __stdcall GetElement (
+        long row,
+        long column,
+        double * returnValue ) = 0;
+    virtual HRESULT __stdcall SetElement (
+        long row,
+        long column,
+        double value ) = 0;
+};
+
+struct __declspec(uuid("a4245c91-b00d-11cf-abef-08003601b769"))
+Vector;
+    // [ default ] interface _DGMVector
+
+struct __declspec(uuid("4dbfc540-b33e-11cf-abef-08003601b769"))
+_DGMPoints : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall get_Count (
+        long * returnValue ) = 0;
+    virtual HRESULT __stdcall get_NewEnum (
+        IUnknown * * returnValue ) = 0;
+    virtual HRESULT __stdcall Item (
+        VARIANT index,
+        struct _DGMPoint * * returnValue ) = 0;
+    virtual HRESULT __stdcall Add (
+        struct _DGMPoint * GMPoint,
+        VARIANT index = vtMissing ) = 0;
+    virtual HRESULT __stdcall Remove (
+        VARIANT index ) = 0;
+    virtual HRESULT __stdcall GetPoint (
+        long index,
+        double * GMPoint ) = 0;
+    virtual HRESULT __stdcall SetPoint (
+        long index,
+        double * GMPoint ) = 0;
+};
+
+struct __declspec(uuid("a4245c90-b00d-11cf-abef-08003601b769"))
+GMPoint;
+    // [ default ] interface _DGMPoint
+
+struct __declspec(uuid("37e44e10-555b-11d1-a237-0060973831ce"))
+_DGMGeometry : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall get_Type (
+        BSTR * typeName ) = 0;
+};
+
+struct __declspec(uuid("ee622580-8cce-11cf-abde-08003601b769"))
+_DGMPointGeometry : _DGMGeometry
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall get_Origin (
+        struct _DGMPoint * * returnValue ) = 0;
+    virtual HRESULT __stdcall putref_Origin (
+        struct _DGMPoint * returnValue ) = 0;
+};
+
+struct __declspec(uuid("ee622581-8cce-11cf-abde-08003601b769"))
+_DGMLineGeometry : _DGMGeometry
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall get_Start (
+        struct _DGMPoint * * returnValue ) = 0;
+    virtual HRESULT __stdcall putref_Start (
+        struct _DGMPoint * returnValue ) = 0;
+    virtual HRESULT __stdcall get_End (
+        struct _DGMPoint * * returnValue ) = 0;
+    virtual HRESULT __stdcall putref_End (
+        struct _DGMPoint * returnValue ) = 0;
+};
+
+struct __declspec(uuid("ee622582-8cce-11cf-abde-08003601b769"))
+_DGMPolylineGeometry : _DGMGeometry
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall get_Points (
+        struct _DGMPoints * * returnValue ) = 0;
+};
+
+struct __declspec(uuid("a4245ca0-b00d-11cf-abef-08003601b769"))
+Points;
+    // [ default ] interface _DGMPoints
+
+struct __declspec(uuid("ee622583-8cce-11cf-abde-08003601b769"))
+_DGMPolygonGeometry : _DGMPolylineGeometry
+{};
+
+struct __declspec(uuid("ee622585-8cce-11cf-abde-08003601b769"))
+_DGMBoundaryGeometry : _DGMGeometry
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall get_Exterior (
+        IDispatch * * Exterior ) = 0;
+    virtual HRESULT __stdcall putref_Exterior (
+        IDispatch * Exterior ) = 0;
+    virtual HRESULT __stdcall get_Holes (
+        struct _DGMGeometryCollection * * Holes ) = 0;
+};
+
+struct __declspec(uuid("f9739b86-b49b-11cf-abf0-08003601b769"))
+GeometryCollection;
+    // [ default ] interface _DGMGeometryCollection
+
+struct __declspec(uuid("ee622586-8cce-11cf-abde-08003601b769"))
+_DGMGeometryCollection : _DGMGeometry
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall get_Count (
+        long * returnValue ) = 0;
+    virtual HRESULT __stdcall get_NewEnum (
+        IUnknown * * returnValue ) = 0;
+    virtual HRESULT __stdcall Item (
+        VARIANT index,
+        IDispatch * * returnValue ) = 0;
+    virtual HRESULT __stdcall Add (
+        IDispatch * geometry,
+        VARIANT index = vtMissing ) = 0;
+    virtual HRESULT __stdcall Remove (
+        VARIANT index ) = 0;
+};
+
+struct __declspec(uuid("ee622587-8cce-11cf-abde-08003601b769"))
+_DGMRectangleGeometry : _DGMGeometry
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall get_Width (
+        double * returnValue ) = 0;
+    virtual HRESULT __stdcall put_Width (
+        double returnValue ) = 0;
+    virtual HRESULT __stdcall get_Height (
+        double * returnValue ) = 0;
+    virtual HRESULT __stdcall put_Height (
+        double returnValue ) = 0;
+    virtual HRESULT __stdcall get_Rotation (
+        double * returnValue ) = 0;
+    virtual HRESULT __stdcall put_Rotation (
+        double returnValue ) = 0;
+    virtual HRESULT __stdcall get_Origin (
+        struct _DGMPoint * * returnValue ) = 0;
+    virtual HRESULT __stdcall putref_Origin (
+        struct _DGMPoint * returnValue ) = 0;
+    virtual HRESULT __stdcall get_Normal (
+        struct _DGMVector * * returnValue ) = 0;
+    virtual HRESULT __stdcall putref_Normal (
+        struct _DGMVector * returnValue ) = 0;
+};
+
+struct __declspec(uuid("ee622588-8cce-11cf-abde-08003601b769"))
+_DGMOrientedPointGeometry : _DGMPointGeometry
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall get_Orientation (
+        struct _DGMVector * * returnValue ) = 0;
+    virtual HRESULT __stdcall putref_Orientation (
+        struct _DGMVector * returnValue ) = 0;
+};
+
+struct __declspec(uuid("ee622589-8cce-11cf-abde-08003601b769"))
+_DGMTextPointGeometry : _DGMPointGeometry
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall get_Rotation (
+        double * returnValue ) = 0;
+    virtual HRESULT __stdcall put_Rotation (
+        double returnValue ) = 0;
+    virtual HRESULT __stdcall get_Alignment (
+        long * returnValue ) = 0;
+    virtual HRESULT __stdcall put_Alignment (
+        long returnValue ) = 0;
+    virtual HRESULT __stdcall get_RichText (
+        BSTR * text ) = 0;
+    virtual HRESULT __stdcall put_RichText (
+        BSTR text ) = 0;
+    virtual HRESULT __stdcall get_text (
+        BSTR * text ) = 0;
+    virtual HRESULT __stdcall put_text (
+        BSTR text ) = 0;
+    virtual HRESULT __stdcall get_Format (
+        short * returnValue ) = 0;
+    virtual HRESULT __stdcall get_Normal (
+        struct _DGMVector * * returnValue ) = 0;
+    virtual HRESULT __stdcall putref_Normal (
+        struct _DGMVector * returnValue ) = 0;
+};
+
+struct __declspec(uuid("ee62258a-8cce-11cf-abde-08003601b769"))
+_DGMArcGeometry : _DGMGeometry
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall get_Start (
+        struct _DGMPoint * * returnValue ) = 0;
+    virtual HRESULT __stdcall putref_Start (
+        struct _DGMPoint * returnValue ) = 0;
+    virtual HRESULT __stdcall get_End (
+        struct _DGMPoint * * returnValue ) = 0;
+    virtual HRESULT __stdcall putref_End (
+        struct _DGMPoint * returnValue ) = 0;
+    virtual HRESULT __stdcall get_Normal (
+        struct _DGMVector * * returnValue ) = 0;
+    virtual HRESULT __stdcall putref_Normal (
+        struct _DGMVector * returnValue ) = 0;
+    virtual HRESULT __stdcall get_Radius (
+        double * returnValue ) = 0;
+    virtual HRESULT __stdcall put_Radius (
+        double returnValue ) = 0;
+    virtual HRESULT __stdcall get_GreaterThanPi (
+        VARIANT_BOOL * returnValue ) = 0;
+    virtual HRESULT __stdcall put_GreaterThanPi (
+        VARIANT_BOOL returnValue ) = 0;
+    virtual HRESULT __stdcall get_Origin (
+        struct _DGMPoint * * returnValue ) = 0;
+};
+
+struct __declspec(uuid("ee62258b-8cce-11cf-abde-08003601b769"))
+_DGMCompositePolylineGeometry : _DGMGeometryCollection
+{};
+
+struct __declspec(uuid("ee62258c-8cce-11cf-abde-08003601b769"))
+_DGMCompositePolygonGeometry : _DGMGeometryCollection
+{};
+
+struct __declspec(uuid("30103c12-cf7f-11cf-8b2f-08003649fd01"))
+IGMError : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall get_ResourceHandle (
+        long * pResourceHandle ) = 0;
+    virtual HRESULT __stdcall put_ResourceHandle (
+        long pResourceHandle ) = 0;
+    virtual HRESULT __stdcall get_ResourceID (
+        long * plResourceID ) = 0;
+    virtual HRESULT __stdcall put_ResourceID (
+        long plResourceID ) = 0;
+    virtual HRESULT __stdcall get_HelpID (
+        long * plHelpID ) = 0;
+    virtual HRESULT __stdcall put_HelpID (
+        long plHelpID ) = 0;
+    virtual HRESULT __stdcall get_HelpFile (
+        BSTR * pbstrHelpFile ) = 0;
+    virtual HRESULT __stdcall put_HelpFile (
+        BSTR pbstrHelpFile ) = 0;
+    virtual HRESULT __stdcall get_ErrorString (
+        BSTR * pbstrErrorString ) = 0;
+    virtual HRESULT __stdcall put_ErrorString (
+        BSTR pbstrErrorString ) = 0;
+    virtual HRESULT __stdcall get_ErrorParameters (
+        VARIANT * psaErrorParams ) = 0;
+    virtual HRESULT __stdcall put_ErrorParameters (
+        VARIANT * psaErrorParams ) = 0;
+    virtual HRESULT __stdcall get_Database (
+        IDispatch * * lplpDatabase ) = 0;
+    virtual HRESULT __stdcall putref_Database (
+        IDispatch * lplpDatabase ) = 0;
+    virtual HRESULT __stdcall get_SourceResourceID (
+        long * plSourceResourceID ) = 0;
+    virtual HRESULT __stdcall put_SourceResourceID (
+        long plSourceResourceID ) = 0;
+    virtual HRESULT __stdcall get_SourceGUID (
+        BSTR * pbstrSourceGUID ) = 0;
+    virtual HRESULT __stdcall put_SourceGUID (
+        BSTR pbstrSourceGUID ) = 0;
+    virtual HRESULT __stdcall Display (
+        VARIANT Title,
+        long DlgButtons,
+        int * Response ) = 0;
+    virtual HRESULT __stdcall DisplayAll (
+        VARIANT Title,
+        long DlgButtons,
+        int * Response ) = 0;
+    virtual HRESULT __stdcall RaiseException ( ) = 0;
+    virtual HRESULT __stdcall get_Errors (
+        IDispatch * * lplpErrors ) = 0;
+    virtual HRESULT __stdcall putref_Errors (
+        IDispatch * lplpErrors ) = 0;
+};
+
+struct __declspec(uuid("228f0581-9ec6-11cf-9e47-08003601e012"))
+IGMSmartLocateServer : IUnknown
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall put_PixelTolerance (
+        long Tolerance ) = 0;
+    virtual HRESULT __stdcall get_PixelTolerance (
+        long * Tolerance ) = 0;
+    virtual HRESULT __stdcall put_FenceMode (
+        long FenceMode ) = 0;
+    virtual HRESULT __stdcall get_FenceMode (
+        long * FenceMode ) = 0;
+    virtual HRESULT __stdcall Locate (
+        IDispatch * GeometryObject,
+        struct _DMapview * ViewID,
+        IDispatch * pObject ) = 0;
+};
+
+struct __declspec(uuid("2675cfc4-e227-11cf-8653-08003601b01f"))
+_DGMEventServer : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall get__HesitationTime (
+        long * Time ) = 0;
+    virtual HRESULT __stdcall put__HesitationTime (
+        long Time ) = 0;
+    virtual HRESULT __stdcall _Initialize (
+        IDispatch * pEventControlDispatch ) = 0;
+    virtual HRESULT __stdcall _Connect (
+        IDispatch * pMapViewDispatch ) = 0;
+    virtual HRESULT __stdcall _Disconnect (
+        IDispatch * pMapViewDispatch,
+        long * IsEmpty ) = 0;
+    virtual HRESULT __stdcall _Terminate ( ) = 0;
+};
+
+struct __declspec(uuid("a4245c92-b00d-11cf-abef-08003601b769"))
+Matrix;
+    // [ default ] interface _DGMMatrix
+
+enum KeypointConstants
+{
+    gmktVertex = 1,
+    gmktEndVertex = 2,
+    gmktOrigin = 1001,
+    gmktCorner = 1002,
+    gmktMidPoint = 1003,
+    gmktEndPoint = 1004,
+    gmktVector = 1005
+};
+
+enum DigitizeModeConstants
+{
+    gmdmDefault = 0,
+    gmdmArcStartPointEnd = 0,
+    gmdmArcStartEndPoint = 1
+};
+
+enum AlignmentConstants
+{
+    gmaTopLeft = 5,
+    gmaTopCenter = 4,
+    gmaTopRight = 6,
+    gmaCenterLeft = 1,
+    gmaCenterCenter = 0,
+    gmaCenterRight = 2,
+    gmaBottomLeft = 9,
+    gmaBottomCenter = 8,
+    gmaBottomRight = 10
+};
+
+enum FormatConstants
+{
+    gmfRichText = 0,
+    gmfUnformatted = 1
+};
+
+struct __declspec(uuid("f9739b80-b49b-11cf-abf0-08003601b769"))
+PointGeometry;
+    // [ default ] interface _DGMPointGeometry
+
+struct __declspec(uuid("f9739b81-b49b-11cf-abf0-08003601b769"))
+LineGeometry;
+    // [ default ] interface _DGMLineGeometry
+
+struct __declspec(uuid("f9739b82-b49b-11cf-abf0-08003601b769"))
+PolylineGeometry;
+    // [ default ] interface _DGMPolylineGeometry
+
+struct __declspec(uuid("f9739b83-b49b-11cf-abf0-08003601b769"))
+PolygonGeometry;
+    // [ default ] interface _DGMPolygonGeometry
+
+struct __declspec(uuid("f9739b85-b49b-11cf-abf0-08003601b769"))
+BoundaryGeometry;
+    // [ default ] interface _DGMBoundaryGeometry
+
+struct __declspec(uuid("f9739b87-b49b-11cf-abf0-08003601b769"))
+RectangleGeometry;
+    // [ default ] interface _DGMRectangleGeometry
+
+struct __declspec(uuid("f9739b88-b49b-11cf-abf0-08003601b769"))
+OrientedPointGeometry;
+    // [ default ] interface _DGMOrientedPointGeometry
+
+struct __declspec(uuid("f9739b89-b49b-11cf-abf0-08003601b769"))
+TextPointGeometry;
+    // [ default ] interface _DGMTextPointGeometry
+
+struct __declspec(uuid("f9739b8a-b49b-11cf-abf0-08003601b769"))
+ArcGeometry;
+    // [ default ] interface _DGMArcGeometry
+
+struct __declspec(uuid("f9739b8b-b49b-11cf-abf0-08003601b769"))
+CompositePolylineGeometry;
+    // [ default ] interface _DGMCompositePolylineGeometry
+
+struct __declspec(uuid("f9739b8c-b49b-11cf-abf0-08003601b769"))
+CompositePolygonGeometry;
+    // [ default ] interface _DGMCompositePolygonGeometry
+
+struct __declspec(uuid("fa7e8785-d8ea-11cf-8b32-08003649fd01"))
+GMError;
+    // [ default ] interface IGMError
+
+struct __declspec(uuid("2675cfc5-e227-11cf-8653-08003601b01f"))
+EventServer;
+    // [ default ] interface _DGMEventServer
+    const long locFenceInside = 1;
+    const long locFenceOverlap = 2;
+
+struct __declspec(uuid("228f0582-9ec6-11cf-9e47-08003601e012"))
+DGMSmartLocateServer : IDispatch
+{};
+
+struct __declspec(uuid("228f0583-9ec6-11cf-9e47-08003601e012"))
+SmartLocateService;
+    // [ default ] interface IGMSmartLocateServer
+    // dispinterface DGMSmartLocateServer
+
+//
+// Named GUID constants initializations
+//
+
+extern "C" const GUID __declspec(selectany) LIBID_PBasic =
+    {0xf4020a30,0x810b,0x11d0,{0x91,0xc4,0x08,0x00,0x36,0x01,0xe0,0xc4}};
+extern "C" const GUID __declspec(selectany) IID__DGMPoint =
+    {0xce361c90,0xb00c,0x11cf,{0xab,0xef,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) IID__DGMVector =
+    {0xce361c91,0xb00c,0x11cf,{0xab,0xef,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) IID__DGMMatrix =
+    {0xce361c92,0xb00c,0x11cf,{0xab,0xef,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) CLSID_Vector =
+    {0xa4245c91,0xb00d,0x11cf,{0xab,0xef,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) IID__DGMPoints =
+    {0x4dbfc540,0xb33e,0x11cf,{0xab,0xef,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) CLSID_GMPoint =
+    {0xa4245c90,0xb00d,0x11cf,{0xab,0xef,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) IID__DGMGeometry =
+    {0x37e44e10,0x555b,0x11d1,{0xa2,0x37,0x00,0x60,0x97,0x38,0x31,0xce}};
+extern "C" const GUID __declspec(selectany) IID__DGMPointGeometry =
+    {0xee622580,0x8cce,0x11cf,{0xab,0xde,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) IID__DGMLineGeometry =
+    {0xee622581,0x8cce,0x11cf,{0xab,0xde,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) IID__DGMPolylineGeometry =
+    {0xee622582,0x8cce,0x11cf,{0xab,0xde,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) CLSID_Points =
+    {0xa4245ca0,0xb00d,0x11cf,{0xab,0xef,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) IID__DGMPolygonGeometry =
+    {0xee622583,0x8cce,0x11cf,{0xab,0xde,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) IID__DGMBoundaryGeometry =
+    {0xee622585,0x8cce,0x11cf,{0xab,0xde,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) CLSID_GeometryCollection =
+    {0xf9739b86,0xb49b,0x11cf,{0xab,0xf0,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) IID__DGMGeometryCollection =
+    {0xee622586,0x8cce,0x11cf,{0xab,0xde,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) IID__DGMRectangleGeometry =
+    {0xee622587,0x8cce,0x11cf,{0xab,0xde,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) IID__DGMOrientedPointGeometry =
+    {0xee622588,0x8cce,0x11cf,{0xab,0xde,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) IID__DGMTextPointGeometry =
+    {0xee622589,0x8cce,0x11cf,{0xab,0xde,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) IID__DGMArcGeometry =
+    {0xee62258a,0x8cce,0x11cf,{0xab,0xde,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) IID__DGMCompositePolylineGeometry =
+    {0xee62258b,0x8cce,0x11cf,{0xab,0xde,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) IID__DGMCompositePolygonGeometry =
+    {0xee62258c,0x8cce,0x11cf,{0xab,0xde,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) IID_IGMError =
+    {0x30103c12,0xcf7f,0x11cf,{0x8b,0x2f,0x08,0x00,0x36,0x49,0xfd,0x01}};
+extern "C" const GUID __declspec(selectany) IID_IGMSmartLocateServer =
+    {0x228f0581,0x9ec6,0x11cf,{0x9e,0x47,0x08,0x00,0x36,0x01,0xe0,0x12}};
+extern "C" const GUID __declspec(selectany) IID__DGMEventServer =
+    {0x2675cfc4,0xe227,0x11cf,{0x86,0x53,0x08,0x00,0x36,0x01,0xb0,0x1f}};
+extern "C" const GUID __declspec(selectany) CLSID_Matrix =
+    {0xa4245c92,0xb00d,0x11cf,{0xab,0xef,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) CLSID_PointGeometry =
+    {0xf9739b80,0xb49b,0x11cf,{0xab,0xf0,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) CLSID_LineGeometry =
+    {0xf9739b81,0xb49b,0x11cf,{0xab,0xf0,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) CLSID_PolylineGeometry =
+    {0xf9739b82,0xb49b,0x11cf,{0xab,0xf0,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) CLSID_PolygonGeometry =
+    {0xf9739b83,0xb49b,0x11cf,{0xab,0xf0,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) CLSID_BoundaryGeometry =
+    {0xf9739b85,0xb49b,0x11cf,{0xab,0xf0,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) CLSID_RectangleGeometry =
+    {0xf9739b87,0xb49b,0x11cf,{0xab,0xf0,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) CLSID_OrientedPointGeometry =
+    {0xf9739b88,0xb49b,0x11cf,{0xab,0xf0,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) CLSID_TextPointGeometry =
+    {0xf9739b89,0xb49b,0x11cf,{0xab,0xf0,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) CLSID_ArcGeometry =
+    {0xf9739b8a,0xb49b,0x11cf,{0xab,0xf0,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) CLSID_CompositePolylineGeometry =
+    {0xf9739b8b,0xb49b,0x11cf,{0xab,0xf0,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) CLSID_CompositePolygonGeometry =
+    {0xf9739b8c,0xb49b,0x11cf,{0xab,0xf0,0x08,0x00,0x36,0x01,0xb7,0x69}};
+extern "C" const GUID __declspec(selectany) CLSID_GMError =
+    {0xfa7e8785,0xd8ea,0x11cf,{0x8b,0x32,0x08,0x00,0x36,0x49,0xfd,0x01}};
+extern "C" const GUID __declspec(selectany) CLSID_EventServer =
+    {0x2675cfc5,0xe227,0x11cf,{0x86,0x53,0x08,0x00,0x36,0x01,0xb0,0x1f}};
+extern "C" const GUID __declspec(selectany) DIID_DGMSmartLocateServer =
+    {0x228f0582,0x9ec6,0x11cf,{0x9e,0x47,0x08,0x00,0x36,0x01,0xe0,0x12}};
+extern "C" const GUID __declspec(selectany) CLSID_SmartLocateService =
+    {0x228f0583,0x9ec6,0x11cf,{0x9e,0x47,0x08,0x00,0x36,0x01,0xe0,0x12}};
+
+#pragma pack(pop)

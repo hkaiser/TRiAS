@@ -1,0 +1,5 @@
+#define IDB_MBUFFHELP       1303
+#define IDC_BUFFDESTSIGHT   1301
+#define IDC_BUFFSRCSIGHT    1300
+#define IDE_BUFFSIZE        1302
+

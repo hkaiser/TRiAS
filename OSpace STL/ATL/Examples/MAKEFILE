@@ -1,0 +1,67 @@
+# C++ Components Series events makefile.
+# Copyright 1995 by ObjectSpace, Inc.  All rights reserved.
+# Email: sales@objectspace.com, ccs.support@objectspace.com
+
+###############################################################################
+
+include ..\..\..\ospace\config\local.cfg
+
+
+###############################################################################
+#
+# Common variable declarations.
+#
+
+.SUFFIXES: .cxx .obj
+
+ODIR = ..\..\..\lib
+OLIB = ospace
+OEXT = .lib
+
+LIB_EXEC = lib
+
+CC_ARGS = \
+	 -I..\..\.. -I..\..\..\include \
+	$(CC_INCLUDES) \
+	$(CC_FLAGS) \
+	$(CC_DEFINES) \
+	$(CC_MT)
+
+
+###############################################################################
+#
+# File list.
+#
+
+SRCS = \
+	itertmpl.cxx
+
+OBJS = $(SRCS:.cxx=.obj)
+
+
+###############################################################################
+#
+# Makefile rules.
+#
+
+all:: $(OLIB)
+
+$(OLIB):: $(ODIR)\$(OLIB)$(OEXT)
+	$(LIB_EXEC) /OUT:$(ODIR)\$(OLIB)$(OEXT) $(OBJS) $(ODIR)\$(OLIB)$(OEXT)
+
+$(ODIR)\$(OLIB)$(OEXT): $(OBJS)
+	@if not exist $(ODIR)\$(OLIB)$(OEXT) $(LIB_EXEC) /OUT:$(ODIR)\$(OLIB)$(OEXT) $(OBJS)
+
+tidy::
+	@for %f in ($(OBJS)) do if exist %f del %f
+
+clean:: tidy
+
+
+###############################################################################
+#
+# Main object compile rule
+#
+
+.cxx.obj:
+	$(CC_PATH)\$(CC_EXEC) $(CC_ARGS) $(CC_COMPILE_FLAG) $(CC_OBJECT_FLAG)$@ $<$(CC_SUFFIX)

@@ -1,0 +1,43 @@
+'\"t
+.TH TAGTABLECOPY 3TAG "July 1990" "SDSC" "TAG TABLE"
+.SH NAME
+TagTableCopy - copy a tag table
+.SH SYNOPSIS
+\fB
+.nf
+#include "sdsc.h"
+
+extern int TagErrNo;
+
+TagTableCopy( srcTable, dstTable, firstEntry, lastEntry )
+	TagTable *srcTable;
+	TagTable *dstTable;
+	int firstEntry;
+	int lastEntry;
+.fi
+\fR
+.SH DESCRIPTION
+\fITagTableCopy\fR copies entries from \fIfirstEntry\fR through \fIlastEntry\fR
+in \fIsrcTable\fR onto the end of \fIdstTable\fR.
+.SH RETURNS
+On success, \fITagTableCopy\fR returns the number of entries copied into
+the destination tag table.
+On failure, -1 is returned and \fITagErrNo\fR set to:
+.sp
+.ta 2i
+.nf
+TAGEBADNTHENTRY	The first or last arguments are < -1 or > 
+	the size of the table
+TAGEMALLOC	Cannot allocate enough memory
+TAGENULLTAGTABLE	The source or destination tag table argument is bad
+.SH SEE ALSO
+TagTableAppend(3TAG),
+TagTableQNEntry(3TAG),
+TagTableAlloc(3TAG)
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

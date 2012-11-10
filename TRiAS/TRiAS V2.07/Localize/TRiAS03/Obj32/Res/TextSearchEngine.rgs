@@ -1,0 +1,29 @@
+HKCR
+{
+	TRiASEx.TextSearchEngine.1 = s 'Allgemeine Textrecherche'
+	{
+		CLSID = s '{0796387E-3123-101C-BB62-00AA0018497C}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {0796387E-3123-101C-BB62-00AA0018497C} = s 'Allgemeine Textrecherche'
+		{
+			val AppID = s '{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}'
+			ProgID = s 'TRiASEx.TextSearchEngine.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+	NoRemove TRiAS.Application.2
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove SearchEngines
+			{
+				ForceRemove TRiASEx.TextSearchEngine.1 = s '{0796387E-3123-101C-BB62-00AA0018497C}'
+			}
+		}
+	}
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text-html; charset=Windows-1252">
+<title>Flurkarten des Landesvermessungsamtes Sachsen Anhalt</title>
+</HEAD>
+<BODY BGCOLOR=#FFFFFF TEXT=#000000>
+<h1><a name="flurkarten_des_landesvermessungsamtes_sachsen_anhalt"></a>Flurkarten des Landesvermessungsamtes Sachsen Anhalt</h1>
+<p>
+Das Landesvermessungsamt Sachsen Anhalt stellt georeferenzierte Flurkarten als TIFF-Dateien bereit. Die Referenzierungsinformationen sind im Image-Description-Tag (Tag270) enthalten, z.B. wie folgt:</p>
+<h2>Example</h2>
+<p>
+Referenzierungsinformationen von Flurkarten des Landesvermessungsamtes Sachsen Anhalt</p>
+<pre>
+{ Embeddings:
+&#09;{ uor_min: ( 4506983.130286242        , 5721761.652502531        ) }
+&#09;{ uor_max: ( 4509358.564827944        , 5724693.781623119        ) }
+&#09;{ ControlPoints:
+&#09;{ PointPair:
+&#09;&#09;{ File: ( 13028.3378148349         , 311.7172243694131        ) }
+&#09;&#09;{ World: ( 4508647.134              , 5724653.965              ) }
+&#09;}
+&#09;{ PointPair:
+&#09;&#09;{ File: ( 18357.6007892361         , 19043.38804123749        ) }
+&#09;&#09;{ World: ( 4509327.474              , 5722261.728              ) }
+&#09;}
+&#09;{ PointPair:
+&#09;&#09;{ File: ( 6181.439594400465        , 22439.17084217877        ) }
+&#09;&#09;{ World: ( 4507772.705              , 5721828.034              ) }
+&#09;}
+&#09;{ PointPair:
+&#09;&#09;{ File: ( 943.8719738908815        , 3670.657934435269        ) }
+&#09;&#09;{ World: ( 4507103.539              , 5724225.003              ) }
+&#09;}
+  }
+}
+</pre>
+<p>
+Diese Struktur stellt alle notwendigen Informationen für das Einpassen der Rasterdatei bereit so daß weitere Bearbeitungsschritte nicht notwendig sind.</p>
+<h2>Hinweis</h2>
+<p>
+Neben den eigentlichen Referenzpunkten (uor_min bzw. uor_max) werden weitere Kontrollpunkte (typischerweise vier) mitgeliefert. Diese Punkte werden vom Importmodul ausgewertet und in TRiAS&reg;  importiert. Die Kontrollpunkte sollten stets mit markanten Punkten im Rasterbild deckungsgleich sein.</p>
+</BODY>
+</HTML>

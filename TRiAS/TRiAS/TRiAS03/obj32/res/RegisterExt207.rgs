@@ -1,0 +1,40 @@
+HKCR
+{
+	ForceRemove .ext = s 'TRiAS.Extension'
+	{
+		TRiASSelfRegister = s 'TRiAS.RegisterExt.1'
+	}
+	ForceRemove 'TRiAS.Extension' = s 'TRiAS Zusatzmodul'
+	TRiAS.RegisterExt.1 = s 'Registrieren von TRiAS Zusatzmodulen'
+	{
+		CLSID = s '{C939B5BF-EA2D-11D0-9611-00A024D6F582}'
+	}
+	TRiAS.RegisterExt = s 'Registrieren von TRiAS Zusatzmodulen'
+	{
+		CurVer = s 'TRiAS.RegisterExt.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {C939B5BF-EA2D-11D0-9611-00A024D6F582} = s 'Registrieren von TRiAS Zusatzmodulen'
+		{
+			ProgID = s 'TRiAS.RegisterExt.1'
+			VersionIndependentProgID = s 'TRiAS.RegisterExt'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079638C5-3123-101C-BB62-00AA0018497C}
+			}
+			'Implemented Categories'
+			{
+				{079639C5-3123-101C-BB62-00AA0018497C}
+			}
+			HandledExtensions = s '.ext'
+			{
+				val Filter = s 'TRiAS® Zusatzmodule (*.ext)|*.ext'
+			}
+		}
+	}
+}

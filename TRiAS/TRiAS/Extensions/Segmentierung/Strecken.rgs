@@ -1,0 +1,39 @@
+HKCR
+{
+	TRiASEx.SegmentPropertyAction.1 = s 'StreckenPropertyAction Class'
+	{
+		CLSID = s '{1406423B-4E7D-433F-B9FF-DB12573756CE}'
+	}
+	TRiASEx.SegmentPropertyAction = s 'StreckenPropertyAction Class'
+	{
+		CLSID = s '{1406423B-4E7D-433F-B9FF-DB12573756CE}'
+		CurVer = s 'TRiASEx.SegmentPropertyAction.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {1406423B-4E7D-433F-B9FF-DB12573756CE} = s 'StreckenPropertyAction Class'
+		{
+			ProgID = s 'TRiASEx.SegmentPropertyAction.1'
+			VersionIndependentProgID = s 'TRiASEx.SegmentPropertyAction'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{95C894AB-0B58-44A3-926D-2B2EBB21C791}'
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiASEx.SegmentPropertyAction.1' = s '{1406423B-4E7D-433F-B9FF-DB12573756CE}'
+			}
+		}
+	}
+}

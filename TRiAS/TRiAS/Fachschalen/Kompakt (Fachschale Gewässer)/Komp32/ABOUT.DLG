@@ -1,0 +1,27 @@
+DLGINCLUDE RCDATA DISCARDABLE
+BEGIN
+    "ABOUT.H\0"
+END
+
+KOMPAKTABOUT DIALOG 81, 50, 201, 130
+STYLE DS_MODALFRAME | WS_POPUP | WS_CLIPSIBLINGS | WS_DLGFRAME
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Aufruf des Kompakt-Systems  V@A.@B.@C", 
+                    -1, "Static", SS_CENTER, 0, 14, 201, 17
+    CONTROL         "Copyright © 1995 - 1999 (#@D)", -1, "Static", 
+                    SS_CENTER, 0, 36, 201, 9
+    CONTROL         "OK", IDOK, "Button", BS_DEFPUSHBUTTON | WS_TABSTOP, 110, 
+                    101, 62, 20
+    CONTROL         "Diese Erweiterung ist lizensiert für:", -1, "Static", 
+                    0x0000, 15, 62, 171, 9
+    CONTROL         "@E", -1, "Static", 0x0000, 15, 81, 172, 9
+    CONTROL         "@F", -1, "Static", 0x0000, 15, 73, 172, 8
+    CONTROL         "TRIAS® - Erweiterung", -1, "Static", SS_CENTER, 0, 5, 
+                    201, 8
+    CONTROL         "", -1, "Static", SS_BLACKFRAME, 2, 57, 197, 1
+    CONTROL         PROJEKTICON, ABOUTICON, "Static", SS_ICON, 37, 99, 18, 
+                    20
+    CONTROL         "@F", -1, "Static", SS_CENTER | WS_GROUP, 
+                    0, 44, 201, 8
+END

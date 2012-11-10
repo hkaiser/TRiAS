@@ -1,0 +1,284 @@
+
+
+
+IMDISSOLVE(1IM)            IMAGE TOOLS            IMDISSOLVE(1IM)
+
+
+
+NAME
+     imdissolve  -  Dissolve any field  between  two  images  and
+     store in a new file
+
+SYNOPSIS
+     imdissolve [_o_p_t_i_o_n_s] _i_n_f_i_l_e_n_a_m_e _o_u_t_f_i_l_e_n_a_m_e
+
+DESCRIPTION
+     imdissolve reads each image in the input files and dissolves
+     their  fields  together,  then writes it to the output file.
+     The input and output image file formats may be different.
+
+OPTIONS
+     imdissolve has a variety of options in  the  following  five
+     categories:
+
+          File Selection     What input and output files to use
+          Format Selection   What image file format to use
+          Format Control     What variant of a file format to generate
+          Standard           Standard generic options on all SDSC tools
+          Manipulation       How the image can be manipulated
+
+     _F_i_l_e _S_e_l_e_c_t_i_o_n, _F_o_r_m_a_t _S_e_l_e_c_t_i_o_n, _F_o_r_m_a_t _C_o_n_t_r_o_l, and  _S_t_a_n_-
+     _d_a_r_d options are common to all SDSC image tools and are dis-
+     cussed in depth in the man page for imconv(1IM).
+
+     All options can be abbreviated to the first few unique char-
+     acters.
+
+  Manipulation Options
+     -infile1 <file> specifies the first image to dissolve.
+
+     -infile2 <file> specifies the second image to dissolve.
+
+     -outfile <file> specifies the output image filename.
+
+     -weight <value> or <start-end> specifies weights to  use  in
+     dissolving.
+
+     -frames <value> or <start-end> specifies how many frames  in
+     dissolve sequence.
+
+     -frameincrement <value> specifies how to  increment  through
+     the frames.
+
+     -rgbfield specifies to dissolve just  the  red,  green,  and
+     blue fields.
+
+     -redfield specifies to dissolve just the red field.
+
+     -greenfield specifies to dissolve just the green field.
+
+
+
+
+SDSC               Last change: June 27, 1995                   1
+
+
+
+
+
+
+IMDISSOLVE(1IM)            IMAGE TOOLS            IMDISSOLVE(1IM)
+
+
+
+     -bluefield specifies to dissolve just the blue field.
+
+     -index8field specifies to dissolve just the index8 field.
+
+     -index16field specifies to dissolve just the index16 field.
+
+     -alphafield specifies to dissolve just the alpha field.
+
+     -monofield specifies to dissolve just the mono field.
+
+     -zbufferfield specifies to dissolve just the zbuffer field.
+
+     -idatafield specifies to  dissolve  just  the  integer  data
+     field.
+
+     -fdatafield specifies to dissolve just  the  floating  point
+     data field.
+
+     -wprotfield specifies to dissolve  just  the  write  protect
+     field.
+
+NOTES
+     For notes regarding  file  format  conversion  and  standard
+     image tool options, see the man page on imconv(1IM).
+
+     Error messages are reported to stderr.
+
+EXAMPLES
+     Typical Fade-to-black Invocations:
+         Dim a single image to 50%:
+
+                  imdissolve  -weight  0.5   image.pix   -outfile
+          result.hdf
+
+         Generate 20 frames fading a static image to black:
+
+                  imdissolve image.pix -frames 20 result.%02d.ras
+
+         Generate 20 frames fading from black to a static image:
+
+                  imdissolve -weight 0.0-1.0 -frames 20 image.rla
+          result.%02d.xwd
+
+         Fade to black a sequence of 10 frames (10-19):
+
+                  imdissolve    -frames    10-19     anim%05d.gif
+          final.%05d.tiff
+
+     Typical Dissolve Between Frames Invocations:
+         Mix together 50% each of two images:
+
+
+
+
+
+2                  Last change: June 27, 1995                SDSC
+
+
+
+
+
+
+IMDISSOLVE(1IM)            IMAGE TOOLS            IMDISSOLVE(1IM)
+
+
+
+                  imdissolve  -weight  0.5  first.pix  second.rla
+          output.pcx
+
+         Mix together 70% of the first  image  with  30%  of  the
+     second:
+
+                  imdissolve  -weight  0.7  first.pix  second.rla
+          output.pcx
+
+         Generate 30 frames dissolving between two static images:
+
+                  imdissolve static1.gif static2.gif  -frames  30
+          anim.%03d.gif
+
+         Dissolve a sequence of 10 frames into a static image:
+
+                  imdissolve    anim.%02d.tiff    -frames     0-9
+          static.ras resultanim.%03d.x
+
+         Dissolve between two sequences of 100 frames:
+
+                  imdissolve first.%d.hdf  second.%d.hdf  -frames
+          100 final.%d.hdf
+
+         Dissolve between two sequences of 100 frames  outputting
+     every 10th frame:
+
+                  imdissolve first.%d.hdf  second.%d.hdf  -frames
+          100 -frameincrement 10 final.%d.hdf
+
+     The default actions are as followed:
+          The default is to expect two input files and an  output
+     file if only one
+               input file is given then the output file  must  be
+     preceeded by -outfile
+               and the second image will be defaulted to a  black
+     image.
+          The default is to dissolve all of the fields.
+          The default start weight is 1.0 and the end  weight  is
+     0.0.
+          The default start and end frames are 0.
+
+     Here is what happens when  dissolve  is  invocated  and  the
+     input files only hold a single image:
+
+8          __________________________________________________
+               FILE 1           FILE 2          FILEOUT
+           single file      single file      single file
+           multiple files   single file      multiple files
+           single file      multiple files   multiple files
+           multiple files   multiple files   multiple files
+8          __________________________________________________
+7         |8|7|7|7|7|
+
+
+
+9                                                           |8|7|7|7|7|
+
+
+
+
+9     If both input names have multiple files then they must  have
+
+
+
+SDSC               Last change: June 27, 1995                   3
+
+
+
+
+
+
+IMDISSOLVE(1IM)            IMAGE TOOLS            IMDISSOLVE(1IM)
+
+
+
+     the same number of files.
+     To output multiple files the output file name must have a  %
+     in it.
+
+     Here is what happens when  dissolve  is  invocated  and  the
+     input files can have more than a single image:
+
+8          _____________________________________________________
+               FILE 1            FILE 2            FILEOUT
+           single image      single image      single image
+           multiple images   single image      multiple images
+           single image      multiple images   multiple images
+           multiple images   multiple images   multiple images
+8          _____________________________________________________
+7         |8|7|7|7|7|
+
+
+
+9                                                              |8|7|7|7|7|
+
+
+
+
+9     If both input names have multiple images then they must have
+     the same number of images.
+
+     No matter what, if there is a mixture of mutiple files  that
+     have multiple images then imdissolve will get angry.
+
+     If the input images do not use rgb color type then they will
+     be  changed  to  rgb and then dissolved and outputted as rgb
+     unless a different output invocation is explicitly  enterred
+     overriding the rgb.
+
+SEE ALSO
+     imadjust (1IM), imcomp (1IM), imfill (1IM), ImVfbMix (3IM)
+
+     For information on SDSC's image library, see imintro(3IM).
+
+AUTHOR
+     Chris Groening
+     San Diego Supercomputer Center
+
+     See the individual file format man pages for the authors  of
+     the  underlying  format  read  and write code.  The names of
+     these man pages begin with the letters "im" followed by  the
+     format  name.  For example, the name of the TIFF man page is
+     imtiff.  To display it, enter man imtiff.
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4                  Last change: June 27, 1995                SDSC
+
+
+

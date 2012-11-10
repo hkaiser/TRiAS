@@ -1,0 +1,185 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "DynQueryRes.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "AfxRes.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "DynQueryRes.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""AfxRes.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""DynQuery.rcv""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// SCRIPT
+//
+
+#if defined(APSTUDIO_INVOKED) || defined(NDEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDR_SCRIPT_OBJFROMORWND$(NDEBUG) SCRIPT  DISCARDABLE     "Res\\GetObjectsFromORWndr.ebc"
+#else
+IDR_SCRIPT_OBJFROMORWND SCRIPT  DISCARDABLE     "Res\\GetObjectsFromORWndr.ebc"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDR_SCRIPT_OBJFROMORWND$(_DEBUG) SCRIPT  DISCARDABLE     "Res\\GetObjectsFromORWndd.ebc"
+#else
+IDR_SCRIPT_OBJFROMORWND SCRIPT  DISCARDABLE     "Res\\GetObjectsFromORWndd.ebc"
+#endif
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_ORWNDMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "DynQueryORWnd"
+    BEGIN
+        MENUITEM "Objekte hervorheben",         IDM_SELECTEDOBJECTS
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DYNQUERIES DIALOGEX 0, 0, 250, 119
+STYLE DS_MODALFRAME | WS_CHILD | WS_DISABLED | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Verwaltung dynamischer Abfragen"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Verfügbare dynamische &Abfragen:",IDC_STATIC,4,4,172,8
+    CONTROL         "Tree1",IDC_DYNQUERIES,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | TVS_EDITLABELS | 
+                    TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,4,15,180,100
+    PUSHBUTTON      "Neu",IDC_NEWQUERY,191,64,55,14
+    PUSHBUTTON      "Darstellung",IDC_DEFINEVIS,191,82,55,14
+    PUSHBUTTON      "Definieren",IDC_MODIFY,191,100,55,14
+    DEFPUSHBUTTON   "OK",IDOK,191,4,55,14
+    PUSHBUTTON      "Abbrechen",IDCANCEL,191,22,55,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_DYNQUERIES, DIALOG
+    BEGIN
+        LEFTMARGIN, 4
+        RIGHTMARGIN, 246
+        TOPMARGIN, 4
+        BOTTOMMARGIN, 115
+        HORZGUIDE, 114
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDS_DYNQUERYOBJENUMS    REGISTRY DISCARDABLE    "Res\\DynQueryObjEnums.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// TYPELIB
+//
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDR_TYPELIB$(_DEBUG)    TYPELIB DISCARDABLE     "WinDebug\\Dynquery.tlb"
+#else
+IDR_TYPELIB             TYPELIB DISCARDABLE     "WinDebug\\Dynquery.tlb"
+#endif
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Verwaltung dynamischer Abfragen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDM_SELECTEDOBJECTS     "Kennzeichnet alle in diesem Fenster selektierten Objekte."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DYNQUERYOBJENUMS_DESC "DynQueryObjEnums Class"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "DynQuery.rcv"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

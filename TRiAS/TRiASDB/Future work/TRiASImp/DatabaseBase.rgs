@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiASImport.ImportDatabase.1 = s 'ImportDatabase Class'
+	{
+		CLSID = s '{56FD6492-93D5-11D1-A024-0060975566B4}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {56FD6492-93D5-11D1-A024-0060975566B4} = s 'DatabaseBase Class'
+		{
+			ProgID = s 'TRiASImport.ImportDatabase.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

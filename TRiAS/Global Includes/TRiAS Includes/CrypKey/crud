@@ -1,0 +1,30 @@
+Comparing files CRYPKEY.54 and crypkey.h
+****** CRYPKEY.54
+#else
+  #define FUNCTYPE
+#endif
+****** crypkey.h
+#else
+  #define FUNCTYPE __cdecl
+#endif
+******
+
+****** CRYPKEY.54
+#define INIT_THUNK16_DDL_CORRUPT    -13  // only on Win32
+
+****** crypkey.h
+#define INIT_THUNK16_DDL_CORRUPT    -13  // only on Win32
+#define INIT_32_DDL_CORRUPT         -14  // only on Win32
+
+******
+
+****** CRYPKEY.54
+unsigned short FUNCTYPE ckChallenge(unsigned short random1, unsigned short random2);
+
+****** crypkey.h
+unsigned short FUNCTYPE ckChallenge(unsigned short random1, unsigned short random2);
+long FUNCTYPE CKChallenge32(long random1, long random2);
+
+******
+
+

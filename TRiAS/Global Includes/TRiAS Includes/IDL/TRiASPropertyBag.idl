@@ -1,0 +1,44 @@
+// $Header: $
+// Copyright© 1999-2002 Geopunkt GmbH & Co. KG, NL Potsdam, All rights reserved
+// Created: 04.11.2002 10:09:27 
+//
+// @doc
+// @module TRiASPropertyBag.idl | IDL definition of <i TRiASPropertyBag>
+// @group In diesem Modul definierte Interfaces
+// @index | INTERFACE
+// @end
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declarations
+interface ITRiASPropertyBag;
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc	INTERFACE TRIASTLB
+// @interface IGeoComponent | Über das <i ITRiASPropertyBag> -Interface wird eine
+// externe GeoKomponente (zumeist VB basiert) angesprochen
+// @group Eigenschaften von <i ITRiASPropertyBag>
+// @index | ITRIASPROPERTYBAG & PROPERTY
+// @group Methoden von <i IGeoComponent>
+// @index | ITRIASPROPERTYBAG & METHOD
+// @doc ITRIASPROPERTYBAG
+cpp_quote("#ifndef _LPTRIASPROPERTYBAG_DEFINED")
+cpp_quote("#define _LPTRIASPROPERTYBAG_DEFINED")
+	[
+		object,
+		uuid(77EA92EB-7A00-4D4D-9682-2E8EB0474DE8),
+		helpstring("ITRiASPropertyBag Interface"),
+		pointer_default(unique),
+		dual, oleautomation
+	]
+	interface ITRiASPropertyBag : IDispatch
+	{
+		import "oaidl.idl";
+		import "ocidl.idl";
+
+		HRESULT ReadProperty ([in] BSTR DataName, [in, optional] VARIANT DefaultValue, [out, retval] VARIANT *Data);
+		HRESULT WriteProperty ([in] BSTR DataName, [in] VARIANT Data, [in, optional] VARIANT DefaultValue);
+	};
+cpp_quote("#endif // _LPTRIASPROPERTYBAG_DEFINED")
+
+
+

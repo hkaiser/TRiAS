@@ -1,0 +1,32 @@
+# Makefile.src
+# Copyright (c) 1998, Regents of the University of California
+# $Id: Makefile.src,v 1.11 1999/07/01 20:16:13 marcel Exp $
+
+SRCS += $(LIBGISTDIR)/gist_file.cc \
+	$(LIBGISTDIR)/gist_p.cc \
+	$(LIBGISTDIR)/gist_htab.cc \
+	$(LIBGISTDIR)/vec_t.cc \
+	$(LIBGISTDIR)/gist.cc \
+	$(LIBGISTDIR)/gist_unordered.cc \
+	$(LIBGISTDIR)/gist_unorderedn.cc \
+	$(LIBGISTDIR)/gist_query.cc \
+	$(LIBGISTDIR)/gist_cursor.cc \
+	$(LIBGISTDIR)/gist_cursorext.cc \
+	$(LIBGISTDIR)/gist_ustk.cc \
+	$(LIBGISTDIR)/gist_support.cc
+
+ifeq (${AMDB},true)
+SRCS += $(LIBGISTDIR)/amdb_treemap.cc \
+	$(LIBGISTDIR)/amdb_analysis.cc \
+	$(LIBGISTDIR)/amdb_wkldprofile.cc \
+	$(LIBGISTDIR)/amdb_wkldstats.cc \
+	$(LIBGISTDIR)/amdb_splitstats.cc \
+	$(LIBGISTDIR)/amdb_penaltystats.cc \
+	$(LIBGISTDIR)/amdb_support.cc \
+	$(LIBGISTDIR)/amdb_idxstruct.cc \
+	$(LIBGISTDIR)/amdb_defs.cc \
+	$(LIBGISTDIR)/amdb_itemset.cc \
+	$(LIBGISTDIR)/gist_amdb.cc \
+	$(LIBGISTDIR)/gist_disppredcursor.cc \
+	$(LIBGISTDIR)/amdb_clustering.cc
+endif

@@ -1,0 +1,264 @@
+
+
+
+IMSPLIT(1IM)               IMAGE TOOLS               IMSPLIT(1IM)
+
+
+
+NAME
+     imsplit  -  Splits a multi-image file into separate files
+
+SYNOPSIS
+     imsplit [_o_p_t_i_o_n_s] _i_n_f_i_l_e_n_a_m_e _o_u_t_f_i_l_e_n_a_m_e
+
+DESCRIPTION
+     imsplit reads in the multi-image input file and  splits  its
+     contents into multiple single-image output files.  The input
+     and output image file formats may be different.
+
+OPTIONS
+     imsplit has a variety  of  options  in  the  following  five
+     categories:
+
+          File Selection     What input and output files to use
+          Format Selection   What image file format to use
+          Format Control     What variant of a file format to generate
+          Standard           Standard generic options on all SDSC tools
+
+     _F_i_l_e _S_e_l_e_c_t_i_o_n, _F_o_r_m_a_t _S_e_l_e_c_t_i_o_n, _F_o_r_m_a_t _C_o_n_t_r_o_l, and  _S_t_a_n_-
+     _d_a_r_d options are common to all SDSC image tools and are dis-
+     cussed in depth in the man page for imconv(1IM).
+
+     All options can be abbreviated to the first few unique char-
+     acters.
+
+  Output File Names
+     Output file names are generated automatically based  upon  a
+     given  output  file  name  template.  The file name template
+     must include the special character code  "%d",  like  the  C
+     language  printf(3)  print  format directive.  This template
+     will be used to generate a series of output image file names
+     by  replacing the "%d" with integer frame numbers, one after
+     another.  The template myimage.%d.rgb, for  instance,  could
+     generate   the   file  names  myimage.0.rgb,  myimage.1.rgb,
+     myimage.2.rgb, and so on.
+
+     By default, all images in the input file are split  out  and
+     written  to  separate  image files.  File name frame numbers
+     will range from 0 (for the first image) to _n-_1 (for the last
+     image), where _n is the number of images in the input file.
+
+     The -frames _l_i_s_t... option may be given one or more times to
+     explicitly  list  the  input  file  frames  that  are  to be
+     extracted.  The -frames option takes a list of one  or  more
+     _r_a_n_g_e_s,  each  of  which  is  a  single value, or a range of
+     values taking one of the following forms:
+
+          _r_a_n_g_e   Extract Frames
+8          ____________________________________________
+          _n       _n only.
+          _n-      _n through the end of the input file.
+
+
+
+SDSC               Last change: June 27, 1995                   1
+
+
+9
+
+
+IMSPLIT(1IM)               IMAGE TOOLS               IMSPLIT(1IM)
+
+
+
+          _n-_m     _n through _m.
+
+     There is no space between _n, the dash, and _m.  _n need not be
+     a value less than _m.
+
+     Frame numbers listed in -frames options will be the same  as
+     those used for generating output file names.
+
+     The following  are  typical  invocations  of  imsplit  using
+     -frames lists:
+
+          imsplit many.hdf -frames 0 1 2 image.%d.tiff
+          imsplit many.hdf -frames 0-5 6 7 9-12 image.%d.rgb
+          imsplit many.hdf -frames 9-12 6 0-3 image.%02d.ras
+          imsplit many.hdf -frame 0 -frame 1 -frame 32 -frame 8-10 5 image.%d.gif
+
+NOTES
+     All of the output files will be written using the same image
+     file  format.   This need not be the same as the file format
+     used by the input file.
+
+     Multi-image files handled by imsplit may  be  created  using
+     imcat(1IM).
+
+     Most image file formats cannot support the storage of multi-
+     ple  images  in  the same file.  This is a limitation of the
+     file format design, not imsplit.
+
+     imsplit uses the C language sprintf(3)  routine  to  replace
+     the file name template's "%d" with image frame numbers.  The
+     use of sprintf(3) means the full range of "%d" format direc-
+     tive  syntax  is  available in generating output file names.
+     While the sprintf(3) man page has full details on  the  "%d"
+     print directive, the following is a summary as it applies to
+     output file naming:
+
+          The "%d" directive has the following general syntax:
+
+                "%" [_f_l_a_g_s] [_d_i_g_i_t] ["." _p_r_e_c_i_s_i_o_n] "d"
+
+          The directive always starts with a  "%"  character  and
+          ends  with  a "d" character.  Field names between the [
+          ]s in the syntax above are optional.  With no  optional
+          field value, the simplest form of the directive is just
+          "%d".
+
+          _f_l_a_g_s
+               Following the "%" is  an  optional  set  of  _f_l_a_g_s
+               characters:
+
+                    _f_l_a_g      Meaning
+8                    ________________________________________________________________
+                    -         Left-justify the frame number.
+
+
+
+2                  Last change: June 27, 1995                SDSC
+
+
+9
+
+
+IMSPLIT(1IM)               IMAGE TOOLS               IMSPLIT(1IM)
+
+
+
+                    +         Always use the sign (+ or -) of the number.
+                    (blank)   Use a blank instead of a + for positive frame numbers.
+
+               Except for peculiar file naming, users of  imsplit
+               can  omit  the  optional  _f_l_a_g_s portion of a print
+               directive.
+
+          _d_i_g_i_t
+               Following the _f_l_a_g_s is  an  optional  _d_i_g_i_t  field
+               that gives the field width of the number, in char-
+               acters.  If the number requires  fewer  than  this
+               minimum,  it  will  be padded on the right or left
+               with blanks (padding is controlled by the  -  _f_l_a_g
+               mentioned above). If the number requires more than
+               this minimum, it will be taken.
+
+               The _d_i_g_i_t field can be preceded by a 0  (zero)  to
+               cause  padding  to  be  done  with  leading  zeros
+               instead of blanks.  This is useful when  referring
+               to  frame numbers of the form "001," "002," "003,"
+               and so on.
+
+          _p_r_e_c_i_s_i_o_n
+               The _d_i_g_i_t field may be optionally  followed  by  a
+               "." (period) and a _p_r_e_c_i_s_i_o_n number that gives the
+               minimum number of digits  for  the  frame  number.
+               This   isn't  particularly  useful  for  users  of
+               imsplit and can be skipped.
+
+          The following are a few typical "%d" directives for use
+          in imsplit:
+
+               %d   No  leading  zeros  or   blanks.    Generates
+                    numbers like "0," "1," "2," "3," etc.
+
+               %03d Leading zeros to fill 3 characters, including
+                    the  number.   Generates  numbers like "000,"
+                    "001," "002," "003," etc.
+
+               %.3d Same effect as "%03d".
+
+     In order to split  apart  multi-image  files,  imsplit  must
+     first  read  in the entire file's image data.  This can take
+     up quite a bit of memory, as well as take a long  time.   If
+     the host does not have enough memory and swap space, imsplit
+     will fail with a memory allocation error.
+
+     For notes regarding  file  format  conversion  and  standard
+     image tool options, see the man page for imconv(1IM).
+
+     Error messages are reported to stderr.
+
+
+
+
+SDSC               Last change: June 27, 1995                   3
+
+
+
+
+
+
+IMSPLIT(1IM)               IMAGE TOOLS               IMSPLIT(1IM)
+
+
+
+EXAMPLES
+     Extract all the images in a multi-image HDF  file  and  save
+     them as Sun raster files:
+
+          imsplit many.hdf single%02d.ras
+
+     Extract the images 0, 1, 2, 3, and  18  from  a  multi-image
+     TIFF file:
+
+          imsplit movie.tiff -frames 0-3 18 image.%02d.tiff
+
+SEE ALSO
+     imcat (1IM)
+
+     For information on SDSC's image library, see imintro(3IM).
+
+AUTHORS
+     Chris Groening and Dave Nadeau
+     San Diego Supercomputer Center
+
+     See the individual file format man pages for the authors  of
+     the  underlying  format  read  and write code.  The names of
+     these man pages begin with the letters "im," followed by the
+     format  name.  For example, the name of the TIFF man page is
+     imtiff.  To display it, enter man imtiff.
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4                  Last change: June 27, 1995                SDSC
+
+
+

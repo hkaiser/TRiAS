@@ -1,0 +1,41 @@
+HKCR
+{
+	TRiASEx.CTFManageCoordParam.1 = s 'ManageCoordParam Class'
+	{
+		CLSID = s '{95F58F37-DF2C-11D1-8606-00600875138A}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {95F58F37-DF2C-11D1-8606-00600875138A} = s 'ManageCoordParam Class'
+		{
+			ProgID = s 'TRiASEx.CTFManageCoordParam.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertySheetHandlers
+			{
+				ForceRemove Coordinates
+				{
+					'TRiASEx.CTFManageCoordParam.1' = s '{95F58F37-DF2C-11D1-8606-00600875138A}'
+				}
+			}
+		}
+	}
+	NoRemove TRiAS.Document.2
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertySheetHandlers
+			{
+				ForceRemove Coordinates
+			}
+		}
+	}
+}

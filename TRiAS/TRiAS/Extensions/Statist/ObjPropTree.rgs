@@ -1,0 +1,34 @@
+HKCR
+{
+	TRiAS.ObjPropTree.1 = s 'PopupTree Class'
+	{
+		CLSID = s '{09C04255-07E6-4EFD-8DED-F362DAE31E2B}'
+	}
+	TRiAS.ObjPropTree = s 'PopupTree Class'
+	{
+		CLSID = s '{09C04255-07E6-4EFD-8DED-F362DAE31E2B}'
+		CurVer = s 'TRiAS.ObjPropTree.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {09C04255-07E6-4EFD-8DED-F362DAE31E2B} = s 'PopupTree Class'
+		{
+			ProgID = s 'TRiAS.PopupTree.1'
+			VersionIndependentProgID = s 'TRiAS.PopupTree'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			ForceRemove 'Control'
+			ForceRemove 'Insertable'
+			ForceRemove 'ToolboxBitmap32' = s '%MODULE%, 24742'
+			'MiscStatus' = s '0'
+			{
+			    '1' = s '131473'
+			}
+			'TypeLib' = s '{0DCA1098-4FFE-431F-8B4A-95A27928AD07}'
+			'Version' = s '1.0'
+		}
+	}
+}

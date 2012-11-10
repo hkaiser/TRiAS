@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiAS.UnitsOfMeasure.1 = s 'UnitsOfMeasure Class'
+	{
+		CLSID = s '{A2497E89-EF70-11D2-9BE5-5AB320524153}'
+	}
+	TRiAS.UnitsOfMeasure = s 'UnitsOfMeasure Class'
+	{
+		CLSID = s '{A2497E89-EF70-11D2-9BE5-5AB320524153}'
+		CurVer = s 'TRiAS.UnitsOfMeasure.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {A2497E89-EF70-11D2-9BE5-5AB320524153} = s 'UnitsOfMeasure Class'
+		{
+			ProgID = s 'TRiAS.UnitsOfMeasure.1'
+			VersionIndependentProgID = s 'TRiAS.UnitsOfMeasure'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{CF461D81-EE47-11D2-9BE4-BAF620524153}'
+		}
+	}
+}

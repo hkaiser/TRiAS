@@ -1,0 +1,11 @@
+// GUID's für die Segmentierung --------------------------------------------
+// File: SEGGUIDS.H
+
+#if !defined(_SEGGUIDS_H)
+#define _SEGGUIDS_H
+
+// {E4B901CE-3896-4d61-B51E-BC4293C00851}
+//DEFINE_GUID(CLSID_Strecken,0xe4b901ce, 0x3896, 0x4d61, 0xb5, 0x1e, 0xbc, 0x42, 0x93, 0xc0, 0x8, 0x51);
+DEFINE_GUID(CLSID_Strecken,0x1406423b, 0x4e7d, 0x433f, 0xb9, 0xff, 0xdb, 0x12, 0x57, 0x37, 0x56, 0xce);
+
+#endif // _SEGGUIDS_H

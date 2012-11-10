@@ -1,0 +1,180 @@
+'\"et
+.if t .TH IMVFBTOINDEX8 3IM "August 19, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMVFBTOINDEX8 3IM "August 19, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImVfbToIndex8 - Convert a virtual frame buffer to an 8-bit index image
+.br
+ImVfbToIndex16 - Convert a virtual frame buffer to a 16-bit index image
+.br
+ImVfbToIndex - Convert a virtual frame buffer to a \fIn\fR color index image
+.br
+ImVfbToRgb - Convert a virtual frame buffer to an RGB image
+.br
+ImVfbToGray - Convert a virtual frame buffer to a grayscale image
+.br
+ImVfbToGrey - Convert a virtual frame buffer to a grayscale image
+.br
+ImVfbToMono - Convert a virtual frame buffer to a monochrome image
+.br
+ImVfbFSDitherToMono - Convert a frame buffer to a monochrome image, using Floyd-Steinberg dithering
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+ImVfb *ImVfbToIndex8( srcVfb, dstVfb )
+	ImVfb *srcVfb ;
+	ImVfb *dstVfb ;
+
+ImVfb *ImVfbToIndex16( srcVfb, dstVfb )
+	ImVfb *srcVfb ;
+	ImVfb *dstVfb ;
+
+ImVfb *ImVfbToIndex( srcVfb, numColors, dstVfb )
+	ImVfb *srcVfb ;
+	int    numColors;
+	ImVfb *dstVfb ;
+
+ImVfb *ImVfbToRgb( srcVfb, dstVfb )
+	ImVfb *srcVfb ;
+	ImVfb *dstVfb ;
+
+ImVfb *ImVfbToGray( srcVfb, dstVfb )
+	ImVfb *srcVfb ;
+	ImVfb *dstVfb ;
+
+ImVfb *ImVfbToGrey( srcVfb, dstVfb )
+	ImVfb *srcVfb ;
+	ImVfb *dstVfb ;
+
+ImVfb *ImVfbToMono( srcVfb, threshold, dstVfb )
+	ImVfb *srcVfb ;
+	int threshold ;
+	ImVfb *dstVfb ;
+
+ImVfb *ImVfbFSDitherToMono( srcVfb, dstVfb )
+	ImVfb *srcVfb ;
+	ImVfb *dstVfb ;
+.fi
+\fR
+.SH DESCRIPTION
+Each of these routines convert an image stored in \fIsrcVfb\fR into an
+image of a different type and store it in \fIdstVfb\fR.
+A pointer to the converted destination Vfb is returned.
+.LP
+\fBImVfbToIndex8\fR converts a virtual frame buffer to
+an 8-bit image.
+.LP
+\fBImVfbToIndex16\fR converts a virtual frame buffer to a
+16-bit image.
+.LP
+\fBImVfbToIndex\fR converts a virtual frame buffer to a
+\fBnumColors\fR indexed image.
+.LP
+\fBImVfbToRgb\fR converts a virtual frame buffer to an RGB image.
+.LP
+\fBImVfbToGray\fR and \fBImVfbToGrey\fR convert a virtual frame buffer
+to an 8-bit gray scale image.
+.LP
+\fBImVfbToMono\fR converts a virtual frame buffer to a monochrome image.
+Each monochromatic pixel value, queried by \fBImVfbQMono\fR , is 0 (white) or 1 (black).
+.LP
+\fBImVfbFSDitherToMono\fR converts a virtual frame buffer to a monochrome image
+using Floyd-Steinber dithering.  Each monochromatic pixel value, queried by 
+\fBImVfbQMono\fR, is 0 (white) or 1 (black).
+.SH NOTES
+The \fIsrcVfb\fR and \fIdstVfb\fR may be the same Vfb without unpleasant
+side effects.
+.LP
+When \fBImVfbToGray\fR is called,
+the resulting gray scale values are placed in the \fBIMVFBINDEX8\fR field
+of the destination virtual frame buffer.
+.LP
+Conversion from grayscale to monochrome uses the \fIthreshold\fR value
+as the breakpoint between white and black values.  Grayscale pixels with
+values less than the threshold are converted to white; those equal
+to or greater than the threshold are converted to black.
+.LP
+Conversion from color to grayscale computes the gray value for each pixel
+using the NTSC Y equation:
+.sp 1
+.ce
+.EQ
+Gray ~~=~~ 0.30*R ~+~ 0.59*G ~+~ 0.11*B
+.EN
+.LP
+Conversion from a color index image to an RGB image uses the \fIsrcVfb\fR's
+color lookup table to look up each pixel value to obtain its RGB
+color.  If the \fIsrcVfb\fR has no color lookup table, a grayscale
+ramp is used. 
+.LP
+Conversion from an RGB image to a color index image scans the RGB image to
+build a color lookup table.  \fBImVfbToIndex8\fR builds a new
+256-entry (or fewer) color lookup table, while \fBImVfbToIndex16\fR
+builds a 65536-entry (or fewer) color lookup table.  If the RGB image
+uses more colors than may be stored in such color tables, then color
+approximations are made to minimize color oddities.
+.LP
+\fBImVfbToIndex\fR converts any VFB to an indexed VFB with \fBnumColors\fR
+or less.  This has the affect of increasing or decreasing the number
+of colors in an indexed VFB.  If the \fBdstVfb\fR is IMVFBNEW,
+a new VFB will be created that is the smallest VFB that can hold
+\fBnumColors\fR.  New \fBdstVfb\fR with \fBnumColors\fR of values 1
+to 256 will have \fBIMVFBINDEX8\fR VFB's.  New \fBdstVfb\fR with
+\fBnumColors\fR of values 256 to 65,536 will have \fBIMVFBINDEX16\fR
+VFB's.  Larger indexed VFB's are not supported.
+.LP
+\fBImVfbFSDitherToMono\fR converts a vfb to mono using Floyd-Steinberg
+dithering.  Floyd-Steinberg dithering works as follows:  First the
+image is converted to greyscale.  Then the image is traversed from
+top to bottom, left to right.  If the current pixel has a value that
+is greater than or equal to 255, then the pixel is set to white in
+the outgoing vgb.  The difference between this pixel's value and 255 is then
+propogated to the pixel's neighbors.  (i.e. If the value is more than
+255 then 255 less than the value is propogated.  If the value is less than 
+255 then the value is propogated.)  The difference is propogated in the
+following manner:  Seven sixteenths of the error goes to the right.  Three
+sixteenths goes to the bottom-left.  Five sixteenths goes to the bottom.
+One sixteenth goes to the bottom-right.
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l l.
+			
+	----	xxxx	7/16
+	3/16	5/16	1/16
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+The purpose of Floyd-Steinberg dithering is to allow the image to be 
+dithered in a single left to right, top to bottom pass.
+.SH RETURNS
+Upon success, all functions return a pointer to the converted destination Vfb.
+An error causes \fBIMVFBNULL\fR to be returned and the value of \fBImErrNo\fR
+to be set to one of the following:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEMALLOC	Cannot allocate enough memory for the new Vfb
+IMENOTINFO	There is not enough information in \fIsrcVfb\fR
+	for the operation 
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH SEE ALSO
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBImVfbAlloc\fR (3IM),
+\fBImVfbCopy\fR (3IM),
+\fBImVfbDup\fR (3IM)
+.SH AUTHORS
+Mike Bailey, Dave Nadeau, Brian Duggan
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

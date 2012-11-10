@@ -1,0 +1,100 @@
+// ProgInd2.idl : IDL source for IProgressIndicator2
+//
+
+// forward declarations
+interface IProgressIndicator2;
+interface IMultiProgressIndicator;
+
+cpp_quote("#ifndef _LPPROGRESSINDICATOR_DEFINED")
+cpp_quote("#define _LPPROGRESSINDICATOR_DEFINED")
+[
+	uuid(079638D1-3123-101C-BB62-00AA0018497C),
+	dual, oleautomation,
+	helpstring("IProgressIndicator2 Interface"),
+    pointer_default(unique)
+]
+interface IProgressIndicator2 : IDispatch
+{
+	import "oaidl.idl";
+
+	typedef enum tagPIFLAGS {
+	// Flags für Restart, ChangeText und RetrieveText
+		[helpstring("Caption beeinflussen")] 
+			PIFLAGS_CAPTION = 0x0001,
+		[helpstring("Feld 'Datei:' beeinflussen")] 
+			PIFLAGS_FILE = 0x0002,
+		[helpstring("Feld 'Dateiname' beeinflussen")] 
+			PIFLAGS_FILENAME = 0x0004,
+		[helpstring("Statusfeld1 beeinflussen")] 
+			PIFLAGS_STATUS = 0x0008,
+		[helpstring("Statusfeld2 beeinflussen")] 
+			PIFLAGS_RESULT = 0x0010,
+		[helpstring("Automatische Zeitanzeige aktivieren")] 
+			PIFLAGS_TIME = 0x0020,
+		[helpstring("Automatisch Prozente aktualisieren")] 
+			PIFLAGS_ADJUSTPERCENT = 0x0040,
+		[helpstring("Fenster erst mit erstem Wert anzeigen")] 
+			PIFLAGS_INIT_SHOWWINDOW = 0x0100,
+		[helpstring("Copy-AVI anzeigen")] 
+			PIFLAGS_AVI_COPY = 0x1000,
+		[helpstring("Move-AVI anzeigen")] 
+			PIFLAGS_AVI_MOVE = 0x2000,
+		[helpstring("Löschen-AVI anzeigen")] 
+			PIFLAGS_AVI_DELETE = 0x3000,
+		[helpstring("Maske für AVI-Nummer")] 
+			PIFLAGS_AVI_MASK = 0x7000,
+
+		[helpstring("Alle Felder anzeigen")] 
+			PIFLAGS_ALL = 0x007f,
+	
+	// Flag für Restart
+		[helpstring("Lediglich 'Canceled'-Status rücksetzen")] 
+			PIFLAGS_RESETCANCEL = 0x8000,
+	} PIFLAGS;
+
+	[id(100)] HRESULT InitNew ([in]HWND hWndParent, [in]DWORD dwReserved,
+		[out, retval] HWND *phWnd);
+    [id(101)] HRESULT Restart ([in]ULONG ulMinPos, [in]ULONG ulMaxPos,
+		[in] PIFLAGS rgFlags);
+    [id(102)] HRESULT ChangeText ([in]PIFLAGS rgWhichText, [in]BSTR bstrNewText);
+    [id(103)] HRESULT RetrieveText ([in]PIFLAGS rgWhichText, [out, retval] BSTR *pbstrOutText);
+	[id(104)] HRESULT SetPosition ([in]ULONG ulNewPos, [out, retval]INT *piPercent);
+    [id(105)] HRESULT IncrementPosition ([out, retval]INT *piPercent);
+    [id(106)] HRESULT IsCanceled (void);
+
+	[id(107), propget] HRESULT Flags ([out, retval] PIFLAGS *prgFlags);
+	[id(107), propput] HRESULT Flags ([in] PIFLAGS rgFlags);
+	[id(108)] HRESULT RetrieveRange ([in, out] ULONG *pulMinPos, [in, out] ULONG *pulMaxPos);
+};
+cpp_quote("#endif")
+
+cpp_quote("#ifndef _MULTIPROGRESSINDICATOR_DEFINED")
+cpp_quote("#define _MULTIPROGRESSINDICATOR_DEFINED")
+[
+	uuid(079638D4-3123-101C-BB62-00AA0018497C),		
+	dual,
+	oleautomation,
+	helpstring("IMultiProgressIndicator Interface"),
+]
+interface IMultiProgressIndicator : IDispatch
+{
+	[
+		id(200), 
+		helpstring("Init an MultiprogressIndicator with the given range count.")
+	]
+	HRESULT Init ([in] int iRangeCnt, [in] IProgressIndicator2 *pPI);		
+
+	[
+		id(201), 
+		helpstring("Get an SubProgressIndicator for the given range.")
+	] 
+	HRESULT GetRange ([in] int iRange, [out, retval] IProgressIndicator2 **ppPI);		
+
+	[
+		id(202), 
+		propget,
+		helpstring("Get the count of ranges for which an SubProgressIndicator exists.")
+	]
+	HRESULT RangeCnt ([out, retval] int *piRangeCnt);							
+};
+cpp_quote("#endif // _MULTIPROGRESSINDICATOR_DEFINED")

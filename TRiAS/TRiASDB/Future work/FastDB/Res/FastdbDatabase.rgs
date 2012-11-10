@@ -1,0 +1,54 @@
+HKCR
+{
+	TRiASDB.FastdbDatabaseObject.1 = s 'FastdbDatabaseObject Class'
+	{
+		CLSID = s '{EE048707-8113-4851-A9EC-F327ECF6A8AC}'
+	}
+	TRiASDB.FastdbDatabaseObject = s 'FastdbDatabaseObject Class'
+	{
+		CLSID = s '{EE048707-8113-4851-A9EC-F327ECF6A8AC}'
+		CurVer = s 'TRiASDB.FastdbDatabaseObject.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {EE048707-8113-4851-A9EC-F327ECF6A8AC} = s 'FastdbDatabaseObject Class'
+		{
+			ProgID = s 'TRiASDB.FastdbDatabaseObject.1'
+			VersionIndependentProgID = s 'TRiASDB.FastdbDatabaseObject'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{AEF1A967-35C7-4E6E-8589-3869A8FA8598}'
+		}
+	}
+	ForceRemove TRiASDB.FastdbDatabase = s 'TRiAS speicherbasierte Datenbank'
+	{
+		CurVer = s 'TRiASDB.FastdbDatabase.1'
+	}
+	ForceRemove TRiASDB.FastdbDatabase.1 = s 'TRiAS 1.0 speicherbasierte Datenbank'
+	{
+		VersionIndependendProgID = s 'TRiASDB.FastdbDatabase'
+		TRiASDB
+		{
+			CLSID = s '{EE048707-8113-4851-A9EC-F327ECF6A8AC}'
+			TypeLib = s '{AEF1A967-35C7-4E6E-8589-3869A8FA8598}'
+			Description 
+			{
+				val DefaultExtension = s '.rim'
+				val LongName = s 'TRiAS speicherbasierte Datenquelle, Daten können beliebig bearbeitet und gespeichert werden.'
+				val ShortName = s 'TRiASMem'
+				val NameDescription = s 'TRiAS speicherbasierte Datenbank'
+				val NameIsDirectory = s '0'
+				val NameIsFile = s '1'
+				val ReadWrite = s '1'
+				val FilterString = s 'TRiAS speicherbasierte Datenbank (*.rim)|*.rim|'
+				val ToolboxBitmap32 = d 27
+				val Version = s '1.0'
+				val TempName = s 'Ohne Namen.rim'
+				val RestrictInstances = s '1'
+			}
+		}
+	}
+}

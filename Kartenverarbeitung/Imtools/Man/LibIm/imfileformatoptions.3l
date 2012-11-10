@@ -1,0 +1,264 @@
+
+
+
+IMFILEFORMATOPTIONS(3IM)SDSC IMAGE LIBRARYIMFILEFORMATOPTIONS(3IM)
+
+
+
+NAME
+     ImFileFormatOptions - add file format names to an  ArgOption
+     list
+     ImFileFormatEquivs - add file format equivalent names to  an
+     ArgEquiv list
+
+SYNOPSIS
+     #include "im.h"
+     #include "arg.h"
+
+     int ImFileFormatOptions( baseNOptions, baseOptions, totalOptions )
+          int baseNOptions;
+          ArgOption *baseOptions;
+          ArgOption **totalOptions;
+
+     int ImFileFormatEquivs( baseNEquivs, baseEquivs, totalEquivs )
+          int baseNOEquivs;
+          ArgEquiv *baseEquivs;
+          ArgEquiv **totalEquivs;
+
+
+DESCRIPTION
+     These functions are used to help  set  up  argument  parsing
+     option   and   equivalent   keyword   lists   for  use  with
+     ArgParse(3ARG).
+
+     ImFileFormatOptions creates a new list of  ArgOption  struc-
+     tures  containing  the baseNOptions basic options in _b_a_s_e_O_p_-
+     _t_i_o_n_s, plus one option for each image file format  supported
+     by the image library.  Each file format option entry has the
+     following attributes:
+
+          arg_keyword      = file format's name
+          arg_valuenames   = NULL
+          arg_help         = format's help information
+          arg_flags        = ARGFMULTIPLE
+          arg_minvalues    = 0
+          arg_maxvalues    = 0
+          arg_type         = ARGTNONE
+
+     The new option list is returned  in  _t_o_t_a_l_O_p_t_i_o_n_s,  and  the
+     number  of  options  in that list returned as the function's
+     value.
+
+     ImFileFormatEquivs creates a new list of ArgEquiv structures
+     containing  the  _b_a_s_e_N_E_q_u_i_v_s  basic  equivalent  keywords in
+     _b_a_s_e_E_q_u_i_v_s, plus  one  equivalent  keyword  entry  for  each
+     equivalent  file format name for each image file format sup-
+     ported by the image library.  Each  new  equivalent  keyword
+     entry is equivalenced to the name of the image file format.
+
+
+
+
+
+SDSC              Last change: August 24, 1992                  1
+
+
+
+
+
+
+IMFILEFORMATOPTIONS(3IM)SDSC IMAGE LIBRARYIMFILEFORMATOPTIONS(3IM)
+
+
+
+     The new equivalent keyword list is returned in  _t_o_t_a_l_E_q_u_i_v_s,
+     and  the number of equivalent keywords in that list returned
+     as the function value.
+
+NOTES
+     Information on the SDSC argument  parsing  package  and  its
+     data structures is in ArgIntro(3ARG).  We assume the user is
+     familiar with the package.
+
+     Tools that have one command-line option per image file  for-
+     mat  name use these routines.  Such options typically select
+     the type of  image  file  to  read  in  or  write  out  (see
+     imconv(1IM)).
+
+     To keep image library tools uniform and consistent, we  sug-
+     gest  tools that use ImFileFormatOptions also use ImFileFor-
+     matEquivs to add the equivalent file  format  names  to  the
+     option set as well.
+
+     ImFileFormatEquivs format equivalences assume that there  is
+     one  keyword  per  format and that it is the format name (as
+     done by ImFileFormatOptions).
+
+EXAMPLES
+     The following code declares  and  initializes  an  ArgOption
+     array with options for a mythical tool immyth.  Within main,
+     ImFileFormatOptions and  ImFileFormatEquivs  are  called  to
+     create  new  ArgOption  and ArgEquiv arrays that incorporate
+     both the basic immyth options and the image file format name
+     options.  These new arrays are then passed to ArgParse(3ARG)
+     as complete descriptions of the argument  set  available  to
+     the immyth.
+
+       #include "im.h"
+       #include "arg.h"
+
+       /* Describe the command. */
+       ArgCommand mythCommand =
+       {
+            "immyth", 1, 0, 0,
+            "%command is a demo program that does nothing.",
+            NULL,
+            NULL, NULL,
+            ARGFNONE,
+            NULL, NULL,
+            "SDSC Image Tools, October 1991.",
+            "Copyright (c) 1989-1991  San Diego Supercomputer Center (SDSC), CA, USA",
+            NULL, NULL
+       };
+
+       /* Describe the command-specific options. */
+       ArgOption mythBaseOptions[ ] =
+
+
+
+2                 Last change: August 24, 1992               SDSC
+
+
+
+
+
+
+IMFILEFORMATOPTIONS(3IM)SDSC IMAGE LIBRARYIMFILEFORMATOPTIONS(3IM)
+
+
+
+       {
+            { "infile", "image_filename", "Specify an input image file name",
+            ARGFREQUIRED | ARGFIMPKEYWORD, 1, 1, ARGTSTRING },
+
+            { "outfile", "image_filename", "Specify an output image file name",
+            ARGFREQUIRED | ARGFIMPKEYWORD, 1, 1, ARGTSTRING },
+
+            { "debug", NULL, "Enable debug mode",
+            ARGFHIDDEN, 0, 0, ARGTNONE }
+       };
+       #define MYTHNBASEOPTIONS 3
+
+       /* Describe the command-specific equivalent keywords. */
+       ArgEquiv mythBaseEquivs[ ] =
+       {
+            { "debug", "dbg" }
+       };
+       #define MYTHNBASEEQUIVS 1
+
+
+       main( argc, argv )
+            int argc;
+            char *argv[ ];
+       {
+            ArgOption *totalOptions;
+            ArgEquiv *totalEquivs;
+            int totalNOptions;
+            int totalNEquivs;
+
+            /* Add image file names to option set. */
+            totalNOptions = ImFileFormatOptions( MYTHNBASEOPTIONS, mythBaseOptions,
+                 &totalOptions );
+
+            /* Add image file equivalent names to equivalence set. */
+            totalNEquivs = ImFileFormatEquivs( MYTHNBASEEQUIVS, mythBaseEquivs,
+                 &totalEquivs );
+
+            /* Parse the arguments. */
+            ArgParse( argc, argv, &mythCommand,
+                 totalNOptions, totalOptions,
+                 totalNEquivs, totalEquivs );
+
+            /* Do work. */
+            ...
+       }
+
+
+RETURNS
+     On success, ImFileFormatOptions returns the number of ArgOp-
+     tion structures in the new _t_o_t_a_l_O_p_t_i_o_n_s list.  On failure, a
+     -1 is returned and ImErrNo set to
+
+
+
+
+SDSC              Last change: August 24, 1992                  3
+
+
+
+
+
+
+IMFILEFORMATOPTIONS(3IM)SDSC IMAGE LIBRARYIMFILEFORMATOPTIONS(3IM)
+
+
+
+          IMEMALLOC   Cannot allocate memory
+
+     On success, ImFileFormatEquivs returns the number  of  ArgE-
+     quiv  structures in the new _t_o_t_a_l_E_q_u_i_v_s list.  On failure, a
+     -1 is returned and ImErrNo set to
+
+          IMEMALLOC   Cannot allocate memory
+
+SEE ALSO
+     ImIntro  (3IM),  ImErrNo  (3IM),  ImFileFormatEquivs  (3IM),
+     ImFileFRead  (3IM), ImFileFWrite (3IM) ImFileQFFormat (3IM),
+     ImFileQFormat (3IM), ImFileQNFormat (3IM), ImFileRead (3IM),
+     ImFileWrite (3IM) ArgIntro (3ARG), ArgParse (3ARG)
+
+AUTHOR
+     Dave Nadeau
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4                 Last change: August 24, 1992               SDSC
+
+
+

@@ -1,0 +1,295 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (WinNT; U) [Netscape]">
+   <title>libgist v.2.0/amdb v.1.0</title>
+</head>
+<body>
+<!-- $Id: install.html,v 1.16 2000/04/05 00:35:59 mashah Exp $ -->
+<center>
+<h1>
+Installing libgist v.2.0/amdb v.1.0</h1></center>
+
+<center>
+<hr WIDTH="100%"></center>
+
+<h2>
+Libgist</h2>
+
+Libgist was initially developed under Digital Unix with the g++
+compiler and was ported to Solaris (both x86 and Sparc), Linux with
+g++, and Windows NT 4.0 with Visual C++ 6.0. Since these platforms are
+quite different, we expect the code to be somewhat portable, but have
+not done extensive porting ourselves. Before you port libgist to other
+platforms, please check the <a
+href="http://gist.cs.berkeley.edu/software.html">libgist home
+page</a> and see if anybody has done it for you already. If not, and
+you succeed in porting, contact us at <a
+href="mailto:gist@postgres.berkeley.edu">gist@postgres.berkeley.edu</a>!
+Note that libgist in independent of amdb (the reverse is not true), so
+it's okay to install the joint distribution and only use libgist.
+
+<h2>
+Amdb</h2>
+
+Amdb was developed under Intel Solaris with Sun's JDK (currently
+supported versions: JDK 1.1.8 and Swing 1.1.1). It has also been
+compiled and tested on Sparc Solaris, Windows NT, and Red Hat Linux
+6.0 as well. The analysis features require the use of hMETIS, a
+hypergraph paritioning package from the Univ.  of Minnesota. This
+package is available for several platforms as well. <p>All of the GNU
+software (GNU zip, GNU tar, GNU C++, GNU make, bison, flex) described
+below is available from the usual free software repositories
+(<i>e.g.</i>, <a href="ftp://ftp.gnu.org/pub/gnu/">ftp://ftp.gnu.org/</a>).  
+<b>We do not provide or support these packages</b>; if they are not
+installed on your computer, please ask your system administrator for
+assistance.  Note that these packages are very common and are often
+available as precompiled executables for many operating systems
+(including Win32).
+
+<center>
+<hr WIDTH="100%"></center>
+
+<h2>
+UNIX Installation Guide</h2>
+
+<h3>
+Requirements</h3>
+
+<ul>
+<li>
+Either a zip package, or tar and GNU zip.</li>
+
+<li>
+GNU C++ (g++) version 2.7.2 or higher (other versions may work, as may
+other C++ compilers, but we have not tested any).</li>
+
+<li>
+GNU make: you may substitute make, but will need to rewrite the (simple)
+Makefiles to suit.</li>
+
+<li>
+Bison &amp; flex: not actually required for libgist, but necessary in order
+to compile the demonstration code. It is possible that yacc and lex may
+be substituted, but we have not tested them.</li>
+</ul>
+Amdb has the following additional requirements:
+<ul>
+<li>
+<a href="http://java.sun.com/products/jdk">JDK 1.1.7 </a>or higher (and
+<a href="http://java.sun.com/products/jdk/1.1/">JDK
+1.1.8</a> or lower)</li>
+
+<li>
+<a href="http://www.javasoft.com/products/jfc/index.html">Swing 1.1.1</a></li>
+
+<li>
+<a href="http://www-users.cs.umn.edu/~karypis/metis/hmetis/main.shtml">hMETIS</a>
+package</li>
+</ul>
+
+<h3>
+Installing libgist</h3>
+
+<ol>
+<li>
+Edit the file <tt>Makefile.inc</tt> in the <tt>src</tt> directory: change
+the line <tt>AMDB = true</tt> to say <tt>false</tt>, if you do not want
+to install amdb.</li>
+
+<li>
+Edit the file <tt>Makefile.paths.<system>.<arch></tt> in the <tt>src</tt>
+directory (where&nbsp;<system>is the output of <tt>uname -s</tt> and&nbsp;<arch>is
+the output of
+<tt>uname -m</tt>; if you do not find such a file, copy one
+of the existing examples): set the variables for the g++ <tt>include</tt>
+and <tt>lib</tt> directory paths and the path to g++ itself. If you want
+to use amdb, you must also set the paths to the JDK and Swing installations
+as well as the paths to the JDK include directories.</li>
+
+<li>
+Set the LIBGISTHOME environment variable to the root of the libgist directory
+hierarchy.</li>
+
+<li>
+Run <tt>gmake cmdline</tt> from the <tt>src</tt> directory -- it will recursively
+make libgist, the pre-packaged extensions and the command line driver program,
+<tt>gistcmdline</tt>.</li>
+
+<li>
+If you want to run some test scripts to make sure everything is working,
+<tt>cd
+</tt>to
+<tt>../tests</tt>,
+and type <tt>./runtests</tt>. If nothing suspicious comes up on the screen,
+your installation has passed the tests.</li>
+
+<li>
+Libraries and executables will be left with their sources.&nbsp; If you
+wish to install them elsewhere, you will need to do so by hand.</li>
+
+<br><tt>gistcmdline </tt>is located under the
+<tt>bin</tt> directory.
+<br>The <tt>lib</tt> directory contains <tt>libgist.a</tt> and the prepackaged
+extensions:
+<tt>libbtree.a</tt>, <tt>librtree.a</tt>.</ol>
+
+<h3>
+Installing amdb</h3>
+
+<ol>
+<li>
+Install JDK, Swing, and hMETIS and make sure that <tt>libgist</tt> is installed
+and working.</li>
+
+<li>
+Make the hMETIS executable accessible from your PATH variable.</li>
+
+<li>
+Run <tt>gmake amdb</tt> from the <tt>src</tt> directory.</li>
+
+<li>
+Add <tt>$LIBGISTHOME/lib</tt> to your LD_LIBRARY_PATH variable.</li>
+
+<li>
+The script <tt>amdb</tt> in the <tt>$LIBGISTHOME/bin</tt> directory will
+run amdb.</li>
+</ol>
+
+<center>
+<hr WIDTH="100%"></center>
+
+<h2>
+Windows NT/95/98 Installation Guide</h2>
+
+<h3>
+Requirements</h3>
+
+<ul>
+<li>
+Winzip</li>
+
+<li>
+Visual Studio C++ 6.0</li>
+</ul>
+Amdb has the following additional requirements
+<ul>
+<li>
+<a href="http://java.sun.com/products/jdk/1.1/">JDK 1.1.8</a></li>
+
+<li>
+<a href="http://www.javasoft.com/products/jfc/index.html">Swing 1.1.1</a></li>
+
+<li>
+<a href="http://www-users.cs.umn.edu/~karypis/metis/hmetis/main.shtml">hMETIS</a>
+package</li>
+</ul>
+
+<h3>
+Installing libgist and amdb</h3>
+
+<ul>
+<li>
+Install JDK, Swing, and hMETIS</li>
+
+<li>
+Make sure you have the Visual C++ variable set.</li>
+
+<li>
+Go into the <tt><font size=+1>libgist\src\</font></tt> directory</li>
+
+<ul>
+<li>
+Edit <tt><font size=+1>amdbvars.bat</font></tt> to point to the appropriate
+locations.</li>
+
+<li>
+Open an MS-DOS session</li>
+
+<li>
+Type <tt><font size=+1>amdbvars.bat</font></tt></li>
+
+<li>
+Type <tt><font size=+1>cc2cpp.bat</font></tt></li>
+
+<li>
+Type <tt><font size=+1>make all</font></tt>. It will recursively make libgist,
+and amdb.</li>
+</ul>
+
+<li>
+If you want to make sure everything is running okay</li>
+
+<ul>
+<li>
+Go into the <tt><font size=+1>libgist\tests\</font></tt> directory</li>
+
+<li>
+Type <tt><font size=+1>runtests.pl</font></tt>. You will need a perl package
+to run this script.</li>
+</ul>
+
+<li>
+Type <tt><font size=+1>amdb</font></tt> to start amdb.</li>
+</ul>
+
+<h3>
+Debugging libgist/amdb from Visual Studio</h3>
+
+<ul>
+<li>
+Open the <font face="Courier New,Courier">gist.dsw</font> file in the <font face="Courier New,Courier">src\projects\gist</font>
+directory</li>
+
+<li>
+Adjust the project settings on the <font face="Courier New,Courier">amdb</font>
+project.</li>
+
+<ul>
+<li>
+Go to the Project Menu and click Settings.</li>
+
+<li>
+Click on <font face="Courier New,Courier">amdb</font> on the left side.</li>
+
+<li>
+Click on the Debug pane</li>
+
+<li>
+In the drop down list select General</li>
+
+<li>
+Set the executable to the <font face="Courier New,Courier">java.exe</font>
+executable</li>
+
+<li>
+Set the working directory to the <font face="Courier New,Courier">src\gui</font>
+directory</li>
+
+<li>
+Set the program arguments to:</li>
+
+<ul>
+<li>
+-classpath &lt;<font face="Courier New,Courier">path to swingall.jar</font>>;&lt;<font face="Courier New,Courier">path
+to classes.zip>;..\gui;..\treeview;..\amdbgist;..\analysis -mx64m -ms16m
+MainWindow</font></li>
+</ul>
+
+<li>
+In the drop down list select Additional DLLs</li>
+
+<li>
+Add the <tt><font size=+1>amdb.dll</font></tt> module that is located under
+the libgist <font face="Courier New,Courier">lib</font> directory.</li>
+</ul>
+
+<li>
+Hit the Go button to start debugging</li>
+</ul>
+Comments, questions and suggestions may be directed to <i><a href="mailto:gist@postgres.berkeley.edu">gist@postgres.berkeley.edu</a></i>
+<p><font size=-2>Last modified: $Date: 2000/04/05 00:35:59 $ by $Author:
+aoki $.</font>
+</body>
+</html>

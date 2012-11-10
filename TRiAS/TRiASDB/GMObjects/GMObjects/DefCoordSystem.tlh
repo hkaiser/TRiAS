@@ -1,0 +1,115 @@
+// Created by Microsoft (R) C/C++ Compiler Version 12.00.8964.0 (e2687002).
+//
+// d:\triasdev.mvc\gmobjects\_debug\DefCoordSystem.tlh
+//
+// C++ source equivalent of Win32 type library tlb/DefCoordSystem.tlb
+// compiler-generated file created 10/10/02 at 22:51:29 - DO NOT EDIT!
+
+#pragma once
+#pragma pack(push, 8)
+
+#include <comdef.h>
+
+//
+// Forward references and typedefs
+//
+
+struct __declspec(uuid("f08ad9ff-b964-11cf-a19a-08003601d502"))
+/* dispinterface */ _DDefCoordSystem;
+struct __declspec(uuid("f08ada00-b964-11cf-a19a-08003601d502"))
+/* dispinterface */ _DDefCoordSystemEvents;
+struct /* coclass */ GMDefCoordSystem;
+
+//
+// Smart pointer typedef declarations
+//
+
+_COM_SMARTPTR_TYPEDEF(_DDefCoordSystem, __uuidof(IDispatch));
+_COM_SMARTPTR_TYPEDEF(_DDefCoordSystemEvents, __uuidof(IDispatch));
+
+//
+// Type library items
+//
+    const long gmOkEssentiallyUnchanged = 0;
+    const long gmOkChanged = 1;
+    const long gmCancel = 2;
+    const long gmFailure = 3;
+
+struct __declspec(uuid("f08ad9ff-b964-11cf-a19a-08003601d502"))
+_DDefCoordSystem : IDispatch
+{
+    //
+    // Property data
+    //
+
+    __declspec(property(get=GetCoordSystem,put=PutCoordSystem))
+    IDispatch * CoordSystem;
+    __declspec(property(get=GetDialogLeft,put=PutDialogLeft))
+    long DialogLeft;
+    __declspec(property(get=GetDialogTop,put=PutDialogTop))
+    long DialogTop;
+    __declspec(property(get=GetCaption,put=PutCaption))
+    BSTR Caption;
+    __declspec(property(get=GetUnitsOfMeasure,put=PutUnitsOfMeasure))
+    IDispatch * UnitsOfMeasure;
+    __declspec(property(get=GetReadOnly,put=PutReadOnly))
+    VARIANT_BOOL ReadOnly;
+    __declspec(property(get=GetTwoD,put=PutTwoD))
+    VARIANT_BOOL TwoD;
+    __declspec(property(get=GetNoPaper,put=PutNoPaper))
+    VARIANT_BOOL NoPaper;
+    __declspec(property(get=GetNoAdvancedStorageParams,put=PutNoAdvancedStorageParams))
+    VARIANT_BOOL NoAdvancedStorageParams;
+
+    //
+    // Wrapper methods for error-handling
+    //
+
+    // Methods:
+    long Show ( );
+    HRESULT AboutBox ( );
+
+    // Properties:
+    IDispatch * GetCoordSystem ( );
+    void PutCoordSystem ( IDispatch * _val );
+    long GetDialogLeft ( );
+    void PutDialogLeft ( long _val );
+    long GetDialogTop ( );
+    void PutDialogTop ( long _val );
+    BSTR GetCaption ( );
+    void PutCaption ( BSTR _val );
+    IDispatch * GetUnitsOfMeasure ( );
+    void PutUnitsOfMeasure ( IDispatch * _val );
+    VARIANT_BOOL GetReadOnly ( );
+    void PutReadOnly ( VARIANT_BOOL _val );
+    VARIANT_BOOL GetTwoD ( );
+    void PutTwoD ( VARIANT_BOOL _val );
+    VARIANT_BOOL GetNoPaper ( );
+    void PutNoPaper ( VARIANT_BOOL _val );
+    VARIANT_BOOL GetNoAdvancedStorageParams ( );
+    void PutNoAdvancedStorageParams ( VARIANT_BOOL _val );
+};
+
+struct __declspec(uuid("f08ada00-b964-11cf-a19a-08003601d502"))
+_DDefCoordSystemEvents : IDispatch
+{};
+
+struct __declspec(uuid("f08ad9f9-b964-11cf-a19a-08003601d502"))
+GMDefCoordSystem;
+    // [ default ] dispinterface _DDefCoordSystem
+    // [ default, source ] dispinterface _DDefCoordSystemEvents
+
+//
+// Named GUID constants initializations
+//
+
+extern "C" const GUID __declspec(selectany) LIBID_DEFCOORDSYSTEMLib =
+    {0xf08ad9fe,0xb964,0x11cf,{0xa1,0x9a,0x08,0x00,0x36,0x01,0xd5,0x02}};
+extern "C" const GUID __declspec(selectany) DIID__DDefCoordSystem =
+    {0xf08ad9ff,0xb964,0x11cf,{0xa1,0x9a,0x08,0x00,0x36,0x01,0xd5,0x02}};
+extern "C" const GUID __declspec(selectany) DIID__DDefCoordSystemEvents =
+    {0xf08ada00,0xb964,0x11cf,{0xa1,0x9a,0x08,0x00,0x36,0x01,0xd5,0x02}};
+extern "C" const GUID __declspec(selectany) CLSID_GMDefCoordSystem =
+    {0xf08ad9f9,0xb964,0x11cf,{0xa1,0x9a,0x08,0x00,0x36,0x01,0xd5,0x02}};
+
+#pragma pack(pop)

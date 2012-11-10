@@ -1,0 +1,493 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "visres32.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resstrg.h"
+#include "visobj.h"
+#include "defabout.h"
+#include "viserrdg.h"
+#include "resetvis.h"
+#include "visexp.h"
+#include "visimp.h"
+#include "vstatus.h"
+#include "colcntrl.h"
+#include "ver.h"
+#include "xvisdlg.h"
+// Trick 17
+// #include "dlgtrick.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+DEFIDICON               ICON    DISCARDABLE     "LUPE.ICO"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDBMP_VERRORLOGO        BITMAP  MOVEABLE PURE   "VERROR.BMP"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+EXTENSIONMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&Visualisierung"
+    BEGIN
+        MENUITEM "I&dentifikatorunabhängig",    IDM_SAVECOMPLETE
+        MENUITEM "&Visualisierung rücksetzen ...", IDM_VISOBJREMOVE
+        MENUITEM SEPARATOR
+        MENUITEM "Ausgeblendete &Objekte anzeigen", IDM_SHOWHIDDEN
+        MENUITEM "&Ausblenden rückgängig ...",  IDM_REVOKEHIDE
+        MENUITEM SEPARATOR
+        MENUITEM "Visualisierung &exportieren ...", IDM_VISINFOEXPORT
+        MENUITEM "Visualisierung &importieren ...", IDM_VISINFOIMPORT
+        MENUITEM SEPARATOR
+        MENUITEM "Farbregelung ...",            IDM_COLORCONTROL
+    END
+END
+
+OBJEXTENSIONMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&Objektvisualisierung"
+    BEGIN
+        MENUITEM "&Standardvisualisierung ...", IDM_CHANGEVISINFO
+        MENUITEM "&Erweiterte Visualisierung ...", IDM_CHANGESYMBOLINFO
+        MENUITEM "Visualisierung &rücksetzen",  IDM_RESETVISINFO
+        MENUITEM SEPARATOR
+        MENUITEM "&Objekt ausblenden",          IDM_HIDEOBJECTS
+        MENUITEM "&Ausblenden rückgängig",      IDM_SHOWOBJECTS
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+UNDEFINEDVISINFO DIALOG DISCARDABLE  69, 41, 224, 101
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Undefinierte Visualisierung"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Definieren",IDOK,153,6,65,14,WS_GROUP
+    PUSHBUTTON      "&Ignorieren",IDCANCEL,153,43,65,14
+    PUSHBUTTON      "Immer I&gnorieren",IDB_IGNOREALWAYS,153,62,65,14
+    PUSHBUTTON      "&Alle ignorieren",IDB_IGNOREALLERRORS,153,81,65,14
+    LTEXT           "Für %s vom Typ '%s' ist in der aktuellen Ansicht keine Visualisierung vorgegeben.",
+                    IDT_VISERRORMESSAGE,10,12,129,41
+    CONTROL         "",IDF_VERRORLOGO,"Static",SS_ETCHEDFRAME | WS_GROUP,6,
+                    64,60,31
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,6,6,137,52
+END
+
+RESETVISINFO DIALOG DISCARDABLE  62, 52, 232, 111
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Visualisierung rücksetzen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Visualisierung rücksetzen für:",IDT_LISTBOXTEXT,6,6,
+                    141,8
+    LISTBOX         IDL_RESETIDENTS,6,19,160,86,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,171,6,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,171,26,55,14
+END
+
+EXPORTVISINFODLG DIALOG DISCARDABLE  70, 20, 207, 229
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Visualisierung exportieren"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Zu exportierende Sichten:",-1,6,6,109,8
+    LISTBOX         IDL_EXPORTVIEWS,6,18,133,93,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "&Alle Ansichten",IDB_SELECTALLVIEWS,146,97,55,14,
+                    WS_GROUP
+    LTEXT           "&Ausgabedatei:",-1,6,119,49,8
+    EDITTEXT        IDE_EXPORTFILENAME,6,129,133,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Durchsuchen...",IDB_EXPORTFILESELECT,146,129,55,14,
+                    WS_GROUP
+    GROUPBOX        " Exportoptionen ",-1,6,149,195,74,WS_GROUP
+    CONTROL         "",-1,"Static",SS_ETCHEDVERT,134,162,1,53
+    CONTROL         "&Standardansicht ausgeben",IDCB_DEFAULTVIEW,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,164,116,10
+    CONTROL         "&Objektvisualisierung ausgeben",IDCB_OBJVISINFO,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,178,116,10
+    CONTROL         "Ansichts&merkmale ausgeben",IDCB_VIEWFEATURES,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,192,115,10
+    CONTROL         "&Legende exportieren",IDCB_LEGENDFEATURES,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,206,115,10
+    LTEXT           "Farbmodell:",-1,147,167,43,8
+    CONTROL         "&RGB",IDR_EXPORTRGB,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,149,181,45,10
+    CONTROL         "&HSB ",IDR_EXPORTHSB,"Button",BS_AUTORADIOBUTTON,149,
+                    194,46,10
+    DEFPUSHBUTTON   "OK",IDOK,146,6,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,146,25,55,14
+END
+
+IMPORTVISINFODLG DIALOG DISCARDABLE  62, 28, 206, 250
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Visualisierung importieren"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Eingabedatei:",-1,6,6,49,8
+    EDITTEXT        IDE_IMPORTFILE,6,17,133,12,ES_AUTOHSCROLL | NOT 
+                    WS_TABSTOP
+    PUSHBUTTON      "&Durchsuchen...",IDB_IMPORTFILESELECT,145,17,55,14
+    LTEXT           "&Zu importierende Sichten:",-1,6,44,131,8
+    LISTBOX         IDL_IMPORTVIEWS,6,56,133,77,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "&Alle Ansichten",IDB_SELECTALLIMPVIEWS,145,119,55,14,
+                    WS_GROUP
+    GROUPBOX        " Importoptionen ",-1,6,139,194,105,WS_GROUP
+    CONTROL         "",-1,"Static",SS_ETCHEDVERT,141,152,1,72
+    CONTROL         "&Standardansicht importieren",IDCB_IMPORTDEFAULTVIEW,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,153,115,10
+    CONTROL         "&Objektvisualisierung importieren",
+                    IDCB_IMPORTOBJVISINFO,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,13,166,116,10
+    CONTROL         "Ansichts&merkmale importieren",IDCB_IMPORTVIEWFEATURES,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,179,117,10
+    CONTROL         "&Legende importieren",IDCB_IMPORTLEGINFO,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,192,118,10
+    CONTROL         "&Existierende Ansichten vor Import löschen",
+                    IDCB_DELETEVIEWS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    13,230,177,10
+    LTEXT           "Farbmodell:",-1,150,153,45,8
+    CONTROL         "&Auto",IDR_AUTOSELECT,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,153,166,33,10
+    CONTROL         "&RGB",IDR_IMPORTRGB,"Button",BS_AUTORADIOBUTTON,153,179,
+                    33,10
+    CONTROL         "&HSB ",IDR_IMPORTHSB,"Button",BS_AUTORADIOBUTTON,153,
+                    192,33,10
+    DEFPUSHBUTTON   "OK",IDOK,145,44,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,145,63,55,14
+    CONTROL         "&Nur für existierende Objektklassen importieren",
+                    IDCB_IMPORTEXISTENTIDENTS,"Button",BS_AUTOCHECKBOX | 
+                    BS_TOP | BS_MULTILINE | WS_TABSTOP,13,205,124,19
+END
+
+IMPEXPORTSTATUS DIALOG DISCARDABLE  50, 51, 181, 64
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CLIPSIBLINGS | 
+    WS_CAPTION | WS_SYSMENU
+CAPTION "Status des aktuellen Exports"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Anteil der bereits exportierten Informationen:",
+                    IDT_COMMENT,5,10,169,10
+    DEFPUSHBUTTON   "&Abbrechen",IDCANCEL,63,45,55,14
+    CONTROL         "%3d%% ",IDG_STATUSGAUGE,"GaugeBox32",0x0,4,23,173,14
+    CONTROL         "",-1,"Static",SS_GRAYFRAME,2,21,177,18
+END
+
+COLORCONTROLDLG DIALOG DISCARDABLE  45, 43, 202, 82
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Farbregelung"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Sättigungwerte regeln:",-1,6,6,116,8
+    CONTROL         "Alle",IDR_ALLSAT,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,6,17,32,10
+    CONTROL         "Kleinere",IDR_SMALLERSAT,"Button",BS_AUTORADIOBUTTON,42,
+                    17,39,10
+    CONTROL         "Größere",IDR_BIGGERSAT,"Button",BS_AUTORADIOBUTTON,86,
+                    17,39,10
+    SCROLLBAR       IDSB_ABSSAT,6,31,88,9,WS_GROUP | WS_TABSTOP
+    EDITTEXT        IDE_ABSSAT,102,29,20,12,ES_AUTOHSCROLL
+    CONTROL         "&Helligkeit",IDR_BRIGHTNESS,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,6,51,50,10
+    CONTROL         "&1 - Helligkeit",IDR_NEGBRIGHTNESS,"Button",
+                    BS_AUTORADIOBUTTON,57,51,60,10
+    SCROLLBAR       IDSB_RELBRIGHTNESS,6,66,88,9,WS_GROUP | WS_TABSTOP
+    EDITTEXT        IDE_RELBRIGHTNESS,102,64,20,12
+    DEFPUSHBUTTON   "Speichern",IDOK,141,6,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,141,25,55,14
+END
+
+EXTSYMBOLDLG DIALOG DISCARDABLE  28, 39, 231, 114
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Punktsymbolisierung"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Symbolisierungstyp:",-1,6,6,92,8
+    LISTBOX         IDL_EXTSYMBOLTYP,6,18,158,90,LBS_SORT | LBS_USETABSTOPS | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,170,6,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,170,25,55,14
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "visres32.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""resstrg.h""\r\n"
+    "#include ""visobj.h""\r\n"
+    "#include ""defabout.h""\r\n"
+    "#include ""viserrdg.h""\r\n"
+    "#include ""resetvis.h""\r\n"
+    "#include ""visexp.h""\r\n"
+    "#include ""visimp.h""\r\n"
+    "#include ""vstatus.h""\r\n"
+    "#include ""colcntrl.h""\r\n"
+    "#include ""ver.h""\r\n"
+    "#include ""xvisdlg.h""\r\n"
+    "// Trick 17\r\n"
+    "// #include ""dlgtrick.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""defabout.src""\t// VersionsDialog\r\n"
+    "#include ""visobj32.rcv""\t// VersionsResource\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    UNDEFINEDVISINFO, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 218
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 95
+    END
+
+    RESETVISINFO, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 226
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 105
+    END
+
+    EXPORTVISINFODLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 201
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 223
+    END
+
+    IMPORTVISINFODLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 200
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 244
+    END
+
+    COLORCONTROLDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 196
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 76
+    END
+
+    EXTSYMBOLDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 225
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 108
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// TYPELIB
+//
+
+IDR_TYPELIB             TYPELIB DISCARDABLE     "..\\Debug\\Visinfo.tlb"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PUNKTOBJEKT         "Punktobjekte"
+    IDS_LINIENOBJEKT        "Linienobjekte"
+    IDS_FLAECHENOBJEKT      "Flächenobjekte"
+    IDS_TEXTOBJEKT          "Textobjekte"
+    IDS_UNKNOWNOBJECT       "die unbekannten Objekte"
+    IDS_OBJECTCAPTION       "Objekt %ld"
+    IDS_ALLOBJCAPTION       "alle selektierten Objekte"
+    IDS_PHEADER             "\tc %s { "
+    IDS_LHEADER             "\tl %s { "
+    IDS_FHEADER             "\ta %s { "
+    IDS_THEADER             "\tx %s { "
+    IDS_GHEADER             "\t%s { "
+    IDS_NEWSTYLE            "t=%u; "
+    IDS_NEWSTYLENAME        "t=%u,""%s""; "
+    IDS_NEWPRIORITY         "p=%d; "
+    IDS_NEWPRIMCOLOR        "m=%d,%d,%d; "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NEWPRIMCOLORHSB     "msbh=%d,%d,%d; "
+    IDS_NEWSECCOLOR         "f=%d,%d,%d; "
+    IDS_NEWSECCOLORHSB      "fsbh=%d,%d,%d; "
+    IDS_NEWSIZE             "s=%d,%d; "
+    IDS_NEWWIDTH            "w=%d; "
+    IDS_NEWTYPE             "y=0x%x; "
+    IDS_NEWROTATION         "r=%d; "
+    IDS_TRAILER             "} "
+    IDS_TAG                 " k"
+    IDS_PBDKURZTEXT         "VisInfo(%s)"
+    IDS_PBDLANGTEXT         "Visualisierungsinformation in der Ansicht '%s'"
+    IDS_IGNOREALLERRORS     "Visualisierungsfehler ignorieren"
+    IDS_HIDEACTIVATEDOBJECT "&Objekt ausblenden"
+    IDS_HIDESELECTEDOBJECTS "&Objekte ausblenden"
+    IDS_RESETVISCAPTION     "Visualisierung rücksetzen"
+    IDS_RESETVISTEXT        "&Visualisierung rücksetzen für:"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_RESETSHOWCAPTION    "Ausblenden rückgängig"
+    IDS_RESETSHOWTEXT       "&Ausblenden rückgängig für:"
+    IDS_VIEWHEADER          "v ""%s"" {"
+    IDS_DEFVIEWHEADER       "v Default {"
+    IDS_NEWROTORIENT        "r=%d; o=%d; "
+    IDS_VIEWFEATURE1        "\tg ""%-16.16s"" { b=""%s""; }"
+    IDS_VIEWFEATURE2        "\tg %ld { b=""%s""; }"
+    IDS_VISASCTEMPLATE      "VisualisierungsInfo (*.vsc)|*.vsc"
+    IDS_DEFAULTVIEW         "__DefaultVisInfo__"
+    IDS_VISASCEXTENSION     ".vsc"
+    IDS_VIEWFEATURECOMM     "//\tg ""%-16.16s"" { b=""%s""; }"
+    IDS_YYERRORCAPTION      "Fehler beim Visualisierungsimport"
+    IDS_TYPECLASH           "Zeile %d: TypeClash: %s -> %s."
+    IDS_EXPORTCOMMENT       "Anteil der bereits exportierten Informationen:"
+    IDS_EXPORTCAPTION       "Status des aktuellen Exports"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_IMPORTCOMMENT       "Anteil der bereits importierten Informationen:"
+    IDS_IMPORTCAPTION       "Status des aktuellen Imports"
+    IDS_VMDEXTENSION        ".vmd"
+    IDS_CUSTOMVISINFO1      "z=""%s"":%s; "
+    IDS_CUSTOMVISINFO2      "z=""%s"":""%s""; "
+    IDS_VMODFORMAT          "  { "
+    IDS_PUNKTSYMBOLDLG      "Punktsymbolisierung"
+    IDS_LINIENSYMBOLDLG     "Liniensymbolisierung"
+    IDS_FLAECHENSYMBOLDLG   "Flächensymbolisierung"
+    IDS_TEXTSYMBOLDLG       "Textsymbolisierung"
+    IDS_VISMODULE           "VisModules"
+    IDS_VMODNUMS            "NumVisModules"
+    IDS_LEGENDINFOFORMAT    "\r\n\t\t     lg={ %%.%ds } "
+    IDS_OBJLEGENDINFOFORMAT "lg={ %s } }"
+    IDS_IMPORTWAIT          "Interne Datenstrukturen werden aufgebaut ..."
+    IDS_LONGCLASSNAME       "Objektbezogene Visualisierung"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXEXTENSIONPROC    "_DexExtensionProc@8"
+    IDS_DEXXEXTENSIONPROC   "_DexxExtensionProc@8"
+    IDS_DEXNOTIFICATIONPROC "_DexNotificationProcEx@12"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LEGINFOKTEXT        "LegInfo (%s)"
+    IDS_LEGINFOLTEXT        "Legendeninformation in der Ansicht '%s'"
+    IDS_OKS                 "o=""%s"""
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_POINTVISINFO_DESC   "Visualisierungsinformation für Punktobjekte"
+    IDS_LINEVISINFO_DESC    "Visualisierungsinformation für Linienobjekte"
+    IDS_AREAVISINFO_DESC    "Visualisierungsinformation für Flächenobjekte"
+    IDS_TEXTVISINFO_DESC    "Visualisierungsinformation für Textobjekte"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "defabout.src"	// VersionsDialog
+#include "visobj32.rcv"	// VersionsResource
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

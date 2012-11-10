@@ -1,0 +1,282 @@
+'\"t
+.de Cb		\" Courier Begin
+.in +0.25i
+.ft CW
+\s-1
+.nf
+..
+.de Ce		\" Courier End
+.ft R
+.fi
+\s+1
+.in -0.25i
+..
+.if t .TH IMVFBALLOC 3IM "August 25, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY" 
+.if n .TH IMVFBALLOC 3IM "August 25, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImVfbAlloc - Allocate a virtual frame buffer
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+ImVfb *ImVfbAlloc( width, height, fields )
+	int width, height ;
+	int fields ;
+.fi
+\fR
+.SH DESCRIPTION
+\fBImVfbAlloc\fR allocates a virtual frame buffer and returns a pointer to the
+new Vfb.
+.LP
+\fIwidth\fR and \fIheight\fR are the x and y dimensions, respectively,
+of the desired Vfb.
+.LP
+\fIfields\fR is a bitmask that specifies what items of information
+need to be stored in each pixel.
+\fIfields\fR is formed by or'ing together one or more of:
+.ne 1.5i
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c
+l l.
+\fBConstant	Meaning\fP
+_
+IMVFBRGB	Store red, green, blue values (0-255)
+IMVFBALPHA	Store an alpha value (0-255)
+IMVFBINDEX8	Store a color index (0-255)
+IMVFBWPROT	Store a write protection (0 or non-zero)
+IMVFBINDEX16	Store a color index (full integer)
+IMVFBMONO	Store a monochrome (on/off) value
+IMVFBZ	Store a z-value (full integer)
+IMVFBIDATA	Store an integer data value
+IMVFBFDATA	Store a floating-point data value
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+.SH NOTES
+Information about a particular virtual frame buffer can be
+\fBS\fRet with:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c
+l l.
+\fBCall	Meaning\fP
+_
+ImVfbSClt( v, c )	Set (assign) a color lookup table to the Vfb
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+Information about a particular virtual frame buffer can be
+\fBQ\fRueried by:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c
+l l.
+\fBCall	Meaning\fP
+_
+ImVfbQWidth(v)	Return the number of columns
+ImVfbQHeight(v)	Return the number of rows
+ImVfbQFields(v)	Return the fields mask
+ImVfbQNBytes(v)	Return the number of bytes per pixel
+ImVfbQClt(v)	Return a pointer to a color lookup table
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+Frame buffer information can be allocated on a
+per-pixel or a per-plane basis. The per-pixel basis
+is better to reduce paging. The per-plane basis reduces overall
+storage. For a per-pixel allocation, one might call:
+.Cb
+v = ImVfbAlloc( 1280, 1024, IMVFBRGB | IMVFBZ );
+.Ce
+For a per-plane allocation, one might call:
+.Cb
+vc = ImVfbAlloc( 1280, 1024, IMVFBRGB );
+vz = ImVfbAlloc( 1280, 1024, IMVFBZ );
+.Ce
+.LP
+Per-pixel storage is a packed array of values. The
+storage convention assumes that the top row is row #0 and
+the left column is column #0. Pixels are stored like C-language
+2D arrays: left-to-right across the row.
+Values can be \fBS\fRet into a particular pixel (pointed to by a
+pixel pointer) within a particular virtual frame buffer by:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c
+l l.
+\fBCall	Meaning\fP
+_
+ImVfbSRed(v,p,r)	Red (byte)
+ImVfbSGreen(v,p,g)	Green (byte)
+ImVfbSBlue(v,p,b)	Blue (byte)
+ImVfbSAlpha(v,p,a)	Alpha-value (byte)
+ImVfbSIndex8(v,p,i8)	Color index (byte)
+ImVfbSIndex16(v,p,i32)	Color index (integer)
+ImVfbSMono(v,p,m)	Monochromatic value (zero or non-zero)
+ImVfbSIndex(v,p,i)	ImVfbSIndex8 or ImVfbSIndex16
+ImVfbSZ(v,p,z)	Z-value (integer)
+ImVfbSGray(v,p,g)	Gray scale (byte)
+ImVfbSGrey(v,p,g)	Gray scale (byte)
+ImVfbSFData(v,p,f)	Floating-point data value
+ImVfbSIData(v,p,i)	Integer data value
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+Various values can be \fBQ\fRueried within a particular virtual frame buffer by:
+.ne 1.5i
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c
+l l.
+\fBCall	Meaning\fP
+_
+ImVfbQRed(v,p)	Red (byte)
+ImVfbQGreen(v,p)	Green (byte)
+ImVfbQBlue(v,p)	Blue (byte)
+ImVfbQAlpha(v,p)	Alpha-value (byte)
+ImVfbQIndex8(v,p)	Color index (byte)
+ImVfbQIndex16(v,p)	Color index (integer)
+ImVfbQMono(v,p,m)	Monochromatic value (zero or non-zero)
+ImVfbQIndex(v,p)	ImVfbQIndex8 or ImVfbQIndex16
+ImVfbQZ(v,p)	Z-value (integer)
+ImVfbQGray(v,p)	Gray scale (byte)
+ImVfbQGrey(v,p)	Gray scale (byte)
+ImVfbQFData(v,p)	Floating-point data value
+ImVfbQIData(v,p)	Integer data value
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+Pixel pointer values can be \fBQ\fRueried and \fBS\fRet by:
+.ne 2i
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c
+l l.
+\fBCall	Meaning\fP
+_
+ImVfbQPtr(v,r,c)	Return a pointer to a particular pixel
+ImVfbQFirst(v)	Return a pointer to the first (UL) pixel
+ImVfbQLast(v)	Return a pointer to the last (LR) pixel
+ImVfbQLeft(v,p)	Return a pointer to a pixel one column left
+ImVfbQRight(v,p)	Return a pointer to a pixel one column right
+ImVfbQUp(v,p)	Return a pointer to a pixel one row up
+ImVfbQDown(v,p)	Return a pointer to a pixel one row down
+ImVfbQNext(v,p)	Same as ImVfbQRight(v,p)
+ImVfbQPrev(v,p)	Same as ImVfbQLeft(v,p)
+ImVfbSInc(v,p)	Same as p = ImVfbQRight(v,p)
+ImVfbSDec(v,p)	Same as p = ImVfbQLeft(v,p)
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+The pixel just to the \fBImVfbQRight\fR of the right-most pixel in a
+scanline is the left-most pixel in the next scanline. The
+pixel just to the \fBImVfbQLeft\fR of the left-most pixel in a scanline
+is the last pixel in the previous scanline. No automatic
+wraparound occurs between the last pixel and the first pixel
+in the framebuffer.
+.SH RETURNS
+An error causes \fBIMVFBNULL\fR to be returned and the value of
+\fBImErrNo\fR to be set to one of the following:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+
+IMEMALLOC	Cannot allocate enough memory for the new Vfb
+IMENOFIELDS	The \fIfields\fR mask is zero
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH SEE ALSO
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBImVfbAdjust\fR (3IM),
+\fBImVfbComp\fR (3IM),
+\fBImVfbCopy\fR (3IM),
+\fBImVfbDup\fR (3IM),
+\fBImVfbFill\fR (3IM),
+\fBImVfbFlip\fR (3IM),
+\fBImVfbFree\fR (3IM),
+\fBImVfbHist\fR (3IM),
+\fBImVfbMix\fR (3IM),
+\fBImVfbQAlpha\fR (3IM),
+\fBImVfbQBlue\fR (3IM),
+\fBImVfbQClt\fR (3IM),
+\fBImVfbQDown\fR (3IM),
+\fBImVfbQFData\fR (3IM),
+\fBImVfbQFields\fR (3IM),
+\fBImVfbQFirst\fR (3IM),
+\fBImVfbQGray\fR (3IM),
+\fBImVfbQGreen\fR (3IM),
+\fBImVfbQGrey\fR (3IM),
+\fBImVfbQHeight\fR (3IM),
+\fBImVfbQIData\fR (3IM),
+\fBImVfbQIndex16\fR (3IM),
+\fBImVfbQIndex8\fR (3IM),
+\fBImVfbQLast\fR (3IM),
+\fBImVfbQLeft\fR (3IM),
+\fBImVfbQNBytes\fR (3IM),
+\fBImVfbQNext\fR (3IM),
+\fBImVfbQPrev\fR (3IM),
+\fBImVfbQPtr\fR (3IM),
+\fBImVfbQRed\fR (3IM),
+\fBImVfbQRight\fR (3IM),
+\fBImVfbQUp\fR (3IM),
+\fBImVfbQWidth\fR (3IM),
+\fBImVfbQZ\fR (3IM),
+\fBImVfbQResize\fR (3IM),
+\fBImVfbQRoll\fR (3IM),
+\fBImVfbSAlpha\fR (3IM),
+\fBImVfbSBlue\fR (3IM),
+\fBImVfbSClt\fR (3IM),
+\fBImVfbSDec\fR (3IM),
+\fBImVfbSFData\fR (3IM),
+\fBImVfbSGray\fR (3IM),
+\fBImVfbSGreen\fR (3IM),
+\fBImVfbSGrey\fR (3IM),
+\fBImVfbSIData\fR (3IM),
+\fBImVfbSInc\fR (3IM),
+\fBImVfbSIndex16\fR (3IM),
+\fBImVfbSIndex8\fR (3IM),
+\fBImVfbSMono\fR (3IM),
+\fBImVfbSRed\fR (3IM),
+\fBImVfbStat\fR (3IM),
+\fBImVfbSZ\fR (3IM),
+\fBImVfbToGray\fR (3IM),
+\fBImVfbToGrey\fR (3IM),
+\fBImVfbToIndex\fR (3IM),
+\fBImVfbToIndex16\fR (3IM),
+\fBImVfbToIndex8\fR (3IM),
+\fBImVfbToMono\fR (3IM),
+\fBImVfbToRGB\fR (3IM),
+\fBImVfbXShear\fR (3IM),
+\fBImVfbYShear\fR (3IM),
+.SH AUTHOR
+Mike Bailey
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

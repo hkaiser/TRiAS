@@ -1,0 +1,58 @@
+HKCR
+{
+	TRiASDB.PolyGIS.DatabaseObject.1 = s 'PolyGISDatabaseObject Class'
+	{
+		CLSID = s '{4D906371-B34B-4705-BC06-55A69309B147}'
+	}
+	TRiASDB.PolyGIS.DatabaseObject = s 'PolyGISDatabaseObject Class'
+	{
+		CLSID = s '{4D906371-B34B-4705-BC06-55A69309B147}'
+		CurVer = s 'TRiASDB.PolyGIS.DatabaseObject.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {4D906371-B34B-4705-BC06-55A69309B147} = s 'PolyGISDatabaseObject Class'
+		{
+			ProgID = s 'TRiASDB.PolyGIS.DatabaseObject.1'
+			VersionIndependentProgID = s 'TRiASDB.PolyGIS.DatabaseObject'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{E4CF961A-5184-4761-BCE1-DF29E60BB905}'
+		}
+	}
+	ForceRemove TRiASDB.PolyGIS.Database = s 'PolyGISDatabase Class'
+	{
+		CurVer = s 'TRiASDB.PolyGIS.Database.1'
+	}
+	ForceRemove TRiASDB.PolyGIS.Database.1 = s 'PolyGISDatabase Class'
+	{
+		VersionIndependendProgID = s 'TRiASDB.PolyGIS.Database'
+		TRiASDB
+		{
+			CLSID = s '{4D906371-B34B-4705-BC06-55A69309B147}'
+			{
+				OpenWizPages = s '{7DCA0F8E-5722-4040-A671-571C2B3D7193}'
+			}
+			TypeLib = s '{E4CF961A-5184-4761-BCE1-DF29E60BB905}'
+			Description 
+			{
+				val DefaultExtension = s '.prj'
+				val LongName = s 'PolyGIS Datenzugriff (Viewer), Daten können nicht bearbeitet, sondern nur angezeigt werden.'
+				val ShortName = s 'PolyGIS'
+				val NameDescription = s 'PolyGIS Datenzugriff'
+				val NameIsDirectory = s '0'
+				val NameIsFile = s '1'
+				val FilterString = s 'PolyGIS Datenquelle (*.prj)|*.PRJ|'
+				val TempName = s 'Ohne Namen.prj'
+				val ReadWrite = s '0'
+				val Version = s '1.0'
+				val ToolboxBitmap32 = d 23
+				val NeedsCoordSysNew = s 1
+				val NeedsCoordSysExisting = s 1
+			}
+		}
+	}
+}

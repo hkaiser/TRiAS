@@ -1,0 +1,160 @@
+'\"et
+.if t .TH IMPS 3IM "August 19, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMPS 3IM "August 19, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+imps \- Adobe PostScript file translation
+.SH SYNOPSIS
+.nf
+\fB
+#include <stdio.h>
+#include "sdsc.h"
+#include "im.h"
+.sp 1
+int ImFileWrite( fd, "ps", flagsTable, dataTable )
+	int         fd;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileFWrite( fp, "ps", flagsTable, dataTable )
+	FILE       *fp;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+\fR
+.fi
+.SH DESCRIPTION
+PostScript color, grayscale, and black-and-white
+image files are used by a variety of PostScript laser printers and
+windowing system tools.
+.SH "FILE RECOGNITION"
+PostScript files are recognized by the following filename
+suffixes:  .ps and .postscript.
+.SH NOTES
+SDSC image library support of PostScript does not 
+contain any proprietary code.
+PostScript format handling 
+is available on any machine for which the SDSC image library is available.
+.LP
+PostScript is a reverse polish notation-style, FORTH-like programming
+language used to describe text and pictures to be rendered by a PostScript
+interpreter embedded within a laser printer (such as Apple's LaserWriter
+printers), windowing system (such as Sun's NeWS or NeXT's NeXTstep), or
+other display tool.
+The language contains numerous basic programming language constructs and
+lots of drawing operations.
+.LP
+PostScript was designed for ease of parsing, not ease
+of programming.  As a result, most people use PostScript
+as a "blackbox" file
+format that describes their picture.  It is left up to software, such
+as the SDSC image library, to figure out how to deal with PostScript.
+.SS "Reading PostScript files"
+The SDSC Image Library is capable of reading PostScript files via
+by using the 'Ghostscript' program.  See the installation documents
+for information about obtaining Ghostscript and configuring the Image 
+Library to use Ghostscript.
+.LP
+When reading a postscript file, you may specify the page width, page
+height, and dots per inch of the incoming file by using the flags
+"page width request", "page height request", and "image dpi request" 
+respectively.  If these requests are omitted, the library will default
+to creating a file that is 288 dpi, and 8.5 by 11 inches.  Note that this 
+will be a pretty big file!  It will be 288x288x8.5x11 pixels.  This is over 
+20 megabytes for RGB files.  The reason that this is the default is so
+that images are printed in the best possible quality.
+.LP
+.SS "Writing PostScript files"
+The SDSC image library writes color, grayscale, or monochrome VFBs as
+PostScript.  In each case the generated PostScript consists
+of a header followed by the image data as ASCII hex numbers.  The choice of
+header and the format of the hex numbers
+depends upon the type of image being written.
+.LP
+\fBIMVFBMONO\fR VFBs are written with a PostScript header that displays
+the image in black-and-white on black-and-white or color devices.  Image
+data is written as two hex characters for each group of eight adjacent
+monochrome pixels (as required by the PostScript image operator).
+.LP
+\fBIMVFBINDEX8\fR VFBs without color lookup tables are written with a
+PostScript header that displays the image in shades of gray on 
+black-and-white or color devices.  Image data is written as two hex
+characters for each grayscale pixel (as required by the PostScript
+image operator).
+.LP
+\fBIMVFBINDEX8\fR VFBs with a color lookup table and \fBIMVFBRGB\fR VFBs
+are written with a PostScript
+header that displays the image in color on color devices and in shades of
+gray on black-and-white devices.  The PostScript header code checks the
+device's systemdict for support of the colorimage operator.  If
+the operator exists, the device supports color.  In both cases, image data
+is written as six hex characters at two characters each for the red, green,
+and blue color component of each pixel (as required by the PostScript
+colorimage operator).  On color devices, this color pixel data generates
+a color image.  On monochrome devices, the header code automatically
+converts the color
+pixel data to shades of gray as it is being displayed or printed.
+This allows the same
+color PostScript file to be sent to color or black-and-white
+printers without any change to the file.
+.LP
+Other image library VFB types are converted to one of the above prior
+to being written out.  See the \fBImFileWrite\fR(3IM) \fBman\fP page for
+details.
+.LP
+Image data is always generated
+for pixels in left to right order, from the top of the image to the bottom.
+.LP
+In all cases the image is rotated and scaled up automatically to
+fill a maximum page area without distorting the image.  You can
+override this automatic orientation and sizing by editing the generated
+PostScript file.  The header of the file contains comments describing
+how to do this.
+.LP
+PostScript generated by the SDSC image library conforms to
+Adobe's version 3.0 document structuring conventions.
+.LP
+\fIWarning:\fR  All PostScript laser 
+printers have a fixed amount of memory
+in which to buffer incoming data and build up the image prior to printing.  
+Large images converted to PostScript and then sent to a laser printer
+may exceed the buffering and image-building memory limitations of the printer.
+Results vary from printer to printer:  some lock up and require a
+reset, while others silently ignore the images and do not print anything.
+.SH ERRORS
+In addition to those listed for \fBImFileWrite\fR(3IM),
+PostScript file writing returns the following error codes: 
+.ne 2
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEMALLOC	Cannot allocate enough memory
+IMESYS	System call error in write operation
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH DOCUMENTATION
+\fIPostScript Language - Tutorial and Cookbook\fR, Adobe Systems Incorporated.
+.LP
+\fIPostScript Language - Reference Manual, Second Edition\fR,
+Adobe Systems Incorporated.
+.SH SEE ALSO
+\fBImIntro\fR(3IM),
+\fBImErrNo\fR(3IM),
+\fBimconv\fR(1IM),
+\fBimfile\fR(1IM),
+\fBimformats\fR(1IM),
+\fBimeps\fR(3IM)
+.SH AUTHORS
+Dave Nadeau, Brian Duggan, John Moreland
+.br
+San Diego Supercomputer Center
+.LP
+Loren "Buck" Buchanan
+.br
+Naval Research Laboratory
+.br
+Kestrel Associates, Inc.
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

@@ -1,0 +1,229 @@
+'**************************************************************************
+'*                                                                        *
+'*  ALB-Abgleich Projekt Berlin                                           *
+'*                                                                        *
+'**************************************************************************
+' Recherchiert Daten in MDB-Tabelle
+'======================================================================================
+Option Explicit
+
+Const strFlur = "Flurstück"
+Const strStrasse = "Straße (allg.)"
+
+'Programmkonstanten
+Const NL = Chr$(13) + Chr$(10)		'NewLine
+Const HT = Chr$(9)	   		' Tab		 
+
+'=========Attribute TRiAS=======================
+Const strDBCode = "DatenbankCode   "
+'Const strDBCode = "DatenbankCode"
+
+' Fehlerkennzeichen
+Const strFKZ = "falsches Kennungszeichen"
+Const strFAA = "fehlende ALB-Anbindung"		
+
+Const strFIG = "Flurstück/identische Geometrie"
+Const strFGG = "Flurstück/getrennte Geometrie"
+Const strFSS = "fehlender Straßenschlüssel/ALB"	
+
+' Objektattribute
+Const strKZ = "Kennungszeichen"
+Const strUIN = "Ursprungs-Identifikationsnummer"
+Const strSN = "Straßenname"
+Const strGN = "Grundstücksnummer"
+
+' ALB - Attribute
+
+'Tabellen
+Const strTabG = "ALB_Grundstuecke"
+Const strTabS = "ALB_FS_Strassen"
+Const strTabF = "FS_Fehler"
+
+Const strTabA = "Datenbanknummern"
+
+
+' Felder
+Const strSFSK = "Flurstueckskennzeichen"
+Const strSSN = "StrName"
+Const strGGN = "Grundstuecksnummer"
+Const strGID = "Identifikator"
+Const strFFE = "FS_Fehler"
+Const strFfalsch = "FS_falsch"
+Const strFNOALB = "FS_ALB_fehlt"
+Const strFALBfalsch = "FS_falsch_ALB_fehlt"
+Const strFALBrichtig = "FS_richtig_ALB_fehlt"
+Const strFDopId = "FS_doppelt_ID_identisch"
+Const strFDopVer = "FS_doppelt_ID_verschieden"
+Const strFStrfehlt = "FS_ALB_Strasse_fehlt"
+
+Const strDB = "Datenbank_AA"
+Const strTR = "TRiAS_DB_Name"
+
+'=====================================================================================
+
+Private docGD As GeoDocument		'Projekt
+Private wsp As Workspace
+
+Private dbs As Database			'MDB - Datenbank
+Private rstPG As Recordset		'Recordset-Objekt 
+
+'======================================================================================
+
+Private strDatenPfad As String
+Private strDatenFile As String
+
+'===========================================================================
+Private clsFlur As GeoClass		'Objektklasse (Flurstück)
+Private objsFlur As GeoObjects		'GeometrieObjekte (Flurstück)
+Private clsStr As GeoClass		'Objektklasse (Straße (allg.)
+Private objsStr As GeoObjects		'GeometrieObjekte (Straße (allg.)
+
+Private bErrFile As Boolean			' Fehlerdatei angelegt (True)
+
+'======================================================================================
+
+' MDB-Datei
+'Tabelle ALB_FS_STRASSEN
+Private fldMDBFstKzS As Field
+Private fldMDBStrName As Field
+
+' Tabelle ALB_Grundstuecke
+Private fldMDBFstKzG As Field
+Private fldMDBGstNr As Field
+Private fldMDBId As Field
+
+'Tabelle FS_Fehler
+Private fldMDBFeFalsch As Field
+Private fldMDBFeALB As Field
+Private fldMDBFeALBfalsch As Field
+Private fldMDBFeALBrichtig As Field
+Private fldMDBFeIdDoppelt As Field
+Private fldMDBFeIdVersch As Field
+Private fldMDBFeStr As Field
+
+Private fldMDBDBA As Field
+'=================================================================
+
+Private Feat As GeoFeature
+Private VFeat As GeoFeature
+'==================================================================
+
+'Titel der Message-Boxen
+Const strBoxTitel = "TRiAS® Berlin -  ALB/Flurstücksbearbeitung"
+
+'====================================================================
+Declare Private Sub HeaderEintrag ( Key As String)
+
+'====================================================================
+'Hauptprogramm
+
+Sub Main()
+
+'Pfade für BasicScript und Daten
+
+  	Set docGD = GetActiveDocument()			'Zugriff auf aktuelles Projekt
+
+	Dim MDBase As String
+	Dim HDBase As String
+	Dim e As String
+
+
+'   Code in DB-Header
+	Dim DBName As String
+	DBName = LCase$(docGD.Name$)
+
+' DB-Code
+	e = "Datenbankcode.mdb:*.mdb"
+
+	HDBase = OpenFilename$ ("     Öffnen *.mdb für Header",e$)
+	If HDBase = "" Then
+		Exit Sub
+	End If
+
+
+'Geduldsanzeige starten
+	Msg.Open NL+"  Die Verarbeitung wird vorbereitet ... bitte warten!  "+NL,,False,False
+
+
+'weitere Variablen initialisieren
+
+'//////////////////////////////////////////////////////////////////////////////
+
+'	MDB - Datenbank
+
+	Set wsp = DBEngine.Workspaces(0)
+
+
+'	msgbox MDBase$
+
+	Msg.Close
+
+
+	Set dbs = wsp.OpenDataBase(HDBase$)
+	If dbs Is Nothing Then
+		MsgBox " Datei "+HDBase$+" nicht offen!",ebCritical,strBoxTitel
+		Exit Sub
+	End If
+
+	HeaderEintrag DBName
+	Set rstPG = Nothing
+	Set dbs = Nothing
+	Set wsp = Nothing
+
+End Sub
+'===================================================================
+'===================================================================
+Sub HeaderEintrag ( Key As String) 
+
+	If Key = "" Then
+		Exit Sub
+	End If
+
+  	If rstPG Is Not Nothing Then
+		rstPG.Close
+		Set rstPG = Nothing
+	End If
+
+	Dim SQLStatement As String
+
+	SQLStatement = "SELECT * FROM " + strTabA + " WHERE " + strTR + " LIKE '" +Key+ "'"
+
+	Set rstPG = dbs.OpenRecordset (SQLStatement, dbOpenSnapshot, dbReadOnly)
+
+	If rstPG Is Nothing Then
+		MsgBox strTabA + " enthält keine Datei "+ Key, _
+				ebQuestion, strBoxTitel
+		Exit Sub
+	End If
+
+	If rstPG.RecordCount > 0 Then
+
+		Set fldMDBDBA = rstPG.Fields(strDB)
+
+		rstPG.MoveLast
+		rstPG.MoveFirst
+
+		Dim Feld As String
+		If fldMDBDBA Is Not Nothing Then
+			Feld = Trim$ ( fldMDBDBA)
+			If Feld <> "" Then
+ '				If docGD.SetHeaderEntry (strDBCode,Feld	) Then
+ 				If (docGD.SetHeaderEntry  (strDBCode , "    HC" ))	 Then
+					msgbox strDBCode + " = " + Feld + " eingetragen"
+					Dim WCode As String
+					WCode = docGD.GetHeaderEntry (strDBCode)
+					msgbox strDBCode + " = *" + WCode + "* gelesen"
+				Else
+					msgbox strDBCode + " = " + Feld + " nicht eingetragen"
+				End If
+			End If
+		End If
+	Else
+		MsgBox strTabA + " enthält keine Datei "+ Key, _
+				ebQuestion, strBoxTitel
+
+	End If
+
+End Sub
+
+'===============================================================

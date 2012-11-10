@@ -1,0 +1,284 @@
+// TRiASConnections.idl: Base-Interfaces for TRiAS-extensions
+//
+
+#if !defined(_TRIASCONNECTIONS_IDL)
+#define _TRIASCONNECTIONS_IDL
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declarations
+interface ITRiASNotificationSink;
+interface DTRiASNotificationSink;
+interface ITRiASSysNotificationSink;
+interface DTRiASSysNotificationSink;
+
+///////////////////////////////////////////////////////////////////////////////
+// Interfaces
+
+///////////////////////////////////////////////////////////////////////////////
+// NotifikationsConnectionPoints von TRiAS/OleAuto
+typedef [public, helpstring("Events, die Statusänderungen von TRiAS® melden")]
+enum _tagSERVEREVT {
+    [helpstring("TRiAS® soll beendet werden.")] 
+		SERVEREVT_ClosingServer = 0,
+	[helpstring("TRiAS® wurde beendet.")] 
+		SERVEREVT_ServerToClose = 1,
+	[helpstring("TRiAS® ist fertig initialisiert.")] 
+		SERVEREVT_InitializedServer = 2,
+	[helpstring("Alle Erweiterungen wurde geladen.")]
+		SERVEREVT_ExtensionsLoaded = 3,
+	[helpstring("Tooltips sollen im folgenden angezeigt werden.")] 
+		SERVEREVT_ShowToolTips = 4,
+	[helpstring("Tooltips sollen im folgenden nicht mehr angezeigt werden.")] 
+		SERVEREVT_ShowNoMoreToolTips = 5
+} SERVEREVT;
+
+typedef [public, helpstring("Events, die Statusänderungen eines Projektes melden")]
+enum _tagPROJECTEVT {
+	[helpstring("Projekt wurde eröffnet.")] 
+		PROJECTEVT_ProjectOpened = 10,
+	[helpstring("Projekt soll geschlossen werden.")] 
+		PROJECTEVT_ClosingProject = 11,
+	[helpstring("Projekt wurde geschlossen.")] 
+		PROJECTEVT_ProjectClosed = 12,
+	[helpstring("Projekt ist jetzt Dirty (muß gespeichert werden).")]
+		PROJECTEVT_ProjectIsDirty = 13,
+	[helpstring("Projekt ist jetzt nicht Dirty (wurde gerade gespeichert).")] 
+		PROJECTEVT_ProjectIsNotDirty = 14,
+	[helpstring("Projekt wird jetzt geschlossen.")] 
+		PROJECTEVT_ProjectToClose = 15,
+	[helpstring("Das Anzeigeformat der Koordinaten wurde modifiziert.")] 
+		PROJECTEVT_ChangedCoordFormat = 16,
+	[helpstring("Die Projekt-Kopfinformationen wurden modifiziert.")]
+		PROJECTEVT_ReReadHeader = 17,
+	[helpstring("Das Projekt soll umbenannt werden.")]
+		PROJECTEVT_RenamingFile = 18,
+	[helpstring("Das Projekt wurde umbennant.")]
+		PROJECTEVT_FileRenamed = 19,
+
+	[helpstring("Eine neue Connection soll erzeugt werden.")]
+		CONNECTIONEVT_CreatingConnection = 200,
+	[helpstring("Eine neue Connection wird erzeugt.")]
+		CONNECTIONEVT_ConnectionToCreate = 201,
+	[helpstring("Eine neue Connection wurde erzeugt.")]
+		CONNECTIONEVT_ConnectionCreated = 202,
+	[helpstring("Eine Connection soll geöffnet werden.")]
+		CONNECTIONEVT_OpeningConnection = 203,
+	[helpstring("Eine Connection wird geöffnet.")]
+		CONNECTIONEVT_ConnectionToOpen = 204,
+	[helpstring("Eine Connection wurde geöffnet.")]
+		CONNECTIONEVT_ConnectionOpened = 205,
+	[helpstring("Eine Connection soll geschlossen werden.")]
+		CONNECTIONEVT_ClosingConnection = 206,
+	[helpstring("Eine Connection wird geschlossen.")]
+		CONNECTIONEVT_ConnectionToClose = 207,
+	[helpstring("Eine Connection wurde geschlossen.")]
+		CONNECTIONEVT_ConnectionClosed = 208,
+	[helpstring("Eine Connection soll gelöscht werden.")]
+		CONNECTIONEVT_DeletingConnection = 209,
+	[helpstring("Eine Connection wird gelöscht.")]
+		CONNECTIONEVT_ConnectionToDelete = 210,
+	[helpstring("Eine Connection wurde gelöscht.")]
+		CONNECTIONEVT_ConnectionDeleted = 211,
+
+	[helpstring("Ein Objekt wurde geteilt.")]
+		PROJECTEVT_ObjectSplitted = 100,
+} PROJECTEVT;
+
+typedef [public, helpstring("Events, die Statusänderungen einer Ansicht melden")]
+enum _tagGEOVIEWEVT {
+	[helpstring("Ansicht soll ausgewählt werden.")] 
+		GEOVIEWEVT_SelectingView = 20,
+	[helpstring("Ansicht wurde ausgewählt.")] 
+		GEOVIEWEVT_ViewSelected = 21,
+	[helpstring("Ansicht soll gelöscht werden.")]
+		GEOVIEWEVT_DeletingView = 22,
+	[helpstring("Ansicht wurde gelöscht.")] 
+		GEOVIEWEVT_ViewDeleted = 23,
+	[helpstring("Ansicht wurde erzeugt.")] 
+		GEOVIEWEVT_ViewCreated = 24,
+	[helpstring("Ausschnitt wurde verändert.")] 
+		GEOVIEWEVT_ZoomChanged = 26,
+	[helpstring("Ansicht soll gezeichnet werden.")] 
+		GEOVIEWEVT_PaintingView = 27,
+	[helpstring("Ansicht wurde neu gezeichnet.")]
+		GEOVIEWEVT_ViewPainted = 28,
+	[helpstring("Ansicht wird horizontal gescrollt.")]
+		GEOVIEWEVT_ScrollingHorz = 29,
+	[helpstring("Ansicht wird vertikal gescrollt.")]
+		GEOVIEWEVT_ScrollingVert = 25,
+	[helpstring("Ansichten neu einlesen.")]
+		GEOVIEWEVT_ReReadAll = 300,
+} GEOVIEWEVT;
+
+typedef [public, helpstring("Events, die Statusänderungen einer Objektklasse melden")]
+enum _tagGEOCLASSEVT {
+	[helpstring("Objektklasse soll gezeichnet werden.")]
+	    GEOCLASSEVT_DrawingClass = 30,
+	[helpstring("Beschreibung Objektklassen wurde verändert.")]
+		GEOCLASSEVT_ClassChanged = 31,
+	[helpstring("Beschreibungen aller/mehrerer Objektklassen wurden verändert.")] 
+		GEOCLASSEVT_ClassesChanged = 32,
+	[helpstring("Objektklasse soll vollständig gelöscht werden.")]
+		GEOCLASSEVT_DeletingClass = 33,
+	[helpstring("Objektklasse wurde vollständig gelöscht.")]
+		GEOCLASSEVT_ClassDeleted = 34
+} GEOCLASSEVT;
+
+typedef [public, helpstring("Events, die Statusänderungen eines Objektes melden")]
+enum _tagGEOOBJECTEVT {
+	[helpstring("Objekt soll gezeichnet werden.")] 
+		GEOOBJECTEVT_DrawingObject = 40,
+	[helpstring("Objekt wurde recherchiert.")]
+		GEOOBJECTEVT_InquiringObject = 41,
+	[helpstring("Objekt wurde selektiert.")] 
+		GEOOBJECTEVT_ObjectSelected = 42,
+	[helpstring("Objekt wurde deselektiert.")]
+		GEOOBJECTEVT_ObjectUnSelected = 43,
+	[helpstring("Objekt soll gelöscht werden.")]
+		GEOOBJECTEVT_DeletingObject = 44,
+	[helpstring("Objekt wurde gelöscht.")] 
+		GEOOBJECTEVT_ObjectDeleted = 45,
+	[helpstring("Objekt wurde aktiviert.")] 
+		GEOOBJECTEVT_ObjectActivated = 46,
+	[helpstring("Objekt wurde deaktiviert.")]
+		GEOOBJECTEVT_ObjectDeActivated = 47,
+	[helpstring("Geometrie des Objektes soll modifiziert werden.")]
+		GEOOBJECTEVT_ChangingGeometry = 48,
+	[helpstring("Geometrie des Objektes wurde modifiziert.")]
+		GEOOBJECTEVT_GeometryChanged = 49,
+	[helpstring("Objekt wird jetzt (wirklich) gelöscht werden.")] 
+		GEOOBJECTEVT_ObjectToDelete = 50,
+	[helpstring("Objekt wurde neu erzeugt (über Editierung).")] 
+		GEOOBJECTEVT_ObjectCreated = 51,
+	[helpstring("Objekt soll umklassifiziert werden.")]
+		GEOOBJECTEVT_ObjectToClassify = 52,
+	[helpstring("Objekt wurde umklassifiziert.")]
+		GEOOBJECTEVT_ObjectClassified = 53,
+	[helpstring("Objekt soll hinzugefügt werden (Abfrage).")]
+		GEOOBJECTEVT_AddingObject = 54,
+	[helpstring("Objekt wird hinzugefügt werden (Mitteilung).")]
+		GEOOBJECTEVT_ObjectToAdd = 55,
+	[helpstring("Objekt wurde hinzugefügt.")]
+		GEOOBJECTEVT_ObjectAdded = 56,
+} GEOOBJECTEVT;
+
+typedef [public, helpstring("Events, die Statusänderungen eines Merkmales melden")]
+enum _tagGEOFEATUREEVT {
+	[helpstring("Beschreibung einses Merkmales wurde verändert.")]
+		GEOFEATUREEVT_FeatureChanged = 60,
+	[helpstring("Beschreibungen aller/mehrerer Merkmale wurden verändert.")] 
+		GEOFEATUREEVT_FeaturesChanged = 61
+} GEOFEATUREEVT;
+
+typedef [public, helpstring("Events, die Statusänderungen einer Relation melden")]
+enum _tagGEORELATIONEVT {
+	[helpstring("Beschreibung der Relation wurde verändert.")] 
+		GEORELATIONEVT_RelationChanged = 70,
+	[helpstring("Beschreibungen aller/mehrerer Relationen wurden verändert.")]
+		GEORELATIONEVT_RelationsChanged = 71
+} GEORELATIONEVT;
+
+typedef [public, helpstring("Events, die Status-Änderungen eines Objektrecherchefensters melden.")]
+enum _tagOBJWNDEVT {
+	[helpstring("Objektrecherchefensters wurde genriert.")] 
+		OBJWNDEVT_WindowCreated = 80,
+	[helpstring("Objektrecherchefensters hat Focus erhalten.")] 
+		OBJWNDEVT_GotFocus = 81,
+	[helpstring("Objektrecherchefensters hat Focus verloren.")] 
+		OBJWNDEVT_LostFocus = 82,
+	[helpstring("Objektrecherchefensters wurde geschlossen.")] 
+		OBJWNDEVT_WindowDestroyed = 83,
+	[helpstring("Objektrecherchefensters wird geschlossen werden.")] 
+		OBJWNDEVT_WindowToDestroy = 84,
+	[helpstring("Objektrecherchefensters soll geschlossen werden.")] 
+		OBJWNDEVT_DestroyingWindow = 85,
+} OBJWNDEVT;
+
+///////////////////////////////////////////////////////////////////////////////
+// TRiAS Connectionpoint, sendet GeoObject-spezifische Events.
+[
+	odl, object, hidden, local,
+	uuid(0796385A-3123-101C-BB62-00AA0018497C),
+	pointer_default(unique),
+	helpstring("TRiAS® Connectionpoint, sendet TRiAS® Datenobjekt-spezifische Events."),
+	oleautomation
+]
+interface ITRiASNotificationSink : IUnknown 
+{
+    HRESULT ServerEvent([in]SERVEREVT Event);
+	HRESULT ProjectEvent([in]long Proj, [in]PROJECTEVT ProjectEvent, [in, optional]VARIANT Data);
+	HRESULT GeoViewEvent([in]long Proj, [in]GEOVIEWEVT GeoViewEvent, [in]VARIANT Data);
+	HRESULT GeoClassEvent([in]long Proj, [in]GEOCLASSEVT GeoClassEvent, [in]long Ident);
+	HRESULT GeoObjectEvent([in]long Proj, [in]GEOOBJECTEVT GeoObjectEvent, [in]long ObjNr);
+    HRESULT GeoFeatureEvent([in]long Proj, [in]GEOFEATUREEVT GeoFeatureEvent, [in]long MCode);
+	HRESULT GeoRelationEvent([in]long Proj, [in]GEORELATIONEVT GeoRelationEvent, [in]long RCode);
+	HRESULT ObjectWindowEvent([in]OBJWNDEVT ObjWndEvent, [in]long ObjWind);
+};
+
+// zugehöriges DispInterface
+[
+	odl, 
+	object, 
+	uuid(0796388F-3123-101C-BB62-00AA0018497C),
+	helpstring("TRiAS® Connectionpoint, sendet TRiAS® Datenobjekt-spezifische Events."),
+	dual,
+	oleautomation
+]
+interface DTRiASNotificationSink : IDispatch 
+{
+    [id(1800), helpstring("Events zu TRiAS® selbst.")]
+		HRESULT ServerEvent ([in]SERVEREVT ServerEvent, 
+			[out, retval] long *RetVal);
+    [id(1801), helpstring("Events zu Projekten.")]
+		HRESULT ProjectEvent ([in]PROJECTEVT ProjectEvent, [in, optional]VARIANT Data,
+			[out, retval] long *RetVal);
+    [id(1802), helpstring("Events zu Ansichten.")]
+		HRESULT GeoViewEvent ([in]long Proj, [in]GEOVIEWEVT GeoViewEvent, 
+			[in]VARIANT Data, [out, retval] long *RetVal);
+    [id(1803), helpstring("Events zu Objektklassen.")]
+		HRESULT GeoClassEvent ([in]long Proj, [in]GEOCLASSEVT GeoClassEvent, 
+			[in]long Ident, [out, retval] long *RetVal);
+    [id(1804), helpstring("Events zu Objekten.")]
+		HRESULT GeoObjectEvent ([in]long Proj, [in]GEOOBJECTEVT GeoObjectEvent, 
+			[in]long ObjNr, [out, retval] long *RetVal);
+    [id(1805), helpstring("Events zu Objekteigenschaften.")]
+		HRESULT GeoFeatureEvent ([in]long Proj, [in]GEOFEATUREEVT GeoFeatureEvent, 
+			[in]long MCode, [out, retval] long *RetVal);
+    [id(1806), helpstring("Events zu Objektrelationen.")]
+		HRESULT GeoRelationEvent ([in]long Proj, [in]GEORELATIONEVT GeoRelationEvent, 
+			[in]long RCode, [out, retval] long *RetVal);
+    [id(1807), helpstring("Events zu Objektrecherchefenstern.")]
+	    HRESULT ObjectWindowEvent ([in]OBJWNDEVT ObjWndEvent, [in]long hORWnd,
+			[out, retval] long *RetVal);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// TRiAS Connectionpoint, sendet Windows-spezifische Events
+[
+	odl, object, hidden, local,
+	uuid(0796386E-3123-101C-BB62-00AA0018497C),
+	helpstring("TRiAS® Connectionpoint, sendet Windows-spezifische Events."),
+	oleautomation
+]
+interface ITRiASSysNotificationSink : IUnknown
+{
+    HRESULT WindowsMessage([in] long hWnd, [in] long uiMsg, 
+		[in] long wParam, [in] long lParam);
+};
+
+[
+	odl, 
+	object, 
+	uuid(079638B0-3123-101C-BB62-00AA0018497C),
+	helpstring("TRiAS® Connectionpoint, sendet Windows-spezifische Events."),
+	dual,
+	oleautomation
+]
+interface DTRiASSysNotificationSink : IDispatch
+{
+    [id(1900), helpstring("Alle Windows-Messages, die an das TRiAS-Hauptfenster gehen.")]
+    HRESULT WindowsMessage([in] long Window, [in] long Message, [in] long wParam, 
+		[in] long lParam, [out, retval] long *Result);
+};
+
+#endif // _TRIASCONNECTIONS_IDL

@@ -1,0 +1,440 @@
+
+'{{BEGINFILE(C:\TRIAS.MVC\Macro Extensions\Objekte vereinigen (Variante 2).ebs,0,0)
+
+' -----------------------------------------------------------------------------
+' $DESCRIPTION: Alle Objekte einer Selektionsmenge vereinigen
+' -----------------------------------------------------------------------------
+'	'TextRecherche.ebs'	TRiAS-MakroErweiterung
+' -----------------------------------------------------------------------------
+'	(c)	FEZ Potsdam GmbH, 7. Mai 1998, H.Kaiser
+' -----------------------------------------------------------------------------
+'	Vereinigt die Geometrien aller Flächen einer Selektionsmenge.
+' -----------------------------------------------------------------------------
+
+Option Explicit
+
+' -----------------------------------------------------------------------------
+' Globale Variablen
+Private docGD As GeoDocument		' aktuelles Projekt
+
+' ToolBar und ToolBarKnopf
+Private tbK As Toolbar
+
+Private tbbSearch As ToolbarButton
+Private tbbEnde As  ToolbarButton
+
+Private Status As StatusIndicator 
+Private lGlobalCnt As Long
+
+' -----------------------------------------------------------------------------
+' Beschreibungs-Strings
+Const NL = Chr$(13) + Chr$(10)		' Zeilenwechsel
+Const strToolSearch As String = "Objekte_vereinigen"
+Const strToolSearchLong As String = "Vereinigen aller Objekte der aktuellen Selektionsmenge"
+
+' -----------------------------------------------------------------------------
+' Deklaration aller verwendeten Routinen
+Declare Private Function AddTool (Tools As ToolBar, iNum As Integer, strName As String, _
+	PictID As Integer, strDesc As String, iState As Integer, iStyle As Integer) As ToolBarButton
+
+Declare Private Sub EnableButtons()
+Declare Private Sub DisableButtons()
+
+Declare Private Function GeometryUnion (Objs As GeoObjects, Cls As GeoClass) As GeoObjects
+Declare Private Function GeometryUnionWithTopo (Objs As GeoObjects, Cls As GeoClass) As GeoObjects
+
+Declare Private Sub InitStatus (lCount As Long)
+Declare Private Function IncrementStatus() As Boolean
+Declare Private Sub FreeStatus()
+
+' -----------------------------------------------------------------------------
+' "BeginScript()" wird immer vor der Script-Abarbeitung gerufen
+Sub BeginScript()
+
+Dim tbKLoc As ToolBar
+Dim Style As Long
+
+	Set docGD = GetActiveDocument()
+
+	Style = TOOLBARSTYLE_BorderAny Or TOOLBARSTYLE_Border3d Or _
+			TOOLBARSTYLE_AlignTop Or TOOLBARSTYLE_Tooltips Or _
+			TOOLBARSTYLE_FlyBy  Or TOOLBARSTYLE_SizeDynamic
+	Set tbKLoc = TRiAS.AddToolBar ("Vereinigung", Style)
+																					   
+' 1. Reihe der Knöpfe
+	Set tbbSearch = AddTool (tbKLoc, 0, "Vereinigen", Tool42+8, _
+			strToolSearchLong + NL + strToolSearch, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+
+	tbKLoc.DockState = DOCKSTATE_DockedTop	' rechts andocken
+	tbKLoc.Visible = 1
+
+	Set tbK = tbKLoc
+
+	Set Status = Nothing
+
+End Sub
+
+' -----------------------------------------------------------------------------
+' "Main()" ist der eigentliche Startpunkt des Makroscriptes 
+Sub Main()
+' Dieser Script muß auch nach Main() aktiv bleiben
+	SetBreakScript (False)
+
+' Testen, ob bereits ein Projekt geöffnet ist, dann Knöpfe aktivieren
+	If (docGD Is Nothing) Then
+		DisableButtons
+	End If
+
+End Sub 
+
+' -----------------------------------------------------------------------------
+' "EndScript()" wird immer nach Beendigung der Script-Abarbeitung gerufen
+Sub EndScript()
+' ToolBar ausblenden
+	If (tbK Is Not Nothing) Then
+		tbK.Visible = False
+	End If
+
+' alle Objekte freigeben
+	Set tbbSearch = Nothing
+	If (tbK Is Not Nothing) Then
+		tbK.Remove		' ToolBar selbst freigeben
+	End If
+	Set tbK = Nothing
+
+	Set docGD = Nothing
+
+	FreeStatus
+
+' Jetzt wird der Script wirklich abgebrochen
+	SetBreakScript (True)
+End Sub
+
+' -----------------------------------------------------------------------------
+' Nutzer drückt Knöpfchen
+Sub Ende_Click()
+	SetBreakScript (True)
+End Sub
+
+' -----------------------------------------------------------------------------
+' "OnDocumentToClose()" wird bei Schließen des aktuellen Projektes gerufen
+Sub OnDocumentToClose (Doc As GeoDocument)
+	DisableButtons		' Knöpfe passivieren
+	Set docGD = Nothing
+End Sub
+
+' "OnDocumentOpened()" wird bei Öffnen eines Projektes gerufen
+Sub OnDocumentOpened (Doc As GeoDocument)
+	Set docGD = GetActiveDocument()
+	If (docGD Is Not Nothing) Then
+		EnableButtons		' Knöpfe aktivieren
+	End If
+End Sub
+
+' -----------------------------------------------------------------------------
+' Hier gehts los
+Const ErrorText1 As String = "Bitte genau ein Objektrecherchefenster öffnen!"
+Const NewObjectClass As String = "Vereinigte Objekte"
+
+Sub Vereinigen_Click()
+Dim Wins As GeoObjectWins
+
+	Set Wins = docGD.GetGeoObjectWins()
+	If (Wins Is Nothing) Then
+		Exit Sub
+	End If
+	If (Wins.Count <> 1) Then
+		MsgBox ErrorText1, , strToolSearchLong
+		Exit Sub
+	End If
+
+' Aktion durchführen
+Dim Objs As GeoObjects
+Dim ObjsOut As GeoObjects
+Dim ObjsRef As GeoObjects
+Dim Cls As GeoClass
+Dim Doc As GeoDocument
+Dim OldCls As GeoClass
+
+	Set Doc = GetActiveDocument
+	Set Cls = Doc.GetClass(NewObjectClass)
+	If (Cls Is Nothing) Then
+		Set Cls = Doc.AddClass(NewObjectClass)
+	End If
+
+	Set Objs = Wins.ActGeoObjectWin.GetSelectedObjects()
+	Set ObjsRef = Objs
+	Set OldCls = Objs(1).ObjClass
+
+	Set ObjsOut = GeometryUnionWithTopo (Objs, Cls)
+	If (ObjsOut Is Nothing) Then
+		Exit Sub	' abgebrochen
+	End If
+
+Dim o As GeoObject
+
+	If (ObjsOut Is Not Nothing) Then
+		For Each o In ObjsOut
+			OldCls.AddObject o
+		Next o
+	End If
+
+' alle verbleibenden Objekte wieder löschen
+	Set OldCls = GetActiveDocument.GetClass (NewObjectClass)
+	If (oldcls Is Not Nothing) Then
+	Dim ObjsT As GeoObjects
+	
+		Set ObjsT = OldCls.GetObjects()
+
+		For Each o in ObjsT
+			GetActiveDocument.RemoveObject o
+		Next ObjsT
+	End If
+
+Dim NewWin As GeoObjectWin 
+
+	Set NewWin = ObjsOut.CreateGeoObjectWin()
+	NewWin.Name = "Vereinigte Objekte"
+
+' zu löschende Objekte rauskriegen
+Dim ToDelObjs As GeoObjects
+
+	Set ToDelObjs = ObjsRef.Difference (ObjsOut)
+	For Each o In ToDelObjs 
+		GetActiveDocument.RemoveObject o
+	Next o
+End Sub
+
+Function GeometryUnionWithTopo (Objs As GeoObjects, Cls As GeoClass) As GeoObjects
+
+Dim Obj As GeoObject
+Dim XMin As Double
+Dim XMax As Double
+Dim YMin As Double
+Dim YMax As Double
+Dim ObjsRect As GeoObjects
+Dim ObjsUnion As GeoObjects
+Dim ObjsOut As New GeoObjects
+
+	Do
+	' das jeweils erste Objekt entfernen
+		Set Obj = Objs(1)
+
+	' alle Objekte innerhalb des Containers finden
+		Obj.GetGeometryRect XMin, YMin, XMax, YMax
+		Set ObjsRect = Objs.GetObjectsInRect(XMin, YMin, XMax, YMax)
+		Objs.Remove Obj.Value
+
+	' jetzt eigentliche Vereinigung für dieses Objekt
+		Set ObjsUnion = GeometryUnion (ObjsRect, Cls)
+
+	' wenn nichts vereinigt wurde, dann dieses Objekt direkt zur Ausgabemenge
+		If (ObjsUnion.Count = 1 And ObjsUnion(1).Value = Obj.Value) Then
+			ObjsOut.Add Obj
+		Else
+		' alle neuen zur Eingabemenge hinzufügen,
+		' alle unveränderten aus Eingabemenge herausnehmen
+			Set ObjsUnion = ObjsUnion.Difference(Objs)
+			Set Objs = Objs.Union(ObjsUnion)
+		End If
+
+	Loop While (Objs.Count > 1)
+
+	Set GeometryUnionWithTopo = ObjsOut	' Ergebnismenge
+
+End Function
+
+' -----------------------------------------------------------------------------
+' Jedes Objekt mit jedem vereinigen
+Function GeometryUnion (Objs As GeoObjects, Cls As GeoClass) As GeoObjects
+Dim fFound As Boolean
+
+' Variablen der Outer-Schleife
+Dim i As Long
+
+' Variablen der Inner-Schleife
+Dim Inner As Long
+Dim OuterObj As GeoObject
+Dim ObjsT As GeoObjects
+
+Dim InnerObj As GeoObject
+Dim NewObjs As GeoObjects
+Dim FakeObjs As GeoObjects
+
+Dim lNewObjsCnt As Long
+
+Dim o As GeoObject
+Dim ResultObjs As New GeoObjects
+
+Dim IsCanceled As Boolean
+
+	lGlobalCnt = 0
+	InitStatus Objs.Count
+
+' Äußere Schleife
+	Do
+	' Flag rücksetzen
+		fFound = False
+
+	' nächstes Bezugsobjekt setzen
+		If (OuterObj Is Not Nothing) Then
+			OuterObj.UnHilight
+		End If
+		Set OuterObj = Objs(1)
+		If (OuterObj Is Nothing) Then
+			Exit Do
+		End If
+
+		OuterObj.Hilight &HFF0000		' Blau kennzeichnen
+
+	' Neue Objektmenge für nächsten Durchlauf			
+ 		Set ObjsT = New GeoObjects
+
+	' Innere Schleife
+		For Inner = 2 To Objs.Count
+
+		' Status weiterschalten
+			If (IncrementStatus() = False) Then
+				Set GeometryUnion = Nothing
+				FreeStatus
+				Exit Function
+			End If
+				
+		' nächstes Vergleichsobjekt
+			Set InnerObj = Objs(Inner)
+			InnerObj.Hilight &HFFFFFF		' Weiß kennzeichnen
+
+		' Versuchen, die beiden zu vereinigen
+			Set FakeObjs = New GeoObjects
+			FakeObjs.Add OuterObj
+			FakeObjs.Add InnerObj
+			Set NewObjs = FakeObjs.GeometryUnion (Cls)
+			Set FakeObjs = Nothing
+
+			If (NewObjs Is Not Nothing) Then
+				lNewObjsCnt = NewObjs.Count
+			Else
+				lNewObjsCnt = 0
+			End If
+
+		' Resultat der Vereinigung auswerten
+			If (NewObjs Is Not Nothing And lNewObjsCnt > 0) Then
+			' wirklich was vereinigt, neue Objekte übenehmen
+				For Each o In NewObjs
+					ObjsT.Add o		' neu gebildete Objekte hinzufügen
+				Next o
+
+			' restliche Objekte übernehmen
+				For i = Inner+1 To Objs.Count
+					ObjsT.Add Objs(i)
+					IsCanceled = IncrementStatus()	' Status weiterschalten
+				Next i
+
+			' Bezugsobjekt wird nicht mehr gebraucht
+				OuterObj.UnHilight
+				If (OuterObj.ObjClass.Name = NewObjectClass) Then
+				' bereits vereinigtes Objekt aus GeoDB löschen
+					GetActiveDocument.RemoveObject OuterObj
+				End If
+				Set OuterObj = Nothing
+
+			' neue Objektmenge ist fertig
+				fFound = True
+				InnerObj.UnHilight
+
+				Exit For ' Inner
+			Else 
+			' es konnte nichts vereinigt werden
+				ObjsT.Add InnerObj
+				InnerObj.UnHilight
+			End If
+		Next Inner
+
+	' Ergebnis dieser Runde setzen
+		Set Objs = ObjsT
+
+		If (fFound = False) Then
+			ResultObjs.Add OuterObj
+		ElseIf (Objs.Count = 1) Then
+			ResultObjs.Add Objs(1)
+			Exit Do
+		End If
+	Loop 
+
+	FreeStatus
+	Set GeometryUnion = ResultObjs
+
+End Function 
+
+' -----------------------------------------------------------------------------
+' Hinzufügen eines Knopfes zur Toolbar
+Function AddTool (Tools As ToolBar, iNum As Integer, strName As String, _
+	PictID As Integer, strDesc As String, iState As Integer, iStyle As Integer) _
+	As ToolBarButton
+
+Dim P As Image
+Dim TB As New ToolBarButton
+
+	Set P = LoadResPicture (PictID, vbResBitmap)
+	If (P Is Not Nothing) Then
+		TB.Name$ = StrName
+		TB.HelpText$ = strDesc
+		TB.State = iState
+		TB.Style = iStyle
+		TB.AttachImage P
+		TB.CmdID = PictID	' CommandID ist PictID (eindeutig ?!)
+
+		Tools.InsertButton iNum, TB
+		Set AddTool = TB
+	Else
+		Set AddTool = Nothing
+	End If
+End Function
+
+' -----------------------------------------------------------------------------
+' Sonstiges 
+Sub EnableButtons ()
+	tbbSearch.State = BUTTONSTATE_Enabled Or BUTTONSTATE_NoKickIdle
+End Sub
+
+Sub DisableButtons ()
+	tbbSearch.State = BUTTONSTATE_Disabled Or BUTTONSTATE_NoKickIdle
+End Sub
+
+'------------------------------------------------------------------------------
+' StatusAnzeige verwalten
+Private Sub InitStatus (lCount As Long)
+
+	Set Status = New StatusIndicator
+	if (Status Is Nothing) Then
+		Exit Sub
+	End If
+
+	Status.Restart 0, (lCount*(lCount-1))/2, STATUS_ShowAllFields
+	Status.Caption = "Vereinigen aller selektierten Objekte"
+	Status.Field(1) = "Anzahl:"
+	Status.Field(2) = Str$(lCount) + " Objekte"
+	Status.Field(3) = "Es wurden bereits %d%% der Objekte vereinigt"
+
+End Sub
+
+Private Function IncrementStatus() As Boolean
+	If (Status Is Not Nothing) Then
+		lGlobalCnt = lGlobalCnt + 1
+		Status.SetPosition lGlobalCnt
+		If (Status.WasCanceled()) Then
+		' abgebrochen
+			IncrementStatus = False
+			Exit Function
+		End If
+	End If
+	IncrementStatus = True
+End Function
+
+Private Sub FreeStatus()
+
+	If (Status Is Not Nothing) Then
+		Set Status = Nothing
+	End If
+End Sub
+ 

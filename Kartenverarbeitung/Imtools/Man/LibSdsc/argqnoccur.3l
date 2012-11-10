@@ -1,0 +1,198 @@
+
+
+
+     AAAARRRRGGGGQQQQNNNNOOOOCCCCCCCCUUUURRRR((((3333AAAARRRRGGGG))))      SSSSDDDDSSSSCCCC ((((SSSSeeeepppptttteeeemmmmbbbbeeeerrrr 1111999999991111))))      AAAARRRRGGGGQQQQNNNNOOOOCCCCCCCCUUUURRRR((((3333AAAARRRRGGGG))))
+
+
+
+     NNNNAAAAMMMMEEEE
+          ArgQNOccur  -  query the number of occurrences of an option
+
+     SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+          #include "sdsc.h"
+
+          int ArgErrNo;
+
+          int ArgQNOccur( keyword )
+               char *keyword;
+
+     DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+          _A_r_g_Q_N_O_c_c_u_r retrieves information about the commandline,
+          after it has been parsed by an earlier call to
+          _A_r_g_P_a_r_s_e(_3_A_R_G).
+
+          _A_r_g_Q_N_O_c_c_u_r queries the number of times the option _k_e_y_w_o_r_d
+          with a keyword or equivalent keyword occurred on the
+          commandline, returning the number as the function value.
+
+     RRRREEEETTTTUUUURRRRNNNNSSSS
+          _A_r_g_Q_N_O_c_c_u_r returns the number of occurrences of an option on
+          the user's input commandline.  If _A_r_g_Q_N_O_c_c_u_r fails to
+          complete, it returns -1 and sets the global _A_r_g_E_r_r_N_o to an
+          error code indicating the cause of the failure.  The
+          following error code may be generated:
+
+          _A_R_G_E_U_N_K_K_E_Y_W_O_R_D = keyword unknown
+               The keyword is not one of the keywords supplied in the
+               _o_p_t_i_o_n_s[] or _e_q_u_i_v[] arrays passed to _A_r_g_P_a_r_s_e(_3_A_R_G)
+               and is not one of the truncation abbreviations.
+
+     NNNNOOOOTTTTEEEESSSS
+          The _k_e_y_w_o_r_d argument may be any keyword, equivalent keyword,
+          or unique abbreviation-by-truncation of keywords or
+          equivalent keywords.  For clarity, the full keyword should
+          be used in all _A_r_g_Q_N_O_c_c_u_r calls.
+
+          During commandline parsing in _A_r_g_P_a_r_s_e(_3_A_R_G), any input
+          keyword that matches any abbreviation or equivalent keyword
+          for an option is considered an occurrence of that option.
+          It is not possible to determine if a particular spelling of
+          a keyword was input by a user.  For instance, consider the
+          following commandlines using the "-infile" option:
+
+               mycommand -infile myfile.hdf
+               mycommand -infil myfile.hdf
+               mycommand -infi myfile.hdf
+               mycommand -inf myfile.hdf
+               mycommand -in myfile.hdf
+               mycommand -i myfile.hdf
+
+
+
+
+     Page 1                                          (printed 6/30/95)
+
+
+
+
+
+
+     AAAARRRRGGGGQQQQNNNNOOOOCCCCCCCCUUUURRRR((((3333AAAARRRRGGGG))))      SSSSDDDDSSSSCCCC ((((SSSSeeeepppptttteeeemmmmbbbbeeeerrrr 1111999999991111))))      AAAARRRRGGGGQQQQNNNNOOOOCCCCCCCCUUUURRRR((((3333AAAARRRRGGGG))))
+
+
+
+          When querying the number of occurrences of the "infile"
+          option keyword, any of the following calls to _A_r_g_Q_N_O_c_c_u_r
+          reports the number of occurrences of any of the above
+          commandline forms:
+
+               noccur = ArgQNOccur( "infile" );
+               noccur = ArgQNOccur( "infil" );
+               noccur = ArgQNOccur( "infi" );
+               noccur = ArgQNOccur( "inf" );
+               noccur = ArgQNOccur( "in" );
+               noccur = ArgQNOccur( "i" );
+
+          If this example's "infile" option was flagged to allow the
+          keyword to be implied (the _A_R_G_F_I_M_P_K_E_Y_W_O_R_D flag in the
+          _A_r_g_O_p_t_i_o_n struct passed to _A_r_g_P_a_r_s_e(_3_A_R_G)), then even the
+          following commandline would be considered an occurrence of
+          the "infile" option and would be reported by any of the
+          _A_r_g_Q_N_O_c_c_u_r calls above:
+
+               mycommand myfile.hdf
+
+          For options that have only one occurrance (_A_R_G_F_M_U_L_T_I_P_L_E not
+          set), code typically calls _A_r_g_Q_N_O_c_c_u_r in an _i_f to see if the
+          option was given.  If it was, the body of the _i_f calls
+          _A_r_g_Q_N_V_a_l_u_e(_3_A_R_G) to get the number of values after the
+          keyword and _A_r_g_Q_V_a_l_u_e(_3_A_R_G) to get each of those values:
+
+               if ( ArgQNOccur( "frames" ) )
+               {
+                    nframes = ArgQNValue( "frames", 0 );
+                    for ( i=0; i<nframes; i++ )
+                    {
+                         frame = ArgQValue( "frames", 0, i )->arg_i;
+                         ...
+                    }
+               }
+
+          For options that may occur more than one time (_A_R_G_F_M_U_L_T_I_P_L_E
+          set), code typically calls _A_r_g_Q_N_O_c_c_u_r and then does a _f_o_r-
+          loop to walk through each occurrence of the option.
+
+     SSSSEEEEEEEE AAAALLLLSSSSOOOO
+          ArgIntro(3ARG), ArgParse(3ARG), ArgPError(3ARG),
+          ArgQNOpt(3ARG), ArgQOccurOpt(3ARG), ArgQOpt(3ARG),
+          ArgQNValue(3ARG), ArgQValue(3ARG), errno(2), perror(3)
+
+     AAAAUUUUTTTTHHHHOOOORRRRSSSS
+          Dave Nadeau
+          San Diego Supercomputer Center
+
+     CCCCOOOONNNNTTTTAAAACCCCTTTT
+          SDSC consultants, (619)534-5100, ccccoooonnnnssssuuuulllltttt@@@@yyyy1111....ssssddddsssscccc....eeeedddduuuu
+
+
+
+     Page 2                                          (printed 6/30/95)
+
+
+
+
+
+
+     AAAARRRRGGGGQQQQNNNNOOOOCCCCCCCCUUUURRRR((((3333AAAARRRRGGGG))))      SSSSDDDDSSSSCCCC ((((SSSSeeeepppptttteeeemmmmbbbbeeeerrrr 1111999999991111))))      AAAARRRRGGGGQQQQNNNNOOOOCCCCCCCCUUUURRRR((((3333AAAARRRRGGGG))))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Page 3                                          (printed 6/30/95)
+
+
+
+
+
+

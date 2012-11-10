@@ -1,0 +1,39 @@
+// Collection.idl
+// Microsoft System Journal 5/98
+// Artikel Collections in ATL Projekten
+// Autor Marcus Heege
+// $Header: $
+// Copyright© 1998 Fernerkundungszentrum Potsdam GmbH, All rights reserved
+// Created: 12/26/1998 01:08:38 PM
+//
+// @doc
+// @module Collection.idl | Interfaces zur Implementation von Collections.
+
+interface IStaticCollection;
+interface IDynamicCollection;
+
+[
+	uuid(AE5F4110-9CBF-11d2-9F09-006008447800),
+	odl, dual, nonextensible, oleautomation
+]
+interface IStaticCollection : IDispatch 
+{
+        import "oaidl.idl";
+        import "ocidl.idl";
+	[id(0x60020000), propget, helpstring("Returns the number of objects in the collection.")] HRESULT Count([out, retval] ULONG *c);
+	[id(0xfffffffc), restricted] HRESULT _stdcall _NewEnum([out, retval] IUnknown** ppunk);
+	[id(0x60020002), helpstring("Updates the collection to reflect recent changes.")] HRESULT Refresh();
+	[id(DISPID_VALUE), propget, helpstring("Given an index, returns an item in the collection.")] HRESULT Item([in] VARIANT Index, [out, retval] VARIANT* retval);
+};
+
+[
+	uuid(AE5F4111-9CBF-11d2-9F09-006008447800),
+	odl, dual, nonextensible, oleautomation
+]
+interface IDynamicCollection : IStaticCollection 
+{
+	[id(0x60030000), helpstring("Appends an object to the collection.")] HRESULT Append([in] IDispatch* Object);
+	[id(0x60030002), helpstring("Deletes an object from a collection.")] HRESULT DeleteByIndex([in] VARIANT Index);
+	[id(0x60030003), helpstring("Deletes an object from a collection.")] HRESULT DeleteByObject([in] IDispatch* Object);
+	[id(0x60030004), helpstring("Deletes all objects from the collection.")] HRESULT Clear();
+};

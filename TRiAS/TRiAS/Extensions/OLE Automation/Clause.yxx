@@ -1,0 +1,260 @@
+///////////////////////////////////////////////////////////////////////////////
+// Grammatik f¸r WhereClause als GetObject-Parameter 
+// File: CLAUSE.YXX
+
+///////////////////////////////////////////////////////////////////////////////
+// Dateinamen der Ausgabe (Lexer/Parser) 
+output lexer 	source "clausel.cpp" ;
+output lexer 	header "clausel.h" ;
+output parser 	source "clausey.cpp" ;
+output parser 	header "clausey.h" ;
+
+class clauses ;
+
+///////////////////////////////////////////////////////////////////////////////
+// LexerSection 
+lexer :: name clause_lex ;
+
+global {
+typedef class INTEGER			*integer_ptr;
+typedef class STRING_CONSTANT	*string_ptr;
+typedef class clause_cmd_obj	*clause_cmd_ptr;
+}
+
+construct	STRING_CONSTANT :: string
+
+		constructor body {
+		// Anf¸hrungszeichen ausblenden
+		int iLen = strlen(yy_this_string) -2;
+		
+		// umkopieren und abschneiden
+			memmove (yy_this_string, yy_this_string+1, iLen);
+			yy_this_string[iLen] = '\0';
+		}
+	;
+	
+construct	INTEGER :: default
+
+		member {
+			private:
+				int m_iValue;		// Zahlenwert
+
+			public:
+				int yy_integer (void) { return m_iValue; }
+				void yy_integer (short iValue) { m_iValue = iValue; }
+		}
+
+		constructor initializer	{ m_iValue(0) }
+		constructor body {
+		char cbValue[30];
+		
+			memcpy (cbValue, yy_this_lex_ptr->yy_lex_token(),
+				yy_this_lex_ptr->yy_lex_len());
+			cbValue[yy_this_lex_ptr->yy_lex_len()] = '\0';
+			m_iValue = atoi (cbValue);
+		}
+	;
+
+// this is the class for OBJPROPNAME 
+construct	OBJPROPNAME :: string
+
+		base { public clause_cmd_obj }
+
+		member {
+			public:
+				clause_rslt_ptr clause_execute(EXECUTEMODE rgMode = EXECUTEMODE_Default);
+				void clause_list();
+		}
+
+		constructor body {
+		// evtl. '[' und ']' ausblenden
+			
+			if ('[' == *yy_this_string) {
+			int iLen = strlen(yy_this_string) -2;
+		
+			// umkopieren und abschneiden
+				memmove (yy_this_string, yy_this_string+1, iLen);
+				ASSERT(']' == yy_this_string[iLen]);	// letztes Zeichen muﬂ ']' sein
+				yy_this_string[iLen] = '\0';
+			}
+		}
+
+		dump {}
+	;
+
+charset 		ASCII8;
+
+token			INTEGER, STRING_CONSTANT, AND, OR, NOT, EQUAL, NOT_EQUAL, IS,
+				LIKE, REGEXPR, OBJPROPNAME, NULL ;
+
+discard token	NEWLINE, WHITESPACE;
+
+INTEGER:	"-" ? ("0" .. "9") +;
+	
+STRING_CONSTANT:
+			'"' ("\\\"" | "\\\\" | "\\" @ | @)* '"'
+	|		"'" ("\\'"  | "\\\\" | "\\" @ | @)* "'"
+	;
+
+LEADING_CHAR:	
+			("a" .. "z" | "A" .. "Z" | "_")
+	;
+
+SUBSEQUENT_CHAR:
+			("a" .. "z" | "A" .. "Z" | "0" .. "9" | "_")
+	;
+
+OBJPROPNAME:
+			LEADING_CHAR SUBSEQUENT_CHAR*
+	|		"[" LEADING_CHAR (SUBSEQUENT_CHAR | " ")* "]"
+	;
+
+WHITESPACE:	(" " | "\t")+ ;
+NEWLINE:	"\n" { ++yy_buf_lineno(); } ;
+
+AND:		"and" | "&&" ;
+OR:			"or"  | "||" ;
+NOT:		"not" | "!"  ;
+IS:			"is" ;
+NULL:		"null" ;
+
+LIKE:		"like" ;
+EQUAL:		"=" ;
+REGEXPR:	"~=" ;
+
+NOT_EQUAL:	"<>" ;
+
+///////////////////////////////////////////////////////////////////////////////
+// ParserSection 
+parser :: name clause_psr ;
+
+global {
+typedef class INTEGER			*integer_ptr;
+typedef class STRING_CONSTANT	*string_ptr;
+typedef class clause_cmd_obj	*clause_cmd_ptr;
+}
+
+union {
+	integer_ptr as_integer_ptr;	
+	string_ptr as_string_ptr;
+	clause_cmd_ptr as_clause_ptr;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// hier gehts los
+
+base construct clause_cmd_obj
+	:: member {
+			public:
+				virtual clause_rslt_ptr clause_execute(EXECUTEMODE rgMode = EXECUTEMODE_Default) = 0;
+				virtual void clause_list() = 0;
+		}
+	;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+construct	Term* 			// * means define a class per alternative
+	:: all
+		name expr_term_base
+
+		base { public clause_cmd_obj }
+
+		member {
+			public:
+				clause_rslt_ptr clause_execute(EXECUTEMODE rgMode = EXECUTEMODE_Default);
+				void clause_list();
+		}
+
+		dump {}
+	;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+construct	Compare* 			// * means define a class per alternative
+	:: all
+		name expr_compare_base
+
+		base { public clause_cmd_obj }
+
+		member {
+			public:
+				clause_rslt_ptr clause_execute(EXECUTEMODE rgMode = EXECUTEMODE_Default);
+				void clause_list();
+		}
+
+		dump {}
+	;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+construct	Null* 			// * means define a class per alternative
+	:: all
+		name expr_null
+
+		base { public clause_cmd_obj }
+
+		member {
+			public:
+				clause_rslt_ptr clause_execute (EXECUTEMODE rgMode = EXECUTEMODE_Default);
+				void clause_list();
+		}
+
+		dump {}
+	;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+remove		Clause ;
+
+left		AND OR NOT ;
+
+Clause:		Term
+		{
+			if (NULL != yy_psr_ref(1).as_clause_ptr) {
+				yy_psr_ref(1).as_clause_ptr -> clause_execute();	// hier passierts
+//				delete yy_psr_ref(1).as_clause_ptr;
+			}
+		}
+	;
+
+Term:
+		Pred
+
+	|	NOT Term
+		:: prefix name expr_not
+
+	|	Term AND Term
+		:: infix name expr_and
+
+	|	Term OR Term
+		:: infix name expr_or
+
+	|	'(' Term ')'
+		:: all name expr_nested
+	;
+
+Pred:
+		Compare
+	|	Null
+	;
+
+Compare:
+	|	OBJPROPNAME EQUAL STRING_CONSTANT
+		:: infix name expr_equal
+
+	|	OBJPROPNAME NOT_EQUAL STRING_CONSTANT
+		:: infix name expr_notequal
+
+	|	OBJPROPNAME LIKE STRING_CONSTANT
+		:: infix name expr_like
+
+	|	OBJPROPNAME NOT LIKE STRING_CONSTANT
+		:: all name expr_notlike
+
+	|	OBJPROPNAME REGEXPR STRING_CONSTANT
+		:: infix name expr_regexpr
+	;
+
+Null:
+		OBJPROPNAME IS NOT? NULL
+	;

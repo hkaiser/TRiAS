@@ -1,0 +1,3393 @@
+
+state 0
+	$accept : _GDBDatei $end 
+
+	PUNKT1  shift 28
+	LINIE1  shift 30
+	KREIS1  shift 25
+	BOGEN1  shift 32
+	POLYGON1  shift 31
+	TEXT1  shift 26
+	PUNKTKOORD1  shift 29
+	FLAECHE1  shift 24
+	SYMBOL1  shift 27
+	.  error
+
+	GDBDatei  goto 1
+	PunktElement  goto 10
+	PunktFormElement  goto 4
+	PunktKoordinaten  goto 11
+	LinienElement  goto 12
+	LinienFormElement  goto 5
+	Polygon  goto 13
+	Bogen  goto 14
+	GDBElemente  goto 2
+	GDBElement  goto 3
+	FlaechenFormElement  goto 6
+	Kreis  goto 7
+	TextElement  goto 8
+	SymbolElement  goto 9
+	FlaechenElementKopf  goto 15
+	SymbolElementKopf  goto 18
+	PunktElementKopf  goto 19
+	LinienElementKopf  goto 21
+	KreisKopf  goto 16
+	BogenKopf  goto 23
+	TextElementKopf  goto 17
+	PunktKoordinatenKopf  goto 20
+	PolygonKopf  goto 22
+
+state 1
+	$accept :  GDBDatei_$end 
+
+	$end  accept
+	.  error
+
+
+state 2
+	GDBDatei :  GDBElemente_    (1)
+	GDBElemente :  GDBElemente_GDBElement 
+
+	PUNKT1  shift 28
+	LINIE1  shift 30
+	KREIS1  shift 25
+	BOGEN1  shift 32
+	POLYGON1  shift 31
+	TEXT1  shift 26
+	PUNKTKOORD1  shift 29
+	FLAECHE1  shift 24
+	SYMBOL1  shift 27
+	.  reduce 1
+
+	PunktElement  goto 10
+	PunktFormElement  goto 4
+	PunktKoordinaten  goto 11
+	LinienElement  goto 12
+	LinienFormElement  goto 5
+	Polygon  goto 13
+	Bogen  goto 14
+	GDBElement  goto 33
+	FlaechenFormElement  goto 6
+	Kreis  goto 7
+	TextElement  goto 8
+	SymbolElement  goto 9
+	FlaechenElementKopf  goto 15
+	SymbolElementKopf  goto 18
+	PunktElementKopf  goto 19
+	LinienElementKopf  goto 21
+	KreisKopf  goto 16
+	BogenKopf  goto 23
+	TextElementKopf  goto 17
+	PunktKoordinatenKopf  goto 20
+	PolygonKopf  goto 22
+
+state 3
+	GDBElemente :  GDBElement_    (2)
+
+	.  reduce 2
+
+
+state 4
+	GDBElement :  PunktFormElement_    (4)
+
+	.  reduce 4
+
+
+state 5
+	GDBElement :  LinienFormElement_    (5)
+
+	.  reduce 5
+
+
+state 6
+	GDBElement :  FlaechenFormElement_    (6)
+
+	.  reduce 6
+
+
+state 7
+	GDBElement :  Kreis_    (7)
+
+	.  reduce 7
+
+
+state 8
+	GDBElement :  TextElement_    (8)
+
+	.  reduce 8
+
+
+state 9
+	GDBElement :  SymbolElement_    (9)
+
+	.  reduce 9
+
+
+state 10
+	PunktFormElement :  PunktElement_    (10)
+
+	.  reduce 10
+
+
+state 11
+	PunktFormElement :  PunktKoordinaten_    (11)
+
+	.  reduce 11
+
+
+state 12
+	LinienFormElement :  LinienElement_    (14)
+
+	.  reduce 14
+
+
+state 13
+	LinienFormElement :  Polygon_    (15)
+
+	.  reduce 15
+
+
+state 14
+	LinienFormElement :  Bogen_    (16)
+
+	.  reduce 16
+
+
+state 15
+	FlaechenFormElement :  FlaechenElementKopf_SubLinienFormElemente 
+	FlaechenFormElement :  FlaechenElementKopf_MFlaechenElementParameter SubLinienFormElemente 
+
+	error  shift 55
+	LINIE  shift 61
+	KREIS  shift 64
+	BOGEN  shift 63
+	POLYGON  shift 62
+	T_TEXT  shift 65
+	PNRSATZ  shift 54
+	XSATZ  shift 44
+	YSATZ  shift 45
+	WINKEL  shift 46
+	NAMSATZ  shift 43
+	SASATZ  shift 47
+	FLASATZ  shift 48
+	HSATZ  shift 52
+	CODESATZ  shift 49
+	TXTSATZ  shift 51
+	PKZSATZ  shift 53
+	POINTER  shift 50
+	.  error
+
+	SubLinienElement  goto 38
+	SubLinienFormElement  goto 36
+	SubPolygon  goto 39
+	SubBogen  goto 40
+	SubKreis  goto 41
+	SubTextElement  goto 42
+	SubLinienFormElemente  goto 34
+	MFlaechenElementParameter  goto 35
+	SubLinienElementKopf  goto 56
+	SubKreisKopf  goto 59
+	SubBogenKopf  goto 58
+	SubTextElementKopf  goto 60
+	SubPolygonKopf  goto 57
+	FlaechenElementParameter  goto 37
+
+state 16
+	Kreis :  KreisKopf_MKreisParameter 
+
+	error  shift 73
+	XSATZ  shift 68
+	YSATZ  shift 69
+	RADIUS  shift 70
+	CODESATZ  shift 72
+	TXTSATZ  shift 71
+	.  error
+
+	MKreisParameter  goto 66
+	KreisParameter  goto 67
+
+state 17
+	TextElement :  TextElementKopf_MTextElementParameter 
+
+	error  shift 76
+	XSATZ  shift 77
+	YSATZ  shift 78
+	WINKEL  shift 81
+	SWINKEL  shift 82
+	NSATZ  shift 79
+	HSATZ  shift 80
+	ASATZ  shift 83
+	MSATZ  shift 84
+	CODESATZ  shift 86
+	TXTSATZ  shift 85
+	.  error
+
+	MTextElementParameter  goto 74
+	TextElementParameter  goto 75
+
+state 18
+	SymbolElement :  SymbolElementKopf_MSymbolElementParameter 
+
+	OSSATZ  shift 95
+	XSATZ  shift 90
+	YSATZ  shift 91
+	WINKEL  shift 92
+	NAMSATZ  shift 89
+	CODESATZ  shift 94
+	TXTSATZ  shift 93
+	.  error
+
+	MSymbolElementParameter  goto 87
+	SymbolElementParameter  goto 88
+
+state 19
+	PunktElement :  PunktElementKopf_MPunktElementParameter 
+
+	error  shift 98
+	XSATZ  shift 99
+	YSATZ  shift 100
+	.  error
+
+	MPunktElementParameter  goto 96
+	PunktElementParameter  goto 97
+
+state 20
+	PunktKoordinaten :  PunktKoordinatenKopf_MPunktKoordinatenParameter 
+	PunktKoordinaten :  PunktKoordinatenKopf_    (40)
+
+	error  shift 114
+	PNRSATZ  shift 106
+	OSSATZ  shift 113
+	XSATZ  shift 103
+	YSATZ  shift 104
+	WINKEL  shift 109
+	SWINKEL  shift 112
+	NAMSATZ  shift 110
+	HSATZ  shift 111
+	CODESATZ  shift 108
+	TXTSATZ  shift 107
+	PKZSATZ  shift 105
+	.  reduce 40
+
+	MPunktKoordinatenParameter  goto 101
+	PunktKoordinatenParameter  goto 102
+
+state 21
+	LinienElement :  LinienElementKopf_SubPunktFormElement SubPunktFormElement 
+	LinienElement :  LinienElementKopf_MLinienElementParameter SubPunktFormElement SubPunktFormElement 
+
+	error  shift 127
+	PUNKT  shift 128
+	PUNKTKOORD  shift 129
+	OSSATZ  shift 126
+	SASATZ  shift 125
+	MSATZ  shift 122
+	CODESATZ  shift 123
+	TXTSATZ  shift 124
+	.  error
+
+	SubPunktFormElement  goto 115
+	SubPunktElement  goto 117
+	SubPunktKoordinaten  goto 118
+	SubPunktElementKopf  goto 120
+	MLinienElementParameter  goto 116
+	SubPunktKoordinatenKopf  goto 121
+	LinienElementParameter  goto 119
+
+state 22
+	Polygon :  PolygonKopf_MPolygonParameter SubPunktFormElement SubPunktFormElement 
+	Polygon :  PolygonKopf_MPolygonParameter 
+	Polygon :  PolygonKopf_    (45)
+
+	error  shift 137
+	NSATZ  shift 133
+	NAMSATZ  shift 132
+	FLDSATZ  shift 139
+	SASATZ  shift 136
+	TXTSATZ  shift 134
+	.  reduce 45
+
+	MPolygonParameter  goto 130
+	PolygonParameter  goto 131
+	StuetzPunktFeld  goto 135
+	FeldKopf  goto 138
+
+state 23
+	Bogen :  BogenKopf_MBogenParameter SubPunktFormElement SubPunktFormElement 
+
+	error  shift 148
+	XSATZ  shift 142
+	YSATZ  shift 143
+	RADIUS  shift 144
+	WINKEL  shift 145
+	CODESATZ  shift 147
+	TXTSATZ  shift 146
+	.  error
+
+	MBogenParameter  goto 140
+	BogenParameter  goto 141
+
+state 24
+	FlaechenElementKopf :  FLAECHE1_$$98 MKopfParameter \n 
+	$$98 : _    (98)
+
+	.  reduce 98
+
+	$$98  goto 149
+
+state 25
+	KreisKopf :  KREIS1_$$115 MKopfParameter \n 
+	$$115 : _    (115)
+
+	.  reduce 115
+
+	$$115  goto 150
+
+state 26
+	TextElementKopf :  TEXT1_$$61 MKopfParameter \n 
+	$$61 : _    (61)
+
+	.  reduce 61
+
+	$$61  goto 151
+
+state 27
+	SymbolElementKopf :  SYMBOL1_MKopfParameter \n 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	.  error
+
+	MKopfParameter  goto 152
+	KopfParameter  goto 153
+
+state 28
+	PunktElementKopf :  PUNKT1_$$59 MKopfParameter \n 
+	$$59 : _    (59)
+
+	.  reduce 59
+
+	$$59  goto 159
+
+state 29
+	PunktKoordinatenKopf :  PUNKTKOORD1_$$140 MKopfParameter \n 
+	$$140 : _    (140)
+
+	.  reduce 140
+
+	$$140  goto 160
+
+state 30
+	LinienElementKopf :  LINIE1_$$86 MKopfParameter \n 
+	$$86 : _    (86)
+
+	.  reduce 86
+
+	$$86  goto 161
+
+state 31
+	PolygonKopf :  POLYGON1_$$158 MKopfParameter \n 
+	$$158 : _    (158)
+
+	.  reduce 158
+
+	$$158  goto 162
+
+state 32
+	BogenKopf :  BOGEN1_$$127 MKopfParameter \n 
+	$$127 : _    (127)
+
+	.  reduce 127
+
+	$$127  goto 163
+
+state 33
+	GDBElemente :  GDBElemente GDBElement_    (3)
+
+	.  reduce 3
+
+
+state 34
+	FlaechenFormElement :  FlaechenElementKopf SubLinienFormElemente_    (22)
+	SubLinienFormElemente :  SubLinienFormElemente_SubLinienFormElement 
+
+	LINIE  shift 61
+	KREIS  shift 64
+	BOGEN  shift 63
+	POLYGON  shift 62
+	T_TEXT  shift 65
+	.  reduce 22
+
+	SubLinienElement  goto 38
+	SubLinienFormElement  goto 164
+	SubPolygon  goto 39
+	SubBogen  goto 40
+	SubKreis  goto 41
+	SubTextElement  goto 42
+	SubLinienElementKopf  goto 56
+	SubKreisKopf  goto 59
+	SubBogenKopf  goto 58
+	SubTextElementKopf  goto 60
+	SubPolygonKopf  goto 57
+
+state 35
+	FlaechenFormElement :  FlaechenElementKopf MFlaechenElementParameter_SubLinienFormElemente 
+	MFlaechenElementParameter :  MFlaechenElementParameter_FlaechenElementParameter 
+
+	error  shift 55
+	LINIE  shift 61
+	KREIS  shift 64
+	BOGEN  shift 63
+	POLYGON  shift 62
+	T_TEXT  shift 65
+	PNRSATZ  shift 54
+	XSATZ  shift 44
+	YSATZ  shift 45
+	WINKEL  shift 46
+	NAMSATZ  shift 43
+	SASATZ  shift 47
+	FLASATZ  shift 48
+	HSATZ  shift 52
+	CODESATZ  shift 49
+	TXTSATZ  shift 51
+	PKZSATZ  shift 53
+	POINTER  shift 50
+	.  error
+
+	SubLinienElement  goto 38
+	SubLinienFormElement  goto 36
+	SubPolygon  goto 39
+	SubBogen  goto 40
+	SubKreis  goto 41
+	SubTextElement  goto 42
+	SubLinienFormElemente  goto 165
+	SubLinienElementKopf  goto 56
+	SubKreisKopf  goto 59
+	SubBogenKopf  goto 58
+	SubTextElementKopf  goto 60
+	SubPolygonKopf  goto 57
+	FlaechenElementParameter  goto 166
+
+state 36
+	SubLinienFormElemente :  SubLinienFormElement_    (24)
+
+	.  reduce 24
+
+
+state 37
+	MFlaechenElementParameter :  FlaechenElementParameter_    (100)
+
+	.  reduce 100
+
+
+state 38
+	SubLinienFormElement :  SubLinienElement_    (17)
+
+	.  reduce 17
+
+
+state 39
+	SubLinienFormElement :  SubPolygon_    (18)
+
+	.  reduce 18
+
+
+state 40
+	SubLinienFormElement :  SubBogen_    (19)
+
+	.  reduce 19
+
+
+state 41
+	SubLinienFormElement :  SubKreis_    (20)
+
+	.  reduce 20
+
+
+state 42
+	SubLinienFormElement :  SubTextElement_    (21)
+
+	.  reduce 21
+
+
+state 43
+	FlaechenElementParameter :  NAMSATZ_\n 
+
+	\n  shift 167
+	.  error
+
+
+state 44
+	FlaechenElementParameter :  XSATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 168
+
+state 45
+	FlaechenElementParameter :  YSATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 172
+
+state 46
+	FlaechenElementParameter :  WINKEL_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 173
+
+state 47
+	FlaechenElementParameter :  SASATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 174
+
+state 48
+	FlaechenElementParameter :  FLASATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 175
+
+state 49
+	FlaechenElementParameter :  CODESATZ_\n 
+
+	\n  shift 176
+	.  error
+
+
+state 50
+	FlaechenElementParameter :  POINTER_\n 
+
+	\n  shift 177
+	.  error
+
+
+state 51
+	FlaechenElementParameter :  TXTSATZ_\n 
+
+	\n  shift 178
+	.  error
+
+
+state 52
+	FlaechenElementParameter :  HSATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 179
+
+state 53
+	FlaechenElementParameter :  PKZSATZ_IDENT \n 
+
+	IDENT  shift 180
+	.  error
+
+
+state 54
+	FlaechenElementParameter :  PNRSATZ_INTEGER \n 
+
+	INTEGER  shift 181
+	.  error
+
+
+state 55
+	FlaechenElementParameter :  error_\n 
+
+	\n  shift 182
+	.  error
+
+
+state 56
+	SubLinienElement :  SubLinienElementKopf_SubPunktFormElement SubPunktFormElement 
+	SubLinienElement :  SubLinienElementKopf_MLinienElementParameter SubPunktFormElement SubPunktFormElement 
+
+	error  shift 127
+	PUNKT  shift 128
+	PUNKTKOORD  shift 129
+	OSSATZ  shift 126
+	SASATZ  shift 125
+	MSATZ  shift 122
+	CODESATZ  shift 123
+	TXTSATZ  shift 124
+	.  error
+
+	SubPunktFormElement  goto 183
+	SubPunktElement  goto 117
+	SubPunktKoordinaten  goto 118
+	SubPunktElementKopf  goto 120
+	MLinienElementParameter  goto 184
+	SubPunktKoordinatenKopf  goto 121
+	LinienElementParameter  goto 119
+
+state 57
+	SubPolygon :  SubPolygonKopf_MPolygonParameter SubPunktFormElement SubPunktFormElement 
+	SubPolygon :  SubPolygonKopf_MPolygonParameter 
+	SubPolygon :  SubPolygonKopf_    (48)
+
+	error  shift 137
+	NSATZ  shift 133
+	NAMSATZ  shift 132
+	FLDSATZ  shift 139
+	SASATZ  shift 136
+	TXTSATZ  shift 134
+	.  reduce 48
+
+	MPolygonParameter  goto 185
+	PolygonParameter  goto 131
+	StuetzPunktFeld  goto 135
+	FeldKopf  goto 138
+
+state 58
+	SubBogen :  SubBogenKopf_MBogenParameter SubPunktFormElement SubPunktFormElement 
+
+	error  shift 148
+	XSATZ  shift 142
+	YSATZ  shift 143
+	RADIUS  shift 144
+	WINKEL  shift 145
+	CODESATZ  shift 147
+	TXTSATZ  shift 146
+	.  error
+
+	MBogenParameter  goto 186
+	BogenParameter  goto 141
+
+state 59
+	SubKreis :  SubKreisKopf_MKreisParameter 
+
+	error  shift 73
+	XSATZ  shift 68
+	YSATZ  shift 69
+	RADIUS  shift 70
+	CODESATZ  shift 72
+	TXTSATZ  shift 71
+	.  error
+
+	MKreisParameter  goto 187
+	KreisParameter  goto 67
+
+state 60
+	SubTextElement :  SubTextElementKopf_MTextElementParameter 
+
+	error  shift 76
+	XSATZ  shift 77
+	YSATZ  shift 78
+	WINKEL  shift 81
+	SWINKEL  shift 82
+	NSATZ  shift 79
+	HSATZ  shift 80
+	ASATZ  shift 83
+	MSATZ  shift 84
+	CODESATZ  shift 86
+	TXTSATZ  shift 85
+	.  error
+
+	MTextElementParameter  goto 188
+	TextElementParameter  goto 75
+
+state 61
+	SubLinienElementKopf :  LINIE_$$88 MKopfParameter \n 
+	$$88 : _    (88)
+
+	.  reduce 88
+
+	$$88  goto 189
+
+state 62
+	SubPolygonKopf :  POLYGON_$$160 MKopfParameter \n 
+	$$160 : _    (160)
+
+	.  reduce 160
+
+	$$160  goto 190
+
+state 63
+	SubBogenKopf :  BOGEN_$$129 MKopfParameter \n 
+	$$129 : _    (129)
+
+	.  reduce 129
+
+	$$129  goto 191
+
+state 64
+	SubKreisKopf :  KREIS_$$117 MKopfParameter \n 
+	$$117 : _    (117)
+
+	.  reduce 117
+
+	$$117  goto 192
+
+state 65
+	SubTextElementKopf :  T_TEXT_$$63 MKopfParameter \n 
+	$$63 : _    (63)
+
+	.  reduce 63
+
+	$$63  goto 193
+
+state 66
+	Kreis :  KreisKopf MKreisParameter_    (33)
+	MKreisParameter :  MKreisParameter_KreisParameter 
+
+	error  shift 73
+	XSATZ  shift 68
+	YSATZ  shift 69
+	RADIUS  shift 70
+	CODESATZ  shift 72
+	TXTSATZ  shift 71
+	.  reduce 33
+
+	KreisParameter  goto 194
+
+state 67
+	MKreisParameter :  KreisParameter_    (119)
+
+	.  reduce 119
+
+
+state 68
+	KreisParameter :  XSATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 195
+
+state 69
+	KreisParameter :  YSATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 196
+
+state 70
+	KreisParameter :  RADIUS_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 197
+
+state 71
+	KreisParameter :  TXTSATZ_\n 
+
+	\n  shift 198
+	.  error
+
+
+state 72
+	KreisParameter :  CODESATZ_\n 
+
+	\n  shift 199
+	.  error
+
+
+state 73
+	KreisParameter :  error_\n 
+
+	\n  shift 200
+	.  error
+
+
+state 74
+	TextElement :  TextElementKopf MTextElementParameter_    (37)
+	MTextElementParameter :  MTextElementParameter_TextElementParameter 
+
+	error  shift 202
+	XSATZ  shift 77
+	YSATZ  shift 78
+	WINKEL  shift 81
+	SWINKEL  shift 82
+	NSATZ  shift 79
+	HSATZ  shift 80
+	ASATZ  shift 83
+	MSATZ  shift 84
+	CODESATZ  shift 86
+	TXTSATZ  shift 85
+	.  reduce 37
+
+	TextElementParameter  goto 201
+
+state 75
+	MTextElementParameter :  TextElementParameter_    (65)
+
+	.  reduce 65
+
+
+state 76
+	MTextElementParameter :  error_    (67)
+	TextElementParameter :  error_\n 
+
+	\n  shift 203
+	.  reduce 67
+
+
+state 77
+	TextElementParameter :  XSATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 204
+
+state 78
+	TextElementParameter :  YSATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 205
+
+state 79
+	TextElementParameter :  NSATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 206
+
+state 80
+	TextElementParameter :  HSATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 207
+
+state 81
+	TextElementParameter :  WINKEL_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 208
+
+state 82
+	TextElementParameter :  SWINKEL_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 209
+
+state 83
+	TextElementParameter :  ASATZ_IDENT \n 
+
+	IDENT  shift 210
+	.  error
+
+
+state 84
+	TextElementParameter :  MSATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 211
+
+state 85
+	TextElementParameter :  TXTSATZ_\n 
+
+	\n  shift 212
+	.  error
+
+
+state 86
+	TextElementParameter :  CODESATZ_\n 
+
+	\n  shift 213
+	.  error
+
+
+state 87
+	SymbolElement :  SymbolElementKopf MSymbolElementParameter_    (26)
+	MSymbolElementParameter :  MSymbolElementParameter_SymbolElementParameter 
+
+	OSSATZ  shift 95
+	XSATZ  shift 90
+	YSATZ  shift 91
+	WINKEL  shift 92
+	NAMSATZ  shift 89
+	CODESATZ  shift 94
+	TXTSATZ  shift 93
+	.  reduce 26
+
+	SymbolElementParameter  goto 214
+
+state 88
+	MSymbolElementParameter :  SymbolElementParameter_    (50)
+
+	.  reduce 50
+
+
+state 89
+	SymbolElementParameter :  NAMSATZ_\n 
+
+	\n  shift 215
+	.  error
+
+
+state 90
+	SymbolElementParameter :  XSATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 216
+
+state 91
+	SymbolElementParameter :  YSATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 217
+
+state 92
+	SymbolElementParameter :  WINKEL_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 218
+
+state 93
+	SymbolElementParameter :  TXTSATZ_\n 
+
+	\n  shift 219
+	.  error
+
+
+state 94
+	SymbolElementParameter :  CODESATZ_\n 
+
+	\n  shift 220
+	.  error
+
+
+state 95
+	SymbolElementParameter :  OSSATZ_INTEGER \n 
+
+	INTEGER  shift 221
+	.  error
+
+
+state 96
+	PunktElement :  PunktElementKopf MPunktElementParameter_    (27)
+	MPunktElementParameter :  MPunktElementParameter_PunktElementParameter 
+
+	XSATZ  shift 99
+	YSATZ  shift 100
+	.  reduce 27
+
+	PunktElementParameter  goto 222
+
+state 97
+	MPunktElementParameter :  PunktElementParameter_    (81)
+
+	.  reduce 81
+
+
+state 98
+	MPunktElementParameter :  error_    (83)
+
+	.  reduce 83
+
+
+state 99
+	PunktElementParameter :  XSATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 223
+
+state 100
+	PunktElementParameter :  YSATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 224
+
+state 101
+	PunktKoordinaten :  PunktKoordinatenKopf MPunktKoordinatenParameter_    (39)
+	MPunktKoordinatenParameter :  MPunktKoordinatenParameter_PunktKoordinatenParameter 
+
+	error  shift 114
+	PNRSATZ  shift 106
+	OSSATZ  shift 113
+	XSATZ  shift 103
+	YSATZ  shift 104
+	WINKEL  shift 109
+	SWINKEL  shift 112
+	NAMSATZ  shift 110
+	HSATZ  shift 111
+	CODESATZ  shift 108
+	TXTSATZ  shift 107
+	PKZSATZ  shift 105
+	.  reduce 39
+
+	PunktKoordinatenParameter  goto 225
+
+state 102
+	MPunktKoordinatenParameter :  PunktKoordinatenParameter_    (144)
+
+	.  reduce 144
+
+
+state 103
+	PunktKoordinatenParameter :  XSATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 226
+
+state 104
+	PunktKoordinatenParameter :  YSATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 227
+
+state 105
+	PunktKoordinatenParameter :  PKZSATZ_IDENT \n 
+
+	IDENT  shift 228
+	.  error
+
+
+state 106
+	PunktKoordinatenParameter :  PNRSATZ_INTEGER \n 
+
+	INTEGER  shift 229
+	.  error
+
+
+state 107
+	PunktKoordinatenParameter :  TXTSATZ_\n 
+
+	\n  shift 230
+	.  error
+
+
+state 108
+	PunktKoordinatenParameter :  CODESATZ_\n 
+
+	\n  shift 231
+	.  error
+
+
+state 109
+	PunktKoordinatenParameter :  WINKEL_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 232
+
+state 110
+	PunktKoordinatenParameter :  NAMSATZ_\n 
+
+	\n  shift 233
+	.  error
+
+
+state 111
+	PunktKoordinatenParameter :  HSATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 234
+
+state 112
+	PunktKoordinatenParameter :  SWINKEL_INTEGER \n 
+
+	INTEGER  shift 235
+	.  error
+
+
+state 113
+	PunktKoordinatenParameter :  OSSATZ_INTEGER \n 
+
+	INTEGER  shift 236
+	.  error
+
+
+state 114
+	PunktKoordinatenParameter :  error_\n 
+
+	\n  shift 237
+	.  error
+
+
+state 115
+	LinienElement :  LinienElementKopf SubPunktFormElement_SubPunktFormElement 
+
+	PUNKT  shift 128
+	PUNKTKOORD  shift 129
+	.  error
+
+	SubPunktFormElement  goto 238
+	SubPunktElement  goto 117
+	SubPunktKoordinaten  goto 118
+	SubPunktElementKopf  goto 120
+	SubPunktKoordinatenKopf  goto 121
+
+state 116
+	LinienElement :  LinienElementKopf MLinienElementParameter_SubPunktFormElement SubPunktFormElement 
+	MLinienElementParameter :  MLinienElementParameter_LinienElementParameter 
+
+	error  shift 127
+	PUNKT  shift 128
+	PUNKTKOORD  shift 129
+	OSSATZ  shift 126
+	SASATZ  shift 125
+	MSATZ  shift 122
+	CODESATZ  shift 123
+	TXTSATZ  shift 124
+	.  error
+
+	SubPunktFormElement  goto 239
+	SubPunktElement  goto 117
+	SubPunktKoordinaten  goto 118
+	SubPunktElementKopf  goto 120
+	SubPunktKoordinatenKopf  goto 121
+	LinienElementParameter  goto 240
+
+state 117
+	SubPunktFormElement :  SubPunktElement_    (12)
+
+	.  reduce 12
+
+
+state 118
+	SubPunktFormElement :  SubPunktKoordinaten_    (13)
+
+	.  reduce 13
+
+
+state 119
+	MLinienElementParameter :  LinienElementParameter_    (90)
+
+	.  reduce 90
+
+
+state 120
+	SubPunktElement :  SubPunktElementKopf_MPunktElementParameter 
+
+	error  shift 98
+	XSATZ  shift 99
+	YSATZ  shift 100
+	.  error
+
+	MPunktElementParameter  goto 241
+	PunktElementParameter  goto 97
+
+state 121
+	SubPunktKoordinaten :  SubPunktKoordinatenKopf_MPunktKoordinatenParameter 
+	SubPunktKoordinaten :  SubPunktKoordinatenKopf_    (42)
+
+	error  shift 114
+	PNRSATZ  shift 106
+	OSSATZ  shift 113
+	XSATZ  shift 103
+	YSATZ  shift 104
+	WINKEL  shift 109
+	SWINKEL  shift 112
+	NAMSATZ  shift 110
+	HSATZ  shift 111
+	CODESATZ  shift 108
+	TXTSATZ  shift 107
+	PKZSATZ  shift 105
+	.  reduce 42
+
+	MPunktKoordinatenParameter  goto 242
+	PunktKoordinatenParameter  goto 102
+
+state 122
+	LinienElementParameter :  MSATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 243
+
+state 123
+	LinienElementParameter :  CODESATZ_\n 
+
+	\n  shift 244
+	.  error
+
+
+state 124
+	LinienElementParameter :  TXTSATZ_\n 
+
+	\n  shift 245
+	.  error
+
+
+state 125
+	LinienElementParameter :  SASATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 246
+
+state 126
+	LinienElementParameter :  OSSATZ_INTEGER \n 
+
+	INTEGER  shift 247
+	.  error
+
+
+state 127
+	LinienElementParameter :  error_\n 
+
+	\n  shift 248
+	.  error
+
+
+state 128
+	SubPunktElementKopf :  PUNKT_$$79 MKopfParameter \n 
+	$$79 : _    (79)
+
+	.  reduce 79
+
+	$$79  goto 249
+
+state 129
+	SubPunktKoordinatenKopf :  PUNKTKOORD_$$142 MKopfParameter \n 
+	$$142 : _    (142)
+
+	.  reduce 142
+
+	$$142  goto 250
+
+state 130
+	Polygon :  PolygonKopf MPolygonParameter_SubPunktFormElement SubPunktFormElement 
+	Polygon :  PolygonKopf MPolygonParameter_    (44)
+	MPolygonParameter :  MPolygonParameter_PolygonParameter 
+
+	error  shift 137
+	PUNKT  shift 128
+	PUNKTKOORD  shift 129
+	NSATZ  shift 133
+	NAMSATZ  shift 132
+	FLDSATZ  shift 139
+	SASATZ  shift 136
+	TXTSATZ  shift 134
+	.  reduce 44
+
+	SubPunktFormElement  goto 251
+	SubPunktElement  goto 117
+	SubPunktKoordinaten  goto 118
+	SubPunktElementKopf  goto 120
+	SubPunktKoordinatenKopf  goto 121
+	PolygonParameter  goto 252
+	StuetzPunktFeld  goto 135
+	FeldKopf  goto 138
+
+state 131
+	MPolygonParameter :  PolygonParameter_    (168)
+
+	.  reduce 168
+
+
+state 132
+	PolygonParameter :  NAMSATZ_\n 
+
+	\n  shift 253
+	.  error
+
+
+state 133
+	PolygonParameter :  NSATZ_INTEGER \n 
+
+	INTEGER  shift 254
+	.  error
+
+
+state 134
+	PolygonParameter :  TXTSATZ_\n 
+
+	\n  shift 255
+	.  error
+
+
+state 135
+	PolygonParameter :  StuetzPunktFeld_    (165)
+
+	.  reduce 165
+
+
+state 136
+	PolygonParameter :  SASATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 256
+
+state 137
+	PolygonParameter :  error_\n 
+
+	\n  shift 257
+	.  error
+
+
+state 138
+	StuetzPunktFeld :  FeldKopf_$$170 FeldWerte 
+	StuetzPunktFeld :  FeldKopf_    (172)
+	$$170 : _    (170)
+
+	ASCIIREAL  reduce 170
+	INTEGER  reduce 170
+	SICADREAL  reduce 170
+	.  reduce 172
+
+	$$170  goto 258
+
+state 139
+	StuetzPunktFeld :  FLDSATZ_\n 
+	FeldKopf :  FLDSATZ_KoordinatenWert \n $$174 KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	\n  shift 259
+	.  error
+
+	KoordinatenWert  goto 260
+
+state 140
+	Bogen :  BogenKopf MBogenParameter_SubPunktFormElement SubPunktFormElement 
+	MBogenParameter :  MBogenParameter_BogenParameter 
+
+	error  shift 148
+	PUNKT  shift 128
+	PUNKTKOORD  shift 129
+	XSATZ  shift 142
+	YSATZ  shift 143
+	RADIUS  shift 144
+	WINKEL  shift 145
+	CODESATZ  shift 147
+	TXTSATZ  shift 146
+	.  error
+
+	SubPunktFormElement  goto 261
+	SubPunktElement  goto 117
+	SubPunktKoordinaten  goto 118
+	SubPunktElementKopf  goto 120
+	SubPunktKoordinatenKopf  goto 121
+	BogenParameter  goto 262
+
+state 141
+	MBogenParameter :  BogenParameter_    (131)
+
+	.  reduce 131
+
+
+state 142
+	BogenParameter :  XSATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 263
+
+state 143
+	BogenParameter :  YSATZ_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 264
+
+state 144
+	BogenParameter :  RADIUS_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 265
+
+state 145
+	BogenParameter :  WINKEL_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 266
+
+state 146
+	BogenParameter :  TXTSATZ_\n 
+
+	\n  shift 267
+	.  error
+
+
+state 147
+	BogenParameter :  CODESATZ_\n 
+
+	\n  shift 268
+	.  error
+
+
+state 148
+	BogenParameter :  error_\n 
+
+	\n  shift 269
+	.  error
+
+
+state 149
+	FlaechenElementKopf :  FLAECHE1 $$98_MKopfParameter \n 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	.  error
+
+	MKopfParameter  goto 270
+	KopfParameter  goto 153
+
+state 150
+	KreisKopf :  KREIS1 $$115_MKopfParameter \n 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	.  error
+
+	MKopfParameter  goto 271
+	KopfParameter  goto 153
+
+state 151
+	TextElementKopf :  TEXT1 $$61_MKopfParameter \n 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	.  error
+
+	MKopfParameter  goto 272
+	KopfParameter  goto 153
+
+state 152
+	SymbolElementKopf :  SYMBOL1 MKopfParameter_\n 
+	MKopfParameter :  MKopfParameter_KopfParameter 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	\n  shift 273
+	.  error
+
+	KopfParameter  goto 274
+
+state 153
+	MKopfParameter :  KopfParameter_    (180)
+
+	.  reduce 180
+
+
+state 154
+	KopfParameter :  ENUM_= INTEGER 
+	KopfParameter :  ENUM_= INTEGER / INTEGER 
+
+	=  shift 275
+	.  error
+
+
+state 155
+	KopfParameter :  ENUMI_= INTEGER 
+
+	=  shift 276
+	.  error
+
+
+state 156
+	KopfParameter :  EB_= INTEGER 
+
+	=  shift 277
+	.  error
+
+
+state 157
+	KopfParameter :  SM_= INTEGER 
+
+	=  shift 278
+	.  error
+
+
+state 158
+	KopfParameter :  ST_= INTEGER 
+
+	=  shift 279
+	.  error
+
+
+state 159
+	PunktElementKopf :  PUNKT1 $$59_MKopfParameter \n 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	.  error
+
+	MKopfParameter  goto 280
+	KopfParameter  goto 153
+
+state 160
+	PunktKoordinatenKopf :  PUNKTKOORD1 $$140_MKopfParameter \n 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	.  error
+
+	MKopfParameter  goto 281
+	KopfParameter  goto 153
+
+state 161
+	LinienElementKopf :  LINIE1 $$86_MKopfParameter \n 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	.  error
+
+	MKopfParameter  goto 282
+	KopfParameter  goto 153
+
+state 162
+	PolygonKopf :  POLYGON1 $$158_MKopfParameter \n 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	.  error
+
+	MKopfParameter  goto 283
+	KopfParameter  goto 153
+
+state 163
+	BogenKopf :  BOGEN1 $$127_MKopfParameter \n 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	.  error
+
+	MKopfParameter  goto 284
+	KopfParameter  goto 153
+
+state 164
+	SubLinienFormElemente :  SubLinienFormElemente SubLinienFormElement_    (25)
+
+	.  reduce 25
+
+
+state 165
+	FlaechenFormElement :  FlaechenElementKopf MFlaechenElementParameter SubLinienFormElemente_    (23)
+	SubLinienFormElemente :  SubLinienFormElemente_SubLinienFormElement 
+
+	LINIE  shift 61
+	KREIS  shift 64
+	BOGEN  shift 63
+	POLYGON  shift 62
+	T_TEXT  shift 65
+	.  reduce 23
+
+	SubLinienElement  goto 38
+	SubLinienFormElement  goto 164
+	SubPolygon  goto 39
+	SubBogen  goto 40
+	SubKreis  goto 41
+	SubTextElement  goto 42
+	SubLinienElementKopf  goto 56
+	SubKreisKopf  goto 59
+	SubBogenKopf  goto 58
+	SubTextElementKopf  goto 60
+	SubPolygonKopf  goto 57
+
+state 166
+	MFlaechenElementParameter :  MFlaechenElementParameter FlaechenElementParameter_    (101)
+
+	.  reduce 101
+
+
+state 167
+	FlaechenElementParameter :  NAMSATZ \n_    (102)
+
+	.  reduce 102
+
+
+state 168
+	FlaechenElementParameter :  XSATZ KoordinatenWert_\n 
+
+	\n  shift 285
+	.  error
+
+
+state 169
+	KoordinatenWert :  SICADREAL_ASCIIREAL 
+	KoordinatenWert :  SICADREAL_    (184)
+
+	ASCIIREAL  shift 286
+	.  reduce 184
+
+
+state 170
+	KoordinatenWert :  ASCIIREAL_    (183)
+
+	.  reduce 183
+
+
+state 171
+	KoordinatenWert :  INTEGER_    (185)
+
+	.  reduce 185
+
+
+state 172
+	FlaechenElementParameter :  YSATZ KoordinatenWert_\n 
+
+	\n  shift 287
+	.  error
+
+
+state 173
+	FlaechenElementParameter :  WINKEL KoordinatenWert_\n 
+
+	\n  shift 288
+	.  error
+
+
+state 174
+	FlaechenElementParameter :  SASATZ KoordinatenWert_\n 
+
+	\n  shift 289
+	.  error
+
+
+state 175
+	FlaechenElementParameter :  FLASATZ KoordinatenWert_\n 
+
+	\n  shift 290
+	.  error
+
+
+state 176
+	FlaechenElementParameter :  CODESATZ \n_    (108)
+
+	.  reduce 108
+
+
+state 177
+	FlaechenElementParameter :  POINTER \n_    (109)
+
+	.  reduce 109
+
+
+state 178
+	FlaechenElementParameter :  TXTSATZ \n_    (110)
+
+	.  reduce 110
+
+
+state 179
+	FlaechenElementParameter :  HSATZ KoordinatenWert_\n 
+
+	\n  shift 291
+	.  error
+
+
+state 180
+	FlaechenElementParameter :  PKZSATZ IDENT_\n 
+
+	\n  shift 292
+	.  error
+
+
+state 181
+	FlaechenElementParameter :  PNRSATZ INTEGER_\n 
+
+	\n  shift 293
+	.  error
+
+
+state 182
+	FlaechenElementParameter :  error \n_    (114)
+
+	.  reduce 114
+
+
+state 183
+	SubLinienElement :  SubLinienElementKopf SubPunktFormElement_SubPunktFormElement 
+
+	PUNKT  shift 128
+	PUNKTKOORD  shift 129
+	.  error
+
+	SubPunktFormElement  goto 294
+	SubPunktElement  goto 117
+	SubPunktKoordinaten  goto 118
+	SubPunktElementKopf  goto 120
+	SubPunktKoordinatenKopf  goto 121
+
+state 184
+	SubLinienElement :  SubLinienElementKopf MLinienElementParameter_SubPunktFormElement SubPunktFormElement 
+	MLinienElementParameter :  MLinienElementParameter_LinienElementParameter 
+
+	error  shift 127
+	PUNKT  shift 128
+	PUNKTKOORD  shift 129
+	OSSATZ  shift 126
+	SASATZ  shift 125
+	MSATZ  shift 122
+	CODESATZ  shift 123
+	TXTSATZ  shift 124
+	.  error
+
+	SubPunktFormElement  goto 295
+	SubPunktElement  goto 117
+	SubPunktKoordinaten  goto 118
+	SubPunktElementKopf  goto 120
+	SubPunktKoordinatenKopf  goto 121
+	LinienElementParameter  goto 240
+
+state 185
+	SubPolygon :  SubPolygonKopf MPolygonParameter_SubPunktFormElement SubPunktFormElement 
+	SubPolygon :  SubPolygonKopf MPolygonParameter_    (47)
+	MPolygonParameter :  MPolygonParameter_PolygonParameter 
+
+	error  shift 137
+	PUNKT  shift 128
+	PUNKTKOORD  shift 129
+	NSATZ  shift 133
+	NAMSATZ  shift 132
+	FLDSATZ  shift 139
+	SASATZ  shift 136
+	TXTSATZ  shift 134
+	.  reduce 47
+
+	SubPunktFormElement  goto 296
+	SubPunktElement  goto 117
+	SubPunktKoordinaten  goto 118
+	SubPunktElementKopf  goto 120
+	SubPunktKoordinatenKopf  goto 121
+	PolygonParameter  goto 252
+	StuetzPunktFeld  goto 135
+	FeldKopf  goto 138
+
+state 186
+	SubBogen :  SubBogenKopf MBogenParameter_SubPunktFormElement SubPunktFormElement 
+	MBogenParameter :  MBogenParameter_BogenParameter 
+
+	error  shift 148
+	PUNKT  shift 128
+	PUNKTKOORD  shift 129
+	XSATZ  shift 142
+	YSATZ  shift 143
+	RADIUS  shift 144
+	WINKEL  shift 145
+	CODESATZ  shift 147
+	TXTSATZ  shift 146
+	.  error
+
+	SubPunktFormElement  goto 297
+	SubPunktElement  goto 117
+	SubPunktKoordinaten  goto 118
+	SubPunktElementKopf  goto 120
+	SubPunktKoordinatenKopf  goto 121
+	BogenParameter  goto 262
+
+state 187
+	SubKreis :  SubKreisKopf MKreisParameter_    (34)
+	MKreisParameter :  MKreisParameter_KreisParameter 
+
+	error  shift 73
+	XSATZ  shift 68
+	YSATZ  shift 69
+	RADIUS  shift 70
+	CODESATZ  shift 72
+	TXTSATZ  shift 71
+	.  reduce 34
+
+	KreisParameter  goto 194
+
+state 188
+	SubTextElement :  SubTextElementKopf MTextElementParameter_    (38)
+	MTextElementParameter :  MTextElementParameter_TextElementParameter 
+
+	error  shift 202
+	XSATZ  shift 77
+	YSATZ  shift 78
+	WINKEL  shift 81
+	SWINKEL  shift 82
+	NSATZ  shift 79
+	HSATZ  shift 80
+	ASATZ  shift 83
+	MSATZ  shift 84
+	CODESATZ  shift 86
+	TXTSATZ  shift 85
+	.  reduce 38
+
+	TextElementParameter  goto 201
+
+state 189
+	SubLinienElementKopf :  LINIE $$88_MKopfParameter \n 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	.  error
+
+	MKopfParameter  goto 298
+	KopfParameter  goto 153
+
+state 190
+	SubPolygonKopf :  POLYGON $$160_MKopfParameter \n 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	.  error
+
+	MKopfParameter  goto 299
+	KopfParameter  goto 153
+
+state 191
+	SubBogenKopf :  BOGEN $$129_MKopfParameter \n 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	.  error
+
+	MKopfParameter  goto 300
+	KopfParameter  goto 153
+
+state 192
+	SubKreisKopf :  KREIS $$117_MKopfParameter \n 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	.  error
+
+	MKopfParameter  goto 301
+	KopfParameter  goto 153
+
+state 193
+	SubTextElementKopf :  T_TEXT $$63_MKopfParameter \n 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	.  error
+
+	MKopfParameter  goto 302
+	KopfParameter  goto 153
+
+state 194
+	MKreisParameter :  MKreisParameter KreisParameter_    (120)
+
+	.  reduce 120
+
+
+state 195
+	KreisParameter :  XSATZ KoordinatenWert_\n 
+
+	\n  shift 303
+	.  error
+
+
+state 196
+	KreisParameter :  YSATZ KoordinatenWert_\n 
+
+	\n  shift 304
+	.  error
+
+
+state 197
+	KreisParameter :  RADIUS KoordinatenWert_\n 
+
+	\n  shift 305
+	.  error
+
+
+state 198
+	KreisParameter :  TXTSATZ \n_    (124)
+
+	.  reduce 124
+
+
+state 199
+	KreisParameter :  CODESATZ \n_    (125)
+
+	.  reduce 125
+
+
+state 200
+	KreisParameter :  error \n_    (126)
+
+	.  reduce 126
+
+
+state 201
+	MTextElementParameter :  MTextElementParameter TextElementParameter_    (66)
+
+	.  reduce 66
+
+
+state 202
+	TextElementParameter :  error_\n 
+
+	\n  shift 203
+	.  error
+
+
+state 203
+	TextElementParameter :  error \n_    (78)
+
+	.  reduce 78
+
+
+state 204
+	TextElementParameter :  XSATZ KoordinatenWert_\n 
+
+	\n  shift 306
+	.  error
+
+
+state 205
+	TextElementParameter :  YSATZ KoordinatenWert_\n 
+
+	\n  shift 307
+	.  error
+
+
+state 206
+	TextElementParameter :  NSATZ KoordinatenWert_\n 
+
+	\n  shift 308
+	.  error
+
+
+state 207
+	TextElementParameter :  HSATZ KoordinatenWert_\n 
+
+	\n  shift 309
+	.  error
+
+
+state 208
+	TextElementParameter :  WINKEL KoordinatenWert_\n 
+
+	\n  shift 310
+	.  error
+
+
+state 209
+	TextElementParameter :  SWINKEL KoordinatenWert_\n 
+
+	\n  shift 311
+	.  error
+
+
+state 210
+	TextElementParameter :  ASATZ IDENT_\n 
+
+	\n  shift 312
+	.  error
+
+
+state 211
+	TextElementParameter :  MSATZ KoordinatenWert_\n 
+
+	\n  shift 313
+	.  error
+
+
+state 212
+	TextElementParameter :  TXTSATZ \n_    (76)
+
+	.  reduce 76
+
+
+state 213
+	TextElementParameter :  CODESATZ \n_    (77)
+
+	.  reduce 77
+
+
+state 214
+	MSymbolElementParameter :  MSymbolElementParameter SymbolElementParameter_    (51)
+
+	.  reduce 51
+
+
+state 215
+	SymbolElementParameter :  NAMSATZ \n_    (52)
+
+	.  reduce 52
+
+
+state 216
+	SymbolElementParameter :  XSATZ KoordinatenWert_\n 
+
+	\n  shift 314
+	.  error
+
+
+state 217
+	SymbolElementParameter :  YSATZ KoordinatenWert_\n 
+
+	\n  shift 315
+	.  error
+
+
+state 218
+	SymbolElementParameter :  WINKEL KoordinatenWert_\n 
+
+	\n  shift 316
+	.  error
+
+
+state 219
+	SymbolElementParameter :  TXTSATZ \n_    (56)
+
+	.  reduce 56
+
+
+state 220
+	SymbolElementParameter :  CODESATZ \n_    (57)
+
+	.  reduce 57
+
+
+state 221
+	SymbolElementParameter :  OSSATZ INTEGER_\n 
+
+	\n  shift 317
+	.  error
+
+
+state 222
+	MPunktElementParameter :  MPunktElementParameter PunktElementParameter_    (82)
+
+	.  reduce 82
+
+
+state 223
+	PunktElementParameter :  XSATZ KoordinatenWert_\n 
+
+	\n  shift 318
+	.  error
+
+
+state 224
+	PunktElementParameter :  YSATZ KoordinatenWert_\n 
+
+	\n  shift 319
+	.  error
+
+
+state 225
+	MPunktKoordinatenParameter :  MPunktKoordinatenParameter PunktKoordinatenParameter_    (145)
+
+	.  reduce 145
+
+
+state 226
+	PunktKoordinatenParameter :  XSATZ KoordinatenWert_\n 
+
+	\n  shift 320
+	.  error
+
+
+state 227
+	PunktKoordinatenParameter :  YSATZ KoordinatenWert_\n 
+
+	\n  shift 321
+	.  error
+
+
+state 228
+	PunktKoordinatenParameter :  PKZSATZ IDENT_\n 
+
+	\n  shift 322
+	.  error
+
+
+state 229
+	PunktKoordinatenParameter :  PNRSATZ INTEGER_\n 
+
+	\n  shift 323
+	.  error
+
+
+state 230
+	PunktKoordinatenParameter :  TXTSATZ \n_    (150)
+
+	.  reduce 150
+
+
+state 231
+	PunktKoordinatenParameter :  CODESATZ \n_    (151)
+
+	.  reduce 151
+
+
+state 232
+	PunktKoordinatenParameter :  WINKEL KoordinatenWert_\n 
+
+	\n  shift 324
+	.  error
+
+
+state 233
+	PunktKoordinatenParameter :  NAMSATZ \n_    (153)
+
+	.  reduce 153
+
+
+state 234
+	PunktKoordinatenParameter :  HSATZ KoordinatenWert_\n 
+
+	\n  shift 325
+	.  error
+
+
+state 235
+	PunktKoordinatenParameter :  SWINKEL INTEGER_\n 
+
+	\n  shift 326
+	.  error
+
+
+state 236
+	PunktKoordinatenParameter :  OSSATZ INTEGER_\n 
+
+	\n  shift 327
+	.  error
+
+
+state 237
+	PunktKoordinatenParameter :  error \n_    (157)
+
+	.  reduce 157
+
+
+state 238
+	LinienElement :  LinienElementKopf SubPunktFormElement SubPunktFormElement_    (29)
+
+	.  reduce 29
+
+
+state 239
+	LinienElement :  LinienElementKopf MLinienElementParameter SubPunktFormElement_SubPunktFormElement 
+
+	PUNKT  shift 128
+	PUNKTKOORD  shift 129
+	.  error
+
+	SubPunktFormElement  goto 328
+	SubPunktElement  goto 117
+	SubPunktKoordinaten  goto 118
+	SubPunktElementKopf  goto 120
+	SubPunktKoordinatenKopf  goto 121
+
+state 240
+	MLinienElementParameter :  MLinienElementParameter LinienElementParameter_    (91)
+
+	.  reduce 91
+
+
+state 241
+	SubPunktElement :  SubPunktElementKopf MPunktElementParameter_    (28)
+	MPunktElementParameter :  MPunktElementParameter_PunktElementParameter 
+
+	XSATZ  shift 99
+	YSATZ  shift 100
+	.  reduce 28
+
+	PunktElementParameter  goto 222
+
+state 242
+	SubPunktKoordinaten :  SubPunktKoordinatenKopf MPunktKoordinatenParameter_    (41)
+	MPunktKoordinatenParameter :  MPunktKoordinatenParameter_PunktKoordinatenParameter 
+
+	error  shift 114
+	PNRSATZ  shift 106
+	OSSATZ  shift 113
+	XSATZ  shift 103
+	YSATZ  shift 104
+	WINKEL  shift 109
+	SWINKEL  shift 112
+	NAMSATZ  shift 110
+	HSATZ  shift 111
+	CODESATZ  shift 108
+	TXTSATZ  shift 107
+	PKZSATZ  shift 105
+	.  reduce 41
+
+	PunktKoordinatenParameter  goto 225
+
+state 243
+	LinienElementParameter :  MSATZ KoordinatenWert_\n 
+
+	\n  shift 329
+	.  error
+
+
+state 244
+	LinienElementParameter :  CODESATZ \n_    (93)
+
+	.  reduce 93
+
+
+state 245
+	LinienElementParameter :  TXTSATZ \n_    (94)
+
+	.  reduce 94
+
+
+state 246
+	LinienElementParameter :  SASATZ KoordinatenWert_\n 
+
+	\n  shift 330
+	.  error
+
+
+state 247
+	LinienElementParameter :  OSSATZ INTEGER_\n 
+
+	\n  shift 331
+	.  error
+
+
+state 248
+	LinienElementParameter :  error \n_    (97)
+
+	.  reduce 97
+
+
+state 249
+	SubPunktElementKopf :  PUNKT $$79_MKopfParameter \n 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	.  error
+
+	MKopfParameter  goto 332
+	KopfParameter  goto 153
+
+state 250
+	SubPunktKoordinatenKopf :  PUNKTKOORD $$142_MKopfParameter \n 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	.  error
+
+	MKopfParameter  goto 333
+	KopfParameter  goto 153
+
+state 251
+	Polygon :  PolygonKopf MPolygonParameter SubPunktFormElement_SubPunktFormElement 
+
+	PUNKT  shift 128
+	PUNKTKOORD  shift 129
+	.  error
+
+	SubPunktFormElement  goto 334
+	SubPunktElement  goto 117
+	SubPunktKoordinaten  goto 118
+	SubPunktElementKopf  goto 120
+	SubPunktKoordinatenKopf  goto 121
+
+state 252
+	MPolygonParameter :  MPolygonParameter PolygonParameter_    (169)
+
+	.  reduce 169
+
+
+state 253
+	PolygonParameter :  NAMSATZ \n_    (162)
+
+	.  reduce 162
+
+
+state 254
+	PolygonParameter :  NSATZ INTEGER_\n 
+
+	\n  shift 335
+	.  error
+
+
+state 255
+	PolygonParameter :  TXTSATZ \n_    (164)
+
+	.  reduce 164
+
+
+state 256
+	PolygonParameter :  SASATZ KoordinatenWert_\n 
+
+	\n  shift 336
+	.  error
+
+
+state 257
+	PolygonParameter :  error \n_    (167)
+
+	.  reduce 167
+
+
+state 258
+	StuetzPunktFeld :  FeldKopf $$170_FeldWerte 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 339
+	FeldWerte  goto 337
+	FeldWert  goto 338
+
+state 259
+	StuetzPunktFeld :  FLDSATZ \n_    (173)
+
+	.  reduce 173
+
+
+state 260
+	FeldKopf :  FLDSATZ KoordinatenWert_\n $$174 KoordinatenWert \n 
+
+	\n  shift 340
+	.  error
+
+
+state 261
+	Bogen :  BogenKopf MBogenParameter SubPunktFormElement_SubPunktFormElement 
+
+	PUNKT  shift 128
+	PUNKTKOORD  shift 129
+	.  error
+
+	SubPunktFormElement  goto 341
+	SubPunktElement  goto 117
+	SubPunktKoordinaten  goto 118
+	SubPunktElementKopf  goto 120
+	SubPunktKoordinatenKopf  goto 121
+
+state 262
+	MBogenParameter :  MBogenParameter BogenParameter_    (132)
+
+	.  reduce 132
+
+
+state 263
+	BogenParameter :  XSATZ KoordinatenWert_\n 
+
+	\n  shift 342
+	.  error
+
+
+state 264
+	BogenParameter :  YSATZ KoordinatenWert_\n 
+
+	\n  shift 343
+	.  error
+
+
+state 265
+	BogenParameter :  RADIUS KoordinatenWert_\n 
+
+	\n  shift 344
+	.  error
+
+
+state 266
+	BogenParameter :  WINKEL KoordinatenWert_\n 
+
+	\n  shift 345
+	.  error
+
+
+state 267
+	BogenParameter :  TXTSATZ \n_    (137)
+
+	.  reduce 137
+
+
+state 268
+	BogenParameter :  CODESATZ \n_    (138)
+
+	.  reduce 138
+
+
+state 269
+	BogenParameter :  error \n_    (139)
+
+	.  reduce 139
+
+
+state 270
+	FlaechenElementKopf :  FLAECHE1 $$98 MKopfParameter_\n 
+	MKopfParameter :  MKopfParameter_KopfParameter 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	\n  shift 346
+	.  error
+
+	KopfParameter  goto 274
+
+state 271
+	KreisKopf :  KREIS1 $$115 MKopfParameter_\n 
+	MKopfParameter :  MKopfParameter_KopfParameter 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	\n  shift 347
+	.  error
+
+	KopfParameter  goto 274
+
+state 272
+	TextElementKopf :  TEXT1 $$61 MKopfParameter_\n 
+	MKopfParameter :  MKopfParameter_KopfParameter 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	\n  shift 348
+	.  error
+
+	KopfParameter  goto 274
+
+state 273
+	SymbolElementKopf :  SYMBOL1 MKopfParameter \n_    (49)
+
+	.  reduce 49
+
+
+state 274
+	MKopfParameter :  MKopfParameter KopfParameter_    (181)
+
+	.  reduce 181
+
+
+state 275
+	KopfParameter :  ENUM =_INTEGER 
+	KopfParameter :  ENUM =_INTEGER / INTEGER 
+
+	INTEGER  shift 349
+	.  error
+
+
+state 276
+	KopfParameter :  ENUMI =_INTEGER 
+
+	INTEGER  shift 350
+	.  error
+
+
+state 277
+	KopfParameter :  EB =_INTEGER 
+
+	INTEGER  shift 351
+	.  error
+
+
+state 278
+	KopfParameter :  SM =_INTEGER 
+
+	INTEGER  shift 352
+	.  error
+
+
+state 279
+	KopfParameter :  ST =_INTEGER 
+
+	INTEGER  shift 353
+	.  error
+
+
+state 280
+	PunktElementKopf :  PUNKT1 $$59 MKopfParameter_\n 
+	MKopfParameter :  MKopfParameter_KopfParameter 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	\n  shift 354
+	.  error
+
+	KopfParameter  goto 274
+
+state 281
+	PunktKoordinatenKopf :  PUNKTKOORD1 $$140 MKopfParameter_\n 
+	MKopfParameter :  MKopfParameter_KopfParameter 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	\n  shift 355
+	.  error
+
+	KopfParameter  goto 274
+
+state 282
+	LinienElementKopf :  LINIE1 $$86 MKopfParameter_\n 
+	MKopfParameter :  MKopfParameter_KopfParameter 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	\n  shift 356
+	.  error
+
+	KopfParameter  goto 274
+
+state 283
+	PolygonKopf :  POLYGON1 $$158 MKopfParameter_\n 
+	MKopfParameter :  MKopfParameter_KopfParameter 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	\n  shift 357
+	.  error
+
+	KopfParameter  goto 274
+
+state 284
+	BogenKopf :  BOGEN1 $$127 MKopfParameter_\n 
+	MKopfParameter :  MKopfParameter_KopfParameter 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	\n  shift 358
+	.  error
+
+	KopfParameter  goto 274
+
+state 285
+	FlaechenElementParameter :  XSATZ KoordinatenWert \n_    (103)
+
+	.  reduce 103
+
+
+state 286
+	KoordinatenWert :  SICADREAL ASCIIREAL_    (182)
+
+	.  reduce 182
+
+
+state 287
+	FlaechenElementParameter :  YSATZ KoordinatenWert \n_    (104)
+
+	.  reduce 104
+
+
+state 288
+	FlaechenElementParameter :  WINKEL KoordinatenWert \n_    (105)
+
+	.  reduce 105
+
+
+state 289
+	FlaechenElementParameter :  SASATZ KoordinatenWert \n_    (106)
+
+	.  reduce 106
+
+
+state 290
+	FlaechenElementParameter :  FLASATZ KoordinatenWert \n_    (107)
+
+	.  reduce 107
+
+
+state 291
+	FlaechenElementParameter :  HSATZ KoordinatenWert \n_    (111)
+
+	.  reduce 111
+
+
+state 292
+	FlaechenElementParameter :  PKZSATZ IDENT \n_    (112)
+
+	.  reduce 112
+
+
+state 293
+	FlaechenElementParameter :  PNRSATZ INTEGER \n_    (113)
+
+	.  reduce 113
+
+
+state 294
+	SubLinienElement :  SubLinienElementKopf SubPunktFormElement SubPunktFormElement_    (31)
+
+	.  reduce 31
+
+
+state 295
+	SubLinienElement :  SubLinienElementKopf MLinienElementParameter SubPunktFormElement_SubPunktFormElement 
+
+	PUNKT  shift 128
+	PUNKTKOORD  shift 129
+	.  error
+
+	SubPunktFormElement  goto 359
+	SubPunktElement  goto 117
+	SubPunktKoordinaten  goto 118
+	SubPunktElementKopf  goto 120
+	SubPunktKoordinatenKopf  goto 121
+
+state 296
+	SubPolygon :  SubPolygonKopf MPolygonParameter SubPunktFormElement_SubPunktFormElement 
+
+	PUNKT  shift 128
+	PUNKTKOORD  shift 129
+	.  error
+
+	SubPunktFormElement  goto 360
+	SubPunktElement  goto 117
+	SubPunktKoordinaten  goto 118
+	SubPunktElementKopf  goto 120
+	SubPunktKoordinatenKopf  goto 121
+
+state 297
+	SubBogen :  SubBogenKopf MBogenParameter SubPunktFormElement_SubPunktFormElement 
+
+	PUNKT  shift 128
+	PUNKTKOORD  shift 129
+	.  error
+
+	SubPunktFormElement  goto 361
+	SubPunktElement  goto 117
+	SubPunktKoordinaten  goto 118
+	SubPunktElementKopf  goto 120
+	SubPunktKoordinatenKopf  goto 121
+
+state 298
+	SubLinienElementKopf :  LINIE $$88 MKopfParameter_\n 
+	MKopfParameter :  MKopfParameter_KopfParameter 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	\n  shift 362
+	.  error
+
+	KopfParameter  goto 274
+
+state 299
+	SubPolygonKopf :  POLYGON $$160 MKopfParameter_\n 
+	MKopfParameter :  MKopfParameter_KopfParameter 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	\n  shift 363
+	.  error
+
+	KopfParameter  goto 274
+
+state 300
+	SubBogenKopf :  BOGEN $$129 MKopfParameter_\n 
+	MKopfParameter :  MKopfParameter_KopfParameter 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	\n  shift 364
+	.  error
+
+	KopfParameter  goto 274
+
+state 301
+	SubKreisKopf :  KREIS $$117 MKopfParameter_\n 
+	MKopfParameter :  MKopfParameter_KopfParameter 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	\n  shift 365
+	.  error
+
+	KopfParameter  goto 274
+
+state 302
+	SubTextElementKopf :  T_TEXT $$63 MKopfParameter_\n 
+	MKopfParameter :  MKopfParameter_KopfParameter 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	\n  shift 366
+	.  error
+
+	KopfParameter  goto 274
+
+state 303
+	KreisParameter :  XSATZ KoordinatenWert \n_    (121)
+
+	.  reduce 121
+
+
+state 304
+	KreisParameter :  YSATZ KoordinatenWert \n_    (122)
+
+	.  reduce 122
+
+
+state 305
+	KreisParameter :  RADIUS KoordinatenWert \n_    (123)
+
+	.  reduce 123
+
+
+state 306
+	TextElementParameter :  XSATZ KoordinatenWert \n_    (68)
+
+	.  reduce 68
+
+
+state 307
+	TextElementParameter :  YSATZ KoordinatenWert \n_    (69)
+
+	.  reduce 69
+
+
+state 308
+	TextElementParameter :  NSATZ KoordinatenWert \n_    (70)
+
+	.  reduce 70
+
+
+state 309
+	TextElementParameter :  HSATZ KoordinatenWert \n_    (71)
+
+	.  reduce 71
+
+
+state 310
+	TextElementParameter :  WINKEL KoordinatenWert \n_    (72)
+
+	.  reduce 72
+
+
+state 311
+	TextElementParameter :  SWINKEL KoordinatenWert \n_    (73)
+
+	.  reduce 73
+
+
+state 312
+	TextElementParameter :  ASATZ IDENT \n_    (74)
+
+	.  reduce 74
+
+
+state 313
+	TextElementParameter :  MSATZ KoordinatenWert \n_    (75)
+
+	.  reduce 75
+
+
+state 314
+	SymbolElementParameter :  XSATZ KoordinatenWert \n_    (53)
+
+	.  reduce 53
+
+
+state 315
+	SymbolElementParameter :  YSATZ KoordinatenWert \n_    (54)
+
+	.  reduce 54
+
+
+state 316
+	SymbolElementParameter :  WINKEL KoordinatenWert \n_    (55)
+
+	.  reduce 55
+
+
+state 317
+	SymbolElementParameter :  OSSATZ INTEGER \n_    (58)
+
+	.  reduce 58
+
+
+state 318
+	PunktElementParameter :  XSATZ KoordinatenWert \n_    (84)
+
+	.  reduce 84
+
+
+state 319
+	PunktElementParameter :  YSATZ KoordinatenWert \n_    (85)
+
+	.  reduce 85
+
+
+state 320
+	PunktKoordinatenParameter :  XSATZ KoordinatenWert \n_    (146)
+
+	.  reduce 146
+
+
+state 321
+	PunktKoordinatenParameter :  YSATZ KoordinatenWert \n_    (147)
+
+	.  reduce 147
+
+
+state 322
+	PunktKoordinatenParameter :  PKZSATZ IDENT \n_    (148)
+
+	.  reduce 148
+
+
+state 323
+	PunktKoordinatenParameter :  PNRSATZ INTEGER \n_    (149)
+
+	.  reduce 149
+
+
+state 324
+	PunktKoordinatenParameter :  WINKEL KoordinatenWert \n_    (152)
+
+	.  reduce 152
+
+
+state 325
+	PunktKoordinatenParameter :  HSATZ KoordinatenWert \n_    (154)
+
+	.  reduce 154
+
+
+state 326
+	PunktKoordinatenParameter :  SWINKEL INTEGER \n_    (155)
+
+	.  reduce 155
+
+
+state 327
+	PunktKoordinatenParameter :  OSSATZ INTEGER \n_    (156)
+
+	.  reduce 156
+
+
+state 328
+	LinienElement :  LinienElementKopf MLinienElementParameter SubPunktFormElement SubPunktFormElement_    (30)
+
+	.  reduce 30
+
+
+state 329
+	LinienElementParameter :  MSATZ KoordinatenWert \n_    (92)
+
+	.  reduce 92
+
+
+state 330
+	LinienElementParameter :  SASATZ KoordinatenWert \n_    (95)
+
+	.  reduce 95
+
+
+state 331
+	LinienElementParameter :  OSSATZ INTEGER \n_    (96)
+
+	.  reduce 96
+
+
+state 332
+	SubPunktElementKopf :  PUNKT $$79 MKopfParameter_\n 
+	MKopfParameter :  MKopfParameter_KopfParameter 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	\n  shift 367
+	.  error
+
+	KopfParameter  goto 274
+
+state 333
+	SubPunktKoordinatenKopf :  PUNKTKOORD $$142 MKopfParameter_\n 
+	MKopfParameter :  MKopfParameter_KopfParameter 
+
+	ENUM  shift 154
+	EB  shift 156
+	SM  shift 157
+	ST  shift 158
+	ENUMI  shift 155
+	\n  shift 368
+	.  error
+
+	KopfParameter  goto 274
+
+state 334
+	Polygon :  PolygonKopf MPolygonParameter SubPunktFormElement SubPunktFormElement_    (43)
+
+	.  reduce 43
+
+
+state 335
+	PolygonParameter :  NSATZ INTEGER \n_    (163)
+
+	.  reduce 163
+
+
+state 336
+	PolygonParameter :  SASATZ KoordinatenWert \n_    (166)
+
+	.  reduce 166
+
+
+state 337
+	StuetzPunktFeld :  FeldKopf $$170 FeldWerte_    (171)
+	FeldWerte :  FeldWerte_FeldWert 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  reduce 171
+
+	KoordinatenWert  goto 339
+	FeldWert  goto 369
+
+state 338
+	FeldWerte :  FeldWert_    (176)
+
+	.  reduce 176
+
+
+state 339
+	FeldWert :  KoordinatenWert_\n $$178 KoordinatenWert \n 
+
+	\n  shift 370
+	.  error
+
+
+state 340
+	FeldKopf :  FLDSATZ KoordinatenWert \n_$$174 KoordinatenWert \n 
+	$$174 : _    (174)
+
+	.  reduce 174
+
+	$$174  goto 371
+
+state 341
+	Bogen :  BogenKopf MBogenParameter SubPunktFormElement SubPunktFormElement_    (35)
+
+	.  reduce 35
+
+
+state 342
+	BogenParameter :  XSATZ KoordinatenWert \n_    (133)
+
+	.  reduce 133
+
+
+state 343
+	BogenParameter :  YSATZ KoordinatenWert \n_    (134)
+
+	.  reduce 134
+
+
+state 344
+	BogenParameter :  RADIUS KoordinatenWert \n_    (135)
+
+	.  reduce 135
+
+
+state 345
+	BogenParameter :  WINKEL KoordinatenWert \n_    (136)
+
+	.  reduce 136
+
+
+state 346
+	FlaechenElementKopf :  FLAECHE1 $$98 MKopfParameter \n_    (99)
+
+	.  reduce 99
+
+
+state 347
+	KreisKopf :  KREIS1 $$115 MKopfParameter \n_    (116)
+
+	.  reduce 116
+
+
+state 348
+	TextElementKopf :  TEXT1 $$61 MKopfParameter \n_    (62)
+
+	.  reduce 62
+
+
+state 349
+	KopfParameter :  ENUM = INTEGER_    (186)
+	KopfParameter :  ENUM = INTEGER_/ INTEGER 
+
+	/  shift 372
+	.  reduce 186
+
+
+state 350
+	KopfParameter :  ENUMI = INTEGER_    (188)
+
+	.  reduce 188
+
+
+state 351
+	KopfParameter :  EB = INTEGER_    (189)
+
+	.  reduce 189
+
+
+state 352
+	KopfParameter :  SM = INTEGER_    (190)
+
+	.  reduce 190
+
+
+state 353
+	KopfParameter :  ST = INTEGER_    (191)
+
+	.  reduce 191
+
+
+state 354
+	PunktElementKopf :  PUNKT1 $$59 MKopfParameter \n_    (60)
+
+	.  reduce 60
+
+
+state 355
+	PunktKoordinatenKopf :  PUNKTKOORD1 $$140 MKopfParameter \n_    (141)
+
+	.  reduce 141
+
+
+state 356
+	LinienElementKopf :  LINIE1 $$86 MKopfParameter \n_    (87)
+
+	.  reduce 87
+
+
+state 357
+	PolygonKopf :  POLYGON1 $$158 MKopfParameter \n_    (159)
+
+	.  reduce 159
+
+
+state 358
+	BogenKopf :  BOGEN1 $$127 MKopfParameter \n_    (128)
+
+	.  reduce 128
+
+
+state 359
+	SubLinienElement :  SubLinienElementKopf MLinienElementParameter SubPunktFormElement SubPunktFormElement_    (32)
+
+	.  reduce 32
+
+
+state 360
+	SubPolygon :  SubPolygonKopf MPolygonParameter SubPunktFormElement SubPunktFormElement_    (46)
+
+	.  reduce 46
+
+
+state 361
+	SubBogen :  SubBogenKopf MBogenParameter SubPunktFormElement SubPunktFormElement_    (36)
+
+	.  reduce 36
+
+
+state 362
+	SubLinienElementKopf :  LINIE $$88 MKopfParameter \n_    (89)
+
+	.  reduce 89
+
+
+state 363
+	SubPolygonKopf :  POLYGON $$160 MKopfParameter \n_    (161)
+
+	.  reduce 161
+
+
+state 364
+	SubBogenKopf :  BOGEN $$129 MKopfParameter \n_    (130)
+
+	.  reduce 130
+
+
+state 365
+	SubKreisKopf :  KREIS $$117 MKopfParameter \n_    (118)
+
+	.  reduce 118
+
+
+state 366
+	SubTextElementKopf :  T_TEXT $$63 MKopfParameter \n_    (64)
+
+	.  reduce 64
+
+
+state 367
+	SubPunktElementKopf :  PUNKT $$79 MKopfParameter \n_    (80)
+
+	.  reduce 80
+
+
+state 368
+	SubPunktKoordinatenKopf :  PUNKTKOORD $$142 MKopfParameter \n_    (143)
+
+	.  reduce 143
+
+
+state 369
+	FeldWerte :  FeldWerte FeldWert_    (177)
+
+	.  reduce 177
+
+
+state 370
+	FeldWert :  KoordinatenWert \n_$$178 KoordinatenWert \n 
+	$$178 : _    (178)
+
+	.  reduce 178
+
+	$$178  goto 373
+
+state 371
+	FeldKopf :  FLDSATZ KoordinatenWert \n $$174_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 374
+
+state 372
+	KopfParameter :  ENUM = INTEGER /_INTEGER 
+
+	INTEGER  shift 375
+	.  error
+
+
+state 373
+	FeldWert :  KoordinatenWert \n $$178_KoordinatenWert \n 
+
+	ASCIIREAL  shift 170
+	INTEGER  shift 171
+	SICADREAL  shift 169
+	.  error
+
+	KoordinatenWert  goto 376
+
+state 374
+	FeldKopf :  FLDSATZ KoordinatenWert \n $$174 KoordinatenWert_\n 
+
+	\n  shift 377
+	.  error
+
+
+state 375
+	KopfParameter :  ENUM = INTEGER / INTEGER_    (187)
+
+	.  reduce 187
+
+
+state 376
+	FeldWert :  KoordinatenWert \n $$178 KoordinatenWert_\n 
+
+	\n  shift 378
+	.  error
+
+
+state 377
+	FeldKopf :  FLDSATZ KoordinatenWert \n $$174 KoordinatenWert \n_    (175)
+
+	.  reduce 175
+
+
+state 378
+	FeldWert :  KoordinatenWert \n $$178 KoordinatenWert \n_    (179)
+
+	.  reduce 179
+
+
+61/127 terminals, 83/200 nonterminals
+192/400 grammar rules, 379/600 states
+0 shift/reduce, 0 reduce/reduce conflicts reported
+83/250 working sets used
+memory: states,etc. 1663/5200, parser 338/4000
+64/450 distinct lookahead sets
+41 extra closures
+697 shift entries, 4 exceptions
+192 goto entries
+140 entries saved by goto default
+Optimizer space used: input 1697/5200, output 609/4000
+609 table entries, 89 zero
+maximum spread: 312, maximum offset: 373

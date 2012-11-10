@@ -1,0 +1,29 @@
+HKCR 
+{
+	NoRemove %PROGID% 
+	{
+		ForceRemove TRiASDB 
+		{
+			CLSID = s '{CD0A5616-42E3-411E-B064-8C97106AFFF4}' 
+			TypeLib = s '{73CA6784-8733-40E6-9E4D-8936D3763ABC}'
+			Description 
+			{
+				val LongName = s '%LONGNAME%'
+				val ShortName = s '%SHORTNAME%'
+				val NameDescription = s '%NAMEDESC%'
+				val NameIsDirectory = s '0'
+				val NameIsFile = s '0'
+				val ReadWrite = s '%READWRITE%'
+				val Version = s '%VERSION%'
+				val ToolBoxBitmap32 = d %BITMAP%
+			}
+		}
+	}
+	TRiASDB.TRiASOGC.DBEngine.1
+	{
+		TRiASDB
+		{
+			%PROGID% = s '%NAMEDESC%'
+		}
+	}
+}

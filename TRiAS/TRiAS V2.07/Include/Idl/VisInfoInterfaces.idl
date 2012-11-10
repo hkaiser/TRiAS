@@ -1,0 +1,430 @@
+// VisInfoInterfaces.idl: Interfaces for Visualisation specifics
+//
+
+#if !defined(_VISINFOINTERFACES_IDL)
+#define _VISINFOINTERFACES_IDL
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declarations
+interface DVisInfo;
+interface DPointVisInfo;
+interface DLineVisInfo;
+interface DAreaVisInfo;
+interface DTextVisInfo;
+
+#if !defined(_VISINFOTYPE_DEFINED)
+#define _VISINFOTYPE_DEFINED
+
+cpp_quote("#if !defined(_VISINFOTYPE_DEFINED)")
+cpp_quote("#define _VISINFOTYPE_DEFINED")
+// Visualisierungtypen
+typedef [public] enum _tagVISINFO_TYPE {
+	VISINFOTYPE_Point = 0,		// OGPunkt
+	VISINFOTYPE_Line = 1,		// OGLinie
+	VISINFOTYPE_Area = 2,		// OGFlaeche
+	VISINFOTYPE_Text = 5,		// OGText
+	VISINFOTYPE_Unknown = 6,	// OGUnknown
+	VISINFOTYPE_Default = 7,	
+} VISINFOTYPE;
+cpp_quote("#endif // _VISINFOTYPE_DEFINED")
+
+#endif // _VISINFOTYPE_DEFINED
+
+///////////////////////////////////////////////////////////////////////////////
+// Interfaces
+
+///////////////////////////////////////////////////////////////////////////////
+// Basisinterface der Visualisierungs-Interface's
+[
+	odl, 
+	object,
+	oleautomation, 
+	dual,
+	uuid(0796386B-3123-101C-BB62-00AA0018497C), 
+	helpstring("Basisinterface für Visualisierungsinformationen")
+]  
+interface DVisInfo : DTRiASBaseClass
+{
+	import "oaidl.idl";
+	import "ocidl.idl";
+	import "objidl.idl";
+#if !defined(NOBASEINTERFACES)
+	import "TRiASBaseInterfaces.idl";
+#endif // NOVISINFOINTERFACES
+
+// Typdefinitionen
+	typedef [public] long TRIASCOLOR;
+
+// IVisInfo base properties
+	[
+		id(10), 
+		propget, 
+		helpstring("Darstellungsstil")
+	]
+	HRESULT Style ([out, retval] int *Style);
+	[
+		id(10), 
+		propput, 
+		helpstring("Darstellungsstil")
+	]
+	HRESULT Style ([in]int Style);
+
+	[
+		id(11), 
+		propget, 
+		helpstring("Darstellungsreihenfolge")
+	]
+	HRESULT Priority ([out, retval] int *Prio);
+	[
+		id(11), 
+		propput, 
+		helpstring("Darstellungsreihenfolge")
+	]
+	HRESULT Priority ([in]int Prio);
+
+	[
+		id(12), 
+		propget, 
+		helpstring("Zusätzliche Beschreibungsinformation")
+	]
+	HRESULT Name ([out, retval] BSTR *Desc);
+	[
+		id(12), 
+		propput, 
+		helpstring("Zusätzliche Beschreibungsinformation")
+	]
+	HRESULT Name ([in]BSTR Desc);
+
+	[
+		id(13), 
+		propget, 
+		helpstring("Vordergrundfarbe")
+	]
+	HRESULT MainColor ([out, retval]TRIASCOLOR *Main);
+	[
+		id(13), 
+		propput, 
+		helpstring("Vordergrundfarbe")
+	]
+	HRESULT MainColor ([in]TRIASCOLOR Main);
+
+	[
+		id(14),
+		propget,
+		helpstring("Statusbits dieser VisInfo")
+	]
+	HRESULT Changed ([out, retval]int *Flags);
+	[
+		id(14),
+		propput,
+		helpstring("Statusbits dieser VisInfo")
+	]
+	HRESULT Changed ([in]int Flags);
+
+	[
+		id(15), 
+		propget, 
+		helpstring("Textliche Repräsentation der gesamten VisInfo.")
+	]
+	HRESULT VisString ([out, retval] BSTR *Desc);
+};
+
+[
+	odl, 
+	oleautomation, 
+	dual,
+	object,
+	uuid(07963867-3123-101C-BB62-00AA0018497C), 
+	helpstring("Visualisierungs-Information für ein Punktobjekt.")
+]  
+interface DPointVisInfo : DVisInfo 
+{
+	[
+		id(20), 
+		propget, 
+		helpstring("Größe (horizontal) des Punktsymboles")
+	]
+	HRESULT SizeX ([out, retval] int *X);
+	[
+		id(20), 
+		propput, 
+		helpstring("Größe (horizontal) des Punktsymboles")
+	]
+	HRESULT SizeX ([in]int X);
+
+	[
+		id(21), 
+		propget, 
+		helpstring("Größe (vertikal) des Punktsymboles")
+	]
+	HRESULT SizeY ([out, retval] int *Y);
+	[
+		id(21), 
+		propput, 
+		helpstring("Größe (vertikal) des Punktsymboles")
+	]
+	HRESULT SizeY ([in]int Y);
+
+	[
+		id(22), 
+		propget, 
+		helpstring("Drehwinkel des Punktsymboles")
+	]
+	HRESULT Rotate ([out, retval] int *Rot);
+	[
+		id(22), 
+		propput, 
+		helpstring("Drehwinkel des Punktsymboles")
+	]
+	HRESULT Rotate ([in]int Rot);
+
+	[
+		id(23), 
+		propget, 
+		helpstring("Hintergrundfarbe")
+	]
+	HRESULT BkColor ([out, retval]TRIASCOLOR *Back);
+	[
+		id(23), 
+		propput, 
+		helpstring("Hintergrundfarbe")
+	]
+	HRESULT BkColor ([in]TRIASCOLOR Back);
+};
+
+[
+	odl, 
+	object,
+	oleautomation, 
+	dual,
+	uuid(07963868-3123-101C-BB62-00AA0018497C), 
+	helpstring("Visualisierungs-Information für ein Linienobjekt.")
+]  
+interface DLineVisInfo : DVisInfo 
+{
+	[
+		id(30), 
+		propget, 
+		helpstring("Breite der Liniensignatur")
+	]
+	HRESULT Width ([out, retval]int *Width);
+	[
+		id(30), 
+		propput, 
+		helpstring("Breite der Liniensignatur")
+	]
+	HRESULT Width ([in]int Width);
+};
+
+[
+	odl, 
+	oleautomation, 
+	dual,
+	object,
+	uuid(07963869-3123-101C-BB62-00AA0018497C), 
+	helpstring("Visualisierungs-Information für ein Flächenobjekt.")
+]  
+interface DAreaVisInfo : DVisInfo 
+{
+	[
+		id(40), 
+		propget, 
+		helpstring("Breite der Kontursignatur")
+	]
+	HRESULT Width ([out, retval]int *Width);
+	[
+		id(40), 
+		propput, 
+		helpstring("Breite der Kontursignatur")
+	]
+	HRESULT Width ([in]int Width);
+
+	[
+		id(41), 
+		propget, 
+		helpstring("Hintergrundmode des Füllmusters")
+	]
+	HRESULT Opaque ([out, retval]int *IsOpaque);
+	[
+		id(41), 
+		propput, 
+		helpstring("Hintergrundmode des Füllmusters")
+	]
+	HRESULT Opaque ([in]int IsOpaque);
+
+	[
+		id(42), 
+		propget, 
+		helpstring("Konturlinie mit Hintergrundfarbe")
+	]
+	HRESULT BkContour ([out, retval]int *BkContour);
+	[
+		id(42), 
+		propput, 
+		helpstring("Konturlinie mit Hintergrundfarbe")
+	]
+	HRESULT BkContour ([in]int BkContour);
+
+	[
+		id(43), 
+		propget, 
+		helpstring("Hintergrundfarbe")
+	]
+	HRESULT BkColor ([out, retval]TRIASCOLOR *Back);
+	[
+		id(43), 
+		propput, 
+		helpstring("Hintergrundfarbe")
+	]
+	HRESULT BkColor ([in]TRIASCOLOR Back);
+};
+
+[
+	odl, 
+	oleautomation, 
+	dual,
+	object,
+	uuid(0796386A-3123-101C-BB62-00AA0018497C), 
+	helpstring("Visualisierungs-Information für ein Textobjekt.")
+]  
+interface DTextVisInfo : DVisInfo 
+{
+cpp_quote("#if !defined(_TEXTVISINFO_DEFINED)")
+cpp_quote("#define _TEXTVISINFO_DEFINED")
+// typedefs for AlignStyle
+	typedef [public] enum _tagALIGNSTYLE {
+		ALIGNSTYLE_Left = 0,
+		ALIGNSTYLE_Centre = 1,
+		ALIGNSTYLE_Right = 2,
+		ALIGNSTYLE_Full = 3,
+	} ALIGNSTYLE;
+
+// typedef für FrameStyle
+	typedef [public] enum _tagFRAMESTYLE {
+		FRAMESTYLE_NoFrame = 0x0000,
+		FRAMESTYLE_SimpleFrame = 0x0001,
+		FRAMESTYLE_Rounded = 0x0002,
+		FRAMESTYLE_TargetColor = 0x0004,
+	} FRAMESTYLE;
+cpp_quote("#endif // _TEXTVISINFO_DEFINED")
+
+	[
+		id(50), 
+		propget, 
+		helpstring("Größe (horizontal) einer Buchstabenzelle")
+	]
+	HRESULT SizeX ([out, retval] int *X);
+	[
+		id(50), 
+		propput, 
+		helpstring("Größe (horizontal) einer Buchstabenzelle")
+	]
+	HRESULT SizeX ([in]int X);
+
+	[
+		id(51), 
+		propget, 
+		helpstring("Größe (vertikal) einer Buchstabenzelle")
+	]
+	HRESULT SizeY ([out, retval] int *Y);
+	[
+		id(51), 
+		propput, 
+		helpstring("Größe (vertikal) einer Buchstabenzelle")
+	]
+	HRESULT SizeY ([in]int Y);
+
+	[
+		id(52), 
+		propget
+	]
+	HRESULT Bold ([out, retval]int *IsBold);
+	[
+		id(52), 
+		propput
+	]
+	HRESULT Bold ([in]int IsBold);
+	
+	[
+		id(53), 
+		propget
+	]
+	HRESULT Italic ([out, retval]int *IsItalic);
+	[
+		id(53), 
+		propput
+	]
+	HRESULT Italic ([in]int IsItalic);
+
+	[
+		id(54), 
+		propget
+	]
+	HRESULT Underline ([out, retval]int *IsUnderlined);
+	[
+		id(54), 
+		propput
+	]
+	HRESULT Underline ([in]int IsUnderlined);
+
+	[
+		id(55), 
+		propget
+	]
+	HRESULT StrikeThrough ([out, retval]int *IsStrikedThrough);
+	[
+		id(55), 
+		propput
+	]
+	HRESULT StrikeThrough ([in]int IsStrikedThrough);
+
+	[
+		id(56), 
+		propget
+	]
+	HRESULT FrameStyle ([out, retval]FRAMESTYLE *FrameStyle);
+	[
+		id(56), 
+		propput
+	]
+	HRESULT FrameStyle ([in]FRAMESTYLE FrameStyle);
+
+	[
+		id(57), 
+		propget
+	]
+	HRESULT AlignStyle ([out, retval]ALIGNSTYLE *AlignStyle);
+	[
+		id(57), 
+		propput
+	]
+	HRESULT AlignStyle ([in]ALIGNSTYLE AlignStyle);
+	
+	[
+		id(58), 
+		propget, 
+		helpstring("Drehwinkel des Textes")
+	]
+	HRESULT Rotate ([out, retval] int *Rot);
+	[
+		id(58), 
+		propput, 
+		helpstring("Drehwinkel des Textes")
+	]
+	HRESULT Rotate ([in]int Rot);
+	
+	[
+		id(59), 
+		propget, 
+		helpstring("Neigungswinkel des Textes")
+	]
+	HRESULT Slant ([out, retval] int *Slant);
+	[
+		id(59), 
+		propput, 
+		helpstring("Neigungswinkel des Textes")
+	]
+	HRESULT Slant ([in]int Slant);
+};
+
+#endif // _VISINFOINTERFACES_IDL

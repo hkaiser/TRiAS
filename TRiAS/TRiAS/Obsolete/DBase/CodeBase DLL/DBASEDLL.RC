@@ -1,0 +1,164 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "dbasedll.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "dbasedll.h"
+#include "ver.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ENTRYEXPRESSION DIALOG DISCARDABLE  10, 20, 303, 211
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "dBASE-Ausdruck eingeben"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "d&BASE-Ausdruck:",-1,7,9,81,11
+    EDITTEXT        IDE_EXPRESSION,7,20,289,12,ES_AUTOHSCROLL
+    LTEXT           "&Felder:",-1,7,41,56,8
+    LISTBOX         IDL_FIELDS,7,53,95,121,WS_VSCROLL | WS_TABSTOP
+    LTEXT           "F&unktionen:",-1,112,41,49,8
+    LISTBOX         IDL_FUNCTIONS,112,53,61,121,WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Opera&toren:",-1,182,41,47,8
+    LISTBOX         IDL_OPERATORS,182,53,53,121,WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "&Prüfen",IDB_CHECK,241,145,55,14,WS_DISABLED | WS_GROUP
+    PUSHBUTTON      "&OK",IDOK,241,53,55,14,WS_DISABLED
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,241,70,55,14
+    LTEXT           "",IDT_EXPRESSIONINFO,11,177,281,21,NOT WS_GROUP
+    GROUPBOX        " Beschreibung: ",-1,7,168,289,35
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "dbasedll.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""dbasedll.h""\r\n"
+    "#include ""ver.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""dbasedll.rcv""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DBASEEXT            ".DBF"
+    IDS_DBASESUBDIR         "DBASE"
+    IDS_ALIAS_FILES         "dBASE-AliasFiles"
+    IDS_PFADSECTION         "Directories"
+    IDS_DBASEKEY            "DBase"
+    IDS_OEMTOANSII          "OemToAnsii"
+    IDS_INIEXT              ".INI"
+    IDS_EXPROKCAPT          "Ergebnis"
+    IDS_EXPROKTEXT          "Der dBASE-Ausdruck ist fehlerfrei."
+    IDS_STANDARD            "Standard"
+    IDS_DBASERELINFO        "dBASERelations"
+    IDS_PROFID              "ID"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_FA_NAMES            "FieldAliasNames"
+    IDS_EDKEY               "EditorName"
+    IDS_DEFED               "triased"
+    IDS_EDSECTION           "TriasEd"
+    IDS_FIELDQUALIFIER      "->"
+    IDS_FIELDINFO           "Typ: %s, Länge: %d"
+    IDS_CHARTYPE            "Zeichenfeld"
+    IDS_DATETYPE            "Datumsfeld"
+    IDS_NUMTYPE             "numerisches Feld"
+    IDS_FLOATTYPE           "Gleitkommafeld"
+    IDS_UNKNOWNTYPE         "unbekanntes Feld"
+    IDS_DECIMALTEXT         " , Nachkommastellen: %d"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_STRINGNOTCLOSED     "Nichtbeendeter Zeichenwert !"
+    IDS_UNKNOWNVALUE        "Unbekannter Wert im dBASE-Ausdruck !"
+    IDS_UNKNOWNOPERT        "Unbekannter Operator im dBASE-Ausdruck !"
+    IDS_UNKNOWNFCTN         "Unbekannte Funktion im dBASE-Ausdruck !"
+    IDS_UNKNOWNOPERD        "Unbekannter Operand im dBASE-Ausdruck !"
+    IDS_KLAMMEREXPEC        "Im dBASE-Ausdruck fehlt die rechte Klammer !"
+    IDS_TOCOMPLEX           "Der dBASE-Ausdruck ist zu lang oder zu kompliziert !"
+    IDS_PARAMERROR          "Falsche Anzahl von Parametern im dBASE-Ausdruck !"
+    IDS_OPENERROR           "Eine im dBASE-Ausdruck benötigte Datei konnte nicht geöffnet werden !"
+    IDS_UNCOMPLETE          "Der dBASE-Ausdruck ist unvollständig !"
+    IDS_KOMMAORKLA          "Im dBASE-Ausdruck fehlen ein Komma oder eine rechte Klammer !"
+    IDS_UNFIELDNAME         "Unbekannter Feldname im dBASE-Ausdruck !"
+    IDS_ALLGERROR           "Fehler im dBASE-Ausdruck !"
+    IDS_EXPROK              "Der dBASE-Ausdruck ist fehlerfrei."
+    IDS_ALIASNAMES          "dBASE-AliasNames"
+    IDS_USEINDEX            "UseIndex"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LOAD_EDIT_CAPTION   "TRiAS-Editor ausführen"
+    IDS_GEN_ERROR           "Allgemeiner Fehler beim Laden des Editors !"
+    IDS_EDIT_NOT_FOUND      "Der Editor wurde nicht gefunden !"
+    IDS_BAD_FORMAT          "Das Format des Editors (EXE-Datei)  ist ungültig !"
+    IDS_SYSTEM_ERROR        "Das System hat keine(n) Speicher/Ressourcen mehr !"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "dbasedll.rcv"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

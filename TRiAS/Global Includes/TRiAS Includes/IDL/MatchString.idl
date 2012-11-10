@@ -1,0 +1,54 @@
+// $Header: $
+// Copyright© 1999-2000 TRiAS GmbH Potsdam, All rights reserved
+// Created: 15.09.2000 12:26:22 
+//
+// @doc
+// @module MatchString.idl | Declaration of the DMatchString(2) interfaces
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface für Objekte, die beim Suchen von Texten helfen
+
+// forward declarations
+interface DMatchString;
+interface DMatchString2;
+
+cpp_quote("#ifndef _MATCHSTRING_DEFINED")
+cpp_quote("#define _MATCHSTRING_DEFINED")
+[
+	object,
+	uuid(079638B4-3123-101C-BB62-00AA0018497C),
+	dual, oleautomation,
+	helpstring("DMatchString Interface"),
+	pointer_default(unique)
+]
+interface DMatchString : IDispatch
+{
+	import "oaidl.idl";
+
+	[id(200)] HRESULT MatchString ([in] BSTR StringToMatch, [out, retval] int *Matched);
+
+	[id(201), propput] HRESULT MatchText ([in] BSTR MatchingString);
+	[id(201), propget] HRESULT MatchText ([out, retval] BSTR *MatchingString);
+	[id(202), propput] HRESULT MatchCase ([in] VARIANT_BOOL MatchCase);
+	[id(202), propget] HRESULT MatchCase ([out, retval] VARIANT_BOOL *MatchCase);
+	[id(203), propput] HRESULT NegateMatch ([in] VARIANT_BOOL NegateMatch);
+	[id(203), propget] HRESULT NegateMatch ([out, retval] VARIANT_BOOL *NegateMatch);
+};
+cpp_quote("#endif // _MATCHSTRING_DEFINED")
+
+cpp_quote("#ifndef _MATCHSTRING2_DEFINED")
+cpp_quote("#define _MATCHSTRING2_DEFINED")
+[
+	object,
+	uuid(69F33A6A-25CB-46C5-B4EB-69A8CA2D7AF5),
+	dual, oleautomation,
+	helpstring("DMatchString2 Interface"),
+	pointer_default(unique)
+]
+interface DMatchString2 : DMatchString
+{
+	import "oaidl.idl";
+
+	[id(300)] HRESULT MatchAndReplaceString ([in] BSTR StringToMatch, [in] BSTR StringToReplace, [out] int *piMatched, [out, retval] BSTR *pbstrResult);
+};
+cpp_quote("#endif // _MATCHSTRING2_DEFINED")

@@ -1,0 +1,1011 @@
+'======================================================================
+'   GBM -Visualisierungen
+'======================================================================
+'	Ausführung folgender Visualisierungen:
+'	1) Stand Bescheidschreibung
+'	2) Angeschlossene Dachteilflächen
+'	3) Beitragsart
+'	4) 
+'	5) 
+'======================================================================
+'	Grundlage der Visualiserung sind folgende Daten:
+'	* Stand Bescheidschreibung:
+'		NF_PG1.B_GEDR == "j" or "J" or "y" or "Y"	==> m_rgbStand1
+'		sonst										==> m_rgbStand2
+'	* Angeschlossene Dachteilflächen:
+'		NF_PG2D.NFP2_ANS ==  "j" or "J" or "y" or "Y"	==> m_rgbDach1
+'		sonst											==> m_rgbDach2
+'	* Beitragsart:
+'		NF_PG1.NFP1_BAR == "1" ==> m_rgbBArt1	"Herstellungsbeitrag"
+'						   "2" ==> m_rgbBArt2	"Erneuerungsbeitrag"
+'						   "3" ==> m_rgbBArt3   "Verbesserungsbeitrag"
+'						   "4" ==> m_rgbBArt3   "Verbesserungsbeitrag"
+'						   "5" ==> m_rgbBArt4   "Erweiterungsbeitrag"
+'		sonst			       ==> m_rgbBArt5
+'	* Angeschlossene Grundstücke:
+'		NF_PG1.NFP1_ANDAT == gült.Datum		==> m_rgbGS1
+'		sonst								==> m_rgbGS2
+'	* Eigentumsverhältnisse:
+'		NF_PG1.??				==> m_rgbEV1	"privates Eigentum"
+'		sonst					==> m_rgbEV2	"komunales Eigentum"
+'======================================================================
+'	(c) uve GmbH FEZ Potsdam, (#970222AD)
+'======================================================================
+
+Option Explicit
+
+'Const strDatenPfad = "L:\GBM\TRiAS\PROJEKTE\AV_BODE\DBASE"
+'Const strDatenPfad = "D:\GBM\DATEN"
+Private strDatenPfad As String
+Const strClassGS = "Grundstück"
+Const strClassDT = "Dachteilfläche"
+Const strFeatureIDE = "Identifikationsnummer"
+Const strFeatureON = "Objektname"
+
+' Stand Bescheidschreibung:
+Private m_rgbStand1 As Long		' Bescheid gedruckt
+Private m_rgbStand2 As Long		' nicht gedruckt
+' Angeschlossene Dachteilflächen:
+Private m_rgbDach1 As Long		' angeschlossene Dachfläche
+Private m_rgbDach2 As Long		' nicht angeschlossen
+' Beitragsart:
+Private m_rgbBArt1 As Long		' Herstellungsbeitrag
+Private m_rgbBArt2 As Long		' Erneuerungsbeitrag
+Private m_rgbBArt3 As Long		' Verbesserungsbeitrag
+Private m_rgbBArt4 As Long		' Erweiterungsbeitrag
+Private m_rgbBArt5 As Long		' sonst
+' Angeschlossene Grundstücke:
+Private m_rgbGS1 As Long		' angeschlossen
+Private m_rgbGS2 As Long		' sonst
+' Eigentumsverhältnisse:
+Private m_rgbEV1 As Long		' privates Eigentum
+Private m_rgbEV2 As Long		' komunales Eigentum
+
+Private docGD As GeoDocument    'Projekt
+Private viewsGD As GeoViews		'Alle Ansichten des Projektes
+
+Private tbK As Toolbar
+Private tbbVis1 As ToolbarButton	' Visualisierung "Stand Bescheidschreibung"
+Private tbbVis2 As ToolbarButton	' Visualisierung "Angeschlossene Dachteilflächen"
+Private tbbVis3 As ToolbarButton	' Visualisierung "Beitragsart"
+Private tbbVis4 As ToolbarButton	' Visualisierung "Angeschlossene Grundstücke"
+Private tbbVis5 As ToolbarButton	' Visualisierung "Eigentumsverhältnisse"
+Private tbbEnde As ToolbarButton	' Beenden Makro
+Private tbbSepa1 As ToolbarButton
+Private tbbSepa2 As ToolbarButton
+
+Private dbsJet As Database			'Microsoft Jet-Datenbank
+Private rstNF_PG1 As Recordset		'Recordset-Objekt (Tabelle)
+Private rstNF_PG2D As Recordset		'Recordset-Objekt (Tabelle)
+
+Private fldGSIdent As Field			'Feld Identifikationsnummer
+Private fldDachTeilNr As Field		'Feld Nr Dachteilfläche
+Private fldBescheid As Field		'Feld Bescheid
+Private fldDT_Ans As Field			'Feld Dach angeschlossen
+Private fldGS_Ans As Field			'Feld Grundstück angeschlossen
+Private fldBeitrag As Field			'Feld Beitragsart
+Private fldEigen As Field			'Feld Eigentumsform
+
+Private gftGSIdent As GeoFeature	'ObjektMerkmal 'Identifikationsnummer'
+Private gftObjName As GeoFeature	'ObjektMerkmal 'Objektname'
+
+Private clsDT As GeoClass			'Objektklasse Dachteilflächen
+Private clsGS As GeoClass			'Objektklasse Grundstücke
+Private objsDach As GeoObjects		'Dachflächen eines Grundstückes
+
+Const NL = Chr$(13) + Chr$(10)
+
+Const strDateiNF_PG1    = "NF_PG1"
+Const strDateiNF_PG2D   = "NF_PG2D"
+Const strFeldNFP1_IDE   = "NFP1_IDE"
+Const strFeldB_GEDR     = "B_GEDR"
+Const strFeldNFP2_IDE   = "NFP2_IDE"
+Const strFeldNFP2_FLN   = "NFP2_FLN"
+Const strFeldNFP2_ANS   = "NFP2_ANS"
+Const strFeldNFP1_BAR   = "NFP1_BAR"
+Const strFeldNFP1_ANMIS = "ANMIS"
+Const strFeldNFP1_EV    = "eigentum"
+
+Const strTool1 = "Visualisierung Stand der Bescheidschreibung"
+Const strTool2 = "Visualisierung angeschlossene/nicht angeschlossene Dachteilflächen"
+Const strTool3 = "Visualisierung der Beitragsart"
+Const strTool4 = "Visualisierung angeschlossene/nicht angeschlossene Grundstücke"
+Const strTool5 = "Visualisierung Eigentumsverhältnisse"
+Const strToolEnde = "Beendet das Makro"
+Const strToolBreak = "Unterbricht die Verarbeitung"
+
+Const strBoxTitel0 = "Fehler in GBM - Visualisierung"
+Const strBoxTitel1 = "Fehler bei Visualisierung Stand der Bescheidschreibung"
+Const strBoxTitel2 = "Fehler bei Visualisierung Dachteilflächen"
+Const strBoxTitel3 = "Fehler bei Visualisierung der Beitragsart"
+Const strBoxTitel4 = "Fehler bei Visualisierung Anschluß der Grundstücke"
+Const strBoxTitel5 = "Fehler bei Visualisierung Eigentumsverhältnisse"
+Const strBoxTitel6 = "Fehler bei "
+
+Const strTitel0 = "GBM - Visualisierung"
+Const strTitel1 = "Stand der Bescheidschreibung"
+Const strTitel2 = "Anschluß der Dachflächen"
+Const strTitel3 = "Beitragsart"
+Const strTitel4 = "Anschluß der Grundstücke"
+Const strTitel5 = "Eigentumsverhältnisse"
+Const strTitel6 = " "
+
+Private m_bAtWork As Boolean
+
+Private arrGS() As String
+Private arrDach() As String
+Private ArraySize As Integer
+
+Declare Sub RegisterDach ( gs As String, dach As String, ch As String )
+Declare Function Angeschlossen ( gs As String, dach As String ) As Integer
+Declare Function Registriert ( gs As String ) As Boolean
+Declare Sub ZugehoerigeDach (objGrund As GeoObject, objsZugehDach As GeoObjects)
+Declare Sub ObjContainer (objGrund As GeoObject, xmin As Double, ymin As Double, _
+									xmax As Double, ymax As Double)
+
+Declare Private Function AddTool (Tools As ToolBar, iNum As Integer, strName As String, _
+	PictID As Integer, strDesc As String, iState As Integer, iStyle As Integer) As ToolBarButton
+
+' "BeginScript()" wird vor Script-Abarbeitung gerufen
+Sub BeginScript()
+
+'Dim tbbV1 As New ToolBarButton
+'Dim tbbV2 As New ToolBarButton
+'Dim tbbV3 As New ToolBarButton
+'Dim tbbV4 As New ToolBarButton
+'Dim tbbV5 As New ToolBarButton
+'Dim tbbEnd As New ToolBarButton
+'Dim tbbS1 As New ToolBarButton
+Dim tbKLoc As ToolBar
+Dim tbbSep1 As ToolBarButton
+Dim Style As Long
+
+'Variablen initialisieren
+	Set docGD = GetActiveDocument
+
+	Style = TOOLBARSTYLE_BorderAny Or TOOLBARSTYLE_Border3d Or _
+			TOOLBARSTYLE_AlignTop Or TOOLBARSTYLE_Tooltips Or _
+			TOOLBARSTYLE_FlyBy Or TOOLBARSTYLE_SizeFixed
+	Set tbKLoc = TRiAS.AddToolBar ("GBM-Visualisierungen", Style)
+	tbKLoc.CtrlID = 23457
+
+	Set tbbVis1 = AddTool(tbKLoc, 0, "Vis1", Tool4, strTool1, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+	Set tbbVis2 = AddTool(tbKLoc, 1, "Vis2", Tool4, strTool2, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+	Set tbbVis3 = AddTool(tbKLoc, 2, "Vis3", Tool4, strTool3, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+	Set tbbVis4 = AddTool(tbKLoc, 3, "Vis4", Tool4, strTool4, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+	Set tbbVis5 = AddTool(tbKLoc, 4, "Vis5", Tool4, strTool5, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+	Set tbbSep1 = AddTool(tbKLoc, 5, "Separator", Tool4, "", BUTTONSTATE_Enabled, BUTTONSTYLE_Separator)
+	Set tbbEnde = AddTool(tbKLoc, 6, "Ende", Tool48, strToolEnde, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+
+	tbKLoc.DockState = DOCKSTATE_DockedTop
+	tbKLoc.Visible = 1
+
+	Set tbK = tbKLoc
+
+Dim zeile As String
+	zeile = TRiAS.FullName$
+	zeile = left$( zeile, Len( zeile ) - 17 )
+	zeile = zeile & "MACRO\GBMDATA.TXT"
+'	MsgBox "TRiAS - FullName ist " & zeile
+
+	Open zeile For Input As #1
+	Input #1, zeile
+	Close #1
+'	MsgBox "Datenpfad gelesen: " & zeile
+	strDatenPfad = zeile
+
+
+' Stand Bescheidschreibung:
+	m_rgbStand1 = RGB(255,200,240)	' Bescheid gedruckt
+	m_rgbStand2 = RGB(255,255,240)	' nicht gedruckt
+' Angeschlossene Dachteilflächen:
+	m_rgbDach1 = RGB(255,255,0)  	' angeschlossene Dachfläche
+	m_rgbDach2 = RGB(255,128,128)	' nicht angeschlossen
+' Beitragsart:
+	m_rgbBArt1 = RGB(255,127,127)	' Herstellungsbeitrag
+	m_rgbBArt2 = RGB(255,127,127)	' Erneuerungsbeitrag
+	m_rgbBArt3 = RGB(255,127,127)	' Verbesserungsbeitrag
+	m_rgbBArt4 = RGB(255,127,127)	' Erweiterungsbeitrag
+	m_rgbBArt5 = RGB(255,127,127)	' sonst
+' Angeschlossene Grundstücke:
+	m_rgbGS1 = RGB(255,127,127)		' angeschlossen
+	m_rgbGS2 = RGB(255,255,240)		' sonst
+' Eigentumsverhältnisse:
+	m_rgbEV1 = RGB(255,127,127)		' privates Eigentum
+	m_rgbEV2 = RGB(127,127,255)		' komunales Eigentum
+
+	ReDim arrGS(0)
+	ReDim arrDach(0)
+	ArraySize = 0
+End Sub
+
+'__________________________________
+
+Sub Main()
+	m_bAtWork = False
+
+	SetBreakScript (False)
+End Sub 
+
+'__________________________________
+
+' "EndScript()" wird nach Beendigung der Script-Abarbeitung gerufen
+Sub EndScript()
+	tbbVis1.State = 0
+	tbbVis2.State = 0
+	tbbVis3.State = 0
+	tbbVis4.State = 0
+	tbbVis5.State = 0
+	tbbEnde.State = 0
+	If tbK Is Not Nothing Then
+		tbK.Visible=0
+		tbK.Remove
+	End If
+End Sub
+
+Sub ModVisInfo( obj As GeoObject, farbe As Long, style As Integer )
+
+        Dim aviAVis As AreaVisInfo
+        Set aviAVis = obj.GetAreaVisInfo()
+        If (aviAVis Is Not Nothing) Then
+                aviAVis.Style = style
+'               aviAVis.Priority = aviMitBescheid.Priority
+'               aviAVis.MainColor = RGB( 0, 0, 0 )
+'               aviAVis.Width = aviMitBescheid.Width
+'               aviAVis.Opaque = aviMitBescheid.Opaque
+'               aviAVis.BkContour = aviMitBescheid.BkContour
+                aviAVis.BkColor = farbe
+
+                obj.SetVisInfo aviAVis
+        End If
+End Sub 'ModVisInfo
+
+
+Function AuswahlAnsicht() As Boolean
+
+	Set viewsGD = docGD.GetViews()
+
+Dim view As GeoView
+Dim i As Integer, idx As Integer
+Dim ViewName$(viewsGD.Count+i)
+Dim AktViewName As String
+
+	AktViewName = docGD.ActiveViewName
+
+	i = 0
+	idx = 0
+	For each view in viewsGD
+		ViewName$(i) = view.Name$
+		If ViewName$(i) = AktViewName Then idx = i
+		i = i + 1
+	Next view
+
+Begin Dialog AnsichtDialog ,,254,50,"Auswahl zu bearbeitende Ansicht"
+	OKButton 192,4,60,14
+	PushButton 192,20,60,14,"Abbrechen",.Cancel
+
+	DropListBox 8,14,172,50,ViewName,.Sicht
+	Text 8,2,100,8,"Ansicht ",.Text1
+End Dialog
+
+Dim myDialog As AnsichtDialog
+Dim r%
+
+	myDialog.Sicht = idx
+
+	r% = Dialog (myDialog)
+
+	If Not r = -1 Then
+		AuswahlAnsicht = False
+		Exit Function
+	End If
+	AuswahlAnsicht = True
+
+'	Ansicht auswählen
+	If Not AktViewName = ViewName$( myDialog.Sicht ) Then
+		docGD.ActiveViewName = ViewName$( myDialog.Sicht )
+		docGD.RePaint
+	End If
+End Function
+
+Sub Ende_Click()
+
+	If m_bAtWork Then
+		tbbVis1.State = BUTTONSTATE_Enabled
+		tbbVis2.State = BUTTONSTATE_Enabled
+		tbbVis3.State = BUTTONSTATE_Enabled
+		tbbVis4.State = BUTTONSTATE_Enabled
+		tbbVis5.State = BUTTONSTATE_Enabled
+		tbbEnde.HelpText$ = strToolEnde
+		m_bAtWork = False
+	Else
+		SetBreakScript (True)
+	End If
+End Sub
+
+Sub Vis1_Click()
+	m_bAtWork = True
+	tbbVis1.State = 0
+	tbbVis2.State = 0
+	tbbVis3.State = 0
+	tbbVis4.State = 0
+	tbbVis5.State = 0
+	tbbEnde.HelpText$ = strToolBreak
+
+	If Not AuswahlAnsicht Then
+		Ende_Click
+		Exit Sub
+	End If
+
+Dim view As GeoView
+Dim AktViewName As String
+Dim objsGS As GeoObjects
+Dim obj As GeoObject
+
+	AktViewName = docGD.ActiveViewName
+	Set view = docGD.GetView( AktViewName )
+	Set clsGS = view.GetClass( strClassGS )
+	If clsGS Is Nothing Then
+		MsgBox "Diese Ansicht zeigt keine Grundstücke!"
+		Ende_Click
+		Exit Sub
+	End If
+
+	Msg.Open NL+"  Der Abgleich wird vorbereitet ... bitte warten!"+NL+NL+strTitel1, ,False,False
+
+	Set objsGS = clsGS.GetObjects( OT_Area )
+
+'dBASE-Dateien für Zugriff öffnen
+	Set dbsJet = OpenDatabase (strDatenPfad, False, False, "dBASE IV;")
+'	Set dbsJet = OpenDatabase (strDatenPfad, False, False, "FoxPro 2.5;")
+	Set rstNF_PG1 = dbsJet.OpenRecordset (strDateiNF_PG1)
+	rstNF_PG1.Index = strFeldNFP1_IDE
+
+	Set fldBescheid = rstNF_PG1.Fields ( strFeldB_GEDR )
+	Set fldGSIdent = rstNF_PG1.Fields ( strFeldNFP1_IDE )
+
+	Msg.Close
+
+Dim AnzGS As Long, l As Long
+Dim strIDE As String, strSuch As String, bescheid As String
+
+On Error GoTo Fehler
+
+	Msg.Open "Ausführen der Visualisierung"+NL+NL+strTitel1, , True, True
+
+	AnzGS = objsGS.Count
+	l = 0
+	For each obj in objsGS
+
+		l = l + 1
+		Msg.Thermometer = l / AnzGS * 100
+
+		bescheid ="N"
+		Set gftGSIdent = obj.GetFeature (strFeatureIDE)
+		If (gftGSIdent Is Not Nothing) Then
+			strIDE = Trim$(gftGSIdent.Feature$)
+			strSuch = strFeatureIDE & " = '" & strIDE & "'"
+'			rstNF_PG1.FindFirst strSuch
+			rstNF_PG1.Seek "=", strIDE
+
+			If fldBescheid.Type = 10 Then   'String
+				If Not IsNull( fldBescheid ) Then	bescheid = fldBescheid
+			End If
+			If fldBescheid.Type = 7 Then    'Nummerisch
+				bescheid = "nummerisch"
+			End If
+			If fldGSIdent.Type = 10 Then 'String
+				If Not IsNull( fldGSIdent ) Then
+					strIDE = fldGSIdent
+				Else
+					strIDE = "daneben!"
+				End If
+			End If
+		Else
+			strIDE = "unbenannt"
+		End If
+
+		If bescheid = "j" Or bescheid = "J" Then bescheid = "J"
+		If bescheid = "y" Or bescheid = "Y" Then bescheid = "J"
+		If bescheid = "J" Then
+			ModVisInfo obj, m_rgbStand1, 1
+		Else
+			ModVisInfo obj, m_rgbStand2, 1
+		End If
+
+	Next obj
+
+	Msg.Close
+	docGD.ReBuild
+
+	dbsJet.Close
+	Set fldBescheid = Nothing
+	Set fldGSIdent = Nothing
+
+	Ende_Click
+	Exit Sub
+
+Fehler:
+	If Err.Number = 18 Then
+		MsgBox "Durch Nutzer abgebrochen!",ebCritical,strBoxTitel1
+	Else
+		MsgBox "Fehler " & Err & " ist aufgetreten!" & NL & Error$,ebCritical,strBoxTitel1
+		Resume Next
+	End If
+	Ende_Click
+End Sub
+
+Sub Vis2_Click()
+	m_bAtWork = True
+	tbbVis1.State = 0
+	tbbVis2.State = 0
+	tbbVis3.State = 0
+	tbbVis4.State = 0
+	tbbVis5.State = 0
+	tbbEnde.HelpText$ = strToolBreak
+
+	If Not AuswahlAnsicht Then Exit Sub
+
+Dim view As GeoView
+Dim AktViewName As String
+Dim objsGS As GeoObjects
+Dim obj As GeoObject, obj1 As GeoObject
+Dim ErrText As String
+
+	AktViewName = docGD.ActiveViewName
+	Set view = docGD.GetView( AktViewName )
+	Set clsDT = view.GetClass( strClassDT )
+	Set clsGS = view.GetClass( strClassGS )
+
+	If (clsDT Is Nothing) And (clsGS Is Nothing) Then
+		ErrText = "Diese Ansicht zeigt keine Dachteilflächen und keine "
+		ErrText = ErrText & "Grundstücke! Nur wenn sowohl Grundstücke als auch Dachteilflächen "
+		ErrText = ErrText & "in der Ansicht sichtbar sind, ist dieser Abgleich möglich!"
+		MsgBox ErrText
+		Ende_Click
+		Exit Sub
+	End If
+
+	If clsDT Is Nothing Then
+		ErrText = "Diese Ansicht zeigt keine Dachteilflächen! "
+		ErrText = ErrText & "Nur wenn sowohl Grundstücke als auch Dachteilflächen "
+		ErrText = ErrText & "in der Ansicht sichtbar sind, ist dieser Abgleich möglich!"
+		MsgBox ErrText
+		Ende_Click
+		Exit Sub
+	End If
+
+	If clsGS Is Nothing Then
+		ErrText = "Diese Ansicht zeigt keine "
+		ErrText = ErrText & "Grundstücke! Nur wenn sowohl Grundstücke als auch Dachteilflächen "
+		ErrText = ErrText & "in der Ansicht sichtbar sind, ist dieser Abgleich möglich!"
+		MsgBox ErrText
+		Ende_Click
+		Exit Sub
+	End If
+
+	Msg.Open NL+"  Der Abgleich wird vorbereitet ... bitte warten!"+NL+NL+strTitel2, ,False,False
+
+	Set objsGS = clsGS.GetObjects( OT_Area )
+
+'dBASE-Dateien für Zugriff öffnen
+	Set dbsJet = OpenDatabase (strDatenPfad, False, False, "dBASE IV;")
+'	Set dbsJet = OpenDatabase (strDatenPfad, False, False, "FoxPro 2.5;")
+	Set rstNF_PG2D = dbsJet.OpenRecordset (strDateiNF_PG2D)
+
+	Set fldGSIdent = rstNF_PG2D.Fields ( strFeldNFP2_IDE )
+	Set fldDachTeilNr = rstNF_PG2D.Fields ( strFeldNFP2_FLN )
+	Set fldDT_Ans = rstNF_PG2D.Fields ( strFeldNFP2_ANS )
+
+	Msg.Close
+
+Dim AnzGS As Long, l As Long
+Dim strIDE As String, strSuch As String, bescheid As String
+Dim test As String, test1 As String, test2 As String
+Dim abbruch As Boolean
+Dim flag As Integer
+
+On Error GoTo Fehler
+
+	Msg.Open "Registrieren der Dachteilflächen"+NL+NL+strTitel2, , False, False
+
+	rstNF_PG2D.MoveFirst
+	While Not rstNF_PG2D.EOF
+		test1 = fldGSIdent
+		Msg.Text = "Registrieren der Dachteilflächen"+NL+test1
+		test = fldDachTeilNr
+		test2 = fldDT_Ans
+		RegisterDach test1, test, test2
+		rstNF_PG2D.MoveNext
+	Wend
+
+	Msg.Close
+
+	Msg.Open "Ausführen der Visualisierung"+NL+NL, , True, True
+
+	AnzGS = objsGS.Count
+	l = 0
+	For each obj in objsGS
+
+		l = l + 1
+		abbruch = FALSE
+
+		Msg.Thermometer = l / AnzGS * 100
+
+		Set gftGSIdent = obj.GetFeature (strFeatureIDE)
+		If (gftGSIdent Is Not Nothing) Then
+			strIDE = Trim$(gftGSIdent.Feature$)
+		Else
+			abbruch = True
+		End If
+
+		If Not abbruch Then
+			abbruch = Not Registriert( strIDE )
+		End If
+
+		If Not abbruch Then
+			ZugehoerigeDach obj, objsDach
+			If objsDach Is Nothing Then	abbruch = True
+		End If
+
+		If Not abbruch Then
+			If objsDach.Count = 0 Then abbruch = True
+		End If
+
+		If Not abbruch Then
+			For each obj1 in objsDach
+				Set gftObjName = obj1.GetFeature(strFeatureON)
+				If (gftObjName Is Not Nothing) Then
+					flag = Angeschlossen( strIDE, gftObjName.Feature$ )
+					If flag = 1 Then
+						ModVisInfo obj1, m_rgbDach1, 1
+					End If
+					If flag = 0 Then
+						ModVisInfo obj1, m_rgbDach2, 1
+					End If
+				End If
+			Next obj1
+		End If
+
+	Next obj
+
+	Msg.Close
+	docGD.ReBuild
+
+	dbsJet.Close
+	Set fldGSIdent = Nothing
+	Set fldDachTeilNr = Nothing
+	Set fldDT_Ans = Nothing
+
+	Ende_Click
+	Exit Sub
+
+Fehler:
+	If Err.Number = 18 Then
+		MsgBox "Durch Nutzer abgebrochen!",ebCritical,strBoxTitel2
+	Else
+		MsgBox "Fehler " & Err & " ist aufgetreten!" & NL & Error$,ebCritical,strBoxTitel2
+		Resume Next
+	End If
+	Ende_Click
+End Sub
+
+Sub Vis3_Click()
+	m_bAtWork = True
+	tbbVis1.State = 0
+	tbbVis2.State = 0
+	tbbVis3.State = 0
+	tbbVis4.State = 0
+	tbbVis5.State = 0
+	tbbEnde.HelpText$ = strToolBreak
+
+	If Not AuswahlAnsicht Then
+		Ende_Click
+		Exit Sub
+	End If
+
+Dim view As GeoView
+Dim AktViewName As String
+Dim objsGS As GeoObjects
+Dim obj As GeoObject
+
+	AktViewName = docGD.ActiveViewName
+	Set view = docGD.GetView( AktViewName )
+	Set clsGS = view.GetClass( strClassGS )
+	If clsGS Is Nothing Then
+		MsgBox "Diese Ansicht zeigt keine Grundstücke!"
+		Ende_Click
+		Exit Sub
+	End If
+
+	Msg.Open NL+"  Der Abgleich wird vorbereitet ... bitte warten!"+NL+NL+strTitel3, ,False,False
+
+	Set objsGS = clsGS.GetObjects( OT_Area )
+
+'dBASE-Dateien für Zugriff öffnen
+	Set dbsJet = OpenDatabase (strDatenPfad, False, False, "dBASE IV;")
+'	Set dbsJet = OpenDatabase (strDatenPfad, False, False, "FoxPro 2.5;")
+	Set rstNF_PG1 = dbsJet.OpenRecordset (strDateiNF_PG1)
+	rstNF_PG1.Index = strFeldNFP1_IDE
+
+	Set fldBeitrag = rstNF_PG1.Fields ( strFeldNFP1_BAR )
+	Set fldGSIdent = rstNF_PG1.Fields ( strFeldNFP1_IDE )
+
+	Msg.Close
+
+Dim AnzGS As Long, l As Long
+Dim strIDE As String, strSuch As String, beitrag As Integer
+Dim error_text As String
+
+On Error GoTo Fehler
+
+	Msg.Open "Ausführen der Visualisierung"+NL+NL+strTitel3, , True, True
+
+	AnzGS = objsGS.Count
+	l = 0
+	For each obj in objsGS
+
+		l = l + 1
+		Msg.Thermometer = l / AnzGS * 100
+
+		beitrag = -1
+		Set gftGSIdent = obj.GetFeature (strFeatureIDE)
+		If (gftGSIdent Is Not Nothing) Then
+			strIDE = Trim$(gftGSIdent.Feature$)
+			strSuch = strFeatureIDE & " = '" & strIDE & "'"
+			error_text = strSuch
+'			rstNF_PG1.FindFirst strSuch
+			rstNF_PG1.Seek "=", strIDE
+
+			If fldBeitrag.Type = 10 Then   'String
+				beitrag = -1
+			End If
+			If fldBeitrag.Type = 7 Then    'Nummerisch
+				beitrag = fldBeitrag
+			End If
+			If fldGSIdent.Type = 10 Then 'String
+				If Not IsNull( fldGSIdent ) Then
+					strIDE = fldGSIdent
+				Else
+					strIDE = "daneben!"
+				End If
+			End If
+		Else
+			strIDE = "unbenannt"
+		End If
+
+		Select Case beitrag
+		Case 1
+			ModVisInfo obj, m_rgbBArt1, 2
+		Case 2
+			ModVisInfo obj, m_rgbBArt2, 3
+		Case 3
+			ModVisInfo obj, m_rgbBArt3, 4
+		Case 4
+			ModVisInfo obj, m_rgbBArt4, 5
+		Case 5
+			ModVisInfo obj, m_rgbBArt5, 6
+		End Select
+
+	Next obj
+
+	Msg.Close
+	docGD.ReBuild
+
+	dbsJet.Close
+	Set fldBeitrag = Nothing
+	Set fldGSIdent = Nothing
+
+	Ende_Click
+	Exit Sub
+
+Fehler:
+	If Err.Number = 18 Then
+		MsgBox "Durch Nutzer abgebrochen!",ebCritical,strBoxTitel3
+	Else
+		MsgBox "Fehler " & Err & " ist aufgetreten!" & NL & error_text & NL & Error$,ebCritical,strBoxTitel3
+		Resume Next
+	End If
+	Ende_Click
+End Sub
+
+Sub Vis4_Click()
+	m_bAtWork = True
+	tbbVis1.State = 0
+	tbbVis2.State = 0
+	tbbVis3.State = 0
+	tbbVis4.State = 0
+	tbbVis5.State = 0
+	tbbEnde.HelpText$ = strToolBreak
+
+	If Not AuswahlAnsicht Then
+		Ende_Click
+		Exit Sub
+	End If
+
+Dim view As GeoView
+Dim AktViewName As String
+Dim objsGS As GeoObjects
+Dim obj As GeoObject
+
+	AktViewName = docGD.ActiveViewName
+	Set view = docGD.GetView( AktViewName )
+	Set clsGS = view.GetClass( strClassGS )
+	If clsGS Is Nothing Then
+		MsgBox "Diese Ansicht zeigt keine Grundstücke!"
+		Ende_Click
+		Exit Sub
+	End If
+
+	Msg.Open NL+"  Der Abgleich wird vorbereitet ... bitte warten!"+NL+NL+strTitel4, ,False,False
+
+	Set objsGS = clsGS.GetObjects( OT_Area )
+
+'dBASE-Dateien für Zugriff öffnen
+	Set dbsJet = OpenDatabase (strDatenPfad, False, False, "dBASE IV;")
+'	Set dbsJet = OpenDatabase (strDatenPfad, False, False, "FoxPro 2.5;")
+	Set rstNF_PG1 = dbsJet.OpenRecordset (strDateiNF_PG1)
+	rstNF_PG1.Index = strFeldNFP1_IDE
+
+	Set fldGS_Ans = rstNF_PG1.Fields ( strFeldNFP1_ANMIS )
+	Set fldGSIdent = rstNF_PG1.Fields ( strFeldNFP1_IDE )
+
+	Msg.Close
+
+Dim AnzGS As Long, l As Long
+Dim strIDE As String, strSuch As String, ans As Boolean
+Dim test As String
+
+On Error GoTo Fehler
+
+	Msg.Open "Ausführen der Visualisierung"+NL+NL+strTitel4, , True, True
+
+	AnzGS = objsGS.Count
+	l = 0
+	For each obj in objsGS
+
+		l = l + 1
+		Msg.Thermometer = l / AnzGS * 100
+
+		test = "N"
+		Set gftGSIdent = obj.GetFeature (strFeatureIDE)
+		If (gftGSIdent Is Not Nothing) Then
+			strIDE = Trim$(gftGSIdent.Feature$)
+			strSuch = strFeatureIDE & " = '" & strIDE & "'"
+'			rstNF_PG1.FindFirst strSuch
+			rstNF_PG1.Seek "=", strIDE
+
+			If fldGS_Ans.Type = 10 Then   'String
+				If Not IsNull( fldGS_Ans ) Then	test = fldGS_Ans
+			End If
+			If fldGS_Ans.Type = 7 Then    'Nummerisch
+				test = "nummerisch"
+			End If
+			If fldGSIdent.Type = 10 Then 'String
+				If Not IsNull( fldGSIdent ) Then
+					strIDE = fldGSIdent
+				Else
+					strIDE = "daneben!"
+				End If
+			End If
+		Else
+			strIDE = "unbenannt"
+		End If
+
+		If test = "j" Or test = "J" Then test = "J"
+		If test = "y" Or test = "Y" Then test = "J"
+		If test = "J" Then
+			ModVisInfo obj, m_rgbGS1, 1
+		Else
+			ModVisInfo obj, m_rgbGS2, 1
+		End If
+
+	Next obj
+
+	Msg.Close
+	docGD.ReBuild
+
+	dbsJet.Close
+	Set fldBeitrag = Nothing
+	Set fldGSIdent = Nothing
+
+	Ende_Click
+	Exit Sub
+
+Fehler:
+	If Err.Number = 18 Then
+		MsgBox "Durch Nutzer abgebrochen!",ebCritical,strBoxTitel4
+	Else
+		MsgBox "Fehler " & Err & " ist aufgetreten!" & NL & Error$,ebCritical,strBoxTitel4
+		Resume Next
+	End If
+	Ende_Click
+End Sub
+
+Sub RegisterDach ( gs As String, dach As String, ch As String )
+Dim idx As Integer, i As Integer, k As Integer
+Dim flag As String, txt As String
+
+	If Len( dach ) < 2 Then Exit Sub
+
+	k = val( mid$( dach, 2 ))
+	idx = -1
+	For i = 0 To ArraySize-1
+		If arrGS(i) = gs Then
+			idx = i
+			Exit For
+		End If
+	Next i
+	If idx = -1 Then
+		ArraySize = ArraySize + 1
+		ReDim Preserve arrGS(ArraySize)
+		ReDim Preserve arrDach(ArraySize)
+		idx = ArraySize - 1
+		arrGS (idx) = gs
+	End If
+	While Len( arrDach(idx)) < k
+		arrDach(idx) = arrDach (idx) & " "
+	Wend
+	If ch = "j" Or ch = "J" Then
+		flag = "J"
+	End If
+	If ch = "y" Or ch = "Y" Then
+		flag = "J"
+	End If
+	If ch = "n" Or ch = "N" Then
+		flag = "N"
+	End If
+	If k > 0 Then
+		txt = Left$( arrDach(idx), k-1 )
+		txt = txt & flag
+	Else
+		txt = flag
+	End If
+	If k < Len( arrDach( idx )) - 1 Then
+		txt = txt & Mid$( arrDach( idx ), k+1 )
+	End If
+	arrDach( idx ) = txt
+End Sub 'RegisterDach
+
+'------------------------------------------------------------------------------
+'Liefert 1 wenn die angegebene Dachfläche als angeschlossen registriert ist,
+'        0 wenn sie als nicht angeschlossen registriert ist
+'       -1 wenn sie nicht registriert ist
+Function Angeschlossen ( gs As String, dach As String ) As Integer
+Dim idx As Integer, i As Integer
+Dim txt As String, k As Integer
+
+	If Len( dach ) < 2 Then Exit Function
+	k = val( mid$( dach, 2 ))
+	Angeschlossen = -1
+	idx = -1
+	For i = 0 To ArraySize-1
+		If arrGS(i) = gs Then
+			idx = i
+			Exit For
+		End If
+	Next i
+	If idx >= 0 And idx < ArraySize Then
+		txt = arrDach( idx )
+		If k < Len( arrDach( idx )) Then
+			If mid$( arrDach( idx ), k, 1 ) = "J" Then
+				Angeschlossen = 1
+			End If
+			If mid$( arrDach( idx ), k, 1 ) = "N" Then
+				Angeschlossen = 0
+			End If
+		End If
+	End If
+End Function 'Angeschlossen
+
+'------------------------------------------------------------------------------
+'Liefert True wenn für das angegebene Grundstück Dachflächen registriert sind
+Function Registriert ( gs As String ) As Boolean
+Dim idx As Integer, i As Integer
+
+	Registriert = False
+	idx = -1
+	For i = 0 To ArraySize-1
+		If arrGS(i) = gs Then
+			idx = i
+			Exit For
+		End If
+	Next i
+	If idx >= 0 Then
+		Registriert = True
+	End If
+End Function 'Registriert
+
+Sub ZugehoerigeDach (objGrund As GeoObject, objsZugehBau As GeoObjects)
+
+Dim xmin As Double, ymin As Double, xmax As Double, ymax As Double
+Dim objsDach As GeoObjects, objDummy As GeoObject
+Dim rel%
+
+	Set objsZugehBau = docGD.CreateGeoObjectsCollection()
+
+	ObjContainer objGrund, xmin, ymin, xmax, ymax
+	Set objsDach = clsDT.GetObjectsInRect (xmin, ymin, xmax, ymax)
+	If objsDach.Count = 0 Then Exit Sub
+
+	Dim objDach As GeoObject
+	For Each objDach In objsDach
+		If objDach.ObjType = OT_Area Then
+			'Relation des objGebaeude-Gebäudes zu dem objGrund-Grundstück
+			'Rückgabewert kann sein: innerhalb (0), außerhalb (1), inner/außerhalb (2) oder unklar (3)
+			rel% = objGrund.TopRelation (objDach)
+			Select Case rel%		'Relation
+			Case 0					'innerhalb
+				Set objDummy = objsZugehBau.Add(objDach.Value)
+			Case 2					'inner/außerhalb
+			'auch das nur teilweise innerhalb gelegene Gebäude brauche ich!!
+				Set objDummy = objsZugehBau.Add(objDach.Value)
+			Case 3					'unklar
+'				TRiASFehler strErrTopRelation, objGrund.Value
+			End Select
+		End If
+	Next objDach
+
+End Sub 'ZugehoerigeDach
+
+Sub ObjContainer (objGrund As GeoObject, xmin As Double, ymin As Double, xmax As Double, ymax As Double)
+
+Dim lngCnt As Long, dummy%, i&
+Dim x() As Double, y() As Double
+ReDim x(0)
+ReDim y(0)
+
+	dummy% = objGrund.GetGeometry (lngCnt, x(), y())
+
+	xmin = 1E300
+	ymin = 1E300
+	xmax = -1
+	ymax = -1
+
+	For i& = 0 To lngCnt-1
+		If x(i) < xmin Then xmin = x(i)
+		If y(i) < ymin Then ymin = y(i)
+		If x(i) > xmax Then xmax = x(i)
+		If y(i) > ymax Then ymax = y(i)
+	Next i
+
+End Sub 'ObjContainer
+
+' -----------------------------------------------------------------------------
+' Hinzufügen eines Knopfes zur Toolbar
+Function AddTool (Tools As ToolBar, iNum As Integer, strName As String, _
+	PictID As Integer, strDesc As String, iState As Integer, iStyle As Integer) _
+	As ToolBarButton
+
+Dim P As Image
+Dim TB As New ToolBarButton
+Dim id As Integer
+
+	If PictID <= 0 Then
+		id = Tool1
+	Else
+		id = PictID
+	End If
+
+	Set P = LoadResPicture (id, vbResBitmap)
+	If (P Is Not Nothing) Then
+		TB.Name$ = StrName
+		TB.HelpText$ = strDesc
+		TB.State = iState
+		TB.Style = iStyle
+		TB.AttachImage P
+
+		Tools.InsertButton iNum, TB
+		Set AddTool = TB
+	Else
+		Set AddTool = Nothing
+	End If
+End Function
+
+' Makro zum Makroprojekt D:\Work\Win16\GBM_2\TRIAS\Macro\Visu1.ebs
+Function OnClosingDocument(Doc As GeoDocument) As Boolean
+' Das Projekt soll geschlossen werden
+' Hier notwendige Verarbeitungen durchführen
+	SetBreakScript( TRUE )
+End Function
+ 

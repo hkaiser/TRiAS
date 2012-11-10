@@ -1,0 +1,39 @@
+HKCR
+{
+	TRiASEx.ClassifyByCode.1 = s 'ClsfyByCodePropertyAction Class'
+	{
+		CLSID = s '{E4A07A4C-E542-4149-9518-3043FE97B067}'
+	}
+	TRiASEx.ClassifyByCode = s 'ClsfyByCodePropertyAction Class'
+	{
+		CLSID = s '{E4A07A4C-E542-4149-9518-3043FE97B067}'
+		CurVer = s 'TRiASEx.ClassifyByCode.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {E4A07A4C-E542-4149-9518-3043FE97B067} = s 'ClsfyByCodePropertyAction Class'
+		{
+			ProgID = s 'TRiASEx.ClassifyByCode.1'
+			VersionIndependentProgID = s 'TRiASEx.ClassifyByCode'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{46537618-3D6B-4E6A-B438-7EB64BF92E53}'
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiASEx.ClassifyByCode.1' = s '{E4A07A4C-E542-4149-9518-3043FE97B067}'
+			}
+		}
+	}
+}

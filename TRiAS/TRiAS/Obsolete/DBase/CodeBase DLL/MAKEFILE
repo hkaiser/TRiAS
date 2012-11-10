@@ -1,0 +1,102 @@
+NAME = DBASEDLL            # dBase-DLL
+
+DBASEIV = 1
+CLIPPER = 0
+DBASEIII = 0
+
+# Generierungsdatum (yymmdd) und Version
+VERSION = 2
+RELEASE = 01
+BUILD = 026
+DATE = 980105
+COPYRIGHT = JB$(DATE)
+
+PNAME = "Version für den Vertrieb"
+PADDRESS = "uve GmbH Fernerkundungszentrum Potsdam"
+
+DEFS = -D__DLL__ -D__XT
+
+!IF $(CLIPPER)
+DEFINES = $(DEFS) -DCLIPPER
+DBASETYPE = "CLIPPER-Version"
+ARCHIV = ntx
+OUTDLL=$(NAME).ntx
+!ENDIF
+
+!IF $(DBASEIII)
+DEFINES = $(DEFS) -DNDX
+DBASETYPE = "dBaseIII-Version"
+ARCHIV = ndx
+OUTDLL=$(NAME).ndx
+!ENDIF
+
+!IF $(DBASEIV)
+DEFINES = $(DEFS) -DMDX
+DBASETYPE = "dBaseIV-Version"
+ARCHIV = mdx
+OUTDLL=$(NAME).mdx
+!ENDIF
+
+DEF = $(NAME).def
+DLLDEST = c:\trias\trias
+LIBDEST = c:\triasdev\lib.32  # LIB-Ziel-Pfad
+RC = rc
+STUB = rights
+RIGHTS = $(STUB).exe
+ASM = masm
+LINK = f:\c8\bin\link
+LIB = lib
+IMPLIB = implib
+REPLACE = ersetz
+LTEMP = link.tmp
+
+!include dbasedll.mak
+
+# -----------------------------------------------------------------------------
+# CopyrightEintraege Generieren 
+new:
+    @del $(DEF)
+    @del $(STUB).asm
+    @del $(NAME).rcv
+
+formake:    $(DEF) $(STUB).exe $(NAME).rcv
+
+$(DEF): $(NAME).tpl
+     $(REPLACE) $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) @A $(NAME).tpl tmp.def
+     $(REPLACE) $(DBASETYPE) tmp.def $(NAME).def
+     @del tmp.def > nul
+
+$(STUB).asm:    $(STUB).tpl 
+    $(REPLACE) $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) @A $(STUB).tpl $(STUB).tmp
+    $(REPLACE) $(DBASETYPE) $(STUB).tmp $(STUB).asm
+    @del $(STUB).tmp > nul
+
+$(RIGHTS):  $(STUB).asm
+    $(ASM) $(STUB) ;
+    $(LINK) /KNOWEAS $(STUB) ;
+
+# Personalisierungsinformation
+$(NAME).rcv:    dbasdllv.tpl
+    $(REPLACE) $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) @A @B @C dbasdllv.tpl tmp.rcv
+    $(REPLACE) $(PNAME) $(PADDRESS) $(DBASETYPE) tmp.rcv $(NAME).rcv
+    @del tmp.rcv > nul
+
+# archivieren ---------------------------------------------------------------
+store:
+	@echo off
+	del *.bak
+	del *.dmp
+	del *.tmp
+	del *.zip
+	del *.map
+	del *.sym
+	del *.sts
+	del *.lst
+	del *.aps
+	del *.pch
+	del *.bnd
+	del *.pdb
+	del *.sbr
+	del *.bsc 
+        zip -m -x*.ncb $(ARCHIV)
+

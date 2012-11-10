@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding = "Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.00"
+	Name="VidCtrl"
+	SccProjectName=""
+	SccLocalPath=""
+	Keyword="MFCProj">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory=".\Release"
+			IntermediateDirectory=".\Release"
+			ConfigurationType="2"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="1"
+				InlineFunctionExpansion="2"
+				FavorSizeOrSpeed="0"
+				OptimizeForWindowsApplication="FALSE"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_AFXEXT"
+				StringPooling="TRUE"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="TRUE"
+				UsePrecompiledHeader="3"
+				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderFile=".\Release/VidCtrl.pch"
+				AssemblerListingLocation=".\Release/"
+				ObjectFile=".\Release/"
+				ProgramDataBaseFileName=".\Release/"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="3"/>
+			<Tool
+				Name="VCCustomBuildTool"
+				CommandLine="xcopy /F $(TargetPath) $(TRiASDIR_R)
+xcopy /F $(TargetDir)$(TargetName).pdb $(TRIASDIR_R)
+"
+				Outputs="$(TRIASDIR_R)\$(TargetFileName)"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalOptions="/MACHINE:I386"
+				OutputFile=".\Release/VidCtrl.ext"
+				LinkIncremental="1"
+				SuppressStartupBanner="TRUE"
+				ModuleDefinitionFile=".\VidCtrl.def"
+				ProgramDatabaseFile=".\Release/VidCtrl.pdb"
+				SubSystem="2"
+				ImportLibrary=".\Release/VidCtrl.lib"/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				SuppressStartupBanner="TRUE"
+				TargetEnvironment="1"
+				GenerateStublessProxies="TRUE"
+				TypeLibraryName=".\Release/VidCtrl.tlb"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_AFXDLL;NDEBUG"
+				Culture="1031"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+		</Configuration>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory=".\Debug"
+			IntermediateDirectory=".\Debug"
+			ConfigurationType="2"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_AFXEXT"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="3"
+				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderFile=".\Debug/VidCtrld.pch"
+				AssemblerListingLocation=".\Debug/"
+				ObjectFile=".\Debug/"
+				ProgramDataBaseFileName=".\Debug/"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="3"/>
+			<Tool
+				Name="VCCustomBuildTool"
+				CommandLine="xcopy /F $(TargetPath) $(TRiASDIR_D)
+xcopy /F $(TargetDir)$(TargetName).pdb $(TRIASDIR_D)
+"
+				Outputs="$(TRIASDIR_D)\$(TargetFileName);"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalOptions="/MACHINE:I386"
+				OutputFile=".\Debug/VidCtrld.ext"
+				LinkIncremental="2"
+				SuppressStartupBanner="TRUE"
+				ModuleDefinitionFile=".\VidCtrl.def"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile=".\Debug/VidCtrld.pdb"
+				SubSystem="2"
+				ImportLibrary=".\Debug/VidCtrld.lib"/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				SuppressStartupBanner="TRUE"
+				TargetEnvironment="1"
+				GenerateStublessProxies="TRUE"
+				TypeLibraryName=".\Debug/VidCtrl.tlb"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_AFXDLL;_DEBUG"
+				Culture="1031"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+		</Configuration>
+	</Configurations>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
+			<File
+				RelativePath=".\StdAfx.cpp">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\VidCtrl.cpp">
+			</File>
+			<File
+				RelativePath=".\VidCtrl.def">
+			</File>
+			<File
+				RelativePath=".\VidCtrl.idl">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCMIDLTool"
+						TargetEnvironment="1"
+						HeaderFileName="$(InputName).h"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCMIDLTool"
+						TargetEnvironment="1"
+						HeaderFileName="$(InputName).h"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\VidCtrl.rc">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCResourceCompilerTool"
+						AdditionalIncludeDirectories="$(OUTDIR);$(NoInherit)"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCResourceCompilerTool"
+						AdditionalIncludeDirectories="$(OUTDIR);$(NoInherit)"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\VidCtrlExt.cpp">
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl">
+			<File
+				RelativePath=".\StdAfx.h">
+			</File>
+			<File
+				RelativePath=".\VidCtrl.h">
+			</File>
+			<File
+				RelativePath=".\VidCtrlConfig.h">
+			</File>
+			<File
+				RelativePath=".\VidCtrlExt.h">
+			</File>
+			<File
+				RelativePath=".\VidCtrlUtil.h">
+			</File>
+			<File
+				RelativePath=".\resource.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="Versioning"
+			Filter="*.mak;*.tpl">
+			<File
+				RelativePath=".\VIDCTRL.tpl">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Performing Custom Build Step on $(InputPath)"
+						CommandLine="nmake -nologo -f version.mak VidCtrl.def
+"
+						AdditionalDependencies="Version.mak;"
+						Outputs="VidCtrl.def"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Performing Custom Build Step on $(InputPath)"
+						CommandLine="nmake -nologo -f version.mak VidCtrl.def
+"
+						AdditionalDependencies="Version.mak;"
+						Outputs="VidCtrl.def"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\VIDCTRLv.tpl">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Performing Custom Build Step on $(InputPath)"
+						CommandLine="nmake -nologo -f version.mak VidCtrl.rcv
+"
+						AdditionalDependencies="Version.mak;"
+						Outputs="VidCtrl.rcv"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Performing Custom Build Step on $(InputPath)"
+						CommandLine="nmake -nologo -f version.mak VidCtrl.rcv
+"
+						AdditionalDependencies="Version.mak;"
+						Outputs="VidCtrl.rcv"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\Version.mak">
+			</File>
+			<File
+				RelativePath=".\Version.tpl">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Performing Custom Build Step on $(InputPath)"
+						CommandLine="nmake -nologo -f version.mak Version.h
+"
+						AdditionalDependencies="Version.mak;"
+						Outputs="Version.h"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Performing Custom Build Step on $(InputPath)"
+						CommandLine="nmake -nologo -f version.mak Version.h
+"
+						AdditionalDependencies="Version.mak;"
+						Outputs="Version.h"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe">
+		</Filter>
+		<File
+			RelativePath="Res\videos.html">
+		</File>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

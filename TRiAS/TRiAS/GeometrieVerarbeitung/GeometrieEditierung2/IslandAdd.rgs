@@ -1,0 +1,23 @@
+HKCR
+{
+	TRiAS.IslandAdd.1 = s 'Innenkontur hinzufügen'
+	{
+		CLSID = s '{7192470A-40C2-11d1-9B1F-444553540000}'
+	}
+	TRiAS.IslandAdd = s 'Innenkontur hinzufügen'
+	{
+		CurVer = s 'TRiAS.IslandAdd.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {7192470A-40C2-11d1-9B1F-444553540000} = s 'Innenkontur hinzufügen'
+		{
+			ProgID = s 'TRiAS.IslandAdd.1'
+			VersionIndependentProgID = s 'TRiAS.IslandAdd'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

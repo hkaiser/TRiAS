@@ -1,0 +1,341 @@
+'*******************************************************
+'*  Topologische Analyse                               *
+'*******************************************************
+
+Option Explicit
+
+Declare Sub ObjektFTeilen( IAObjsF As GeoObjects, obj1 As GeoObject, obj2 As GeoObject )
+Declare Function FlaechenInhalt( objGO As geoObject ) As Double
+Declare Function FlaechenWert( objGO As GeoObject ) As String
+Declare Function MasseinheitAbtrennen( MWert$, MZahl# ) as string
+Declare Sub RecherchierteObjekte( objsBO As GeoObjects, strClsIdent As String )
+Declare Sub RecherchierteObjekteEx( objsBO As GeoObjects, strClsIdent As String )
+
+'Programmkonstanten
+Const NL = chr$(13) + chr$(10)
+Const HT = chr$(9)
+
+'globale Variablen
+Private docGD As GeoDocument
+Private objsErgeb As GeoObjects
+Private IObjsF As GeoObjects
+Private IAObjsF As GeoObjects
+Private MyObj As GeoObject
+Private objDummy As GeoObject
+
+'Titel der MessageBoxen
+Const strBoxTitel = "Flächenanalyse"
+
+' "BeginScript()" wird vor Script-Abarbeitung gerufen
+Sub BeginScript()
+' Hier notwendige Initialisierungen durchführen
+	
+End Sub
+
+'__________________________________
+
+Sub Main()
+
+	Set docGD = GetActiveDocument()
+
+	Dim IObjsF As GeoObjects
+	Dim IUObjsF As GeoObjects
+	Dim IAObjsF As GeoObjects
+	Dim myWin1 As GeoObjectWin
+	Dim myWin2 As GeoObjectWin
+	Dim myWin3 As GeoObjectWin
+
+	Dim RechObjs As GeoObjects
+	Dim Objs As GeoObjects
+	Dim Obj As GeoObject
+	Dim Feat As GeoFeature
+	Dim MyFeat$
+
+	Set RechObjs = docGD.CreateGeoObjectsCollection()
+	RecherchierteObjekte RechObjs, "TemporärerPuffer"
+	If ( RechObjs.Count <> 1 ) Then
+		If ( RechObjs.Count = 0 ) Then
+			MsgBox "Kein Pufferbereich markiert!", ebCritical, strBoxTitel
+		Else
+			MsgBox "Mehr als ein Pufferbereich markiert!", ebCritical, strBoxTitel
+		End If
+		Exit Sub
+	Else
+		Set MyObj = RechObjs.Item( 1 )
+	End If
+
+	Dim dlg As New PropertySequence
+	dlg.Description = "Wählen Sie bitte die zu verschneidenden Flächen aus:"
+	dlg.AddAction "TRiASEx.SelectIdentObjTyp.1"
+
+	Set Objs = dlg.DoActions()
+
+	If Objs Is Nothing Then
+		Exit Sub
+	End If
+
+	Set IObjsF = docGD.CreateGeoObjectsCollection()
+	Set IUObjsF = docGD.CreateGeoObjectsCollection()
+	Set IAObjsF = docGD.CreateGeoObjectsCollection()
+
+	Dim SelObjs&
+
+	SelObjs& = Objs.Count
+
+	'Statusanzeige erzeugen und starten
+
+	Dim status As New StatusIndicator
+
+	If (status Is Not Nothing) Then
+		status.restart 0, SelObjs, STATUS_ShowAllFields
+		status.caption = "Recherchieren von Objekten"
+		status.field(1) = Str$(SelObjs)
+		status.field(2) = "Objekte werden selektiert"
+		status.field(3) = "Es wurden bereits %d%% der Objekte verarbeitet."
+	End If
+
+	Dim rel%
+	Dim ActCnt As Long
+	ActCnt = 0
+
+	For each Obj in Objs
+		If Obj.ObjType = OT_Area Then
+			rel% = MyObj.TopRelation( obj )
+			Dim RefObj As GeoObject
+			Select Case rel%
+				Case 3		' unklar
+
+				Case 2		' Innen/Außen
+					Set objDummy = IUObjsF.Add(Obj)
+					ObjektFTeilen IAObjsF, MyObj, Obj
+
+				Case 1		' Außen
+
+				Case 0		' Innen
+					Set objDummy = IObjsF.Add(obj)
+			End Select
+		End If
+		' Status weiterschalten
+		If (status Is Not Nothing) Then
+			ActCnt = ActCnt + 1
+			Status.Field(4) = "Objekt: " + Str$(Obj.Value)
+			status.SetPosition ActCnt
+			If ( status.WasCanceled()) Then
+				Exit For
+			End If
+		End If
+	Next Obj
+
+	Set status = Nothing
+
+	' Fenster erzeugen
+	If IObjsF.Count > 0 Then
+		Set myWin1 = IObjsF.CreateGeoObjectWin()
+		myWin1.Name$ = "Innere Flächen"
+		myWin1.top = 1
+		myWin1.Visible = true
+	End If
+
+	If IAObjsF.Count > 0 Then
+		Set myWin2 = IAObjsF.CreateGeoObjectWin()
+		myWin2.Name$ = "Verschnittene Flächen"
+		myWin2.left = 1
+		myWin2.Visible = true
+	End If
+
+	If IUObjsF.Count > 0 Then
+		Set myWin3 = IUObjsF.CreateGeoObjectWin()
+		myWin3.Name$ = "Betroffene Flächen"
+		If IObjsF.Count > 0 Then
+			myWin3.top = myWin1.Height + myWin1.Height
+		Else
+			myWin3.top = 1
+		End If
+		myWin3.Visible = true
+	End If
+
+	docGD.RePaint
+End Sub 
+
+'__________________________________
+
+' "EndScript()" wird nach Beendigung der Script-Abarbeitung gerufen
+Sub EndScript()
+
+
+' Hier notwendige Aufräumarbeiten durchführen
+End Sub
+
+'__________________________________
+
+' "OnDocumentToClose()" wird nach dem Schließen des Projektes gerufen
+Sub OnDocumentToClose (Doc As GeoDocument)
+' Hier sollte der laufende Script angehalten werden
+	SetBreakScript(true)
+End Sub
+
+
+Sub ObjektFTeilen( IAObjsF As GeoObjects, Obj1 As GeoObject, Obj2 As GeoObject)
+
+	Dim KKS$
+	KKS$ = "TemporäreTeilFläche"	' obj2.ObjClass.Name$
+
+	Dim objsTO As GeoObjects
+	Set objsTO = obj1.GeometryIntersection( obj2 )
+
+	If objsTO Is Nothing Then
+		msgBox "Fläche: Fehler bei Durchschnitt!", ebCritical, strBoxTitel
+		Exit Sub
+	End If
+
+	If objsTO.Count = 0 Then
+		msgBox "Fläche: Fehler bei Durchschnitt: Objektanzahl 0 !", ebCritical, strBoxTitel
+		Exit Sub
+	End If
+
+	Dim FlWert$, FlIn#
+	Dim Fl#, Proz#
+
+	FlWert$ = FlaechenWert( obj2 )
+	FlIn# = FlaechenInhalt( obj2 )
+
+	Dim BFeat As GeoFeature		' Ursprungsfläche
+	Dim BFlaeche$
+	BFlaeche$ = FlWert$
+
+	Dim PFeat As GeoFeature		' Prozent
+	Dim PFlaeche$, PFla$
+
+	Dim objTO As GeoObject
+	Dim cls As GeoClass
+
+	Set cls = docGD.GetClass( KKS$ )
+	For each objTO in objsTO
+		If objTO.ObjType = OT_Area Then
+			Fl# = FlaechenInhalt( objTO )
+			Proz# = FL# / FlIn#
+			If Proz# > 0.009999 then
+				PFlaeche = Format$( Proz#, "##.## %" )
+			Else
+				PFla$ = Str$( Proz#*100.0 )
+				PFlaeche = "0" + Left$( PFla$, 5 ) + " %"
+			End If
+			Set BFeat = objTO.GetFeature("Ursprungsfläche")
+			If BFeat Is Nothing Then
+				Set BFeat = objTO.AddFeature("Ursprungsfläche")
+			End If
+			BFeat.Feature$ = BFlaeche$
+			Set PFeat = objTO.GetFeature("Prozentualer Anteil")
+			If PFeat Is Nothing Then
+				Set PFeat = objTO.AddFeature("Prozentualer Anteil")
+			End If
+			PFeat.Feature$ = PFlaeche$
+
+			cls.AddObject objTO
+			Set objDummy = IAObjsF.Add( objTO )
+		Else
+			docGD.RemoveObject objTO
+		End If
+	Next objTO
+
+	objsTO.Refresh
+	Set objsTO = Nothing
+End Sub		' ObjektFTeilen
+
+
+Function FlaechenInhalt( objGO As GeoObject ) As Double
+
+	Dim ftFlInhalt As GeoFeature
+	Set ftFlInhalt = objGO.GetFeature("Flächeninhalt")
+	If ( ftFlInhalt Is Nothing ) Then
+		FlaechenInhalt = 0
+		Exit Function
+	End If
+
+	Dim Fl$
+	Fl$ = trim$( ftFlInhalt.Feature$ )		'Flächeninhalt und Maßeinheit
+	If Fl$ = "" Then		'kein Flächenobjekt
+		FlaechenInhalt = 0
+		Exit Function
+	End If
+
+	Dim Flaeche As Double, ME$
+	ME$ = MasseinheitAbtrennen( Fl$, Flaeche )
+	Select Case LCase(Mid(ME$,2,1))		' das 1. Zeichen von ME$ ist '['
+		Case "m"		' m²
+			FlaechenInhalt = Flaeche
+		Case "h"		' ha
+			FlaechenInhalt = 10000 * Flaeche
+		Case "k"		' km²
+			FlaechenInhalt = 1000000 * Flaeche
+		Case Else
+			MsgBox "Die ermittelte Maßeinheit ist unbekannt!", ebCritical, strBoxTitel
+			FlaechenInhalt = -1
+	End Select
+End Function	' FlaechenInhalt
+
+
+Function FlaechenWert( objGO As geoObject ) As String
+
+	Dim ftFlInhalt As GeoFeature
+	Set ftFlInhalt = objGO.GetFeature( "Flächeninhalt" )
+	If ( ftFlInhalt Is Nothing ) Then
+		FlaechenWert = "***"
+		Exit Function
+	End If
+
+	FlaechenWert = Trim$( ftFlInhalt.Feature$ )		' Flächeninhalt und Maßeinheit
+
+End Function	' FlaechenWert
+
+Function MasseinheitAbtrennen( MWert$, MZahl# ) as string
+
+	Dim Pos%
+	Pos% = InStr( MWert$, "[" )		' Position der öffnenden Klammer
+	If Pos% = 0 Then
+		MsgBox "Maßeinheit beginnt nicht mit [", ebCritical, strBoxTitel
+		MasseinheitAbtrennen = "  "
+		Exit Function
+	End If
+
+	Pos% = InStr( MWert$, " " )	   		' Position zwischen Zahlenwert und Dimension
+	MZahl# = Val( Left( MWert$, Pos% ))	' Dimension abschneiden
+	MasseinheitAbtrennen = Right( MWert$, Len( MWert$ ) - Pos% )
+
+End Function	' MasseinheitAbtrennen
+
+'Recherchierte Flächen der Objektklasse objsBO aufsammeln
+Sub RecherchierteObjekte( objsBO As GeoObjects, strClsIdent As String )
+	Dim objsRWin As GeoObjectWins   'Recherchefenster
+	Set objsRWin = docGD.GetGeoObjectWins()
+	Dim objsRechObj As GeoObjects
+	Dim objRWin As GeoObjectWin
+	For Each objRWin In objsRWin	'alle geöffneten Recherchefenster abfragen
+		Set objsRechObj = objRWin.GetSelectedObjects()
+		Dim objRO As GeoObject
+		For Each objRO In objsRechObj
+			If ( objRO.ObjClass.Name$ = strClsIdent ) And _
+				objRO.ObjType = OT_Area Then	'auch OT_Point, OT_Line, OT_Text
+				Set objDummy = objsBO.Add( objRO )	'recherchierte objsGO-Objekte sammeln
+			End If
+		Next objRO
+	Next objRWin
+End Sub 'RecherchierteObjekte 
+
+'Recherchierte Flächen mit der Teilzeichenkette strClsIdent im Klassennamen
+Sub RecherchierteObjekteEx( objsBO As GeoObjects, strClsIdent As String )
+	Dim objsRWin As GeoObjectWins   'Recherchefenster
+	Set objsRWin = docGD.GetGeoObjectWins()
+	Dim objsRechObj As GeoObjects
+	Dim objRWin As GeoObjectWin
+	For Each objRWin In objsRWin	'alle geöffneten Recherchefenster abfragen
+		Set objsRechObj = objRWin.GetSelectedObjects()
+		Dim objRO As GeoObject
+		For Each objRO In objsRechObj
+			If ( instr( objRO.ObjClass.Name$, strClsIdent ) > 0 ) And _
+				objRO.ObjType = OT_Area Then	'auch OT_Point, OT_Line, OT_Text
+				Set objDummy = objsBO.Add( objRO )	'recherchierte objsGO-Objekte sammeln
+			End If
+		Next objRO
+	Next objRWin
+End Sub 'RecherchierteObjekteEx

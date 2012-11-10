@@ -1,0 +1,27 @@
+HKCR
+{
+	TRiAS.NativeDB.Class.1 = s 'TRiASNativeIdent Object'
+	{
+		CLSID = s '{926BD1B2-509C-46D1-9B76-6D7DA1151E3F}'
+	}
+	TRiAS.NativeDB.Class = s 'TRiASNativeIdent Object'
+	{
+		CLSID = s '{926BD1B2-509C-46D1-9B76-6D7DA1151E3F}'
+		CurVer = s 'TRiAS.NativeDB.Class.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {926BD1B2-509C-46D1-9B76-6D7DA1151E3F} = s 'TRiASNativeIdent Object'
+		{
+			ProgID = s 'TRiAS.NativeDB.Class.1'
+			VersionIndependentProgID = s 'TRiAS.NativeDB.Class'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Both'
+			}
+			'TypeLib' = s '{57A33B20-5B28-4EEF-AD76-D5FEADABB03E}'
+			'Version' = s '1.0'
+		}
+	}
+}

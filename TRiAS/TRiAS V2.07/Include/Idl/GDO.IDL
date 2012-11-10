@@ -1,0 +1,892 @@
+// Generated .IDL file (by the OLE/COM Object Viewer)
+// 
+// typelib filename: GDO.tlb
+// Forward declare all types defined in this typelib
+interface _IGCollection;
+interface _IGDynaCollection;
+interface GRecordsets;
+interface GTableDefs;
+interface GFields;
+interface GIndexes;
+interface GErrors;
+interface GRecordset;
+interface GField;
+interface GError;
+interface GTableDef;
+interface GIndex;
+interface GDatabase;
+
+[
+  uuid(11A6CDD0-78F6-11CF-83FC-080036830302),
+  version(1.0),
+  helpstring("Intergraph GDO 1.0 Object Library"),
+  helpfile("gdoauto"),
+  helpcontext(00000000)
+]
+library GDO
+{
+    // TLib : OLE Automation : {00020430-0000-0000-C000-000000000046}
+    importlib("stdole2.tlb");
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      dllname("<invalid typelib>"),
+      helpstring("GDO Predefined Constants")
+    ]
+    module GConstants {
+        [entry(00000000), helpstring("GAliasTable Types")] const LPSTR gdbCoordSystem = "GCoordSystemTable";
+        [entry(0x00000001), helpstring("GAliasTable Types")] const LPSTR gdbModifications = "GModifications";
+        [entry(0x00000002), helpstring("GAliasTable Types")] const LPSTR gdbModifiedTables = "GModifiedTables";
+        [entry(0x00000003), helpstring("SQL Conformance Level")] const short gdbBasicQuery = 1;
+        [entry(0x00000004), helpstring("SQL Conformance Level")] const short gdbPatternQuery = 2;
+        [entry(0x00000005), helpstring("SQL Conformance Level")] const short gdbFullQuery = 3;
+        [entry(0x00000006), helpstring("Spatial Filter Operators")] const short gdbEntirelyContains = 1;
+        [entry(0x00000007), helpstring("Spatial Filter Operators")] const short gdbEntirelyContainedBy = 2;
+        [entry(0x00000008), helpstring("Spatial Filter Operators")] const short gdbTouches = 3;
+        [entry(0x00000009), helpstring("Spatial Filter Operators")] const short gdbNotTouches = 4;
+        [entry(0x0000000a), helpstring("Geometry Types")] const short gdbPoint = 10;
+        [entry(0x0000000b), helpstring("Geometry Types")] const short gdbLinear = 1;
+        [entry(0x0000000c), helpstring("Geometry Types")] const short gdbAreal = 2;
+        [entry(0x0000000d), helpstring("Geometry Types")] const short gdbAnySpatial = 3;
+        [entry(0x0000000e), helpstring("Geometry Types")] const short gdbCoverage = 4;
+        [entry(0x0000000f), helpstring("Geometry Types")] const short gdbGraphicsText = 5;
+        [entry(0x00000010), helpstring("Type (RecordSet, argument of OpenRecordset)")] const short gdbOpenDynaset = 2;
+        [entry(0x00000011), helpstring("Type (RecordSet, argument of OpenRecordset)")] const short gdbOpenSnapshot = 4;
+        [entry(0x00000012), helpstring("EditMode (Recordset)")] const short gdbEditNone = 0;
+        [entry(0x00000013), helpstring("EditMode (Recordset)")] const short gdbEditInProgress = 1;
+        [entry(0x00000014), helpstring("EditMode (Recordset)")] const short gdbEditAdd = 2;
+        [entry(0x00000015), helpstring("Options argument (OpenRecordset)")] const short gdbDenyWrite = 1;
+        [entry(0x00000016), helpstring("Options argument (OpenRecordset)")] const short gdbDenyRead = 2;
+        [entry(0x00000017), helpstring("Options argument (OpenRecordset)")] const short gdbReadOnly = 4;
+        [entry(0x00000018), helpstring("Options argument (OpenRecordset)")] const short gdbAppendOnly = 8;
+        [entry(0x00000019), helpstring("Options argument (OpenRecordset)")] const short gdbForwardOnly = 256;
+        [entry(0x0000001a), helpstring("Options argument (OpenRecordset)")] const short gdbSeeChanges = 512;
+        [entry(0x0000001b), helpstring("Attributes (Field on Tabledef)")] const short gdbFixedField = 1;
+        [entry(0x0000001c), helpstring("Attributes (Field on Tabledef)")] const short gdbVariableField = 2;
+        [entry(0x0000001d), helpstring("Attributes (Field on Tabledef)")] const short gdbAutoIncrField = 16;
+        [entry(0x0000001e), helpstring("Attributes (Field on Tabledef)")] const short gdbUpdatableField = 32;
+        [entry(0x0000001f), helpstring("Attributes (Field on Tabledef)")] const short gdbDescending = 1;
+        [entry(0x00000020), helpstring("Type (Field)")] const short gdbBoolean = 1;
+        [entry(0x00000021), helpstring("Type (Field)")] const short gdbByte = 2;
+        [entry(0x00000022), helpstring("Type (Field)")] const short gdbInteger = 3;
+        [entry(0x00000023), helpstring("Type (Field)")] const short gdbLong = 4;
+        [entry(0x00000024), helpstring("Type (Field)")] const short gdbCurrency = 5;
+        [entry(0x00000025), helpstring("Type (Field)")] const short gdbSingle = 6;
+        [entry(0x00000026), helpstring("Type (Field)")] const short gdbDouble = 7;
+        [entry(0x00000027), helpstring("Type (Field)")] const short gdbDate = 8;
+        [entry(0x00000028), helpstring("Type (Field)")] const short gdbText = 10;
+        [entry(0x00000029), helpstring("Type (Field)")] const short gdbLongBinary = 11;
+        [entry(0x0000002a), helpstring("Type (Field)")] const short gdbMemo = 12;
+        [entry(0x0000002b), helpstring("Type (Field)")] const short gdbGuid = 15;
+        [entry(0x0000002c), helpstring("Type (Field)")] const short gdbSpatial = 32;
+        [entry(0x0000002d), helpstring("Type (Field)")] const short gdbGraphic = 33;
+        [entry(0x0000002e), helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangArabic = ";LANGID=0x0401;CP=1256;COUNTRY=0";
+        [entry(0x0000002f), helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangCzech = ";LANGID=0x0405;CP=1250;COUNTRY=0";
+        [entry(0x00000030), helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangDutch = ";LANGID=0x0413;CP=1252;COUNTRY=0";
+        [entry(0x00000031), helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangGeneral = ";LANGID=0x0409;CP=1252;COUNTRY=0";
+        [entry(0x00000032), helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangGreek = ";LANGID=0x0408;CP=1253;COUNTRY=0";
+        [entry(0x00000033), helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangHebrew = ";LANGID=0x040D;CP=1255;COUNTRY=0";
+        [entry(0x00000034), helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangHungarian = ";LANGID=0x040E;CP=1250;COUNTRY=0";
+        [entry(0x00000035), helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangIcelandic = ";LANGID=0x040F;CP=1252;COUNTRY=0";
+        [entry(0x00000036), helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangNordic = ";LANGID=0x041D;CP=1252;COUNTRY=0";
+        [entry(0x00000037), helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangNorwDan = ";LANGID=0x0414;CP=1252;COUNTRY=0";
+        [entry(0x00000038), helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangPolish = ";LANGID=0x0415;CP=1250;COUNTRY=0";
+        [entry(0x00000039), helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangCyrillic = ";LANGID=0x0419;CP=1251;COUNTRY=0";
+        [entry(0x0000003a), helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangSpanish = ";LANGID=0x040A;CP=1252;COUNTRY=0";
+        [entry(0x0000003b), helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangSwedFin = ";LANGID=0x040B;CP=1252;COUNTRY=0";
+        [entry(0x0000003c), helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangTurkish = ";LANGID=0x041F;CP=1254;COUNTRY=0";
+        [entry(0x0000003d), helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangJapanese = ";LANGID=0x0411;CP=932;COUNTRY=0";
+        [entry(0x0000003e), helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangChineseSimplified = ";LANGID=0x0804;CP=936;COUNTRY=0";
+        [entry(0x0000003f), helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangChineseTraditional = ";LANGID=0x0404;CP=950;COUNTRY=0";
+        [entry(0x00000040), helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangKorean = ";LANGID=0x040C;CP=494;COUNTRY=0";
+        [entry(0x00000041), helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangThai = ";LANGID=0x101E;CP=874;COUNTRY=0";
+        [entry(0x00000042), helpstring("CollatingOrder (Database, Field)")] const short gdbSortNeutral = 1024;
+        [entry(0x00000043), helpstring("CollatingOrder (Database, Field)")] const short gdbSortArabic = 1025;
+        [entry(0x00000044), helpstring("CollatingOrder (Database, Field)")] const short gdbSortCyrillic = 1049;
+        [entry(0x00000045), helpstring("CollatingOrder (Database, Field)")] const short gdbSortCzech = 1029;
+        [entry(0x00000046), helpstring("CollatingOrder (Database, Field)")] const short gdbSortDutch = 1043;
+        [entry(0x00000047), helpstring("CollatingOrder (Database, Field)")] const short gdbSortGeneral = 1033;
+        [entry(0x00000048), helpstring("CollatingOrder (Database, Field)")] const short gdbSortGreek = 1032;
+        [entry(0x00000049), helpstring("CollatingOrder (Database, Field)")] const short gdbSortHebrew = 1037;
+        [entry(0x0000004a), helpstring("CollatingOrder (Database, Field)")] const short gdbSortHungarian = 1038;
+        [entry(0x0000004b), helpstring("CollatingOrder (Database, Field)")] const short gdbSortIcelandic = 1039;
+        [entry(0x0000004c), helpstring("CollatingOrder (Database, Field)")] const short gdbSortNorwdan = 1030;
+        [entry(0x0000004d), helpstring("CollatingOrder (Database, Field)")] const short gdbSortPDXIntl = 1033;
+        [entry(0x0000004e), helpstring("CollatingOrder (Database, Field)")] const short gdbSortPDXNor = 1030;
+        [entry(0x0000004f), helpstring("CollatingOrder (Database, Field)")] const short gdbSortPDXSwe = 1053;
+        [entry(0x00000050), helpstring("CollatingOrder (Database, Field)")] const short gdbSortPolish = 1045;
+        [entry(0x00000051), helpstring("CollatingOrder (Database, Field)")] const short gdbSortSpanish = 1034;
+        [entry(0x00000052), helpstring("CollatingOrder (Database, Field)")] const short gdbSortSwedFin = 1053;
+        [entry(0x00000053), helpstring("CollatingOrder (Database, Field)")] const short gdbSortTurkish = 1055;
+        [entry(0x00000054), helpstring("CollatingOrder (Database, Field)")] const short gdbSortJapanese = 1041;
+        [entry(0x00000055), helpstring("CollatingOrder (Database, Field)")] const short gdbSortChineseSimplified = 2052;
+        [entry(0x00000056), helpstring("CollatingOrder (Database, Field)")] const short gdbSortChineseTraditional = 1028;
+        [entry(0x00000057), helpstring("CollatingOrder (Database, Field)")] const short gdbSortKorean = 1036;
+        [entry(0x00000058), helpstring("CollatingOrder (Database, Field)")] const short gdbSortThai = 4126;
+        [entry(0x00000059), helpstring("CollatingOrder (Database, Field)")] const short gdbSortUndefined = -1;
+        [entry(0x0000005a), helpstring("Unknown value returned from property/method")] const short gdbUnknown = -1;
+        [entry(0x0000005b), helpstring("Modication Types")] const short gdbInsert = 1;
+        [entry(0x0000005c), helpstring("Modication Types")] const short gdbUpdate = 2;
+        [entry(0x0000005d), helpstring("Modication Types")] const short gdbDelete = 3;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      dllname("<invalid typelib>"),
+      helpstring("GDO CSGuid Constants")
+    ]
+    module GCSGuidConstants {
+        [entry(00000000), helpstring("Coordinate System Constants")] const short gdbgTransient = 1;
+        [entry(0x00000001), helpstring("Coordinate System Constants")] const short gdbgPersistent = 2;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      dllname("<invalid typelib>"),
+      helpstring("GDO CS Base Storage Constants")
+    ]
+    module GCSBaseStorageConstants {
+        [entry(00000000), helpstring("Coordinate System Constants")] const short gdbbsProjected = 0;
+        [entry(0x00000001), helpstring("Coordinate System Constants")] const short gdbbsGeographic = 1;
+        [entry(0x00000002), helpstring("Coordinate System Constants")] const short gdbbsGeocentric = 2;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      dllname("<invalid typelib>"),
+      helpstring("GDO CS Height Constants")
+    ]
+    module GCSHeightConstants {
+        [entry(00000000), helpstring("Coordinate System Constants")] const short gdbhOrthometric = 0;
+        [entry(0x00000001), helpstring("Coordinate System Constants")] const short gdbhGeometric = 1;
+        [entry(0x00000002), helpstring("Coordinate System Constants")] const short gdbhUnspecified = 2;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      dllname("<invalid typelib>"),
+      helpstring("GDO CS Longitude Normalization Constants")
+    ]
+    module GCSLongitudeNormalizationConstants {
+        [entry(00000000), helpstring("Coordinate System Constants")] const short gdblnZeroTo360LeftInclude = 0;
+        [entry(0x00000001), helpstring("Coordinate System Constants")] const short gdblnZeroTo360BothInclude = 1;
+        [entry(0x00000002), helpstring("Coordinate System Constants")] const short gdblnMinus180ToPlus180LeftInclude = 2;
+        [entry(0x00000003), helpstring("Coordinate System Constants")] const short gdblnMinus180ToPlus180BothInclude = 3;
+        [entry(0x00000004), helpstring("Coordinate System Constants")] const short gdblnMinus360To0RightInclude = 4;
+        [entry(0x00000005), helpstring("Coordinate System Constants")] const short gdblnMinus360To0BothInclude = 5;
+        [entry(0x00000006), helpstring("Coordinate System Constants")] const short gdblnNoLongitudeNormalization = 6;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      dllname("<invalid typelib>"),
+      helpstring("GDO CS Geodetic Datum Constants")
+    ]
+    module GCSGeodeticDatumConstants {
+        [entry(00000000), helpstring("Coordinate System Constants")] const short gdbgdUserDefined = 0;
+        [entry(0x00000001), helpstring("Coordinate System Constants")] const short gdbgdAFG = 1;
+        [entry(0x00000002), helpstring("Coordinate System Constants")] const short gdbgdAustralian1966 = 2;
+        [entry(0x00000003), helpstring("Coordinate System Constants")] const short gdbgdAustralian1984 = 3;
+        [entry(0x00000004), helpstring("Coordinate System Constants")] const short gdbgdEuropean1950 = 4;
+        [entry(0x00000005), helpstring("Coordinate System Constants")] const short gdbgdEuropean1979 = 5;
+        [entry(0x00000006), helpstring("Coordinate System Constants")] const short gdbgdGeodDatum1949 = 6;
+        [entry(0x00000007), helpstring("Coordinate System Constants")] const short gdbgdIndian = 7;
+        [entry(0x00000008), helpstring("Coordinate System Constants")] const short gdbgdIreland1965 = 8;
+        [entry(0x00000009), helpstring("Coordinate System Constants")] const short gdbgdNAD27 = 9;
+        [entry(0x0000000a), helpstring("Coordinate System Constants")] const short gdbgdNAD83 = 10;
+        [entry(0x0000000b), helpstring("Coordinate System Constants")] const short gdbgdOrdnanceSurveyGreatBritain = 11;
+        [entry(0x0000000c), helpstring("Coordinate System Constants")] const short gdbgdPulkovo1942 = 12;
+        [entry(0x0000000d), helpstring("Coordinate System Constants")] const short gdbgdQornoq = 13;
+        [entry(0x0000000e), helpstring("Coordinate System Constants")] const short gdbgdTokyo = 14;
+        [entry(0x0000000f), helpstring("Coordinate System Constants")] const short gdbgdWGS66 = 15;
+        [entry(0x00000010), helpstring("Coordinate System Constants")] const short gdbgdWGS72 = 16;
+        [entry(0x00000011), helpstring("Coordinate System Constants")] const short gdbgdWGS84 = 17;
+        [entry(0x00000012), helpstring("Coordinate System Constants")] const short gdbgdSAD1956 = 18;
+        [entry(0x00000013), helpstring("Coordinate System Constants")] const short gdbgdSAD1969 = 19;
+        [entry(0x00000014), helpstring("Coordinate System Constants")] const short gdbgdIndonesian1974 = 20;
+        [entry(0x00000015), helpstring("Coordinate System Constants")] const short gdbgdWGS60 = 21;
+        [entry(0x00000016), helpstring("Coordinate System Constants")] const short gdbgdTananObservatory1925 = 22;
+        [entry(0x00000017), helpstring("Coordinate System Constants")] const short gdbgdKertau1948 = 23;
+        [entry(0x00000018), helpstring("Coordinate System Constants")] const short gdbgdPotsdam = 24;
+        [entry(0x00000019), helpstring("Coordinate System Constants")] const short gdbgdUSStandard = 25;
+        [entry(0x0000001a), helpstring("Coordinate System Constants")] const short gdbgdMGICS = 26;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      dllname("<invalid typelib>"),
+      helpstring("GDO CS Ellipsoid Constants")
+    ]
+    module GCSEllipsoidConstants {
+        [entry(00000000), helpstring("Coordinate System Constants")] const short gdbeUndefined = 0;
+        [entry(0x00000001), helpstring("Coordinate System Constants")] const short gdbeGRS80 = 1;
+        [entry(0x00000002), helpstring("Coordinate System Constants")] const short gdbeWGS72 = 2;
+        [entry(0x00000003), helpstring("Coordinate System Constants")] const short gdbeAussyNationalSAmerica69 = 3;
+        [entry(0x00000004), helpstring("Coordinate System Constants")] const short gdbeKrassovsky = 4;
+        [entry(0x00000005), helpstring("Coordinate System Constants")] const short gdbeInternational = 5;
+        [entry(0x00000006), helpstring("Coordinate System Constants")] const short gdbeWGS66 = 6;
+        [entry(0x00000007), helpstring("Coordinate System Constants")] const short gdbeClark1880 = 7;
+        [entry(0x00000008), helpstring("Coordinate System Constants")] const short gdbeClark1866 = 8;
+        [entry(0x00000009), helpstring("Coordinate System Constants")] const short gdbeHelmert1906 = 9;
+        [entry(0x0000000a), helpstring("Coordinate System Constants")] const short gdbeBessel1841 = 10;
+        [entry(0x0000000b), helpstring("Coordinate System Constants")] const short gdbeDanish = 11;
+        [entry(0x0000000c), helpstring("Coordinate System Constants")] const short gdbeStruve = 12;
+        [entry(0x0000000d), helpstring("Coordinate System Constants")] const short gdbeHough = 13;
+        [entry(0x0000000e), helpstring("Coordinate System Constants")] const short gdbeAiry1830 = 14;
+        [entry(0x0000000f), helpstring("Coordinate System Constants")] const short gdbeEverest1830 = 15;
+        [entry(0x00000010), helpstring("Coordinate System Constants")] const short gdbeModAiry = 16;
+        [entry(0x00000011), helpstring("Coordinate System Constants")] const short gdbeModEverest = 17;
+        [entry(0x00000012), helpstring("Coordinate System Constants")] const short gdbeFischer1960Mercury = 18;
+        [entry(0x00000013), helpstring("Coordinate System Constants")] const short gdbeModFischer1960SA = 19;
+        [entry(0x00000014), helpstring("Coordinate System Constants")] const short gdbeFischer1968 = 20;
+        [entry(0x00000015), helpstring("Coordinate System Constants")] const short gdbeUserDefined = 21;
+        [entry(0x00000016), helpstring("Coordinate System Constants")] const short gdbeWGS84 = 22;
+        [entry(0x00000017), helpstring("Coordinate System Constants")] const short gdbeIndoNational1974 = 23;
+        [entry(0x00000018), helpstring("Coordinate System Constants")] const short gdbeWGS60 = 24;
+        [entry(0x00000019), helpstring("Coordinate System Constants")] const short gdbeUnitSphere = 25;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      dllname("<invalid typelib>"),
+      helpstring("GDO CS Projection Algorithm Constants")
+    ]
+    module GCSProjectionAlgorithmConstants {
+        [entry(00000000), helpstring("Coordinate System Constants")] const short gdbpaUndefined = 0;
+        [entry(0x00000001), helpstring("Coordinate System Constants")] const short gdbpaMercator = 1;
+        [entry(0x00000002), helpstring("Coordinate System Constants")] const short gdbpaLambert = 2;
+        [entry(0x00000003), helpstring("Coordinate System Constants")] const short gdbpaNorthPolar = 3;
+        [entry(0x00000004), helpstring("Coordinate System Constants")] const short gdbpaSouthPolar = 4;
+        [entry(0x00000005), helpstring("Coordinate System Constants")] const short gdbpaLinearElastic = 5;
+        [entry(0x00000006), helpstring("Coordinate System Constants")] const short gdbpaTransverseMercator = 6;
+        [entry(0x00000007), helpstring("Coordinate System Constants")] const short gdbpaUniversalTransverseMercator = 8;
+        [entry(0x00000008), helpstring("Coordinate System Constants")] const short gdbpaIndonesianPoly = 9;
+        [entry(0x00000009), helpstring("Coordinate System Constants")] const short gdbpaSPCS27 = 10;
+        [entry(0x0000000a), helpstring("Coordinate System Constants")] const short gdbpaPolyconic = 11;
+        [entry(0x0000000b), helpstring("Coordinate System Constants")] const short gdbpaAlbers = 12;
+        [entry(0x0000000c), helpstring("Coordinate System Constants")] const short gdbpaObliqueMercator = 13;
+        [entry(0x0000000d), helpstring("Coordinate System Constants")] const short gdbpaNewZealand = 14;
+        [entry(0x0000000e), helpstring("Coordinate System Constants")] const short gdbpaVanDerGrinten = 15;
+        [entry(0x0000000f), helpstring("Coordinate System Constants")] const short gdbpaAzimuthalEquidistant = 19;
+        [entry(0x00000010), helpstring("Coordinate System Constants")] const short gdbpaOrthographic = 20;
+        [entry(0x00000011), helpstring("Coordinate System Constants")] const short gdbpaSPCS83 = 21;
+        [entry(0x00000012), helpstring("Coordinate System Constants")] const short gdbpaStereographic = 22;
+        [entry(0x00000013), helpstring("Coordinate System Constants")] const short gdbpaGnomonic = 23;
+        [entry(0x00000014), helpstring("Coordinate System Constants")] const short gdbpaRobinson = 24;
+        [entry(0x00000015), helpstring("Coordinate System Constants")] const short gdbpaCassini = 25;
+        [entry(0x00000016), helpstring("Coordinate System Constants")] const short gdbpaSinusoidal = 26;
+        [entry(0x00000017), helpstring("Coordinate System Constants")] const short gdbpaLambertAzimuthalEqArea = 27;
+        [entry(0x00000018), helpstring("Coordinate System Constants")] const short gdbpaMillerCyl = 28;
+        [entry(0x00000019), helpstring("Coordinate System Constants")] const short gdbpaBonne = 29;
+        [entry(0x0000001a), helpstring("Coordinate System Constants")] const short gdbpaBritNGrid = 30;
+        [entry(0x0000001b), helpstring("Coordinate System Constants")] const short gdbpaMollweide = 31;
+        [entry(0x0000001c), helpstring("Coordinate System Constants")] const short gdbpaLocalSpaceRect = 32;
+        [entry(0x0000001d), helpstring("Coordinate System Constants")] const short gdbpaUniversalPolarStereo = 33;
+        [entry(0x0000001e), helpstring("Coordinate System Constants")] const short gdbpaRectifiedSkewOrthomorphic = 35;
+        [entry(0x0000001f), helpstring("Coordinate System Constants")] const short gdbpaIMWModPolycon = 36;
+        [entry(0x00000020), helpstring("Coordinate System Constants")] const short gdbpaObliqueLambert = 37;
+        [entry(0x00000021), helpstring("Coordinate System Constants")] const short gdbpaChamberlinTrimetric = 38;
+        [entry(0x00000022), helpstring("Coordinate System Constants")] const short gdbpaCylEquirect = 39;
+        [entry(0x00000023), helpstring("Coordinate System Constants")] const short gdbpaGeneralPerspective = 40;
+        [entry(0x00000024), helpstring("Coordinate System Constants")] const short gdbpaConic = 41;
+        [entry(0x00000025), helpstring("Coordinate System Constants")] const short gdbpaStereo3Step = 42;
+        [entry(0x00000026), helpstring("Coordinate System Constants")] const short gdbpaGaussKruger = 43;
+        [entry(0x00000027), helpstring("Coordinate System Constants")] const short gdbpaBIPOCC = 44;
+        [entry(0x00000028), helpstring("Coordinate System Constants")] const short gdbpaLaborde = 45;
+        [entry(0x00000029), helpstring("Coordinate System Constants")] const short gdbpaEckertIV = 46;
+        [entry(0x0000002a), helpstring("Coordinate System Constants")] const short gdbpaSpaceObliqueMercator = 47;
+        [entry(0x0000002b), helpstring("Coordinate System Constants")] const short gdbpaSpaceObliqueMercatorPS = 48;
+        [entry(0x0000002c), helpstring("Coordinate System Constants")] const short gdbpaKrovak = 49;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      dllname("<invalid typelib>"),
+      helpstring("GDO CS Hemisphere Constants")
+    ]
+    module GCSHemisphereConstants {
+        [entry(00000000), helpstring("Coordinate System Constants")] const short gdbhNorthern = 0;
+        [entry(0x00000001), helpstring("Coordinate System Constants")] const short gdbhSouthern = 1;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      dllname("<invalid typelib>"),
+      helpstring("GDO CS Satellite Constants")
+    ]
+    module GCSSatelliteConstants {
+        [entry(00000000), helpstring("Coordinate System Constants")] const short gdbsLandsat1 = 0;
+        [entry(0x00000001), helpstring("Coordinate System Constants")] const short gdbsLandsat2 = 1;
+        [entry(0x00000002), helpstring("Coordinate System Constants")] const short gdbsLandsat3 = 2;
+        [entry(0x00000003), helpstring("Coordinate System Constants")] const short gdbsLandsat4 = 3;
+        [entry(0x00000004), helpstring("Coordinate System Constants")] const short gdbsLandsat5 = 4;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      dllname("<invalid typelib>"),
+      helpstring("GDO CS Local Space Rectangular Constants")
+    ]
+    module GCSLocalSpaceRectConstants {
+        [entry(00000000), helpstring("Coordinate System Constants")] const short gdblsrXAxisAzDefinedByDirect = 0;
+        [entry(0x00000001), helpstring("Coordinate System Constants")] const short gdblsrXAxisAzDefinedByTwoPoints = 1;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      dllname("<invalid typelib>"),
+      helpstring("GDO CS Oblique Mercator Constants")
+    ]
+    module GCSObliqueMercatorConstants {
+        [entry(00000000), helpstring("Coordinate System Constants")] const short gdbomByOnePointAndAzimuth = 0;
+        [entry(0x00000001), helpstring("Coordinate System Constants")] const short gdbomByTwoPoints = 1;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      dllname("<invalid typelib>"),
+      helpstring("GDO CS Oblique Lambert Conformal Conic Constants")
+    ]
+    module GCSObliqueLambertConfConicConstants {
+        [entry(00000000), helpstring("Coordinate System Constants")] const short gdbolccByRotatedNorthPole = 0;
+        [entry(0x00000001), helpstring("Coordinate System Constants")] const short gdbolccByAzimuthOfCentralMeridian = 1;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      dllname("<invalid typelib>"),
+      helpstring("GDO CS Spherical Model Constants")
+    ]
+    module GCSSphericalModelConstants {
+        [entry(00000000), helpstring("Coordinate System Constants")] const short gdbsmEquatorial = 0;
+        [entry(0x00000001), helpstring("Coordinate System Constants")] const short gdbsmEqualSurface = 1;
+        [entry(0x00000002), helpstring("Coordinate System Constants")] const short gdbsmEqualVolume = 2;
+        [entry(0x00000003), helpstring("Coordinate System Constants")] const short gdbsmGaussian = 3;
+        [entry(0x00000004), helpstring("Coordinate System Constants")] const short gdbsmUserSpecified = 4;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      dllname("<invalid typelib>"),
+      helpstring("GDO CS Chamberlin Trimetric Constants")
+    ]
+    module GCSChamberlinTrimetricConstants {
+        [entry(00000000), helpstring("Coordinate System Constants")] const short gdbctOriginUserSpecified = 0;
+        [entry(0x00000001), helpstring("Coordinate System Constants")] const short gdbctOriginAutomatic = 1;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      dllname("<invalid typelib>"),
+      helpstring("GDO CS General Perspective Ang Orientation Proj Plane Constants")
+    ]
+    module GCSGeneralPerspectiveAngOrientationProjPlaneConstants {
+        [entry(00000000), helpstring("Coordinate System Constants")] const short gdbgpaoppByRotations = 0;
+        [entry(0x00000001), helpstring("Coordinate System Constants")] const short gdbgpaoppByTiltSwingAzimuth = 1;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      dllname("<invalid typelib>"),
+      helpstring("GDO CS General Perspective Location Proj Plane Constants")
+    ]
+    module GCSGeneralPerspectiveLocProjPlaneConstants {
+        [entry(00000000), helpstring("Coordinate System Constants")] const short gdbgplppByHeightAboveEllipAtNadir = 0;
+        [entry(0x00000001), helpstring("Coordinate System Constants")] const short gdbgplppByFocalLength = 1;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      dllname("<invalid typelib>"),
+      helpstring("GDO CS General Perspective Ref Coord Sys Constants")
+    ]
+    module GCSGeneralPerspectiveRefCoordSysConstants {
+        [entry(00000000), helpstring("Coordinate System Constants")] const short gdbgprcsByGeographic = 0;
+        [entry(0x00000001), helpstring("Coordinate System Constants")] const short gdbgprcsByGeocentric = 1;
+        [entry(0x00000002), helpstring("Coordinate System Constants")] const short gdbgprcsByLocalHorizon = 2;
+    };
+
+    [
+      odl,
+      uuid(3BD80880-7126-11CF-8357-08003601E5F9),
+      helpstring("Collection Interface"),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface _IGCollection : IDispatch {
+        [id(0x60020000), propget, helpcontext(0x00000424)]
+        HRESULT _stdcall Count([out, retval] short* Count);
+        [id(0xfffffffc), hidden]
+        HRESULT _stdcall _NewEnum([out, retval] IUnknown** Enum);
+    };
+
+    [
+      odl,
+      uuid(05F57EB0-720B-11CF-8357-08003601E5F9),
+      helpstring("Dyna Collection Interface"),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface _IGDynaCollection : _IGCollection {
+        [id(0x60030000), helpcontext(0x00000118)]
+        HRESULT _stdcall Append([in] IDispatch* Object);
+        [id(0x60030001), helpcontext(0x000001e0)]
+        HRESULT _stdcall Delete([in] BSTR Name);
+    };
+
+    [
+      odl,
+      uuid(6CF50B40-7126-11CF-8357-08003601E5F9),
+      helpstring("Collection of GRecordset objects"),
+      helpcontext(0x000000a0),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface GRecordsets : _IGCollection {
+        [id(00000000), propget, hidden, helpstring("get recordset"), helpcontext(0x000005c8)]
+        HRESULT _stdcall Item(
+                        [in] VARIANT index, 
+                        [out, retval] GRecordset** ppGRecordset);
+    };
+
+    [
+      odl,
+      uuid(E81F5E20-7126-11CF-8357-08003601E5F9),
+      helpstring("Collection of GTableDef objects"),
+      helpcontext(0x000000f0),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface GTableDefs : _IGDynaCollection {
+        [id(00000000), propget, hidden, helpstring("Get GTableDef"), helpcontext(0x000005c8)]
+        HRESULT _stdcall Item(
+                        [in] VARIANT index, 
+                        [out, retval] GTableDef** ppGTableDef);
+    };
+
+    [
+      odl,
+      uuid(034D65A0-76B4-11CF-8357-08003601E5F9),
+      helpstring("Collection of GField objects"),
+      helpcontext(0x00000050),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface GFields : _IGDynaCollection {
+        [id(00000000), propget, hidden, helpstring("Get GField"), helpcontext(0x000005c8)]
+        HRESULT _stdcall Item(
+                        [in] VARIANT index, 
+                        [out, retval] GField** ppGField);
+    };
+
+    [
+      odl,
+      uuid(12C00EE0-76B4-11CF-8357-08003601E5F9),
+      helpstring("Collection of GIndex objects"),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface GIndexes : _IGDynaCollection {
+        [id(00000000), propget, hidden, helpstring("Get GIndex"), helpcontext(0x000005c8)]
+        HRESULT _stdcall Item(
+                        [in] VARIANT index, 
+                        [out, retval] GIndex** ppGIndex);
+    };
+
+    [
+      odl,
+      uuid(82F5A9E0-7127-11CF-8357-08003601E5F9),
+      helpstring("Collection of GError objects"),
+      helpcontext(0x00000028),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface GErrors : _IGCollection {
+        [id(00000000), propget, hidden, helpstring("Get GError "), helpcontext(0x000005c8)]
+        HRESULT _stdcall Item(
+                        [in] VARIANT index, 
+                        [out, retval] GError** ppGError);
+    };
+
+    [
+      odl,
+      uuid(BCBD18C0-72D2-11CF-8357-08003601E5F9),
+      helpstring("GRecordset Object"),
+      helpcontext(0x0000008c),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface GRecordset : IDispatch {
+        [id(00000000), propget, helpcontext(0x00000514)]
+        HRESULT _stdcall GFields([out, retval] GFields** ppGFields);
+        [id(0x60020001), propget, helpstring("Indicates whether the current record position is before the first record in a GRecordset."), helpcontext(0x000003c0)]
+        HRESULT _stdcall BOF([out, retval] VARIANT_BOOL* pb);
+        [id(0x60020002), propget, helpstring("Uniquely identifies the current record in a GRecordset object or sets the current record in a GRecordset to a valid bookmark."), helpcontext(0x000003d4)]
+        HRESULT _stdcall Bookmark([out, retval] SAFEARRAY(unsigned char)* ppsach);
+        [id(0x60020002), propput, helpstring("Uniquely identifies the current record in a GRecordset object or sets the current record in a GRecordset to a valid bookmark."), helpcontext(0x000003d4)]
+        HRESULT _stdcall Bookmark([in] SAFEARRAY(unsigned char)* ppsach);
+        [id(0x60020004), propget, helpstring("Indicates whether a GRecordset object supports bookmarks, which you can set using the Bookmark property."), helpcontext(0x000003e8)]
+        HRESULT _stdcall Bookmarkable([out, retval] VARIANT_BOOL* pb);
+        [id(0x60020005), propget, helpstring("Indicates the state of editing for the current record."), helpcontext(0x0000049c)]
+        HRESULT _stdcall EditMode([out, retval] short* pi);
+        [id(0x60020006), propget, helpstring("Indicates whether the current record position is after the last record in a GRecordset."), helpcontext(0x000004b0)]
+        HRESULT _stdcall EOF([out, retval] VARIANT_BOOL* pb);
+        [id(0x60020007), propget, helpstring("Indicates the most recently added or changed record."), helpcontext(0x000005dc)]
+        HRESULT _stdcall LastModified([out, retval] SAFEARRAY(unsigned char)* LastModified);
+        [id(0x60020008), propget, helpstring("User-defined name for a GRecordset."), helpcontext(0x00000604)]
+        HRESULT _stdcall Name([out, retval] BSTR* Name);
+        [id(0x60020009), propget, helpstring("Number of records accessed in a Recordset."), helpcontext(0x00000690)]
+        HRESULT _stdcall RecordCount([out, retval] long* RecordCount);
+        [id(0x6002000a), propget, helpstring("Indicates type of GRecordset (dbOpenTable, dbOpenSnap, dbOpenDynaSet)."), helpcontext(0x00000758)]
+        HRESULT _stdcall Type([out, retval] short* Type);
+        [id(0x6002000b), propget, helpstring("Indicates whether changes can be made to a records in the GRecordset."), helpcontext(0x00000780)]
+        HRESULT _stdcall Updatable([out, retval] VARIANT_BOOL* Updatable);
+        [id(0x6002000c), helpstring("Creates a new record for a table-type or dynaset-type GRecordset object."), helpcontext(0x00000104)]
+        HRESULT _stdcall AddNew();
+        [id(0x6002000d), helpstring("Cancels any pending updates for the GRecordset object represented by the object placeholder."), helpcontext(0x00000154)]
+        HRESULT _stdcall CancelUpdate();
+        [id(0x6002000e), helpstring("Closes an open GRecordset."), helpcontext(0x0000017c)]
+        HRESULT _stdcall Close();
+        [id(0x6002000f), helpstring("Deletes the current record in an open dynaset-type or table-type GRecordset object."), helpcontext(0x000001e0)]
+        HRESULT _stdcall Delete();
+        [id(0x60020010), helpstring("Copies the current record from a dynaset-type or table-type GRecordset object to the copy buffer for subsequent editing."), helpcontext(0x000001f4)]
+        HRESULT _stdcall Edit();
+        [id(0x60020011), helpstring("Returns the Extension object for the specified name.")]
+        HRESULT _stdcall GetExtension(
+                        [in] BSTR Name, 
+                        [out, retval] IDispatch** ppGExtension);
+        [id(0x60020012), helpstring("Retrieves multiple rows of a GRecordset object into an array."), helpcontext(0x00000280)]
+        HRESULT _stdcall GetRows(
+                        [in] VARIANT Rows, 
+                        [out, retval] VARIANT* pvar);
+        [id(0x60020013), helpstring("Moves the position of the current record in a GRecordset object."), helpcontext(0x00000294)]
+        HRESULT _stdcall Move(
+                        [in] long Rows, 
+                        [in, optional] VARIANT StartBookmark);
+        [id(0x60020014), helpstring("Move to the first record in a specified GRecordset object and make that record the current record."), helpcontext(0x000002a8)]
+        HRESULT _stdcall MoveFirst();
+        [id(0x60020015), helpstring("Move to the last record in a specified GRecordset object and make that record the current record."), helpcontext(0x000002bc)]
+        HRESULT _stdcall MoveLast();
+        [id(0x60020016), helpstring("Move to the next record in a specified Recordset object and make that record the current record."), helpcontext(0x000002d0)]
+        HRESULT _stdcall MoveNext();
+        [id(0x60020017), helpstring("Move to the previous record in a specified GRecordset object and make that record the current record."), helpcontext(0x000002e4)]
+        HRESULT _stdcall MovePrevious();
+        [id(0x60020018), helpstring("Saves the contents of the copy buffer to a specified dynaset- or table-type GRecordset object."), helpcontext(0x0000035c)]
+        HRESULT _stdcall Update();
+    };
+
+    [
+      odl,
+      uuid(A1596D10-7602-11CF-8357-08003601E5F9),
+      helpstring("GField Interface"),
+      helpcontext(0x0000003c),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface GField : IDispatch {
+        [id(00000000), propget, helpstring("Value of a GField object."), helpcontext(0x00000794)]
+        HRESULT _stdcall Value([out, retval] VARIANT* pValue);
+        [id(00000000), propput, helpstring("Value of a GField object."), helpcontext(0x00000794)]
+        HRESULT _stdcall Value([in] VARIANT pValue);
+        [id(0x60020002), propget, helpstring("Indicates whether a zero-length string is a valid setting for the Value property of a GField object. "), helpcontext(0x00000398)]
+        HRESULT _stdcall AllowZeroLength([out, retval] VARIANT_BOOL* pAllow);
+        [id(0x60020002), propput, helpstring("Indicates whether a zero-length string is a valid setting for the Value property of a GField object. "), helpcontext(0x00000398)]
+        HRESULT _stdcall AllowZeroLength([in] VARIANT_BOOL pAllow);
+        [id(0x60020004), propget, helpstring("Indicates one or more characteristics of a GField object."), helpcontext(0x000003ac)]
+        HRESULT _stdcall Attributes([out, retval] long* pAttr);
+        [id(0x60020004), propput, helpstring("Indicates one or more characteristics of a GField object."), helpcontext(0x000003ac)]
+        HRESULT _stdcall Attributes([in] long pAttr);
+        [id(0x60020006), propget, helpstring("Specifies the sequence of the sort order in text for string comparison or sorting."), helpcontext(0x000003fc)]
+        HRESULT _stdcall CollatingOrder([out, retval] long* pOrder);
+        [id(0x60020007), propget, helpstring("GUID of Coordinate System."), helpcontext(0x00000410)]
+        HRESULT _stdcall CoordSystemGUID([out, retval] VARIANT* CSGuid);
+        [id(0x60020007), propput, helpstring("GUID of Coordinate System."), helpcontext(0x00000410)]
+        HRESULT _stdcall CoordSystemGUID([in] VARIANT CSGuid);
+        [id(0x60020009), propget, helpstring("Indicates whether the data in the field represented by a GField object is updatable."), helpcontext(0x00000438)]
+        HRESULT _stdcall DataUpdatable([out, retval] VARIANT_BOOL* pUpdatable);
+        [id(0x6002000a), propput, helpstring("Default value of a GField object. Not supported by GIndex. "), helpcontext(0x00000460)]
+        HRESULT _stdcall DefaultValue([in] BSTR pValue);
+        [id(0x6002000a), propget, helpstring("Default value of a GField object. Not supported by GIndex. "), helpcontext(0x00000460)]
+        HRESULT _stdcall DefaultValue([out, retval] BSTR* pValue);
+        [id(0x6002000c), propget, helpstring("User-defined name for a GField object."), helpcontext(0x00000604)]
+        HRESULT _stdcall Name([out, retval] BSTR* pName);
+        [id(0x6002000c), propput, helpstring("User-defined name for a GField object."), helpcontext(0x00000604)]
+        HRESULT _stdcall Name([in] BSTR pName);
+        [id(0x6002000e), propget, helpstring("Indicates whether a GField object requires a non-Null value."), helpcontext(0x000006b8)]
+        HRESULT _stdcall Required([out, retval] VARIANT_BOOL* pRequired);
+        [id(0x6002000e), propput, helpstring("Indicates whether a GField object requires a non-Null value."), helpcontext(0x000006b8)]
+        HRESULT _stdcall Required([in] VARIANT_BOOL pRequired);
+        [id(0x60020010), propget, helpstring("Maximum size of a GField object that contains text or the fixed size of a GField object that contains text or numeric values."), helpcontext(0x000006e0)]
+        HRESULT _stdcall Size([out, retval] long* pSize);
+        [id(0x60020010), propput, helpstring("Maximum size of a GField object that contains text or the fixed size of a GField object that contains text or numeric values."), helpcontext(0x000006e0)]
+        HRESULT _stdcall Size([in] long pSize);
+        [id(0x60020012), propget, helpstring("Indicates the name of the database that is the original source of the data for a GField object for GRecordsets only."), helpcontext(0x00000712)]
+        HRESULT _stdcall SourceDatabase([out, retval] BSTR* pDatabase);
+        [id(0x60020013), propget, helpstring("Indicates the name of the field that is the original source of the data for a GField object on a GRecordset only."), helpcontext(0x0000071c)]
+        HRESULT _stdcall SourceField([out, retval] BSTR* pField);
+        [id(0x60020014), propget, helpstring("Indicates the name of the table that is the original source of the data for a GField object for GRecordsets only."), helpcontext(0x00000730)]
+        HRESULT _stdcall SourceTable([out, retval] BSTR* pTable);
+        [id(0x60020015), propget, helpstring("Classification of spatial or graphic geometry.")]
+        HRESULT _stdcall SubType([out, retval] long* pGeometryType);
+        [id(0x60020015), propput, helpstring("Classification of spatial or graphic geometry.")]
+        HRESULT _stdcall SubType([in] long pGeometryType);
+        [id(0x60020017), propget, helpstring("Indicates the operational type or data type of a GField object."), helpcontext(0x00000758)]
+        HRESULT _stdcall Type([out, retval] short* pType);
+        [id(0x60020017), propput, helpstring("Indicates the operational type or data type of a GField object."), helpcontext(0x00000758)]
+        HRESULT _stdcall Type([in] short pType);
+        [id(0x60020019), helpstring("Appends data from a string expression to a Raw, LongRaw, or a Long object in the GFields collection of a GRecordset object."), helpcontext(0x0000012c)]
+        HRESULT _stdcall AppendChunk([in] VARIANT Val);
+        [id(0x6002001a), helpstring("Returns the number of bytes in a Raw, LongRaw or a Long object in the GFields collection of a GRecordset object."), helpcontext(0x00000208)]
+        HRESULT _stdcall FieldSize([out, retval] long* pSize);
+        [id(0x6002001b), helpstring("Returns all or a portion of the contents of a Memo, gdbGeometry, or an OLE Object Field (gdbLongBinary) object in the GFields collections of a GRecordset object."), helpcontext(0x0000026c)]
+        HRESULT _stdcall GetChunk(
+                        [in] long Offset, 
+                        [in] long Bytes, 
+                        [out, retval] VARIANT* pChunk);
+        [id(0x6002001c), helpstring("Returns the Extension object for the specified name.")]
+        HRESULT _stdcall GetExtension(
+                        [in] BSTR Name, 
+                        [out, retval] IDispatch** ppGExtension);
+    };
+
+    [
+      odl,
+      uuid(1FEC0B90-7699-11CF-8357-08003601E5F9),
+      helpstring("GError Object"),
+      helpcontext(0x00000014),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface GError : IDispatch {
+        [id(00000000), propget, helpstring("Text description of the error"), helpcontext(0x00000474)]
+        HRESULT _stdcall Description([out, retval] BSTR* pDescription);
+        [id(0x60020001), propget, helpstring("Error number of the most recent error."), helpcontext(0x0000062c)]
+        HRESULT _stdcall Number([out, retval] long* pNumber);
+        [id(0x60020002), propget, helpstring("Name of the object class that the error occured on."), helpcontext(0x00000708)]
+        HRESULT _stdcall Source([out, retval] BSTR* pSource);
+        [id(0x60020003), propget, helpstring("Help file containing the description of this error"), helpcontext(0x0000058c)]
+        HRESULT _stdcall HelpFile([out, retval] BSTR* pHelpFile);
+        [id(0x60020004), propget, helpstring("Help context ID for the description of this error"), helpcontext(0x00000578)]
+        HRESULT _stdcall HelpContext([out, retval] long* pContext);
+    };
+
+    [
+      odl,
+      uuid(9C76DF90-76A1-11CF-8357-08003601E5F9),
+      helpstring("GTableDef Interface"),
+      helpcontext(0x000000dc),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface GTableDef : IDispatch {
+        [id(00000000), propget, helpstring("Returns the GFields collection object."), helpcontext(0x00000514)]
+        HRESULT _stdcall GFields([out, retval] GFields** Fields);
+        [id(0x60020001), propget, helpstring("Returns the GIndexes collection object."), helpcontext(0x00000528)]
+        HRESULT _stdcall GIndexes([out, retval] GIndexes** Indexes);
+        [id(0x60020002), propget, helpstring("Date and time when the table was created."), helpcontext(0x0000044c)]
+        HRESULT _stdcall DateCreated([out, retval] VARIANT* pDate);
+        [id(0x60020003), propget, helpstring("Date and time of the most recent change to the table's structure."), helpcontext(0x000005f0)]
+        HRESULT _stdcall LastUpdated([out, retval] VARIANT* pLastUpdated);
+        [id(0x60020004), propget, helpstring("The name of this object."), helpcontext(0x00000604)]
+        HRESULT _stdcall Name([out, retval] BSTR* pName);
+        [id(0x60020004), propput, helpstring("The name of this object."), helpcontext(0x00000604)]
+        HRESULT _stdcall Name([in] BSTR pName);
+        [id(0x60020006), propget, helpstring("The number of records in the Table."), helpcontext(0x00000690)]
+        HRESULT _stdcall RecordCount([out, retval] long* pCount);
+        [id(0x60020007), propget, helpstring("Indicates whether the definition of the table can be changed."), helpcontext(0x00000780)]
+        HRESULT _stdcall Updatable([out, retval] VARIANT_BOOL* pUpdatable);
+        [id(0x60020008), helpstring("Creates a new GField object."), helpcontext(0x000001b8)]
+        HRESULT _stdcall CreateField(
+                        [in, optional] VARIANT Name, 
+                        [in, optional] VARIANT Type, 
+                        [in, optional] VARIANT Size, 
+                        [out, retval] GField** ppField);
+        [id(0x60020009), helpstring("Creates a new GIndex object.")]
+        HRESULT _stdcall CreateIndex(
+                        [in, optional] VARIANT Name, 
+                        [out, retval] GIndex** ppIndex);
+        [id(0x6002000a), helpstring("Returns the Extension object for the specified name.")]
+        HRESULT _stdcall GetExtension(
+                        [in] BSTR Name, 
+                        [out, retval] IDispatch** ppGExtension);
+    };
+
+    [
+      odl,
+      uuid(2FA9E2D0-76A7-11CF-8357-08003601E5F9),
+      helpstring("GIndex Interface"),
+      helpcontext(0x00000064),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface GIndex : IDispatch {
+        [id(00000000), propget, helpcontext(0x00000514)]
+        HRESULT _stdcall GFields([out, retval] GFields** pvar);
+        [id(0x60020001), propget, helpstring("Indicates whether the Null values are stored in the index."), helpcontext(0x000005a0)]
+        HRESULT _stdcall IgnoreNulls([out, retval] VARIANT_BOOL* pb);
+        [id(0x60020001), propput, helpstring("Indicates whether the Null values are stored in the index."), helpcontext(0x000005a0)]
+        HRESULT _stdcall IgnoreNulls([in] VARIANT_BOOL pb);
+        [id(0x60020003), propget, helpstring("The name of this object."), helpcontext(0x00000604)]
+        HRESULT _stdcall Name([out, retval] BSTR* Name);
+        [id(0x60020003), propput, helpstring("The name of this object."), helpcontext(0x00000604)]
+        HRESULT _stdcall Name([in] BSTR Name);
+        [id(0x60020005), propget, helpstring("Indicates whether this is a primary index for a table."), helpcontext(0x0000067c)]
+        HRESULT _stdcall Primary([out, retval] VARIANT_BOOL* pPrimary);
+        [id(0x60020005), propput, helpstring("Indicates whether this is a primary index for a table."), helpcontext(0x0000067c)]
+        HRESULT _stdcall Primary([in] VARIANT_BOOL pPrimary);
+        [id(0x60020007), propput, helpstring("Indicates whether the Index requires a non-Null value."), helpcontext(0x000006b8)]
+        HRESULT _stdcall Required([in] VARIANT_BOOL pRequired);
+        [id(0x60020007), propget, helpstring("Indicates whether the Index requires a non-Null value."), helpcontext(0x000006b8)]
+        HRESULT _stdcall Required([out, retval] VARIANT_BOOL* pRequired);
+        [id(0x60020009), propget, helpstring("Determines whether this is a unique index for a table."), helpcontext(0x0000076c)]
+        HRESULT _stdcall Unique([out, retval] VARIANT_BOOL* pUnique);
+        [id(0x60020009), propput, helpstring("Determines whether this is a unique index for a table."), helpcontext(0x0000076c)]
+        HRESULT _stdcall Unique([in] VARIANT_BOOL pUnique);
+        [id(0x6002000b), helpstring("Creates a new Field object."), helpcontext(0x000001b8)]
+        HRESULT _stdcall CreateField(
+                        [in, optional] VARIANT Name, 
+                        [in, optional] VARIANT Type, 
+                        [in, optional] VARIANT Size, 
+                        [out, retval] GField** ppField);
+    };
+
+    [
+      odl,
+      uuid(6946F650-78F6-11CF-83FC-080036830302),
+      helpstring("Application object for the GDatabase application."),
+      helpcontext(0x00000001),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface GDatabase : IDispatch {
+        [id(0x60020000), propget, helpstring("Returns a integer that specifies the sort order for text."), helpcontext(0x000003fc)]
+        HRESULT _stdcall CollatingOrder([out, retval] long* pCollatingOrder);
+        [id(0x60020001), propget, helpstring("Information saved from the Source argument of OpenDatabase."), helpcontext(0x00000406)]
+        HRESULT _stdcall Connect([out, retval] BSTR* Connect);
+        [id(0x60020002), propget, helpstring("Returns the metadata table name."), helpcontext(0x000004d8)]
+        HRESULT _stdcall GAliasTable([out, retval] BSTR* AliasTableName);
+        [id(0x60020003), propget, helpstring("Returns the GErrors collection."), helpcontext(0x000004ec)]
+        HRESULT _stdcall GErrors([out, retval] GErrors** ppGErrors);
+        [id(0x60020004), propget, helpstring("Returns the GRecordsets collection."), helpcontext(0x0000053c)]
+        HRESULT _stdcall GRecordsets([out, retval] GRecordsets** ppGRecordsets);
+        [id(0x60020005), propget, helpstring("Returns the GTabledefs collection."), helpcontext(0x00000564)]
+        HRESULT _stdcall GTableDefs([out, retval] GTableDefs** ppGTabledefs);
+        [id(0x60020006), propget, helpstring("returns a string specifying path of database."), helpcontext(0x00000604)]
+        HRESULT _stdcall Name([out, retval] BSTR* Name);
+        [id(0x60020007), propget, helpstring("Returns a BOOLEAN indicating whether changes can be made to the schema."), helpcontext(0x000006cc)]
+        HRESULT _stdcall SchemaUpdatable([out, retval] VARIANT_BOOL* Updatable);
+        [id(0x60020008), propget, helpstring("Specifies the level of SQL Conformance")]
+        HRESULT _stdcall SQLConformance([out, retval] long* pSQLConformance);
+        [id(0x60020009), propget, helpstring("Returns a BOOLEAN indicating whether transactions are supported."), helpcontext(0x00000744)]
+        HRESULT _stdcall Transactions([out, retval] VARIANT_BOOL* Transactions);
+        [id(0x6002000a), propget, helpstring("Returns a BOOLEAN indicating whether changes can be made to the database."), helpcontext(0x00000780)]
+        HRESULT _stdcall Updatable([out, retval] VARIANT_BOOL* Updatable);
+        [id(0x6002000b), propget, helpstring("Returns a string withe the database version #."), helpcontext(0x000007a8)]
+        HRESULT _stdcall Version([out, retval] BSTR* Version);
+        [id(0x6002000c), helpstring("Begins a Transaction."), helpcontext(0x00000140)]
+        HRESULT _stdcall BeginTrans();
+        [id(0x6002000d), helpstring("Clears the Modification Log."), helpcontext(0x00000168)]
+        HRESULT _stdcall ClearModificationLog([in, optional] VARIANT Entry);
+        [id(0x6002000e), helpstring("Close Database Connection."), helpcontext(0x0000017c)]
+        HRESULT _stdcall Close();
+        [id(0x6002000f), helpstring("Commits a Transaction."), helpcontext(0x00000190)]
+        HRESULT _stdcall CommitTrans();
+        [id(0x60020010), helpstring("Creates a new Database"), helpcontext(0x000001a4)]
+        HRESULT _stdcall CreateDatabase(
+                        [in] BSTR Name, 
+                        [in] BSTR locale);
+        [id(0x60020011), helpstring("Creates a GTableDef"), helpcontext(0x000001cc)]
+        HRESULT _stdcall CreateTableDef(
+                        [in] VARIANT Name, 
+                        [out, retval] GTableDef** ppGTableDef);
+        [id(0x60020012), helpstring("Returns the Extension object for the specified name.")]
+        HRESULT _stdcall GetExtension(
+                        [in] BSTR Name, 
+                        [out, retval] IDispatch** ppGExtension);
+        [id(0x60020013), helpstring("Opens a GDatabase."), helpcontext(0x000002f8)]
+        HRESULT _stdcall OpenDatabase(
+                        [in] BSTR Name, 
+                        [in, optional] VARIANT exclusive, 
+                        [in, optional] VARIANT readonly, 
+                        [in, optional] VARIANT ModTrack, 
+                        [in, optional] VARIANT Source);
+        [id(0x60020014), helpstring("Opens a GRecordset."), helpcontext(0x0000030c)]
+        HRESULT _stdcall OpenRecordset(
+                        [in] BSTR Name, 
+                        [in, optional] VARIANT Type, 
+                        [in, optional] VARIANT options, 
+                        [in, optional] VARIANT SpatialOp, 
+                        [in, optional] VARIANT SpatialGeometryFilter, 
+                        [in, optional] VARIANT GeometryFieldName, 
+                        [out, retval] GRecordset** ppGRecordset);
+        [id(0x60020015), helpstring("Rolls Back a Transaction."), helpcontext(0x00000334)]
+        HRESULT _stdcall Rollback();
+    };
+};

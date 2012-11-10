@@ -1,0 +1,315 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "geoedita.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "dlgs.h"
+#include "resstrg.h"
+#include "geoedit.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_NEUERFASSUNG DIALOG DISCARDABLE  2, 15, 191, 106
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "New capture"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Object class:",-1,2,3,51,8
+    COMBOBOX        IDL_IDENTIFIKATOR,2,12,139,59,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Object name:",-1,2,27,44,8
+    EDITTEXT        IDE_OBJNAME,2,36,139,12,ES_AUTOHSCROLL
+    LTEXT           "Coordinates:",-1,2,51,44,8
+    LTEXT           "&X:",-1,2,62,10,8,NOT WS_GROUP
+    EDITTEXT        IDE_XKOORD,13,60,55,12,ES_AUTOHSCROLL
+    LTEXT           "&Y:",-1,2,77,8,8,NOT WS_GROUP
+    EDITTEXT        IDE_YKOORD,13,75,55,12,ES_AUTOHSCROLL
+    GROUPBOX        " Memory form",IDG_SPEICHERFORM,80,52,61,35,WS_GROUP
+    CONTROL         " &Temporary",IDR_TEMPORAER,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,84,62,47,10
+    CONTROL         " &Permanent",IDR_PERMANENT,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,84,74,50,10
+    DEFPUSHBUTTON   "&Save",IDOK,146,12,43,14,WS_GROUP
+    PUSHBUTTON      "&Cancel",IDCANCEL,146,34,43,14
+    PUSHBUTTON      "&Continue",IDB_FORTSETZEN,146,56,43,14
+    PUSHBUTTON      "&Tighten",IDB_ZUZIEHEN,2,90,43,14
+    PUSHBUTTON      "&Delete",IDB_LOESCHEN,50,90,43,14
+    PUSHBUTTON      "&Island beginning",IDB_INSEL,98,90,43,14
+    PUSHBUTTON      "&Circle (arc)",IDB_KREIS,146,90,43,14
+END
+
+IDD_VERTEXMODIFY DIALOG DISCARDABLE  2, 15, 126, 57
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Modify base"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Coordinates:",-1,4,4,44,8
+    LTEXT           "&X:",-1,4,20,10,8,NOT WS_GROUP
+    EDITTEXT        IDE_XMODIFY,17,18,45,13,ES_AUTOHSCROLL
+    LTEXT           "&Y:",-1,4,40,8,8,NOT WS_GROUP
+    EDITTEXT        IDE_YMODIFY,17,38,45,13,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "&OK",IDOK,71,5,50,14,WS_GROUP
+    PUSHBUTTON      "&Cancel",IDCANCEL,71,21,50,14
+    PUSHBUTTON      "&Delete",IDB_DELETE,71,37,50,14
+END
+
+IDD_STKOORDMOD DIALOG DISCARDABLE  0, 0, 150, 47
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Modify base coordinates"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&OK",IDOK,93,5,50,14,WS_DISABLED
+    PUSHBUTTON      "&Cancel",IDCANCEL,93,26,50,14
+    LTEXT           "&X:",-1,6,8,12,8
+    EDITTEXT        IDE_XKOORDMOD,17,6,60,12,ES_AUTOHSCROLL
+    LTEXT           "&Y:",-1,6,29,8,8
+    EDITTEXT        IDE_YKOORDMOD,17,27,60,12,ES_AUTOHSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+NEUEDITP                BITMAP  MOVEABLE PURE   "stiftp.bmp"
+NEUEDITL                BITMAP  MOVEABLE PURE   "stiftl.bmp"
+NEUEDITF                BITMAP  MOVEABLE PURE   "stiftf.bmp"
+MODEDIT                 BITMAP  MOVEABLE PURE   "stiftv.bmp"
+IDB_TOOLBAREDIT         BITMAP  DISCARDABLE     "tbaredit.bmp"
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "geoedita.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""dlgs.h""\r\n"
+    "#include ""resstrg.h""\r\n"
+    "#include ""geoedit.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""geoedit.rcv""\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MODMENUE1 MENU DISCARDABLE 
+BEGIN
+    POPUP "Dot"
+    BEGIN
+        MENUITEM "&Modify coordinates ...",  IDM_KOORDMOD, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "Move object",         IDM_OBJMOVE, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "Delete object",             IDM_OBJDELETE
+        MENUITEM SEPARATOR
+        MENUITEM "&Cancel",                  IDM_ABBRUCH
+    END
+END
+
+IDR_MODMENUE2 MENU DISCARDABLE 
+BEGIN
+    POPUP "Line"
+    BEGIN
+        MENUITEM "&Modify coordinates ...",  IDM_KOORDMOD, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "Extend object",          IDM_LINIEVERL
+        MENUITEM "Move object",         IDM_OBJMOVE, GRAYED
+        MENUITEM "Rotate object",              IDM_OBJDREHEN, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "Delete object",             IDM_OBJDELETE
+        MENUITEM SEPARATOR
+        MENUITEM "&Cancel",                  IDM_ABBRUCH
+    END
+END
+
+IDR_MODMENUE3 MENU DISCARDABLE 
+BEGIN
+    POPUP "Area"
+    BEGIN
+        MENUITEM "&Modify coordinates ...",  IDM_KOORDMOD, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "Move object",         IDM_OBJMOVE, GRAYED
+        MENUITEM "Rotate object",              IDM_OBJDREHEN, GRAYED
+        MENUITEM "&Right angle",           IDM_RECHTWINKL, GRAYED
+        MENUITEM "&Create line of intersection",        IDM_OBJPART
+        MENUITEM SEPARATOR
+        MENUITEM "&Add island",           IDM_ADDINSEL, GRAYED
+        MENUITEM "Delete island",              IDM_SUBINSEL, GRAYED
+        MENUITEM "Delete object",             IDM_OBJDELETE
+        MENUITEM SEPARATOR
+        MENUITEM "&Cancel",                  IDM_ABBRUCH
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_CURKREUZ            CURSOR  DISCARDABLE     "delete.cur"
+IDC_CURSTERN            CURSOR  DISCARDABLE     "move.cur"
+IDC_CURTRENN            CURSOR  DISCARDABLE     "split.cur"
+IDC_CURPALETTE          CURSOR  DISCARDABLE     "Palette.cur"
+IDC_CURFANGEN           CURSOR  DISCARDABLE     "Fangen.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDB_TOOLBAREDIT TOOLBAR DISCARDABLE  80, 15
+BEGIN
+    BUTTON      ID_BUTTON40018
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Geometry editing"
+    IDS_GEOREIN             "TRiAS.Clearing.1"
+    IDS_NOGEOREIN           "Unable to find the ""georein.ext"" extra module.\r\nCannot test if the edited object is correct."
+    IDS_NOOBJOPER           "Unable to find the ""objoper.ext"" extra module.\r\nCannot separate the area."
+    IDS_NEUEDITPKT          "Editing of new dots"
+    IDS_NEUEDITLIN          "Editing of new lines"
+    IDS_NEUEDITFLA          "Editing of new areas"
+    IDS_MODGEOMETRIE        "&Geometry modification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PUNKTOBJ            "Dot"
+    IDS_LINIENOBJ           "Line"
+    IDS_FLAECHENOBJ         "Area"
+    IDS_AUSSENKON           " (Outside contour)"
+    IDS_KONTURCNT           " (%d. Inside contour)"
+    IDS_GEOFEHLERNEU        "There is a geometric error in the new object. \r\n It will not be saved."
+    IDS_GEOFEHLERMOD        "This action would create a geometric error.\r\nThe modified object will not be saved."
+    IDS_FLTEILEN            "Separate area"
+    IDS_NOTEILUNG           "Cannot separate area."
+    IDS_VERTEX              "&Add base"
+    IDS_NEUEOBJEKTE         "Created subareas"
+    IDS_BUTTONTEXT1         "&Separate"
+    IDS_BUTTONTEXT2         "&Continue"
+    IDS_DELVERTEX           "Move base(s)"
+    IDS_DELOBJECT           "Delete object"
+    IDS_OBJGEOMMOD          "Modify object geometry"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_TOOLBARWERKZEUG     "Tools"
+    ID_TOOL_PUNKTEDIT       "Selects a tool for new capture of dots.\nNew capture of dots"
+    ID_TOOL_LINIENEDIT      "Selects a tool for new capture of lines.\nNew capture of lines"
+    ID_TOOL_FLAECHENEDIT    "Selects a tool for new capture of areas.\nNew capture of areas"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEBUGSECTION        "TriasFramework"
+    IDS_DEBUGENTRY          "debugmessageoutput"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UNIQUEIDENT         "Unique Ident"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UIFORMAT            "GEOEDIT_EXT_%ld"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXEXTENSIONPROC    "DEXEXTENSIONPROC"
+    IDS_DEXXEXTENSIONPROC   "DEXXEXTENSIONPROC"
+    IDS_DEXNOTIFICATIONPROC "DEXNOTIFICATIONPROCEX"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_TOOL_MODIFYOBJ       "Selects a tool to modify old objects (Modify bases).\nModify object geometry"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LINIENEU            "New capture of line"
+    IDS_FLAECHENEU          "New capture of area"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "geoedit.rcv"
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

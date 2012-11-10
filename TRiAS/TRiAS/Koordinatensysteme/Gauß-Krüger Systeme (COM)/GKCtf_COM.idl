@@ -1,0 +1,63 @@
+// GKCtf_COM.idl : IDL source for GKCtf_COM.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (GKCtf_COM.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+// additional includes JG990120
+#include "idl/CTFInterfaces.idl"
+#include "idl/CTFEventInterfaces.idl"
+
+[
+	uuid(727979C1-ABAD-11D1-A066-0060975566B4),
+	version(1.0),
+	helpstring("GKCtf_COM 1.0 Type Library")
+]
+library GKCTF_COMLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+	importlib("PBasic.tlb");
+
+	[
+		uuid(4EDBD3A1-AFA2-11d2-8CEC-006097A8F384),
+		helpstring("GKBesselCoordTrans Class")
+	]
+	coclass GKBesselCoordTrans
+	{
+		[default] interface ICoordTransform;
+		interface ICoordTransformInit;
+	};
+
+	[
+		uuid(4EDBD3A4-AFA2-11d2-8CEC-006097A8F384),
+		helpstring("GKKrassCoordTrans Class")
+	]
+	coclass GKKrassCoordTrans
+	{
+		[default] interface ICoordTransform;
+		interface ICoordTransformInit;
+	};
+
+	[
+		uuid(089D69E1-B63E-11d2-8CEF-006097A8F384),
+		helpstring("GKEtrsCoordTrans Class")
+	]
+	coclass GKEtrsCoordTrans
+	{
+		[default] interface ICoordTransform;
+		interface ICoordTransformInit;
+	};
+
+	[
+		uuid(F2D244C1-B04F-11d2-8CEC-006097A8F384),
+		helpstring("CTFExGKContext Class")
+	]
+	coclass CTFExContext							//	JG 980120
+	{
+		[default] interface ICTFExContext;
+	};
+};

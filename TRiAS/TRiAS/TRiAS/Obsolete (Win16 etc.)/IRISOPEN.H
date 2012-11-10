@@ -1,0 +1,10 @@
+#define IDB_OPENHELP   153
+#define IDB_RDONLY     157
+#define IDCANCEL       2
+#define IDD_FILENAME   151
+#define IDD_PASSWORD   156
+#define IDD_USERNAME   155
+#define IDL_FILES      152
+#define IDOK           1
+#define IDT_PATHNAME   154
+#define IRISOPEN                    54

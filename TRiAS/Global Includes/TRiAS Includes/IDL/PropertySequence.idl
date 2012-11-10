@@ -1,0 +1,384 @@
+// $Header: $
+// Copyright© 1999-2002 Geopunkt GmbH & Co. KG, NL Potsdam, All rights reserved
+// Created: 01.11.2002 19:55:35 
+//
+// @doc
+// @module PropertySequence.idl | IDL source for GeoComponent VB interfaces
+// @group In diesem Modul definierte Interfaces
+// @index | INTERFACE
+// @end
+
+#include <oleauto.hh>
+#include "idl/TRiASPropertyBag.idl"
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declarations
+interface IGeoComponent;
+interface IGeoComponentCallback;
+interface IGeoComponentUI;
+interface IGeoComponentUICallback;
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc	INTERFACE TRIASTLB
+// @interface IGeoComponent | Über das <i IGeoComponent> -Interface wird eine
+// externe GeoKomponente (zumeist VB basiert) angesprochen
+// @group Eigenschaften von <i IGeoComponent>
+// @index | IGEOCOMPONENT & PROPERTY
+// @group Methoden von <i IGeoComponent>
+// @index | IGEOCOMPONENT & METHOD
+// @doc IGEOCOMPONENT
+cpp_quote("#ifndef _LPGEOCOMPONENT_DEFINED")
+cpp_quote("#define _LPGEOCOMPONENT_DEFINED")
+	[
+		object,
+		uuid(6D8227DD-7B77-49F0-B82C-419B106F831C),
+		helpstring("IGeoComponent Interface"),
+		pointer_default(unique),
+		dual, oleautomation,
+		helpcontext(IGeoComponent_int)
+	]
+	interface IGeoComponent : IDispatch
+	{
+		import "oaidl.idl";
+		import "ocidl.idl";
+
+	// @doc IGEOCOMPONENT | PROPERTY
+	// @property HRESULT | IGeoComponent | Callback | Die Eigenschaft <op .Callback>
+	// setzt den Rückverweis auf die Sequenz der Geokomponenten. Dieser Rückverweis
+	// kann dazu verwendet werden, die Kontextdatenmenge abzufragen (s. <i IGeoComponentCallback>)
+	// @comm Diese Funktion ist die erste, die überhaupt an einem Objekt vom Typ <o GeoComponent>
+	// gerufen wird. In diesem Fall ist der übergebene Wert gültig (Not Nothing). Gleichzeitig
+	// ist diese Funktion auch die letzte die überhaupt an einem Objekt vom Typ <o GeoComponent>
+	// gerufen wird. In diesem Fall ist der übergebene Wert nicht gültig (Nothing).
+	// @xref <i IGeoComponent>, <i IGeoComponentCallback>
+		[propputref, id(1), helpstring("Setzt den Callback zur Sequenz."), helpcontext(IGeoComponent_Callback_prop)] HRESULT Callback([in] IGeoComponentCallback *Callback);
+
+	// @doc IGEOCOMPONENT | PROPERTY
+	// @property HRESULT | IGeoComponent | HasDataOut | Die Eigenschaft <op .HasDataOut>
+	// liefert, ob weitere Ausgabe- Datenmengen verfügbar sind. Diese Eigenschaft wird grundsätzlich
+	// nach dem Aufruf von <om .EndAction> aufgerufen um zu prüfen, ob von dieser
+	// Geokomponente weitere Datenmengen abgefragt werden sollen.
+	// @comm Die Eigenschaft <op .HasDataOut> kann nicht gesetzt werden.
+	// @xref <i IGeoComponent>, <om .EndAction>
+		[propget, id(2), helpstring("Abfrage, ob weitere Ausgabe- Datenmengen verfügbar sind."), helpcontext(IGeoComponent_HasDataOut_prop)] HRESULT HasDataOut([out, retval] VARIANT_BOOL *HasData);
+
+	// @doc IGEOCOMPONENT | PROPERTY
+	// @property HRESULT | IGeoComponent | PageCount | Die Eigenschaft <op .PageCount> liefert, 
+	// wieviele Dialogseiten diese Geokomponente besitzt.
+	// @comm Die Eigenschaft <op .PageCount> kann nicht gesetzt werden.
+	// @comm Wenn die Eigenschaft <op .PageCount> Null liefert, dann werden die 
+	// Eigenschaften <op .PageProgId>, <op .ConnectUI> nicht gerufen.
+	// @xref <i IGeoComponent>, <op .PageProgId>, <op .ConnectUI>
+		[propget, id(3), helpstring("Abfrage der Anzahl der Dialogseiten dieser Geokomponente."), helpcontext(IGeoComponent_PageCount_prop)] HRESULT PageCount([out, retval] long *Count);
+
+	// @doc IGEOCOMPONENT | PROPERTY
+	// @property HRESULT | IGeoComponent | PageProgId | Die Eigenschaft <op .PageProgId> liefert
+	// den ProgId des Objektes, welches die anzuzeigende Dialogseite representiert.
+	// @comm Die Eigenschaft <op .PageProgId> kann nicht gesetzt werden.
+	// @comm Die Eigenschaft <op .ConnectUI> wird nur gesetzt, wenn die Eigenschaft <op .PageCount>
+	// einen Wert größer Null geliefert hat.
+	// @xref <i IGeoComponent>
+		[propget, id(4), helpstring("Abfrage des ProgId's der anzuzeigenden n-ten Dialogseite."), helpcontext(IGeoComponent_PageProgId_prop)] HRESULT PageProgId([in] long Index, [out, retval] BSTR *ProgId);
+
+	// @doc IGEOCOMPONENT | PROPERTY
+	// @property HRESULT | IGeoComponent | ConnectUI | Die Eigenschaft <op .ConnectUI> übergibt
+	// die fertig initialisierte Dialogseite an die Geokomponente.
+	// @comm Die Eigenschaft <op .ConnectUI> kann nicht gelesen werden.
+	// @comm Die Eigenschaft <op .ConnectUI> wird nur gesetzt, wenn die Eigenschaft <op .PageCount>
+	// einen Wert größer Null geliefert hat und die durch die entsprechende Eigenschaft <op .PageProgId> 
+	// gelieferte ProgId erfolgreich für die Instantiierung des entsprechenden COM- Objekte verwendet 
+	// werden konnte.
+	// @xref <i IGeoComponent>
+		[propputref, id(5), helpstring("Übergabe der n-ten anzuzeigenden Dialogseite an die Geokomponente."), helpcontext(IGeoComponent_PageProgId_prop)] HRESULT ConnectUI([in] long Index, [in] IDispatch *PageUI);
+
+	// @doc IGEOCOMPONENT | METHOD
+	// @method HRESULT | IGeoComponent | ReadProperties | Die Methode <om .ReadProperties>
+	// wird gerufen, um dem Objekt objektspezifischen Voreinstellungen zu übergeben.
+	// @parm <o TRiASPropertyBag> * | PropBag | Der Parameter <p PropBag> enthält einen Verweis
+	// auf ein Objekt vom Typ <o TRiASPropertyBag>, welches die zu ladenden Informationen 
+	// bereitstellt.
+	// @comm Diese Methode wird grundsätzlich mit den objektspezifischen Einstellungen
+	// gerufen, die vorher durch die Methode <om .WriteProperties> geschrieben wurden.
+	// @xref <i IGeoComponent>
+		[id(100), helpstring("Laden objektspezifischen Voreinstellungen."), helpcontext(IGeoComponent_ReadProperties_meth)] HRESULT ReadProperties ([in] ITRiASPropertyBag *PropBag);
+
+	// @doc IGEOCOMPONENT | METHOD
+	// @method HRESULT | IGeoComponent | WriteProperties | Die Methode <om .WriteProperties>
+	// Abfrage objektspezifischer Einstellungen.
+	// @parm UserDefined | PropBag | Der Parameter <p PropBag> ...
+	// @xref <i IGeoComponent>
+		[id(101), helpstring("Abfrage objektspezifischer Einstellungen."), helpcontext(IGeoComponent_WriteProperties_meth)] HRESULT WriteProperties ([in] ITRiASPropertyBag *PropBag);
+
+	// @doc IGEOCOMPONENT | METHOD
+	// @method HRESULT | IGeoComponent | InitFromData | Die Methode <om .InitFromData> wird
+	// während der Erstinitialisierung des Objektes gerufen und stellt Daten bereit, die 
+	// z.B. im zugehörigen XML- Konfigurationsskript definiert sind.
+	// @parm <o TRiASPropertyBag> * | PropBag | Der Parameter <p PropBag> enthält einen Verweis
+	// auf ein Objekt vom Typ <o TRiASPropertyBag>, welches die zu ladenden Informationen 
+	// bereitstellt.
+	// @comm Diese Methode gestattet eine Vorinitialisierung des Objektes entsprechend 
+	// externen Vorgaben. Im Gegensatz dazu wird die Methode <om .ReadProperties> mit 
+	// Initialisierungsdaten gerufen, die das Objekt selbst geschrieben hat.
+	// @xref <i IGeoComponent>
+		[id(102), helpstring("Abfrage objektspezifischer Einstellungen."), helpcontext(IGeoComponent_InitFromData_meth)] HRESULT InitFromData ([in] ITRiASPropertyBag *PropBag);
+
+	// @doc IGEOCOMPONENT | METHOD
+	// @method HRESULT | IGeoComponent | PreConfigAction | Die Methode <om .PreConfigAction>
+	// Wird vor Anzeige evtl. Dialoge mit der gegebenen Eingabedatenmenge gerufen.
+	// @parm <o Application> * | App | Der Parameter <p App> enthält das <tr> 
+	// Applikationsobjekt 
+	// @parm <o GeoDocument> * | Doc | Der Parameter <p Doc> enthält das aktuell geöffnete 
+	// Dokument bzw. Nothing, wenn kein Document geöffnet ist.
+	// @parm <o TRiASDataObject> * | DataIn | Der Parameter <p DataIn> enthält einen Verweis 
+	// auf die Datenmenge, die am Eingang der ersten geokomponente dieser Sequenz angelegt 
+	// werden soll.
+	// @xref <i IGeoComponent>
+		[id(103), helpstring("Wird vor Anzeige evtl. Dialoge mit der gegebenen Eingabedatenmenge gerufen."), helpcontext(IGeoComponent_PreConfigAction_meth)] HRESULT PreConfigAction([in] DApplication *App, [in] DDocument *Doc, [in] ITRiASDataObject *DataIn);
+
+	// @doc IGEOCOMPONENT | METHOD
+	// @method HRESULT | IGeoComponent | BeginAction | Die Methode <om .BeginAction>
+	// Beginn der Abarbeitung. 
+	// @parm <o ProgressIndicator> * | Indicator | Der Parameter <p Indicator> enthält (optional)
+	// einen Verweis auf ein <o ProgressIndikator> -Objekt, welcher für Abarbeitungsstatus und 
+	// andere Nutzerinformationen eingesetzt werden sollte.
+	// @comm Die Methode <om .BeginAction> wird einmal zu Beginn der eigentlichen 
+	// Abarbeitung gerufen. Der übergebene ProgressIndicator kann während der Abarbeitung 
+	// der Methode <om .EndAction> dazu verwendet werden, eine Gedultsanzeige zu erzeugen.
+	// @xref <i IGeoComponent>
+		[id(104), helpstring("Beginn der Abarbeitung."), helpcontext(IGeoComponent_BeginAction_meth)] HRESULT BeginAction([in] IProgressIndicator2 *Indicator);
+
+	// @doc IGEOCOMPONENT | METHOD
+	// @method HRESULT | IGeoComponent | DoAction | Die Methode <om .DoAction>
+	// Übergabe einer Datenmenge.
+	// @parm UserDefined | DataIn | Der Parameter <p DataIn> enthält einen Verweis auf
+	// eine Datenmenge, die von der vorhergehenden Geokomponente erzeugt worden ist.
+	// @comm die Methode <om .DoAction> wird gerufen, um die Datenmengen zu übergeben, 
+	// die die vorhergehende Geokomponente abgegeben hat. Diese Methode wird genau sooft 
+	// gerufen wie die vorhergehende Geokomponente Datenmengen erzeugt. Entsprechend der 
+	// allgemeinen Konvention sollte diese Methode die Eingabemengen lediglich zwischenspeichern 
+	// und die eigentliche Verarbeitung erst während der Abarbeitung der Methode <om .EndAction> 
+	// erledigen.
+	// @xref <i IGeoComponent>
+		[id(105), helpstring("Übergabe einer Datenmenge."), helpcontext(IGeoComponent_DoAction_meth)] HRESULT DoAction([in] ITRiASDataObject *DataIn);
+
+	// @doc IGEOCOMPONENT | METHOD
+	// @method HRESULT | IGeoComponent | EndAction | Die Methode <om .EndAction>
+	// Abholen einer Datenmenge.
+	// @comm Die Methode <om .EndAction> wird gerufen, wenn die vorgehende Geokomponente 
+	// keine Datenmengen mehr abzugeben hat und nachdem unsere Methode <om .DoAction> für 
+	// die letzte dort abgegebene Datenmenge gerufen wurde. Die Methode <om .EndAction> wird 
+	// solange gerufen werden, bis unsere Eigenschaft <op .HasDataOut> = <cv True> ist. Bei 
+	// jedem dieser Aufrufe muß <om .EndAction> eine Datenmenge liefern.<nnl>Eine Ausnahme bildet 
+	// der erste Aufruf von <om .EndAction>. Wenn überhaupt keine Datenmenge geliefert werden 
+	// soll, dann darf der Rückgabewert Nothing sein. Unbedingt ist zu unterscheiden zwischen 
+	// 'keine Objektmenge abzugeben' und 'keine Datenmenge abzugeben'. <nnl>Wenn diese 
+	// Geokomponente keine Datenmenge abgeben soll (z.B. weil die Eingabedatenmenge lediglich 
+	// in einem Recherchefenster angezeigt und keine nachfolgende Geokomponente erwartet 
+	// wird), dann liefert diese Methode Nothing (beim ersten Aufruf). Wenn normalerweise 
+	// jedoch Objekte abgegeben werden sollen, in einer konkreten Situation jedoch keine 
+	// passenden Objekte vorhanden sind (z.B. keine entsprechenden Rechercheergebnisse), 
+	// dann muß diese Methode eine Datenmenge zurückliefern, die eine leere Objektmenge 
+	// enthält.<nnl>Generell gilt, wenn eine Datenmenge geliefert wird, dann muß diese 
+	// eine (notfalls leere) Objektmenge enthalten.<nnl>Übrigens werden die Datenmengen, 
+	// die hier geliefert werden an die Funktion <om .DoAction> der nachfolgenden Geokomponente 
+	// übergeben.
+	// @xref <i IGeoComponent>
+		[id(106), helpstring("Abholen einer Datenmenge."), helpcontext(IGeoComponent_EndAction_meth)] HRESULT EndAction([out, retval] ITRiASDataObject **DataOut);
+	};
+cpp_quote("#endif // _LPGEOCOMPONENT_DEFINED")
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc	INTERFACE TRIASTLB 
+// @interface IGeoComponentCallback | Über das <i IGeoComponentCallback> -Interface wird eine
+// externe GeoKomponente (zumeist VB basiert) angesprochen
+// @group Eigenschaften von <i IGeoComponentCallback>
+// @index | IGEOCOMPONENTCALLBACK & PROPERTY
+// @group Methoden von <i IGeoComponentCallback>
+// @index | IGEOCOMPONENTCALLBACK & METHOD
+// @doc IGEOCOMPONENTCALLBACK
+cpp_quote("#ifndef _LPGEOCOMPONENTCALLBACK_DEFINED")
+cpp_quote("#define _LPGEOCOMPONENTCALLBACK_DEFINED")
+	[
+		object,
+		uuid(3BCD2124-D9A3-4A06-B9D9-5F5CA3E60487),
+		helpstring("IGeoComponentCallback Interface"),
+		pointer_default(unique),
+		dual, oleautomation,
+		helpcontext(IGeoComponentCallback_int)
+	]
+	interface IGeoComponentCallback : IDispatch
+	{
+		import "oaidl.idl";
+		import "ocidl.idl";
+
+	// @doc IGEOCOMPONENTCALLBACK | PROPERTY
+	// @property HRESULT | IGeoComponentCallback | ContextData | Die Eigenschaft <op .ContextData>
+	// liefert die Kontext-Datenmenge der Folge von Geokomponenten.
+	// @xref <i IGeoComponentCallback>
+		[propget, id(1), helpstring("Liefert Kontext-Datenmenge"), helpcontext(IGeoComponentCallback_ContextData_prop)] HRESULT ContextData([out, retval] ITRiASDataObject **DataCtx);
+
+	// @doc IGEOCOMPONENTCALLBACK | PROPERTY
+	// @property HRESULT | IGeoComponentCallback | IsSequence | Die Eigenschaft <op .IsSequence>
+	// liefert, ob die Folge von Geokomponenten vom Typ 'Sequenz' oder 'Auswahl' ist.
+	// @xref <i IGeoComponentCallback>
+		[propget, id(2), helpstring("Liefert, ob die Folge von Geokomponenten eine Sequenz ist."), helpcontext(IGeoComponentCallback_IsSequence_prop)] HRESULT IsSequence([out, retval] VARIANT_BOOL *IsSequence);
+	};
+cpp_quote("#endif // _LPGEOCOMPONENTCALLBACK_DEFINED")
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc	INTERFACE TRIASTLB
+// @interface IGeoComponentUI | Über das <i IGeoComponentUI> -Interface wird das
+// Nutzerinterface einer externen GeoKomponente (zumeist VB basiert) angesprochen
+// @group Eigenschaften von <i IGeoComponentUI>
+// @index | IGEOCOMPONENTUI & PROPERTY
+// @group Methoden von <i IGeoComponentUI>
+// @index | IGEOCOMPONENTUI & METHOD
+// @doc IGEOCOMPONENTUI
+cpp_quote("#ifndef _LPGEOCOMPONENTUI_DEFINED")
+cpp_quote("#define _LPGEOCOMPONENTUI_DEFINED")
+	[
+		object,
+		uuid(1321524A-2A2B-445C-96A7-D735E671F62B),
+		helpstring("IGeoComponentUI Interface"),
+		pointer_default(unique),
+		dual, oleautomation,
+		helpcontext(IGeoComponentUI_int)
+	]
+	interface IGeoComponentUI : IDispatch
+	{
+		import "oaidl.idl";
+		import "ocidl.idl";
+
+	// @doc IGEOCOMPONENTUI | PROPERTY
+	// @property HRESULT | IGeoComponentUI | Callback | Die Eigenschaft <op .Callback>
+	// setzt den Rückverweis auf den umschließenden Dialog, der das OCX enthält. Dieser Rückverweis
+	// kann dazu verwendet werden, Statusänderungen an den umschließenden DIalog weiterzugeben
+	// (s. <i IGeoComponentUICallback>)
+	// @comm Diese Funktion ist die erste, die überhaupt an einem Objekt vom Typ <o GeoComponentUI>
+	// gerufen wird. In diesem Fall ist der übergebene Wert gültig (Not Nothing). Gleichzeitig
+	// ist diese Funktion auch die letzte die überhaupt an einem Objekt vom Typ <o GeoComponentUI>
+	// gerufen wird. In diesem Fall ist der übergebene Wert nicht gültig (Nothing).
+	// @xref <i IGeoComponentUI>, <i IGeoComponentUICallback>
+		[propputref, id(1), helpstring("Setzt den Callback zum umschließenden Dialog."), helpcontext(IGeoComponentUI_Callback_prop)] HRESULT Callback([in] IGeoComponentUICallback *Callback);
+
+	// @doc IGEOCOMPONENTUI | PROPERTY
+	// @property HRESULT | IGeoComponentUI | AllowNextPage | Die Eigenschaft <op .IsDirty>
+	// fragt ab, ob zum nächsten Assitentenseite gewechset werden darf (die 'Weiter >' bzw. 
+	// 'Fertigstellen' Schaltfläche aktiv sein soll).
+	// @comm Diese Eigenschaft wird vom umschließenden Dialog immer dann geprüft, wenn
+	// Informationen über den anzuzeigenden Status der Bedienelemente des Assistenten
+	// benötigt werden oder wenn über das <i IGeoComponentUICallback> -Interface die 
+	// Methode OnStatusChange gerufen wurde.
+	// @xref <i IGeoComponentUI>, <om IGeoComponentUICallback.OnStatusChange> 
+		[propget, id(2), helpstring("Abfrage, ob Dialog geändert wurde."), helpcontext(IGeoComponentUI_AllowNextPage_prop)] HRESULT AllowNextPage([out, retval] VARIANT_BOOL *Allow);
+
+	// @doc IGEOCOMPONENTUI | METHOD
+	// @method HRESULT | IGeoComponentUI | OnActivate | Die Methode <om .OnActivate>
+	// wird gerufen, wenn der umschließende Dialog aktiviert wird.
+	// @xref <i IGeoComponentUI>
+		[id(100), helpstring("Wird gerufen, wenn der umschließende Dialog aktiviert/deaktiviert wird."), helpcontext(IGeoComponentUI_OnActivate_meth)] HRESULT OnActivate([in] VARIANT_BOOL Activate);
+
+	// @doc IGEOCOMPONENTUI | METHOD
+	// @method HRESULT | IGeoComponentUI | OnNext | Die Methode <om .OnNext>
+	// wird gerufen, wenn eines der Bedienelemente 'Weiter >' oder 'Fertigstellen' des 
+	// umschließenden Dialoges betätigt wurden.
+	// @xref <i IGeoComponentUI>
+		[id(101), helpstring("Wird gerufen, wenn die nächste Seite angezeigt werden soll."), helpcontext(IGeoComponentUI_OnNext_meth)] HRESULT OnNext([out, retval] VARIANT_BOOL *Allow);
+
+	// @doc IGEOCOMPONENTUI | METHOD
+	// @method HRESULT | IGeoComponentUI | OnBack | Die Methode <om .OnBack>
+	// wird gerufen, wenn das Bedienelement 'Zurück >' des umschließenden Dialoges betätigt wurden.
+	// @xref <i IGeoComponentUI>
+		[id(102), helpstring("Wird gerufen, wenn die vorhergehende Seite angezeigt werden soll."), helpcontext(IGeoComponentUI_OnBack_meth)] HRESULT OnBack([out, retval] VARIANT_BOOL *Allow);
+
+	// @doc IGEOCOMPONENTUI | METHOD
+	// @method HRESULT | IGeoComponentUI | TranslateAccelerator | Die Methode <om .TranslateAccelerator>
+	// ermöglicht dem Dialog die Verarbeitung von Tastaturkürzeln innerhalb des 
+	// Dialoges der Geokomponente.
+	// @parm long | Wnd | Der Parameter <p Wnd> enthält das fensterhandle, an welches die
+	// Windows-Message geschickt werden soll.
+	// @parm long | Msg | Der Parameter <p Msg> enthält den Typ der zu bearbeitenden 
+	// Windows-Message
+	// @parm long | wParam | Der Parameter <p wParam> enthält den Wert 'wParam' der 
+	// zu bearbeitenden Windows-Message
+	// @parm long | lParam | Der Parameter <p lParam> enthält den Wert 'lParam' der 
+	// zu bearbeitenden Windows-Message
+	// @parm long | Time | Der Parameter <p Time> enthält den aktuellen Systemzeitpunkt
+	// zu dem diese Windows-Message generiert wurde
+	// @parm long | PosX | Der Parameter <p PosX> enthält die X-Koordinate der
+	// aktuelle Mausposition, als diese Windows-Message generiert wurde 
+	// (Bildschirmkoordinaten)
+	// @parm long | PosY | Der Parameter <p PosY> enthält die Y-Koordinate der
+	// aktuelle Mausposition, als diese Windows-Message generiert wurde 
+	// (Bildschirmkoordinaten)
+	// @comm Diese Methode sollte zumindest unverändert an die gleichnamige Methode
+	// des <i IGeoComponentUICallback> -Interfaces weitergeleitet werden.
+	// @xref <i IGeoComponentUI>
+		[id(103), helpstring("Ermöglicht dem Dialog die Verarbeitung von Tastaturkürzeln."), helpcontext(IGeoComponentUI_TranslateAccelerator_meth)] HRESULT TranslateAccelerator([in] long Wnd, [in] long Msg, [in] long wParam, [in] long lParam, [in] long Time, [in] long PosX, [in] long PosY, [out, retval] VARIANT_BOOL *Result);
+	};
+cpp_quote("#endif // _LPGEOCOMPONENTUI_DEFINED")
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc	INTERFACE TRIASTLB 
+// @interface IGeoComponentUICallback | Über das <i IGeoComponentUICallback> -Interface 
+// wird der Rückverweise der Nutzerschnittstelle einer externen GeoKomponente (zumeist 
+// VB basiert) zum umschließenden Dialog angesprochen
+// @group Eigenschaften von <i IGeoComponentUICallback>
+// @index | IGEOCOMPONENTUICALLBACK & PROPERTY
+// @group Methoden von <i IGeoComponentUICallback>
+// @index | IGEOCOMPONENTUICALLBACK & METHOD
+// @doc IGEOCOMPONENTUICALLBACK
+cpp_quote("#ifndef _LPGEOCOMPONENTUICALLBACK_DEFINED")
+cpp_quote("#define _LPGEOCOMPONENTUICALLBACK_DEFINED")
+	[
+		object,
+		uuid(9C3051D8-6A60-489D-830B-D90D9B47A437),
+		helpstring("IGeoComponentUICallback Interface"),
+		pointer_default(unique),
+		dual, oleautomation,
+		helpcontext(IGeoComponentUICallback_int)
+	]
+	interface IGeoComponentUICallback : IDispatch
+	{
+		import "oaidl.idl";
+		import "ocidl.idl";
+
+	// @doc IGEOCOMPONENTUICALLBACK | METHOD
+	// @method HRESULT | IGeoComponentUICallback | OnStatusChange | Die Methode <om .OnStatusChange>
+	// Teilt dem umschließenden Dialog mit, daß sich der Dialog geändert hat.
+	// @xref <i IGeoComponentUICallback>
+		[id(100), helpstring("Teilt dem umschließenden Dialog mit, daß sich der Dialog geändert hat."), helpcontext(IGeoComponentUICallback_OnStatusChange_meth)] HRESULT OnStatusChange();
+
+	// @doc IGEOCOMPONENTUICALLBACK | METHOD
+	// @method HRESULT | IGeoComponentUICallback | TranslateAccelerator | Die Methode <om .TranslateAccelerator>
+	// Ermöglicht dem Dialog die Verarbeitung von Tastaturkürzeln.
+	// @parm long | Wnd | Der Parameter <p Wnd> enthält das fensterhandle, an welches die
+	// Windows-Message geschickt werden soll.
+	// @parm long | Msg | Der Parameter <p Msg> enthält den Typ der zu bearbeitenden 
+	// Windows-Message
+	// @parm long | wParam | Der Parameter <p wParam> enthält den Wert 'wParam' der 
+	// zu bearbeitenden Windows-Message
+	// @parm long | lParam | Der Parameter <p lParam> enthält den Wert 'lParam' der 
+	// zu bearbeitenden Windows-Message
+	// @parm long | Time | Der Parameter <p Time> enthält den aktuellen Systemzeitpunkt
+	// zu dem diese Windows-Message generiert wurde
+	// @parm long | PosX | Der Parameter <p PosX> enthält die X-Koordinate der
+	// aktuelle Mausposition, als diese Windows-Message generiert wurde 
+	// (Bildschirmkoordinaten)
+	// @parm long | PosY | Der Parameter <p PosY> enthält die Y-Koordinate der
+	// aktuelle Mausposition, als diese Windows-Message generiert wurde 
+	// (Bildschirmkoordinaten)
+	// @xref <i IGeoComponentUICallback>
+		[id(101), helpstring("Ermöglicht dem Dialog die Verarbeitung von Tastaturkürzeln."), helpcontext(IGeoComponentUICallback_TranslateAccelerator_meth)] HRESULT TranslateAccelerator([in] long Wnd, [in] long Msg, [in] long wParam, [in] long lParam, [in] long Time, [in] long PosX, [in] long PosY, [out, retval] VARIANT_BOOL *Result);
+	};
+cpp_quote("#endif // _LPGEOCOMPONENTUICALLBACK_DEFINED")
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASTLB
+// @object GeoComponent | Ein Datenobjekt vom Typ <o GeoComponent> kann 
+// implementiert werden, um einen Baustein für die konfigurierbaren Sequenzen
+// von Geokomponenten in <tr> zur Verfügung zu stellen.
+// @supint <i IGeoComponent> | Über das Interface <i IGeoComponent> sind sämtliche Eigenschaften
+// und Methoden zugänglich, die ein Objekt vom Typ <o GeoComponent> betreffen.
+// @xref <i IGeoComponent>, <i IGeoComponentCallback>
+

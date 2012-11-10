@@ -1,0 +1,198 @@
+
+
+
+IMVFBCOPY(3IM)         SDSC IMAGE LIBRARY          IMVFBCOPY(3IM)
+
+
+
+NAME
+     ImVfbCopy - Copy a subarea within a virtual frame buffer
+     ImVfbCopyChannel - Copy a single channel  from  one  vfb  to
+     another
+
+SYNOPSIS
+     #include "im.h"
+
+     ImVfb *ImVfbCopy( srcVfb, srcXLeft, srcYTop, srcDX, srcDY, fieldMask, dstVfb, dstXLeft, dstYTop )
+          ImVfb *srcVfb ;
+          int srcXLeft, srcYTop ;
+          int srcDX, srcDY ;
+          int fieldMask ;
+          ImVfb *dstVfb ;
+          int dstXLeft, dstYTop ;
+
+     ImVfb* ImVfbCopyChannel( inVfb, inFieldMask, outVfb, outFieldMask)
+          ImVfb* inVfb;
+          int inFieldMask;
+          ImVfb* outVfb;
+          int outFieldMask;
+
+
+
+DESCRIPTION
+     ImVfbCopy copies a portion of  a  virtual  frame  buffer  to
+     another virtual frame buffer.
+     A  pointer  to  the  destination  virtual  frame  buffer  is
+     returned by both functions.
+
+     _s_r_c_V_f_b is the Vfb whose subarea is to be copied.
+
+     _s_r_c_X_L_e_f_t, _s_r_c_Y_T_o_p indicate the top-left corner of  the  area
+     of the Vfb to be copied.
+
+     _s_r_c_D_X, _s_r_c_D_Y are the dimensions of the subarea of the Vfb to
+     be copied.
+
+     _f_i_e_l_d_M_a_s_k is a  mask  of  field  constants  (see  ImVfbAlloc
+     (3IM))  that  selects the fields in _s_r_c_V_f_b to be copied into
+     _d_s_t_V_f_b.
+
+     _d_s_t_V_f_b is the Vfb to receive the copied area.
+
+     _d_s_t_X_L_e_f_t, _d_s_t_Y_T_o_p indicate the top-left corner of  the  area
+     to which the subarea will be copied.
+
+     ImVfbCopyChannel copies one channel  of  one  virtual  frame
+     buffer  to  the  desired  channel  of  another virtual frame
+     buffer.
+     _i_n_V_f_b is the source vfb.
+     _i_n_F_i_e_l_d_M_a_s_k is the channel of the  vfb  from  which  we  are
+
+
+
+SDSC               Last change: June 16, 1995                   1
+
+
+
+
+
+
+IMVFBCOPY(3IM)         SDSC IMAGE LIBRARY          IMVFBCOPY(3IM)
+
+
+
+     copying.  It may be one of the following values:
+
+          IMVFBGREY      gray channel
+          IMVFBINDEX8    index channel
+          IMVFBINDEX16   16-bit index channel
+          IMVFBRED       red channel
+          IMVFBGREEN     green channel
+          IMVFBBLUE      blue channel
+          IMVFBALPHA     alpha channel
+          IMVFBWPROT     write protection channel
+          IMVFBZ         z-buffer channel
+          IMVFBIDATA     integer data channel
+
+     _o_u_t_V_f_b is the destination vfb.
+     _o_u_t_F_i_e_l_d_M_a_s_k is the channel of  the  destination  vfb,  into
+     which  we  are  copying.   It may take on the same values as
+     inFieldMask.
+
+
+NOTES
+     If _d_s_t_V_f_b is the constant IMVFBNEW, a new Vfb  is  allocated
+     for  the  copied  data.   The  Vfb  has the same size as the
+     region being copied, and the fields are selected  by  _f_i_e_l_d_-
+     _M_a_s_k.  A pointer to the new Vfb is returned.
+
+     Portions of the copied data that  would  extend  beyond  the
+     borders of the _d_s_t_V_f_b are skipped.
+
+     The _s_r_c_V_f_b and _d_s_t_V_f_b may be the same Vfb.  The  source  and
+     destination  areas  can  overlap  with  no  unpleasant  side
+     effects.
+
+RETURNS
+     Upon  success,  ImVfbCopy  and  ImVfbCopyChannel  return   a
+     pointer  to the destination Vfb.  Upon failure, IMVFBNULL is
+     returned and ImErrNo set to the following:
+
+          IMEMALLOC       Cannot allocate enough memory for the new Vfb
+          IMENOVFB        No vfb was sent
+          IMEBADCHANNEL   The incoming vfb does not have the specified channel
+          IMEFIELD        The desired channel has not been allocated in the outgoing vfb
+          IMEDIFFSIZE     The vfb's were different sizes
+
+SEE ALSO
+     ImVfbIntro  (3IM),  ImVfbErrNo  (3IM),   ImVfbAlloc   (3IM),
+     ImVfbDup (3IM)
+
+AUTHORS
+     Mike Bailey, Dave Nadeau, Brian Duggan
+     San Diego Supercomputer Center
+
+
+
+
+
+2                  Last change: June 16, 1995                SDSC
+
+
+
+
+
+
+IMVFBCOPY(3IM)         SDSC IMAGE LIBRARY          IMVFBCOPY(3IM)
+
+
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SDSC               Last change: June 16, 1995                   3
+
+
+

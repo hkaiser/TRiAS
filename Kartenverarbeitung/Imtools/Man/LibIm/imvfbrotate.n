@@ -1,0 +1,112 @@
+'\"et
+.if t .TH IMVFBROTATE 1IM "June 16, 1995" "San Diego Supercomputer Center" "IMAGE TOOLS" 
+.if n .TH IMVFBROTATE 1IM "June 16, 1995" "SDSC" "IMAGE TOOLS"
+.SH NAME
+ImVfbRotate  -  rotate an image
+.LP
+ImVfb90Rotate - rotate an image 90 degrees counterclockwise
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+ImVfb *ImVfbRotate( srcVfb, degree, dstVfb )
+        ImVfb   *srcVfb;
+        float    degree;
+        ImVfb   *dstVfb;
+
+ImVfb *ImVfb90Rotate( srcVfb, dstVfb)
+	ImVfb* srcVfb;
+	ImVfb* dstVfb;
+.fi
+\fR
+.SH DESCRIPTION
+.LP
+\fBImVfbRotate\fR rotates the \fIsrcVfb\fR about an axis orthogonal to the
+image plane and positioned at the center of the image.  The resulting rotated
+image is returned in \fIdstVfb\fR, a pointer to which is returned as the
+function value.
+.LP
+The image rotation angle \fIdegree\fR is measured using the
+right-hand rule: positive angles rotate counter-clockwise, while negative
+angles rotate clockwise.
+.LP
+If \fIdstVfb\fR is \fBIMVFBNEW\fR a new destination VFB will be automatically
+allocated with the proper size, the same fields as \fIsrcVfb\fR, and
+initialized to zeroes in all fields.  A pointer to the new \fIdstVfb\fR is
+returned by \fBImVfbRotate\fR.
+.LP
+If \fIdstVfb\fR is not \fBIMVFBNEW\fR, the VFB must have at least the same
+fields as \fIsrcVfb\fR and must be large enough to hold the rotated image.
+Rotation VFB sizes may be computed based upon the rotation angle using:
+.RS 0.5i
+Width = fabs( sin(\fIdegree\fR) * \fBImVfbQHeight\fR(\fIsrcVfb\fR)) +
+.br
+	fabs( cos(\fIdegree\fR) * \fBImVfbQWidth\fR(\fIsrcVfb\fR))
+.br
+
+Height = fabs( sin(\fIdegree\fR) * \fBImVfbQWidth\fR(\fIsrcVfb\fR)) +
+.br
+	fabs( cos(\fIdegree\fR) * \fBImVfbQHeight\fR(\fIsrcVfb\fR))
+.br
+.RE
+.LP
+\fIdstVfb\fR contents will be overwritten by those pixels from \fIsrcVfb\fR
+that constitute the rotated image.  Pixels outside of the image (four corner
+triangles) will be unmodified in \fIdstVfb\fR.
+.LP
+\fBImVfb90Rotate\fR rotates a vfb 90 degrees counterclockwise.  This routine
+can be used to avoid unnecessary time-consuming calculations which would
+otherwise be done by \fBImVfbRotate\fR.
+.SH NOTES
+Providing a \fIdstVfb\fR to \fBImVfbRotate\fR is appropriate for a variety
+of effects.  In the simplest case, the \fIdstVfb\fR may contain a background
+color that matches the background of the \fIsrcVfb\fR.  When rotated, the
+\fIsrcVfb\fR's pixels will blend seamlessly into the \fIdstVfb\fR background
+rather than leave empty black triangular corners.
+.LP
+In a more complex use of a \fIdstVfb\fR, the \fIdstVfb\fR may be intialized
+to a transparent alpha channel value.  The \fIsrcVfb\fR, complete with its
+own variety of transparent and opaque alpha values, will be rotated and
+placed into the transparent background of \fIdstVfb\fR.  The combination can
+then be used with \fBImVfbComp\fR to digitally composite the rotated image
+atop another image.
+.LP
+Finally, a \fIdstVfb\fR could contain a complete image atop which the rotated
+image is to be placed.  This is usually less satisfying that using an
+alpha-channel based compositing approach because the entire rectangle of the
+rotated \fIsrcVfb\fR will be pasted atop the \fIdstVfb\fR, leaving you
+a rotated image with \fIdstVfb\fR only showing through in the corners.
+.LP
+\fIsrcVfb\fR is unaltered by this operation.
+.SH RETURNS
+Upon success, \fBImVfbRotate\fR returns a pointer to
+the destination VFB.
+Upon failure, \fBIMVFBNULL\fR is returned, and \fBImErrNo\fR set
+to one of the following:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEFIELD	\fIsrcVfb\fR and \fBdstVfb\fR fields aren't compatible
+IMEHEIGHT	Height not the right size for the resulting shear
+IMEMALLOC	Cannot allocate enough memory for the new VFB
+IMENOVFB	NULL \fIsrcVfb\fR
+IMEWIDTH	Width  not the right size for the resulting shear
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH "SEE ALSO"
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBImVfbComp\fR(3IM),
+\fBImVfbXShear\fR(3IM),
+\fBImVfbYShear\fR(3IM)
+.SH AUTHOR
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

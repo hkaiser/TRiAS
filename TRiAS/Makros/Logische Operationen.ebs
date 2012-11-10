@@ -1,0 +1,344 @@
+' -----------------------------------------------------------------------------
+' $DESCRIPTION: Logische Operationen mit ORFenster-Inhalten
+' -----------------------------------------------------------------------------
+'	'Logische Operationen.ebs'	TRiAS-MakroErweiterung
+' -----------------------------------------------------------------------------
+'	(c)	uve GmbH FEZ Potsdam, 3. November 1997, H.Kaiser
+' -----------------------------------------------------------------------------
+'	Erlaubt, Objektmengen mehrerer Objektrecherchefenster durch logische
+'	Operationen miteinander zu verbinden und das Resultat in einem
+'	weiteren Objektrecherchefenster anzuzeigen.
+'	Derzeit hier implementierte logische Operationen: UND, ODER, XOR.
+' -----------------------------------------------------------------------------
+
+Option Explicit
+
+' -----------------------------------------------------------------------------
+' Globale Variablen
+Private docGD As GeoDocument		' aktuelles Projekt
+
+' ToolBar und ToolBarKnopf
+Private tbK As Toolbar
+
+Private tbbAnd As ToolbarButton
+Private tbbOr As ToolbarButton
+Private tbbXor As ToolbarButton
+
+' -----------------------------------------------------------------------------
+' Beschreibungs-Strings
+Const strToolAnd = "Logisches Und"
+Const strToolAndLong = "Bildet die logische Durchschnittsmenge" + _
+					   " von Objekten verschiedener Recherchefenster."
+Const strToolOr = "Logisches Oder"
+Const strToolOrLong = "Bildet die logische Vereinigungsmenge" + _
+					  " von Objekten verschiedener Recherchefenster."
+Const strToolXor = "Logisches Exklusiv Oder"
+Const strToolXorLong = "Bildet die logische symmetrische Differenzmenge" + _
+					  " von Objekten verschiedener Recherchefenster."
+
+Const NL = Chr$(13) + Chr$(10)		' Zeilenwechsel
+
+' -----------------------------------------------------------------------------
+' Deklaration aller verwendeten Routinen
+Declare Private Function AddTool (Tools As ToolBar, iNum As Integer, strName As String, _
+	PictID As Integer, strDesc As String, iState As Integer, iStyle As Integer) As ToolBarButton
+
+Declare Private Sub EnableButtons()
+Declare Private Sub DisableButtons()
+
+' -----------------------------------------------------------------------------
+' "BeginScript()" wird immer vor der Script-Abarbeitung gerufen
+Sub BeginScript()
+
+Dim tbKLoc As ToolBar
+Dim Style As Long
+
+	Set docGD = GetActiveDocument()
+
+	Style = TOOLBARSTYLE_BorderAny Or TOOLBARSTYLE_Border3d Or _
+			TOOLBARSTYLE_AlignTop Or TOOLBARSTYLE_Tooltips Or _
+			TOOLBARSTYLE_FlyBy  Or TOOLBARSTYLE_SizeDynamic
+	Set tbKLoc = TRiAS.AddToolBar ("Logische Operationen", Style)
+																					   
+' Eruegen der Knöpfe
+	Set tbbAnd = AddTool (tbKLoc, 0, "And", Tool57, strToolAndLong + NL + strToolAnd, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+	Set tbbOr = AddTool (tbKLoc, 1, "Or", Tool58, strToolOrLong + NL + strToolOr, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+	Set tbbXor = AddTool (tbKLoc, 2, "Xor", Tool56, strToolXorLong + NL + strToolXor, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+
+	tbKLoc.DockState = DOCKSTATE_DockedTop		' oben andocken
+	tbKLoc.Visible = 1
+
+	Set tbK = tbKLoc
+
+End Sub
+
+' -----------------------------------------------------------------------------
+' "Main()" ist der eigentliche Startpunkt des Makroscriptes 
+Sub Main()
+' Dieser Script muß auch nach Main() aktiv bleiben
+	SetBreakScript (False)
+
+' Testen, ob bereits ein Projekt geöffnet ist, dann Knöpfe aktivieren
+	If (docGD Is Nothing) Then
+		DisableButtons
+	End If
+End Sub 
+
+' -----------------------------------------------------------------------------
+' "EndScript()" wird immer nach Beendigung der Script-Abarbeitung gerufen
+Sub EndScript()
+' ToolBar ausblenden
+	If (tbK Is Not Nothing) Then
+		tbK.Visible = False
+	End If
+
+' alle Objekte freigeben
+	Set tbbAnd = Nothing
+	Set tbbOr = Nothing
+	Set tbbXor = Nothing
+
+	If (tbK Is Not Nothing) Then
+		tbK.Remove		' ToolBar selbst freigeben
+	End If
+	Set tbK = Nothing
+
+	Set docGD = Nothing
+
+' Jetzt wird der Script wirklich abgebrochen
+	SetBreakScript (True)
+End Sub
+
+' -----------------------------------------------------------------------------
+' Nutzer drückt Knöpfchen
+Sub Ende_Click()
+	SetBreakScript (True)
+End Sub
+
+' -----------------------------------------------------------------------------
+' "OnDocumentToClose()" wird bei Schließen des aktuellen Projektes gerufen
+Sub OnDocumentToClose (Doc As GeoDocument)
+	DisableButtons		' Knöpfe passivieren
+	Set docGD = Nothing
+End Sub
+
+' "OnDocumentOpened()" wird bei Öffnen eines Projektes gerufen
+Sub OnDocumentOpened (Doc As GeoDocument)
+	Set docGD = GetActiveDocument()
+	If (docGD Is Not Nothing) Then
+		EnableButtons		' Knöpfe aktivieren
+	End If
+End Sub
+
+
+'------------------------------------------------------------------------------
+' logisches UND (Durchschnittsmenge)
+Const ErrorText1 As String = "Es sind keine Objektrecherchefenster geöffnet!"
+Const ErrorText2 As String = "Es müssen mindestens 2 Objektrecherchefenster geöffnet sein!."
+Const ErrorText3 As String = "Das Ergebnisfenster konnte nicht erzeugt werden!"
+Const ErrorText4 As String = " enthält keine Objekte!"
+
+Const Prefix As String = "Die "
+Const AndOperation As String = "Durchschnittsmenge"
+Const OrOperation As String = "Vereinigungsmenge"
+Const XorOperation As String = "Symmetrische Differenzmenge"
+
+Sub And_Click()
+
+	If (docGD Is Nothing) Then
+		Exit Sub
+	End If
+
+' Projekt ist geöffnet
+Dim Wins As GeoObjectWins
+
+	Set Wins = docGD.GetGeoObjectWins()
+	If (Wins Is Nothing) Then
+		MsgBox ErrorText1, , AndOperation
+		Exit Sub
+	End If
+	If (Wins.Count < 2) Then
+		MsgBox ErrorText2, , AndOperation
+		Exit Sub
+	End If
+
+' alle Recherchefenster durchgehen, und Durchschnittsmenge abfragen
+Dim OuterObjs As GeoObjects 
+Dim Win As GeoObjectWin
+
+	For Each Win In Wins
+	Dim Objs As GeoObjects
+	
+		Set Objs = Win.GetObjects()
+		If (Objs Is Not Nothing) Then
+			If (OuterObjs Is Not Nothing) Then
+				Set OuterObjs = Objs.Intersection (OuterObjs)	' <-- hier passierts
+			Else
+				Set OuterObjs = Objs
+			End If
+		End If
+	Next Win
+
+	If (OuterObjs Is Not Nothing) Then
+	Dim NewWin As GeoObjectWin
+
+		Set NewWin = OuterObjs.CreateGeoObjectWin()
+		If (NewWin Is Not Nothing) Then
+			NewWin.Name = AndOperation
+			NewWin.Visible = True
+		Else
+			MsgBox ErrorText3, , AndOperation
+		End If
+	Else
+		MsgBox Prefix + AndOperation + ErrorText4
+	End If
+
+End Sub
+
+'------------------------------------------------------------------------------
+' logisches XOR (Symmetrische Differenzmenge)
+Sub Xor_Click()
+
+	If (docGD Is Nothing) Then
+		Exit Sub
+	End If
+
+' Projekt ist geöffnet
+Dim Wins As GeoObjectWins
+
+	Set Wins = docGD.GetGeoObjectWins()
+	If (Wins Is Nothing) Then
+		MsgBox ErrorText1, , XorOperation
+		Exit Sub
+	End If
+	If (Wins.Count < 2) Then
+		MsgBox ErrorText2, , XorOperation
+		Exit Sub
+	End If
+
+' alle Recherchefenster durchgehen, und Symmetrische Differenz abfragen
+Dim OuterObjs As GeoObjects 
+Dim Win As GeoObjectWin
+
+	For Each Win In Wins
+	Dim Objs As GeoObjects
+	
+		Set Objs = Win.GetObjects()
+		If (Objs Is Not Nothing) Then
+			If (OuterObjs Is Not Nothing) Then
+				Set OuterObjs = Objs.SymmetricDifference (OuterObjs) ' <-- hier passierts
+			Else
+				Set OuterObjs = Objs
+			End If
+		End If
+	Next Win
+
+	If (OuterObjs Is Not Nothing) Then
+	Dim NewWin As GeoObjectWin
+
+		Set NewWin = OuterObjs.CreateGeoObjectWin()
+		If (NewWin Is Not Nothing) Then
+			NewWin.Name = XorOperation
+			NewWin.Visible = True
+		Else
+			MsgBox ErrorText3, , XorOperation
+		End If
+	Else
+		MsgBox Prefix + XorOperation + ErrorText4
+	End If
+
+End Sub
+
+'------------------------------------------------------------------------------
+' logisches ODER (Vereinigungsmenge)
+Sub Or_Click()
+
+	If (docGD Is Nothing) Then
+		Exit Sub
+	End If
+
+' Projekt ist geöffnet
+Dim Wins As GeoObjectWins
+
+	Set Wins = docGD.GetGeoObjectWins()
+	If (Wins Is Nothing) Then
+		MsgBox ErrorText1, , OrOperation
+		Exit Sub
+	End If
+	If (Wins.Count < 2) Then
+		MsgBox ErrorText2, , OrOperation
+		Exit Sub
+	End If
+
+' alle Recherchefenster durchgehen, und Vereinigungsmenge abfragen
+Dim OuterObjs As GeoObjects 
+Dim Win As GeoObjectWin
+
+	For Each Win In Wins
+	Dim Objs As GeoObjects
+	
+		Set Objs = Win.GetObjects()
+		If (Objs Is Not Nothing) Then
+			If (OuterObjs Is Not Nothing) Then
+				Set OuterObjs = Objs.Union (OuterObjs)	' <-- hier passierts
+			Else
+				Set OuterObjs = Objs
+			End If
+		End If
+	Next Win
+
+	If (OuterObjs Is Not Nothing) Then
+	Dim NewWin As GeoObjectWin
+
+		Set NewWin = OuterObjs.CreateGeoObjectWin()
+		If (NewWin Is Not Nothing) Then
+			NewWin.Name = OrOperation
+			NewWin.Visible = True
+		Else
+			MsgBox ErrorText3, , OrOperation
+		End If
+	Else
+		MsgBox Prefix + OrOperation + ErrorText4
+	End If
+
+End Sub
+
+' -----------------------------------------------------------------------------
+' Hinzufügen eines Knopfes zur Toolbar
+Function AddTool (Tools As ToolBar, iNum As Integer, strName As String, _
+	PictID As Integer, strDesc As String, iState As Integer, iStyle As Integer) _
+	As ToolBarButton
+
+Dim P As Image
+Dim TB As New ToolBarButton
+
+	Set P = LoadResPicture (PictID, vbResBitmap)
+	If (P Is Not Nothing) Then
+		TB.Name$ = StrName
+		TB.HelpText$ = strDesc
+		TB.State = iState
+		TB.Style = iStyle
+		TB.AttachImage P
+		TB.CmdID = PictID	' CommandID ist PictID (eindeutig ?!)
+
+		Tools.InsertButton iNum, TB
+		Set AddTool = TB
+	Else
+		Set AddTool = Nothing
+	End If
+End Function
+
+' -----------------------------------------------------------------------------
+' Sonstiges 
+Sub EnableButtons ()
+	tbbAnd.State = BUTTONSTATE_Enabled Or BUTTONSTATE_NoKickIdle
+	tbbOr.State = BUTTONSTATE_Enabled Or BUTTONSTATE_NoKickIdle
+	tbbXor.State = BUTTONSTATE_Enabled Or BUTTONSTATE_NoKickIdle
+End Sub
+
+Sub DisableButtons ()
+	tbbAnd.State = BUTTONSTATE_Disabled Or BUTTONSTATE_NoKickIdle
+	tbbOr.State = BUTTONSTATE_Disabled Or BUTTONSTATE_NoKickIdle
+	tbbXor.State = BUTTONSTATE_Disabled Or BUTTONSTATE_NoKickIdle
+End Sub
+
+   

@@ -1,0 +1,76 @@
+'\"t
+.TH TAGTABLEAPPEND 3TAG "July 1990" "SDSC" "TAG TABLE"
+.SH NAME
+TagTableAppend - append a tag table entry to a tag table
+.SH SYNOPSIS
+\fB
+.nf
+#include "sdsc.h"
+
+extern int TagErrNo;
+
+int TagTableAppend( tagTable, tagEntry )
+	TagTable *tagTable;
+	TagEntry *tagEntry;
+.fi
+\fR
+.SH DESCRIPTION
+\fITagTableAppend\fR adds the \fItagEntry\fR to the end of the \fItagTable\fR.
+The \fInthEntry\fR and \fInthOccur\fR fields of the \fItagEntry\fR are set.
+.SH NOTES
+For a description of the fields of a tag table entry, see the \fBman\fP page
+on \fITagEntryAlloc\fR(3TAG).
+.LP
+Appending an entry to the tag table places the entry at the end of the
+table, giving it the highest \fInthEntry\fR field of any entry in the table.
+The first entry in the table has an \fInthEntry\fR field of 0.
+The second entry in the table has an \fInthEntry\fR of 1, and so on.
+.LP
+Tag entries may be retrieved based on their entry number using
+\fITagTableQLinear\fR(3TAG), which treats the tag table like a linear list.
+Tag entries may be inserted after, deleted, and replaced based on their
+entry number using \fITagTableInsert\fR(3TAG), \fITagTableDelete\fR(3TAG),
+and \fITagTableReplace\fR(3TAG).
+.LP
+Appending an entry to the tag table also adds it to the list of occurrences
+of entries with the same tag.
+This gives it the highest \fInthOccur\fR field of any entry in the table
+with the same tag.
+The first entry in the table with this tag has an \fInthOccur\fR field of 0.
+The second entry in the table with this tag has an \fInthOccur\fR
+of 1, and so on.
+.LP
+Tag entries may be retrieved based on their tag and occurrence number using
+\fITagTableQDirect\fR(3TAG), which treats the tag table like a hash table.
+.SH RETURNS
+On success, \fITagTableAppend\fR returns the new total number of entries in
+the tag table.
+On failure, -1 is returned and \fITagErrNo\fR set to:
+.sp
+.TS
+center;
+l l.
+TAGEMALLOC	Cannot allocate enough memory
+TAGENULLTAGENTRY	The tag entry argument is bad
+TAGENULLTAGTABLE	The tag table argument is bad
+.TE
+.SH SEE ALSO
+TagTableDelete(3TAG),
+TagEntryAlloc(3TAG),
+TagEntryFree(3TAG),
+TagTableInsert(3TAG),
+TagTableQDirect(3TAG),
+TagEntryQNthEntry(3TAG),
+TagEntryQNthOccur(3TAG),
+TagTableQLinear(3TAG),
+TagTableQNEntry(3TAG),
+TagTableReplace(3TAG),
+TagTableAlloc(3TAG),
+TagTableFree(3TAG)
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

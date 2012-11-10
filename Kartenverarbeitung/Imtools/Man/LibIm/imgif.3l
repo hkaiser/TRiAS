@@ -1,0 +1,198 @@
+
+
+
+IMGIF(3IM)             SDSC IMAGE LIBRARY              IMGIF(3IM)
+
+
+
+NAME
+     imgif - CompuServe GIF (Graphics  Interchange  Format)  file
+     translation
+
+SYNOPSIS
+     #include <stdio.h>
+     #include "sdsc.h"
+     #include "im.h"
+
+     int ImFileRead( fd, "gif", flagsTable, dataTable )
+          int fd;
+          TagTable *flagsTable;
+          TagTable *dataTable;
+
+     int ImFileFRead( fp, "gif", flagsTable, dataTable )
+          FILE *fp;
+          TagTable *flagsTable;
+          TagTable *dataTable;
+
+     int ImFileWrite( fd, "gif",  flagsTable, dataTable )
+          int fd;
+          TagTable *flagsTable;
+          TagTable *dataTable;
+
+     int ImFileFWrite( fp, "gif",  flagsTable, dataTable )
+          FILE *fp;
+          TagTable *flagsTable;
+          TagTable *dataTable;
+
+
+
+DESCRIPTION
+     GIF (Graphics Interchange Format) is  CompuServe's  standard
+     for  generalized  color  raster  images.  This standard is a
+     mechanism  to  exchange  and  display  high-quality,   high-
+     resolution graphics images.
+
+FILE RECOGNITION
+     CompuServe gif files are recognized  by  the  filename  suf-
+     fixes: .gif and .giff.
+
+NOTES
+     SDSC image library support of CompuServe's gif  format  con-
+     tains  no  proprietary code.  CompuServe gif format handling
+     is available on any machine for which the SDSC image library
+     is available.
+
+  Reading CompuServe GIF files
+     The  SDSC  image  library  reads  LZW   (Limpel-Ziv   Welsh)
+     compressed  color  index  images  with depths of 1 through 8
+     bits, with or without a CLT.  1-bit  images  are  stored  as
+     IMVFBMONO  VFBs,  while  2- through 8-bit color index images
+
+
+
+SDSC              Last change: August 24, 1992                  1
+
+
+
+
+
+
+IMGIF(3IM)             SDSC IMAGE LIBRARY              IMGIF(3IM)
+
+
+
+     are stored as IMVFBINDEX8 VFBs.
+
+     If the gif file contains multiple images, multiple VFBs  are
+     created  and  appended  to  the  _d_a_t_a_T_a_b_l_e.   The SDSC image
+     library reads both gif 87a and gif 89a.
+
+  Writing CompuServe GIF files
+     SDSC  image  library  IMVFBMONO  VFBs  are  written  as  LZW
+     compressed 1-bit images, with or without a CLT.  IMVFBINDEX8
+     VFBs are written as LZW compressed  8-bit  images,  with  or
+     without a CLT.
+
+     Other image library VFB types are converted to IMVFBMONO  or
+     IMVFBINDEX8  VFBs  prior  to  being  written  out.   See the
+     ImFileWrite(3IM) man  page  for  details.   The  SDSC  image
+     library writes only gif 87a files.  This allows maximum por-
+     tability of the file, since gif 89a decoders can  also  read
+     gif 87a.
+
+     The gif format can support multiple images in a single file,
+     with  the  restriction  that  all  such images have the same
+     depth.  The SDSC image library currently  does  not  support
+     storage of more than one image in a single gif file.
+
+     The SDSC image library supports writing  of  a  transparency
+     field to a gif file.  This field is used by programs such as
+     netscape to determine which index value shall be  considered
+     transparent.   You  may  request  image transparency via the
+     flags table by adding an entry  to  the  flags  table  named
+     "image  transparency  request".   The  value associated with
+     this entry should be a character string in one of  the  fol-
+     lowing forms:
+     "most common"   Select the most common index value as transparent
+     "rgb=r g b"     Select pixels with r red, g green, b blue as transparent
+     "index=i"       Select pixels with index value i as transparent.
+
+ERRORS
+     In addition to those listed for ImFileRead(3IM),  CompuServe
+     gif file reading returns the following error codes:
+
+          IMEMAGIC    Bad magic number of GIF file
+          IMEMALLOC   Cannot allocate enough memory
+          IMESYS      System call error in read operation
+
+     In addition to those listed for ImFileWrite(3IM), CompuServe
+     gif file writing returns the following error codes:
+
+          IMEMALLOC   Cannot allocate enough memory
+          IMESYS      System call error in write operation
+
+DOCUMENTATION
+     _G_I_F _G_r_a_p_h_i_c_s _I_n_t_e_r_c_h_a_n_g_e  _F_o_r_m_a_t  _V_e_r_s_i_o_n  _8_9_a,  CompuServe,
+
+
+
+2                 Last change: August 24, 1992               SDSC
+
+
+
+
+
+
+IMGIF(3IM)             SDSC IMAGE LIBRARY              IMGIF(3IM)
+
+
+
+     July 31, 1990.
+     _G_I_F _G_r_a_p_h_i_c_s _I_n_t_e_r_c_h_a_n_g_e  _F_o_r_m_a_t  _V_e_r_s_i_o_n  _8_7_a:  _A  _s_t_a_n_d_a_r_d
+     _d_e_f_i_n_i_n_g  _a  _m_e_c_h_a_n_i_s_m  _f_o_r  _t_h_e _s_t_o_r_a_g_e _a_n_d _t_r_a_n_s_m_i_s_s_i_o_n _o_f
+     _r_a_s_t_e_r-_b_a_s_e_d  _g_r_a_p_h_i_c_s  _i_n_f_o_r_m_a_t_i_o_n,  CompuServe,  June  15,
+     1987.
+
+SEE ALSO
+     ImIntro(3IM),   ImErrNo(3IM),   imconv(1IM),    imfile(1IM),
+     imformats(1IM)
+
+AUTHOR
+     Soraya Gonzalez, Toan-Vinh Le, Brian Duggan
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SDSC              Last change: August 24, 1992                  3
+
+
+

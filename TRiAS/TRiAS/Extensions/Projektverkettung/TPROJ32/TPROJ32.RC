@@ -1,0 +1,273 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resstrg.h"
+#include "about.h"
+#include "tproject.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Deutsch (Deutschland) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+PROJECTICON             ICON    DISCARDABLE     "REGION.ICO"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+CPROJECTEXTENSIONMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Tei&lprojekte"
+    BEGIN
+        MENUITEM "Tei&lprojekte bearbeiten ...", IDM_DEFPROJECT
+        MENUITEM "Teilproje&kte anzeigen ...",  IDM_SEARCHPROJECT
+        MENUITEM SEPARATOR
+        MENUITEM "&Bildausschnitt beibehalten", IDM_SETCONT
+        MENUITEM SEPARATOR
+        MENUITEM "&Vorheriges Projekt öffnen ", IDM_OPENPREVIOUSPROJECT
+        MENUITEM "&Übergeordnetes Projekt öffnen ", IDM_OPENPREVIOUSLEVEL
+    END
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""resstrg.h""\r\n"
+    "#include ""about.h""\r\n"
+    "#include ""tproject.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""tproj32.rcv""\r\n"
+    "#include ""about.src""\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+TPROJECTDEFINITION DIALOG DISCARDABLE  30, 30, 249, 150
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Bearbeiten von Teilprojekten"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Teilprojekte:",IDC_STATIC,6,3,63,9
+    LISTBOX         IDLB_TPROJECTS,6,14,171,71,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Verzeichnis bearbeiten:",IDC_STATIC,6,91,84,9
+    EDITTEXT        IDS_TPROJECTSDIR,6,102,215,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    PUSHBUTTON      "&...",IDB_TPROJECTSEARCH,228,102,12,14
+    LTEXT           "&Name des Teilprojektes:",IDC_STATIC,6,121,77,8
+    EDITTEXT        IDS_TPROJECTKEY,6,132,216,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "S&peichern",IDB_TPROJECTSTORE,185,52,55,14,WS_GROUP
+    PUSHBUTTON      "&Löschen",IDB_TPROJECTDELETE,185,70,55,14
+    DEFPUSHBUTTON   "OK",IDOK,185,6,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,185,24,55,14
+    PUSHBUTTON      " ...",IDC_BUTTONNEW,228,132,12,14
+END
+
+TPROJECTMCODE DIALOG DISCARDABLE  60, 60, 198, 98
+STYLE DS_SYSMODAL | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Merkmalscode -Teilprojekt"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Speichern",IDOK,142,30,50,14
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,142,47,50,14
+    LISTBOX         IDLB_TPMKLIST,2,29,135,68,LBS_SORT | WS_VSCROLL
+    LTEXT           "Merkmalscode auswählen :",-1,4,10,103,7
+    EDITTEXT        IDS_TPMCODE,107,8,61,12,ES_AUTOHSCROLL
+END
+
+TPROJECTKORREKTUR DIALOG DISCARDABLE  50, 50, 281, 172
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Bearbeiten eines fehlerhaften Verweises auf ein Teilprojekt"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Verzeichnis:",IDC_STATIC,5,7,48,9
+    EDITTEXT        IDS_TPROJECTSDIR,5,18,194,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "&Name des Teilprojektes:",IDC_STATIC,5,37,77,8
+    EDITTEXT        IDS_TPROJECTKEY,5,48,210,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Löschen",IDC_DELBUTTON,224,48,50,14,WS_GROUP
+    DEFPUSHBUTTON   "OK",IDOK,224,6,50,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,224,25,50,14
+    EDITTEXT        IDC_TPPROJECTINI,11,103,199,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "Projekt-INI :",IDC_STATIC,11,92,56,8
+    LTEXT           "Fehlerhafter Verweis :",IDC_STATIC,11,129,69,8
+    EDITTEXT        IDC_TPROJECTPFAD,12,141,258,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    PUSHBUTTON      "&...",IDB_TPROJECTSEARCHMOD,203,18,12,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    TPROJECTDEFINITION, DIALOG
+    BEGIN
+        RIGHTMARGIN, 222
+        VERTGUIDE, 6
+        VERTGUIDE, 243
+        HORZGUIDE, 6
+        HORZGUIDE, 85
+        HORZGUIDE, 146
+    END
+
+    TPROJECTKORREKTUR, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 274
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 165
+        HORZGUIDE, 70
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXEXTENSIONPROC    "_DexExtensionProc@8"
+    IDS_DEXXEXTENSIONPROC   "_DexxExtensionProc@8"
+    IDS_DEXNOTIFICATIONPROC "_DexNotificationProcEx@12"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Projektverkettung"
+    IDS_ININOWRITABLE       "Die INI-Datei des Projektes ist schreibgeschützt !\nKein Abspeichern von Teilprojekten möglich !"
+    IDS_TPLINK              "Verweis zum Teilprojekt * "
+    IDS_TPERROR             " * fehlerhaft"
+    IDS_TPPFAD              "Pfad : "
+    IDS_TPWORK              "Teilprojekt-Verweis aktualisieren ?"
+    IDS_ERRININOWRITABLE    "Die Ini-Datei des Projektes ist schreibgeschützt !\nBeim Wechsel zum anderen Projekt gehen die geänderten Teilprojekteinträge verloren !!! \nMöchten Sie trotzdem zum ausgewählten Projekt wechseln ? "
+    IDS_DEFAULTPROJECT      "DEFAULT"
+    IDS_DEFAULTPROJECTS     "MainProject"
+    IDS_NOMOVINGINI         "Einträge zur Teilprojektverkettung in die Projekt-INI fehlgeschlagen! "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_TPCREATEOTHER       "Sollen alle folgenden Teilprojekte \n aus diesem Projektverzeichnis geladen werden ?"
+    IDS_TPNEWCAPTION        "Neue Teilprojekte anbinden"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PROJECTMENUITEM     "Teilproje&kt anzeigen"
+    IDS_PREVPROJECT         "&Vorheriges Projekt öffnen"
+    IDS_PROJECTDEF          "Tei&lprojekt bearbeiten"
+    IDS_PROJECTS            "Projects"
+    IDS_PROJECTSUBDIR       "PROJEKTE\\"
+    IDS_PROFILEEXT          ".ini"
+    IDS_DATABASEEXT         ".riw "
+    IDS_TPNOPROJECTKEY      "Kein Projektschlüssel angegeben - bitte eintragen !!!"
+    IDS_TPSEARCHCAPTION     "%s Teilprojekt (*.riw)|*.riw;"
+    IDS_TPOPENPOPUP         "Projekt öffnen"
+    IDS_TPORWINDOWCAPTION   "Teilprojekte"
+    IDS_TPORWINDOWFALSE     "-fehlerhafte Zuordnung"
+    IDS_TPNORELATION        "Fehlerhafte Zuordnung"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDT_TPCAPTION           " Anbinden von Teilprojekten"
+    IDT_HEADTPMCODEIDENT    "TPMCodeIdent    "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDT_HEADTPMCODETEXT     "Teilprojekt"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_GLOBALDELETE        "&Löschen"
+    IDS_LOCALDELETE         "&Entfernen"
+END
+
+#endif    // Deutsch (Deutschland) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "tproj32.rcv"
+#include "about.src"
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

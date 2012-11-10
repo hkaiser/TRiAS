@@ -1,0 +1,4 @@
+#define  IDB_PRNTSELECT	280
+#define  IDL_PRNTSELECT	281
+#define  IDB_PRSHELP	282
+#define PRINTER_SELEKTION           69

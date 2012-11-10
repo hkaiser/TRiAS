@@ -1,0 +1,325 @@
+' -----------------------------------------------------------------------------
+' $DESCRIPTION: Topologische Analysen
+' -----------------------------------------------------------------------------
+'	'Topologische Analysen.ebs'	TRiAS-MakroErweiterung
+' -----------------------------------------------------------------------------
+'	(c)	uve GmbH FEZ Potsdam, 6. November 1997, H.Kaiser
+' -----------------------------------------------------------------------------
+'	Alle selektierte Objekte eines Recherchefensters werden mit allen 
+'	selektierten Objekten eines zweiten Recherchfensters auf eine bestimmte 
+'	topologische Relation hin untersucht.
+' -----------------------------------------------------------------------------
+
+Option Explicit
+
+' -----------------------------------------------------------------------------
+' Globale Variablen
+Private docGD As GeoDocument		' aktuelles Projekt
+
+' ToolBar und ToolBarKnopf
+Private tbK As Toolbar
+
+Private tbbInner As ToolbarButton
+Private tbbOuter As ToolbarButton
+Private tbbOther As ToolbarButton
+
+Private tbbEnde As  ToolbarButton
+
+' -----------------------------------------------------------------------------
+' Beschreibungs-Strings
+Const strToolInner = "Innerhalb"
+Const strToolInnerLong = "Findet alle innerhalb liegenden Objekte."
+Const strToolOuter = "Außerhalb"
+Const strToolOuterLong = "Findet alle außerhalb liegenden Objekte."
+Const strToolOther = "Sonstige"
+Const strToolOtherLong = "Findet alle sonstig liegenden Objekte."
+
+Const strToolEnde = "Beendet das Makro"
+
+Const NL = Chr$(13) + Chr$(10)		' Zeilenwechsel
+
+' -----------------------------------------------------------------------------
+' Deklaration aller verwendeten Routinen
+Declare Private Function AddTool (Tools As ToolBar, iNum As Integer, strName As String, _
+	PictID As Integer, strDesc As String, iState As Integer, iStyle As Integer) As ToolBarButton
+
+Declare Private Sub EnableButtons()
+Declare Private Sub DisableButtons()
+
+' -----------------------------------------------------------------------------
+' "BeginScript()" wird immer vor der Script-Abarbeitung gerufen
+Sub BeginScript()
+
+Dim tbKLoc As ToolBar
+Dim Style As Long
+
+	Set docGD = GetActiveDocument()
+
+	Style = TOOLBARSTYLE_BorderAny Or TOOLBARSTYLE_Border3d Or _
+			TOOLBARSTYLE_AlignTop Or TOOLBARSTYLE_Tooltips Or _
+			TOOLBARSTYLE_FlyBy  Or TOOLBARSTYLE_SizeDynamic
+	Set tbKLoc = TRiAS.AddToolBar ("Tologosche Analysen", Style)
+'	tbKLoc.CtrlID = 12347
+																					   
+' 1. Reihe der Knöpfe
+	Set tbbInner = AddTool (tbKLoc, 0, "Inner", Tool1, strToolInnerLong + NL + strToolInner, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+	Set tbbOuter = AddTool (tbKLoc, 1, "Outer", Tool2, strToolOuterLong + NL + strToolOuter, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+	Set tbbOther = AddTool (tbKLoc, 2, "Other", Tool3, strToolOtherLong + NL + strToolOther, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+
+' 4. Reihe der Knöpfe: Endebutton, nur, wenn nicht als Zusatzmodul geladen
+'	If (Not IsExtension()) Then
+'	Dim Dummy As ToolBarButton 
+'
+'		Set Dummy = AddTool (tbKLoc, 9, "Ende", Tool48, strToolEnde, BUTTONSTATE_Enabled Or BUTTONSTATE_Wrap, BUTTONSTYLE_Button)
+'	End if
+
+	tbKLoc.DockState = DOCKSTATE_DockedTop	' rechts andocken
+	tbKLoc.Visible = 1
+
+	Set tbK = tbKLoc
+
+End Sub
+
+' -----------------------------------------------------------------------------
+' "Main()" ist der eigentliche Startpunkt des Makroscriptes 
+Sub Main()
+' Dieser Script muß auch nach Main() aktiv bleiben
+	SetBreakScript (False)
+
+' Testen, ob bereits ein Projekt geöffnet ist, dann Knöpfe aktivieren
+	If (docGD Is Nothing) Then
+		DisableButtons
+	End If
+End Sub 
+
+' -----------------------------------------------------------------------------
+' "EndScript()" wird immer nach Beendigung der Script-Abarbeitung gerufen
+Sub EndScript()
+' ToolBar ausblenden
+	If (tbK Is Not Nothing) Then
+		tbK.Visible = False
+	End If
+
+' alle Objekte freigeben
+	Set tbbInner = Nothing
+	Set tbbOuter = Nothing
+	Set tbbOther = Nothing
+	If (tbK Is Not Nothing) Then
+		tbK.Remove		' ToolBar selbst freigeben
+	End If
+	Set tbK = Nothing
+
+	Set docGD = Nothing
+
+' Jetzt wird der Script wirklich abgebrochen
+	SetBreakScript (True)
+End Sub
+
+' -----------------------------------------------------------------------------
+' Nutzer drückt Knöpfchen
+Sub Ende_Click()
+	SetBreakScript (True)
+End Sub
+
+' -----------------------------------------------------------------------------
+' "OnDocumentToClose()" wird bei Schließen des aktuellen Projektes gerufen
+Sub OnDocumentToClose (Doc As GeoDocument)
+	DisableButtons		' Knöpfe passivieren
+	Set docGD = Nothing
+End Sub
+
+' "OnDocumentOpened()" wird bei Öffnen eines Projektes gerufen
+Sub OnDocumentOpened (Doc As GeoDocument)
+	Set docGD = GetActiveDocument()
+	If (docGD Is Not Nothing) Then
+		EnableButtons		' Knöpfe aktivieren
+	End If
+End Sub
+
+' -----------------------------------------------------------------------------
+' Hier gehts los
+Const strWirdUntersucht As String = " wird untersucht"
+Const strCaption As String = "liegende Objekte"
+
+Declare Sub AnalyseTopology (iTopRel As Integer)
+
+Sub Inner_Click()
+	AnalyseTopology TR_Inner
+End Sub
+
+Sub Outer_Click()
+	AnalyseTopology TR_Outer
+End Sub
+
+Sub Other_Click()
+	AnalyseTopology TR_InnerOuter
+End Sub
+
+' used for hack:
+Const strOKS2 As String = "Objektklasse 2"
+
+Sub AnalyseTopology (iTopRel As Integer)
+
+Dim Wins As GeoObjectWins
+
+	Set Wins = docGD.GetGeoObjectWins()
+	If (Wins Is Nothing) Then
+		Exit Sub
+	End If
+	If (Wins.Count <> 2) Then
+		MsgBox "Bitte genau 2 Recherchefenster bereitstellen!"
+		Exit Sub
+	End If
+
+Dim Win1 As GeoObjectWin
+Dim Win2 As GeoObjectWin
+
+	Set Win1 = Wins(1)
+	Set Win2 = Wins(2)
+	If (Win1 Is Nothing Or Win2 Is Nothing) Then
+		MsgBox "What's that ?"
+		Exit Sub
+	End If
+
+' alle Objekte des ersten Fensters der Reihe nach mit allen
+' Objekten des 2. Fensters verschneiden
+Dim Objs1 As GeoObjects
+Dim Objs2 As GeoObjects
+
+	Set Objs1 = Win1.GetSelectedObjects()
+	Set Objs2 = Win2.GetSelectedObjects()
+	If (Objs1 Is Nothing Or Objs2 Is Nothing) Then
+		MsgBox "What's that - No objects ?"
+		Exit Sub
+	End If
+
+' Hack: dafür sorgen, daß Objs1 zur Objektklasse 1 gehören
+Dim HackObj As GeoObject
+
+	Set HackObj = Objs1(1)
+	If (HackObj Is Nothing) Then
+		Exit Sub
+	End If
+
+Dim Cls As GeoClass
+
+	Set Cls = HackObj.ObjClass
+	If (Cls.Name = strOKS2) Then
+	' swap
+	Dim ObjsT As GeoObjects
+
+		Set ObjsT = Objs1
+		Set Objs2 = Objs2
+		Set Objs1 = ObjsT 
+	End If
+
+' eigentliche Schleife testen jedes Objekt mit jedem
+Dim Status As New StatusIndicator	
+
+	Status.Restart 0, Objs1.Count, STATUS_ShowAllFields
+	Status.Caption = "Topologische Analyse"
+	Status.Field(1) = ""
+	Status.Field(2) = ""
+	Status.Field(3) = "Es wurden bereits %d%% bearbeitet"
+
+Dim Result As GeoObjects
+Dim Obj1 As GeoObject
+Dim i As Long
+
+	i = 0
+	For Each Obj1 in Objs1
+		Status.SetPosition i
+		i = i + 1
+
+		Status.Field(4) = "Objekt: " + Str$(Obj1.Value)
+
+	Dim R As GeoObjects 
+
+		Set R = Obj1.GetTopRelationObjects (iTopRel)
+		If (R Is Not Nothing) Then
+			Set R = R.Intersection (Objs2)
+
+		' zur Ausgabemenge hinzufügen
+			If (Result Is Not Nothing) Then
+				If (R Is Not Nothing) Then
+					Set Result = Result.Union (R)
+				End If
+			Else
+				Set Result = R
+			End If	' Result Is Not Nothing
+		End If 		' R Is Not Nothing
+
+	' ggf. abbrechen
+		If (Status.WasCanceled()) Then
+			Exit For
+		End If
+	Next Obj1
+
+	Set Status = Nothing
+
+	If (Result Is Nothing) Then
+		MsgBox "No objects found!"
+		Exit Sub 
+	End If
+
+Dim NewWin As geoObjectWin
+
+	Set NewWin = Result.CreateGeoObjectWin()
+
+	Select Case iTopRel
+	Case TR_Inner
+		NewWin.Name = "Innerhalb" + strCaption
+		
+	Case TR_Outer
+		NewWin.Name = "Außerhalb" + strCaption
+
+	Case TR_InnerOuter
+		NewWin.Name = "Überlappende" + strCaption
+
+	End Select
+
+	NewWin.Visible = True
+
+End Sub
+
+' -----------------------------------------------------------------------------
+' Hinzufügen eines Knopfes zur Toolbar
+Function AddTool (Tools As ToolBar, iNum As Integer, strName As String, _
+	PictID As Integer, strDesc As String, iState As Integer, iStyle As Integer) _
+	As ToolBarButton
+
+Dim P As Image
+Dim TB As New ToolBarButton
+
+	Set P = LoadResPicture (PictID, vbResBitmap)
+	If (P Is Not Nothing) Then
+		TB.Name$ = StrName
+		TB.HelpText$ = strDesc
+		TB.State = iState
+		TB.Style = iStyle
+		TB.AttachImage P
+		TB.CmdID = PictID	' CommandID ist PictID (eindeutig ?!)
+
+		Tools.InsertButton iNum, TB
+		Set AddTool = TB
+	Else
+		Set AddTool = Nothing
+	End If
+End Function
+
+' -----------------------------------------------------------------------------
+' Sonstiges 
+Sub EnableButtons ()
+	tbbInner.State = BUTTONSTATE_Enabled Or BUTTONSTATE_NoKickIdle
+	tbbOuter.State = BUTTONSTATE_Enabled Or BUTTONSTATE_NoKickIdle
+	tbbOther.State = BUTTONSTATE_Enabled Or BUTTONSTATE_NoKickIdle
+End Sub
+
+Sub DisableButtons ()
+	tbbInner.State = BUTTONSTATE_Disabled Or BUTTONSTATE_NoKickIdle
+	tbbOuter.State = BUTTONSTATE_Disabled Or BUTTONSTATE_NoKickIdle
+	tbbOther.State = BUTTONSTATE_Disabled Or BUTTONSTATE_NoKickIdle
+End Sub
+
+  
+ 

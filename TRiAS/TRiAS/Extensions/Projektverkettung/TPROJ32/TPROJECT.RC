@@ -1,0 +1,188 @@
+//Microsoft App Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resstrg.h"
+#include "about.h"
+#include "tproject.h"
+
+/////////////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+PROJECTICON             ICON    DISCARDABLE     "REGION.ICO"
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+CPROJECTEXTENSIONMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&Teilprojekte"
+    BEGIN
+        MENUITEM "Teilprojekte bearbeiten ...", IDM_DEFPROJECT
+        MENUITEM "Teilprojekte anzeigen ...",   IDM_SEARCHPROJECT
+        MENUITEM SEPARATOR
+        MENUITEM "Ausschnitt beibehalten",      IDM_SETCONT
+        MENUITEM SEPARATOR
+        MENUITEM "vorheriges Projekt öffnen ",  IDM_OPENPREVIOUSPROJECT
+        MENUITEM "übergeordnetes Projekt öffnen ",IDM_OPENPREVIOUSLEVEL
+        MENUITEM SEPARATOR
+        MENUITEM "&Info ...",                   IDM_ABOUT
+    END
+END
+
+#ifdef APSTUDIO_INVOKED
+//////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""resstrg.h""\r\n"
+    "#include ""about.h""\r\n"
+    "#include ""tproject.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""tproject.rcv""\r\n"
+    "#include ""about.src""\r\n"
+    "\r\n"
+    "\0"
+END
+
+/////////////////////////////////////////////////////////////////////////////////////
+#endif    // APSTUDIO_INVOKED
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+TPROJECTDEFINITION DIALOG DISCARDABLE  30, 30, 214, 153
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Projektdefinition"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "S&peichern",IDB_TPROJECTSTORE,160,47,50,14
+    PUSHBUTTON      "&Schlie\337en",IDOK,160,4,50,14
+    LISTBOX         IDLB_TPROJECTS,4,18,148,70,LBS_SORT | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Teilprojekte :",-1,5,6,63,9
+    EDITTEXT        IDS_TPROJECTSDIR,5,133,205,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    PUSHBUTTON      "A&usw\344hlen",IDB_TPROJECTSEARCH,160,83,50,14
+    EDITTEXT        IDS_TPROJECTKEY,4,102,206,14,ES_AUTOHSCROLL
+    LTEXT           "Projektpfad :",-1,5,121,48,9
+    LTEXT           "Projektbezeichnung  :",-1,5,91,145,8
+    PUSHBUTTON      "&L\366schen",IDB_TPROJECTDELETE,160,66,50,14
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,160,21,50,14
+END
+
+TPROJECTMCODE DIALOG DISCARDABLE  60, 60, 198, 98
+STYLE DS_SYSMODAL | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Merkmalscode -Teilprojekt"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Speichern",IDOK,142,30,50,14
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,142,47,50,14
+    LISTBOX         IDLB_TPMKLIST,2,29,135,68,LBS_SORT | WS_VSCROLL
+    LTEXT           "Merkmalscode ausw\344hlen :",-1,4,10,103,7
+    EDITTEXT        IDS_TPMCODE,107,8,61,12,ES_AUTOHSCROLL
+END
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXEXTENSIONPROC    "_DexExtensionProc@8"
+    IDS_DEXXEXTENSIONPROC   "_DexxExtensionProc@8"
+    IDS_DEXNOTIFICATIONPROC "_DexNotificationProcEx@12"
+END
+
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Projektverkettung"
+END
+
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PROJECTMENUITEM     "&Projekt anzeigen"
+    IDS_PREVPROJECT         "&Vorheriges Projekt \366ffnen"
+    IDS_PROJECTDEF          "&Projekt bearbeiten"
+    IDS_PROJECTS            "Projects"
+    IDS_PROJECTSUBDIR       "PROJEKTE\\"
+    IDS_PROFILEEXT          ".ini"
+    IDS_DATABASEEXT         ".ris"
+    IDS_TPNOPROJECTKEY      "Kein Projektschl\374ssel angegeben - bitte eintragen !!!"
+    IDS_TPSEARCHCAPTION     "TRiAS(R) Teilprojekt (*.ris);(*.stb)|*.ris;*.stb "
+    IDS_TPOPENPOPUP         "Projekt \366ffnen"
+    IDS_TPORWINDOWCAPTION   "Teilprojekte"
+    IDS_TPORWINDOWFALSE     "-fehlerhafte Zuordnung"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDT_TPCAPTION           "TRIAS(R) Anbinden von Teilprojekten"
+    IDT_HEADTPMCODEIDENT    "TPMCodeIdent    "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDT_HEADTPMCODETEXT     "Teilprojekt"
+END
+
+
+#ifndef APSTUDIO_INVOKED
+////////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "tproject.rcv"
+#include "about.src"
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

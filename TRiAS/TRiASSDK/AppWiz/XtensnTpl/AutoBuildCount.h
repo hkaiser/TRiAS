@@ -1,0 +1,6 @@
+// 33
+#ifndef AUTOBUILDCOUNT_H
+#define AUTOBUILDCOUNT_H
+#define BUILDCOUNT_NUM 33
+#define BUILDCOUNT_STR "33"
+#endif

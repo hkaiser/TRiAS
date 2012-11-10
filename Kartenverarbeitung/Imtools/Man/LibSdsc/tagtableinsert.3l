@@ -1,0 +1,132 @@
+
+
+
+     TTTTAAAAGGGGTTTTAAAABBBBLLLLEEEEIIIINNNNSSSSEEEERRRRTTTT((((3333TTTTAAAAGGGG))))    SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))     TTTTAAAAGGGGTTTTAAAABBBBLLLLEEEEIIIINNNNSSSSEEEERRRRTTTT((((3333TTTTAAAAGGGG))))
+
+
+
+     NNNNAAAAMMMMEEEE
+          TagTableInsert - insert a tag table entry into a tag table
+
+     SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+          ####iiiinnnncccclllluuuuddddeeee """"ssssddddsssscccc....hhhh""""
+
+          eeeexxxxtttteeeerrrrnnnn iiiinnnntttt TTTTaaaaggggEEEErrrrrrrrNNNNoooo;;;;
+
+          iiiinnnntttt TTTTaaaaggggTTTTaaaabbbblllleeeeIIIInnnnsssseeeerrrrtttt(((( ttttaaaaggggTTTTaaaabbbblllleeee,,,, aaaafffftttteeeerrrrNNNNtttthhhhEEEEnnnnttttrrrryyyy,,,, ttttaaaaggggEEEEnnnnttttrrrryyyy ))))
+               TTTTaaaaggggTTTTaaaabbbblllleeee ****ttttaaaaggggTTTTaaaabbbblllleeee;;;;
+               iiiinnnntttt aaaafffftttteeeerrrrNNNNtttthhhhEEEEnnnnttttrrrryyyy;;;;
+               TTTTaaaaggggEEEEnnnnttttrrrryyyy ****ttttaaaaggggEEEEnnnnttttrrrryyyy;;;;
+
+
+     DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+          _T_a_g_T_a_b_l_e_I_n_s_e_r_t adds the _t_a_g_E_n_t_r_y to the _t_a_g_T_a_b_l_e immediately
+          after the _a_f_t_e_r_N_t_h_E_n_t_r_y in the table.  The _n_t_h_E_n_t_r_y and
+          _n_t_h_O_c_c_u_r fields of the _t_a_g_E_n_t_r_y are set.
+
+          To insert before the first entry in the table, pass -1 for
+          the _a_f_t_e_r_N_t_h_E_n_t_r_y argument.
+
+     NNNNOOOOTTTTEEEESSSS
+          For a description of the fields of a tag table entry, see
+          the mmmmaaaannnn page on _T_a_g_E_n_t_r_y_A_l_l_o_c(3TAG).
+
+          Inserting an entry into the tag table places the entry after
+          the _a_f_t_e_r_N_t_h_E_n_t_r_y entry in the table, giving the new entry
+          an _n_t_h_E_n_t_r_y field of _a_f_t_e_r_N_t_h_E_n_t_r_y+_1.  The first entry in
+          the table has an _n_t_h_E_n_t_r_y field of 0.  The second entry in
+          the table has an _n_t_h_E_n_t_r_y of 1, and so on.
+
+          Inserting an entry causes all further entries in the table
+          to move down by one.  This increases their _n_t_h_E_n_t_r_y fields
+          by one each.
+
+          Tag entries may be retrieved based on their entry number
+          using _T_a_g_T_a_b_l_e_Q_L_i_n_e_a_r(3TAG), which treats the tag table like
+          a linear list.  Tag entries may be deleted, and replaced
+          based on their entry number using _T_a_g_T_a_b_l_e_D_e_l_e_t_e(3TAG) and
+          _T_a_g_T_a_b_l_e_R_e_p_l_a_c_e(3TAG).  Tag entries may be appended to a
+          table using _T_a_g_T_a_b_l_e_A_p_p_e_n_d(3TAG).
+
+          Inserting an entry into the tag table also adds it to the
+          list of occurrences of entries with the same tag.  This
+          gives it the highest _n_t_h_O_c_c_u_r field of any entry in the
+          table with the same tag.  The first entry in the table with
+          this tag has an _n_t_h_O_c_c_u_r field of 0.  The second entry in
+          the table with this tag has an _n_t_h_O_c_c_u_r of 1, and so on.
+
+          Tag entries may be retrieved based on their tag and
+          occurrence number using _T_a_g_T_a_b_l_e_Q_D_i_r_e_c_t(3TAG), which treats
+
+
+
+     Page 1                                          (printed 6/30/95)
+
+
+
+
+
+
+     TTTTAAAAGGGGTTTTAAAABBBBLLLLEEEEIIIINNNNSSSSEEEERRRRTTTT((((3333TTTTAAAAGGGG))))    SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))     TTTTAAAAGGGGTTTTAAAABBBBLLLLEEEEIIIINNNNSSSSEEEERRRRTTTT((((3333TTTTAAAAGGGG))))
+
+
+
+          the tag table like a hash table.
+
+     RRRREEEETTTTUUUURRRRNNNNSSSS
+          On success, _T_a_g_T_a_b_l_e_I_n_s_e_r_t returns the new total number of
+          entries in the tag table.  On failure, -1 is returned and
+          _T_a_g_E_r_r_N_o set to:
+
+          TAGEBADNTHENTRY     The nth entry argument is < -1 or >
+                              the size of the table
+          TAGEMALLOC          Cannot allocate enough memory
+          TAGENULLTAGENTRY    The tag entry argument is bad
+          TAGENULLTAGTABLE    The tag table argument is bad
+
+     SSSSEEEEEEEE AAAALLLLSSSSOOOO
+          TagTableAppend(3TAG), TagTableDelete(3TAG),
+          TagEntryAlloc(3TAG), TagEntryFree(3TAG),
+          TagTableQDirect(3TAG), TagEntryQNthEntry(3TAG),
+          TagEntryQNthOccur(3TAG), TagTableQLinear(3TAG),
+          TagTableQNEntry(3TAG), TagTableReplace(3TAG),
+          TagTableAlloc(3TAG), TagTableFree(3TAG)
+
+     AAAAUUUUTTTTHHHHOOOORRRRSSSS
+          Dave Nadeau
+          San Diego Supercomputer Center
+
+     CCCCOOOONNNNTTTTAAAACCCCTTTT
+          SDSC consultants, (619)534-5100, ccccoooonnnnssssuuuulllltttt@@@@yyyy1111....ssssddddsssscccc....eeeedddduuuu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Page 2                                          (printed 6/30/95)
+
+
+

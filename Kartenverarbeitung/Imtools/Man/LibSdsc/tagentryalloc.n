@@ -1,0 +1,161 @@
+'\"t
+.TH TAGENTRYALLOC 3TAG "July 1990" "SDSC" "TAG TABLE"
+.SH NAME
+TagEntryAlloc - allocate a new tag table entry
+.SH SYNOPSIS
+\fB
+.nf
+#include "sdsc.h"
+
+extern int TagErrNo;
+
+TagEntry *TagEntryAlloc( tag, type, pValue )
+	char *tag;
+	int   type;
+	void *pValue;
+.fi
+\fR
+.SH DESCRIPTION
+\fITagEntryAlloc\fR allocates a new tag table entry.
+The entry's tag is set to \fItag\fR, its value type set to \fItype\fR,
+and its value set to the data pointed to by \fIpValue\fR.
+.SH NOTES
+Tag table entries contain public and private data.
+Public data is set at the time the entry is allocated by \fITagEntryAlloc\fR
+and includes the following fields:
+.LP
+.IP "tag"
+The tag field of an entry contains a NULL-terminated character
+string of \fITAGMAXLEN\fR characters or less.
+\fITagEntryAlloc\fR copies the \fItag\fR argument into the new entry's
+tag field.
+.br
+Searches of a tag table based on a tag may be made using
+\fITagTableQDirect\fR(3TAG).
+.IP "type"
+The type field of an entry indicates the basic C type for the value.
+\fITagEntryAlloc\fR copies the \fItype\fR argument into the new entry's
+type field.
+.br
+The type is used to determine the number of bytes of value data to store
+along with the tag in the new entry.
+\fITagEntryAlloc\fR recognizes all types defined by the Binary I/O
+package (see \fIBinIntro\fR(3BIN)), plus the special type \fIPOINTER\fR.
+\fIPOINTER\fR may be used to generically indicate that the value is a
+pointer to something, such as a character string, or a user structure.
+.br
+At least the following types are currently recognized:
+.LP
+.in +1.0i
+.TS
+l l.
+\fItype\fR	\fBMeaning\fR
+BOOLEAN	boolean
+CHAR	signed character
+DOUBLE	double-precision floating point
+FLOAT	single-precision floating point
+INT	signed int
+INT16	signed 16-bit (or greater) integer
+INT32	signed 32-bit (or greater) integer
+INT64	signed 64-bit (or greater) integer
+INT8	signed 8-bit (or greater) integer
+LONG	signed long
+POINTER	pointer to something
+SHORT	signed short
+UCHAR	unsigned character
+UINT	unsigned int
+UINT16	unsigned 16-bit (or greater) integer
+UINT32	unsigned 32-bit (or greater) integer
+UINT64	unsigned 64-bit (or greater) integer
+UINT8	unsigned 8-bit (or greater) integer
+ULONG	unsigned long
+USHORT	unsigned short
+.TE
+.in -1.0i
+.IP "pValue"
+The value field of an entry contains the integer, float, char, or whatever
+value to be stored with the tag.
+\fITagEntryAlloc\fR copies the consecutive bytes pointed to by
+\fIpValue\fR into the new entry's value field.
+The number of bytes to copy is determined by the \fItype\fR and varies
+with different machine architectures and compiler flags.
+However, since the same number of bytes will be copied back out when
+the value is retrieved by \fITagEntryQValue\fR(3TAG), machine
+architecture differences should go unnoticed.
+.br
+Note that the argument \fIpValue\fR is a pointer to the value to put
+into the entry, so integer and floating-point literals cannot be
+passed in as the value argument.
+Such literals should first be assigned to a temporary variable, and
+then a pointer to that variable passed in.
+.br
+This use of a pointer to the value to copy is necessary to avoid
+machine-specific quirks relating to argument passing and variably-sized
+argument lists.
+.LP
+Tag entry private data is set at the time the entry is added to a tag
+table using \fITagTableAppend\fR(3TAG), \fITagTableInsert\fR(3TAG),
+or \fITagTableReplace\fR(3TAG) and includes the following fields:
+.IP "nthEntry"
+The nthEntry field of an entry contains an integer count indicating the
+placement of the entry in the tag table.
+The first entry in the table has an nthEntry field value of 0.
+The second is nthEntry 1, and so on in increasing order.
+.br
+Using \fITagTableQLinear\fR(3TAG), specific entries in a tag table may be
+retrieved by nthEntry number.
+This may be used to search a table from start to finish.
+.br
+This field is not set if the entry is not yet in a tag table.
+.IP "nthOccur"
+The nthOccur field of an entry contains an integer count indicating the
+placement of the entry among others in the table with the same tag.
+The first entry in the table with this tag has an nthOccur field of 0.
+The second is nthOccur 1, and so on in increasing order.
+.br
+Using \fITagTableQDirect\fR(3TAG), specific entries in a tag table may be
+retrieved based on a tag and the nthOccur number.
+This may be used to search a table for all entries with a specific tag.
+.br
+This field is not set if the entry is not yet in a tag table.
+.LP
+A tag table entry may only be in one table at a time and may not have
+its tag, type, or value changed after it has been allocated.
+.LP
+Fields in tag table entries may be queried individually using
+\fITagEntryQNthEntry\fR(3TAG), \fITagEntryQNthOccur\fR(3TAG),
+\fITagEntryQTag\fR(3TAG), \fITagEntryQValueType\fR(3TAG),
+\fITagEntryQValue\fR(3TAG). 
+.SH RETURNS
+\fITagEntryAlloc\fR returns a new \fITagEntry *\fR.  If it fails to complete,
+\fITAGENTRYNULL\fR is returned and \fITagErrNo\fR set to:
+.sp
+.ta 2i
+.nf
+TAGEMALLOC	Cannot allocate enough memory for 
+	the new tag entry
+TAGEUNKVALUETYPE	The type argument is not a known type
+TAGENULLTAG	The tag argument is a NULL pointer 
+	or an empty string
+.SH SEE ALSO
+TagTableAppend(3TAG),
+TagTableDelete(3TAG),
+TagEntryFree(3TAG),
+TagTableInsert(3TAG),
+TagTableQDirect(3TAG),
+TagEntryQNthEntry(3TAG),
+TagEntryQNthOccur(3TAG),
+TagEntryQTag(3TAG),
+TagEntryQValue(3TAG),
+TagEntryQValueType(3TAG),
+TagTableQLinear(3TAG),
+TagTableQNEntry(3TAG),
+TagTableReplace(3TAG),
+TagTableFree(3TAG)
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

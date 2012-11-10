@@ -1,0 +1,44 @@
+'\"t
+.if t .TH IMVFBDUP 3IM "August 25, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY" 
+.if n .TH IMVFBDUP 3IM "August 25, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImVfbDup - Duplicate a virtual frame buffer
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+ImVfb *ImVfbDup( srcVfb )
+	ImVfb *srcVfb ;
+.fi
+\fR
+.SH DESCRIPTION
+\fBImVfbDup\fR duplicates a virtual frame buffer and returns a pointer
+to the new Vfb.
+\fIsrcVfb\fR is the Vfb to be duplicated.
+It is not changed by this operation.
+.SH RETURNS
+An error causes \fBIMVFBNULL\fR to be returned and the value of
+\fBImErrNo\fR to be set to the following:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEMALLOC	Cannot allocate enough memory for the new Vfb
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH SEE ALSO
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBImVfbAlloc\fR (3IM),
+\fBImVfbCopy\fR (3IM)
+.SH AUTHOR
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

@@ -1,0 +1,246 @@
+/* Scanner fuer Eingabe der Visualisierungsinformationen */
+/* File: VISIDLL.LX */
+
+%{
+
+extern "C" {
+	#include <windows.h>
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <string.h>
+	#include <ctype.h>
+
+	#include "yvisidl.h"
+}
+
+#include <commonvu.hxx>
+
+#include <errcodes.hxx>
+#include "yystype.hxx"
+
+struct keyentry {               /* Tabelleneintrag fuer reservierte Worte */
+	int  lx;
+	char *id;
+};
+
+extern YYSTYPE yylval;
+void yyerror (ErrCode, ...);
+void yyerror (const char *, ...);
+
+/* reservierte Worte, die vom Scanner identifiziert werden */
+struct keyentry keywords[] = 
+{
+	{	T_VIEW, "VIEW"				},
+	{	T_DEFAULT, "DEFAULT"		},
+	{	T_PRIORITY, "PRIORITY"		},
+	{	T_TYPE, "TYPE"				},
+	{	T_MAINCOLOR, "MAINCOLOR"	},
+	{	T_SIZE, "SIZE"				},
+	{	T_WIDTH, "WIDTH"			},
+	{	T_FILLCOLOR, "FILLCOLOR"	},
+	{	T_IDENT, "IDENT"			},
+	{	T_PUNKT, "COORDPAIR"		},
+	{	T_LINIE, "LINE"				},
+	{	T_FLAECHE, "AREA"			},
+	{	T_TEXT, "X"					},
+	{	T_TTYP, "Y"					},
+	{	T_TROT, "ROTATION"			},
+	{	T_EQUAL, "EQUAL"			},
+	{	T_MCODE, "GENERALINFO"		},
+	{	T_DESC, "BESCHREIBUNG"		},
+	{	T_MAINCOLORC, "MSBH"		},
+	{	T_FILLCOLORC, "FSBH"		},
+	{	T_TVCS, "Z"					},
+	{	T_TLEGINFO, "LG"			},
+	{	T_TAGGED, "KENNZEICHEN"		},
+	{	T_OKS, "OKS"				},
+	{	T_STARTVIEW, "SVIEW"		},
+	{	T_UPPERSCALE, "USCALE"		},
+	{	T_LOWERSCALE, "LSCALE"		},
+	{	0, NULL						},
+};
+
+#undef YYLMAX		// max. Stringlänge
+#define YYLMAX	2048
+
+#undef output
+#define output(x)
+
+#define RBRACE	'}'
+
+%}
+
+S               [-+]?
+D               [0-9]
+X		[0-9A-Fa-f]
+XP		0[xX]
+ID              [a-zA-Z_]([a-zA-Z0-9_])*
+
+%start TextTyp 
+%start LegInfo 
+%start LegInfoString
+
+%%
+
+<LegInfo>\{	{
+				BEGIN LegInfoString;
+				return *yytext;
+			}
+
+<LegInfoString>.	{     
+			/* LegendenInfo wird ohne Prüfung als String gelesen */
+			char *cptr = new char [YYLMAX];
+			char *pBuff = cptr;
+			char inchar;
+			
+				if (cptr == NULL)
+					yyerror (EC_NOMEMORY);
+				else {
+					while ((inchar = input()) != RBRACE)
+						*cptr++ = inchar;
+					*cptr = '\0';
+				}
+
+				unput (RBRACE);	
+				BEGIN 0;	/* wieder normal */
+
+				LEXSTACK (pBuff, YYString, yylineno);
+				return T_STRING;
+			}
+
+\{			|
+\}			|
+\=			|
+\(			|
+\)			|
+\,			|
+\;			|
+\%			|
+\:			{
+				return *yytext;
+			}
+
+\/\*		{	/* Kommentar */
+			register int ch;
+
+				for (;;) {
+					while ((ch = input()) != '*') {
+//						if (ch == '\n')		// Zeilen werden bereits in 'input()' gezählt
+//							++yylineno;
+					}
+					if ( (ch = input()) == '/')
+						break;
+					else
+						unput(ch);
+				}
+			}
+
+\/\/		{	/* Kommentar */
+			register int ch;
+
+				while ((ch = input()) != '\n')
+					;
+				unput(ch);
+			}
+
+\"			|
+\'			{
+			int scope_char = yytext[0];
+			int inchar;
+			char *cptr = new char [YYLMAX];
+			char *pBuff = cptr;
+			
+				if (cptr == NULL)
+					yyerror (EC_NOMEMORY);
+				else {
+					inchar = input();
+					while (inchar != 0 && inchar != scope_char) {
+						if (inchar == '\\') {
+							inchar = input();
+							if (0 == inchar)
+								break;
+						}
+						*cptr++ = inchar;
+						inchar = input();
+					}
+					*cptr = '\0';
+				}
+
+				BEGIN 0;
+
+				OemToAnsi (pBuff, pBuff);
+				LEXSTACK (pBuff, YYString, yylineno);
+				return T_STRING;
+			}
+
+<TextTyp>0x{X}+		|
+<TextTyp>0X{X}+		{		/* HexZahl */
+			long *pLNum = new long (strtoul (yytext, NULL, 16));
+
+				BEGIN 0;
+				LEXSTACK (pLNum, YYLong, yylineno);
+				return T_NUMBER;
+			}
+
+{XP}{X}+		{
+			long *pLNum = new long (strtoul (yytext, NULL, 16));
+
+				BEGIN 0;
+				LEXSTACK (pLNum, YYLong, yylineno);
+
+				return (T_HEXNUMBER);
+			}
+
+[ \t]*		;               /* ignorieren */
+
+{ID}		{	/* Keyword */
+			short iLen = strlen (yytext);
+			char *pIdent = new char [iLen+1];
+
+				if (pIdent != NULL) {
+					strcpy (pIdent, yytext);
+					strupr (pIdent);
+				}
+				
+			/* ist ID ein reserviertes Wort ? */
+				for (short i = 0; keywords[i].lx ; i++) {
+					if (!strncmp (keywords[i].id, pIdent, iLen))
+						break;
+				}
+				if (keywords[i].lx) {   /* ID ist Schluesselwort */
+				// Besonderheit fuer T_TTYP
+					if (keywords[i].lx == T_TTYP)
+						BEGIN TextTyp;
+
+				// Besonderheit fuer T_TLEGINFO
+					if (keywords[i].lx == T_TLEGINFO)
+						BEGIN LegInfo;
+
+					LEXSTACK (pIdent, YYString, yylineno);
+					return (keywords[i].lx);
+				} 
+				else {          /* kein Keyword --> Fehler */
+					if (pIdent) delete pIdent;
+					LEXSTACK (NULL, YYLong, yylineno);
+					return (T_IDENT);
+				}
+			}
+
+{S}{D}+		{       /* Integerzahl */
+			long *pLNum = new long (atol (yytext));
+
+				LEXSTACK (pLNum, YYLong, yylineno);
+				return (T_NUMBER);
+			}
+
+{S}{X}+		{       /* Integerzahl */
+			long *pLNum = new long (strtoul (yytext, NULL, 16));
+
+				LEXSTACK (pLNum, YYLong, yylineno);
+				return (T_HEXNUMBER);
+			}
+
+.			;       /* alles andere schlicht ignorieren */
+
+%%
+

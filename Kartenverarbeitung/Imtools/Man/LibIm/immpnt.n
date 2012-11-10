@@ -1,0 +1,108 @@
+.if t .TH IMMPNT 3IM "August 19, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMMPNT 3IM "August 19, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+immpnt \- Apple Macintosh MacPaint translation
+.SH SYNOPSIS
+.nf
+\fB
+#include <stdio.h>
+#include "sdsc.h"
+#include "im.h"
+.sp 1
+int ImFileRead( fd, "mpnt", flagsTable, dataTable )
+	int         fd;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileFRead( fp, "mpnt", flagsTable, dataTable )
+	FILE       *fp;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileWrite( fd, "mpnt", flagsTable, dataTable )
+	int         fd;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileFWrite( fp, "mpnt", flagsTable, dataTable )
+	FILE       *fp;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;\fR
+.fi
+.SH DESCRIPTION
+.LP
+The MacPaint \fBmpnt\fR
+file is the standard Apple Macintosh monochrome bitmap image
+file format.  It can be read by many Macintosh graphics applications,
+and many Macintosh applications that can export bitmap graphics do so
+in the MacPaint \fBmpnt\fR file format. 
+.SH "FILE RECOGNITION"
+\fBmpnt\fR
+files are recognized by these filename suffixes: .mpnt, .macp, and .pntg.
+.SH NOTES
+SDSC image library support of the Apple MacPaint \fBmpnt\fR
+format does not require use of Apple tools or hardware
+and contains no proprietary code.  MacPaint \fBmpnt\fR format handling
+is available on any machine for which the SDSC image library is available.
+.SS "Reading MacPaint MPNT files"
+The SDSC image library reads 1-bit MacPaint \fBmpnt\fR PackBits compressed
+images and stores them as \fBIMVFBMONO\fR VFBs without a CLT.
+MacPaint images are always 576 pixels wide by 720 pixels high.
+.SS "Writing MacPaint MPNT files"
+SDSC image library \fBIMVFBMONO\fR VFBs are written out as 1-bit monochrome
+MacPaint \fBmpnt\fR images.
+MacPaint images are always compressed using Apples Macintosh PackBits
+compression scheme.
+.LP
+The MacPaint \fBmpnt\fR format requires that images be exactly 576 x 720
+pixels.  If an image to be written is smaller, the image will be
+oriented in the upper left corner of the MacPaint image, and the remainder
+filled with white.  If the image to be written is larger, the image will
+be clipped to keep the upper left corner and warning messages output.
+.SH ERRORS
+In addition to those listed for \fBImFileRead\fR(3IM),
+MacPaint \fBmpnt\fR file reading returns the following error codes:
+.ne 4
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEMALLOC	Cannot allocate enough memory
+IMESYS	System call error in read operation
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+In addition to those listed for \fBImFileWrite\fR(3IM),
+MacPaint \fBmpnt\fR file writing returns the following error codes:
+.ne 2
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEHEIGHT	Image too tall; clipped to 720 pixels high
+IMEMALLOC	Cannot allocate enough memory
+IMESYS	System call error in write operation
+IMEWIDTH	Image too wide; clipped to 576 pixels wide
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH DOCUMENTATION 
+\fIInside Macintosh, Volumes I-V\fR, Apple Computer, Inc.
+.SH "SEE ALSO"
+\fBImIntro\fR(3IM),
+\fBImErrNo\fR(3IM),
+\fBimconv\fR (1IM),
+\fBimfile\fR (1IM),
+\fBimformats\fR (1IM),
+\fBimpict\fR (3IM),
+\fBimtiff\fR (3IM)
+.SH AUTHOR
+John Moreland
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

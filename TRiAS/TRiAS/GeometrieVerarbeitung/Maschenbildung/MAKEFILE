@@ -1,0 +1,102 @@
+# Generieren der Versionsinfo's
+
+!include <$(TRIASINCLUDE)/triasver.mak>
+!include <$(TRIASINCLUDE)/GeometryVersion.mak>
+
+# Generierungsdatum (yymmdd) und Version
+DATE = $(GEOMETRY_DATE)
+VERSION = $(GEOMETRY_VERSION)
+RELEASE = $(GEOMETRY_RELEASE)
+BUILD = $(GEOMETRY_BUILD)
+
+COPYRIGHT = JB$(DATE)
+
+PNAME = $(TRIAS_PNAME)
+PADDRESS = $(TRIAS_PADDRESS)
+
+###############################################################################
+#
+NAME = LINVER
+OUTDLL = $(NAME).ext
+COPY = 0
+
+DLLDEST = $(TRIASDIR_D)		# DLL-Ziel-Pfad
+DEF = $(NAME).def
+STUB = rights
+RIGHTS = $(STUB).exe
+ASM = masm
+LINK = link16.exe
+REPLACE = ersetz
+MIDL = midl
+MIDL_FILE = imultipi
+MIDL_LIB = multipi
+MIDL_FLAGS = /I d:\triasdev\idl /I c:\msdev\include /old /win32 /ms_ext /c_ext 
+
+# Versionskontrolle -----------------------------------------------------------
+$(STUB).exe:    $(STUB).asm
+        $(ASM) rights;
+        $(LINK) /KNOWEAS rights;
+
+# alle versionsabhängien Datein löschen
+new:
+	@del $(DEF) > nul
+#	@del $(STUB).asm > nul
+	@del $(NAME).rcv > nul
+	@del version.h > nul
+
+# nur Versionsabhängigkeiten auflösen
+formake: $(NAME).tpl $(NAME).rcv $(DEF) version.h	# $(STUB).exe 
+
+# ModulDefinitionsDatei mit allen Exporten generieren
+$(DEF):  $(NAME).tpl makefile $(TRIASINCLUDE)\GeometryVersion.mak
+        ersetz $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) $(NAME).tpl $(DEF)
+
+$(STUB).asm:    $(STUB). makefile
+	ersetz $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) $(STUB).tpl $(STUB).asm
+
+version.h:    version.tpl makefile $(TRIASINCLUDE)\GeometryVersion.mak
+        ersetz $(VERSION) $(RELEASE) version.tpl version.h
+
+# Personalisierungsinformation
+#$(NAME).rcv: $(NAME)v.tpl makefile
+#        ersetz $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) @A @B $(NAME)v.tpl tmp.rcv
+#	ersetz $(PNAME) $(PADDRESS) tmp.rcv $(NAME).rcv
+#	@del tmp.rcv > nul
+
+$(NAME).rcv:    $(NAME)v.tpl makefile $(TRIASINCLUDE)\GeometryVersion.mak
+	$(REPLACE) \
+		$(VERSION) \
+		$(RELEASE) \
+		$(BUILD) \
+		$(COPYRIGHT) \
+		$(PNAME) \
+		$(PADDRESS) \
+		$(TRIAS_VERSION) \
+		$(TRIAS_RELEASE) \
+		$(COMPANYNAME) \
+			$(NAME)v.tpl $(NAME).rcv
+	
+# archivieren ---------------------------------------------------------------
+store:  
+	@echo off
+	del *.bak
+	del *.dmp
+	del *.tmp
+	del *.zip
+	del *.sym
+	del *.sts
+	del *.lst
+	del *.aps
+	del *.pch
+	del *.bnd
+	del *.pdb
+	del *.sbr
+	del *.bsc
+        del *.lib
+        zip -x*.ncb -m $(NAME)
+
+# MIDL ----------------------------------------------------------------------
+idl:    $(MIDL_FILE).idl progind2.idl
+        $(MIDL) $(MIDL_FILE).idl $(MIDL_FLAGS) /h $(MIDL_FILE).h /tlb $(MIDL_LIB).tlb
+
+        

@@ -1,0 +1,132 @@
+
+
+
+IMMPNT(3IM)            SDSC IMAGE LIBRARY             IMMPNT(3IM)
+
+
+
+NAME
+     immpnt - Apple Macintosh MacPaint translation
+
+SYNOPSIS
+     #include <stdio.h>
+     #include "sdsc.h"
+     #include "im.h"
+
+     int ImFileRead( fd, "mpnt", flagsTable, dataTable )
+          int         fd;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileFRead( fp, "mpnt", flagsTable, dataTable )
+          FILE       *fp;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileWrite( fd, "mpnt", flagsTable, dataTable )
+          int         fd;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileFWrite( fp, "mpnt", flagsTable, dataTable )
+          FILE       *fp;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+DESCRIPTION
+     The MacPaint mpnt file is the standard Apple Macintosh mono-
+     chrome  bitmap  image  file  format.  It can be read by many
+     Macintosh graphics applications, and many Macintosh applica-
+     tions  that can export bitmap graphics do so in the MacPaint
+     mpnt file format.
+
+FILE RECOGNITION
+     mpnt files are recognized by these filename suffixes: .mpnt,
+     .macp, and .pntg.
+
+NOTES
+     SDSC image library support of the Apple MacPaint mpnt format
+     does not require use of Apple tools or hardware and contains
+     no proprietary  code.   MacPaint  mpnt  format  handling  is
+     available on any machine for which the SDSC image library is
+     available.
+
+  Reading MacPaint MPNT files
+     The SDSC image library reads 1-bit  MacPaint  mpnt  PackBits
+     compressed  images and stores them as IMVFBMONO VFBs without
+     a CLT.  MacPaint images are always 576 pixels  wide  by  720
+     pixels high.
+
+
+
+
+SDSC              Last change: August 19, 1992                  1
+
+
+
+
+
+
+IMMPNT(3IM)            SDSC IMAGE LIBRARY             IMMPNT(3IM)
+
+
+
+  Writing MacPaint MPNT files
+     SDSC image library IMVFBMONO VFBs are written out  as  1-bit
+     monochrome MacPaint mpnt images.  MacPaint images are always
+     compressed  using  Apples  Macintosh  PackBits   compression
+     scheme.
+
+     The MacPaint mpnt format requires that images be exactly 576
+     x  720  pixels.   If  an image to be written is smaller, the
+     image will be oriented in the upper left corner of the  Mac-
+     Paint  image,  and  the remainder filled with white.  If the
+     image to be written is larger, the image will be clipped  to
+     keep the upper left corner and warning messages output.
+
+ERRORS
+     In addition to those listed  for  ImFileRead(3IM),  MacPaint
+     mpnt file reading returns the following error codes:
+
+          IMEMALLOC   Cannot allocate enough memory
+          IMESYS      System call error in read operation
+
+     In addition to those listed for  ImFileWrite(3IM),  MacPaint
+     mpnt file writing returns the following error codes:
+
+          IMEHEIGHT   Image too tall; clipped to 720 pixels high
+          IMEMALLOC   Cannot allocate enough memory
+          IMESYS      System call error in write operation
+          IMEWIDTH    Image too wide; clipped to 576 pixels wide
+
+DOCUMENTATION
+     _I_n_s_i_d_e _M_a_c_i_n_t_o_s_h, _V_o_l_u_m_e_s _I-_V, Apple Computer, Inc.
+
+SEE ALSO
+     ImIntro(3IM),  ImErrNo(3IM),  imconv  (1IM),  imfile  (1IM),
+     imformats (1IM), impict (3IM), imtiff (3IM)
+
+AUTHOR
+     John Moreland
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2                 Last change: August 19, 1992               SDSC
+
+
+

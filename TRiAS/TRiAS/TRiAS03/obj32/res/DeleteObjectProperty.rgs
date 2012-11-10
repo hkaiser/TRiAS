@@ -1,0 +1,34 @@
+HKCR
+{
+	TRiASEx.DeleteObjectProperty.1 = s 'DeleteObjectProperty Class'
+	{
+		CLSID = s '{E5927445-894C-4563-8C05-E9450530A693}'
+	}
+	TRiASEx.DeleteObjectProperty = s 'DeleteObjectProperty Class'
+	{
+		CLSID = s '{E5927445-894C-4563-8C05-E9450530A693}'
+		CurVer = s 'TRiASEx.DeleteObjectProperty.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {E5927445-894C-4563-8C05-E9450530A693} = s 'DeleteObjectProperty Class'
+		{
+			ProgID = s 'TRiASEx.DeleteObjectProperty.1'
+			VersionIndependentProgID = s 'TRiASEx.DeleteObjectProperty'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiASEx.DeleteObjectProperty.1' = s '{E5927445-894C-4563-8C05-E9450530A693}'
+			}
+		}
+	}
+}

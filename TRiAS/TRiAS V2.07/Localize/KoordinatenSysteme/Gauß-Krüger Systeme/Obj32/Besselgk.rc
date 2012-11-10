@@ -1,0 +1,332 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "besslres.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include <windows.h>
+#include <commctrl.h>
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resstrg.h"
+
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "besslres.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include <windows.h>\r\n"
+    "#include <commctrl.h>\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""resstrg.h""\r\n"
+    "\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#ifdef ELLIPSE_BESSEL\r\n"
+    "#include ""besselgk.rcv""\r\n"
+    "#else \r\n"
+    "#include ""krassgk.rcv""\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+#if defined(APSTUDIO_INVOKED) || defined(ELLIPSE_BESSEL)
+#if defined(APSTUDIO_INVOKED)
+IDD_COORDDLG$(ELLIPSE_BESSEL) DIALOG DISCARDABLE  0, 0, 327, 86
+#else
+IDD_COORDDLG DIALOG DISCARDABLE  0, 0, 327, 86
+#endif
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Externe Koordinaten (Projektkoordinaten: Gauß/Krüger Bessel)"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " Bei Ein- und Ausgaben verwendetes externes Koordinatensystem ",
+                    IDC_STATIC,6,6,260,60,WS_GROUP
+    LTEXT           "Gauß/Krüger Koordinaten",IDC_STATIC,15,18,82,8
+    LTEXT           "&Streifenbreite [°]:",IDT_STRBREITE,22,30,56,10
+    COMBOBOX        IDC_STRBREITE,35,44,38,35,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDVERT,85,30,1,30
+    LTEXT           "&Mittelmeridian [°]:",IDT_MERIDIAN,98,30,56,9
+    CONTROL         "&Automatisch feststellen",IDC_AUTOMERIDIAN,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,159,31,97,10
+    CONTROL         "&Vorgeben:",IDC_SELECTMERIDIAN,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,159,46,49,10
+    COMBOBOX        IDC_MERIDIAN,217,44,38,45,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_GROUP | WS_TABSTOP
+    CONTROL         "Auswahl als neue &Voreinstellungen für dieses Projekt speichern",
+                    IDC_SAVE,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,7,71,230,10
+    DEFPUSHBUTTON   "OK",IDOK,271,6,50,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,271,24,50,14
+END
+#endif
+
+#if defined(APSTUDIO_INVOKED) || defined(ELLIPSE_KRASSOVSKY)
+#if defined(APSTUDIO_INVOKED)
+IDD_COORDDLG$(ELLIPSE_KRASSOVSKY) DIALOG DISCARDABLE  0, 0, 327, 86
+#else
+IDD_COORDDLG DIALOG DISCARDABLE  0, 0, 327, 86
+#endif
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Externe Koordinaten (Projektkoordinaten: Gauß/Krüger Krassovsky)"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " Bei Ein- und Ausgaben verwendetes externes Koordinatensystem ",
+                    IDC_STATIC,6,6,260,60,WS_GROUP
+    LTEXT           "Gauß/Krüger Koordinaten",IDC_STATIC,15,18,82,8
+    LTEXT           "&Streifenbreite [°]:",IDT_STRBREITE,22,30,56,10
+    COMBOBOX        IDC_STRBREITE,35,44,38,35,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDVERT,85,30,1,30
+    LTEXT           "&Mittelmeridian [°]:",IDT_MERIDIAN,98,30,56,9
+    CONTROL         "&Automatisch feststellen",IDC_AUTOMERIDIAN,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,159,31,97,10
+    CONTROL         "&Vorgeben:",IDC_SELECTMERIDIAN,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,159,46,49,10
+    COMBOBOX        IDC_MERIDIAN,217,44,38,45,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_GROUP | WS_TABSTOP
+    CONTROL         "Auswahl als neue &Voreinstellungen für dieses Projekt speichern",
+                    IDC_SAVE,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,7,71,230,10
+    DEFPUSHBUTTON   "OK",IDOK,271,6,50,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,271,24,50,14
+END
+#endif
+
+#if defined(APSTUDIO_INVOKED) || defined(ELLIPSE_BESSEL)
+#if defined(APSTUDIO_INVOKED)
+IDD_COORDPARAM$(ELLIPSE_BESSEL) DIALOG DISCARDABLE  0, 0, 250, 134
+#else
+IDD_COORDPARAM DIALOG DISCARDABLE  0, 0, 250, 134
+#endif
+STYLE WS_CHILD | WS_BORDER
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Internes Koordinatensystem des Projektes:",IDC_STATIC,3,
+                    5,138,8
+    CTEXT           "Gauß/Krüger (%d/%d) - Bessel-Ellipsoid [System 40/83]",
+                    IDC_COORDSYSTEM,3,16,244,8
+    GROUPBOX        " Bei Ein- und Ausgaben verwendetes externes Koordinatensystem ",
+                    IDC_STATIC,3,31,244,92,WS_GROUP
+    LTEXT           "&Streifenbreite [°]:",IDT_STRBREITE,16,57,57,8
+    COMBOBOX        IDC_STRBREITE,29,69,38,49,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDVERT,77,56,1,30
+    LTEXT           "&Mittelmeridian [°]:",IDT_MERIDIAN,85,57,56,8
+    CONTROL         "&Automatisch feststellen",IDC_AUTOMERIDIAN,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,144,58,95,10
+    CONTROL         "&Vorgeben:",IDC_SELECTMERIDIAN,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,144,71,49,10
+    COMBOBOX        IDC_MERIDIAN,197,69,38,49,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_GROUP | WS_TABSTOP
+    LTEXT           "Anzahl der verwendeten &Nachkommastellen:",IDC_STATIC,
+                    12,92,142,8
+    EDITTEXT        IDC_PRECISION,197,89,38,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_PRECISIONSPIN,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,236,89,8,14
+    LTEXT           "Zusätzlicher Skalierungskoeffizient:",IDC_STATIC,12,105,
+                    142,8
+    EDITTEXT        IDC_SCALING,197,104,38,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SCALINGSPIN,"msctls_updown32",UDS_ALIGNRIGHT | 
+                    UDS_AUTOBUDDY | UDS_ARROWKEYS,236,104,8,14
+    LTEXT           "Gauß/Krüger &Koordinaten:",IDC_STATIC,12,45,84,8
+END
+#endif
+
+#if defined(APSTUDIO_INVOKED) || defined(ELLIPSE_KRASSOVSKY)
+#if defined(APSTUDIO_INVOKED)
+IDD_COORDPARAM$(ELLIPSE_KRASSOVSKY) DIALOG DISCARDABLE  0, 0, 250, 134
+#else
+IDD_COORDPARAM DIALOG DISCARDABLE  0, 0, 250, 134
+#endif
+STYLE WS_CHILD | WS_BORDER
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Internes Koordinatensystem des Projektes:",IDC_STATIC,3,
+                    5,138,8
+    CTEXT           "Gauß/Krüger (%d/%d) - Krassovsky-Ellipsoid [System 42/83]",
+                    IDC_COORDSYSTEM,3,16,244,8
+    GROUPBOX        " Bei Ein- und Ausgaben verwendetes externes Koordinatensystem ",
+                    IDC_STATIC,3,31,244,92,WS_GROUP
+    LTEXT           "&Streifenbreite [°]:",IDT_STRBREITE,16,57,57,8
+    COMBOBOX        IDC_STRBREITE,29,69,38,49,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDVERT,77,56,1,30
+    LTEXT           "&Mittelmeridian [°]:",IDT_MERIDIAN,85,57,56,8
+    CONTROL         "&Automatisch feststellen",IDC_AUTOMERIDIAN,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,144,58,95,10
+    CONTROL         "&Vorgeben:",IDC_SELECTMERIDIAN,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,144,71,49,10
+    COMBOBOX        IDC_MERIDIAN,197,69,38,49,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_GROUP | WS_TABSTOP
+    LTEXT           "Anzahl der verwendeten &Nachkommastellen:",IDC_STATIC,
+                    12,92,142,8
+    EDITTEXT        IDC_PRECISION,197,89,38,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_PRECISIONSPIN,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,236,89,8,14
+    LTEXT           "Zusätzlicher Skalierungskoeffizient:",IDC_STATIC,12,105,
+                    142,8
+    EDITTEXT        IDC_SCALING,197,104,38,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SCALINGSPIN,"msctls_updown32",UDS_ALIGNRIGHT | 
+                    UDS_AUTOBUDDY | UDS_ARROWKEYS,236,104,8,14
+    LTEXT           "Gauß/Krüger &Koordinaten:",IDC_STATIC,12,45,84,8
+END
+#endif
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    "IDD_COORDDLG$(ELLIPSE_BESSEL)", DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 321
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 81
+    END
+
+    "IDD_COORDDLG$(ELLIPSE_KRASSOVSKY)", DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 321
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 81
+    END
+
+    "IDD_COORDPARAM$(ELLIPSE_BESSEL)", DIALOG
+    BEGIN
+        LEFTMARGIN, 3
+        RIGHTMARGIN, 247
+        VERTGUIDE, 115
+        TOPMARGIN, 3
+        BOTTOMMARGIN, 131
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+#if defined(APSTUDIO_INVOKED) || defined(ELLIPSE_KRASSOVSKY)
+#if defined(APSTUDIO_INVOKED)
+IDR_REGISTRY$(ELLIPSE_KRASSOVSKY) REGISTRY DISCARDABLE    "res\\krassgk.rgs"
+#else
+IDR_REGISTRY            REGISTRY DISCARDABLE    "res\\krassgk.rgs"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(ELLIPSE_BESSEL)
+#if defined(APSTUDIO_INVOKED)
+IDR_REGISTRY$(ELLIPSE_BESSEL) REGISTRY DISCARDABLE    "res\\besselgk.rgs"
+#else
+IDR_REGISTRY            REGISTRY DISCARDABLE    "res\\besselgk.rgs"
+#endif
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DESCRIPTIONBESSEL   "Gauß/Krüger (%d/%d) - Bessel-Ellipsoid [System 40/83]"
+    IDS_DESCRIPTIONKRASSOVSKY 
+                            "Gauß/Krüger (%d/%d) - Krassovsky-Ellipsoid [System 42/83] "
+    IDS_LONGCLASSNAMEBE     "Koordinatentransformation (Bessel Gauß/Krüger) Property Page"
+    IDS_LONGCLASSNAMEKR     "Koordinatentransformation (Krassovsky Gauß/Krüger) Property Page"
+    IDS_CTFPROPPAGECAP      "Koordinaten"
+    IDS_COORDTRANSFORM      "CoordTransform"
+    IDS_SHOWGKCOORDS        "ShowGKCoords    "
+    IDS_COORDMERIDIAN       "CoordMeridian   "
+    IDS_COORDSTRBREITE      "CoordStrBreite  "
+    IDS_DESCRIPTIONBESSELAUTO 
+                            "Gauß/Krüger (%d° Streifen) - Bessel-Ellipsoid [System 40/83]"
+    IDS_DESCRIPTIONKRASSOVSKYAUTO 
+                            "Gauß/Krüger (%d° Streifen) - Krassovsky-Ellipsoid [System 42/83]"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CTFSCALING          "CoordScaling    "
+    IDS_CTFPRECISION        "CoordPrecision  "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CTFMERIDIAN         "CoordMeridian   "
+    IDS_CTFSTREIFEN         "CoordStrBreite  "
+    IDS_CTFMERIDIANVIEW     "CoordMeridianV  "
+    IDS_CTFSTREIFENVIEW     "CoordStrBreiteV "
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#ifdef ELLIPSE_BESSEL
+#include "besselgk.rcv"
+#else 
+#include "krassgk.rcv"
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

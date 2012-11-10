@@ -1,0 +1,23 @@
+HKCR
+{
+	TRiAS.ColorLookUp.1 = s 'Generieren von Farbverläufen'
+	{
+		CLSID = s '{2CFAA6B9-4DCA-11D0-B0DC-00A024D6F582}'
+	}
+	TRiAS.ColorLookUp = s 'Generieren von Farbverläufen'
+	{
+		CLSID = s '{2CFAA6B9-4DCA-11D0-B0DC-00A024D6F582}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {2CFAA6B9-4DCA-11D0-B0DC-00A024D6F582} = s 'Generieren von Farbverläufen'
+		{
+			ProgID = s 'TRiAS.ColorLookUp.1'
+			VersionIndependentProgID = s 'TRiAS.ColorLookUp'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'both'
+			}
+		}
+	}
+}

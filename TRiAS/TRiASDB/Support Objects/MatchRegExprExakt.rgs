@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiAS.MatchRegExprExakt.1 = s 'MatchRegExprExakt Class'
+	{
+		CLSID = s '{C3BF0D3B-7DF6-11D2-9EF6-006008447800}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {C3BF0D3B-7DF6-11D2-9EF6-006008447800} = s 'MatchRegExprExakt Class'
+		{
+			ProgID = s 'TRiAS.MatchRegExprExakt.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

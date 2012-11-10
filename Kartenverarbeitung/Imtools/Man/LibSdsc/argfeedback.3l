@@ -1,0 +1,132 @@
+
+
+
+     AAAARRRRGGGGFFFFEEEEEEEEDDDDBBBBAAAACCCCKKKK((((3333AAAARRRRGGGG))))     SSSSDDDDSSSSCCCC ((((SSSSeeeepppptttteeeemmmmbbbbeeeerrrr 1111999999991111))))     AAAARRRRGGGGFFFFEEEEEEEEDDDDBBBBAAAACCCCKKKK((((3333AAAARRRRGGGG))))
+
+
+
+     NNNNAAAAMMMMEEEE
+          ArgFeedback  -  output a feedback form
+
+     SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+          #include "sdsc.h"
+
+          int ArgErrNo;
+
+          int ArgFeedback( )
+
+     DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+          _A_r_g_F_e_e_d_b_a_c_k uses information about the command as passed
+          into an earlier call to _A_r_g_P_a_r_s_e(_3_A_R_G).
+
+          _A_r_g_F_e_e_d_b_a_c_k creates a feedback form in the current directory
+          with the name "commandname.fbk.0", where "commandname" is
+          the name of the command, as given in the _a_r_g__n_a_m_e field of
+          the _A_r_g_C_o_m_m_a_n_d structure passed to _A_r_g_P_a_r_s_e(_3_A_R_G).  If a
+          file of this name already exists in the current directory,
+          "commandname.fbk.1" is tried, and so on up to 20.
+
+     RRRREEEETTTTUUUURRRRNNNNSSSS
+          _A_r_g_F_e_e_d_b_a_c_k returns 0.  If _A_r_g_F_e_e_d_b_a_c_k fails to complete, it
+          returns -1 and sets the global _A_r_g_E_r_r_N_o to an error code
+          indicating the cause of the failure.  The following error
+          codes may be generated:
+
+          _A_R_G_E_F_B_K = couldn't create feedback form file
+               _A_r_g_F_e_e_d_b_a_c_k tried to create a feedback form file with
+               the name "commandname.fbk.0" and failed.  It added 1,
+               tried again, failed, and so on up through 20.  All
+               attempts failed and a feedback form file could not be
+               created.
+
+          _A_R_G_E_S_Y_S = a system error has occurred
+               An error relating to the OS has occurred.  This
+               includes directory write permission problems, file
+               creation errors, and so on.  The error code describing
+               the system error is available in the global _e_r_r_n_o (set
+               by UNIX system calls).
+
+     NNNNOOOOTTTTEEEESSSS
+          Product developers use feedback forms to obtain information
+          on the performace of their software products.  Users are
+          encouraged to fill out feedback forms whenever they find
+          bugs, think of enhancements, or have comments regarding a
+          tool, routine, or library.
+
+     SSSSEEEEEEEE AAAALLLLSSSSOOOO
+          ArgIntro(3ARG), ArgParse(3ARG), ArgPError(3ARG),
+          ArgRegister(3ARG), ArgVersion(3ARG), errno(2), perror(3)
+
+
+
+
+     Page 1                                          (printed 6/30/95)
+
+
+
+
+
+
+     AAAARRRRGGGGFFFFEEEEEEEEDDDDBBBBAAAACCCCKKKK((((3333AAAARRRRGGGG))))     SSSSDDDDSSSSCCCC ((((SSSSeeeepppptttteeeemmmmbbbbeeeerrrr 1111999999991111))))     AAAARRRRGGGGFFFFEEEEEEEEDDDDBBBBAAAACCCCKKKK((((3333AAAARRRRGGGG))))
+
+
+
+     AAAAUUUUTTTTHHHHOOOORRRRSSSS
+          Dave Nadeau
+          San Diego Supercomputer Center
+
+     CCCCOOOONNNNTTTTAAAACCCCTTTT
+          SDSC consultants, (619)534-5100, ccccoooonnnnssssuuuulllltttt@@@@yyyy1111....ssssddddsssscccc....eeeedddduuuu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Page 2                                          (printed 6/30/95)
+
+
+

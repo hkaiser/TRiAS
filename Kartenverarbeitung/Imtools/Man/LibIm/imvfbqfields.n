@@ -1,0 +1,42 @@
+'\"t
+.if t .TH IMVFBQFIELDS 3IM "August 25, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY" 
+.if n .TH IMVFBQFIELDS 3IM "August 25, 1992" "SDSC" "SDSC IMAGE
+LIBRARY" 
+.SH NAME
+ImVfbQFields - Query the pixel fields of a virtual frame buffer
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+int ImVfbQFields( srcVfb )
+	ImVfb *srcVfb ;
+
+.fi
+\fR
+.SH DESCRIPTION
+\fBImVfbQFields\fR returns a bitmask specifying
+the fields stored in \fIsrcVfb\fR.
+.SH NOTES
+\fIfields\fR specifies what information is to be stored in each pixel
+of the Vfb.
+\fIfields\fR is a bitmask formed by or'ing together one or more
+of the same constants used by the \fIfields\fR parameter in
+\fBImVfbAlloc\fR (3IM).
+.LP
+\fBImVfbQFields\fR is a macro.
+.SH RETURNS
+\fBImVfbQFields\fR returns the fields mask of the \fIsrcVfb\fR.
+.SH SEE ALSO
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBimadjust\fR (1IM),
+\fBImVfbAlloc\fR (3IM)
+.SH AUTHOR
+Mike Bailey
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

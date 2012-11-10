@@ -1,0 +1,184 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Deutsch (Deutschland) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#if defined(_DEBUG)\r\n"
+    "1 TYPELIB ""Debug\\Segment.tlb""\r\n"
+    "#else\r\n"
+    "1 TYPELIB ""Release\\Segment.tlb""\r\n"
+    "#endif // defined(_DEBUG)\r\n"
+    "#include ""Segment.rcv""\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_STRECKEN            REGISTRY DISCARDABLE    "Strecken.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_STRECKEN_OPTIONS DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Optionen  ",IDC_STATIC,11,45,32,8
+    LTEXT           "Beschreibung     ",IDC_STATIC,11,84,54,8
+    CONTROL         " &Knotenbildung",IDC_CHECKKNOTEN,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,63,82,10
+    LTEXT           "_______________________________________________________",
+                    IDC_STATIC,50,44,222,8,WS_DISABLED
+    LTEXT           "____________________________________________________",
+                    IDC_STATIC,64,84,206,8,WS_DISABLED
+    EDITTEXT        IDC_BESCHREIBUNG,11,98,258,36,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_READONLY | ES_WANTRETURN | NOT 
+                    WS_BORDER | WS_GROUP
+    CONTROL         "",IDC_COMBODATASOURCE,"ComboBoxEx32",CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP,11,26,236,59
+    LTEXT           "Wählen Sie die Datenquelle aus, in welche die Knoten gespeichert werden sollen.",
+                    IDC_STATIC,11,7,259,19
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// HTML
+//
+
+SEGMENTDATAOKS.XML      HTML    DISCARDABLE     "res\\SegmentDataOKS.xml"
+SEGMENTDATAORWND.XML    HTML    DISCARDABLE     "res\\SegmentDataORWnd.xml"
+GEOCOMPONENTSEQUENCE.DTD HTML    DISCARDABLE     "res\\GeoComponentSequence.dtd"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_STRECKEN_OPTIONS, DIALOG
+    BEGIN
+        VERTGUIDE, 1
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_PROJECTTYPES_MASK   BITMAP  DISCARDABLE     "res\\ProjectTypesMask.bmp"
+IDB_PROJECTTYPES        BITMAP  DISCARDABLE     "res\\ProjectTypes.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PROJNAME            "Segment"
+    IDS_LONGCLASSNAME       "Streckensegmentierung"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ORIGINALCODE        "Guid_Segment"
+    IDS_ERRORCODE           "ERRORMODE"
+    IDS_KNOTENAP            " [Knoten-AP] "
+    IDS_KNOTENEP            " [Knoten-EP]"
+    IDS_KANTEN              " [Kante]"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MENUENTRY           "Segmentierung ..."
+    IDS_ORMENUENTRY         "Objekte &segmentieren ..."
+    IDS_SEGMENTDATA         "Segmentierung"
+    IDS_SEGMENTCAP          "Segmentierung"
+    IDS_ORSEGMENTCAP        "Objektsegmentierung"
+    IDS_NOSEGMENT           "Keine Segmentierung"
+    IDS_SHOWXMLERROR_CAP    "Fehler beim Datenexport"
+    IDS_NOXMLDOMPARSER      "Die für die Segmentierung notwendigen Komponenten konnten nicht gefunden werden.\nÜberprüfen und wiederholen Sie gegebenenfalls die Installation von %s."
+    IDS_NOWORKING           "Bei der Segmentierung traten Fehler auf!"
+    IDS_BASISUNIQUE         "SHORTLINE_"
+    IDS_BASISPOINTUNIQUE    "LINEPOINT_"
+    IDS_KNOTENTEXT          "Für jedes Segment sollen die Anfangs- und Endknoten als Punktobjekte gebildet werden."
+    IDS_KANTENTEXT          "Aus Liniensegmenten sollen Kanten mit zwei Stützstellen (Anfangspunkt, Endpunkt) gebildet werden."
+    IDS_NODATEN             "Keine Knoten und Kanten werden gebildet."
+    IDS_KNOTENCODE          "Guid_Knoten"
+    IDS_KANTENCODE          "Guid_Kante"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DESCRIPTION_STRECKEN "Streckenbildung"
+END
+
+#endif    // Deutsch (Deutschland) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#if defined(_DEBUG)
+1 TYPELIB "Debug\Segment.tlb"
+#else
+1 TYPELIB "Release\Segment.tlb"
+#endif // defined(_DEBUG)
+#include "Segment.rcv"
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

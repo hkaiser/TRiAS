@@ -1,0 +1,29 @@
+	char szOutPath [256] = "";             
+	UINT uPathLen = 0;                                                                                        
+	
+//	Installiere dBASE-IV-Treiber (Version 2.0)	 
+	BOOL bHelp = SQLInstallDriver ("c:\\odbc.inf", "dBase Files (*.dbf)", szOutPath, sizeof (szOutPath), &uPathLen);
+	bHelp = SQLConfigDataSource (NULL, ODBC_ADD_DSN, "dBase Files (*.dbf)", 
+			"DSN=DBASE\0Description=dBASE IV 2.0\0FileType=dbase4\0SingleUser=False\0DataDirectory=c:\\trias\\dbase\0");
+			
+//	Installiere FoxPro-Treiber (Version 2.5)	 
+	bHelp = SQLInstallDriver ("c:\\odbc.inf", "FoxPro Files (*.dbf)", szOutPath, sizeof (szOutPath), &uPathLen);
+	bHelp = SQLConfigDataSource (NULL, ODBC_ADD_DSN, "FoxPro Files (*.dbf)", 
+			"DSN=FOXPRO\0Description=FoxPro 2.5\0FileType=FoxPro 2.5\0SingleUser=False\0DataDirectory=c:\\trias\\dbase\0");
+			
+//	Installiere Excel-Treiber (Version 4.0; beachte - in Excel-Datei bitte Datenbank-Bereich festlegen !)			
+	bHelp = SQLInstallDriver ("c:\\odbc.inf", "Excel Files (*.xls)", szOutPath, sizeof (szOutPath), &uPathLen);
+	bHelp = SQLConfigDataSource (NULL, ODBC_ADD_DSN, "Excel Files (*.xls)", 
+			"DSN=EXCEL\0Description=MS-Excel 4.0\0FileType=Excel\0SingleUser=False\0DataDirectory=c:\\trias\\dbase\0");	
+			
+//	Installiere MS-Access-Treiber (beachte: Hier ist die Access-Dateiname direkt anzugeben, da eine Access-Datenbank
+//	mehrere Tabellen enthalten kann !)	
+
+	bHelp = SQLInstallDriver ("c:\\odbc.inf", "Access Data (*.mdb)", szOutPath, sizeof (szOutPath), &uPathLen);
+	bHelp = SQLConfigDataSource (NULL, ODBC_ADD_DSN, "Access Data (*.mdb)", 
+			"DSN=Access1\0Description=Access\0FileType=RedISAM\0SingleUser=False\0DataDirectory=c:\\trias\\projekte\\rath\\dbase\\course.mdb\0UseSystemDB=False\0");					
+			
+//	Installiere Text-Treiber
+	bHelp = SQLInstallDriver ("c:\\odbc.inf", "Text Files (*.txt; *.csv)", szOutPath, sizeof (szOutPath), &uPathLen);
+	bHelp = SQLConfigDataSource (NULL, ODBC_ADD_DSN, "Text Files (*.txt; *.csv)", 
+			"DSN=TEXT\0Description=Text-Dateien\0FileType=Text\0DataDirectory=c:\\trias\\dbase\0ColNameHeader=False\0Format=CSVDelimited\0MaxScanRows=25\0CharacterSet=OEM\0");				

@@ -1,0 +1,38 @@
+HKCR
+{
+	TRiASEx.LimitPackets.1 = s 'Einschränken der zu bildenden Objektgruppen'
+	{
+		CLSID = s '{44BBA22C-5A88-43F1-9EE3-623996452B09}'
+	}
+	TRiASEx.LimitPackets = s 'Einschränken der zu bildenden Objektgruppen'
+	{
+		CLSID = s '{44BBA22C-5A88-43F1-9EE3-623996452B09}'
+		CurVer = s 'TRiASEx.LimitPackets.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {44BBA22C-5A88-43F1-9EE3-623996452B09} = s 'Einschränken der zu bildenden Objektgruppen'
+		{
+			ProgID = s 'TRiASEx.LimitPackets.1'
+			VersionIndependentProgID = s 'TRiASEx.LimitPackets'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiASEx.LimitPackets.1' = s '{44BBA22C-5A88-43F1-9EE3-623996452B09}'
+			}
+		}
+	}
+}

@@ -1,0 +1,23 @@
+HKCR
+{
+	TRiAS.DragMultiLine.1 = s 'Nachziehen mehrerer Linien'
+	{
+		CLSID = s '{079638FC-3123-101C-BB62-00AA0018497C}'
+	}
+	TRiAS.DragMultiLine = s 'Nachziehen mehrerer Linien'
+	{
+		CurVer = s 'TRiAS.DragMultiLine.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {079638FC-3123-101C-BB62-00AA0018497C} = s 'Nachziehen mehrerer Linien'
+		{
+			ProgID = s 'TRiAS.DragMultiLine.1'
+			VersionIndependentProgID = s 'TRiAS.DragMultiLine'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

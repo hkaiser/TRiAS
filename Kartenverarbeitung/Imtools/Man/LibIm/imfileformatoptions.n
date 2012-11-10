@@ -1,0 +1,211 @@
+'\"et
+.de Cb		\" Courier Begin
+.in +0.25i
+.ft CW
+\s-1
+.nf
+..
+.de Ce		\" Courier End
+.ft R
+.fi
+\s+1
+.in -0.25i
+..
+.if t .TH IMFILEFORMATOPTIONS 3IM "August 24, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMFILEFORMATOPTIONS 3IM "August 24, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImFileFormatOptions - add file format names to an ArgOption list
+.br
+ImFileFormatEquivs - add file format equivalent names to an ArgEquiv list
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+#include "arg.h"
+
+int ImFileFormatOptions( baseNOptions, baseOptions, totalOptions )
+	int baseNOptions;
+	ArgOption *baseOptions;
+	ArgOption **totalOptions;
+
+int ImFileFormatEquivs( baseNEquivs, baseEquivs, totalEquivs )
+	int baseNOEquivs;
+	ArgEquiv *baseEquivs;
+	ArgEquiv **totalEquivs;
+.fi
+\fR
+.SH DESCRIPTION
+These functions are used to help set up argument parsing option and
+equivalent keyword lists for use with \fBArgParse\fR(3ARG).
+.LP
+\fBImFileFormatOptions\fR creates a new list of \fBArgOption\fR structures
+containing the \fBbaseNOptions\fR basic options in \fIbaseOptions\fR, plus
+one option for each image file format supported by the image library.
+Each file format option entry has the following attributes:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+\fBarg_keyword\fR	= file format's name
+\fBarg_valuenames\fR	= NULL
+\fBarg_help\fR	= format's help information
+\fBarg_flags\fR	= \fBARGFMULTIPLE\fR
+\fBarg_minvalues\fR	= 0
+\fBarg_maxvalues\fR	= 0
+\fBarg_type\fR	= \fBARGTNONE\fR
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+The new option list is returned in \fItotalOptions\fR, and the number of
+options in that list returned as the function's value.
+.LP
+\fBImFileFormatEquivs\fR creates a new list of \fBArgEquiv\fR structures
+containing the \fIbaseNEquivs\fR basic equivalent keywords in \fIbaseEquivs\fR,
+plus one equivalent keyword entry for each equivalent file format name for each
+image file format supported by the image library.
+Each new equivalent keyword entry is equivalenced to the name of the image
+file format.
+.LP
+The new equivalent keyword list is returned in \fItotalEquivs\fR, and the
+number of equivalent keywords in that list returned as the function value.
+.SH NOTES
+Information on the SDSC argument parsing package and its data
+structures is in \fBArgIntro\fR(3ARG).  We assume the user is familiar
+with the package.
+.LP
+Tools that have one command-line option per image file format name use
+these routines.  Such options typically select the type of image file
+to read in or write out (see \fBimconv\fR(1IM)).
+.LP
+To keep image library tools uniform and consistent, we suggest tools
+that use \fBImFileFormatOptions\fR also use \fBImFileFormatEquivs\fR 
+to add the equivalent file format names to the option set as well.
+.LP
+\fBImFileFormatEquivs\fR format equivalences assume that there is one keyword
+per format and that it is the format name (as done
+by \fBImFileFormatOptions\fR).
+.SH EXAMPLES
+The following code declares and initializes an \fBArgOption\fR array with
+options for a mythical tool \fBimmyth\fR.  Within \fBmain\fR,
+\fBImFileFormatOptions\fR and \fBImFileFormatEquivs\fR are called to create
+new \fBArgOption\fR and \fBArgEquiv\fR arrays that incorporate both the
+basic \fBimmyth\fR options and the image file format name options.
+These new arrays are then passed to \fBArgParse\fR(3ARG) as complete
+descriptions of the argument set available to the \fBimmyth\fR.
+.Cb
+.ta 0.5i +0.5i +0.5i +0.5i +0.5i +0.5i
+#include "im.h"
+#include "arg.h"
+
+/* Describe the command. */
+ArgCommand mythCommand =
+{
+	"immyth", 1, 0, 0,
+	"%command is a demo program that does nothing.",
+	NULL,
+	NULL, NULL,
+	ARGFNONE,
+	NULL, NULL, 
+	"SDSC Image Tools, October 1991.",
+	"Copyright (c) 1989-1991  San Diego Supercomputer Center (SDSC), CA, USA",
+	NULL, NULL
+};
+
+/* Describe the command-specific options. */
+ArgOption mythBaseOptions[ ] =
+{
+	{ "infile", "image_filename", "Specify an input image file name",
+	ARGFREQUIRED | ARGFIMPKEYWORD, 1, 1, ARGTSTRING },
+
+	{ "outfile", "image_filename", "Specify an output image file name",
+	ARGFREQUIRED | ARGFIMPKEYWORD, 1, 1, ARGTSTRING },
+
+	{ "debug", NULL, "Enable debug mode",
+	ARGFHIDDEN, 0, 0, ARGTNONE }
+};
+#define MYTHNBASEOPTIONS 3
+
+/* Describe the command-specific equivalent keywords. */
+ArgEquiv mythBaseEquivs[ ] =
+{
+	{ "debug", "dbg" }
+};
+#define MYTHNBASEEQUIVS 1
+
+
+main( argc, argv )
+	int argc;
+	char *argv[ ];
+{
+	ArgOption *totalOptions;
+	ArgEquiv *totalEquivs;
+	int totalNOptions;
+	int totalNEquivs;
+
+	/* Add image file names to option set. */
+	totalNOptions = ImFileFormatOptions( MYTHNBASEOPTIONS, mythBaseOptions,
+		&totalOptions );
+
+	/* Add image file equivalent names to equivalence set. */
+	totalNEquivs = ImFileFormatEquivs( MYTHNBASEEQUIVS, mythBaseEquivs,
+		&totalEquivs );
+
+	/* Parse the arguments. */
+	ArgParse( argc, argv, &mythCommand,
+		totalNOptions, totalOptions,
+		totalNEquivs, totalEquivs );
+
+	/* Do work. */
+	...
+}
+.Ce
+.SH RETURNS
+On success, \fBImFileFormatOptions\fR returns the number of \fBArgOption\fR
+structures in the new \fItotalOptions\fR list.
+On failure, a -1 is returned and \fBImErrNo\fR set to
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEMALLOC	Cannot allocate memory
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+On success, \fBImFileFormatEquivs\fR returns the number of \fBArgEquiv\fR
+structures in the new \fItotalEquivs\fR list.
+On failure, a -1 is returned and \fBImErrNo\fR set to
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEMALLOC	Cannot allocate memory
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+.SH "SEE ALSO"
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBImFileFormatEquivs\fR (3IM),
+\fBImFileFRead\fR (3IM),
+\fBImFileFWrite\fR (3IM)
+\fBImFileQFFormat\fR (3IM),
+\fBImFileQFormat\fR (3IM),
+\fBImFileQNFormat\fR (3IM),
+\fBImFileRead\fR (3IM),
+\fBImFileWrite\fR (3IM)
+\fBArgIntro\fR (3ARG),
+\fBArgParse\fR (3ARG)
+.SH AUTHOR
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

@@ -1,0 +1,262 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "featres.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include <windows.h>
+#include <commctrl.h>
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "featres.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include <windows.h>\r\n"
+    "#include <commctrl.h>\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""feature.rcv""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_FEATUREMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&Recherche"
+    BEGIN
+        MENUITEM "&Objektrelationen erzeugen ...", ID_FEATURE_CLASSIFY
+        MENUITEM "Objektrelationen erzeugen (2) ...", 
+                                                ID_RECHERCHE_OBJEKTRELATIONENERZEUGEN
+
+    END
+END
+
+IDR_ORFEATUREMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&Merkmale"
+    BEGIN
+        MENUITEM "&Doppelte Objekte löschen",   ID_FEATURE_DUPDELETE
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+SELECTIDENTSDLG DIALOG DISCARDABLE  67, 43, 231, 156
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Suchen doppelter Merkmalswerte"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Auswahl der zu behandelnden &Objektklassen:",IDC_STATIC,
+                    7,6,152,8
+    LISTBOX         IDL_SELECTIDENTS,7,18,154,100,LBS_SORT | LBS_USETABSTOPS | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Auswahl des zu untersuchenden &Merkmales:",IDC_STATIC,8,
+                    125,150,7
+    COMBOBOX        IDC_FEATURES,6,136,217,72,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Alle &Klassen",IDB_SELALLCLASSES,170,76,55,14,WS_GROUP
+    PUSHBUTTON      "&Hilfe",IDHELP,170,105,55,14,WS_GROUP
+    DEFPUSHBUTTON   "OK",IDOK,170,8,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,170,26,55,14
+END
+
+IDD_CLASSIFIED_FEATURES DIALOG DISCARDABLE  0, 0, 251, 153
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Klassifizierte Merkmale"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Vorhandene Merkmalswerte:",IDC_STATIC,7,5,169,9
+    LISTBOX         IDC_FEATURES,6,17,175,129,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "&Objekte zeigen",ID_SHOWOBJECTS,189,45,55,14
+    PUSHBUTTON      "&Kopieren",ID_COPYCLIP,189,64,55,14,WS_GROUP
+    PUSHBUTTON      "Alle Auswählen",ID_SELECTALL,189,132,55,14,WS_GROUP
+    DEFPUSHBUTTON   "&Schließen",IDOK,189,6,55,14,WS_GROUP
+END
+
+IDD_SELECTIDS_WIZ DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Auswahl der zu behandelnden &Objektklassen:",IDC_STATIC,
+                    2,5,180,8
+    CONTROL         "Generic1",IDC_LISTIDENTS,"SysListView32",LVS_REPORT | 
+                    LVS_SHAREIMAGELISTS | LVS_ALIGNLEFT | WS_BORDER | 
+                    WS_TABSTOP,1,24,200,115
+    PUSHBUTTON      "&Alle Auswählen",IDB_SELALLCLASSES,219,125,55,14
+END
+
+IDD_OBJECTROP_WIZ DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Auswahl der Objekteigenschaft, auf deren Grundlage die Objekte zu Gruppen zusammengefaßt werden sollen:",
+                    IDC_STATIC,2,5,175,23
+    CONTROL         "Generic2",IDC_OBJPROPS,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | 
+                    TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,1,34,182,105
+    GROUPBOX        " Auswahlkriterium ",IDC_STATIC,189,30,85,109
+    CONTROL         "&Existenz",IDC_EXISTS,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,196,47,61,10
+    CONTROL         "&Gleichheit",IDC_EQUAL,"Button",BS_AUTORADIOBUTTON,196,
+                    60,61,10
+END
+
+IDD_SELECTREL_WIZ DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Auswahl der gewünschten Relation, mit der die Objekte einer Gruppe zusammengefaßt werden sollen:",
+                    IDC_STATIC,2,5,133,27
+    CONTROL         "Generic1",IDC_LISTRELATIONS,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SORTASCENDING | LVS_SHAREIMAGELISTS | 
+                    LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,1,34,134,105
+    LTEXT           "Auswahl der Objektklasse der neuen &Komplexobjekte:",
+                    IDC_STATIC,140,5,132,27
+    CONTROL         "Generic1",IDC_LISTIDENTS,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SORTASCENDING | LVS_SHAREIMAGELISTS | 
+                    LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,137,34,137,105
+END
+
+IDD_SELECTOBJWND_WIZ DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Auswahl der zu verwendenden Recherchefenster:",
+                    IDC_STATIC,2,5,165,11
+    LISTBOX         IDC_LISTOBJWND,1,34,200,62,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "Alle aus&wählen",IDC_SELECTALL,220,82,55,14
+    GROUPBOX        " Auswahlkriterien ",IDC_STATIC,1,107,200,32,WS_GROUP
+    CONTROL         "&Selektierte Objekte",IDC_SELECTEDOBJECTS,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,7,121,92,10
+    CONTROL         "Alle &Objekte ",IDC_ALLOBJECTS,"Button",
+                    BS_AUTORADIOBUTTON,105,121,92,10
+END
+
+IDD_DESTOBJWND_WIZ DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " Erzeugte Objekte in Recherchefenster anzeigen ",
+                    IDC_STATIC,1,1,272,104,WS_GROUP
+    CONTROL         "&Neues Recherchefenster erzeugen",IDC_CREATENEWOBJWND,
+                    "Button",BS_AUTORADIOBUTTON | WS_TABSTOP,8,14,198,10
+    CONTROL         "&Existierendes Recherchefenster auswählen:",
+                    IDC_SELECTOBJWND,"Button",BS_AUTORADIOBUTTON,8,26,189,10
+    LISTBOX         IDC_LISTOBJWND,17,40,252,60,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    GROUPBOX        " Objekte selektieren ",IDC_STATIC,1,107,273,29,WS_GROUP
+    CONTROL         "Bisherige &Selektion beibehalten",IDC_RETAINSELECTION,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,119,125,10
+    CONTROL         "&Neue Objekte selektieren",IDC_SELECTNEW,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,147,119,120,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Erweiterte Recherche"
+    IDS_DUPCAPTION          "Doppelte Merkmale"
+    IDS_UNDODELDUP          "Doppelte Objekte löschen"
+    IDS_CLASSIFYCAPTION     "Klassifikation von Merkmalen"
+    IDS_OBJCLUSTER          "Ausgewählte Objekte"
+    IDS_HEADERIDENT         "Identifikator"
+    IDS_HEADERTYPE          "Objekttyp"
+    IDS_HEADERDESC          "Beschreibung"
+    IDS_GROUPNAME           "Recherche"
+    IDS_PROPINFO_IDENTOTYP  "Objektauswahl nach Identifikator und Typ"
+    IDS_HELPDESC_IDENTOTYP  "Stellt alle Objekte zusammen, die gegebene Identifikatoren bzw. Objekttypen besitzen."
+    IDS_PROPACTCAPTION      "Bilden von Objektrelationen"
+    IDS_PROPINFO_CLASSIFYOBJ "Gruppieren von Objekten"
+    IDS_HELPDESC_CLASSIFYOBJ 
+                            "Gruppiert Objekte an Hand einer Objekteigenschaft."
+    IDS_PROPINFO_GENKOMPLEXOBJS "Bilden von Objektrelationen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_HELPDESC_GENKOMPLEXOBJS 
+                            "Faßt alle Objekte einer Gruppe mit einer Relation zusammen."
+    IDS_HEADERRCODE         "Relationscode"
+    IDS_HEADERRELTYPE       "Realtionstyp"
+    IDS_PROPINFO_OBJWND     "Objektauswahl aus Recherchefenster"
+    IDS_HELPDESC_OBJWND     "Stellt Objekte eines oder mehrerer Recherchefenster zusammen."
+    IDS_NEWOBJCAPTION       "Ergebnis der Recherche"
+    IDS_PROPINFO_DESTOBJWND "Objekte in Recherchefenster anzeigen"
+    IDS_HELPDESC_DESTOBJWND "Zeigt alle Objekte einer Gruppe in einem Recherchefenster an."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_GENERRORCAP         "Recherche: Allgemeiner Fehler"
+    IDS_ADDERROR            "Das Recherchemodule '%s' kann nicht geladen werden."
+    IDS_QUERYCONTINUE       "\r\nSoll die Operation fortgesetzt werden ?"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "feature.rcv"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

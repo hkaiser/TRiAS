@@ -1,0 +1,45 @@
+HKCR
+{
+	TRiASGDO.CreateOpenWizPropExt.1 = s 'CreateOpenWizPropExt Class'
+	{
+		CLSID = s '{2A0D6543-7B43-4F50-B65F-BDAD4E10A6DE}'
+        VersionIndependendProgID = s 'TRiASGDO.CreateOpenWizPropExt'
+	}
+	TRiASGDO.CreateOpenWizPropExt = s 'CreateOpenWizPropExt Class'
+	{
+		CLSID = s '{2A0D6543-7B43-4F50-B65F-BDAD4E10A6DE}'
+        CurVer = s 'TRiASGDO.CreateOpenWizPropExt.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {2A0D6543-7B43-4F50-B65F-BDAD4E10A6DE} = s 'CreateOpenWizPropExt Class'
+		{
+			ProgID = s 'TRiASGDO.CreateOpenWizPropExt.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+	NoRemove SQLServerRO.GDatabase 
+    {
+		TRiASDB 
+        {
+            CLSID 
+            {
+				OpenWizPages = s '{2A0D6543-7B43-4F50-B65F-BDAD4E10A6DE}'
+			}
+        }
+    }
+	NoRemove SQLServerRW.GDatabase 
+    {
+		TRiASDB 
+        {
+            CLSID 
+            {
+				OpenWizPages = s '{2A0D6543-7B43-4F50-B65F-BDAD4E10A6DE}'
+			}
+        }
+    }
+}

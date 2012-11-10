@@ -1,0 +1,29 @@
+HKCR {
+	TRiASUI.MaskEdit.1 = s 'TRiAS® UserInterface - Maskedit' {
+		CLSID = s '{51BB3DDF-0C38-11D2-8F6B-0060085FC1CE}'
+		'Insertable'
+	}
+	TRiASUI.MaskEdit = s 'TRiAS® UserInterface - Maskedit' {
+		CLSID = s '{51BB3DDF-0C38-11D2-8F6B-0060085FC1CE}'
+		CurVer = s 'TRiASUI.MaskEdit.1'
+	}
+	NoRemove CLSID {
+		ForceRemove {51BB3DDF-0C38-11D2-8F6B-0060085FC1CE} = s 'TRiAS® UserInterface - Maskedit' {
+			ProgID = s 'TRiASUI.MaskEdit.1'
+			VersionIndependentProgID = s 'TRiASUI.MaskEdit'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%' {
+				val ThreadingModel = s 'Apartment'
+			}
+			ForceRemove 'Control'
+			ForceRemove 'Programmable'
+			ForceRemove 'Insertable'
+			ForceRemove 'ToolboxBitmap32' = s '%MODULE%, 1'
+			'MiscStatus' = s '0' {
+			    '1' = s '131473'
+			}
+			'TypeLib' = s '{51BB3DD1-0C38-11D2-8F6B-0060085FC1CE}'
+			'Version' = s '1.0'
+		}
+	}
+}

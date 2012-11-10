@@ -1,0 +1,134 @@
+/* Scanner fuer Reportgenerator - Dateneingabe                  */
+/* File: REPORT.LX                                              */
+
+%{
+static char SccsId[] = "uve FEZ: %W%  %E%";
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
+	#include <stdio.h>
+	#include <malloc.h>
+	#include <string.h>
+
+	#include "report.h"
+
+#ifdef unix
+	#include "y.tab.h"
+#endif
+#ifdef msdos
+	#include "ytab.h"
+#endif
+#if defined(__cplusplus)
+}
+#endif
+
+
+static VARIABLE *in_feld;       /* Zeiger auf aktuelles Eingabefeld */
+static VARIABLE *p;             /* Zeiger auf in_feld */
+
+%}
+
+S               [-+]?
+D               [0-9]
+E               [DEde]{S}?{D}+
+S1              [^\"\n]*
+S2              [^'\n]*
+
+%%
+
+{S}{D}+                 {
+                        /* Integer */
+                                if (p->ptr == NULL) {
+                                        if ((p->ptr = calloc (1, sizeof(int))) == NULL) {
+                                                r_abort ("Kein Speicherplatz.");
+						return 0;
+					}
+                                } else if (p->type != 'i') {
+                                        if ((p->ptr = realloc (p->ptr, sizeof(int))) == NULL) {
+                                                r_abort ("Kein Speicherplatz.");
+						return 0;
+					}
+                                }
+				*(long *)(p->ptr) = atol (yytext);
+                                p->type = 'i';
+                                if (++p > &in_feld[MAXINPARS]) {
+                                /* kein Platz mehr */
+					while ((c = input()) != '\n')
+						;	// Rest der Zeile lesen
+                                        return (MAXINPARS);
+				}
+                        }
+
+{S}{D}+"."{D}*({E})?    |
+{S}{D}*"."{D}+({E})?    |
+{S}{D}+{E}              {
+                        /* Real Number */
+                                if (p->ptr == NULL) {
+                                        if ((p->ptr = calloc (1, sizeof(double))) == NULL) {
+                                                r_abort ("Kein Speicherplatz.");
+						return 0;
+					}
+                                } else if (p->type != 'f') {
+                                        if ((p->ptr = realloc (p->ptr, sizeof(double))) == NULL) {
+                                                r_abort ("Kein Speicherplatz.");
+						return 0;
+					}
+                                }
+				*(double *)(p->ptr) = atof (yytext);
+                                p->type = 'f';
+                                if (++p > &in_feld[MAXINPARS]) {
+	                        /* kein Platz mehr */
+					while ((c = input ()) != '\n')
+						;	// Rest der Zeile lesen
+                                        return (MAXINPARS);
+				}
+                        }
+
+\"{S1}\"                        |
+\'{S2}\'                        {
+                        /* String */
+                        register scope_char = yytext[0];
+			char *cptr;
+
+                                if (p->ptr == NULL) {
+                                        if ((p->ptr = calloc (MAXSTRING+1, 1)) == NULL) {
+                                                r_abort ("Kein Speicherplatz.");
+						return 0;
+					}
+                                } else if (p->type != 's') {
+                                        if ((p->ptr = realloc (p->ptr, MAXSTRING+1)) == NULL) {
+                                                r_abort ("Kein Speicherplatz.");
+						return 0;
+					}
+                                }
+                                cptr = strchr (&yytext[1], scope_char);
+				if (cptr) 
+					*cptr = '\0';
+			// sonst bis Tokenende
+                                strncpy (p->ptr, &yytext[1], MAXSTRING);
+                                p->type = 's';
+                                if (++p > &in_feld[MAXINPARS]) {
+                                /* kein Platz mehr */
+					while ((c = input()) != '\n')
+						; 	// Rest der Zeile lesen
+                                        return (MAXINPARS);
+				}
+                        }
+
+\n                      {
+                        /* Zeilenende */
+                                return (p-in_feld);     /* Anzahl der Elemente */
+                        }
+
+.                       ;       /* Nop */
+
+%%
+
+int lexin (VARIABLE *infeld) {
+
+        p = in_feld = infeld;   /* Anfangswert fuer p */
+
+return (yylex ());
+}
+

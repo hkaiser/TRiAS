@@ -1,0 +1,26 @@
+' Dichte durch 100 dividieren -> ist gelaufen
+
+Sub Main ()
+    Dim dbs As Database
+    Dim table As Recordset
+	Dim Index As Long
+	Dim Max As Long
+	Dim Feld As Field
+
+    Set dbs = OpenDatabase("c:\gak\daten\gak30.mdb")
+    ' Set table = dbs.OpenRecordset.("Abfallarten", dbOpenTable)
+	Set table = dbs.OpenRecordset ("Abfallarten", dbOpenTable)
+
+	Set Feld = table.Fields.Item ("Dichte")
+	table.MoveFirst
+	For Index = 1 To table.RecordCount
+		table.Edit
+		Feld = Feld / 100
+		table.Update
+		table.MoveNext 
+	Next Index
+
+    ' Close the database
+    dbs.Close
+End Sub
+

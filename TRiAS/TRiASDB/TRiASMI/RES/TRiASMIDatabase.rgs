@@ -1,0 +1,51 @@
+HKCR
+{
+	TRiASDB.TRiASMIDatabaseObject.1 = s 'TRiASMIDatabaseObject Class'
+	{
+		CLSID = s '{DA3DD80A-6589-4616-ADBE-2D915D90689A}'
+	}
+	TRiASDB.TRiASMIDatabaseObject = s 'TRiASMIDatabaseObject Class'
+	{
+		CLSID = s '{DA3DD80A-6589-4616-ADBE-2D915D90689A}'
+		CurVer = s 'TRiASDB.TRiASMIDatabaseObject.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {DA3DD80A-6589-4616-ADBE-2D915D90689A} = s 'TRiASMIDatabaseObject Class'
+		{
+			ProgID = s 'TRiASDB.TRiASMIDatabaseObject.1'
+			VersionIndependentProgID = s 'TRiASDB.TRiASMIDatabaseObject'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{EE31A3CF-69DE-4628-91C8-01513D8B9A70}'
+		}
+	}
+	ForceRemove TRiASDB.TRiASMIDatabase = s 'TRiASMIDatabase Class'
+	{
+		CurVer = s 'TRiASDB.TRiASMIDatabase.1'
+	}
+	ForceRemove TRiASDB.TRiASMIDatabase.1 = s 'TRiASMIDatabase Class'
+	{
+		VersionIndependendProgID = s 'TRiASDB.TRiASMIDatabase'
+		TRiASDB
+		{
+			CLSID = s '{DA3DD80A-6589-4616-ADBE-2D915D90689A}'
+			TypeLib = s '{EE31A3CF-69DE-4628-91C8-01513D8B9A70}'
+			Description 
+			{
+				val DefaultExtension = s '.tab'
+				val LongName = s 'MapInfo Datenquelle (Viewer), Daten können nicht bearbeitet, sondern nur angezeigt werden.'
+				val ShortName = s 'MapInfo'
+				val NameDescription = s 'MapInfo Datenquelle'
+				val NameIsDirectory = s '1'
+				val NameIsFile = s '0'
+				val ReadWrite = s '0'
+				val Version = s '1.0'
+				val ToolboxBitmap32 = d 19
+			}
+		}
+	}
+}

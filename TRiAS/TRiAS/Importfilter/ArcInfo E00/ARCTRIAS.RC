@@ -1,0 +1,285 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "arctrias.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "arctrias.h"
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resstrg.h"
+#include "ver.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_OPTPARAMS DIALOG DISCARDABLE  60, 20, 260, 199
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Optionale Parameter"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " O&bjektklasse: ",-1,7,6,89,44
+    EDITTEXT        IDE_IDENT,14,18,75,12,ES_AUTOHSCROLL | WS_GROUP
+    CONTROL         "Für alle &Cover",IDB_FOR_ALL_COVER,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,34,58,10
+    GROUPBOX        " &Koordinaten ",-1,7,53,89,93,WS_GROUP
+    LTEXT           "&X-Verschiebung:",-1,14,63,76,8,NOT WS_GROUP
+    EDITTEXT        IDE_XOFFSET,14,74,75,12,ES_AUTOHSCROLL | WS_GROUP
+    LTEXT           "&Y-Verschiebung:",-1,14,90,68,8,NOT WS_GROUP
+    EDITTEXT        IDE_YOFFSET,14,101,75,12,ES_AUTOHSCROLL
+    LTEXT           "&Skalierungs-Faktor:",-1,14,118,68,8,NOT WS_GROUP
+    EDITTEXT        IDE_SCALING,14,129,75,12,ES_AUTOHSCROLL
+    CONTROL         "ARC/INFO-&User-ID konvertieren",IDB_USERID,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,112,13,138,10
+    CONTROL         "TRiAS-Uni&que-ID erzeugen",IDB_CTREATUNIDENT,"Button",
+                    BS_AUTOCHECKBOX,112,26,137,10
+    GROUPBOX        " &Import von ",-1,104,53,85,93,WS_GROUP
+    CONTROL         "&Flächen",IDB_AREAS,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,112,65,59,9
+    CONTROL         "&Linien",IDB_LINES,"Button",BS_AUTOCHECKBOX,112,78,53,
+                    10
+    CONTROL         "&Punkten",IDB_POINTS,"Button",BS_AUTOCHECKBOX,112,91,60,
+                    10
+    CONTROL         "&Texte",IDB_TEXTE,"Button",BS_AUTOCHECKBOX,112,104,69,
+                    10
+    CONTROL         "sonstigen T&abellen",IDB_TABLES,"Button",
+                    BS_AUTOCHECKBOX,112,118,75,10
+    DEFPUSHBUTTON   "&OK",IDOK,199,57,55,14,WS_GROUP
+    PUSHBUTTON      "&Hilfe",IDB_PARHELP,199,132,55,14,NOT WS_VISIBLE | NOT 
+                    WS_TABSTOP
+    PUSHBUTTON      "A&bbrechen",IDCANCEL,199,73,55,14,NOT WS_TABSTOP
+    GROUPBOX        " Beschreibung ",-1,7,152,247,38
+    LTEXT           "",IDT_DESCRIPTION,12,162,236,22,NOT WS_GROUP
+END
+
+IDD_RECHERCHESTATUS DIALOG DISCARDABLE  60, 60, 195, 91
+STYLE DS_MODALFRAME | WS_POPUP | WS_CLIPSIBLINGS | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Sans Serif"
+BEGIN
+    CTEXT           "",IDT_ELEMSTAT2,0,7,195,11
+    DEFPUSHBUTTON   "&Abbrechen",IDCANCEL,71,68,55,16
+    CONTROL         "%3d%%",IDG_EXPORTSTATUS,"GaugeBox32",0x2,3,26,190,14
+    CTEXT           "",IDT_ELEMSTAT,0,50,195,8
+END
+
+IDD_IMPORTRESULT DIALOG DISCARDABLE  20, 60, 176, 161
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Importergebnis"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "Anzahl der importierten",-1,7,3,82,8,NOT WS_GROUP
+    RTEXT           "Text-Objekte:",-1,5,14,95,8,NOT WS_GROUP
+    RTEXT           "Punkt-Objekte:",-1,9,25,91,8,NOT WS_GROUP
+    RTEXT           "Linien-Objekte:",-1,9,36,91,8,NOT WS_GROUP
+    RTEXT           "Flächen-Objekte:",-1,9,47,91,8,NOT WS_GROUP
+    LTEXT           "0",IDT_TEXTCNT,104,14,64,8,NOT WS_GROUP
+    LTEXT           "0",IDT_PKTCNT,104,25,64,8,NOT WS_GROUP
+    LTEXT           "0",IDT_LINCNT,104,36,64,8,NOT WS_GROUP
+    LTEXT           "0",IDT_TABLECNT,104,80,64,9,NOT WS_GROUP
+    LTEXT           "0",IDT_FLCNT,104,47,64,9,NOT WS_GROUP
+    CONTROL         "",-1,"Static",SS_BLACKRECT,4,95,167,1
+    RTEXT           "importierte Objekte:",-1,9,102,91,8
+    DEFPUSHBUTTON   "&OK",-1,61,140,55,14
+    LTEXT           "0",IDT_SUMME,104,102,64,8,NOT WS_GROUP
+    RTEXT           "sonstigen Tabellen:",-1,9,80,91,8,NOT WS_GROUP
+    RTEXT           "Importzeit:",-1,9,125,91,8
+    LTEXT           "0",IDT_IMPORTTIME,104,125,64,8
+    RTEXT           "(nur Außenkonturen):",-1,9,58,91,8
+    LTEXT           "0",IDT_REDIMPORTED,104,58,64,8
+    RTEXT           "nicht importierte Objekte:",-1,9,114,91,8
+    LTEXT           "0",IDT_NOTIMPORTED,104,114,64,8
+    RTEXT           "Objekte mit Geometriefehlern:",-1,4,69,96,8
+    LTEXT           "0",IDT_GEO_ERROR,104,69,64,8
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "arctrias.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""arctrias.h""\r\n"
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""resstrg.h""\r\n"
+    "#include ""ver.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""arctrias.rcv""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_OPTPARAMS, DIALOG
+    BEGIN
+        RIGHTMARGIN, 254
+        VERTGUIDE, 254
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_OBJEKTKLASSE        "Eingabe des Codes der Objektklasse, dem die importierten Objekte zugeordnet werden. "
+    IDS_TEMPEXT             ".e$$"
+    IDS_LINSECTION          "Linien-Section gefunden ..."
+    IDS_PKTSECTION          "Punkte-Section gefunden ..."
+    IDS_BNDSECTION          "Bildmaße-Section gefunden ..."
+    IDS_AAT                 "Linien-Attribut-Tabelle gefunden ..."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CREATEUID           "Eindeutigen Schlüssel für interne Arbeit in TRIAS® erzeugen."
+    IDS_FORMATVALX          "3,""%s"",""%s"",%lx"
+    IDS_CREATENOUID         "Eindeutigen Schlüssel für interne Arbeit in TRIAS® nicht erzeugen."
+    IDS_TXTSECTION          "Texte-Section gefunden ..."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PALSECTION          "Flächen-Section gefunden ..."
+    IDS_DBASESECTION        "DBASE"
+    IDS_RELATIONSECTION     "dBASERelations"
+    IDS_DATASOURCENAME      "ODBC-Data-Source-Names"
+    IDS_INIEXT              ".INI"
+    IDS_IDFORMAT            "ID%08ld"
+    IDS_PARAMERROR          "Parameter-Fehler"
+    IDS_RELFORMAT           "%s:%s"
+    IDS_TEXTDRKENNUNG       "Microsoft Text Driver (*.txt; *.csv)"
+    IDS_PARERR              "Die Objektklasse ""%s"" ist ungültig."
+    IDS_TEXTDRDSN           "DSN=%s"
+    IDS_TEXTDRDATADIR       "DefaultDir=%s%s"
+    IDS_DEBUGSECTION        "TriasFrameWork"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PAT                 "Flächen/Punkte-Attribut-Tabelle gefunden ..."
+    IDS_COVERCAPTION        "Prüfe Cover: %s"
+    IDS_KOORDTRX            "Alle Koordinaten werden um den eingegebenen Wert vor der Skalierung in X-Richtung verschoben."
+    IDS_KOORDTRY            "Alle Koordinaten werden um den eingegebenen Wert vor der Skalierung in Y-Richtung verschoben."
+    IDS_KOORDSKAL           "Alle Koordinaten werden nach der Verschiebung mit dem eingegebenen Faktor multipliziert."
+    IDS_IMPORT_ALL          "Es werden Flächen, Linien, Punkte, Texte und sonstige Tabellen importiert."
+    IDS_IMPORTAREA          "Flächen werden importiert."
+    IDS_IMPORT_SELECTED     "Es werden die vom Nutzer eingestellten Objekte importiert."
+    IDS_IMPORTNOAREA        "Flächen werden nicht importiert."
+    IDS_IMPORTLINES         "Linien werden importiert."
+    IDS_IMPORTNOLINES       "Linien werden nicht importiert."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_IMPORTPOINTS        "Punkte werden importiert,"
+    IDS_IMPORTNOPOINTS      "Punkte werden nicht importiert."
+    IDS_ARIALTEXT           "Arial"
+    IDS_IMPORTTEXTE         "Texte werden importiert."
+    IDS_IMPORTNOTEXTE       "Texte werden nicht importiert."
+    IDS_IMPORTTABLES        "Attribut-Tabellen, die weitere Sachdaten enthalten, werden als Textdatei importiert und über ODBC angezeigt."
+    IDS_STATCAPTION         "Importiere Cover: %s"
+    IDS_OPTCAPTION          "Optionale Parameter für Cover: %s"
+    IDS_IMPORTNOTABLES      "Weitere Attribut-Tabellen (außer PAT und AAT) werden nicht importiert."
+    IDS_IDFORMATX           "ID%08lx"
+    IDS_IMPORTUSERID        "Den in ARC/INFO vergebenen User-ID importieren."
+    IDS_FORMATVAL           "3,""%s"",""%s"",%ld"
+    IDS_IMPORTNOUSERID      "Den in ARC/INFO vergebenen User-ID nicht importieren."
+    IDS_IDFORMAT_IDENT      "3,""%s"",""%s"",%s"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEBUGENTRY          "DebugMessageOutput"
+    IDS_NOTEXTIMPORT        "ARCTRIAS: TextObjekt::Output ():  Textobjekt nicht importiert !\n"
+    IDS_NOPUNKTIMPORT       "ARCTRIAS: OutputPunktLinie (): %ld. Punkt nicht importiert !\n"
+    IDS_NOAREAIMPORT        "ARCTRIAS: OutputFlaeche (): %ld. Fläche nicht importiert !\n(Stützpunkte: %ld, Konturen: %d)\n"
+    IDS_DRIVERID            "DriverId=27"
+    IDS_FILTYP              "FIL=text;"
+    IDS_FLAECHEREDUCED      "ARCTRIAS: PalEntries :: OutGeo (), %ld. Fläche (Stützunkte: %ld/%ld, Konturen %d)\nNur Außenkontur importiert !\n"
+    IDS_NOLINEIMPORT        "ARCTRIAS: OutputPunktLinie (): %ld. Linie mit %ld Stützpunkten nicht importiert !\n"
+    IDS_NOTIMPORTED         "%ld Objekt(e) nicht importiert !\n"
+    IDS_ONLYMASCHMPORTED    "Bei %ld Fläche(n) nur äußere Masche(n) importiert !\n"
+    IDS_FORMATDESCRIPTION   "ARC/INFO-Austauschformat"
+    IDS_LONGCLASSNAME       "Import aus dem ARC/INFO-Austauschformat"
+    IDS_DEFAULTEXTENSION    "e00"
+    IDS_TEXTDRKENNUNG32     "Microsoft Text Driver (*.txt; *.csv) (32 bit)"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_FOR_ALL_COVER       "Die Objektklasse wird für alle Coverages benutzt."
+    IDS_FOR_NOTALL_COVER    "Für jedes Coverage wird eine neue Objektklasse erzeugt."
+    IDS_IMPORT_INFO         "Prozentualer Anteil der bereits importierten Datei:"
+    IDS_CHECK_INFO          "Prozentualer Anteil der bereits geprüften Datei:"
+    IDS_RESULTCAPT          "Importergebnis für Cover: %s"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "arctrias.rcv"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

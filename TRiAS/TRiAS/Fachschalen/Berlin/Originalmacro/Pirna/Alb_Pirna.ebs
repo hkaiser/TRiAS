@@ -1,0 +1,640 @@
+'**************************************************************************
+'*                                                                        *
+'*  ALB-Abgleich Projekt Berlin                                           *
+'*                                                                        *
+'**************************************************************************
+' Recherchiert Daten in MDB-Tabelle
+'======================================================================================
+Option Explicit
+
+Const strFlur = "Flurstück"
+Const strStrasse = "Straße (allg.)"
+
+'Programmkonstanten
+Const NL = Chr$(13) + Chr$(10)		'NewLine
+Const HT = Chr$(9)	   		' Tab		 
+
+'=========Attribute TRiAS=======================
+'Const strDBCode = "DatenbankCode   "
+Const strDBCode = "DatenbankCode"
+
+' Fehlerkennzeichen
+Const strFKZ = "falsches Kennungszeichen"
+Const strFAA = "fehlende ALB-Anbindung"		
+
+Const strFIG = "Flurstück/identische Geometrie"
+Const strFGG = "Flurstück/getrennte Geometrie"
+Const strFSS = "fehlender Straßenschlüssel/ALB"	
+
+' Objektattribute
+Const strKZ = "Kennungszeichen"
+Const strUIN = "Ursprungs-Identifikationsnummer"
+Const strSN = "Straßenname"
+Const strGN = "Grundstücksnummer"
+
+' ALB - Attribute
+
+'Tabellen
+Const strTabG = "ALB_Grundstuecke"
+Const strTabS = "ALB_FS_Strassen"
+Const strTabF = "FS_Fehler"
+
+Const strTabA = "Datenbanknummern"
+
+
+' Felder
+Const strSFSK = "Flurstueckskennzeichen"
+Const strSSN = "StrName"
+Const strGGN = "Grundstuecksnummer"
+Const strGID = "Identifikator"
+Const strFFE = "FS_Fehler"
+Const strFfalsch = "FS_falsch"
+Const strFNOALB = "FS_ALB_fehlt"
+Const strFALBfalsch = "FS_falsch_ALB_fehlt"
+Const strFALBrichtig = "FS_richtig_ALB_fehlt"
+Const strFDopId = "FS_doppelt_ID_identisch"
+Const strFDopVer = "FS_doppelt_ID_verschieden"
+Const strFStrfehlt = "FS_ALB_Strasse_fehlt"
+
+Const strDB = "Datenbank_AA"
+Const strTR = "TRiAS_DB_Name"
+
+'=====================================================================================
+
+Private docGD As GeoDocument		'Projekt
+Private wsp As Workspace
+
+Private dbs As Database			'MDB - Datenbank
+Private rstPG As Recordset		'Recordset-Objekt 
+
+'======================================================================================
+
+Private strDatenPfad As String
+Private strDatenFile As String
+
+'===========================================================================
+Private clsFlur As GeoClass		'Objektklasse (Flurstück)
+Private objsFlur As GeoObjects		'GeometrieObjekte (Flurstück)
+Private clsStr As GeoClass		'Objektklasse (Straße (allg.)
+Private objsStr As GeoObjects		'GeometrieObjekte (Straße (allg.)
+
+Private bErrFile As Boolean			' Fehlerdatei angelegt (True)
+
+'======================================================================================
+
+' MDB-Datei
+'Tabelle ALB_FS_STRASSEN
+Private fldMDBFstKzS As Field
+Private fldMDBStrName As Field
+
+' Tabelle ALB_Grundstuecke
+Private fldMDBFstKzG As Field
+Private fldMDBGstNr As Field
+Private fldMDBId As Field
+
+'Tabelle FS_Fehler
+Private fldMDBFeFalsch As Field
+Private fldMDBFeALB As Field
+Private fldMDBFeALBfalsch As Field
+Private fldMDBFeALBrichtig As Field
+Private fldMDBFeIdDoppelt As Field
+Private fldMDBFeIdVersch As Field
+Private fldMDBFeStr As Field
+
+Private fldMDBDBA As Field
+'=================================================================
+
+Private Feat As GeoFeature
+Private VFeat As GeoFeature
+'==================================================================
+
+'Titel der Message-Boxen
+Const strBoxTitel = "TRiAS® Berlin -  ALB/Flurstücksbearbeitung"
+
+'====================================================================
+Declare Private Sub ErrFile (strErrText As String)
+Declare Private Sub ALB_Grundstueck (Obj As GeoObject,Key As String)
+Declare Private Sub ALB_FehlerCode (Obj As GeoObject,Key As String)
+Declare Private Sub ALB_Strasse (Obj As GeoObject,Key As String)
+Declare Private Sub HeaderEintrag ( Key As String)
+
+'====================================================================
+'Hauptprogramm
+
+Sub Main()
+
+'Pfade für BasicScript und Daten
+
+  	Set docGD = GetActiveDocument()			'Zugriff auf aktuelles Projekt
+
+	Dim MDBase As String
+	Dim HDBase As String
+	Dim e As String
+
+
+'   Code in DB-Header
+	Dim DBName As String
+	DBName = LCase$(docGD.Name$)
+
+
+' Daten
+	e = "Stadtbezirk.mdb:*.mdb"
+
+	MDBase = OpenFilename$ ("     Öffnen *.mdb für Stadtbezirk",e$)
+	If MDBase = "" Then
+		Exit Sub
+	End If
+ 	
+
+'Geduldsanzeige starten
+	Msg.Open NL+"  Die Verarbeitung wird vorbereitet ... bitte warten!  "+NL,,False,False
+
+
+'weitere Variablen initialisieren
+
+'//////////////////////////////////////////////////////////////////////////////
+
+'	MDB - Datenbank
+
+	Set wsp = DBEngine.Workspaces(0)
+
+
+'	msgbox MDBase$
+
+
+  '	Set dbs = Nothing
+
+	Set dbs = wsp.OpenDataBase(MDBase$)
+	If dbs Is Nothing Then
+		MsgBox " Datei "+MDBase$+" nicht offen!",ebCritical,strBoxTitel
+		Exit Sub
+	End If
+
+
+
+	Set clsFlur = docGD.GetClass (strFlur)
+	Set clsStr = docGD.GetClass (strStrasse)
+
+	If (clsFlur Is Nothing) Then
+		MsgBox "Im Projekt wurden keine Flurstücke gefunden!", _
+				ebInformation, strBoxTitel
+		Exit Sub
+	End If
+
+	Set objsFlur = clsFlur.GetObjects (OT_Area)
+	If (objsFlur Is Nothing) Then
+		MsgBox "Im Projekt wurden keine flächenförmigen Flurstücke gefunden!", _
+				ebInformation, strBoxTitel
+	End If
+
+	If (clsStr Is Nothing) Then
+		Set objsStr= Nothing
+'		MsgBox "Das Projekt enthält keine allgemeinen Straßen", ebQuestion, strBoxTitel
+ '		Exit Sub
+  '	End If
+  	Else
+   		Set objsStr = clsStr.GetObjects (OT_Area)
+   		If objsStr.Count = 0 Then
+'   			MsgBox "Das Projekt enthält keine flächenmäßigen allgemeinen Straßen", _
+ '  					ebQuestion, strBoxTitel
+ '  			Exit Sub
+   		End If
+	End If
+
+	Dim Obj As GeoObject
+
+	Dim SelObjS As Long
+	SelObjS = objsFlur.Count
+
+	bErrFile = False	' Fehlerdatei (noch) nicht angelegt
+
+	Msg.Close
+
+
+' StatusAnzeige erzeugen und initialisieren
+	Dim Status As New StatusIndicator 
+
+	If (Status Is Not Nothing) Then
+		Status.Restart 0, SelObjs, STATUS_ShowAllFields
+		Status.Caption = "Analyse der Flurstücke "
+		Status.Field(1) = Str$(SelObjs)
+		Status.Field(2) = "Objekte werden durchsucht."
+		Status.Field(3) = "Es wurden bereits %d%% der Objekte analysiert."
+	End If
+
+' Jetzt alle selektierten Objekte bearbeiten
+	Dim ActCnt As Long		' Zähler der bearbeiteten Objekte
+	Dim MyFeat As String
+
+	ActCnt = 0
+
+	For Each Obj In objsFlur
+
+	' Status weiterschalten
+		If (Status Is Not Nothing) Then
+			ActCnt = ActCnt + 1
+			Status.Field(4) = "Objekt: " + Str$(Obj.Value)
+			If (Status Is Not Nothing) Then
+				Status.SetPosition ActCnt
+				If (Status.WasCanceled()) Then	' Abbrechen gedrückt
+					Exit For					' innere Schleife beenden
+				End If
+			End If
+		End If
+
+		If Obj.ObjType = OT_Area Then
+ 
+			Set Feat = Obj.GetFeature ( strKZ)
+			If Feat Is Not Nothing Then
+   				MyFeat = Trim$(Feat.Feature$)
+				If MyFeat <> "" Then
+					ALB_Grundstueck Obj,MyFeat
+					ALB_FehlerCode Obj,MyFeat
+				End If
+ 			End If
+		End If
+
+	Next Obj
+
+
+' Nun Straßen
+  
+	If (clsStr Is Nothing Or objsStr Is Nothing Or objsStr.Count = 0 ) Then
+ 		Beep
+		MsgBox "Und tschüß!", ebInformation, strBoxTitel
+		Exit Sub
+ 	End If
+
+	SelObjS = objsStr.Count
+	
+
+	bErrFile = False	' Fehlerdatei (noch) nicht angelegt
+
+
+' StatusAnzeige initialisieren
+	
+	If (Status Is Not Nothing) Then
+		Status.Restart 0, SelObjs, STATUS_ShowAllFields
+		Status.Caption = "Analyse der Straßen "
+		Status.Field(1) = Str$(SelObjs)
+		Status.Field(2) = "Objekte werden durchsucht."
+		Status.Field(3) = "Es wurden bereits %d%% der Objekte analysiert."
+	End If
+
+
+	ActCnt = 0
+
+	For Each Obj In objsStr
+
+	' Status weiterschalten
+		If (Status Is Not Nothing) Then
+			ActCnt = ActCnt + 1
+			Status.Field(4) = "Objekt: " + Str$(Obj.Value)
+			If (Status Is Not Nothing) Then
+				Status.SetPosition ActCnt
+				If (Status.WasCanceled()) Then	' Abbrechen gedrückt
+					Exit For					' innere Schleife beenden
+				End If
+			End If
+		End If
+
+		If Obj.ObjType = OT_Area Then
+  
+			Set Feat = Obj.GetFeature ( strKZ)
+			If Feat Is Not Nothing Then
+   				MyFeat = Trim$(Feat.Feature$)
+				If MyFeat <> "" Then
+					ALB_Strasse Obj,MyFeat
+					ALB_FehlerCode Obj,MyFeat
+				End If
+ 			End If
+		End If
+
+	Next Obj
+
+	Beep
+	MsgBox "Und tschüß!", ebInformation, strBoxTitel
+
+	Set Status = Nothing
+	Set rstPG = Nothing
+	Set dbs = Nothing
+	Set wsp = Nothing
+
+End Sub
+'===================================================================
+Sub ALB_Grundstueck ( Obj As GeoObject,Key As String) 
+
+	If Obj Is Nothing Then
+		Exit Sub
+	End If
+
+	If Key = "" Then
+		Exit Sub
+	End If
+
+  	If rstPG Is Not Nothing Then
+		rstPG.Close
+		Set rstPG = Nothing
+	End If
+
+	Dim SQLStatement As String
+
+	SQLStatement = "SELECT * FROM " + strTabG + " WHERE " + strSFSK + " LIKE '" +Key+ "'"
+
+	Set rstPG = dbs.OpenRecordset (SQLStatement, dbOpenSnapshot, dbReadOnly)
+
+	If rstPG Is Nothing Then
+		Exit Sub
+	End If
+
+	If rstPG.RecordCount > 0 Then
+
+		Set fldMDBGstNr = rstPG.Fields(strGGN)
+ 		Set fldMDBId = rstPG.Fields(strGID)
+
+		rstPG.MoveLast
+		rstPG.MoveFirst
+
+		Dim Feld As String
+		If fldMDBGstNr Is Not Nothing Then
+			Feld$ = Trim$ ( fldMDBGstNr)
+			If Feld$ <> "" Then
+				Set VFeat = Obj.GetFeature(strGN)
+				If VFeat Is Nothing Then
+					Set VFeat = Obj.AddFeature(strGN,FEATURETYPE_WriteAble)
+				End If
+
+				If VFeat Is Not Nothing Then
+					VFeat.Feature$ = Feld
+				End If			
+			End If
+		End If
+		Set VFeat = Nothing
+		If fldMDBId Is Not Nothing Then
+			Feld$ = Trim$ ( fldMDBId)
+			If Feld$ <> "" Then
+				Set VFeat = Obj.GetFeature(strUIN)
+				If VFeat Is Nothing Then
+					Set VFeat = Obj.AddFeature(strUIN,FEATURETYPE_WriteAble)
+				End If
+
+				If VFeat Is Not Nothing Then
+					VFeat.Feature$ = Feld
+				End If			
+			End If
+		End If
+
+	End If
+
+End Sub
+
+'===============================================================
+'===================================================================
+Sub HeaderEintrag ( Key As String) 
+
+	If Key = "" Then
+		Exit Sub
+	End If
+
+  	If rstPG Is Not Nothing Then
+		rstPG.Close
+		Set rstPG = Nothing
+	End If
+
+	Dim SQLStatement As String
+
+	SQLStatement = "SELECT * FROM " + strTabA + " WHERE " + strTR + " LIKE '" +Key+ "'"
+
+	Set rstPG = dbs.OpenRecordset (SQLStatement, dbOpenSnapshot, dbReadOnly)
+
+	If rstPG Is Nothing Then
+		MsgBox strTabA + " enthält keine Datei "+ Key, _
+				ebQuestion, strBoxTitel
+		Exit Sub
+	End If
+
+	If rstPG.RecordCount > 0 Then
+
+		Set fldMDBDBA = rstPG.Fields(strDB)
+
+		rstPG.MoveLast
+		rstPG.MoveFirst
+
+		Dim Feld As String
+		If fldMDBDBA Is Not Nothing Then
+			Feld$ = Trim$ ( fldMDBDBA)
+			If Feld$ <> "" Then
+				If docGD.SetHeaderEntry (strDBCode,Feld	) Then
+					msgbox strDBCode + " = " + Feld + " eingetragen"
+				Else
+					msgbox strDBCode + " = " + Feld + " nicht eingetragen"
+				End If
+			End If
+		End If
+	Else
+		MsgBox strTabA + " enthält keine Datei "+ Key, _
+				ebQuestion, strBoxTitel
+
+	End If
+
+End Sub
+
+'===============================================================
+'===================================================================
+Sub ALB_Strasse ( Obj As GeoObject,Key As String) 
+
+	If Obj Is Nothing Then
+		Exit Sub
+	End If
+
+	If Key = "" Then
+		Exit Sub
+	End If
+
+  	If rstPG Is Not Nothing Then
+		rstPG.Close
+		Set rstPG = Nothing
+	End If
+
+	Dim SQLStatement As String
+
+	SQLStatement = "SELECT * FROM " + strTabS + " WHERE " + strSFSK + " LIKE '" +Key+ "'"
+
+	Set rstPG = dbs.OpenRecordset (SQLStatement, dbOpenSnapshot, dbReadOnly)
+
+	If rstPG Is Nothing Then
+		Exit Sub
+	End If
+
+	If rstPG.RecordCount > 0 Then
+
+		Set fldMDBStrName = rstPG.Fields(strSSN)
+
+		rstPG.MoveLast
+		rstPG.MoveFirst
+
+		Dim Feld As String
+		If fldMDBStrName Is Not Nothing Then
+			Feld$ = Trim$ ( fldMDBStrName)
+			If Feld$ <> "" Then
+				Set VFeat = Obj.GetFeature(strSN)
+				If VFeat Is Nothing Then
+					Set VFeat = Obj.AddFeature(strSN,FEATURETYPE_WriteAble)
+				End If
+
+				If VFeat Is Not Nothing Then
+					VFeat.Feature$ = Feld
+				End If			
+			End If
+		End If
+
+	End If
+
+End Sub
+
+'===============================================================
+'===================================================================
+Sub ALB_FehlerCode ( Obj As GeoObject,Key As String) 
+
+	If Obj Is Nothing Then
+		Exit Sub
+	End If
+
+	If Key = "" Then
+		Exit Sub
+	End If
+
+  	If rstPG Is Not Nothing Then
+		rstPG.Close
+		Set rstPG = Nothing
+	End If
+
+	Dim SQLStatement As String
+
+	SQLStatement = "SELECT * FROM " + strTabF + " WHERE " + strSFSK + " LIKE '" +Key+ "'"
+
+	Set rstPG = dbs.OpenRecordset (SQLStatement, dbOpenSnapshot, dbReadOnly)
+
+	If rstPG Is Nothing Then
+		Exit Sub
+	End If
+
+	If rstPG.RecordCount > 0 Then
+
+		Set fldMDBFeFalsch = rstPG.Fields(strFfalsch)
+		Set fldMDBFeALB = rstPG.Fields(strFNOALB)
+		Set fldMDBFeALBfalsch = rstPG.Fields(strFALBfalsch)
+		Set fldMDBFeALBrichtig = rstPG.Fields(strFALBrichtig)
+		Set fldMDBFeIdDoppelt = rstPG.Fields(strFDopId)
+		Set fldMDBFeIdVersch = rstPG.Fields(strFDopVer)
+		Set fldMDBFeStr = rstPG.Fields(strFStrfehlt)
+
+		rstPG.MoveLast
+		rstPG.MoveFirst
+
+		Dim Feld As String
+
+		If fldMDBFeFalsch Is Not Nothing Then
+			Feld$ = Trim$ ( fldMDBFeFalsch)
+			If Feld$ = "True" Then
+				Feld = "1"
+				Set VFeat = Nothing
+				Set VFeat = Obj.GetFeature(strFKZ)
+				If VFeat Is Nothing Then
+					Set VFeat = Obj.AddFeature(strFKZ,FEATURETYPE_WriteAble)
+				End If
+
+				If VFeat Is Not Nothing Then
+					VFeat.Feature$ = Feld
+				End If			
+			End If
+		End If
+'================================
+		If fldMDBFeALB Is Not Nothing Then
+			Feld$ = Trim$ ( fldMDBFeALB)
+			If Feld$ = "True" Then
+				Feld = "1"
+				Set VFeat = Nothing
+				Set VFeat = Obj.GetFeature(strFAA)
+				If VFeat Is Nothing Then
+					Set VFeat = Obj.AddFeature(strFAA,FEATURETYPE_WriteAble)
+				End If
+
+				If VFeat Is Not Nothing Then
+					VFeat.Feature$ = Feld
+				End If			
+			End If
+		End If
+'================================
+		If fldMDBFeIdDoppelt Is Not Nothing Then
+			Feld$ = Trim$ ( fldMDBFeIdDoppelt)
+			If Feld$ = "True" Then
+				Feld = "1"
+				Set VFeat = Nothing
+				Set VFeat = Obj.GetFeature(strFIG)
+				If VFeat Is Nothing Then
+					Set VFeat = Obj.AddFeature(strFIG,FEATURETYPE_WriteAble)
+				End If
+
+				If VFeat Is Not Nothing Then
+					VFeat.Feature$ = Feld
+				End If			
+			End If
+		End If
+
+'================================
+		If fldMDBFeIdVersch Is Not Nothing Then
+			Feld$ = Trim$ ( fldMDBFeIdVersch)
+			If Feld$ = "True" Then
+				Feld = "1"
+				Set VFeat = Nothing
+				Set VFeat = Obj.GetFeature(strFGG)
+				If VFeat Is Nothing Then
+					Set VFeat = Obj.AddFeature(strFGG,FEATURETYPE_WriteAble)
+				End If
+
+				If VFeat Is Not Nothing Then
+					VFeat.Feature$ = Feld
+				End If			
+			End If
+		End If
+
+'================================
+		If fldMDBFeStr Is Not Nothing Then
+			Feld$ = Trim$ ( fldMDBFeStr)
+			If Feld$ = "True" Then
+				Feld = "1"
+				Set VFeat = Nothing
+				Set VFeat = Obj.GetFeature(strFSS)
+				If VFeat Is Nothing Then
+					Set VFeat = Obj.AddFeature(strFSS,FEATURETYPE_WriteAble)
+				End If
+
+				If VFeat Is Not Nothing Then
+					VFeat.Feature$ = Feld
+				End If			
+			End If
+		End If
+
+'================================
+	End If
+
+End Sub
+
+'===============================================================
+' --------------------------------------------------------------------------------------
+' Fehlertext strErrText in Fehlerdatei (Name des aktuellen Projektes mit Attribut "err")
+' eintragen
+Sub ErrFile ( strErrText As String)
+
+	Dim strErrDatei As String
+	strErrDatei = Left$(docGD.FullName$,Len(docGD.FullName$)-3) + "err"
+	Open strErrDatei For Append Lock Write As #1	' Fehler-Datei öffnen
+
+	Print #1, strErrText
+	Close											' Fehler-Datei schließen
+	bErrFile = True
+End Sub ' ErrFile
+' --------------------------------------------------------------------------------------
+'=================================================================================================
+  

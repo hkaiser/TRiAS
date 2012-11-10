@@ -1,0 +1,151 @@
+'\"t
+.if t .TH IMVFBQPTR 3IM "August 25, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMVFBQPTR 3IM "August 25, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImVfbQPtr - Query the pointer to a pixel location in a virtual frame
+buffer 
+.br
+ImVfbQFirst - Query the pointer to the first pixel location in a
+virtual frame buffer 
+.br
+ImVfbQLast - Query the pointer to the last pixel location in a virtual
+frame buffer 
+.br
+ImVfbQLeft - Query the pointer to the next pixel to the left in a
+virtual frame buffer 
+.br
+ImVfbQRight - Query the pointer to the next pixel to the right in a
+virtual frame buffer 
+.br
+ImVfbQUp - Query the pointer to the next pixel up in a virtual frame
+buffer 
+.br
+ImVfbQDown - Query the pointer to the next pixel down in a virtual frame
+buffer 
+.br
+ImVfbQNext - Query the pointer to the next pixel in a virtual frame
+buffer 
+.br
+ImVfbQPrev - Query the pointer to the previous pixel in a virtual frame
+buffer 
+.br
+ImVfbSInc - Increment the pointer to point to the next pixel in a virtual frame buffer
+.br
+ImVfbSDec - Decrement the pointer to point to the previous pixel in a virtual frame buffer
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+ImVfbPtr ImVfbQPtr( srcVfb, x, y )
+	ImVfb *srcVfb ;
+	int x, y ;
+
+ImVfbPtr ImVfbQFirst( srcVfb )
+	ImVfb *srcVfb ;
+
+ImVfbPtr ImVfbQLast( srcVfb )
+	ImVfb *srcVfb ;
+
+ImVfbPtr ImVfbQLeft( srcVfb, p )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+
+ImVfbPtr ImVfbQRight( srcVfb, p )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+
+ImVfbPtr ImVfbQUp( srcVfb, p )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+
+ImVfbPtr ImVfbQDown( srcVfb, p )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+
+ImVfbPtr ImVfbQNext( srcVfb, p )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+
+ImVfbPtr ImVfbQPrev( srcVfb, p )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+
+void ImVfbSInc( srcVfb, p )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+
+void ImVfbSDec( srcVfb, p )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+.fi
+\fR
+.SH DESCRIPTION
+\fBImVfbQPtr\fR returns the pointer to the \fIsrcVfb\fR pixel at
+coordinate (\fIx\fR,\fIy\fR).  (0,0) is the upper left corner of the
+image. 
+.LP
+\fBImVfbQFirst\fR returns the pointer to the first pixel in the
+\fIsrcVfb\fR and is equivalent to \fBImVfbQPtr( srcVfb, 0, 0 )\fR.
+.LP
+\fBImVfbQLast\fR returns the pointer to the last pixel in the
+\fIsrcVfb\fR and is equivalent to \fBImVfbQPtr( srcVfb, ImVfbQWidth(
+srcVfb ), ImVfbQHeight( srcVfb ) )\fR. 
+.LP
+\fBImVfbQLeft\fR returns the pointer to the pixel in the \fIsrcVfb\fR,
+just to the left of the pixel pointed to by \fIp\fR.  If \fIp\fR
+points to the left-most pixel of a scanline, \fBImVfbQLeft\fR wraps
+around to the end of the previous scanline.
+.LP
+\fBImVfbQRight\fR returns the pointer to the pixel in the
+\fIsrcVfb\fR, just to the right of the pixel pointed to by \fIp\fR.
+If \fIp\fR points to the right-most pixel of a scanline,
+\fBImVfbQRight\fR wraps around to the start of the next scanline.
+.LP
+\fBImVfbQUp\fR returns the pointer to the pixel in the \fIsrcVfb\fR,
+which is just above the pixel pointed to by \fIp\fR.
+.LP
+\fBImVfbQDown\fR returns the pointer to the pixel in the \fIsrcVfb\fR,
+which is just below the pixel pointed to by \fIp\fR.
+.LP
+\fBImVfbQNext\fR returns the pointer to the pixel in the \fIsrcVfb\fR
+just to the right of the pixel pointed to by \fIp\fR (identical to
+\fBImVfbQRight\fR). 
+.LP
+\fBImVfbQPrev\fR returns the pointer to the pixel in the \fIsrcVfb\fR
+just to the left of the pixel pointed to by \fIp\fR (identical to
+\fBImVfbQLeft\fR). 
+.LP
+\fBImVfbSInc\fR increments pointer \fIp\fR by one and is equivalent to
+\fBp = ImVfbQNext( srcVfb, p )\fR.
+.LP
+\fBImVfbSDec\fR decrements pointer \fIp\fR by one and is equivalent to
+\fBp = ImVfbQPrev( srcVfb, p )\fR.
+.SH NOTES
+The pixel just to the \fBImVfbQRight\fR of the right-most pixel in a
+scanline is the left-most pixel in the next scanline down. The
+pixel just to the \fBImVfbQLeft\fR of the left-most pixel in a scanline
+is the last pixel in the previous scanline.
+.LP
+No automatic wraparound occurs between the last pixel and the first pixel
+in the frame buffer.
+.LP
+All are C macros.
+.SH SEE ALSO
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBImCltQFirst\fR (3IM),
+\fBImCltQLast\fR (3IM),
+\fBImCltQNext\fR (3IM),
+\fBImCltQPrev\fR (3IM),
+\fBImCltQPtr\fR (3IM),
+\fBImCltSDec\fR (3IM),
+\fBImCltSInc\fR (3IM)
+.SH AUTHOR
+Mike Bailey
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

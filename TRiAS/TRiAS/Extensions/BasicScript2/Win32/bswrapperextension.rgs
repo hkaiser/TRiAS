@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiAS.BasicScriptWrapperExtension.1 = s 'Wrapper fuer BasicScript-Erweiterungen'
+	{
+		CLSID = s '{07963840-3123-101C-BB62-00AA0018497C}'
+		UnRegister = s '{07963841-3123-101C-BB62-00AA0018497C}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {07963840-3123-101C-BB62-00AA0018497C} = s 'Wrapper fuer BasicScript-Erweiterungen'
+		{
+			ProgID = s 'TRiAS.BasicScriptWrapperExtension.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+}

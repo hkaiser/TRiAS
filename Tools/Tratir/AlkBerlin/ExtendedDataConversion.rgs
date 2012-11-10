@@ -1,0 +1,19 @@
+HKCR
+{
+	Tratir.AlkBerlin.1 = s 'ExtendedDataConversion Class for AlkBerlin'
+	{
+		CLSID = s '{F2ACEC44-4D87-11D2-9EC8-006008447800}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {F2ACEC44-4D87-11D2-9EC8-006008447800} = s 'ExtendedDataConversion Class for AlkBerlin'
+		{
+			ProgID = s 'Tratir.AlkBerlin.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

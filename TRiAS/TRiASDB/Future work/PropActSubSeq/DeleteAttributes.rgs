@@ -1,0 +1,39 @@
+HKCR
+{
+	PropActSubSeq.DeleteAttributes.1 = s 'DeleteAttributes Class'
+	{
+		CLSID = s '{8CA870EB-841E-4B58-A7D7-9E91323D61B1}'
+	}
+	PropActSubSeq.DeleteAttributes = s 'DeleteAttributes Class'
+	{
+		CLSID = s '{8CA870EB-841E-4B58-A7D7-9E91323D61B1}'
+		CurVer = s 'PropActSubSeq.DeleteAttributes.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {8CA870EB-841E-4B58-A7D7-9E91323D61B1} = s 'DeleteAttributes Class'
+		{
+			ProgID = s 'PropActSubSeq.DeleteAttributes.1'
+			VersionIndependentProgID = s 'PropActSubSeq.DeleteAttributes'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{83728720-01F3-11D3-94CB-0080C786297B}'
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.3
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'PropActSubSeq.DeleteAttributes.1' = s '{8CA870EB-841E-4B58-A7D7-9E91323D61B1}'
+			}
+		}
+	}
+}

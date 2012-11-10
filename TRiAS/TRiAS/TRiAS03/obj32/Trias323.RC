@@ -1,0 +1,1599 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "trias323.h"
+
+// Generated Help ID header file
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "trias323.hm"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include <atlres.h>
+#include <commctrl.h>
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "ver.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "trias323.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include <atlres.h>\r\n"
+    "#include <commctrl.h>\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""ver.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""trias323.rcv""\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_STATUSDLG DIALOG DISCARDABLE  50, 50, 250, 62
+STYLE DS_MODALFRAME | WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | 
+    WS_CAPTION | WS_SYSMENU
+CAPTION "Status der aktuellen Aktion"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Abbrechen",IDCANCEL,187,39,55,14
+    CONTROL         "",IDPB_STATUS,"msctls_progress32",PBS_SMOOTH,10,40,171,
+                    8
+    LTEXT           "Verarbeitung der Projekt-Informationen",IDT_PERCENT,10,
+                    24,171,9
+    LTEXT           "%s",IDT_FILENAME,36,13,146,9
+    LTEXT           "Objekt %ld\n2",IDT_OBJECTNUMBER,189,13,53,17
+    LTEXT           "Verbleibende Zeit:",IDT_TIMETEXT,10,49,68,8
+    RTEXT           "",IDT_TIME,99,50,81,8
+    LTEXT           "Datei: ",IDT_FILE,10,13,22,8
+    CONTROL         "Animate1",IDC_ANIMATE,"SysAnimate32",NOT WS_VISIBLE | 
+                    WS_DISABLED | WS_BORDER,9,4,16,6
+END
+
+IDD_DESTOBJWND_WIZ DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,147,7,124,1
+    LTEXT           "Objekte in Objektrecherchefenster anzeigen ",IDC_STATIC,
+                    3,2,142,8
+    CONTROL         "&Neues Objektrecherchefenster erzeugen",
+                    IDC_CREATENEWOBJWND,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,8,13,198,10
+    CONTROL         "&Existierendes Objektrecherchefenster auswählen:",
+                    IDC_SELECTOBJWND,"Button",BS_AUTORADIOBUTTON,8,26,189,10
+    LISTBOX         IDC_LISTOBJWND,17,40,252,60,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "Bisherige &Markierung beibehalten",IDC_RETAINSELECTION,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,119,125,10
+    CONTROL         "&Neue Objekte markieren",IDC_SELECTNEW,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,147,119,120,10
+    LTEXT           "Objekte markieren",IDC_STATIC,3,106,58,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,68,111,203,1
+END
+
+IDD_SELECTOBJWND_WIZ DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Objektrecherchefenster auswählen:",IDC_STATIC,1,0,113,
+                    8
+    LISTBOX         IDC_LISTOBJWND,2,11,211,66,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "&Alle auswählen",IDC_SELECTALL,220,63,55,14
+    CONTROL         "&Markierte Objekte",IDC_SELECTEDOBJECTS,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,103,96,80,10
+    CONTROL         "Alle &Objekte ",IDC_ALLOBJECTS,"Button",
+                    BS_AUTORADIOBUTTON,213,96,58,10
+    CONTROL         "A&ktivierte Objekte",IDC_ACTIVATED,"Button",
+                    BS_AUTORADIOBUTTON,7,96,72,10
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,72,86,200,1
+    LTEXT           "Objekte auswählen",IDC_STATIC,5,81,62,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,66,117,206,1
+    LTEXT           "Weitere Optionen",IDC_STATIC,5,112,56,8
+    CONTROL         "&Bearbeitete Objektrecherchefenster schließen",
+                    IDC_CLOSEWHENREADY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    7,124,160,10
+END
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDD_SELECTREL_WIZ$(_DEBUG) DIALOG DISCARDABLE  0, 0, 276, 140
+#else
+IDD_SELECTREL_WIZ DIALOG DISCARDABLE  0, 0, 276, 140
+#endif
+STYLE DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Auswahl der gewünschten Relation, mit der die Objekte einer Gruppe zusammengefasst werden sollen:",
+                    IDC_STATIC,2,5,133,27
+    CONTROL         "Generic1",IDC_LISTRELATIONS,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SORTASCENDING | LVS_SHAREIMAGELISTS | 
+                    LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,1,34,134,105
+    LTEXT           "Auswahl der Objektklasse der neuen &Komplexobjekte:",
+                    IDC_STATIC,140,5,132,27
+    CONTROL         "Generic1",IDC_LISTIDENTS,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SORTASCENDING | LVS_SHAREIMAGELISTS | 
+                    LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,137,34,137,105
+END
+#endif
+
+IDD_SELECTIDS_WIZ DIALOG DISCARDABLE  0, 0, 276, 141
+STYLE DS_3DLOOK | DS_CONTROL | WS_CHILD | WS_DISABLED | WS_BORDER
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Objekte nach Objektklasse und Objekttyp auswählen:",
+                    IDC_STATIC,1,0,170,8
+    CONTROL         "Generic1",IDC_LISTIDENTS,"SysListView32",LVS_REPORT | 
+                    LVS_SHOWSELALWAYS | LVS_SHAREIMAGELISTS | LVS_ALIGNLEFT | 
+                    WS_BORDER | WS_TABSTOP,1,12,212,129
+    PUSHBUTTON      "&Alle auswählen",IDB_SELALLCLASSES,220,127,56,14
+END
+
+IDD_MODIFYIDS_WIZ DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Neue &Objektklasse auswählen:",IDC_STATIC_SELECTIDENT,1,
+                    0,99,8
+    CONTROL         "Neue &Objektklasse auswählen:",IDC_CHECK_SELECTIDENT,
+                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,1,0,114,
+                    10
+    CONTROL         "Generic1",IDC_LISTDESTIDENTS,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_SORTASCENDING | 
+                    LVS_SHAREIMAGELISTS | LVS_ALIGNLEFT | WS_BORDER | 
+                    WS_TABSTOP,1,12,211,115
+    CONTROL         "Objektklasse zu aktueller &Ansicht hinzufügen",
+                    IDC_ADDTOVIEW,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,1,130,157,10
+    PUSHBUTTON      "&Neuer Eintrag",IDC_DEFINENEW,220,113,55,14,WS_GROUP
+END
+
+IDD_TEXTSEARCHENGINE_CFG DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           " Bezugsgröße auswählen",IDC_STATIC,4,3,80,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,87,8,182,1
+    LTEXT           "&Objekteigenschaft:",IDC_STATIC,14,18,60,8
+    EDITTEXT        IDC_OBJPROPERTY,84,16,164,13,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    PUSHBUTTON      "",IDC_SELECT_OBJPROP,252,16,11,13,BS_BITMAP
+    LTEXT           " Kriterium auswählen",IDC_STATIC,4,36,66,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,73,42,196,1
+    CONTROL         "&Lediglich Existenz der Objekteigenschaft testen",
+                    IDC_EXISTSONLY,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,13,49,165,10
+    CONTROL         "&Gegenliste",IDC_NEGATE,"Button",BS_AUTOCHECKBOX | 
+                    WS_GROUP | WS_TABSTOP,186,49,77,10
+    LTEXT           "&Suchen nach:",IDT_SEARCH,13,70,46,8
+    COMBOBOX        IDC_FINDWHAT,84,68,164,68,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "",IDC_INSERT_REGEXPR,252,68,11,13,BS_BITMAP
+    CONTROL         "&Groß-/Kleinschreibung nicht beachten",IDC_CAPITAL,
+                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,13,89,
+                    136,10
+    CONTROL         "&Mit Mustervergleich",IDC_USEREGEXPR,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,158,89,77,10
+    CONTROL         "Teil&zeichenkette suchen",IDC_PARTIALMATCH,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,13,102,93,10
+    CONTROL         "Nur &Textanfang vergleichen",IDC_BEGINOFTEXT,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,158,102,104,10
+    CONTROL         "&Ungefähre Suche (Ausgleichen einzelner Tippfehler)",
+                    IDC_FUZZYMATCH,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,13,115,180,10
+END
+
+IDD_STATUSDLG_AVI DIALOG DISCARDABLE  50, 50, 250, 87
+STYLE DS_MODALFRAME | WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | 
+    WS_CAPTION | WS_SYSMENU
+CAPTION "Status der aktuellen Aktion"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Abbrechen",IDCANCEL,187,65,55,14
+    CONTROL         "",IDPB_STATUS,"msctls_progress32",PBS_SMOOTH,10,66,171,
+                    8
+    LTEXT           "Beschreibung der aktuellen Aktion",IDT_PERCENT,10,54,
+                    171,9
+    LTEXT           "%s",IDT_FILENAME,52,44,130,9
+    LTEXT           "Objekt %ld",IDT_OBJECTNUMBER,189,44,53,18
+    LTEXT           "Verbleibende Zeit:",IDT_TIMETEXT,10,76,68,8
+    RTEXT           "",IDT_TIME,85,76,96,8
+    LTEXT           "Datei: ",IDT_FILE,10,44,39,8
+    CONTROL         "Animate1",IDC_ANIMATE,"SysAnimate32",ACS_TRANSPARENT | 
+                    ACS_AUTOPLAY | WS_TABSTOP,8,8,232,33
+END
+
+IDD_CREATETEXTS_WIZ DIALOG DISCARDABLE  0, 0, 276, 141
+STYLE DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Anzuzeigender Text",IDC_STATIC,3,2,64,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,71,7,199,1
+    CONTROL         "Aus &Objekteigenschaft:",IDC_FROMOBJPROP,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,9,14,89,10
+    EDITTEXT        IDC_OBJPROPERTY,101,12,150,13,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    PUSHBUTTON      "",IDC_SELECT_OBJPROP,255,13,11,13,BS_BITMAP
+    CONTROL         "Hier &vorgeben:",IDC_DIRECTINPUT,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,9,31,63,10
+    COMBOBOX        IDC_DIRECTTEXTLIST,101,30,166,68,CBS_DROPDOWN | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Zusätzliche Optionen",IDC_STATIC,3,45,68,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,75,50,195,1
+    CONTROL         "&Abhängige Textobjekte erzeugen",IDC_CREATEDEPENDEND,
+                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,9,56,
+                    121,10
+    LTEXT           "Dabei existierende abhängige Textobjekte ",
+                    IDC_OPTIONSELECT,21,68,136,8
+    CONTROL         "&löschen",IDC_DELETE,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,162,68,44,10
+    CONTROL         "&ersetzen",IDC_REPLACE,"Button",BS_AUTORADIOBUTTON,209,
+                    68,51,10
+    CONTROL         "Texte &dynamisch aktualisieren",IDC_DYNAMICLABEL,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,20,79,111,10
+    CONTROL         "&Nur bei existierender Objekteigenschaft erzeugen",
+                    IDC_NOTEXISTANT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,9,
+                    106,192,10
+    CONTROL         "&Textdrehwinkel anpassen",IDC_ROTATEFORLINES,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,20,90,131,10
+    CONTROL         "&Bezugsobjekte löschen",IDC_DELETETARGETOBJECT,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,9,118,187,10
+    CONTROL         "Neu erzeugte Textobjekte an &Punkten nicht versetzen",
+                    IDC_DONOTMOVE,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,9,130,187,10
+END
+
+IDD_IMPORT_WIZ DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Zu importierendes Datenformat auswählen",IDC_STATIC,4,2,
+                    134,8
+    COMBOBOX        IDC_IMPORTFORMATS,3,13,265,78,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,146,7,125,1
+    LTEXT           "Dateinamen auswählen",IDC_STATIC,4,29,75,8
+    EDITTEXT        IDC_IMPORTFILES,3,40,248,14,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "&...",IDC_SELECTIMPORTFILES,255,40,13,14
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,87,34,184,1
+    CONTROL         "Dateien aus DOS-&Zeichensatz konvertieren",
+                    IDC_IMPORTANSIOEM,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,4,59,153,10
+    LTEXT           "Importoptionen auswählen",IDC_STATIC,4,73,84,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,93,78,178,1
+    CONTROL         "&Geometrie",IDC_IMPORTGEOMETRY,"Button",BS_AUTOCHECKBOX | 
+                    WS_GROUP | WS_TABSTOP,4,86,61,10
+    CONTROL         "&Relationen",IDC_IMPORTRELATIONS,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,101,86,61,10
+    CONTROL         "&Objekteigenschaften",IDC_IMPORTFEATURES,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,4,103,86,10
+    CONTROL         "&Visualisierung",IDC_IMPORTVISUALISATION,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,101,103,61,10
+    PUSHBUTTON      "&Koordinaten ...",IDC_COORDSYS,213,83,55,14,WS_GROUP
+    PUSHBUTTON      "Kon&figuration ...",IDB_CONFIG,213,101,55,14,WS_GROUP
+    LTEXT           "&Datenquelle auswählen:",IDC_STATIC,4,123,77,8
+    COMBOBOX        IDC_DATASOURCES,101,122,167,71,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_SELECTIDS_WIZPP DIALOG DISCARDABLE  0, 0, 270, 124
+STYLE DS_3DLOOK | DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Objekte nach Objektklasse und Objekttyp auswählen:",
+                    IDC_STATIC,1,0,170,8
+    CONTROL         "Generic1",IDC_LISTIDENTS,"SysListView32",LVS_REPORT | 
+                    LVS_SHOWSELALWAYS | LVS_SHAREIMAGELISTS | LVS_ALIGNLEFT | 
+                    WS_BORDER | WS_TABSTOP,1,12,207,109
+    PUSHBUTTON      "&Alle auswählen",IDB_SELALLCLASSES,214,107,55,14
+END
+
+IDD_SELECTFROMDS_WIZ DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE DS_3DLOOK | DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Objekte folgender Datenquellen auswählen:",IDC_STATIC,
+                    1,2,139,8
+    CONTROL         "List1",IDC_SELECT_DATASOURCES,"SysListView32",
+                    LVS_REPORT | LVS_SHOWSELALWAYS | LVS_SHAREIMAGELISTS | 
+                    LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,0,14,212,126
+    PUSHBUTTON      "&Alle auswählen",IDB_SELALLDATASOURCES,220,126,55,14
+END
+
+IDD_SELECTFROMDS_WIZPP DIALOG DISCARDABLE  0, 0, 270, 124
+STYLE DS_3DLOOK | DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Objekte folgender Datenquellen auswählen:",IDC_STATIC,
+                    3,3,139,8
+    CONTROL         "List1",IDC_SELECT_DATASOURCES,"SysListView32",
+                    LVS_REPORT | LVS_SHOWSELALWAYS | LVS_SHAREIMAGELISTS | 
+                    LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,3,15,203,106
+    PUSHBUTTON      "&Alle auswählen",IDB_SELALLDATASOURCES,212,107,55,14
+END
+
+IDD_TEXTREPLACE_WIZ DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           " Bezugsgröße auswählen",IDC_STATIC,0,1,80,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,84,7,186,1
+    LTEXT           "&Objekteigenschaft:",IDC_STATIC,11,15,60,8
+    EDITTEXT        IDC_OBJPROPERTY_SRC,81,13,171,13,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    PUSHBUTTON      "",IDC_SELECT_OBJPROP_SRC,258,13,11,13,BS_BITMAP
+    LTEXT           " Kriterium auswählen",IDC_STATIC,0,33,66,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,70,38,200,1
+    LTEXT           "&Suchen nach:",IDC_STATIC,11,47,46,8
+    COMBOBOX        IDC_FINDWHAT_REPLACE,81,45,171,68,CBS_DROPDOWN | 
+                    CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "",IDC_INSERT_REGEXPR_SEARCH,258,45,11,13,BS_BITMAP
+    CONTROL         "&Groß-/Kleinschreibung nicht beachten",
+                    IDC_CAPITAL_REPLACE,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,10,63,136,10
+    CONTROL         "&Mit Mustervergleich",IDC_USEREGEXPR_REPLACE,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,155,63,77,10
+    CONTROL         "Teil&zeichenkette suchen",IDC_PARTIALMATCH_REPLACE,
+                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,10,77,
+                    93,10
+    CONTROL         "Nur &Textanfang vergleichen",IDC_BEGINOFTEXT_REPLACE,
+                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,155,77,
+                    104,10
+    LTEXT           " Ergebnis konfigurieren",IDC_STATIC,0,95,73,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,76,101,193,1
+    LTEXT           "&Ersetzen durch:",IDT_REPLACE,11,109,50,8
+    COMBOBOX        IDC_REPLACEWITH,81,107,171,68,CBS_DROPDOWN | 
+                    CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "",IDC_INSERT_REGEXPR_REPLACE,258,107,11,13,BS_BITMAP
+    LTEXT           "&Schreiben in:",IDC_STATIC,11,128,42,8
+    EDITTEXT        IDC_OBJPROPERTY_DEST,81,126,171,13,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    PUSHBUTTON      "",IDC_SELECT_OBJPROP_DEST,258,126,11,13,BS_BITMAP
+END
+
+IDD_GENERATEOBJECTPROPERTIES_SEQUENCE DIALOG DISCARDABLE  0, 0, 276, 141
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Reihenfolge festlegen, in der die Objekteigenschaften ausgegeben werden sollen:",
+                    IDC_STATIC,1,0,212,19
+    CONTROL         "List1",IDC_PROPERTY_SEQUENCE,"SysListView32",LVS_REPORT | 
+                    LVS_SHOWSELALWAYS | LVS_SHAREIMAGELISTS | 
+                    LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,1,23,212,117
+    GROUPBOX        " Verschieben ",IDC_STATIC,219,109,55,31,WS_GROUP
+    PUSHBUTTON      "&U",IDC_UP,228,121,16,14,BS_BITMAP
+    PUSHBUTTON      "&D",IDC_DOWN,250,121,16,14,BS_BITMAP
+END
+
+IDD_GENERATEOBJECTPROPERTIES_SELECTPROPS DIALOG DISCARDABLE  0, 0, 276, 141
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Objekteigenschaften auswählen, deren Werte für alle zu behandelnden Objekte ausgegeben werden sollen:",
+                    IDC_STATIC,2,0,272,20
+    CONTROL         "Tree1",IDC_OBJECTPROPERTIES,"SysTreeView32",
+                    TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | 
+                    TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | WS_BORDER | 
+                    WS_TABSTOP,2,23,272,80
+    LTEXT           "Beschreibung der Objekteigenschaft",IDC_STATIC,2,106,
+                    116,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,122,111,91,1
+    LTEXT           "",IDC_OBJPROP_DESCRIPTION,2,117,211,23
+    PUSHBUTTON      "&Konfiguration ...",IDC_CONFIG_PROP,219,127,55,14
+END
+
+IDD_DELETEOBJECTPROPERTY_OPTIONS DIALOG DISCARDABLE  0, 0, 276, 141
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Tree1",IDC_OBJECTPROPERTIES,"SysTreeView32",
+                    TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | 
+                    TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | WS_BORDER | 
+                    WS_TABSTOP,1,23,274,80
+    LTEXT           "&Objekteigenschaften auswählen, deren Werte für alle zu behandelnden Objekte gelöscht werden sollen:",
+                    IDC_STATIC,1,0,274,20
+    LTEXT           "Beschreibung der Objekteigenschaft",IDC_STATIC,2,106,
+                    116,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,122,111,153,1
+    LTEXT           "",IDC_OBJPROP_DESCRIPTION,2,117,273,19
+END
+
+IDD_GENERATEOBJECTPROPERTIES_OPTIONS DIALOG DISCARDABLE  0, 0, 276, 137
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Erzeugte Informationen",IDC_STATIC,1,0,78,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,80,4,194,1
+    CONTROL         "Ü&berschrift",IDCB_OBJPROPHEADLINE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,10,12,81,10
+    CONTROL         "Kumulativer &Index",IDCB_OBJPROPCUMULATE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,167,12,86,10
+    CONTROL         "&Objekteigenschaften",IDCB_OBJPROPPROPS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,10,25,81,10
+    CONTROL         "Anzahl der &Einträge",IDCB_OBJPROPCOUNT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,167,25,86,10
+    LTEXT           "Ausgabe der Objekteigenschaften in",IDC_STATIC,1,40,116,
+                    8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,124,45,150,1
+    CONTROL         "&Zwischenablage",IDR_OBJPROPCLIPBOARD,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,8,52,93,10
+    CONTROL         "&Fenster",IDR_OBJPROPWINDOW,"Button",BS_AUTORADIOBUTTON,
+                    8,67,87,10
+    CONTROL         "&Datei:",IDR_OBJPROPFILE,"Button",BS_AUTORADIOBUTTON,8,
+                    81,35,10
+    EDITTEXT        IDE_OBJPROPFILE,89,80,164,13,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    PUSHBUTTON      "&...",IDC_OBJPROPFILE,257,80,10,13
+    CONTROL         "Objekteigen&schaft:",IDR_OBJPROPMCODE,"Button",
+                    BS_AUTORADIOBUTTON,8,96,75,10
+    EDITTEXT        IDC_OBJPROPERTY,89,96,164,13,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    PUSHBUTTON      "",IDC_SELECT_OBJPROP,257,96,10,13,BS_BITMAP
+    LTEXT           "Sonstige Optionen",IDC_STATIC,1,113,59,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,65,118,209,1
+    LTEXT           "Zu verwendendes &Trennzeichen:",IDC_STATIC,7,126,106,8
+    COMBOBOX        IDC_SEPARATOR,167,123,86,66,CBS_DROPDOWN | 
+                    CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_OBJPROPDESTWINDOW DIALOGEX 38, 44, 287, 182
+STYLE WS_POPUP | WS_CAPTION | WS_THICKFRAME
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Objekteigenschaften"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Ausgegebene Objekteigenschaften:",IDC_STATIC,3,6,114,8
+    CONTROL         "Generic1",IDC_OBJPROPDESTWINDOW,"SysListView32",
+                    LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | 
+                    LVS_NOSORTHEADER | WS_BORDER | WS_GROUP | WS_TABSTOP,3,
+                    18,215,128,0,HIDC_OBJPROPDESTWINDOW
+    PUSHBUTTON      "&Kopieren",IDC_COPYTOCLIPBOARD,226,132,55,14,WS_GROUP,0,
+                    HIDC_COPYTOCLIPBOARD
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,4,155,277,1
+    DEFPUSHBUTTON   "&Schließen",IDOK,226,163,56,14,WS_GROUP,0,HIDOK
+END
+
+IDD_OBJEKTEVEREINIGEN DIALOG DISCARDABLE  0, 0, 270, 135
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Optionen",-1,0,3,33,8
+    CONTROL         "",-1,"Static",SS_ETCHEDHORZ,32,8,237,1
+    CONTROL         "&Verwendete Ursprungsobjekte löschen",IDC_ORIGINDEL,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,18,138,10
+    CONTROL         "Verwendete &Ursprungsobjekte kennzeichnen",
+                    IDC_ORIGINMARK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,
+                    34,175,10
+    LTEXT           "Beschreibung",-1,0,98,48,8
+    CONTROL         "",-1,"Static",SS_ETCHEDHORZ,47,103,223,1
+    LTEXT           "",IDT_OPTDESCRIPT,0,109,268,26,NOT WS_GROUP
+    CONTROL         "&Nicht verwendete Ursprungsobjekte doppeln",
+                    IDC_COPYNOTUSED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,
+                    50,175,10
+END
+
+IDD_OBJECTROP_WIZ DIALOG DISCARDABLE  0, 0, 276, 141
+STYLE DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS | WS_BORDER
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           " Bezugsgröße auswählen",IDC_STATIC,0,3,80,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,84,9,185,1
+    LTEXT           "&Objekteigenschaft:",IDC_STATIC,11,17,60,8
+    EDITTEXT        IDC_OBJPROPERTY_SRC,81,15,171,13,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    PUSHBUTTON      "",IDC_SELECT_OBJPROP_SRC,258,15,11,13,BS_BITMAP
+    LTEXT           " O&ptionen auswählen",IDC_STATIC,0,36,68,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,70,41,199,1
+    CONTROL         "&Groß-/Kleinschreibung nicht beachten",
+                    IDC_CAPITAL_CLASSIFY,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,11,52,136,10
+    CONTROL         "Objekte mit &fehlender Objekteigenschaft berücksichtigen",
+                    IDC_CLASSIFYALL,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,11,66,238,10
+    CONTROL         "Am &Textanfang nur ",IDC_BEGINOFTEXT_CLASSIFY,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,11,80,78,10
+    EDITTEXT        IDC_COUNT_CHARS,92,78,28,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_COUNT_CHARS_SPIN,"msctls_updown32",UDS_WRAP | 
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,112,78,8,14
+    LTEXT           "Zeichen vergleichen",IDC_MATCH_CHARS_STATIC,125,81,66,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,4,105,265,1
+    LTEXT           "Alle Objekte, die dem Kriterium entsprechen, werden zu Gruppen zusammengefasst (klassifiziert). Nachfolgende Operationen können auf diese Gruppen Bezug nehmen.",
+                    IDC_STATIC,3,110,265,26
+END
+
+IDD_OBJECTROP_WIZPP DIALOG DISCARDABLE  0, 0, 270, 124
+STYLE DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS | WS_BORDER
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           " Bezugsgröße auswählen",IDC_STATIC,0,0,80,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,84,6,182,1
+    LTEXT           "&Objekteigenschaft:",IDC_STATIC,11,14,60,8
+    EDITTEXT        IDC_OBJPROPERTY_SRC,81,12,166,13,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    PUSHBUTTON      "",IDC_SELECT_OBJPROP_SRC,254,12,11,13,BS_BITMAP
+    LTEXT           " O&ptionen auswählen",IDC_STATIC,0,32,68,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,72,37,194,1
+    CONTROL         "&Groß-/Kleinschreibung nicht beachten",
+                    IDC_CAPITAL_CLASSIFY,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,11,45,136,10
+    CONTROL         "Objekte mit &fehlender Objekteigenschaft berücksichtigen",
+                    IDC_CLASSIFYALL,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,11,59,238,10
+    CONTROL         "Am &Textanfang nur ",IDC_BEGINOFTEXT_CLASSIFY,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,11,73,78,10
+    EDITTEXT        IDC_COUNT_CHARS,92,71,28,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_COUNT_CHARS_SPIN,"msctls_updown32",UDS_WRAP | 
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,112,71,8,14
+    LTEXT           "Zeichen vergleichen",IDC_MATCH_CHARS_STATIC,125,74,66,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,4,92,262,1
+    LTEXT           "Alle Objekte, die dem Kriterium entsprechen, werden zu Gruppen zusammengefasst (klassifiziert). Nachfolgende Operationen können auf diese Gruppen Bezug nehmen.",
+                    IDC_STATIC,4,97,262,26
+END
+
+IDD_TEXTSEARCHENGINE_CFGPP DIALOG DISCARDABLE  0, 0, 270, 124
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           " Bezugsgröße auswählen",IDC_STATIC,1,1,80,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,84,7,182,1
+    LTEXT           "&Objekteigenschaft:",IDC_STATIC,11,16,60,8
+    EDITTEXT        IDC_OBJPROPERTY,81,14,164,13,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    PUSHBUTTON      "",IDC_SELECT_OBJPROP,249,14,11,13,BS_BITMAP
+    LTEXT           " Kriterium auswählen",IDC_STATIC,1,33,66,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,70,39,196,1
+    CONTROL         "&Lediglich Existenz der Objekteigenschaft testen",
+                    IDC_EXISTSONLY,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,10,46,165,10
+    CONTROL         "&Gegenliste",IDC_NEGATE,"Button",BS_AUTOCHECKBOX | 
+                    WS_GROUP | WS_TABSTOP,183,46,77,10
+    LTEXT           "&Suchen nach:",IDT_SEARCH,10,66,46,8
+    COMBOBOX        IDC_FINDWHAT,81,64,164,68,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "",IDC_INSERT_REGEXPR,249,64,11,13,BS_BITMAP
+    CONTROL         "&Groß-/Kleinschreibung nicht beachten",IDC_CAPITAL,
+                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,10,83,
+                    136,10
+    CONTROL         "&Mit Mustervergleich",IDC_USEREGEXPR,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,155,83,77,10
+    CONTROL         "Teil&zeichenkette suchen",IDC_PARTIALMATCH,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,10,96,93,10
+    CONTROL         "Nur &Textanfang vergleichen",IDC_BEGINOFTEXT,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,155,96,104,10
+    CONTROL         "&Ungefähre Suche (Ausgleichen einzelner Tippfehler)",
+                    IDC_FUZZYMATCH,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,10,109,180,10
+END
+
+IDD_REPLACE_CONFIRM DIALOG DISCARDABLE  0, 0, 265, 86
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Ersetzen in Objekteigenschaften"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Objekt:",IDC_STATIC,5,10,24,8
+    EDITTEXT        IDC_OBJECT_PROPS,59,7,140,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    PUSHBUTTON      "Objekt &zeigen",IDB_SHOW_OBJECT,205,7,55,14
+    LTEXT           "Bisheriger Wert:",IDC_STATIC,5,28,51,8
+    EDITTEXT        IDC_OLDVALUE,59,25,201,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "&Neuer Wert:",IDC_STATIC,5,47,40,8
+    EDITTEXT        IDC_NEWVALUE,59,44,201,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Ersetzen",IDB_REPLACE,4,66,55,14,WS_GROUP
+    PUSHBUTTON      "&Alle ersetzen",IDB_REPLACEALL,66,66,55,14
+    DEFPUSHBUTTON   "&Weitersuchen",IDOK,144,66,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,205,66,55,14
+END
+
+IDD_COPYOBJECTS_OPTIONS DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Objekte in folgende Datenquelle kopieren:",IDC_STATIC,
+                    1,2,134,8
+    CONTROL         "List1",IDC_SELECT_DATASOURCE,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_SHAREIMAGELISTS | 
+                    WS_BORDER | WS_TABSTOP,0,14,275,126
+END
+
+IDD_COPYOBJECTS_OPTIONSPP DIALOG DISCARDABLE  0, 0, 270, 124
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Objekte in folgende Datenquelle kopieren:",IDC_STATIC,
+                    1,2,134,8
+    CONTROL         "List1",IDC_SELECT_DATASOURCE,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_SHAREIMAGELISTS | 
+                    WS_BORDER | WS_TABSTOP,0,14,269,110
+END
+
+IDD_MODIFYIDS_WIZPP DIALOG DISCARDABLE  0, 0, 270, 124
+STYLE DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Neue &Objektklasse auswählen:",IDC_STATIC_SELECTIDENT,1,
+                    1,99,8
+    CONTROL         "Neue &Objektklasse auswählen:",IDC_CHECK_SELECTIDENT,
+                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,1,1,114,
+                    10
+    CONTROL         "Generic1",IDC_LISTDESTIDENTS,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_SORTASCENDING | 
+                    LVS_SHAREIMAGELISTS | LVS_ALIGNLEFT | WS_BORDER | 
+                    WS_TABSTOP,1,12,210,99
+    CONTROL         "Objektklasse zu aktueller &Ansicht hinzufügen",
+                    IDC_ADDTOVIEW,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,1,113,157,10
+    PUSHBUTTON      "&Neuer Eintrag",IDC_DEFINENEW,214,97,55,14,WS_GROUP
+END
+
+IDD_CLASSIFYRESULT_WIZ DIALOG DISCARDABLE  0, 0, 276, 141
+STYLE DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS | WS_BORDER
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Zu bildende Objektgruppen einschränken",IDC_STATIC,0,3,
+                    132,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,137,8,138,1
+    CONTROL         "&Alle Objektgruppen bilden",IDC_NOLIMIT,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,6,16,97,10
+    CONTROL         "&Nur Objektgruppen mit",IDC_ADDITIONAL_LIMIT,"Button",
+                    BS_AUTORADIOBUTTON,6,32,87,10
+    COMBOBOX        IDC_COMPARE,34,48,95,79,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_OBJCOUNT,138,48,40,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN_COUNT,"msctls_updown32",UDS_WRAP | 
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,254,48,8,14
+    LTEXT           "Objekt(en) bilden",IDC_OBJECTCOUNT,187,51,54,8
+    CONTROL         "Lediglich die ersten ",IDC_LIMIT_ORWNDS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,6,82,77,10
+    EDITTEXT        IDC_COUNT_ORWNDS,89,80,40,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN_COUNT_ORWNDS,"msctls_updown32",UDS_WRAP | 
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,254,80,8,14
+    LTEXT           "Objektgruppen bilden",IDC_STATIC,138,83,68,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,0,105,275,1
+    LTEXT           "Es werden lediglich die Objektgruppen aus dem vorhergehenden Verarbeitungsschritt gebildet, die den eingestellten Kriterien entsprechen.",
+                    IDC_LIMITPACKETS_DESC,3,110,265,26
+    LTEXT           "Anzahl der zu bildenden Objektgruppen einschränken",
+                    IDC_STATIC,0,68,170,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,173,73,102,1
+END
+
+IDD_VBPROPERTYSEQUENCE_OPTIONS DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",IDC_VBDIALOG,"Static",SS_ETCHEDFRAME,0,0,276,140
+END
+
+IDD_LOADOBJECTCOLLECTION_OPTIONS DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "TODO: Layout für TRiAS Geokomponentendialog gestalten",
+                    -1,44,66,188,8
+END
+
+IDD_SAVEOBJECTCOLLECTION_OPTIONS DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Wählen Sie aus, wo und unter welchem Namen die zu speichernde Objektmenge abgelegt werden soll:",
+                    IDC_STATIC,0,0,275,19
+    CONTROL         "Als &Datei speichern:",IDC_SAVEASEXTERNALFILE,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,1,23,79,10
+    LTEXT           "Name der Datei, unter dem die Objektmenge abgelegt werden soll:",
+                    IDC_STATIC,13,38,253,8
+    EDITTEXT        IDC_SAVEASFILENAME,13,51,239,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    PUSHBUTTON      "&...",IDC_SELECTSAVEAS,255,51,12,14
+    CONTROL         "Im aktuellen &Projekt speichern",IDC_SAVEINPROJECT,
+                    "Button",BS_AUTORADIOBUTTON | WS_DISABLED | WS_GROUP,1,
+                    79,111,10
+    LTEXT           "Name, unter dem die Objektmenge im Projekt abgelegt werden soll:",
+                    IDC_STATIC,13,94,253,8,WS_DISABLED
+    COMBOBOX        IDC_NAMEINPROJECT,13,105,254,91,CBS_DROPDOWN | CBS_SORT | 
+                    WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_SELECTOBJWND_WIZPP DIALOG DISCARDABLE  0, 0, 270, 124
+STYLE DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Objektrecherchefenster auswählen:",-1,1,0,113,8
+    LISTBOX         IDC_LISTOBJWND,0,12,207,65,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "&Alle auswählen",IDC_SELECTALL,214,63,55,14
+    CONTROL         "&Markierte Objekte",IDC_SELECTEDOBJECTS,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,103,94,80,10
+    CONTROL         "Alle &Objekte ",IDC_ALLOBJECTS,"Button",
+                    BS_AUTORADIOBUTTON,209,94,58,10
+    CONTROL         "A&ktivierte Objekte",IDC_ACTIVATED,"Button",
+                    BS_AUTORADIOBUTTON,7,94,72,10
+    CONTROL         "",-1,"Static",SS_ETCHEDHORZ,69,86,200,1
+    LTEXT           "Objekte auswählen",-1,5,81,62,8
+    CONTROL         "&Bearbeitete Objektrecherchefenster schließen",
+                    IDC_CLOSEWHENREADY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    7,109,160,10
+END
+
+IDD_MANAGEOBJECTPROPERTIES DIALOG DISCARDABLE  0, 0, 250, 135
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Installierte konfigurierbare &Objekteigenschaften:",
+                    IDC_STATIC,4,4,150,8
+    CONTROL         "Tree1",IDC_OBJECTPROPERTIES,"SysTreeView32",
+                    TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | 
+                    TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | TVS_INFOTIP | 
+                    TVS_FULLROWSELECT | WS_BORDER | WS_TABSTOP,4,15,179,116
+    PUSHBUTTON      "&Neu",IDC_NEWOBJPROP,190,79,56,14
+    PUSHBUTTON      "&Löschen",IDC_DELOBJPROP,190,98,56,14
+    PUSHBUTTON      "&Eigenschaften",IDC_OBJPROP_PROPS,190,117,56,14
+END
+
+IDD_NEWOBJPROP DIALOGEX 0, 0, 250, 134
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Erzeugen einer neuen Objekteigenschaft"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,189,6,55,14
+    PUSHBUTTON      "Abbrechen",IDCANCEL,189,26,55,14
+    EDITTEXT        IDE_OBJPROPFILE,7,63,162,13,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "&...",IDC_OBJPROPFILE,173,63,10,13
+    LTEXT           "Name der neuen Objekteigenschaft:",IDC_STATIC,6,6,176,8
+    EDITTEXT        IDC_EDIT1,6,18,177,14,ES_AUTOHSCROLL
+    LTEXT           "Objekteigenschaft laden",IDC_STATIC,6,48,82,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,86,53,158,1
+    PUSHBUTTON      "Konfigurieren",IDC_BUTTON1,189,62,55,14
+    LTEXT           "",IDC_DESCRIPTION,6,96,238,32
+    LTEXT           "Beschreibung",IDC_STATIC,6,84,51,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,58,89,186,1
+END
+
+IDD_SELECTCOORDSYSACTION_OPTIONS DIALOG DISCARDABLE  0, 0, 276, 141
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Bitte wählen Sie das &Koordinatensystem aus, in dem die Geometrien der zu importierenden Objekte vorliegen:",
+                    IDC_DESCTEXT,2,3,273,18
+    CONTROL         "Tree1",IDC_COORDSYSTEMS,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | 
+                    TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,2,24,273,84
+    LTEXT           "1\n2\n3",IDC_COORDDESCRIPTION,2,116,273,25
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_PLFT_SMALL          BITMAP  DISCARDABLE     "res\\plft.bmp"
+IDB_PLFT_LARGE          BITMAP  DISCARDABLE     "res\\plft_lar.bmp"
+IDB_OBJPROPTYPES        BITMAP  DISCARDABLE     "res\\headerst.bmp"
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDB_CHECKMARKS_NT$(_DEBUG) BITMAP  DISCARDABLE     "res\\checkmar.bmp"
+#else
+IDB_CHECKMARKS_NT       BITMAP  DISCARDABLE     "res\\checkmar.bmp"
+#endif
+#endif
+IDB_CHECKMARKS_40       BITMAP  DISCARDABLE     "res\\Chckmark.bmp"
+IDB_PROJECTTYPES        BITMAP  DISCARDABLE     "res\\ProjectTypes.bmp"
+IDB_PROJECTTYPES_MASK   BITMAP  DISCARDABLE     "res\\ProjectTypesMask.bmp"
+IDB_HEADER              BITMAP  DISCARDABLE     "res\\header.bmp"
+IDB_COORDSYSTEM         BITMAP  DISCARDABLE     "res\\CoordSys.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_SELECTOBJWND_WIZ, DIALOG
+    BEGIN
+        RIGHTMARGIN, 275
+        VERTGUIDE, 213
+        HORZGUIDE, 11
+        HORZGUIDE, 77
+    END
+
+    IDD_SELECTIDS_WIZ, DIALOG
+    BEGIN
+        VERTGUIDE, 212
+        VERTGUIDE, 220
+        BOTTOMMARGIN, 140
+        HORZGUIDE, 8
+        HORZGUIDE, 12
+        HORZGUIDE, 132
+    END
+
+    IDD_MODIFYIDS_WIZ, DIALOG
+    BEGIN
+        LEFTMARGIN, 1
+        VERTGUIDE, 212
+        HORZGUIDE, 8
+        HORZGUIDE, 12
+        HORZGUIDE, 127
+    END
+
+    IDD_TEXTSEARCHENGINE_CFG, DIALOG
+    BEGIN
+        LEFTMARGIN, 1
+        RIGHTMARGIN, 275
+        TOPMARGIN, 1
+        BOTTOMMARGIN, 139
+    END
+
+    IDD_STATUSDLG_AVI, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 62
+    END
+
+    IDD_CREATETEXTS_WIZ, DIALOG
+    BEGIN
+        LEFTMARGIN, 1
+        VERTGUIDE, 3
+        BOTTOMMARGIN, 140
+    END
+
+    IDD_IMPORT_WIZ, DIALOG
+    BEGIN
+        VERTGUIDE, 275
+    END
+
+    IDD_SELECTIDS_WIZPP, DIALOG
+    BEGIN
+        VERTGUIDE, 208
+        HORZGUIDE, 121
+    END
+
+    IDD_SELECTFROMDS_WIZ, DIALOG
+    BEGIN
+        VERTGUIDE, 212
+        VERTGUIDE, 220
+        HORZGUIDE, 2
+        HORZGUIDE, 10
+        HORZGUIDE, 14
+    END
+
+    IDD_SELECTFROMDS_WIZPP, DIALOG
+    BEGIN
+        VERTGUIDE, 3
+        VERTGUIDE, 206
+        VERTGUIDE, 212
+        VERTGUIDE, 267
+        HORZGUIDE, 3
+        HORZGUIDE, 11
+        HORZGUIDE, 15
+        HORZGUIDE, 121
+    END
+
+    IDD_GENERATEOBJECTPROPERTIES_SEQUENCE, DIALOG
+    BEGIN
+        VERTGUIDE, 1
+        VERTGUIDE, 274
+        BOTTOMMARGIN, 140
+        HORZGUIDE, 7
+        HORZGUIDE, 140
+    END
+
+    IDD_GENERATEOBJECTPROPERTIES_SELECTPROPS, DIALOG
+    BEGIN
+        VERTGUIDE, 2
+        VERTGUIDE, 274
+        HORZGUIDE, 103
+    END
+
+    IDD_DELETEOBJECTPROPERTY_OPTIONS, DIALOG
+    BEGIN
+        VERTGUIDE, 1
+        VERTGUIDE, 275
+        HORZGUIDE, 103
+        HORZGUIDE, 140
+    END
+
+    IDD_GENERATEOBJECTPROPERTIES_OPTIONS, DIALOG
+    BEGIN
+        VERTGUIDE, 1
+        VERTGUIDE, 167
+        VERTGUIDE, 253
+        VERTGUIDE, 274
+        HORZGUIDE, 1
+        HORZGUIDE, 136
+    END
+
+    IDD_OBJPROPDESTWINDOW, DIALOG
+    BEGIN
+        LEFTMARGIN, 3
+        VERTGUIDE, 218
+        VERTGUIDE, 226
+        VERTGUIDE, 281
+        TOPMARGIN, 3
+        HORZGUIDE, 18
+        HORZGUIDE, 146
+        HORZGUIDE, 177
+    END
+
+    IDD_OBJECTROP_WIZ, DIALOG
+    BEGIN
+        VERTGUIDE, 275
+    END
+
+    IDD_OBJECTROP_WIZPP, DIALOG
+    BEGIN
+        RIGHTMARGIN, 269
+        VERTGUIDE, 4
+        VERTGUIDE, 266
+    END
+
+    IDD_TEXTSEARCHENGINE_CFGPP, DIALOG
+    BEGIN
+        LEFTMARGIN, 1
+        RIGHTMARGIN, 269
+        TOPMARGIN, 1
+        BOTTOMMARGIN, 123
+    END
+
+    IDD_REPLACE_CONFIRM, DIALOG
+    BEGIN
+        VERTGUIDE, 5
+        VERTGUIDE, 59
+        VERTGUIDE, 199
+        VERTGUIDE, 260
+        HORZGUIDE, 14
+        HORZGUIDE, 32
+        HORZGUIDE, 51
+        HORZGUIDE, 80
+    END
+
+    IDD_MODIFYIDS_WIZPP, DIALOG
+    BEGIN
+        LEFTMARGIN, 1
+        VERTGUIDE, 211
+        HORZGUIDE, 8
+        HORZGUIDE, 12
+        HORZGUIDE, 111
+    END
+
+    IDD_CLASSIFYRESULT_WIZ, DIALOG
+    BEGIN
+        VERTGUIDE, 275
+    END
+
+    IDD_SELECTOBJWND_WIZPP, DIALOG
+    BEGIN
+        RIGHTMARGIN, 269
+        VERTGUIDE, 209
+        HORZGUIDE, 12
+        HORZGUIDE, 77
+    END
+
+    IDD_MANAGEOBJECTPROPERTIES, DIALOG
+    BEGIN
+        LEFTMARGIN, 4
+        RIGHTMARGIN, 246
+        TOPMARGIN, 4
+        BOTTOMMARGIN, 131
+    END
+
+    IDD_NEWOBJPROP, DIALOG
+    BEGIN
+        VERTGUIDE, 6
+        VERTGUIDE, 183
+        VERTGUIDE, 244
+        HORZGUIDE, 6
+        HORZGUIDE, 69
+        HORZGUIDE, 128
+    END
+
+    IDD_SELECTCOORDSYSACTION_OPTIONS, DIALOG
+    BEGIN
+        VERTGUIDE, 2
+        VERTGUIDE, 275
+        BOTTOMMARGIN, 140
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// TYPELIB
+//
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDR_TYPELIB$(_DEBUG)    TYPELIB DISCARDABLE     "..\\Debug4\\TRiASHelper.tlb"
+#else
+IDR_TYPELIB             TYPELIB DISCARDABLE     "..\\Debug4\\TRiASHelper.tlb"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(NDEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDR_TYPELIB$(NDEBUG)    TYPELIB DISCARDABLE     "..\\Release\\TRiASHelper.tlb"
+#else
+IDR_TYPELIB             TYPELIB DISCARDABLE     "..\\Release\\TRiASHelper.tlb"
+#endif
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_REGISTRYHELPER      REGISTRY DISCARDABLE    "res\\Register.rgs"
+IDR_TEXTSEARCHENGINE    REGISTRY DISCARDABLE    "res\\TextSearchEngine.rgs"
+IDR_PROPINFO_IDENTOTYP  REGISTRY DISCARDABLE    "res\\SelIdPrp.rgs"
+IDR_PROPINFO_MODIDENT   REGISTRY DISCARDABLE    "res\\ModIdPrp.rgs"
+IDR_PROPINFO_OBJWND     REGISTRY DISCARDABLE    "res\\SelObWnd.rgs"
+IDR_PROPINFO_PROPSEQUENCE REGISTRY DISCARDABLE    "res\\PropSeq.rgs"
+IDR_PROPINFO_ORWNDDEST  REGISTRY DISCARDABLE    "res\\DstObWnd.rgs"
+IDR_ENUMOBJECTSBYNMUMBER REGISTRY DISCARDABLE    "res\\EnumONr.rgs"
+IDR_PROGRESSINDICATOR_RGS REGISTRY DISCARDABLE    "res\\StatImpl.rgs"
+IDR_MULTIPI_RGS         REGISTRY DISCARDABLE    "res\\MultiPI.rgs"
+IDR_PROPINFO_DELOBJECT  REGISTRY DISCARDABLE    "res\\DelObPrp.rgs"
+IDR_PROPINFO_CREATETEXT_RGS REGISTRY DISCARDABLE    "res\\TxtObPrp.rgs"
+IDR_REGISTRY            REGISTRY DISCARDABLE    "res\\TRiAS03.rgs"
+IDR_PROPINFO_CLASSIFYBYOBJPROP REGISTRY DISCARDABLE    "res\\SelObjPrp.rgs"
+IDR_REGISTEREXT_RGS     REGISTRY DISCARDABLE    "res\\RegisterExt.rgs"
+IDR_PROPINFO_IMPORTDATA REGISTRY DISCARDABLE    "res\\ImportData.rgs"
+IDR_GENTEXTPROPACT      REGISTRY DISCARDABLE    "res\\GenTextPropAct.rgs"
+IDR_SCRIPTPROPACT       REGISTRY DISCARDABLE    "res\\ScriptPropAct.rgs"
+IDR_OBJEKTEDOPPELN      REGISTRY DISCARDABLE    "res\\ObjekteDoppeln.rgs"
+IDR_OBJEKTEVEREINIGEN   REGISTRY DISCARDABLE    "res\\ObjekteVereinigen.rgs"
+IDR_FAKETRIASLOCKFEATURE REGISTRY DISCARDABLE    "res\\FakeTRiASLockFeature.rgs"
+IDR_SELECTEXPORTOBJECTS REGISTRY DISCARDABLE    "res\\SelectExportObjects.rgs"
+IDR_ADDASOBJECTCLASS    REGISTRY DISCARDABLE    "res\\AddAsObjectClass.rgs"
+IDR_TEXTREPLACEENGINE   REGISTRY DISCARDABLE    "res\\TextReplaceEngine.rgs"
+IDR_DELETEOBJECTPROPERTY REGISTRY DISCARDABLE    "res\\DeleteObjectProperty.rgs"
+#if defined(APSTUDIO_INVOKED) || defined(_REGISTER_OBJECT_PROPERTIES)
+#if defined(APSTUDIO_INVOKED)
+IDR_OBJPROP_OBJNR$(_REGISTER_OBJECT_PROPERTIES) REGISTRY DISCARDABLE    "res\\ObjPropObjNr.rgs"
+#else
+IDR_OBJPROP_OBJNR       REGISTRY DISCARDABLE    "res\\ObjPropObjNr.rgs"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(_REGISTER_OBJECT_PROPERTIES)
+#if defined(APSTUDIO_INVOKED)
+IDR_OBJPROP_DATASOURCEDESC$(_REGISTER_OBJECT_PROPERTIES) REGISTRY DISCARDABLE    "res\\ObjPropDataSourceDesc.rgs"
+#else
+IDR_OBJPROP_DATASOURCEDESC REGISTRY DISCARDABLE    "res\\ObjPropDataSourceDesc.rgs"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(_REGISTER_OBJECT_PROPERTIES)
+#if defined(APSTUDIO_INVOKED)
+IDR_OBJPROP_GUID$(_REGISTER_OBJECT_PROPERTIES) REGISTRY DISCARDABLE    "res\\ObjPropGUID.rgs"
+#else
+IDR_OBJPROP_GUID        REGISTRY DISCARDABLE    "res\\ObjPropGUID.rgs"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(_REGISTER_OBJECT_PROPERTIES)
+#if defined(APSTUDIO_INVOKED)
+IDR_OBJPROP_QUERYFIELD$(_REGISTER_OBJECT_PROPERTIES) REGISTRY DISCARDABLE    "res\\ObjPropQueryField.rgs"
+#else
+IDR_OBJPROP_QUERYFIELD  REGISTRY DISCARDABLE    "res\\ObjPropQueryField.rgs"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(_REGISTER_OBJECT_PROPERTIES)
+#if defined(APSTUDIO_INVOKED)
+IDR_OBJPROP_OBJTYPLONG$(_REGISTER_OBJECT_PROPERTIES) REGISTRY DISCARDABLE    "res\\ObjPropObjTypLong.rgs"
+#else
+IDR_OBJPROP_OBJTYPLONG  REGISTRY DISCARDABLE    "res\\ObjPropObjTypLong.rgs"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(_REGISTER_OBJECT_PROPERTIES)
+#if defined(APSTUDIO_INVOKED)
+IDR_OBJPROP_OBJTYPSHORT$(_REGISTER_OBJECT_PROPERTIES) REGISTRY DISCARDABLE    "res\\ObjPropObjTypShort.rgs"
+#else
+IDR_OBJPROP_OBJTYPSHORT REGISTRY DISCARDABLE    "res\\ObjPropObjTypShort.rgs"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(_REGISTER_OBJECT_PROPERTIES)
+#if defined(APSTUDIO_INVOKED)
+IDR_OBJPROP_DATASOURCE$(_REGISTER_OBJECT_PROPERTIES) REGISTRY DISCARDABLE    "res\\ObjPropDataSource.rgs"
+#else
+IDR_OBJPROP_DATASOURCE  REGISTRY DISCARDABLE    "res\\ObjPropDataSource.rgs"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(_REGISTER_OBJECT_PROPERTIES)
+#if defined(APSTUDIO_INVOKED)
+IDR_OBJPROP_OKS$(_REGISTER_OBJECT_PROPERTIES) REGISTRY DISCARDABLE    "res\\ObjPropOKS.rgs"
+#else
+IDR_OBJPROP_OKS         REGISTRY DISCARDABLE    "res\\ObjPropOKS.rgs"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(_REGISTER_OBJECT_PROPERTIES)
+#if defined(APSTUDIO_INVOKED)
+IDR_OBJPROP_IDENT$(_REGISTER_OBJECT_PROPERTIES) REGISTRY DISCARDABLE    "res\\ObjPropIdent.rgs"
+#else
+IDR_OBJPROP_IDENT       REGISTRY DISCARDABLE    "res\\ObjPropIdent.rgs"
+#endif
+#endif
+IDR_OBJPROP_FEATURE     REGISTRY DISCARDABLE    "res\\ObjPropFeature.rgs"
+IDR_PROPERTYOPERATION   REGISTRY DISCARDABLE    "res\\PropertyOperation.rgs"
+IDR_PROPERTYACTIONJOIN  REGISTRY DISCARDABLE    "res\\PropertyActionJoin.rgs"
+IDR_PROPERTYACTIONSPLIT REGISTRY DISCARDABLE    "res\\PropertyActionSplit.rgs"
+IDR_GENERATEOBJECTPROPERTIES REGISTRY DISCARDABLE    "res\\GenerateObjectProperties.rgs"
+IDR_PROPERTYSEQUENCESERVICE REGISTRY DISCARDABLE    "res\\PropertySequenceService.rgs"
+IDR_CATSIMPLECACHE      REGISTRY DISCARDABLE    "res\\CatSimpleCache.rgs"
+IDR_LIMITSEARCHES       REGISTRY DISCARDABLE    "res\\LimitSearches.rgs"
+IDR_LIMITPACKETS        REGISTRY DISCARDABLE    "res\\LimitPackets.rgs"
+IDR_TRIASDATAOBJECT     REGISTRY DISCARDABLE    "res\\TRiASDataObject.rgs"
+IDR_VBGEOCOMPONENT      REGISTRY DISCARDABLE    "res\\VBPropertySequence.rgs"
+IDR_MKVBGEOCOMPONENT    REGISTRY DISCARDABLE    "res\\MkVBGeoComponent.rgs"
+IDR_SAVEOBJECTCOLLECTION REGISTRY DISCARDABLE    "res\\SaveObjectCollection.rgs"
+IDR_LOADOBJECTCOLLECTION REGISTRY DISCARDABLE    "res\\LoadObjectCollection.rgs"
+IDR_MANAGEOBJECTPROPERTIES REGISTRY DISCARDABLE    "res\\ManageObjectProperties.rgs"
+IDR_AREASTOLINES        REGISTRY DISCARDABLE    "res\\AreasToLines.rgs"
+IDR_LINESTOAREAS        REGISTRY DISCARDABLE    "res\\LinesToAreas.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_REGEXPR MENU DISCARDABLE 
+BEGIN
+    POPUP "Regular Expressions"
+    BEGIN
+        MENUITEM "&Beliebiges Zeichen",         ID_ANYCHAR
+        MENUITEM "Zeichen aus &Menge",          ID_CHARINRANGE
+        MENUITEM "Zeichen &nicht aus Menge",    ID_CHARNOTINRANGE
+        MENUITEM SEPARATOR
+        MENUITEM "Wortanfang",                  ID_WORDBEGIN
+        MENUITEM "Worten&de",                   ID_WORDEND
+        MENUITEM "&Innerhalb eines Wortes",     ID_WITHINWORD
+        MENUITEM SEPARATOR
+        MENUITEM "&Zeilenanfang",               ID_BEGINOFLINE
+        MENUITEM "Zeilenende",                  ID_ENDOFLINE
+        MENUITEM SEPARATOR
+        MENUITEM "&Textanfang",                 ID_BEGINOFTEXT
+        MENUITEM "Text&ende",                   ID_LINEEND
+        MENUITEM SEPARATOR
+        MENUITEM "&Oder",                       ID_OR
+        MENUITEM "&Gruppierung",                ID_GROUPTOKENS
+        MENUITEM SEPARATOR
+        MENUITEM "&0 oder mehrmaliges Auftreten", ID_ZEROORMORE
+        MENUITEM "&1 oder mehrmaliges Auftreten", ID_ONEORMORE
+        MENUITEM "0 oder 1 maliges &Auftreten", ID_ZEROORONE
+        MENUITEM SEPARATOR
+        MENUITEM "&Abbrechen",                  IDCANCEL
+    END
+    POPUP "ReplaceWith Expressions"
+    BEGIN
+        MENUITEM "&Bisheriger Wert der Objekteigenschaft", ID_ORIGVALUE
+        POPUP "&Gruppierung im bisherigen Wert"
+        BEGIN
+            MENUITEM "&1",                          ID_GRUPPIERUNG_1
+            MENUITEM "&2",                          ID_GRUPPIERUNG_2
+            MENUITEM "&3",                          ID_GRUPPIERUNG_3
+            MENUITEM "&4",                          ID_GRUPPIERUNG_4
+            MENUITEM "&5",                          ID_GRUPPIERUNG_5
+            MENUITEM "&6",                          ID_GRUPPIERUNG_6
+            MENUITEM "&7",                          ID_GRUPPIERUNG_7
+            MENUITEM "&8",                          ID_GRUPPIERUNG_8
+            MENUITEM "&9",                          ID_GRUPPIERUNG_9
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&Inhalt der Zwischenablage",  ID_FROMCLIPBOARD
+        POPUP "Wert einer Objekteigenschaft"
+        BEGIN
+            MENUITEM "DummyObjProp",                IDM_DUMMY
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&Abbrechen",                  IDCANCEL
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AVI
+//
+
+IDR_COPY_AVI            AVI     DISCARDABLE     "res\\Copy.avi"
+IDR_MOVE_AVI            AVI     DISCARDABLE     "res\\Move.avi"
+IDR_DELETE_AVI          AVI     DISCARDABLE     "res\\Delete.avi"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// SCRIPT
+//
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDR_SCRIPT_COPYOBJECTS$(_DEBUG) SCRIPT  DISCARDABLE     "res\\CopyObjectsd.ebc"
+#else
+IDR_SCRIPT_COPYOBJECTS  SCRIPT  DISCARDABLE     "res\\CopyObjectsd.ebc"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(NDEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDR_SCRIPT_COPYOBJECTS$(NDEBUG) SCRIPT  DISCARDABLE     "res\\CopyObjectsr.ebc"
+#else
+IDR_SCRIPT_COPYOBJECTS  SCRIPT  DISCARDABLE     "res\\CopyObjectsr.ebc"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDR_SCRIPT_UNIONOBJECTS$(_DEBUG) SCRIPT  DISCARDABLE     "res\\ObjekteVereinigend.ebc"
+#else
+IDR_SCRIPT_UNIONOBJECTS SCRIPT  DISCARDABLE     "res\\ObjekteVereinigend.ebc"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(NDEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDR_SCRIPT_UNIONOBJECTS$(NDEBUG) SCRIPT  DISCARDABLE     "res\\ObjekteVereinigenr.ebc"
+#else
+IDR_SCRIPT_UNIONOBJECTS SCRIPT  DISCARDABLE     "res\\ObjekteVereinigenr.ebc"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDR_SCRIPT_UNIONOBJECTS_OPT$(_DEBUG) SCRIPT  DISCARDABLE     "res\\ObjekteVereinigenOptd.ebc"
+#else
+IDR_SCRIPT_UNIONOBJECTS_OPT SCRIPT  DISCARDABLE     "res\\ObjekteVereinigenOptd.ebc"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(NDEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDR_SCRIPT_UNIONOBJECTS_OPT$(NDEBUG) SCRIPT  DISCARDABLE     "res\\ObjekteVereinigenOptr.ebc"
+#else
+IDR_SCRIPT_UNIONOBJECTS_OPT SCRIPT  DISCARDABLE     "res\\ObjekteVereinigenOptr.ebc"
+#endif
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_GLOBALUNDOLIST      "Globale Undoliste"
+    IDS_GLOBALREDOLIST      "Globale Redoliste"
+    IDS_UNDOCREATEFEATURE   "Objekteigenschaft erzeugen|Objekteigenschaft %s an Objekt Nr. %ld erzeugen"
+    IDS_UNDOEDITFEATURE     "Objekteigenschaft editieren|Objekteigenschaft %s an Objekt Nr. %ld editieren"
+    IDS_UNDODELETEFEATURE   "Objekteigenschaft löschen|Objekteigenschaft %s an Objekt Nr. %ld löschen"
+    IDS_UNDODELETETEXT      "Textobjekt löschen|Textobjekt (Objekt %ld) löschen"
+    IDS_UNDOCREATETEXT      "Textobjekt erzeugen|Textobjekt erzeugen (%s)"
+    IDS_UNDODELETERELATION  "Relation auflösen|Relation auflösen (Code: %ld, Typ %d, Objekte %ld und %ld)"
+    IDS_UNDOCREATERELATION  "Relation erzeugen|Relation erzeugen (Code: %ld, Typ %d, Objekte %ld und %ld)"
+    IDS_DELETEOBJHWND       "Objekt aus Recherchefenster entfernen|Objekt %ld aus Recherchefenster entfernen"
+    IDS_UNDODELETEOBJECT    "Objekt löschen|Objekt %ld löschen"
+    IDS_UNDOMODIFYOBJECT    "Objekt modifizieren|Objekt %ld modifizieren"
+    IDS_FILETEMPLATE        "Datei: "
+    IDS_UNDOCREATEPBDDATA   "Beschreibungseintrag erzeugen|Unbekannten Beschreibungseintrag erzeugen (Target: %s)"
+    IDS_UNDOCREATEPBDDATA2  "Objektklassenbeschreibung erzeugen|Objektklassenbeschreibung erzeugen (Objektklasse: %s)"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UNDOCREATEPBDDATA3  "Beschreibung für Objekteigenschaft erzeugen|Beschreibung für Objekteigenschaft erzeugen (interner Code: %s)"
+    IDS_UNDOCREATEPBDDATA4  "Relationsbeschreibung erzeugen|Relationsbeschreibung erzeugen (Relationscode: %s)"
+    IDS_UNDODELETEPBDDATA   "Beschreibungseintrag löschen|Unbekannten Beschreibungseintrag löschen (Target: %s)"
+    IDS_UNDODELETEPBDDATA2  "Objektklassenbeschreibung löschen|Objektklassenbeschreibung löschen (Objektklasse: %s)"
+    IDS_UNDODELETEPBDDATA3  "Beschreibung für Objekteigenschaft  löschen|Beschreibung für Objekteigenschaft löschen interner Code: %s)"
+    IDS_UNDODELETEPBDDATA4  "Relationsbeschreibung löschen|Relationsbeschreibung löschen (Relationscode: %s)"
+    IDS_UNDOEDITPBDDATA     "Beschreibungseintrag editieren|Unbekannten Beschreibungseintrag editieren (Target: %s)"
+    IDS_UNDOEDITPBDDATA2    "Objektklassenbeschreibung editieren|Objektklassenbeschreibung editieren (Objektklasse: %s)"
+    IDS_UNDOEDITPBDDATA3    "Beschreibung für Objekteigenschaft editieren|Beschreibung für Objekteigenschaft editieren (interner Code: %s)"
+    IDS_UNDOEDITPBDDATA4    "Relationsbeschreibung editieren|Relationsbeschreibung editieren (Relationscode: %s)"
+    IDS_HEADERIDENT         "Objektklasse"
+    IDS_HEADERDESC          "Beschreibung"
+    IDS_UNDOVISINFO         "Darstellungsparameter modifizieren|Darstellungsparameter modifizieren (Objektklasse: %s)"
+    IDS_UNDOMODIDENT        "Objektklasse modifizieren|Modifizieren der Objektklasse von Objekt Nr. %ld"
+    IDS_GENERRORCAP         "Recherche: Allgemeiner Fehler"
+    IDS_ADDERROR            "Das Recherchemodule '%s' kann nicht geladen werden."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_QUERYCONTINUE       "\r\nSoll die Operation fortgesetzt werden ?"
+    IDS_PROPINFO_IDENTOTYP  "Objektauswahl nach Objektklasse und Objekttyp"
+    IDS_HELPDESC_IDENTOTYP  "Stellt alle Objekte zusammen, die gegebenen Objektklassen angehören und gegebene Objekttypen besitzen."
+    IDS_PROPINFO_CLASSIFYOBJ "Gleicher Text"
+    IDS_PROPINFO_MODIDENT   "Modifikation der Objektklasse von Objekten"
+    IDS_HELPDESC_MODIDENT   "Modifiziert die Objektklasse aller übergebenen Objekte."
+    IDS_UNDOMODIDENTS       "Objektklassenschlüssel modifizieren"
+    IDS_PROPINFO_OBJWND     "Objektauswahl aus Recherchefenster"
+    IDS_HELPDESC_OBJWND     "Stellt Objekte eines oder mehrerer Recherchefenster zusammen."
+    IDS_HELPDESC_PROPSEQUENCE 
+                            "Faßt mehrere Eigenschaftsfunktionen zu einer neuen Eigenschaftsfunktion zusammen."
+    IDS_PROPINFO_PROPSEQUENCE "Aktionsfolge von Geo-Komponenten"
+    IDS_ENUMOBJECTSBYNMUMBER "Enumerator für TRiAS GeoObjekte"
+    IDS_PROPINFO_ORWNDDEST  "Objektanzeige in einem Recherchefenster"
+    IDS_HELPDESC_ORWNDDEST  "Zeigt alle übergebenen Objekte in einem Objektrecherchefenster an."
+    IDS_NEWOBJCAPTION       "Ergebnis der Recherche"
+    IDS_TEXTSEARCHENGINE_DESC "Textrecherche"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_REGISTRAR_DESC      "TRiAS Registry Helper 1.0 Objekt"
+    IDS_NOT_IN_MAP          "Wert in Variablentabelle nicht gefunden."
+    IDS_UNEXPECTED_EOS      "Unerwartetes Ende des Eingabedatenstromes.."
+    IDS_VALUE_SET_FAILED    "Schlüsselwert konnte nicht gesetzt werden."
+    IDS_RECURSE_DELETE_FAILED 
+                            "Rekursives Löschen eines Schlüssels ist fehlgeschlagen."
+    IDS_EXPECTING_EQUAL     "Fehlendes Gleichheitszeichen ('=')."
+    IDS_CREATE_KEY_FAILED   "Erzeugen eines Schlüssel ist fehlgeschlagen."
+    IDS_DELETE_KEY_FAILED   "Löschen über einen Schlüssel ist fehlgeschlagen."
+    IDS_OPEN_KEY_FAILED     "Öffnen über einen Schlüssel ist fehlgeschlagen."
+    IDS_CLOSE_KEY_FAILED    "Schließen über einen Schlüssel ist fehlgeschlagen."
+    IDS_UNABLE_TO_COERCE    "Typ kann nicht verändert werden."
+    IDS_BAD_HKEY            "Ungültiger Schlüssel für einen Wurzeleintrag gegeben."
+    IDS_MISSING_OPENKEY_TOKEN "Fehlende öffnende geschweifte Klammer ('{')."
+    IDS_CONVERT_FAILED      "Ersetzung konnte nicht in geforderten Wert konvertiert werden."
+    IDS_TYPE_NOT_SUPPORTED  "Der geforderte Typ ist nicht unterstützt."
+    IDS_COULD_NOT_CONCAT    "Zeichenketten konnten nicht verbunden werden."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_COMPOUND_KEY        "Die geforderte Aktion mit einem Verbundschlüssel konnte nicht ausgeführt werden (ein Schlüssel, welcher ein '\\' enthält)."
+    IDS_INVALID_MAPKEY      "Ungültiges Leerzeichen in Schlüssel zu Variablentabelle."
+    IDS_UNSUPPORTED_VT      "Der geforderte Variant-Typ ist nicht unterstützt."
+    IDS_VALUE_GET_FAILED    "Schlüsselwert konnte nicht gelesen werden."
+    IDS_VALUE_TOO_LARGE     "Der zu lesende Wert ist länger als 1k. Verwenden Sie Ersetzungs-Variablen."
+    IDS_MISSING_VALUE_DELIMETER "Im Wert fehlt ein ""."
+    IDS_DATA_NOT_BYTE_ALIGNED "Die Binärdaten sind nicht BYTE-ausgerichtet."
+    IDS_UNDOCREATEOBJECT    "Objekt erzeugen|Objekt %ld erzeugen"
+    IDS_NOOBJECTSFOUND      "Es wurden keine Objekte gefunden, die den vorgegebenen Kriterien genügen."
+    IDS_PROPINFO_DELOBJECT  "Objekte löschen"
+    IDS_HELPDESC_DELOBJECT  "Löscht alle übergebenen Objekte mit Undo aus dem aktuellen Projekt heraus."
+    IDS_DELOBJECTRESULT     "Objekt: %ld"
+    IDS_DELOBJECTSTATUS     "Es wurden bereits %d%% der Objekte gelöscht."
+    IDS_PROPINFO_CREATETEXT "Erzeugen von Textobjekten über Objekteigenschaft"
+    IDS_HELPDESC_CREATETEXT "Erzeugt abhängige oder nicht abhängige Textobjekte über eine ausgewählte Objekteigenschaft."
+    IDS_REPLACEOBJHWND      "Objekt in Recherchefenster austauschen|Objekt %ld in Recherchefenster gegen %ld austauschen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ADDTOOBJHWND        "Objekt zu Recherchefenster hinzufügen|Objekt %ld zu Recherchefenster hinzufügen"
+    IDS_HELPDESC_CLASSIFYOBJ 
+                            "Gruppiert Objekte nach einer ausgewählten Objekteigenschaft."
+    IDS_NOVALUE             "<NoValue>"
+    IDS_PROPINFO_IMPORTDATA "Datenimport aus externen ASC-Formaten"
+    IDS_HELPDESC_IMPORTDATA "Importiert Daten aus externen ASC-Datenformaten."
+    IDS_IMPORTFMTDLGCAP     "Import aus anderen Datenformaten"
+    IDS_NOIMPORTFILTERS     "Auf Ihrem Rechner sind keine Module für den Datenimport aus anderen Datenformaten installiert.\r\nDer Datenimport wird daher abgebrochen."
+    IDS_IMPORTNOMULTISEL    "Das ausgewählte Importmodul kann nicht mehrere Dateien gleichzeitig verarbeiten.\r\nEs wird daher lediglich die Datei '%s' importiert."
+    IDS_GENTEXTPROPACT_DESC "Erzeugen von Textobjekten"
+    IDS_HELPDESC_GENTEXTPROPACT 
+                            "Erzeugt Textobjekte aus Objekteigenschaften von Bezugsobjekten"
+    IDS_SCRIPTPROPACT_DESC  "Bearbeiten von Objekten mit BasicScript"
+    IDS_SCRIPTPROPACT_HELPDESC 
+                            "Bearbeitet alle Objekte der Objektmenge mit einem gegebenen BasicScript."
+    IDS_STANDARDSTATUSTEXT  "%d %% der notwendigen Operationen sind durchgeführt."
+    IDS_HEADERCONN          "Datenquelle"
+    IDS_NOWRITEABLECONNECTIONS 
+                            "Im aktuellen Projekt sind keine beschreibbaren Datenquellen geöffnet\r\nSie können daher keine Daten importieren."
+    IDS_HEADERTYP           "Typ"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DESCRIPTION_SELECTEXPORTOBJECTS 
+                            "Stellt alle Objekte zusammen, die gegebenen Datenquellen angehören."
+    IDS_NOOPENCONNECTIONS   "Im aktuellen Projekt sind keine geöffneten Datenquellen eingebunden\r\nSie können daher keine Daten exportieren."
+    IDS_EXPORTFMTDLGCAP     "Export in andere Datenformate"
+    IDS_SELFREGISTERSUCCEEDED "%s (%s): Selbstregistrierung erfolgreich.\r\n"
+    IDS_SELFREGISTERFAILED  "%s (%s): Selbstregistrierung fehlerhaft (%08lx: %s).\r\n"
+    IDS_LOADLIBRARYFAILED   "%s (%s): Datei kann nicht geladen werden (%08lx: %s).\r\n"
+    IDS_NOSELFREGISTER      "%s (%s): Selbstregistrierung nicht unterstützt."
+    IDS_ENTRYPOINTNOTFOUND  "%s (%s): Der für die Selbstregistrierung erforderliche DLL-Eintrittspunkt existiert nicht.\r\n"
+    IDS_MAKEOBJCLASS_DESC   "Speichert sämtliche ausgewählten Objekte als neue Objektklasse."
+    IDS_ADDASOBJECTCLASS_UNDO 
+                            "Objekte zu Rechercheobjektmenge hinzufügen|Objekte zu Rechercheobjektmenge hinzufügen"
+    IDS_DESCRIPTION_TEXTREPLACEENGINE 
+                            "Sucht und ersetzt Werte von Objekteigenschaften aller zu bearbeitenden Objekte."
+    IDS_DESCRIPTION_DELETEOBJECTPROPERTY 
+                            "Löscht die Werte einer Objekteigenschaft für alle zu bearbeitenden Objekte."
+    IDS_UNDO_REPLACE        "Suchen und ersetzen|Suchen und Ersetzen in Objekteigenschaften ausgewählter Objekte"
+    IDS_UNDO_DELETEPROPERTY "Objekteigenschaften löschen|Löscht die Werte einer Objekteigenschaft ausgewählter Objekte"
+    IDS_DESCRIPTION_PROPERTYOPERATION 
+                            "Führt logische Operationen über Objektmengen aus."
+    IDS_DESCRIPTION_PROPERTYACTIONJOIN 
+                            "Zusammenführen von Aktionsfolgen von Geo-Komponenten"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_COPYOBJECTS_ISCOPY  " (Kopie)"
+    IDS_COPYOBJECTS_UIDENT  "COPYOBJ_"
+    IDS_COPYOBJECTS_ERROR   "Fehler beim Kopieren eines Objektes"
+    IDS_COPYOBJECTS_ERRORNUM " (Fehlernummer: "
+    IDS_COPYOBJECTS_OBJ     "Objekt: "
+    IDS_COPYOBJECTS_ERRORTEXT1 
+                            "Soll die Operation aufgrund des Fehlers abgebrochen werden ?"
+    IDS_COPYOBJECTS_ERRORTEXT2 
+                            "Die Operation wird auf Grund eines Fehlers abgebrochen!"
+    IDS_COPYOBJECTS_COPYOBJS "Doppeln von Objekten"
+    IDS_COPYOBJECTS_COUNT   "Anzahl: "
+    IDS_COPYOBJECTS_OBJECTS " Objekte"
+    IDS_COPYOBJECTS_STATUS  "Es wurden bereits %d%% der Objekte gedoppelt"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UNION_OBJCLASSNAME  "Vereinigte Objekte"
+    IDS_UNION_STATUSCAP     "Vereinigen der selektierten Objekte"
+    IDS_UNION_STATUSTEXT    "Es wurden bereits %d%% der Objekte vereinigt"
+    IDS_UNION_MARKFEATURE   "Kennzeichen/Geometrieoperation"
+    IDS_UNION_MARK          "1"
+    IDS_UNION_MARKFEATURE_DESC 
+                            "Markierung für Objekte, die bei einer Geometrieoperation verwendet wurden"
+    IDS_UNION_ERRORCAPTION  "Fehler beim Vereinigen von Objekten"
+    IDS_OBJEKTEVEREINIGEN   "Objekte geometrisch vereinigen"
+    IDS_DESCRIPTION_AREASTOLINES "Wandelt gegebene Flächen in Linien um."
+    IDS_DESCRIPTION_LINESTOAREAS 
+                            "Wandelt gegebene geschlossene Linien in Flächen um."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_ANYCHAR              "Das Suchkriterium wird an dieser Position durch ein beliebiges Zeichen erfüllt."
+    ID_CHARINRANGE          "Das Suchkriterium wird an dieser Position durch ein beliebiges Zeichen der gegebenen Zeichenmenge erfüllt."
+    ID_CHARNOTINRANGE       "Das Suchkriterium wird an dieser Position durch ein beliebiges Zeichen erfüllt, das nicht der gegebenen Zeichenmenge angehört."
+    ID_WORDBOUNDARY         "Das Suchkriterium wird an dieser Position durch eine Wortgrenze erfüllt."
+    ID_WORDBEGIN            "Das Suchkriterium wird an dieser Position durch einen Wortanfang erfüllt."
+    ID_WORDEND              "Das Suchkriterium wird an dieser Position durch ein Wortende erfüllt."
+    ID_WITHINWORD           "Das Suchkriterium wird an dieser Position durch einbeliebiges Zeichen innerhalb eines Wortes erfüllt."
+    ID_BEGINOFLINE          "Das Suchkriterium wird an dieser Position durch einen Zeilenanfang erfüllt."
+    ID_ENDOFLINE            "Das Suchkriterium wird an dieser Position durch ein Zeilenende erfüllt."
+    ID_BEGINOFTEXT          "Das Suchkriterium wird an dieser Position durch den Anfang des Wertes der Objekteigenschaft erfüllt."
+    ID_LINEEND              "Das Suchkriterium wird an dieser Position durch das Ende des Wertes der Objekteigenschaft erfüllt."
+    ID_OR                   "Das Suchkriterium wird durch eine der beiden Alternativen, links bzw. rechts von dieser Position erfüllt."
+    ID_GROUPTOKENS          "Das eingeschlossene Muster wird gruppiert und ist damit im weiteren referenzierbar."
+    ID_ZEROORMORE           "Das Suchkriterium wird an dieser Position durch 0 oder mehrmaliges Auftreten des unmittelbar vorherigen Musters erfüllt."
+    ID_ONEORMORE            "Das Suchkriterium wird an dieser Position durch 1 oder mehrmaliges Auftreten des unmittelbar vorherigen Musters erfüllt."
+    ID_ZEROORONE            "Das Suchkriterium wird an dieser Position durch 0 oder 1 maliges Auftreten des unmittelbar vorherigen Musters erfüllt."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_ORIGVALUE            "An dieser Stelle des neuen Wertes der Objekteigenschaft wird der bisherige Wert dieser Objekteigenschaft eingesetzt."
+    ID_GRUPPIERUNG_1        "An dieser Stelle des neuen Wertes der Objekteigenschaft wird der durch die erste Gruppierung im Suchmuster eingeschlossene Wert eingesetzt."
+    ID_GRUPPIERUNG_2        "An dieser Stelle des neuen Wertes der Objekteigenschaft wird der durch die zweite Gruppierung im Suchmuster eingeschlossene Wert eingesetzt."
+    ID_GRUPPIERUNG_3        "An dieser Stelle des neuen Wertes der Objekteigenschaft wird der durch die dritte Gruppierung im Suchmuster eingeschlossene Wert eingesetzt."
+    ID_GRUPPIERUNG_4        "An dieser Stelle des neuen Wertes der Objekteigenschaft wird der durch die vierte Gruppierung im Suchmuster eingeschlossene Wert eingesetzt."
+    ID_GRUPPIERUNG_5        "An dieser Stelle des neuen Wertes der Objekteigenschaft wird der durch die fünfte Gruppierung im Suchmuster eingeschlossene Wert eingesetzt."
+    ID_GRUPPIERUNG_6        "An dieser Stelle des neuen Wertes der Objekteigenschaft wird der durch die sechste Gruppierung im Suchmuster eingeschlossene Wert eingesetzt."
+    ID_GRUPPIERUNG_7        "An dieser Stelle des neuen Wertes der Objekteigenschaft wird der durch die siebte Gruppierung im Suchmuster eingeschlossene Wert eingesetzt."
+    ID_GRUPPIERUNG_8        "An dieser Stelle des neuen Wertes der Objekteigenschaft wird der durch die achte Gruppierung im Suchmuster eingeschlossene Wert eingesetzt."
+    ID_GRUPPIERUNG_9        "An dieser Stelle des neuen Wertes der Objekteigenschaft wird der durch die neunte Gruppierung im Suchmuster eingeschlossene Wert eingesetzt."
+    ID_FROMCLIPBOARD        "An dieser Stelle des neuen Wertes der Objekteigenschaft wird der Inhalt der Zwischenablage eingesetzt."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DESCRIPTION_PROPERTYACTIONSPLIT 
+                            "Auftrennen von  Aktionsfolgen von Geo-Komponenten"
+    IDS_DESCRIPTION_GENERATEOBJECTPROPERTIES 
+                            "Ausgeben von Objekteigenschaften"
+    IDS_OBJPROPERTY_COLUMN  "Objekteigenschaft"
+    IDS_GROUP_COLUMN        "Gruppe"
+    IDS_SUBGROUP_COLUMN     "Teilgruppe"
+    IDS_DELIMITER_SPACE     "Leerzeichen"
+    IDS_DELIMITER_COMMA     "Komma"
+    IDS_DELIMITER_SEMICOLON "Semikolon"
+    IDS_DELIMITER_TABULATOR "Tabulator"
+    IDS_COLUMNHEADER        "Spalte %ld"
+    IDS_COLUMN_NUMBER       "Nr."
+    IDS_ORIGINDEL_COMMENT   "Alle Urspungsobjekte, die zur Bildung der neuen Objekte beigetragen haben, werden gelöscht."
+    IDS_ORIGINMARK_COMMENT  "Alle Urspungsobjekte, die zur Bildung der neuen Objekte beigetragen haben, erhalten in der Objekteigenschaft 'Kennzeichen/Geometrieoperation' einen Eintrag."
+    IDS_WARNIFTOMANYORWNDS  "Die ausgeführte Operation würde als Ergebnis %ld  Objektrecherchefenster anzeigen. Sind Sie sicher, daß Sie fortfahren wollen?\r\n\r\nDrücken Sie 'Ja' um fortzufahren.\r\nDrücken Sie 'Nein' um alle Ergebnisobjekte in einem Objektrecherefenster anzuzeigen.\r\nDrücken Sie 'Abbrechen' um die Operation abzubrechen."
+    IDS_CLASSIFYCAPTION     "Klassifikationsergebnis (%s)"
+    IDS_COPYNOTUSED_COMMENT "Alle Ursprungsobjekte, die nicht zur Bildung eines der neuen Objekte beigetragen haben werden kopiert."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DELIMITER_NODELIMITER "Ohne Trennzeichen"
+    IDS_NUMMER              "No."
+    IDS_INDEX               "Index"
+    IDS_COUNT               "Gesamt"
+    IDS_DATASOURCE          "Im Projekt geöffnete Datenquellen"
+    IDS_UNDOCLONEOBJECT     "Objekt kopieren|Objekt Nr. %ld kopieren"
+    IDS_COPYOBJECTS_UNDO    "Objekte kopieren|Objekte (ggf. in andere Datenquelle) kopieren"
+    IDS_NOOPENWRITABLECONNECTIONS 
+                            "Im aktuellen Projekt sind keine beschreibbaren Datenquellen geöffnet\r\nSie können daher keine Objekte kopieren."
+    IDS_COPYOBJECTSFMTDLGCAP "Objekte kopieren"
+    IDS_DATASOURCE_NOTRO    "Im Projekt geöffnete beschreibbare Datenquellen"
+    IDS_DESCRIPTION_LIMITSEARCHES 
+                            "Recherchen auf aktuellen Bildausschnitt bzw. selektierten Bereich begrenzen"
+    IDS_WARNOBJECTDELETE    "Der auszuführende Befehl wird ein oder mehrere Objekte aus einer Datenquelle löschen.\nUnter Umständen ist diese Aktion nicht rückgängig zu machen.\n\nSind Sie sicher, daß die ausgewählten Objekte gelöscht werden sollen?"
+    IDS_LIMIT_PACKETS       "Es werden lediglich die Objektgruppen aus dem vorhergehenden Verarbeitungsschritt gebildet, die den eingestellten Kriterien entsprechen."
+    IDS_NOLIMIT_PACKETS     "Die Objektgruppen aus dem vorhergehenden Verarbeitungsschritt werden ohne Einschränkungen gebildet."
+    IDS_DESCRIPTION_LIMITPACKETS "Einschränken der zu bildenden Objektgruppen"
+    IDS_LESSER              "weniger als"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LESSEREQUAL         "weniger als oder genau"
+    IDS_EQUAL               "genau"
+    IDS_MOREEQUAL           "mehr als oder genau"
+    IDS_MORE                "mehr als"
+    IDS_DESCRIPTION_VBPROPERTYSEQUENCE "Wrapperobjekt für VB Geo-Komponente"
+    IDS_WARNIFTOMANYORWNDS_ADDON 
+                            "\r\n\r\nIn jedem Fall werden jedoch nicht mehr als %d Objektrecherchefenster erzeugt werden."
+    IDS_WARNIFREALLYTOMANYORWNDS 
+                            "Es wurden nicht alle Objektrecherchefenster angezeigt, die im Resultat der ausgeführten Operation entstanden sind. Die Anzahl der angezeigten Objektrecherchefenster wurde auf %d begrenzt."
+    IDS_DESCRIPTION_LOADOBJECTCOLLECTION 
+                            "Lädt eine gespeicherte Objektmenge und zeigt diese in den ursprünglichen Recherchefenstern wieder an."
+    IDS_DESCRIPTION_SAVEOBJECTCOLLECTION 
+                            "Speichert die gegebenen Objektmengen derart, dass diese später wiederhergestellt werden können."
+    IDS_MANAGEOBJECTPROPERTIES_CAP "Objekteigenschaften"
+    IDS_UNDOAREATOLINE      "Fläche zu Line umwandeln|Flächenobjekt %ld zu Linie umwandeln."
+    IDS_UNDOLINETOAREA      "Line zu Fläche umwandeln|Linienobjekt %ld zu Fläche umwandeln."
+    IDS_AREASTOLINES_UNDO   "Flächen zu Linien umwandeln"
+    IDS_LINESTOAREAS_UNDO   "Linien in Flächen umwandeln "
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "trias323.rcv"
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

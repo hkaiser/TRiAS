@@ -1,0 +1,589 @@
+// Generated .IDL file (by the OLE/COM Object Viewer)
+// 
+// typelib filename: PBasic.tlb
+// Forward declare all types defined in this typelib
+interface _DGMPoint;
+interface _DGMPoints;
+interface _DGMPointGeometry;
+interface _DGMLineGeometry;
+interface _DGMPolylineGeometry;
+interface _DGMPolygonGeometry;
+interface _DGMBoundaryGeometry;
+interface _DGMGeometryCollection;
+interface _DGMRectangleGeometry;
+interface _DGMOrientedPointGeometry;
+interface _DGMTextPointGeometry;
+interface IGMError;
+interface _DGMEventServer;
+interface IGMSmartLocateServer;
+dispinterface DGMSmartLocateServer;
+
+[
+  uuid(F4020A30-810B-11D0-91C4-08003601E0C4),
+  version(1.0),
+  helpstring("Intergraph GeoMedia PBasic"),
+  helpfile("util_auto.hlp"),
+  helpcontext(00000000)
+]
+library PBasic
+{
+    // TLib : GMMapview OLE Custom Control module : {47E3FD10-88A2-11CF-A17B-08003606E802}
+    importlib("mapview1.ocx");
+    // TLib : OLE Automation : {00020430-0000-0000-C000-000000000046}
+    importlib("stdole2.tlb");
+
+    [
+      odl,
+      uuid(CE361C90-B00C-11CF-ABEF-08003601B769),
+      hidden,
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface _DGMPoint : IDispatch {
+        [id(0x00000001), propget, helpcontext(0x00007e22)]
+        HRESULT _stdcall X([out, retval] double* returnValue);
+        [id(0x00000001), propput, helpcontext(0x00007e22)]
+        HRESULT _stdcall X([in] double returnValue);
+        [id(0x00000002), propget, helpcontext(0x00007e2c)]
+        HRESULT _stdcall Y([out, retval] double* returnValue);
+        [id(0x00000002), propput, helpcontext(0x00007e2c)]
+        HRESULT _stdcall Y([in] double returnValue);
+        [id(0x00000003), propget, helpcontext(0x00007e36)]
+        HRESULT _stdcall Z([out, retval] double* returnValue);
+        [id(0x00000003), propput, helpcontext(0x00007e36)]
+        HRESULT _stdcall Z([in] double returnValue);
+        [id(0x60020006), restricted, hidden]
+        HRESULT _stdcall GetPoint([out] double* Point);
+        [id(0x60020007), restricted, hidden]
+        HRESULT _stdcall SetPoint([in] double* Point);
+    };
+
+    [
+      uuid(A4245C90-B00D-11CF-ABEF-08003601B769),
+      helpcontext(0x00007d28)
+    ]
+    coclass Point {
+        [default] interface _DGMPoint;
+    };
+
+    [
+      odl,
+      uuid(4DBFC540-B33E-11CF-ABEF-08003601B769),
+      hidden,
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface _DGMPoints : IDispatch {
+        [id(0x00000001), propget, helpcontext(0x00007db4)]
+        HRESULT _stdcall Count([out, retval] long* returnValue);
+        [id(0xfffffffc), propget, restricted, hidden]
+        HRESULT _stdcall NewEnum([out, retval] IUnknown** returnValue);
+        [id(00000000), helpcontext(0x00007d82)]
+        HRESULT _stdcall Item(
+                        [in] VARIANT index, 
+                        [out, retval] Point** returnValue);
+        [id(0x00000002), helpcontext(0x00007d64)]
+        HRESULT _stdcall Add(
+                        [in] Point* Point, 
+                        [in, optional] VARIANT index);
+        [id(0x00000003), helpcontext(0x00007d8c)]
+        HRESULT _stdcall Remove([in] VARIANT index);
+        [id(0x00000005), restricted, hidden]
+        HRESULT _stdcall GetPoint(
+                        [in] long index, 
+                        [out] double* Point);
+        [id(0x00000004), restricted, hidden]
+        HRESULT _stdcall SetPoint(
+                        [in] long index, 
+                        [in] double* Point);
+    };
+
+    [
+      uuid(A4245CA0-B00D-11CF-ABEF-08003601B769),
+      helpcontext(0x00007d28)
+    ]
+    coclass Points {
+        [default] interface _DGMPoints;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      dllname("<invalid typelib>"),
+      helpstring("Alignment Constants")
+    ]
+    module AlignmentConstants {
+        [entry(00000000), helpstring("Alignment Types")] const long gmaTopLeft = 5;
+        [entry(0x00000001), helpstring("Alignment Types")] const long gmaTopCenter = 4;
+        [entry(0x00000002), helpstring("Alignment Types")] const long gmaTopRight = 6;
+        [entry(0x00000003), helpstring("Alignment Types")] const long gmaCenterLeft = 1;
+        [entry(0x00000004), helpstring("Alignment Types")] const long gmaCenterCenter = 0;
+        [entry(0x00000005), helpstring("Alignment Types")] const long gmaCenterRight = 2;
+        [entry(0x00000006), helpstring("Alignment Types")] const long gmaBottomLeft = 9;
+        [entry(0x00000007), helpstring("Alignment Types")] const long gmaBottomCenter = 8;
+        [entry(0x00000008), helpstring("Alignment Types")] const long gmaBottomRight = 10;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      dllname("<invalid typelib>"),
+      helpstring("Format Constants")
+    ]
+    module FormatConstants {
+        [entry(00000000), helpstring("Format Types")] const short gmfRichText = 0;
+        [entry(0x00000001), helpstring("Format Types")] const short gmfUnformatted = 1;
+    };
+
+    [
+      odl,
+      uuid(EE622580-8CCE-11CF-ABDE-08003601B769),
+      hidden,
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface _DGMPointGeometry : IDispatch {
+        [id(0x00000001), propget, helpcontext(0x00007de6)]
+        HRESULT _stdcall Origin([out, retval] Point** returnValue);
+        [id(0x00000001), propputref, helpcontext(0x00007de6)]
+        HRESULT _stdcall Origin([in] Point* returnValue);
+    };
+
+    [
+      uuid(F9739B80-B49B-11CF-ABF0-08003601B769),
+      helpcontext(0x00007d32)
+    ]
+    coclass PointGeometry {
+        [default] interface _DGMPointGeometry;
+    };
+
+    [
+      odl,
+      uuid(EE622581-8CCE-11CF-ABDE-08003601B769),
+      hidden,
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface _DGMLineGeometry : IDispatch {
+        [id(0x00000001), propget, helpcontext(0x00007e0e)]
+        HRESULT _stdcall Start([out, retval] Point** returnValue);
+        [id(0x00000001), propputref, helpcontext(0x00007e0e)]
+        HRESULT _stdcall Start([in] Point* returnValue);
+        [id(0x00000002), propget, helpcontext(0x00007dbe)]
+        HRESULT _stdcall End([out, retval] Point** returnValue);
+        [id(0x00000002), propputref, helpcontext(0x00007dbe)]
+        HRESULT _stdcall End([in] Point* returnValue);
+    };
+
+    [
+      uuid(F9739B81-B49B-11CF-ABF0-08003601B769),
+      helpcontext(0x00007d14)
+    ]
+    coclass LineGeometry {
+        [default] interface _DGMLineGeometry;
+    };
+
+    [
+      odl,
+      uuid(EE622582-8CCE-11CF-ABDE-08003601B769),
+      hidden,
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface _DGMPolylineGeometry : IDispatch {
+        [id(00000000), propget, helpcontext(0x00007df0)]
+        HRESULT _stdcall Points([out, retval] Points** returnValue);
+    };
+
+    [
+      uuid(F9739B82-B49B-11CF-ABF0-08003601B769),
+      helpcontext(0x00007d46)
+    ]
+    coclass PolylineGeometry {
+        [default] interface _DGMPolylineGeometry;
+    };
+
+    [
+      odl,
+      uuid(EE622583-8CCE-11CF-ABDE-08003601B769),
+      hidden,
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface _DGMPolygonGeometry : _DGMPolylineGeometry {
+    };
+
+    [
+      uuid(F9739B83-B49B-11CF-ABF0-08003601B769),
+      helpcontext(0x00007d3c)
+    ]
+    coclass PolygonGeometry {
+        [default] interface _DGMPolygonGeometry;
+    };
+
+    [
+      odl,
+      uuid(EE622585-8CCE-11CF-ABDE-08003601B769),
+      hidden,
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface _DGMBoundaryGeometry : IDispatch {
+        [id(0x00000001), propget, helpcontext(0x00007dc8)]
+        HRESULT _stdcall Exterior([out, retval] IDispatch** Exterior);
+        [id(0x00000001), propputref, helpcontext(0x00007dc8)]
+        HRESULT _stdcall Exterior([in] IDispatch* Exterior);
+        [id(0x00000002), propget, helpcontext(0x00007ddc)]
+        HRESULT _stdcall Holes([out, retval] _DGMGeometryCollection** Holes);
+    };
+
+    [
+      uuid(F9739B85-B49B-11CF-ABF0-08003601B769),
+      helpcontext(0x00007d00)
+    ]
+    coclass BoundaryGeometry {
+        [default] interface _DGMBoundaryGeometry;
+    };
+
+    [
+      odl,
+      uuid(EE622586-8CCE-11CF-ABDE-08003601B769),
+      hidden,
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface _DGMGeometryCollection : IDispatch {
+        [id(0x00000001), propget, helpcontext(0x00007db4)]
+        HRESULT _stdcall Count([out, retval] long* returnValue);
+        [id(0xfffffffc), propget, restricted, hidden]
+        HRESULT _stdcall NewEnum([out, retval] IUnknown** returnValue);
+        [id(00000000), helpcontext(0x00007d82)]
+        HRESULT _stdcall Item(
+                        [in] VARIANT index, 
+                        [out, retval] IDispatch** returnValue);
+        [id(0x00000002), helpcontext(0x00007d64)]
+        HRESULT _stdcall Add(
+                        [in] IDispatch* geometry, 
+                        [in, optional] VARIANT index);
+        [id(0x00000003), helpcontext(0x00007d8c)]
+        HRESULT _stdcall Remove([in] VARIANT index);
+    };
+
+    [
+      uuid(F9739B86-B49B-11CF-ABF0-08003601B769),
+      helpcontext(0x00007d0a)
+    ]
+    coclass GeometryCollection {
+        [default] interface _DGMGeometryCollection;
+    };
+
+    [
+      odl,
+      uuid(EE622587-8CCE-11CF-ABDE-08003601B769),
+      hidden,
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface _DGMRectangleGeometry : IDispatch {
+        [id(0x60020000), propget, helpcontext(0x00007e18)]
+        HRESULT _stdcall Width([out, retval] double* returnValue);
+        [id(0x60020000), propput, helpcontext(0x00007e18)]
+        HRESULT _stdcall Width([in] double returnValue);
+        [id(0x60020002), propget, helpcontext(0x00007dd2)]
+        HRESULT _stdcall Height([out, retval] double* returnValue);
+        [id(0x60020002), propput, helpcontext(0x00007dd2)]
+        HRESULT _stdcall Height([in] double returnValue);
+        [id(0x60020004), propget, helpcontext(0x00007e04)]
+        HRESULT _stdcall Rotation([out, retval] double* returnValue);
+        [id(0x60020004), propput, helpcontext(0x00007e04)]
+        HRESULT _stdcall Rotation([in] double returnValue);
+        [id(0x60020006), propget, helpcontext(0x00007de6)]
+        HRESULT _stdcall Origin([out, retval] Point** returnValue);
+        [id(0x60020006), propputref, helpcontext(0x00007de6)]
+        HRESULT _stdcall Origin([in] Point* returnValue);
+        [id(0x60020008), helpcontext(0x00007d6e)]
+        HRESULT _stdcall GetNormalUnitVector(
+                        [out] double* ui, 
+                        [out] double* uj, 
+                        [out] double* uk);
+        [id(0x60020009), helpcontext(0x00007d96)]
+        HRESULT _stdcall SetNormalUnitVector(
+                        [in] double ui, 
+                        [in] double uj, 
+                        [in] double uk);
+    };
+
+    [
+      uuid(F9739B87-B49B-11CF-ABF0-08003601B769),
+      helpcontext(0x00007d50)
+    ]
+    coclass RectangleGeometry {
+        [default] interface _DGMRectangleGeometry;
+    };
+
+    [
+      odl,
+      uuid(EE622588-8CCE-11CF-ABDE-08003601B769),
+      hidden,
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface _DGMOrientedPointGeometry : _DGMPointGeometry {
+        [id(0x60030000), helpcontext(0x00007d78)]
+        HRESULT _stdcall GetOrientation(
+                        [out] double* i, 
+                        [out] double* j, 
+                        [out] double* k);
+        [id(0x60030001), helpcontext(0x00007da0)]
+        HRESULT _stdcall SetOrientation(
+                        [in] double i, 
+                        [in] double j, 
+                        [in] double k);
+    };
+
+    [
+      uuid(F9739B88-B49B-11CF-ABF0-08003601B769),
+      helpcontext(0x00007d1e)
+    ]
+    coclass OrientedPointGeometry {
+        [default] interface _DGMOrientedPointGeometry;
+    };
+
+    [
+      odl,
+      uuid(EE622589-8CCE-11CF-ABDE-08003601B769),
+      hidden,
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface _DGMTextPointGeometry : _DGMPointGeometry {
+        [id(0x60030000), propget, helpcontext(0x00007e04)]
+        HRESULT _stdcall Rotation([out, retval] double* returnValue);
+        [id(0x60030000), propput, helpcontext(0x00007e04)]
+        HRESULT _stdcall Rotation([in] double returnValue);
+        [id(0x60030002), propget, helpcontext(0x00007daa)]
+        HRESULT _stdcall Alignment([out, retval] long* returnValue);
+        [id(0x60030002), propput, helpcontext(0x00007daa)]
+        HRESULT _stdcall Alignment([in] long returnValue);
+        [id(0x60030004), propget, helpcontext(0x00007dfa)]
+        HRESULT _stdcall RichText([out, retval] BSTR* text);
+        [id(0x60030004), propput, helpcontext(0x00007dfa)]
+        HRESULT _stdcall RichText([in] BSTR text);
+        [id(0x60030006), propget, helpcontext(0x00007dfa)]
+        HRESULT _stdcall text([out, retval] BSTR* text);
+        [id(0x60030006), propput, helpcontext(0x00007dfa)]
+        HRESULT _stdcall text([in] BSTR text);
+        [id(0x60030008), propget]
+        HRESULT _stdcall Format([out, retval] short* returnValue);
+        [id(0x60030009), helpcontext(0x00007d6e)]
+        HRESULT _stdcall GetNormalUnitVector(
+                        [out] double* ui, 
+                        [out] double* uj, 
+                        [out] double* uk);
+        [id(0x6003000a), helpcontext(0x00007d96)]
+        HRESULT _stdcall SetNormalUnitVector(
+                        [in] double ui, 
+                        [in] double uj, 
+                        [in] double uk);
+    };
+
+    [
+      uuid(F9739B89-B49B-11CF-ABF0-08003601B769),
+      helpcontext(0x00007d5a)
+    ]
+    coclass TextPointGeometry {
+        [default] interface _DGMTextPointGeometry;
+    };
+
+    [
+      odl,
+      uuid(30103C12-CF7F-11CF-8B2F-08003649FD01),
+      helpstring("GMError Object"),
+      hidden,
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface IGMError : IDispatch {
+        [id(0x60020000), propget, helpstring("Handle to resource dll of the error")]
+        HRESULT _stdcall ResourceHandle([out, retval] long* pResourceHandle);
+        [id(0x60020000), propput, helpstring("Handle to resource dll of the error")]
+        HRESULT _stdcall ResourceHandle([in] long pResourceHandle);
+        [id(0x60020002), propget, helpstring("Resource identifier of text description of the error")]
+        HRESULT _stdcall ResourceID([out, retval] long* plResourceID);
+        [id(0x60020002), propput, helpstring("Resource identifier of text description of the error")]
+        HRESULT _stdcall ResourceID([in] long plResourceID);
+        [id(0x60020004), propget, helpstring("Identifier for the help topic associated with this error")]
+        HRESULT _stdcall HelpID([out, retval] long* plHelpID);
+        [id(0x60020004), propput, helpstring("Identifier for the help topic associated with this error")]
+        HRESULT _stdcall HelpID([in] long plHelpID);
+        [id(0x60020006), propget, helpstring("Help file containing the description of this error")]
+        HRESULT _stdcall HelpFile([out, retval] BSTR* pbstrHelpFile);
+        [id(0x60020006), propput, helpstring("Help file containing the description of this error")]
+        HRESULT _stdcall HelpFile([in] BSTR pbstrHelpFile);
+        [id(0x60020008), propget, helpstring("String description of error")]
+        HRESULT _stdcall ErrorString([out, retval] BSTR* pbstrErrorString);
+        [id(0x60020008), propput, helpstring("String description of error")]
+        HRESULT _stdcall ErrorString([in] BSTR pbstrErrorString);
+        [id(0x6002000a), propget, helpstring("Values used in support of an error string with variable arguments")]
+        HRESULT _stdcall ErrorParameters([out, retval] VARIANT* psaErrorParams);
+        [id(0x6002000a), propput, helpstring("Values used in support of an error string with variable arguments")]
+        HRESULT _stdcall ErrorParameters([in] VARIANT* psaErrorParams);
+        [id(0x6002000c), propget, helpstring("Database")]
+        HRESULT _stdcall Database([out, retval] IDispatch** lplpDatabase);
+        [id(0x6002000c), propputref, helpstring("Database")]
+        HRESULT _stdcall Database([in] IDispatch* lplpDatabase);
+        [id(0x6002000e), propget, helpstring("resource identifier that represents the name associated with the GUID that generated the error")]
+        HRESULT _stdcall SourceResourceID([out, retval] long* plSourceResourceID);
+        [id(0x6002000e), propput, helpstring("resource identifier that represents the name associated with the GUID that generated the error")]
+        HRESULT _stdcall SourceResourceID([in] long plSourceResourceID);
+        [id(0x60020010), propget, helpstring("GUID of the component generating the error.")]
+        HRESULT _stdcall SourceGUID([out, retval] BSTR* pbstrSourceGUID);
+        [id(0x60020010), propput, helpstring("GUID of the component generating the error.")]
+        HRESULT _stdcall SourceGUID([in] BSTR pbstrSourceGUID);
+        [id(0x60020012), helpstring("Displays an error.")]
+        HRESULT _stdcall Display(
+                        [in] VARIANT Title, 
+                        [in] long DlgButtons, 
+                        [out, retval] int* Response);
+        [id(0x60020013), helpstring("Displays all errors in the error collection.")]
+        HRESULT _stdcall DisplayAll(
+                        [in] VARIANT Title, 
+                        [in] long DlgButtons, 
+                        [out, retval] int* Response);
+        [id(0x60020014), helpstring("Raises an exception.")]
+        HRESULT _stdcall RaiseException();
+    };
+
+    [
+      uuid(FA7E8785-D8EA-11CF-8B32-08003649FD01)
+    ]
+    coclass GMError {
+        [default] interface IGMError;
+    };
+
+    [
+      odl,
+      uuid(2675CFC4-E227-11CF-8653-08003601B01F),
+      helpstring("EventServer Interface"),
+      helpcontext(0x0000407e),
+      hidden,
+      dual,
+      oleautomation
+    ]
+    interface _DGMEventServer : IDispatch {
+        [id(0x60020000), propget, hidden]
+        HRESULT _stdcall _HesitationTime([out, retval] long* Time);
+        [id(0x60020000), propput, hidden]
+        HRESULT _stdcall _HesitationTime([in] long Time);
+        [id(0x60020002), hidden]
+        HRESULT _stdcall _Initialize([in] IDispatch* pEventControlDispatch);
+        [id(0x60020003), hidden]
+        HRESULT _stdcall _Connect([in] IDispatch* pMapViewDispatch);
+        [id(0x60020004), hidden]
+        HRESULT _stdcall _Disconnect(
+                        [in] IDispatch* pMapViewDispatch, 
+                        [out] long* IsEmpty);
+        [id(0x60020005), hidden]
+        HRESULT _stdcall _Terminate();
+    };
+
+    [
+      uuid(2675CFC5-E227-11CF-8653-08003601B01F)
+    ]
+    coclass EventServer {
+        [default] interface _DGMEventServer;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      dllname("<invalid typelib>"),
+      helpstring("Geomedia FenceMode Constants")
+    ]
+    module GMFenceModeConstants {
+        [entry(00000000), helpstring("Fence Inside")] const long locFenceInside = 1;
+        [entry(0x00000001), helpstring("Fence Overlap")] const long locFenceOverlap = 2;
+    };
+
+    [
+      odl,
+      uuid(228F0581-9EC6-11CF-9E47-08003601E012),
+      helpcontext(0x000047e0)
+    ]
+    interface IGMSmartLocateServer : IUnknown {
+        [propput, helpstring("Get/Set Pixel Tolerance Level"), helpcontext(0x000047fe)]
+        HRESULT _stdcall PixelTolerance([in] long Tolerance);
+        [propget, helpstring("Get/Set Pixel Tolerance Level"), helpcontext(0x000047fe)]
+        HRESULT _stdcall PixelTolerance([out, retval] long* Tolerance);
+        [propput, helpstring("Get/Set Fence Mode"), helpcontext(0x000047f4)]
+        HRESULT _stdcall FenceMode([in] long FenceMode);
+        [propget, helpstring("Get/Set Fence Mode"), helpcontext(0x000047f4)]
+        HRESULT _stdcall FenceMode([out, retval] long* FenceMode);
+        [helpstring("Locate Objects By Geometric Criteria"), helpcontext(0x000047ea)]
+        HRESULT _stdcall Locate(
+                        [in] IDispatch* GeometryObject, 
+                        [in] _DMapview* ViewID, 
+                        [in] IDispatch* pObject);
+    };
+
+    typedef [public]
+    IGMSmartLocateServer* LPIGMSMARTLOCATESERVER;
+
+    [
+      uuid(228F0582-9EC6-11CF-9E47-08003601E012),
+      helpstring("SmartLocateService Object"),
+      hidden
+    ]
+    dispinterface DGMSmartLocateServer {
+        properties:
+        methods:
+            [id(0x60000000), restricted]
+            void QueryInterface(
+                            [in] GUID* riid, 
+                            [out] void** ppvObj);
+            [id(0x60000001), restricted]
+            unsigned long AddRef();
+            [id(0x60000002), restricted]
+            unsigned long Release();
+            [id(00000000), propput, helpstring("Get/Set Pixel Tolerance Level"), helpcontext(0x000047fe)]
+            void PixelTolerance([in] long rhs);
+            [id(00000000), propget, helpstring("Get/Set Pixel Tolerance Level"), helpcontext(0x000047fe)]
+            long PixelTolerance();
+            [id(0x00000001), propput, helpstring("Get/Set Fence Mode"), helpcontext(0x000047f4)]
+            void FenceMode([in] long rhs);
+            [id(0x00000001), propget, helpstring("Get/Set Fence Mode"), helpcontext(0x000047f4)]
+            long FenceMode();
+            [id(0x00000002), helpstring("Locate Objects By Geometric Criteria"), helpcontext(0x000047ea)]
+            void Locate(
+                            [in] IDispatch* GeometryObject, 
+                            [in] _DMapview* ViewID, 
+                            [in] IDispatch* pObject);
+    };
+
+    [
+      uuid(228F0583-9EC6-11CF-9E47-08003601E012),
+      helpstring("SmartLocateService Object")
+    ]
+    coclass SmartLocateService {
+        [default] interface IGMSmartLocateServer;
+        dispinterface DGMSmartLocateServer;
+    };
+};

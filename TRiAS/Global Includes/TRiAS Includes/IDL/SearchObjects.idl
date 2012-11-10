@@ -1,0 +1,59 @@
+// $Header: $
+// Copyright© 1999-2002 Geopunkt GmbH & Co. KG, NL Potsdam, All rights reserved
+// Created: 25.06.2002 18:54:45 
+//
+// @doc
+// @module SearchObjects.idl | Declaration of the <i DSearchObjects> interface
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface für ObjektEigenschaft, das beim Suchen von Objekten hilft,
+// sollte von jeder Objekteigenschaft implementiert werden
+interface IEnumObjectsByNumber;		// forward decl
+interface DSearchObjects;
+
+cpp_quote("#if !defined(_DSEARCHOBJECTS_DEFINED)")
+cpp_quote("#define _DSEARCHOBJECTS_DEFINED")
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface, welches einer Objekteigenschaft erlaubt, Recherchen selbst 
+// auszuführen
+[
+	object,
+	hidden,
+	uuid(079638C4-3123-101C-BB62-00AA0018497C),
+	dual, oleautomation,
+	helpstring("DSearchObjects Interface"),
+	pointer_default(unique)
+]
+interface DSearchObjects : IDispatch
+{
+	import "oaidl.idl";
+
+	typedef [v1_enum, hidden] 
+	enum _tagSEARCHMODE {
+	// Matching
+		SEARCHMODE_NORMAL = 0,
+		SEARCHMODE_REGEXPR = 0x01,
+		SEARCHMODE_LIKE = 0x02,
+		SEARCHMODE_ONLYEXISTANCE = 0x04,
+
+	// MatchMode
+		SEARCHMODE_FULLMATCH = 0,
+		SEARCHMODE_PARTIALMATCH = 0x0100,
+		SEARCHMODE_PARTIALMATCHBOB = 0x0200,
+		SEARCHMODE_NOMATCHCASE = 0x0400,
+		SEARCHMODE_NEGATERESULT = 0x0800,
+
+	// alle Flags zusammen
+		SEARCHMODE_SEARCHMODIFIERS = 0x0F00,
+	} SEARCHMODE;
+
+	[id(300)] HRESULT ConsiderSearch (
+		[in] BSTR bstrToMatch, [in] SEARCHMODE rgFlags, [in] ULONG ulCnt);
+	[id(301)] HRESULT SearchObjects (
+		[in] BSTR bstrToMatch, [in] SEARCHMODE rgFlags,
+		[out] IEnumObjectsByNumber **ppvObj);
+};
+
+cpp_quote("#endif // !defined(_DSEARCHOBJECTS_DEFINED)")
+

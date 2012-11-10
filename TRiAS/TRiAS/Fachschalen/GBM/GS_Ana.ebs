@@ -1,0 +1,406 @@
+'*******************************************************
+'*  Analyse 2                                          *
+'*                                                     *
+'*  Untersucht genau ein Grundstück in Relation zu     *
+'*  einem Pufferbereich.                               *
+'*******************************************************
+
+Option Explicit
+
+Declare Sub ObjektFTeilen( IAObjsF As GeoObjects, obj1 As GeoObject, obj2 As GeoObject )
+Declare Function FlaechenInhalt( objGO As geoObject ) As Double
+Declare Function FlaechenWert( objGO As GeoObject ) As String
+Declare Function MasseinheitAbtrennen( MWert$, MZahl# ) as string
+Declare Sub RecherchierteObjekte( objsBO As GeoObjects, strClsIdent As String )
+Declare Sub RecherchierteObjekteEx( objsBO As GeoObjects, strClsIdent As String )
+
+'Programmkonstanten
+Const NL = chr$(13) + chr$(10)
+Const HT = chr$(9)
+
+'globale Variablen
+Private docGD As GeoDocument
+Private objsErgeb As GeoObjects
+Private IObjsF As GeoObjects
+Private IAObjsF As GeoObjects
+Private MyBufferObj As GeoObject
+Private MyGSObj As GeoObject
+Private objDummy As GeoObject
+
+' ToolBar und ToolBarKnöfe
+Private tbK As Toolbar
+Private tbb1 As ToolbarButton
+
+' Beschreibungs-Strings
+Const strTool1 = "Analysiert betroffene Teilfläche(n) eines Grundstückes"
+
+'Titel der MessageBoxen
+Const strBoxTitel = "Flächenanalyse"
+
+' "BeginScript()" wird vor Script-Abarbeitung gerufen
+Sub BeginScript()
+' Hier notwendige Initialisierungen durchführen
+End Sub
+
+'__________________________________
+
+Sub Main()
+Dim tbKLoc As ToolBar
+Dim Style As Long
+
+	Set docGD = GetActiveDocument()
+
+	Style = TOOLBARSTYLE_BorderAny Or TOOLBARSTYLE_Border3d Or _
+			TOOLBARSTYLE_AlignTop Or TOOLBARSTYLE_Tooltips Or _
+			TOOLBARSTYLE_FlyBy Or TOOLBARSTYLE_SizeFixed
+	Set tbKLoc = TRiAS.AddToolBar ("Grundstück untersuchen", Style)
+	tbKLoc.CtrlID = 12348
+
+'	Set tbbNW = AddTool (tbKLoc,    0, "NordWest", Tool43, strToolNW, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+'               AddTool ( Tools, iNum,    strName, PictID,   strDesc,              iState,            iStyler)
+Dim P As Image
+Dim TB As New ToolBarButton
+
+	Set P = LoadResPicture( Tool43, vbResBitmap )
+	If (P Is Not Nothing) Then
+		TB.Name$ = "Analyse"
+		TB.HelpText$ = strTool1
+		TB.State = BUTTONSTATE_Enabled
+		TB.Style = BUTTONSTYLE_Button
+		TB.AttachImage P
+
+		tbKLoc.InsertButton 0, TB
+	End If
+	Set tbb1 = TB
+
+	tbKLoc.DockState = DOCKSTATE_DockedRight	' rechts andocken
+	tbKLoc.Visible = 1
+
+	Set tbK = tbKLoc
+
+' Dieser Script muß auch nach Main() aktiv bleiben
+	SetBreakScript (False)
+MsgBox "Main fertig!"
+End Sub
+
+'__________________________________
+
+' "EndScript()" wird nach Beendigung der Script-Abarbeitung gerufen
+Sub EndScript()
+MsgBox "GS-Analyse beenden!"
+
+	SetBreakScript(true)
+
+' Hier notwendige Aufräumarbeiten durchführen
+' ToolBar ausblenden
+	If (tbK Is Not Nothing) Then
+		tbK.Visible = False
+	End If
+
+' alle Objekte freigeben
+	Set tbb1 = Nothing
+
+	If (tbK Is Not Nothing) Then
+		tbK.Remove		' ToolBar selbst freigeben
+	End If
+	Set tbK = Nothing
+
+	Set docGD = Nothing
+End Sub
+
+Sub Analyse_Click
+MsgBox "Analyse_Click!"
+
+	Dim strDlgGesamtFl As String
+	Dim strDlgTeilFl As String
+	Dim strDlgProzent As String
+	Dim strDlgKomment As String
+
+Begin Dialog FlDialog ,,225,66,"Betroffene Fläche"
+	OKButton 180,4,40,14
+	Text 8,20,52,8,"Gesamtfläche:",.Text2
+	Text 8,32,76,8,"betroffene Teilfläche:",.Text3
+	Text 8,44,72,8,"Anteil:",.Text4
+	Text 96,20,56,8,strDlgGesamtFl,.GesamtFl
+	Text 96,32,56,8,strDlgTeilFl,.TeilFl
+	Text 96,44,56,8,strDlgProzent,.Prozent
+	Text 4,4,164,8,strDlgKomment,.Komment
+End Dialog
+
+'	Set docGD = GetActiveDocument()
+
+	Dim IObjsF As GeoObjects
+	Dim IUObjsF As GeoObjects
+	Dim IAObjsF As GeoObjects
+	Dim myWin1 As GeoObjectWin
+	Dim myWin2 As GeoObjectWin
+	Dim myWin3 As GeoObjectWin
+
+	Dim RechObjs1 As GeoObjects
+	Dim RechObjs2 As GeoObjects
+	Dim Objs As GeoObjects
+	Dim Obj As GeoObject
+	Dim Feat As GeoFeature
+	Dim MyFeat$
+
+	Set RechObjs1 = docGD.CreateGeoObjectsCollection()
+	Set RechObjs2 = docGD.CreateGeoObjectsCollection()
+	Set IAObjsF = docGD.CreateGeoObjectsCollection()
+
+	RecherchierteObjekte RechObjs1, "TemporärerPuffer"
+	If ( RechObjs1.Count <> 1 ) Then
+		If ( RechObjs1.Count = 0 ) Then
+			MsgBox "Kein Pufferbereich markiert!", ebCritical, strBoxTitel
+		Else
+			MsgBox "Mehr als ein Pufferbereich markiert!", ebCritical, strBoxTitel
+		End If
+		Exit Sub
+	Else
+		Set MyBufferObj = RechObjs1.Item( 1 )
+	End If
+
+	RecherchierteObjekte RechObjs2, "Grundstück"
+	If ( RechObjs2.Count <> 1 ) Then
+		If ( RechObjs2.Count = 0 ) Then
+			MsgBox "Kein Grundstück markiert!", ebCritical, strBoxTitel
+		Else
+			MsgBox "Mehr als ein Grundstück markiert!", ebCritical, strBoxTitel
+		End If
+		Exit Sub
+	Else
+		Set MyGSObj = RechObjs2.Item( 1 )
+	End If
+
+	Dim rel%
+
+	rel% = MyBufferObj.TopRelation( MyGSObj )
+	Dim RefObj As GeoObject
+	Dim PFeat As GeoFeature		' Prozent
+
+	Select Case rel%
+		Case 3		' unklar
+			MsgBox "Grundstück ist nicht betroffen!"
+			strDlgKomment = ""
+
+		Case 2		' Innen/Außen
+'			MsgBox "Geschnittene Fläche"
+			ObjektFTeilen IAObjsF, MyBufferObj, MyGSObj
+			If ( IAObjsF.Count = 0 ) Then
+				strDlgKomment = "Keine betroffene Fläche gefunden!"
+				strDlgGesamtFl = FlaechenWert( MyGSObj )
+				strDlgTeilFl = "0 m²"
+				strDlgProzent = "0 %"
+			End If
+			If ( IAObjsF.Count = 1 ) Then
+				Set Obj = IAObjsF.Item( 1 )
+				Set PFeat = Obj.GetFeature("Prozentualer Anteil")
+				strDlgKomment = "Eine betroffene Fläche gefunden!"
+				strDlgGesamtFl = FlaechenWert( MyGSObj )
+				strDlgTeilFl = FlaechenWert( Obj )
+				If PFeat Is Not Nothing Then
+					strDlgProzent = PFeat.Feature$
+				End If
+				docGD.RemoveObject Obj
+			End If
+			If ( IAObjsF.Count > 1 ) Then
+				strDlgKomment = "Mehrere betroffene Fläche gefunden!"
+				strDlgGesamtFl = FlaechenWert( MyGSObj )
+				For each Obj in IAObjsF
+
+					docGD.RemoveObject Obj
+				Next Obj
+			End If
+			Set IAObjsF = Nothing
+
+		Case 1		' Außen
+			MsgBox "Grundstück ist nicht betroffen!"
+			strDlgKomment = ""
+
+		Case 0		' Innen
+			strDlgKomment = "Grundstück ist vollständig betroffen!"
+			strDlgGesamtFl = FlaechenWert( MyGSObj )
+			strDlgTeilFl = strDlgGesamtFl
+			strDlgProzent = "100 %"
+
+	End Select
+
+	If ( Len( strDlgKomment ) > 0 ) Then
+		Dim dlg As FlDialog
+		Dialog dlg
+	End If
+
+End Sub 
+
+'__________________________________
+
+' "OnDocumentToClose()" wird nach dem Schließen des Projektes gerufen
+Sub OnDocumentToClose (Doc As GeoDocument)
+' Hier sollte der laufende Script angehalten werden
+	SetBreakScript(true)
+End Sub
+
+
+Sub ObjektFTeilen( IAObjsF As GeoObjects, Obj1 As GeoObject, Obj2 As GeoObject)
+
+	Dim KKS$
+	KKS$ = "TemporäreTeilFläche"	' obj2.ObjClass.Name$
+
+	Dim objsTO As GeoObjects
+	Set objsTO = obj1.GeometryIntersection( obj2 )
+
+	If objsTO Is Nothing Then
+		msgBox "Fläche: Fehler bei Durchschnitt!", ebCritical, strBoxTitel
+		Exit Sub
+	End If
+
+	If objsTO.Count = 0 Then
+		msgBox "Fläche: Fehler bei Durchschnitt: Objektanzahl 0 !", ebCritical, strBoxTitel
+		Exit Sub
+	End If
+
+	Dim FlWert$, FlIn#
+	Dim Fl#, Proz#
+
+	FlWert$ = FlaechenWert( obj2 )
+	FlIn# = FlaechenInhalt( obj2 )
+
+	Dim BFeat As GeoFeature		' Ursprungsfläche
+	Dim BFlaeche$
+	BFlaeche$ = FlWert$
+
+	Dim PFeat As GeoFeature		' Prozent
+	Dim PFlaeche$, PFla$
+
+	Dim objTO As GeoObject
+	Dim cls As GeoClass
+
+	Set cls = docGD.GetClass( KKS$ )
+	For each objTO in objsTO
+		If objTO.ObjType = OT_Area Then
+			Fl# = FlaechenInhalt( objTO )
+			Proz# = FL# / FlIn#
+			If Proz# > 0.009999 then
+				PFlaeche = Format$( Proz#, "##.## %" )
+			Else
+				PFla$ = Str$( Proz#*100.0 )
+				PFlaeche = "0" + Left$( PFla$, 5 ) + " %"
+			End If
+			Set BFeat = objTO.GetFeature("Ursprungsfläche")
+			If BFeat Is Nothing Then
+				Set BFeat = objTO.AddFeature("Ursprungsfläche")
+			End If
+			BFeat.Feature$ = BFlaeche$
+			Set PFeat = objTO.GetFeature("Prozentualer Anteil")
+			If PFeat Is Nothing Then
+				Set PFeat = objTO.AddFeature("Prozentualer Anteil")
+			End If
+			PFeat.Feature$ = PFlaeche$
+
+'			cls.AddObject objTO
+			Set objDummy = IAObjsF.Add( objTO )
+		Else
+			docGD.RemoveObject objTO
+		End If
+	Next objTO
+
+'	objsTO.Refresh
+	Set objsTO = Nothing
+End Sub		' ObjektFTeilen
+
+
+Function FlaechenInhalt( objGO As GeoObject ) As Double
+
+	Dim ftFlInhalt As GeoFeature
+	Set ftFlInhalt = objGO.GetFeature("Flächeninhalt")
+	If ( ftFlInhalt Is Nothing ) Then
+		FlaechenInhalt = 0
+		Exit Function
+	End If
+
+	Dim Fl$
+	Fl$ = trim$( ftFlInhalt.Feature$ )		'Flächeninhalt und Maßeinheit
+	If Fl$ = "" Then		'kein Flächenobjekt
+		FlaechenInhalt = 0
+		Exit Function
+	End If
+
+	Dim Flaeche As Double, ME$
+	ME$ = MasseinheitAbtrennen( Fl$, Flaeche )
+	Select Case LCase(Mid(ME$,2,1))		' das 1. Zeichen von ME$ ist '['
+		Case "m"		' m²
+			FlaechenInhalt = Flaeche
+		Case "h"		' ha
+			FlaechenInhalt = 10000 * Flaeche
+		Case "k"		' km²
+			FlaechenInhalt = 1000000 * Flaeche
+		Case Else
+			MsgBox "Die ermittelte Maßeinheit ist unbekannt!", ebCritical, strBoxTitel
+			FlaechenInhalt = -1
+	End Select
+End Function	' FlaechenInhalt
+
+
+Function FlaechenWert( objGO As geoObject ) As String
+
+	Dim ftFlInhalt As GeoFeature
+	Set ftFlInhalt = objGO.GetFeature( "Flächeninhalt" )
+	If ( ftFlInhalt Is Nothing ) Then
+		FlaechenWert = "***"
+		Exit Function
+	End If
+
+	FlaechenWert = Trim$( ftFlInhalt.Feature$ )		' Flächeninhalt und Maßeinheit
+
+End Function	' FlaechenWert
+
+Function MasseinheitAbtrennen( MWert$, MZahl# ) as string
+
+	Dim Pos%
+	Pos% = InStr( MWert$, "[" )		' Position der öffnenden Klammer
+	If Pos% = 0 Then
+		MsgBox "Maßeinheit beginnt nicht mit [", ebCritical, strBoxTitel
+		MasseinheitAbtrennen = "  "
+		Exit Function
+	End If
+
+	Pos% = InStr( MWert$, " " )	   		' Position zwischen Zahlenwert und Dimension
+	MZahl# = Val( Left( MWert$, Pos% ))	' Dimension abschneiden
+	MasseinheitAbtrennen = Right( MWert$, Len( MWert$ ) - Pos% )
+
+End Function	' MasseinheitAbtrennen
+
+'Recherchierte Flächen der Objektklasse objsBO aufsammeln
+Sub RecherchierteObjekte( objsBO As GeoObjects, strClsIdent As String )
+	Dim objsRWin As GeoObjectWins   'Recherchefenster
+	Set objsRWin = docGD.GetGeoObjectWins()
+	Dim objsRechObj As GeoObjects
+	Dim objRWin As GeoObjectWin
+	For Each objRWin In objsRWin	'alle geöffneten Recherchefenster abfragen
+		Set objsRechObj = objRWin.GetSelectedObjects()
+		Dim objRO As GeoObject
+		For Each objRO In objsRechObj
+			If ( objRO.ObjClass.Name$ = strClsIdent ) And _
+				objRO.ObjType = OT_Area Then	'auch OT_Point, OT_Line, OT_Text
+				Set objDummy = objsBO.Add( objRO )	'recherchierte objsGO-Objekte sammeln
+			End If
+		Next objRO
+	Next objRWin
+End Sub 'RecherchierteObjekte
+
+'Recherchierte Flächen mit der Teilzeichenkette strClsIdent im Klassennamen
+Sub RecherchierteObjekteEx( objsBO As GeoObjects, strClsIdent As String )
+	Dim objsRWin As GeoObjectWins   'Recherchefenster
+	Set objsRWin = docGD.GetGeoObjectWins()
+	Dim objsRechObj As GeoObjects
+	Dim objRWin As GeoObjectWin
+	For Each objRWin In objsRWin	'alle geöffneten Recherchefenster abfragen
+		Set objsRechObj = objRWin.GetSelectedObjects()
+		Dim objRO As GeoObject
+		For Each objRO In objsRechObj
+			If ( instr( objRO.ObjClass.Name$, strClsIdent ) > 0 ) And _
+				objRO.ObjType = OT_Area Then	'auch OT_Point, OT_Line, OT_Text
+				Set objDummy = objsBO.Add( objRO )	'recherchierte objsGO-Objekte sammeln
+			End If
+		Next objRO
+	Next objRWin
+End Sub 'RecherchierteObjekteEx

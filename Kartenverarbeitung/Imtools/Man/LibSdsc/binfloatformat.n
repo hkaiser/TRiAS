@@ -1,0 +1,215 @@
+'\"t
+.TH BINFLOATFORMAT 3BIN "July 1990" "SDSC" "BINARY I/O"
+.SH NAME
+BinFloatFormat  -  select the floating-point format for reading/writing binary files
+.br
+BinQFloatFormat  -  query the current floating-point format used for binary files
+.SH SYNOPSIS
+.if t \fB
+.nf
+#include "sdsc.h"
+
+extern int BinErrNo;
+
+int BinFloatFormat( format )
+.in +0.5i
+int format;
+.in -0.5i
+
+int BinQFloatFormat( )
+.fi
+.if t \fR
+.SH DESCRIPTION
+\fIBinFloatFormat\fR selects the floating-point format to use
+when writing data to, or
+reading data from, binary files managed by the binary I/O package.
+\fIformat\fR may be one of the following:
+.LP
+.in +0.5i
+.TS
+l l.
+\fIformat\fR	\fBMeaning\fR
+BINIEEE	IEEE formats
+BINVAX	VAX formats (f, d, and h)
+BINVAXG	VAX formats (f, g, and h)
+BINCRAYMP	Cray X-MP/Y-MP formats
+.TE
+.in -0.5i
+.LP
+The default floating-point format is BINIEEE.
+.LP
+\fIBinQFloatFormat\fR queries the current floating-point format selection.
+.SH RETURNS
+\fIBinFloatFormat\fR returns 0.  If an error occurs it returns -1 and
+the global \fIBinErrNo\fR set to an error code indicating the cause of
+the error.  The following error code may be returned:
+.LP
+.IP "\fIBINEFLOATFORMAT\fR = Unknown file floating-point format selection"
+The \fIformat\fR argument did not match any supported floating-point format.
+.LP
+\fIBinQFloatFormat\fR returns the current floating-point format selection.
+.SH NOTES
+Binary data files and streams are a compact and speedy
+way to store and transfer data.
+The binary format of a value can take fewer bytes to store than using the
+equivalent ASCII format.
+For instance, the number "32767" takes 16 bits to represent on a 2's compliment
+integer machine.
+When written to a binary file or stream, the number can be stored in 2 bytes.
+The same number written to an ASCII file or stream requires 5
+bytes:  "3", "2", "7", "6", and "7".
+.LP
+While the UNIX \fIread\fR(2) and \fIwrite\fR(2) calls support reading and
+writing binary data, they do not create binary files that can be read in again
+on a machine with a different byte order or larger or smaller word size
+(without additional programming).
+The calls in the binary I/O package provide a portable means of reading and
+writing binary files and streams.
+Application code that calls \fIBinRead\fR to read in an array of 32-bit
+integers from a binary file remains unchanged whether being compiled for
+a SPARCstation, a VAX running VMS, or a CRAY X-MP.
+Differences in byte ordering, word sizes, and structure field padding are
+handled by the binary I/O package.
+.LP
+Floating-point formats primarily differ in the number
+of bits used to express the exponent and the mantissa.
+If a float in one format is interpreted as a float in a different format,
+it is likely that no error will be detected.
+The value will simply be wrong.
+.LP
+The floating-point format
+of a file may differ from that of the host trying to read or write it.
+Some standard file formats document the floating-point format they use.
+Other file formats include some flag near the top of the file
+that a program may read to determine the floating-point format of data in
+the file.
+.LP
+Because file format authors usually do not plan that their files will
+be read on machines of a different type, most formats don't include
+flags telling what float format to use.  When in doubt, find out what
+type of machine the author had.  The following is a list of common
+machines and floating-point formats: 
+.LP
+.in +0.5i
+.TS
+l l.
+\fBMachine\fR	\fBFormat\fR
+Cray X-MP	BINCRAYMP
+Cray Y-MP	BINCRAYMP
+DECStation	BINIEEE
+SGI Iris 4D	BINIEEE
+Stardent TITAN	BINIEEE
+Sun 3	BINIEEE
+Sun 4 (SPARC)	BINIEEE
+DEC VAX	BINVAX and BINVAXG
+.TE
+.in -0.5i
+.LP
+IEEE is becoming the default standard, however, different machines still use different byte orders of IEEE
+(DECStation is LBF IEEE while a SPARCstation is MBF IEEE).
+\fIBinByteOrder\fR(3BIN) should be used to select the machine's byte order.
+.LP
+Data may be read in using \fIBinRead\fR(3BIN) and \fIBinReadStruct\fR(3X)
+and written out using \fIBinWrite\fR(3BIN) and \fIBinWriteStruct\fR(3X).
+These read and write calls each expect an \fInbytes\fR value that indicates
+the number of bytes a float occupies in the file.
+This may or may not be the same as the number of bytes the same float occupies
+when stored in host memory in the host's floating-point format.
+For instance, a file containing IEEE double-precision floats (8 bytes each)
+may be read on a VAX into its single-precision floats (4 bytes each).
+.LP
+Not all values for \fInbytes\fR are acceptable.
+For instance, there is no such thing as a 3-byte IEEE float or an
+11-byte VAX float.
+Passing \fInbytes\fR of 3 or 11 to a read or write call to read or write
+a float will cause these routines to return a \fIBINEFLOATUNSUPPORTED\fR
+error.
+The following float sizes are supported for each of the known floating
+point formats:
+.LP
+.in +0.5i
+.TS
+l l.
+\fBFormat\fR	\fBSizes (in bytes)\fR
+BINIEEE	single (4), double (8)
+BINVAX	f (4), d (8), h (16)
+BINVAXG	f (4), g (8), h (16)
+BINCRAYMP	single (8)
+.TE
+.in -0.5i
+.LP
+The CRAY's \fIdouble\fR float is the same length and format as its
+single-precision float.
+.LP
+The difference between the \fIBINVAX\fR and \fIBINVAXG\fR format selections
+is in their treatments of double-precision floats.
+The VAX supports two different double-precision formats:  'd' and 'g'.
+Each has a different numbers of bits for the exponent and mantisssa.
+Selection of the double-precision format within a program is
+controlled through compiler arguments.
+.LP
+The characteristics of the host CPU, including its floating-point format,
+may be queried using \fIBinQMachine\fR(3BIN).
+.br
+.ne 5
+.SH EXAMPLES
+.SS "Example 1"
+Read in a 1-byte flag at the top of a file.
+If the flag is "0x0", assume the file uses IEEE floating-point.
+If the flag is "0x1", assume the file uses VAX floating-point.
+If the flag is neither of these, issue an error.
+.LP
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+int flag;
+int fd;
+
+BinRead( fd, flag, INT, 1, 1 );
+if ( flag == 0x0 )
+	BinFloatFormat( BINIEEE );
+else if ( flag == 0x1 )
+	BinFloatFormat( BINVAX );
+else
+	issue an error
+.in -0.5i
+.fi
+.LP
+Note that the floating-point format of the host is not an issue.
+The binary I/O package will automatically
+convert from the file's float format to the format of the host.
+.SS "Example 2"
+Query the current floating-point format selection.
+.LP
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+int format;
+
+format = BinQFloatFormat( );
+.in -0.5i
+.fi
+.SH "SEE ALSO"
+BinByteOrder(3BIN),
+BinErrorHandler(3BIN),
+BinFRead(3BIN),
+BinFReadStruct(3BIN),
+BinFWrite(3BIN),
+BinFWriteStruct(3BIN),
+BinPError(3BIN),
+BinQByteOrder(3BIN),
+BinQMachine(3BIN),
+BinRead(3BIN),
+BinReadStruct(3BIN),
+BinSRead(3BIN),
+BinSWrite(3BIN),
+BinWrite(3BIN),
+BinWriteStruct(3BIN)
+.br
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASQL.DropStmt.1 = s 'DropStmt Class'
+	{
+		CLSID = s '{C9A6E64C-2D79-11D3-8582-00104B8CC00A}'
+	}
+	TRiASQL.DropStmt = s 'DropStmt Class'
+	{
+		CLSID = s '{C9A6E64C-2D79-11D3-8582-00104B8CC00A}'
+		CurVer = s 'TRiASQL.DropStmt.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {C9A6E64C-2D79-11D3-8582-00104B8CC00A} = s 'DropStmt Class'
+		{
+			ProgID = s 'TRiASQL.DropStmt.1'
+			VersionIndependentProgID = s 'TRiASQL.DropStmt'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{62ECE770-EC1D-4680-9A37-B5CD0BF0C1BC}'
+		}
+	}
+}

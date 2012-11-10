@@ -1,0 +1,37 @@
+// MMFkSanh.idl : IDL source for MMFkSanh.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (MMFkSanh.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(9943C093-1BFC-11D2-8F7F-0060085FC1CE),
+	version(1.0),
+	helpstring("MMFkSanh 1.0 Type Library")
+]
+library MMFKSANHLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+	[
+		object
+		, uuid(B6AFCF03-1A64-11d2-8F7D-0060085FC1CE)
+		, dual
+		, helpstring("IMapLVermA Interface")
+		, pointer_default(unique)
+	]
+	interface IMapLVermA : IDispatch
+	{
+	};
+	[
+		uuid(B6AFCF04-1A64-11d2-8F7D-0060085FC1CE),
+		helpstring("MapLVermA Class")
+	]
+	coclass MapLVermA
+	{
+		[default] interface IMapLVermA;
+	};
+};

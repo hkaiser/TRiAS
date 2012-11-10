@@ -1,0 +1,17 @@
+HKCR {
+	TRiASUI.PpgUpDownList.1 = s 'TRiAS® UserInterface - Eigenschaften von UpDownList' {
+		CLSID = s '{AAFA2AB9-D8B3-11D2-9924-00AA002A873B}'
+	}
+	TRiASUI.PpgUpDownList = s 'TRiAS® UserInterface - Eigenschaften von UpDownList' {
+		CLSID = s '{AAFA2AB9-D8B3-11D2-9924-00AA002A873B}'
+		CurVer = s 'TRiASUI.PpgUpDownList.1'
+	}
+	NoRemove CLSID {
+		ForceRemove {AAFA2AB9-D8B3-11D2-9924-00AA002A873B} = s 'TRiAS® UserInterface - Eigenschaften von UpDownList' {
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%' {
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

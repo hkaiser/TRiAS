@@ -1,0 +1,24 @@
+HKCR
+{
+	TRiASDB.TRiASConnectionCTF.1 = s 'TRiASConnectionCTF Class'
+	{
+		CLSID = s '{B22F49A5-1833-11D2-9E90-006008447800}'
+	}
+	TRiASDB.TRiASConnectionCTF = s 'TRiASConnectionCTF Class'
+	{
+		CurVer = s 'TRiASDB.TRiASConnectionCTF.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {B22F49A5-1833-11D2-9E90-006008447800} = s 'TRiASConnectionCTF Class'
+		{
+			ProgID = s 'TRiASDB.TRiASConnectionCTF.1'
+			VersionIndependentProgID = s 'TRiASDB.TRiASConnectionCTF'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

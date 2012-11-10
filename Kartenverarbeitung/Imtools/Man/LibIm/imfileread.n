@@ -1,0 +1,736 @@
+'\"et
+.de Cb		\" Courier Begin
+.in +0.25i
+.ft CW
+\s-1
+.nf
+..
+.de Ce		\" Courier End
+.ft R
+.fi
+\s+1
+.in -0.25i
+..
+.if t .TH IMFILEREAD 3IM "August 25, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMFILEREAD 3IM "August 25, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImFileRead, ImFileFRead - Read an image format input stream into a Vfb
+.br
+ImFileWrite, ImFileFWrite - Write a Vfb onto an image format output stream
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+int ImFileRead( fd, format, flagsTable, dataTable )
+	int fd;
+	char *format;
+	TagTable *flagsTable;
+	TagTable *dataTable;
+
+int ImFileFRead( fp, format, flagsTable, dataTable )
+	FILE *fp;
+	char *format;
+	TagTable *flagsTable;
+	TagTable *dataTable;
+
+int ImFileWrite( fd, format, flagsTable, dataTable )
+	int fd;
+	char *format;
+	TagTable *flagsTable;
+	TagTable *dataTable;
+
+int ImFileFWrite( fp, format, flagsTable, dataTable )
+	FILE *fp;
+	char *format;
+	TagTable *flagsTable;
+	TagTable *dataTable;
+.fi
+\fR
+.SH DESCRIPTION
+\fBImFileRead\fR and \fBImFileFRead\fR read image data of type
+\fIformat\fR from the input stream selected by \fIfd\fR or \fIfp\fR,
+respectively.  Format-specific flags in \fIflagsTable\fR may modify
+the behavior of the read operation.  Data read from the stream is
+appended to \fIdataTable\fR. 
+.LP
+\fBImFileWrite\fR and \fBImFileFWrite\fR write image data of type
+\fIformat\fR onto the output stream selected by \fIfd\fR or \fIfp\fR,
+respectively.  Format-specific flags in \fIflagsTable\fR may modify
+the behavior of the write operation.  Data to write is taken from the
+\fIdataTable\fR. 
+.SH NOTES
+The image file I/O routines handle the input and output of image data
+in a variety of image file formats.  Read and write routines read or write
+using file descriptors (unbuffered I/O) or file pointers (buffered
+I/O), allowing both files and pipes to be handled identically.
+.SS "Image Formats"
+Format names are NULL-terminated character strings giving the name, or any
+of the equivalent names for any supported image file format.
+If a NULL pointer is passed to \fBImFileWrite\fR or \fBImFileRead\fR, then
+the format will be selected via the following mechanism:  
+.br
+When reading a file,
+first we look for file compression.  File compression is discerned via the magic
+number, and the filename suffix.  After uncompressing the file, we try to
+identify the image file format.  The image format is also discerned using the
+magic number and the filename suffix.  In both cases, the magic number takes
+precedence over the filename suffix.  
+If the incoming data is a pipe, then the magic number will not be used.
+When writing a file, the filename suffix indicates the format of the
+outgoing file.
+.br
+
+The list of image file formats supported is ever-growing.
+As of this writing, the format list includes the following:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l l.
+Primary	Equivalent
+Name	Names	Description
+_
+bmp	bmp	Microsoft Windows BitMaP file
+cur	cur	Microsoft Windows CURsor file
+gif	giff	CompuServe Graphics Image Format file
+hdf	df, ncsa	Hierarchical Data Format file
+ico	ico	Microsoft Windows ICOn file
+icon	cursor, pr	Sun Icon and Cursor file
+iff	suniff, taac	Sun TAAC Image File Format
+mpnt	macp, pntg	Apple Macintosh MacPaint file
+pbm	pgm,pnm,ppm	Portable Bit Map file
+pcx	pcc	ZSoft PC Paintbrush file
+pgm	-	Portable Grayscale Map file
+pic	picio, pixar	PIXAR PICture file
+pict	pict2	Apple Macintosh QuickDraw/PICT picture file
+pix	alias	Alias PIXel image file
+ps	postscript	PostScript image file
+ras	sun, sr, scr	Sun RASterfile
+rgb	iris, sgi	Silicon Graphics RGB image file
+rla	rlb	Wavefront raster image file
+rle	-	Utah Run-Length-Encoded image file
+synu	-	Synu image file
+tga	tga, vda, ivb	Truevision Targa image file
+tiff	tif	Tagged Image File
+viff	viff, xv	Khoros Visualization Image File Format
+x	avs	Stardent AVS X image file
+xbm	bm	X11 Bit Map file
+xwd	x11	X11 Window Dump image file
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+For a current list of image format names supported by the library,
+execute the \fBimformats\fR(1IM) command, or 
+type \fBimconv -help -informat\fR, or scan the global
+\fBImFileFormats\fR table of format information. 
+.LP
+Individual \fBman\fP pages are available for each of the above file
+formats.  The naming convention is primary name with \fIim\fR prefix.  For
+instance, the \fBman\fP page on image library support of the Sun
+RASterfile format is \fBimras\fR(3IM).
+.LP
+.SS "Data Tag Table Entries"
+Image file data read in by \fBImFileRead\fR or \fBImFileFRead\fR is
+appended to the \fIdataTable\fR in the order in which it is encountered
+in the file.  Each piece of information is given its own table entry
+and tagged with a standard or custom tag name.  Standard tags are
+given below.  Custom tags are format-specific and are discussed in the
+individual format \fBman\fP pages.
+.LP
+Data written by \fBImFileWrite\fR or \fBImFileFWrite\fR
+is written in the same order as tags encountered in the \fIdataTable\fR.
+Table entries with tags applicable to the format are used, while the
+rest are ignored.
+.LP
+The following standard \fIdataTable\fR tags are recognized by most file
+format read and write handlers:
+.sp 1
+.IP "\fBimage vfb\fP"
+\fBImVfb\fR pointer to an image.
+
+When reading multi-image files, each image is given its own entry in
+the \fIdataTable,\fR in the same order as the images occur in the file.
+
+When writing multi-image \fIdataTable\fRs, images are written to the file
+in the same order as they occur in the \fIdataTable\fR.  If the format
+does not support multiple images per file, the format handler returns
+an error and does not write the file.
+.IP "\fBimage clt\fP"
+\fBImClt\fR pointer to a color lookup table.
+
+When reading a color lookup table (CLT) and image from a file, both
+the CLT and 
+the image are listed in the \fIdataTable\fR; the CLT first and the
+image second.  If it is clear from the format's specification that the
+CLT is to be associated with the image, the CLT also is attached to
+the image virtual frame buffer using \fBImVfbSClt\fR(3IM).
+
+When reading multi-image files, the CLT (if any) for each image
+immediately precedes the image when placed into the \fIdataTable\fR. 
+
+When writing a CLT and image from a \fIdataTable\fR, the CLT (if any)
+associated with the image virtual frame buffer takes precedence over
+any in the \fIdataTable\fR.  \fBimage clt\fP tags are ignored.
+\fB
+.SS "Format Flags"
+The \fIflagsTable\fR argument on read and write calls may contain
+flags that select format-specific options.  A \fIflagsTable\fR flag
+may request a particular image compression scheme, may block output of
+an image's CLT, may request that the image be output
+without its alpha channel, and so on.  In all cases, \fIflagsTable\fR
+entries direct format output handlers \fBhow\fR to output information.
+\fBWhat\fR to output is the domain of the \fIdataTable\fR.
+.LP
+A NULL pointer for the \fIflagsTable\fR indicates no flags are provided.
+.LP
+Standard \fIflagsTable\fR tags are given below.  Custom
+format-specific tags are discussed in the individual format man pages.
+Examples and interdependency explanations follow in later sections of
+this \fBman\fP page. 
+.sp 1
+.IP "error handler"
+Integer function pointer for the function to be called and passed an error
+message.  If not given, there is no error handler.
+
+See below for usage of the error handler.
+.IP "error stream"
+\fBFILE\fR pointer
+for the stream to which error messages should be output, such as
+\fBstderr\fR.  If not given, there is no error stream.  See below for
+usage of the error stream. 
+.IP "file name"
+Character string name of the input or output file.  If not given, the
+file name defaults to \fBfile\fP.  If input or output is to a stream
+instead of a file, the strings \fBstdin\fP or \fBstdout\fP should be used.
+
+File name is used when constructing error message text to be printed
+to the error stream and passed to the error handler (see below).
+File name has no other significance and is not opened directly.
+.IP "image alpha request"
+Integer flag to block or force an alpha plane to be output.  If
+not given, an alpha plane is output if the image has one and the
+format can support it.  If the tag forces output when a file format cannot
+support it or blocks output when a format must have it, an error is
+returned. 
+
+This tag is only used by image write handlers.
+A value of \fBIMALPHADUMP\fR forces alpha plane output.  A value of
+\fBIMALPHANODUMP\fR blocks output.
+.IP "image channel number request"
+Integer number of image channels to output.  If not given, each channel
+in each incoming image is output or the closest number supported by the
+output file format.  If this tag specifies a number of channels that
+cannot be supported by the image file format, an error is returned.
+
+This tag is only used by image write handlers.
+
+Channel numbers are typically 1 or 3.  Channel image number 1
+corresponds to  a monochrome, grayscale, or color index image where 1
+integer per pixel is stored.  Channel image number 3 corresponds to an
+RGB image.  Note that an alpha channel for the image is not included.
+See the separate tag "image alpha request" for control of alpha
+channel output. 
+.IP "image channel depth request"
+Integer number of bits per channel to output.  If not given, the bit
+depth per channel is the one that most closely matches each image to
+be output and is available to the image file format.
+
+This tag is only used by image write handlers.
+
+Bit depth values are typically between 1 and 32.  8-bit depths are the
+most common. 
+.IP "image clt request"
+Integer flag to block or force a color lookup table to be output.  If
+not given, a color lookup table is output, if the image has one and the
+format can support it.  If the tag forces output when a file format cannot
+support it or blocks output when a format must have it, an error is returned.
+
+This tag is only used by image write handlers.
+A value of \fBIMCLTDUMP\fR forces color lookup table output.  A value of
+\fBIMCLTNODUMP\fR blocks output.
+.IP "image compression request"
+Integer compression mode to use.  If not given, the most common or
+best compression scheme available to the format is used.
+If the tag specifies a compression scheme not available to the format, an
+error is returned.
+
+This tag is only used by image write handlers.  The compression scheme
+selects how pixel data is compressed in order to save space in the output
+file.  Available compression schemes include:
+.LP
+.if t .in +1.0i
+.if n .in +10
+.TS
+l l.
+Value	Meaning
+_
+IMCOMPNONE	Don't compress
+IMCOMPRLE	Run-length encode
+IMCOMPLZW	Lempel-Ziv Welsh encoding
+IMCOMPPACKBITS	Apple PackBits
+.TE
+.if t .in -1.0i
+.if n .in -10
+.LP
+.IP " "
+Uncompressed images store each image pixel as a separate value in the file.
+
+Run-length encoded images denote runs of adjacent pixels with the same color.
+Such runs are reduced to a run length and a run value (the pixel's color)
+and write these two values to the file instead of the (potentially) much
+longer run itself.  This usually gains about a 30% reduction in storage
+space.  Most image file formats support some form of run-length encoding,
+but they differ in the exact mechanics.
+
+Lempel-Ziv Welsh and Apple PackBits encoding are
+bit-wise run-length encoding schemes that are more time-consuming to
+process but achieve even higher compression ratios.  Both schemes are
+available for only a few image file formats.
+.IP "file compression"
+Character string indicating a file compression scheme to
+be used when reading or writing.  Valid compression
+schemes are currently:
+.LP
+.if t .in +1.0i
+.if n .in +10
+.TS
+l l.
+uu	uuencoding
+Z	Z compression
+z	packed files
+gz	gzip compression
+.TE
+.if t .in -1.0i
+.if n .in -10
+.LP
+For an up to date list of file compression schemes, consult
+the file imcompress.c.  This file maintains the list of
+schemes.
+.IP "image interlace request"
+Integer RGB image interlace mode to use.  If not given, the most common
+or most easily compressed RGB interlacing scheme is used.
+If the tag specifies that an interlace mode be
+used that the image file format cannot support, an error is returned.
+
+This tag is only used by image write handlers, and only if the image to be
+written is an RGB image.  The interlace mode specifies
+how RGB images should be stored in the file.  Available interlace modes
+include
+.LP
+.if t .in +1.0i
+.if n .in +10
+.TS
+l l.
+Value	Meaning
+_
+IMINTERNONE	Don't interlace
+IMINTERLINE	Scanline interlace
+IMINTERPLANE	Plane interlace
+.TE
+.if t .in -1.0i
+.if n .in -10
+.LP
+.IP " "
+Non-interlaced RGB images are stored with each pixel's red, green, and
+blue components as adjacent data in the file.  For instance, an RGB image
+would be stored as:  RGBRGBRGBRGB.
+
+Scanline interlaced images store all of the scanline's red components
+first, then the scanline's green, then blue components.  The next scanline
+starts over again with just its red components, and so on.
+
+Plane interlaced images store the red components for all of the
+image pixels, followed by all of the green, then all of the blue.
+
+When compressing images, plane interlacing usually produces the best
+compression.
+.IP "image mono threshold"
+Integer pixel value threshold beyond which grayscale pixel values
+are considered black, and below which pixel values are considered white
+when mapping grayscale images to monochrome.
+If not given, the default is 127.
+
+This tag is only used by image write handlers.  The monochrome threshold
+is used only if the output of the image into the selected file format
+requires reducing it from color or grayscale to monochrome.
+Color images are converted to grayscale prior to monochrome thresholding.
+
+See also \fBImVfbToMono\fR(3IM).
+.IP "image type request"
+Integer image type to output.  If not given, the image type is that of
+the image being written or one as close to it as supported by the selected
+output image file format.  If this tag is given and the requested type is
+not available to the format, an error is returned.
+
+This tag is only used by image write handlers.  Available image types
+include 
+.LP
+.if t .in +1.0i
+.if n .in +10
+.TS
+l l.
+Value	Meaning
+_
+IMTYPEINDEX	Color index per pixel
+IMTYPERGB	RGB color per pixel
+.TE
+.if t .in -1.0i
+.if n .in -10
+.LP
+.IP " "
+Color index images correspond to \fBIMVFBINDEX8\fR, \fBIMVFBINDEX16\fR,
+and \fBIMVFBMONO\fR
+virtual frame buffer field values.  RGB images correspond to \fBIMVFBRGB\fR
+virtual frame buffers.
+
+If the selected image type differs from that of an image to be written,
+the image is converted into a temporary virtual frame buffer before
+being output.
+
+See also \fBImVfbToIndex8\fR(3IM), \fBImVfbToIndex16\fR(3IM),
+\fBImVfbToRgb\fR(3IM), \fBImVfbToGray\fR(3IM), and \fBImVfbToMono\fR(3IM).
+.IP "program name"
+Character string name of the program, such as the value in
+\fIargv[0]\fR passed into \fBmain\fR. If not given, the program name
+defaults to "program." 
+
+Program name is used when constructing error message text to be printed
+to the error stream passed to the error handler (see below).
+.SS "Error Handling"
+.LP
+Upon encountering an error, the image file read and write routines use
+the following algorithm to decide how to report the error and whether or
+not to return or try and continue:
+.LP
+.nf
+.if t .in +0.5i
+.if n .in +5
+if an error handler has been defined in the \fIflagsTable\fR,
+    if the error is fatal,
+        call the error handler with the error message text
+        set \fBImErrNo\fR and return an error
+    call the error handler with the error message text
+    if the error handler returned a -1,
+        set \fBImErrNo\fR and return an error
+else if an error stream has been defined in the \fIflagsTable\fR,
+    print the error message text to the stream
+    if the error is fatal,
+        set \fBImErrNo\fR and return an error
+else if the error is fatal or a warning,
+        set \fBImErrNo\fR and return an error
+.fi
+.if t .in -0.5i
+.if n .in -5
+.LP
+Fatal errors are errors that cannot be recovered from.
+If a handler has been given, it is called before the read/write routine returns.
+If a stream has been defined instead, it is printed to before returning.
+Otherwise, the routine just returns an error code.
+.LP
+Warning errors are errors that somebody should see but don't require aborting
+the read or write operation.
+If a handler has been given, it is called and its return value checked.
+If it returns a -1, the read/write routine returns.
+Otherwise it tries to continue.
+If a stream has been defined instead, the error text is printed without
+returning.
+Otherwise, the warning reverts to a fatal error and the
+routine returns with an error code.
+.LP
+Information errors are messages that should be displayed, but don't
+require aborting the operation.
+If a handler has been given, it is called and its return value checked.
+If it returns -1, the operation is aborted.
+Otherwise, it is continued.
+If a stream has been defined instead, the information text is printed out.
+.LP
+Error handlers may be declared as follows:
+.Cb
+int MyHandler( severity, errno, message )
+	int severity;
+	int errno;
+	char *message;
+.Ce
+.LP
+\fIseverity\fR can be one of these three error severity types:
+.RS 0.5i
+.sp 1
+.TS
+l l.
+\fIseverity\fR	\fBMeaning\fR
+_
+\fBIMERRORFATAL\fR	Fatal error
+\fBIMERRORWARNING\fR	Warning error
+\fBIMERRORINFO\fR	Information only
+.TE
+.RE
+.LP
+The \fIerrno\fR argument to the handler gives the \fBImErrNo\fR code for
+the error.  See \fBImErrNo\fR(3IM) for information on error numbers and
+generic error message texts for each.
+.LP
+The \fImessage\fR argument to the handler is the same as that printed to
+the error stream, if any, and has the form:
+.Cb
+program_name: file_name: text
+.Ce
+.LP
+The \fIprogram_name\fR and \fIfile_name\fR are those specified by
+flags in the \fIflagsTable\fR (if given).  The \fItext\fR of the
+message describes the error and may or may not be more informative
+than the generic message available based on the \fIerrno\fR error code.
+The error message is not terminated with a carriage return.
+.LP
+The error handler should return -1 if the read or write operation is to
+be aborted because of the error or 0 if it should be continued.
+A typical error handler in a windowing-based application would use the
+\fIseverity\fR code to decide how to display a dialog box on the screen:
+.IP "IMERRORFATAL"
+Dialog box containing the error message text and an "Abort" button is
+displayed.  Pressing "Abort" takes down the dialog box and returns -1
+from the handler. 
+.IP "IMERRORWARNING and IMERRORINFO"
+Dialog box containing the error message text and "Abort" and "Continue"
+buttons are displayed.
+Pressing "Abort" takes down the dialog box and returns -1 from the handler;
+pressing "Continue" takes down the dialog box and returns 0 from the handler.
+.LP
+.SS "Automatic Conversions"
+Most of the \fIflagsTable\fR flags having names beginning with "image"
+direct how automatic image conversions should take place when writing an
+image file.  In most cases, the programmer need never use any of these.
+Automatic conversion takes place and does the "right thing."
+These flags are only necessary if the programmer wishes to steer
+automatic conversion a particular way.
+.LP
+Automatic image conversion is necessary when an image to be written out
+is not in a format acceptable for the image file format.  For instance, if
+an RGB image is to be written out as a MacPaint file, the image must first
+be converted to monochrome.  This is an automatic image conversion.
+.LP
+Image conversions could be done by the user prior to calling
+\fBImFileWrite\fR or \fBImFileFWrite\fR, but the added hassle makes it
+convenient for the write routines themselves to handle image
+conversion.
+.LP
+Image conversion must alter an image's attributes to match those of the
+output file format.  An image has a type (color index or RGB), a number
+of channels of color data per pixel (usually 1 or 3), and a bit depth for
+each of those channels (usually 8 bits).  The three \fIflagsTable\fR
+flags "image type request," "image channel number request," and "image
+channel depth request" allow you to constrain automatic conversion to
+a particular value for these attributes.
+.LP
+If an attribute is not constrained, automatic conversion chooses values
+that most closely match the image to be written.  If those values specify
+an image that the output image file format cannot support (such as an RGB
+image in a monochrome MacPaint file), then automatic conversion makes the
+closest match to what the file format can support.  The image to be written is
+then converted (in a temporary virtual frame buffer) to that match and
+output.
+.LP
+If an attribute is constrained, automatic conversion restricts its matching
+algorithm to require the image attribute match the user's request.  If this
+prevents the algorithm from creating a match between an image to be written
+and an output image file format's supported abilities, then an error is
+returned and the image is not output.
+.LP
+For instance, an RGB image is to be output into a MacPaint file.  With
+no constraints, automatic conversion will convert the image to 1-bit
+monochrome and output it.  If image type is constrained to be RGB, then
+automatic conversion cannot make a match (RGB cannot be stored in MacPaint
+files), and an error is returned.
+.LP
+Automatic conversion contraints are most useful when a particular variant of
+an output file format is desired.  For instance, a Sun rasterfile can
+support 1-bit monochrome, 8-bit color index, and 24-bit RGB image storage.
+Without contraints, an incomming RGB image will be written out as an
+RGB rasterfile (the closest automatic match).  If the user wishes to display
+the image on an 8-bit frame buffer, the "image type request" flag could be
+used to constrain output conversion to a \fBIMTYPEINDEX\fR, color index image.
+This would force automatic conversion to output an 8-bit color index
+Sun rasterfile.
+.LP
+.SS "Output Constraints"
+Many image file formats support multiple variants on image compression,
+RGB image interlacing, and the inclusion of color lookup tables and alpha
+channels.  Many of the \fIflagsTable\fR flags having names beginning
+with "image" direct format output to use a particular variant of the file 
+format.
+.LP
+If not given, these flags default to the "right thing."  Image compression
+defaults to the best or most common compression scheme.  RGB image interlace
+defaults to the most common or most easily compressed interlace mode.
+Color lookup tables are written if the image has one and the format can store
+it.  The same applies to alpha plane output.
+.LP
+.SS "Pipe Handling"
+When reading from or writing to pipes, some image file formats require
+that the data be stored in a temporary file.  Such a file is created
+and later destroyed.  If there is insufficient space in \fB/usr/tmp\fR
+for this file, an error is returned. 
+.SH EXAMPLES
+The following code opens and reads in a Sun RASterfile and retrieves the
+new virtual frame buffer image from the \fIdataTable\fR.
+Note that a NULL pointer is given instead of a \fIflagsTable\fR.
+.Cb
+.ta 0.5i +0.5i +0.5i +0.5i +0.5i +0.5i +0.5i
+#include <stdio.h>
+#include "im.h"
+
+main( )
+{
+	FILE *rasFile;
+	ImVfb *image;
+	TagTable *dataTable;
+	TagEntry *imageEntry;
+
+	/* Get space for the data list. */
+	dataTable = TagTableAlloc( );
+
+	/* Open the Sun rasterfile. */
+	rasFile = fopen( "myfile.ras", "r" );
+
+	/* Read in its images. */
+	ImFileFRead( rasFile, "ras", NULL, dataTable );
+
+	/* Get the virtual frame buffer. */
+	imageEntry = TagTableQDirect( dataTable, "image vfb", 0 );
+	TagEntryQValue( imageEntry, &image );
+
+	/* Do something with it. */
+	...
+}
+.Ce
+.LP
+The following code accepts command-line arguments to specify an input
+format name and filename and an output format name and filename.
+The input file is opened and read in as the selected image file format.
+The output file is opened and the image data written back out in the new
+format.
+.Cb
+.ta 0.5i +0.5i +0.5i +0.5i +0.5i +0.5i +0.5i
+#include <stdio.h>
+#include "im.h"
+
+main( argc, argv )
+	int argc;
+	char *argv[ ];
+{
+	FILE *file;
+	TagTable *dataTable;
+
+	/* Get space for the data list. */
+	dataTable = TagTableAlloc( );
+
+	/* Open the input file and read it in. */
+	file = fopen( argv[2], "r" );
+	ImFileFRead( file, argv[1], NULL, dataTable );
+	fclose( file );
+
+	/* Open the output file and write it out. */
+	file = fopen( argv[4], "w" );
+	ImFileFWrite( file, argv[3], NULL, dataTable );
+	fclose( file );
+}
+.Ce
+.LP
+The above program is a complete generic image file converter that can read
+in any selected image file and output a new one in any desired format.
+The above code is the basis for the SDSC image conversion tool
+\fBimconv\fR(1IM).
+.LP
+The following code outputs an image stored in a virtual frame buffer and
+constrains it to be RGB and include an alpha plane.
+.Cb
+.ta 0.5i +0.5i +0.5i +0.5i +0.5i +0.5i +0.5i
+writeImage( image, fileName )
+	ImVfb *image;
+	char *fileName;
+{
+	FILE *file;
+	TagTable *dataTable;
+	TagTable *flagsTable;
+	int tmp;
+
+	/* Get space for the data and flags tables. */
+	dataTable = TagTableAlloc( );
+	flagsTable = TagTableAlloc( );
+
+	/* Add image to data table. */
+	TagTableAppend( dataTable,
+		TagEntryAlloc( "image vfb", POINTER, &image ) );
+
+	/* Add constraint flags. */
+	tmp = IMTYPERGB;
+	TagTableAppend( flagsTable,
+		TagEntryAlloc( "image type request", INT, &tmp ) );
+	tmp = IMALPHADUMP;
+	TagTableAppend( flagsTable,
+		TagEntryAlloc( "image alpha request", INT, &tmp ) );
+
+	/* Open the output file and write the data. */
+	file = fopen( fileName, "w" );
+	ImFileFWrite( file, "rlb", flagsTable, dataTable );
+	fclose( file );
+
+	/* Clean up. */
+	TagTableFree( dataTable );
+	TagTableFree( flagsTable );
+}
+.Ce
+.SH RETURNS
+On successful completion, the read calls return the number of entries
+added to the \fIdataTable\fR and the write calls return the number of
+entries used from the \fIdataTable\fR.
+.LP
+On failure, the read calls return -1 and set \fIImErrNo\fR to
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMESYS	System call error
+IMEMALLOC	Cannot allocate memory
+IMEFORMAT	Bad format
+IMENOREAD	Read not supported on format
+IMEMAGIC	Bad magic number in image file
+IMEDEPTH	Unknown image depth
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+On failure, the read calls return -1 and set \fIImErrNo\fR to
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMESYS	System call error
+IMEMANYVFB	Too many VFBs for image write
+IMENOVFB	No VFB given for image write
+IMEMALLOC	Cannot allocate memory
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH FILES
+.ta 2.0i
+\fB/usr/tmp/im.\fIXXXXXX	Temporary file for pipe handling
+.SH "SEE ALSO"
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBImFileFormatEquivs\fR (3IM),
+\fBImFileFormatOptions\fR (3IM),
+\fBImFileQFFormat\fR (3IM),
+\fBImFileQFormat\fR (3IM),
+\fBTagIntro\fR (3TAG)
+.SH AUTHOR
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

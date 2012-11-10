@@ -1,0 +1,10 @@
+# Makefile.src
+# Copyright (c) 1998, Regents of the University of California
+# $Id: Makefile.src,v 1.1 1999/09/27 01:10:13 marcel Exp $
+
+SRCS += $(LIBNPTREEDIR)/gist_nptree.cc \
+	$(LIBNPTREEDIR)/sequence.cc 
+
+ifeq (${AMDB},true)
+SRCS += $(LIBNPTREEDIR)/amdb_nptree.cc 
+endif

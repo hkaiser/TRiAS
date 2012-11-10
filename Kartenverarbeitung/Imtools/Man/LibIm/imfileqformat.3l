@@ -1,0 +1,132 @@
+
+
+
+IMFILEQFORMAT(3IM)     SDSC IMAGE LIBRARY      IMFILEQFORMAT(3IM)
+
+
+
+NAME
+     ImFileQFormat, ImFileQFFormat - query file's image format
+
+SYNOPSIS
+     #include "im.h"
+
+     char *ImFileQFormat( fd, fileName )
+          int fd;
+          char *fileName;
+
+     char *ImFileQFFormat( fp, fileName )
+          FILE *fp;
+          char *fileName;
+
+     ImFileFormat** ImFileFindFormat(name)
+          char* name;
+
+     char *ImFileQCompression( fd, fileName )
+          int fd;
+          char *fileName;
+
+     char *ImFileQFCompression( fp, fileName )
+          FILE *fp;
+          char *fileName;
+
+     ImCompressScheme *ImFileFindCompressionScheme(name)
+          char* name;
+
+
+
+DESCRIPTION
+     ImFileQFormat and ImFileQFFormat determine  the  image  file
+     format  in  use  by the stream selected by _f_d or _f_p, respec-
+     tively.  The name of the format is returned.
+     ImFileFindFormat returns a pointer to a pointer to the  file
+     format  structure corresponding to _n_a_m_e.   If _n_a_m_e is not in
+     the format table, then it returns NULL.
+
+     ImFileQCompression  and  ImFileQFCompression  determine  the
+     compression scheme (if any) in use by the stream selected by
+     _f_d or _f_p, respectively.  If the stream  is  compressed,  the
+     name   of  the  scheme  is  returned.   Otherwise,  NULL  is
+     returned.
+     ImFileFindCompressionScheme returns a pointer to an entry in
+     the compression scheme table corresponding to _n_a_m_e.
+
+NOTES
+     If the stream is a pipe or device,  or  a  file  opened  for
+     writing,  the stream is left untouched with no data read in.
+     The input's image file format is determined by matching  the
+     _f_i_l_e_N_a_m_e  extension  (characters after the last "." in name)
+     against a list of formats supported by  the  image  library.
+
+
+
+SDSC               Last change: June 16, 1995                   1
+
+
+
+
+
+
+IMFILEQFORMAT(3IM)     SDSC IMAGE LIBRARY      IMFILEQFORMAT(3IM)
+
+
+
+     If no match is found, a NULL character string is returned by
+     both functions.
+
+     If the stream is a file opened for reading, data is read  in
+     and checked against a list of magic numbers for schemes sup-
+     ported by the image library.  If  no  match  is  found,  the
+     _f_i_l_e_N_a_m_e  extension  is  checked,  as above.  If no match is
+     found here either, a NULL character string  is  returned  by
+     both  functions.   In any case, the stream is reset to point
+     to the first byte of the file.
+
+     If a match is found, a character pointer to the name of  the
+     matched  image  file  format  is  returned as the function's
+     value.  The returned pointer points to internal table  space
+     that should not be modified by the user.
+
+RETURNS
+     Upon success, the name of the format used by the  stream  is
+     returned.   On failure, a NULL character pointer is returned
+     and IImErrNo set to
+
+          IMESYS             System call error
+          IMEFORMATUNKNOWN   Unknown image file format
+
+SEE ALSO
+     ImIntro  (3IM),  ImErrNo  (3IM),  ImFileFormatEquivs  (3IM),
+     ImFileFormatOptions  (3IM),  ImFileFRead (3IM), ImFileFWrite
+     (3IM), ImFileQNFormat (3IM), ImFileRead  (3IM),  ImFileWrite
+     (3IM)
+
+AUTHOR
+     Dave Nadeau, Brian Duggan
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2                  Last change: June 16, 1995                SDSC
+
+
+

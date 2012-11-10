@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASQL.UpdateItem.1 = s 'UpdateItem Class'
+	{
+		CLSID = s '{AD9A870A-26E1-11D3-857D-00104B8CC00A}'
+	}
+	TRiASQL.UpdateItem = s 'UpdateItem Class'
+	{
+		CLSID = s '{AD9A870A-26E1-11D3-857D-00104B8CC00A}'
+		CurVer = s 'TRiASQL.UpdateItem.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {AD9A870A-26E1-11D3-857D-00104B8CC00A} = s 'UpdateItem Class'
+		{
+			ProgID = s 'TRiASQL.UpdateItem.1'
+			VersionIndependentProgID = s 'TRiASQL.UpdateItem'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{62ECE770-EC1D-4680-9A37-B5CD0BF0C1BC}'
+		}
+	}
+}

@@ -1,0 +1,48 @@
+'\"t
+.TH TAGENTRYQTAG 3TAG "July 1990" "SDSC" "TAG TABLE"
+.SH NAME
+TagEntryQTag - query the tag field of a tag table entry
+.SH SYNOPSIS
+\fB
+.nf
+#include "sdsc.h"
+
+extern int TagErrNo;
+
+char *TagEntryQTag( tagEntry )
+	TagEntry *tagEntry;
+.fi
+\fR
+.SH DESCRIPTION
+\fITagEntryQTag\fR returns a pointer to the first character in the
+NULL-terminated tag character string for the \fItagEntry\fR.
+.SH NOTES
+For a description of the fields of a tag table entry, see the \fBman\fP page
+on \fITagEntryAlloc\fR(3TAG).
+.LP
+The character pointer returned points to the actual stored tag string.
+The characters it points to should not be modified.
+.SH RETURNS
+On success, \fITagEntryQTag\fR returns the tag entry's tag string.
+On failure, \fINULL\fR is returned and \fITagErrNo\fR set to:
+.sp
+.TS
+center;
+l l.
+TAGENULLTAGENTRY	The tag entry argument is bad
+.TE
+.SH SEE ALSO
+TagEntryAlloc(3TAG),
+TagEntryFree(3TAG),
+TagTableQDirect(3TAG),
+TagEntryQNthEntry(3TAG),
+TagEntryQNthOccur(3TAG),
+TagEntryQValue(3TAG),
+TagEntryQValueType(3TAG)
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

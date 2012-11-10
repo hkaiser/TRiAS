@@ -1,0 +1,70 @@
+// ----------------------------------------------------------------------
+//
+// NT_allModel_h -- provide header code common to all models
+//
+//   NT-specific version: No Template usage, and fixes for VC++
+//
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\\
+//                                                                     \\
+// NOTICE:                                                              \\
+//   This file is part of "The SI Library of Unit-Based Computation."  \\
+//   See "doc/README" for copyright, license, and other information.   \\
+//                                                                     \\
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\\
+//
+// History:
+//   19-Jan-1999  MF  Initiated, based on allModel_h
+//	 22-Jan-1999  MF  Added constructors Element(i,w) needed for VC++
+// ----------------------------------------------------------------------
+
+ 
+  // -----  Provide the standard dimensions:
+  //
+
+#define u( name, p1, p2, p3, p4, p5, p6, p7 )		\
+    typedef DimensionedQuantity name;
+#include "dims.dat"
+#undef u
+
+  // Kludge for VC++ only:  pascal is considered a keyword
+//#define pascal NT_PASCAL
+
+  // -----  Declare the standard units and constants:
+  //
+
+#define u( type, name, value )	\
+    extern const type name;
+#define a( type, name, value )	\
+    namespace abbreviations { u(type, name, value) }
+#include "consts.dat"
+#undef a
+#undef u
+
+  // -----  Declare information about elements:
+  //
+namespace elements  {
+
+    struct Element  {
+      unsigned short atomicnumber;
+      AtomicWeight   atomicweight;
+	  inline Element (const Element & orig) : 
+				atomicnumber(orig.atomicnumber), 
+				atomicweight(orig.atomicweight)  {}
+	  inline Element (unsigned short an, AtomicWeight aw) : 
+				atomicnumber(an), atomicweight(aw) {}
+    };  // Element
+
+    extern const Element periodictable[];
+
+    #define e(atnum, abbr, name, atwt)		\
+      extern const Element & name;	\
+      extern const Element & element ## atnum;
+    #include "elements.dat"
+    #undef e
+
+}  // elements
+
+  // ----- Support user macro to provide custom names for dimensions
+  //       (moot in NT, but needed for code compatibility)
+  #define CustomDimension( name, p1, p2, p3, p4, p5, p6, p7 )		\
+    typedef DimensionedQuantity name;

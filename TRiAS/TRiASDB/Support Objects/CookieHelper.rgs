@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiAS.CookieHelper.1 = s 'CookieHelper Class'
+	{
+		CLSID = s '{BED66F3A-7351-11D2-9EF1-006008447800}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {BED66F3A-7351-11D2-9EF1-006008447800} = s 'CookieHelper Class'
+		{
+			ProgID = s 'TRiAS.CookieHelper.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

@@ -1,0 +1,27 @@
+HKCR
+{
+	TRiAS.Geometry.OGCPoint.1 = s 'OGCPoint Object'
+	{
+		CLSID = s '{C8FB764C-8BE0-40AB-9B3E-8EEFB32AF356}'
+	}
+	TRiAS.Geometry.OGCPoint = s 'OGCPoint Object'
+	{
+		CLSID = s '{C8FB764C-8BE0-40AB-9B3E-8EEFB32AF356}'
+		CurVer = s 'TRiAS.Geometry.OGCPoint.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {C8FB764C-8BE0-40AB-9B3E-8EEFB32AF356} = s 'OGCPoint Object'
+		{
+			ProgID = s 'TRiAS.Geometry.OGCPoint.1'
+			VersionIndependentProgID = s 'TRiAS.Geometry.OGCPoint'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Both'
+			}
+			'TypeLib' = s '{6A0120C3-70C6-11D1-974B-00A024D6F582}'
+			'Version' = s '1.0'
+		}
+	}
+}

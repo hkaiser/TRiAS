@@ -1,0 +1,134 @@
+<html>
+<body>
+<pre>
+<h1>Erstellungsprotokoll</h1>
+<h3>
+--------------------Konfiguration: Segment - Win32 Debug--------------------
+</h3>
+<h3>Befehlszeilen</h3>
+Erstellen der temporären Datei  "D:\Temp\RSP688.bat" mit Inhalten
+[
+@echo off
+nmake -nologo -f version.mak Segment.def
+]
+Erstellen der Befehlzeile "D:\Temp\RSP688.bat"
+Erstellen der temporären Datei  "D:\Temp\RSP689.bat" mit Inhalten
+[
+@echo off
+nmake -nologo -f version.mak Segment.rcv
+]
+Erstellen der Befehlzeile "D:\Temp\RSP689.bat"
+Erstellen der temporären Datei  "D:\Temp\RSP68A.bat" mit Inhalten
+[
+@echo off
+nmake -nologo -f version.mak Version.h
+]
+Erstellen der Befehlzeile "D:\Temp\RSP68A.bat"
+Erstellen der Befehlzeile "midl.exe /nologo /D "_DEBUG" /tlb "Debug/Segment.tlb" /Oicf /win32 "D:\TRiASDev.MVC\xtension\Segment\Segment.idl""
+Performing Custom Build Step on .\Segment.tpl
+Segment.def
+Performing Custom Build Step on .\Segmentv.tpl
+Segment.rcv
+Performing Custom Build Step on .\Version.tpl
+Version.h
+Creating command line "rc.exe /l 0x407 /fo"Debug/Segment.res" /d "_DEBUG" /d "_AFXDLL" "D:\TRiASDev.MVC\xtension\Segment\Segment.rc"" 
+Erstellen der temporären Datei  "D:\Temp\RSP68B.tmp" mit Inhalten
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_AFXEXT" /Fp"Debug/Segment.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"D:\TRiASDev.MVC\xtension\Segment\Segment.cpp"
+"D:\TRiASDev.MVC\xtension\Segment\SegmentExt.cpp"
+"D:\TRiASDev.MVC\xtension\Segment\SegmKey.cpp"
+"D:\TRiASDev.MVC\xtension\Segment\Strecken.cpp"
+"D:\TRiASDev.MVC\xtension\Segment\StreckenDlg.cpp"
+"D:\TRiASDev.MVC\xtension\Segment\Strings.cpp"
+"D:\TRiASDev.MVC\xtension\Segment\worker.cpp"
+]
+Creating command line "cl.exe @D:\Temp\RSP68B.tmp" 
+Erstellen der temporären Datei  "D:\Temp\RSP68C.tmp" mit Inhalten
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_AFXEXT" /Fp"Debug/Segment.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"D:\TRiASDev.MVC\xtension\Segment\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\Temp\RSP68C.tmp" 
+Erstellen der temporären Datei  "D:\Temp\RSP68D.tmp" mit Inhalten
+[
+delayimp.lib cont50d.lib /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/Segmentd.pdb" /debug /machine:I386 /def:".\Segment.def" /out:"Debug/Segmentd.ext" /implib:"Debug/Segmentd.lib" /pdbtype:sept 
+.\Debug\Segment.obj
+.\Debug\SegmentExt.obj
+.\Debug\SegmKey.obj
+.\Debug\StdAfx.obj
+.\Debug\Strecken.obj
+.\Debug\StreckenDlg.obj
+.\Debug\Strings.obj
+.\Debug\worker.obj
+.\Debug\Segment.res
+]
+Erstellen der Befehlzeile "link.exe @D:\Temp\RSP68D.tmp"
+Erstellen der temporären Datei  "D:\Temp\RSP68E.bat" mit Inhalten
+[
+@echo off
+xcopy /F ".\Debug\Segmentd.ext" "D:\TRiAS4_DEBUG"
+xcopy /F ".\Debug\Segmentd.pdb" "D:\TRiAS4_DEBUG"
+]
+Erstellen der Befehlzeile "D:\Temp\RSP68E.bat"
+Typbibliothek wird erstellt...
+Processing D:\TRiASDev.MVC\xtension\Segment\Segment.idl
+Segment.idl
+Processing D:\PLATFORM SDK\INCLUDE\oaidl.idl
+oaidl.idl
+Processing D:\PLATFORM SDK\INCLUDE\objidl.idl
+objidl.idl
+Processing D:\PLATFORM SDK\INCLUDE\unknwn.idl
+unknwn.idl
+Processing D:\PLATFORM SDK\INCLUDE\wtypes.idl
+wtypes.idl
+Processing D:\PLATFORM SDK\INCLUDE\basetsd.h
+basetsd.h
+Processing D:\PLATFORM SDK\INCLUDE\guiddef.h
+guiddef.h
+Processing D:\PLATFORM SDK\INCLUDE\ocidl.idl
+ocidl.idl
+Processing D:\PLATFORM SDK\INCLUDE\oleidl.idl
+oleidl.idl
+Processing D:\PLATFORM SDK\INCLUDE\servprov.idl
+servprov.idl
+Processing D:\PLATFORM SDK\INCLUDE\urlmon.idl
+urlmon.idl
+Processing D:\PLATFORM SDK\INCLUDE\msxml.idl
+msxml.idl
+Processing D:\TRIASDEV.MVC\INCLUDE\IDL\ProgInd2.idl
+ProgInd2.idl
+Processing C:\PROGRAMME\MICROSOFT SDK\INCLUDE\oaidl.acf
+oaidl.acf
+Processing C:\PROGRAMME\MICROSOFT SDK\INCLUDE\ocidl.acf
+ocidl.acf
+Ressourcen werden kompiliert...
+Kompilierung läuft...
+StdAfx.cpp
+d:\triasdev.mvc\xtension\segment\segmentconfig.h(27) : TODO: "Decide if to use MFC or WTL!"
+Kompilierung läuft...
+Segment.cpp
+SegmentExt.cpp
+SegmKey.cpp
+D:\TRiASDev.MVC\xtension\Segment\SegmentExt.cpp(144) : TODO: "Add clean up code here!"
+Strecken.cpp
+StreckenDlg.cpp
+Strings.cpp
+worker.cpp
+Generieren von Code...
+Linker-Vorgang läuft...
+   Bibliothek Debug/Segmentd.lib und Objekt Debug/Segmentd.exp wird erstellt
+<h3>Ausgabefenster</h3>
+Benutzerdefinierte Build-Stufe wird für .\Debug\Segmentd.ext ausgeführt
+D:\TRiASDev.MVC\xtension\Segment\Debug\Segmentd.ext -> D:\TRiAS4_DEBUG\Segmentd.ext
+1 Datei(en) kopiert
+D:\TRiASDev.MVC\xtension\Segment\Debug\Segmentd.pdb -> D:\TRiAS4_DEBUG\Segmentd.pdb
+1 Datei(en) kopiert
+
+
+
+<h3>Ergebnisse</h3>
+Segmentd.ext - 0 Fehler, 0 Warnung(en)
+</pre>
+</body>
+</html>

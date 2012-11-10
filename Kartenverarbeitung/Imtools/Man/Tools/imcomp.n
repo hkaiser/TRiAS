@@ -1,0 +1,778 @@
+'\"et
+.de Cb		\" Courier Begin
+.in +0.25i
+.ft CW
+\s-1
+.nf
+..
+.de Ce		\" Courier End
+.ft R
+.fi
+\s+1
+.in -0.25i
+..
+.if t .TH IMCOMP 1IM "June 27, 1995" "San Diego Supercomputer Center" "IMAGE TOOLS" 
+.if n .TH IMCOMP 1IM "June 27, 1995" "SDSC" "IMAGE TOOLS"
+.SH NAME
+imcomp  -  composite two images together
+.SH SYNOPSIS
+\fBimcomp\fR [\fIoptions\fR] \fIinfile1name\fR \fIinfile2name\fR \fIoutfilename\fR
+.SH DESCRIPTION
+\fBimcomp\fR combines two input images together using a digital compositing
+operation that uses the alpha channels (coverage masks) of
+one or both input images.
+The resulting composite image is stored to the output file.
+Input and output image file formats may be different.
+.SH OPTIONS
+\fBimcomp\fR has a variety of options in the following categories:
+.LP
+.RS 0.5i
+.TS
+l l.
+File Selection	What input and output files to use
+Format Selection	What image file format to use
+Format Control	What variant of a file format to generate
+Standard	Standard generic options on all SDSC tools
+Compositing	How to combine two images
+Field(s)	Which field(s) are composited
+Positioning	How to position and size foreground
+.TE
+.RE
+.LP
+\fIFile Selection\fR, \fIFormat Selection\fR, \fIFormat Control\fR, and
+\fIStandard\fR options are common to all SDSC image tools and are
+discussed in depth in the \fBman\fP page for \fBimconv\fR(1IM).
+.LP
+All options can be abbreviated to the first few unique characters.
+.SS "Compositing"
+\fICompositing\fR is a technique that combines pixels of two input images
+together to create a third \fIcomposite\fR image.  Compositing is commonly
+used to take two separately computed images and combine them, with portions
+of one obscuring portions of the other.
+In such cases the first input image would act
+as a \fIforeground\fR image, and the second as a \fIbackground\fR image.
+.LP
+Foreground and background images can be composited together to create a variety
+of special effects, or as an aid to speed up the rendering of complex
+scenery.  For instance, a complex computer-generated robot must walk
+across the screen in front of a computer-generated library filled with books.
+The library could
+be modeled, book by book, and the robot modeled, joint for joint.  An image
+showing the robot in the library could be rendered by combining both models
+and sending the entire mass of geometry off to the renderer all at once.
+A single image would result.
+.LP
+To render an animation of the robot moving in front of the library one could
+send both masses of geometry to the renderer for each frame.  However, the
+library is static in this scene and the interaction between the robot and
+its books nil.  The time spent rendering, and rerendering, each library book,
+frame after frame is a waste and dramatically increases the rendering time
+of the animation.
+.LP
+A more efficient approach would be to render the static library just once,
+without the robot.  The robot would then be rendered for each frame, but
+without the library behind it (just a solid black background).
+Once rendering is
+complete, the separate foreground (robot) and background (library) images
+can be composited together to create a series of frames showing the robot
+moving in front of the library.  The total rendering time for such an
+approach is considerably less.
+.LP
+Such compositing tricks are regularly used in Hollywood in order to place
+actors in front of locations they aren't in, or to make spaceships fly all
+about in front of swirling planets or sparkley star fields.  In video the
+same technique, called \fIkeying\fR, is used to place the weather man in
+front of a computer-generated weather map.
+.LP
+In each of these cases, the compositing operation must know what portions of
+the foreground image to paste over the background image.  This information is
+supplied in a \fIcoverage mask\fR, historically referred to as an \fIalpha
+channel\fR or sometimes a \fImatte\fR.
+.LP
+Alpha channels are usually generated at the same time the color portion of
+the image is rendered.  Alpha information is stored as a one-byte integer
+value "behind" each image pixel.  An alpha value of 0 indicates the pixel
+is \fItransparent\fR, or wild.  An alpha value of 255 indicates the pixel
+is \fIopaque\fR.  For instance, in the robot example, all pixels showing
+colors for the robot itself would have alpha values of 255.  All pixels for
+the blank background behind the robot (remember the robot's rendered
+separately from the library) would be transparent, or wild, and have alpha
+values of 0.
+.LP
+When compositing a foreground image over a background image, the portions
+of the foreground image that are opaque (alpha = 255) will obscure the
+background image.  Portions of the foreground image that are transparent
+(alpha = 0) will let the background image show through.
+.LP
+Alpha values between 0 and 255 indicate a level of transparency.  Foreground
+image pixels with alpha values of 128, for instance, would be blended with
+background pixels to create a pseudo-translucency effect.  This is most often
+used to blend the edges of foreground objects so that crisp, noticeable jaggies
+don't result.
+.LP
+\fBimcomp\fR supports four compositing algorithms considered standard in
+digital compositors:
+.LP
+.RS 0.5i
+.nf
+Over
+Atop
+Inside
+Outside
+.fi
+.RE
+.LP
+The \fIover\fR algorithm is the one most often used and the one appropriate for
+placing portions of a foreground image over a background image.
+.LP
+\fIatop\fR is rarely used, but can be appropriate when certain special
+effects are desired.
+.LP
+\fIinside\fR and \fIoutside\fR are opposites of each other and are typically
+used when creating \fImattes\fR, black and white masks that isolate portions
+of an image (see matte descriptions in the NOTES section below).
+.LP
+Each of these composition algorithms are discussed below.  Discussions use
+the following nomenclature:
+.LP
+.RS 0.5i
+.IP "In1Field"
+A pixel's field (usually a color attribute) from input image 1.
+.IP "In2Field"
+A pixel's field (usually a color attribute) from input image 2.
+.IP "OutField"
+A pixel's field (usually a color attribute) for the output image.
+.IP "In1Alpha"
+A pixel's alpha field from input image 1.
+.IP "In2Alpha"
+A pixel's alpha field from input image 2.
+.RE
+.SS "Over"
+\fB-over\fR selects the \fIover\fR compositing algorithm.  \fIOver\fR is
+used to place opaque portions of the first input image over the second
+input image.  \fIOver\fR is by far the most common compositing operation
+and is the default if no specific composite operation is given on the
+command-line.
+.LP
+\fIOver\fR uses the following formula for each pixel:
+.RS 0.5i
+.Cb
+OutField = In1Field * (In1Alpha/255.0) +
+	In2Field * (1.0 - (In1Apha/255.0))
+.Ce
+.RE
+.LP
+The first input image must have an alpha channel.  \fBimcomp\fR will
+report an error and exit if it does not.
+.LP
+An alpha channel on the second input image is not needed or used by the
+\fIover\fR operation.
+.SS "Atop"
+\fB-atop\fR selects the \fIatop\fR compositing algorithm.  \fIAtop\fR is
+used to combine the opaque portions of the two input images, merging their
+colors by addition of their field values.  The \fIatop\fR operation is
+mostly used for special effects and has a rather non-intuitive effect that
+can cause unexpected color shifts.
+.LP
+\fIAtop\fR uses the following formula for each pixel:
+.RS 0.5i
+.Cb
+OutField = In1Field * (In2Alpha/255.0) +
+	In2Field * (1.0 - (In1Alpha/255.0))
+.Ce
+.RE
+.LP
+Both input images must have alpha channels.  \fBimcomp\fR will report an
+error and exit if they do not.
+.SS "Inside"
+\fB-inside\fR selects the \fIinside\fR compositing algorithm.  \fIInside\fR
+uses pixels from the first image whenever the second image is opaque.  This
+has the effect of substituting the first image into the second image in a
+controlled way and is most often used when creating \fImattes\fR, a special
+form of coverage mask that may be used in chains of compositing operations.
+\fIinside\fR's specialized function makes it rare for typical compositing work.
+.LP
+\fIInside\fR uses the following formula for each pixel:
+.RS 0.5i
+.Cb
+OutField = In1Field * (In2Alpha/255.0)
+.Ce
+.RE
+.LP
+The second input image must have an alpha channel.  \fBimcomp\fR will
+report an error and exit if it does not.
+.LP
+An alpha channel on the first input image is not needed or used by the
+\fIinside\fR operation.
+.SS "Outside"
+\fB-outside\fR selects the \fIoutside\fR compositing algorithm.  \fIOutside\fR
+is the reverse of \fIinside\fR.  Where \fIinside\fR uses pixels from the
+first image where the second is opaque, \fIoutside\fR uses pixels from the
+first image where the second is transparent.  Like \fIinside\fR, \fIoutside\fR
+is most often used for creating \fImattes\fR for use in chains of compositing
+operations.
+.LP
+\fIOutside\fR uses the following formula for each pixel:
+.RS 0.5i
+.Cb
+OutField = In1Field * (1.0 - (In2Alpha/255.0))
+.Ce
+.RE
+.LP
+The second input image must have an alpha channel.  \fBimcomp\fR will
+report an error and exit if it does not.
+.LP
+An alpha channel on the first input image is not needed or used by the
+\fIoutside\fR operation.
+.SS "Field(s)"
+\fBimcomp\fR applies the compositing algorithm to fields of the
+input images in order to generate the output image.  By default, all fields
+in the input images are composited into the output image.  Users may restrict
+or alter \fBimcomp\fR's field use by compositing on specific fields using
+one or more of the following options:
+.LP
+.RS 0.5i
+.TS
+l l.
+\fBOption\fR	\fBComposite\fR
+_
+\fB-mono\fR	the monochrome field
+\fB-index\fR	the color index field
+\fB-alpha\fR	the alpha field
+_
+\fB-red\fR	the red field
+\fB-green\fR	the green field
+\fB-blue\fR	the blue field
+_
+\fB-hue\fR	on the virtual hue field
+\fB-saturation\fR	on the virtual saturation field
+\fB-intensity\fR	on the virtual intensity field
+.TE
+.RE
+.LP
+In general, composite fields named by any of the above options must exist
+in both input images.  For instance, compositing using \fB-index\fR for color
+index fields doesn't make sense on RGB images.  A certain amount of automatic
+image type conversion is performed by \fBimcomp\fR in order to make things
+a little bit more flexible:
+.LP
+.IP "\fB-mono\fR"
+Monochrome compositing requires that both input images have monochrome
+image fields.
+.IP "\fB-index\fR"
+Color index compositing requires that both input images have color index
+image fields.
+.IP "\fB-alpha\fR"
+Alpha channel compositing requires that both input images have alpha image
+fields.  Please note that this is different from the compositing operation's
+use of alpha channels.  The composite operation uses alpha values to decide
+how to affect a particular field of a pixel.  \fB-alpha\fR selects that that
+field in fact be the alpha channel itself.
+.IP "\fB-red, \fB-green\fR, \fB-blue\fR"
+Compositing on red, green, or blue fields works for any image, whether
+monochrome, grayscale, color indexed, or RGB.  Such images are promoted
+internally to RGB images in order to accomplish the compositing.
+.IP "\fB-hue\fR, \fB-saturation\fR, \fB-intensity\fR"
+Compositing on the virtual image fields of hue, saturation, or intensity
+works for any image type.  Input image color field values are converted
+internally to the HSI color space in order to accomplish the compositing.
+.LP
+Compositing may occur on more than one field at once with the restriction
+that the four color spaces not be mixed on the same command-line:  monochrome,
+color indexes, RGB, and HSI.
+.RS 0.5i
+\fBIllegal\fR
+.RS 0.5i
+imcomp one.x two.x -red -index out.x
+imcomp one.x two.x -hue -mono out.x
+imcomp one.x two.x -index -saturation -red out.x
+.Ce
+.RE
+\fBLegal\fR
+.RS 0.5i
+imcomp one.x two.x -red -green -blue out.x
+imcomp one.x two.x -hue out.x
+imcomp one.x two.x -index -alpha out.x
+imcomp one.x two.x -saturation -alpha out.x
+.SS "Positioning"
+There also exist provisions for positioning and sizing the foreground image.
+This is useful since sometimes only a part of the foreground is desired in the
+composite. The positioning of the foreground in respect to the background is
+useful if the foreground needs to be somewhere other than the upper left hand
+corner of the image.
+.LP
+.RS 0.5i
+.TS
+l l.
+\fB-xposition x\fR	Specify left edge of foreground into background
+\fB-yposition y\fR	Specify top edge of foreground into background
+\fB-xstart x\fR	Specify left edge in foreground data
+\fB-ystart y\fR	Specify top edge in foreground data
+\fB-xsize width\fR	Specify width of foreground data
+\fB-ysize height\fR	Specify height of foreground data
+.TE
+.RE
+.IP "\fB-xposition -yposition\fR"
+Allows you to position the foreground in the background. The foreground
+can be positioned at a new x and y position other than the default, which is
+0 and 0. In other words, if these arguments are not specified, then the
+foreground image will be composited onto the background extending from the
+upper left hand corner. Quantities are specified in pixels.
+.IP "\fB-xstart -ystart\fR"
+Allows you to pick an upper left hand corner of the foreground. All compositing
+of the foreground will start from this corner. The default for xstart is 0, or 
+the left hand edge. The default for ystart is 0, or the top edge. Quantities 
+are specified in pixels.
+.IP "\fB-xsize -ysize\fR"
+Allows you to choose how much of the foreground to composite onto the 
+background, extending from the corner specified by xstart and ystart. (Note 
+that this corner will be 0,0 if there were no xtstart or ystart quantities 
+given.) The xsize argument is how many pixels to composite out to the right of 
+this corner. The ysize argument is how many pixels to composite downward from 
+this corner. Quantities are specified in pixels.
+.LP
+.Ce
+.RE
+.RE
+.SS "Alpha Files"
+.IP "\fB-inalphafile\fB" 
+Allows you to give the name of an external file whose alpha channel shall
+be used in lieu of the alpha channel of the file specified with \fB-infile\fB.
+This option is particularly useful in conjunction with the -inalphamap option.
+Here are some ways in which these two options could be used:
+.LP
+Alias (on Silicon Graphics computers) generates files known as "matte" files.
+These files are a variant of the Alias 'pix' format.  They are simply greyscale
+files whose values correspond to the alpha channel of a corresponding RGB
+pix file.  If you have, say, an rgb file named dinosaur.pix and a matte
+file named dinomatte.pix, and you wanted to put your dinosaur against a
+background of swamps (swamps.pix), then you would type:
+.LP
+.RS 0.5i
+imcomp dinasaur.pix -inalphafile dinomatte.pix swamps.pix -inalphamap alpha=grey output.rgb
+.RE
+.LP
+To use the red channel of red.rgb as the alpha channel for car.rgb, while
+compositing the car against a freeway (freeway.rgb), you would type:
+.LP
+.RS 0.5i
+imcomp car.rgb freeway.rgb -inalphafile red.rgb -inalphamap alpha=red out.rgb
+.RE
+.SH NOTES
+Compositing historically originated in the analog domain where it was (and
+still is) used for combining separate film footage into a
+single composite result.  This is used for special effects that can place
+an alien spaceship in the sky above a sleepy suburban neighborhood, or a
+giant dinosaur on the streets of New York.  It is also used for more subtle
+effects like stars in a night sky (stars don't film well, so they are usually
+faked using compositing special effects).
+.LP
+In film, two rolls of film are processed to produce \fImattes\fR.  If the
+matte changes from frame to frame, such as for a moving object, then it's
+called a \fItraveling matte\fR.  In either case the matte is a black and white
+coverage mask that delimits the area of interest of each source film footage.
+.LP
+For instance, to place a starship in front of a planet takes several steps:
+.LP
+.RS 0.5i
+.IP "1."
+Film the starship model in front of a solid blue screen (or any color not
+in the model itself).  Move the camera or model around to simulate flying
+acrobatics.
+.IP "2."
+Film a model or painting of a planet, complete with star-filled sky.
+.IP "3."
+Create the first traveling matte of the starship model footage.  Everywhere
+there's a blue background in the starship footage, make the matte film black.
+Everywhere else (where the starship is) make it white.  If you watched this
+film you'd just see a flat white blobby
+silhouette of the spaceship flying about on a black background.
+.IP "4."
+Create the second traveling matte by doing the same thing, but make the
+blue background area white, and the spaceship area black.  If you watched this
+film you'd see a flat black blobby
+silhouette of the spaceship flying about on a white background.
+.IP "5."
+Run the first matte (white where the starship is) and the raw starship
+footage through a projector back-to-back.  Light from the projector bulb
+will only make it through the combined matte and starship film where it
+is light in both pieces of film.  Because the matte only lets light through
+in areas the starship is, only the starship shows up on the projection.
+The blue background (and model stand, strings, stray cables, floor, and other
+stage clutter) of the raw starship
+footage doesn't show up.  Expose a new roll of film with this starship-only
+result.
+.IP "6."
+Do the same kind of thing but this time use the second matte (white where
+the starship isn't) and the planet footage.  When run through the projector,
+light will only make it through the planet film and the second matte for the
+areas the starship isn't covering.  Double-expose the same roll of film from
+step 5 with this planet-only result.  You now have one piece of film with
+the starship and the planet, and neither overlaps the other.
+.RE
+.LP
+If we didn't go through all this hassle and just double-exposed one roll of
+film with both the space ship and the planet, we'd see the planet through
+the darker parts of the spaceship and it would look weird.  If you watch
+old cheesy science fiction movies you see this kind of effect a lot.  It's
+cheap, but not very realistic.  To get realism you have to do compositing
+using the steps above.
+.LP
+Obviously the above procedure is pretty tedious.  If you want two separately
+filmed spaceships in the scene, then you need to go through
+another compositing stage.  Three spaceships and you've got yet another stage.
+And so on for each additional independently filmed scene element.  The Star
+Wars epic, for instance, went to extraordinary levels of compositing to get
+all those independently moving Tie-fighters, X-wing fighters, Y-wing fighters,
+the Death Star, and the Millennium Falcon all into one scene.
+.LP
+The difficulty with film compositing is that it experiences generation loss.
+Each time footage is transferred to a new roll of film (steps 5 and 6 of
+the procedure above), the footage gets grainier and less crisp.  The darks
+get lighter and the image quality goes down a bit.  In a complex compositing
+nightmare like a Star Wars film, the number of compositing passes is huge
+and this generation loss becomes quite noticeable.  The next time you watch
+a Star Wars film, watch for differences in scene quality from cut to cut during
+a frantic battle.  Scenes with fewer ships in them will look crisper and the
+darks darker.
+.LP
+It is this generation loss problem that prompted George Lucas to have PIXAR
+develop its original PIXAR Image Computer.  The PIXAR system was used to do
+digital compositing, much like \fBimcomp\fR does.  Raw footage was scanned
+in, frame by frame, and matte's generated digitally.  The mattes and footage
+could then be combined any number of times, digitally, without any generation
+loss.  The final result is then recorded back to film just as crisp and clean as
+the original footage.  It is this type of system that Disney uses today for
+combining cell animation and computer animation.
+.LP
+\fBimcomp\fR's compositing operations perform this same kind of digital
+compositing.  \fB-inside\fR and \fB-outside\fR may be used to generate
+mattes.  However, more commonly, \fB-over\fR is used to accomplish in one
+step the full 6-step compositing operation outlined earlier.
+.LP
+\fBimcomp\fR allows users to composite individual image fields, and to
+composite in the HSI color space instead of just the RGB color space.
+The red pixels in the first image can be composited on
+to the red channel of the second to generate a third image.  Blue and green
+pixels are unchanged.  Or, the saturation values of one image can be
+composited over a second image's colors to create an interesting form of
+double exposure.
+.LP
+Because of the extra per-pixel operation formula evaluation, \fBimcomp\fR
+can be somewhat slow on large images.  \fBimpaste\fR(1IM) is a stripped down
+version of the compositor that simply pastes the entire first input image
+atop the second image, without regard to an alpha channel.  Without
+the additional
+formula evaluation per pixel, \fBimpaste\fR(1IM) is considerably faster.
+.LP
+Alpha channels may be added to images that don't already have
+them by using tools like
+\fBimfill\fR(1IM) and \fBimadjust\fR(1IM).  \fBimfill\fR(1IM) will create a
+solid or ramped alpha channel useful for special effects.
+\fBimadjust\fR(1IM) will create alpha channels whose values vary based upon
+selection criteria, such as "Set alpha to 0 (transparent) for all black
+pixels."  Additionally, \fBimkey\fR(1IM) will automatically add an alpha
+channel to an image for you while compositing.  That is, \fBBimkey\fR will
+let you composite based on fields other than the alpha field.  For more complex
+alpha channel work, paint systems are more appropriate.
+.LP
+Color index compositing is rarely a good thing to do.  Compositing operations
+apply math operations to calculate new color index values.  Those new values
+will point into the output image's color table, cloned from the second input
+image.  It is unlikely that those new index values will point to colors that
+look right.  The operation may even create illegal color indexes that point
+to CLT slots beyond the end of the CLT.  Beware color index compositing!
+It usually makes more sense to composite in RGB space instead.
+.LP
+For notes regarding file format conversion and standard image tool
+options, see the \fBman\fP page on \fBimconv\fR(1IM).
+.LP
+Error messages are reported to \fBstderr\fR.
+.SH EXAMPLES
+Composite one Sun Rasterfile image \fIover\fR another:
+.RS 0.5i
+.LP
+\fBimcomp inone.ras intwo.ras out.rgb\fR
+.RE
+.LP
+Do the same operation, but only composite the red field:
+.RS 0.5i
+.LP
+\fBimcomp inone.ras intwo.ras -red out.ras\fR
+.RE
+.LP
+Composite using the saturation and hue fields and the \fIoutside\fR operation:
+.RS 0.5i
+.LP
+\fBimcomp inone.ras intwo.ras -saturation -hue -outside out.ras\fR
+.RE
+.LP
+Composite, but move the foreground image right by 20 pixels and down by 50:
+.RS 0.5i
+.LP
+\fBimcomp inone.ras intwo.ras -xposition 20 -yposition 50 out.ras\fR
+.RE
+.LP
+Composite only using a rectangle sub-region of the foreground. The left
+hand edge of the foreground composite will start at 10 pixels into the left 
+edge of foreground and will be 30 pixels wide and 40 pixels high against
+the background:
+.RS 0.5i
+.LP
+\fBimcomp inone.ras intwo.ras -xstart 10 -xsize 30 -ysize 40 out.ras\fR
+.RE
+.SH "TUTORIAL EXAMPLES"
+The different effects obtained with the four compositing algorithms can
+sometimes be confusing.  The following examples are step-by-step procedures
+for creating a set of test cases that can be displayed to gain
+greater insight into compositing trickery.
+.LP
+For these examples, two sample input images are created using \fBimfill\fR(1IM):
+.LP
+.IP "Image One:  \fBstripes.ras\fR"
+The following steps create a 100 x 100 RGB Sun Rasterfile
+image with a red background
+and three purple stripes.  The background has an alpha value of 0 (transparent)
+and the stripes an alpha value of 255 (opaque):
+.RS 0.5i
+.Cb
+imfill -xsize 100 -ysize 100 -red 200 -alpha 0 stripes.ras
+imfill -ypos 10 -ysize 20 -blue 200 -alpha 255 stripes.ras stripes.ras
+imfill -ypos 45 -ysize 10 -blue 200 -alpha 255 stripes.ras stripes.ras
+imfill -ypos 70 -ysize 20 -blue 200 -alpha 255 stripes.ras stripes.ras
+.Ce
+.RE
+.IP "Image Two:  \fBcee.ras\fR"
+The following steps create a 100 x 100 RGB Sun Rasterfile
+image with a green background
+and a yellow letter C.  The background has an alpha value of 0 (transparent),
+and the C an alpha value of 255 (opaque):
+.RS 0.5i
+.Cb
+imfill -xsize 100 -ysize 100 -green 200 -alpha 0 cee.ras
+imfill -xpos 20 -xsize 10 -ypos 10 -ysize 80 -alpha 255 -red 200 cee.ras cee.ras
+imfill -xpos 30 -xsize 50 -ypos 10 -ysize 10 -alpha 255 -red 200 cee.ras cee.ras
+imfill -xpos 30 -xsize 50 -ypos 80 -ysize 10 -alpha 255 -red 200 cee.ras cee.ras
+.Ce
+.RE
+.LP
+.SS "cee.ras over stripes.ras"
+This test case may be generated using:
+.RS 0.5i
+.Cb
+imcomp cee.ras stripes.ras -over over.ras
+.Ce
+.RE
+.LP
+The resulting image places the opaque portions of \fBcee.ras\fR over
+pixels of \fBstripes.ras\fR.  Since the opaque portions of \fBcee.ras\fR
+are those pixels that are a part of the yellow C, the resulting image
+\fIover.ras\fR has a yellow C on a background of red with purple stripes.
+.LP
+Pixels involved in this compositing operation fell into two categories:
+.IP "1."
+When pixels in \fBcee.ras\fR had alpha values of 255 (opaque), they were
+copied directly to the output image.
+.IP "2."
+All other output image pixels were filled in with pixels from \fBstripes.ras\fR.
+.SS "stripes.ras over cee.ras"
+This test case may be generated using:
+.RS 0.5i
+.Cb
+imcomp stripes.ras cee.ras -over over.ras
+.Ce
+.RE
+.LP
+The resulting image places the opaque portions of \fBstripes.ras\fR over pixels
+of \fBcee.ras\fR.  Since the opaque portions of \fBstripes.ras\fR are those
+pixels that make up the purple stripes, the resulting image \fIover.ras\fR
+has purple stripes overlapping the green background and yellow C of
+\fBcee.ras\fR.
+.LP
+Pixels involved in this compositing operation fell into two categories:
+.IP "1."
+When pixels in \fBstripes.ras\fR had alpha values of 255 (opaque), they were
+copied directly to the output image.
+.IP "2."
+All other output image pixels were filled in with pixels from \fBcee.ras\fR.
+.SS "cee.ras atop stripes.ras"
+This test case may be generated using:
+.RS 0.5i
+.Cb
+imcomp cee.ras stripes.ras -atop atop.ras
+.Ce
+.RE
+.LP
+The resulting image looks pretty weird.  The image shows the red background
+from \fBstripes.ras\fR as red stripes on a white background.  A yellow C
+hides behind the stripes.  Where the stripes and the C intersect, the
+color is black.
+.LP
+Recall the \fIatop\fR compositing operation formula:
+.RS 0.5i
+.Cb
+OutField = In1Field * In2Alpha + In2Field * (1.0 - In1Alpha)
+.Ce
+.RE
+.LP
+Pixels involved in this compositing operation fell into four categories:
+.IP "1."
+When \fBcee.ras\fR (image one) alphas are 0 (transparent) and
+\fBstripes.ras\fR (image two) alphas are 0
+(transparent), the formula evaluates to using \fBstripes.ras\fR's colors.
+\fBcee.ras\fR has 0 alpha for the green background, and \fBstripes.ras\fR has
+0 alpha for the red background between the purple stripes.  Combined we get
+red stripes where the green and red backgrounds overlap.
+.IP "2."
+When \fBcee.ras\fR alphas are 255 (opaque) and \fBstripes.ras\fR alphas are
+255 (opaque), the formula evaluates to using \fBcee.ras\fR's colors.
+\fBcee.ras\fR has 255 alpha for the yellow C, and \fBstripes.ras\fR has
+255 alpha for the purple stripes.  Combined, we get portions of a yellow C
+everywhere the purple stripes and the C overlap.
+.IP "3."
+When \fBcee.ras\fR alpha is
+255 (opaque), but \fBstripes.ras\fR is 0 (transparent),
+the formula evaluates to 0, making these portions black.
+.IP "4."
+When \fBstripes.ras\fR alpha
+is 255 (opaque), but \fBcee.ras\fR is 0 (transparent),
+the formula includes both image's color components and sums the red, green,
+and blue values each to 200's, producing white.
+.SS "stripes.ras atop cee.ras"
+This test case may be generated using:
+.RS 0.5i
+.Cb
+imcomp stripes.ras cee.ras -atop atop.ras
+.Ce
+.RE
+.LP
+The image shows the green background
+from \fBcee.ras\fR as green stripes on a black background.  A purple C
+hides behind the stripes.  Where the stripes and the C intersect, the color
+is a purple-yellow.
+.LP
+Pixels involved in this compositing operation fell into four categories:
+.IP "1."
+When \fBstripes.ras\fR (image one) alphas are 0 (transparent) and
+\fBcee.ras\fR (image two) alphas are 0
+(transparent), the formula evaluates to using \fBcee.ras\fR's colors.
+\fBstripes.ras\fR has 0 alpha for the red background, and \fBcee.ras\fR has
+0 alpha for the green background.  Combined we get
+green stripes where the green and red backgrounds overlap.
+.IP "2."
+When \fBstripes.ras\fR alphas are 255 (opaque) and \fBcee.ras\fR alphas are
+255 (opaque), the formula evaluates to using \fBstripes.ras\fR's colors.
+\fBstripes.ras\fR has 255 alpha for the purple stripes, and \fBcee.ras\fR has
+255 alpha for the yellow C.  Combined, we get portions of the purple stripes
+everywhere the purple stripes and the C overlap.
+.IP "3."
+When \fBstripes.ras\fR alpha
+is 255 (opaque), but \fBcee.ras\fR is 0 (transparent),
+the formula evaluates to 0, making these portions black.
+.IP "4."
+When \fBcee.ras\fR alpha
+is 255 (opaque), but \fBstripes.ras\fR is 0 (transparent),
+the formula includes both image's color components and sums each of
+the red, green, and blue values to produce a purple-yellow-ish color.
+.SS "cee.ras inside stripes.ras"
+This test case may be generated using:
+.RS 0.5i
+.Cb
+imcomp cee.ras stripes.ras -inside inside.ras
+.Ce
+.RE
+.LP
+The resulting image shows the yellow C and green background of \fBcee.ras\fR
+behind a set of black stripes.
+.LP
+Pixels involved in this compositing operation fell into two categories:
+.IP "1."
+When pixels in \fBstripes.ras\fR have alpha values of 255, pixels from
+\fBcee.ras\fR are copied to the output image.
+.IP "2."
+When pixels in \fBstripes.ras\fR have alpha values of 0, the output pixel
+value is zero (black).
+.SS "stripes.ras inside cee.ras"
+This test case may be generated using:
+.RS 0.5i
+.Cb
+imcomp stripes.ras cee.ras -inside inside.ras
+.Ce
+.RE
+.LP
+The resulting image shows a black background with a C-shaped stencil cut-out
+inside of which we see the red and purple stripes of \fBstripes.ras\fR.
+.LP
+Pixels involved in this compositing operation fell into two categories:
+.IP "1."
+When pixels in \fBcee.ras\fR have alpha values of 255, pixels from
+\fBstripes.ras\fR are copied to the output image.
+.IP "2."
+When pixels in \fBcee.ras\fR have alpha values of 0, the output pixel
+value is zero (black).
+.SS "cee.ras outside stripes.ras"
+This test case may be generated using:
+.RS 0.5i
+.Cb
+imcomp cee.ras stripes.ras -outside outside.ras
+.Ce
+.RE
+.LP
+The resulting image shows black stripes obscuring the green and yellow C
+image of \fBcee.ras\fR.  The image is a reversal of
+the \fIinside\fR image created using \fBimcomp cee.ras stripes.ras -inside
+inside.ras\fR.  Black stripes in the former show color in the later, and black
+stripes in the later show color in the former.  If these two images were
+combined, stripe by stripe, the result would be \fBcee.ras\fR.
+.LP
+Pixels involved in this compositing operation fell into two categories:
+.IP "1."
+When pixels in \fBstripes.ras\fR have alpha values of 0, pixels from
+\fBcee.ras\fR are copied to the output image.
+.IP "2."
+When pixels in \fBstripes.ras\fR have alpha values of 255, the output pixel
+value is zero (black).
+.SS "stripes.ras outside cee.ras"
+This test case may be generated using:
+.RS 0.5i
+.Cb
+imcomp stripes.ras cee.ras -outside outside.ras
+.Ce
+.RE
+.LP
+The resulting image shows a black C atop the red and purple stripes of
+\fBstripes.ras\fR.
+The image should look like a reversal of
+the \fIinside\fR image created using \fBimcomp stripes.ras cee.ras -inside
+inside.ras\fR.  The C in the former shows color, while the C in the later
+is black.
+If these two images were combined the result would
+be \fBstripes.ras\fR.
+.LP
+Pixels involved in this compositing operation fell into two categories:
+.IP "1."
+When pixels in \fBcee.ras\fR have alpha values of 0, pixels from
+\fBstripes.ras\fR are copied to the output image.
+.IP "2."
+When pixels in \fBcee.ras\fR have alpha values of 255, the output pixel
+value is zero (black).
+.SH "SEE ALSO"
+\fBimadjust\fR (1IM),
+\fBimdissolve\fR (1IM),
+\fBimfill\fR (1IM),
+\fBImVfbComp\fR (3IM)
+.sp 1
+For information on SDSC's image library, see \fBimintro\fR(3IM). 
+.SH AUTHORS
+Chris Groening, Dave Nadeau, Shane Cooper, Brian Duggan
+.br
+San Diego Supercomputer Center
+.LP
+See the individual file format \fBman\fR pages for the authors of the underlying
+format read and write code.  The names of these \fBman\fR pages begin
+with the letters "im" followed by the format name.
+For example, the name of the TIFF \fBman\fR page is \fBimtiff\fR.
+To display it, enter \fBman imtiff\fR.
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

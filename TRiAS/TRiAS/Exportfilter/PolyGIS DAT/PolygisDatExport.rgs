@@ -1,0 +1,79 @@
+HKCR 
+{
+	TRiAS.PolygisDatExport.1 = s 'TRiAS Export in das PolyGIS - DAT-Format' 
+	{
+		CLSID = s '{152651A7-2994-4752-A2CA-38EAB8C9EA54}'
+	}
+	TRiAS.PolygisDatExport = s 'TRiAS Export in das PolyGIS - DAT-Format' 
+	{
+		CLSID = s '{152651A7-2994-4752-A2CA-38EAB8C9EA54}'
+		CurVer = s 'TRiAS.PolygisDatExport.1'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {152651A7-2994-4752-A2CA-38EAB8C9EA54} = s 'TRiAS Export in das PolyGIS - DAT-Format' 
+		{
+			ProgID = s 'TRiAS.PolygisDatExport.1'
+			VersionIndependentProgID = s 'TRiAS.PolygisDatExport'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%' 
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{F2CC5479-EF78-4BA5-A95D-AC92B6878FF2}'
+		}
+	}
+}
+
+HKCU 
+{ 
+	NoRemove Software 
+	{ 
+		TRiAS 
+		{ 
+			TRiAS 
+			{ 
+				Extensions 
+				{ 
+					TRiAS.Export.1 
+					{ 
+						Engines 
+						{
+							ForceRemove {152651A7-2994-4752-A2CA-38EAB8C9EA54} = s 'PolyGIS - DAT-Export'
+						} 
+					} 
+				} 
+			} 
+		} 
+	} 
+}
+
+HKCU
+{ 
+	NoRemove Software 
+	{ 
+		NoRemove TRiAS 
+		{ 
+			NoRemove TRiAS 
+			{ 
+				NoRemove PolyGISWandler = s 'Konfigurationsdaten'
+				{ 
+					NoRemove Export = s 'Konfigurationsdaten'
+					{
+						NoRemove StandardDATStruktur = s 'PolyGIS - DAT-Export'
+						{
+							val 'Key01' = s 'GCO-Code'
+							val 'Key02' = s 'Strassenname'
+							val 'Key03' = s 'Strassencode'
+						}
+						NoRemove PunktDATStruktur = s 'PolyGIS - DAT-Punkt-Export'
+						{
+							val 'Key01' = s 'GCA-Kurzcode'
+							val 'Key02' = s 'Hausnummer'
+						}
+					}
+				} 
+			} 
+		} 
+	} 
+}

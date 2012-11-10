@@ -1,0 +1,33 @@
+HKCR
+{
+	TRiASEx.DoppelteGeometrie.1 = s 'Suchen von Objekten gleicher Geometrie.'
+	{
+		CLSID = s '{079638B5-3123-101C-BB62-00AA0018497C}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {079638B5-3123-101C-BB62-00AA0018497C} = s 'Suchen von Objekten gleicher Geometrie.'
+		{
+			val AppID = s '{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}'
+			ProgID = s 'TRiASEx.DoppelteGeometrie.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove TRiASEx.DoppelteGeometrie.1 = s '{079638B5-3123-101C-BB62-00AA0018497C}'
+			}
+		}
+	}
+}

@@ -1,0 +1,198 @@
+
+
+
+IMMONO(1IM)                IMAGE TOOLS                IMMONO(1IM)
+
+
+
+NAME
+     immono  -  Convert an image to monochrome
+
+SYNOPSIS
+     immono [_o_p_t_i_o_n_s] _i_n_f_i_l_e_n_a_m_e _o_u_t_f_i_l_e_n_a_m_e
+
+DESCRIPTION
+     immono converts an input image to monochrome, then writes it
+     to  an output image file.  If the input file contains multi-
+     ple images, immono converts each one and writes  it  to  the
+     output file.  The input and output image file formats may be
+     different.
+
+OPTIONS
+     immono has a  variety  of  options  in  the  following  five
+     categories:
+
+          File Selection     What input and output files to use
+          Format Selection   What image file format to use
+          Format Control     What variant of a file format to generate
+          Standard           Standard generic options on all SDSC tools
+          Manipulation       How the image can be manipulated
+
+     _F_i_l_e _S_e_l_e_c_t_i_o_n, _F_o_r_m_a_t _S_e_l_e_c_t_i_o_n, _F_o_r_m_a_t _C_o_n_t_r_o_l, and  _S_t_a_n_-
+     _d_a_r_d options are common to all SDSC image tools and are dis-
+     cussed in depth in the man page for imconv(1IM).
+
+     All options can be abbreviated to the first few unique char-
+     acters.
+
+  Manipulation Options
+     Conversion of an input image to  monochrome  is  a  two-step
+     process:
+
+          1.   Convert the color image to grayscale.
+          2.   Convert the grayscale image to monochrome.
+
+     In step 1, conversion from color to grayscale  computes  the
+     gray value for each pixel using the NTSC Y equation:
+
+               Gray ~~=~~ 0.30*R ~+~ 0.59*G ~+~ 0.11*B
+
+     In step 2 conversion from grayscale pixel values (0-255)  to
+     monochrome  pixel  values  (0  or 1) can use either a simple
+     thresholding technique or it can use dithering.  The default
+     is  the  former;  pixel  values  equal to or higher than the
+     threshold are considered  white.   Pixel  values  below  the
+     threshold are considered black.
+
+     By default, the threshold is set at 127.  This threshold may
+     be  selected explicitly using -threshold followed by a posi-
+     tive integer.
+
+
+
+SDSC               Last change: June 27, 1995                   1
+
+
+
+
+
+
+IMMONO(1IM)                IMAGE TOOLS                IMMONO(1IM)
+
+
+
+     If dithering is desired, then step 2 is different.  By  giv-
+     ing  the -dither option, dithering will be used.  Dithering,
+     in this case, is a mechanism for arranging black  and  white
+     pixels  in  various patterns in order to give the appearance
+     of different shades of grey.  (More generally, dithering  is
+     the process by which many colors can be represented by fewer
+     colors.)
+
+     immono uses Floyd-Steinberg dithering.  The  Floyd-Steinberg
+     algorithm works like this:  The image is traversed from left
+     to right and top to bottom.  If a given pixel has a value of
+     255  or  greater, then this pixel will be set to white (i.e.
+     255), and the difference (i.e. the pixel  value  minus  255)
+     will  be  propagated  to  the neighboring pixels as follows:
+     Seven sixteenths of the error goes to the right, three  six-
+     teenths  to  the bottom-left, five-sixteenths to the bottom,
+     and one-sixteenth to the bottom-right.
+
+          ----   xx     7/16
+          3/16   5/16   1/16
+
+     If the value of the pixel is less than 255, then  the  value
+     of  the  pixel  will  be  propogated in the manner described
+     above, and the pixel will be set to black.  (i.e. 0)
+
+     The idea behind Floyd-Steinberg dithering is  to  allow  the
+     image  to  be dithered with a single top-to-bottom, left-to-
+     right pass.
+
+NOTES
+     For notes regarding  file  format  conversion  and  standard
+     image tool options, see the man page on imconv(1IM).
+
+     Error messages are reported to stderr.
+
+EXAMPLES
+     To convert an RGB Alias pix file  image  to  monochrome  and
+     store  it in a Sun ras file, enter any of the following com-
+     mand lines:
+
+          immono picture.pix picture.ras
+              or
+          immono -informat pix picture.pix -outformat ras picture.ras
+              or
+          immono -informat pix - picture.ras < picture.pix
+              or
+          immono -informat pix picture.pix -outformat ras - > picture.ras
+              or
+          immono -informat pix - -outformat ras - < picture.pix > picture.ras
+              or
+          cat picture.pix | immono -informat pix - -outformat ras - | cat > picture.ras
+
+
+
+
+2                  Last change: June 27, 1995                SDSC
+
+
+
+
+
+
+IMMONO(1IM)                IMAGE TOOLS                IMMONO(1IM)
+
+
+
+SEE ALSO
+     imconv (1IM), imfile (1IM), imformat  (1IM),  imgray  (1IM),
+     ImVfbToMono (3IM)
+
+     For information on SDSC's image library, see imintro(3IM).
+
+AUTHOR
+     Dave Nadeau, Brian Duggan
+     San Diego Supercomputer Center
+
+     See the individual file format man pages for the authors  of
+     the  underlying  format  read  and write code.  The names of
+     these man pages begin with the letters "im" followed by  the
+     format  name.  For example, the name of the TIFF man page is
+     imtiff.  To display it, enter man imtiff.
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SDSC               Last change: June 27, 1995                   3
+
+
+

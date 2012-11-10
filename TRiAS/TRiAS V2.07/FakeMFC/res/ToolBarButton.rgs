@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiAS.ToolBarButton.1 = s 'TRiAS Toolbarschaltflächenobjekt'
+	{
+		CLSID = s '{07963879-3123-101C-BB62-00AA0018497C}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {07963879-3123-101C-BB62-00AA0018497C} = s 'TRiAS Toolbarschaltflächenobjekt'
+		{
+			val AppID = s '{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}'
+			ProgID = s 'TRiAS.ToolBarButton.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+}

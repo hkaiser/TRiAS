@@ -1,0 +1,205 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "begeodr.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include <windows.h>
+#include <commctrl.h>
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "begeodr.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include <windows.h>\r\n"
+    "#include <commctrl.h>\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#if defined(ELLIPSE_BESSEL)\r\n"
+    "#include ""begeod.rcv""\r\n"
+    "#else\r\n"
+    "#include ""krgeod.rcv""\r\n"
+    "#endif\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_COORDPARAM DIALOG DISCARDABLE  0, 0, 250, 134
+STYLE WS_CHILD | WS_BORDER
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Internes Koordinatensystem des Projektes:",IDC_STATIC,1,
+                    5,138,8
+    CTEXT           "",IDC_COORDSYSTEM,1,17,248,8
+    GROUPBOX        " Bei Ein- und Ausgaben verwendetes externes Koordinatensystem ",
+                    IDC_STATIC,1,31,248,102,WS_GROUP
+    CONTROL         "&Geodätische Koordinaten (Grad, Minuten, Sekunden)",
+                    IDC_GEOCOORDS,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
+                    WS_TABSTOP,10,44,187,10
+    CONTROL         "Gauß/Krüger &Koordinaten:",IDC_GAUCOORDS,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,10,57,100,10
+    COMBOBOX        IDC_SELELLIPSE,110,56,130,43,CBS_DROPDOWNLIST | NOT 
+                    WS_VISIBLE | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Streifenbreite [°]:",IDT_STRBREITE,10,75,60,8
+    COMBOBOX        IDC_STRBREITE,25,88,38,49,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDVERT,71,74,1,30
+    LTEXT           "&Mittelmeridian [°]:",IDT_MERIDIAN,81,75,56,8
+    CONTROL         "&Automatisch feststellen",IDC_AUTOMERIDIAN,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,139,75,95,10
+    CONTROL         "&Vorgeben:",IDC_SELECTMERIDIAN,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,139,89,49,10
+    COMBOBOX        IDC_MERIDIAN,202,88,38,49,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Anzahl der verwendeten &Nachkommastellen:",IDC_STATIC,
+                    47,108,142,8
+    EDITTEXT        IDC_PRECISION,202,105,38,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_PRECISIONSPIN,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,232,107,8,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_COORDPARAM, DIALOG
+    BEGIN
+        LEFTMARGIN, 1
+        RIGHTMARGIN, 249
+        VERTGUIDE, 10
+        VERTGUIDE, 25
+        VERTGUIDE, 110
+        VERTGUIDE, 139
+        VERTGUIDE, 240
+        TOPMARGIN, 2
+        BOTTOMMARGIN, 133
+        HORZGUIDE, 62
+        HORZGUIDE, 80
+        HORZGUIDE, 94
+        HORZGUIDE, 113
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+#if defined(APSTUDIO_INVOKED) || defined(ELLIPSE_KRASSOVSKI)
+#if defined(APSTUDIO_INVOKED)
+IDR_REGISTRY$(ELLIPSE_KRASSOVSKI) REGISTRY DISCARDABLE    "res\\krgeod.rgs"
+#else
+IDR_REGISTRY            REGISTRY DISCARDABLE    "res\\krgeod.rgs"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(ELLIPSE_BESSEL)
+#if defined(APSTUDIO_INVOKED)
+IDR_REGISTRY$(ELLIPSE_BESSEL) REGISTRY DISCARDABLE    "res\\begeod.rgs"
+#else
+IDR_REGISTRY            REGISTRY DISCARDABLE    "res\\begeod.rgs"
+#endif
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DESCRIPTION         "Geodätische Koordinaten - "
+    IDS_SHOWGKCOORDS        "ShowGKCoords    "
+    IDS_COORDMERIDIAN       "CoordMeridian   "
+    IDS_COORDSTRBREITE      "CoordStrBreite  "
+    IDS_CTFPROPPAGECAP      "Koordinaten"
+    IDS_COORDTRANSFORM      "CoordTransform  "
+    IDS_LONGCLASSINFO       "Koordinatentransformation (Bessel geodätisch) Property Page"
+    IDS_LONGCLASSINFOKR     "Koordinatentransformation (Krassovsky geodätisch) Property Page"
+    IDS_DESCRIPTIONGK       "Gauß/Krüger (%d/%d) - "
+    IDS_DESCRIPTIONGKAUTO   "Gauß/Krüger (%d° Streifen) - "
+    IDS_INTERNALKOORDS_DLG  "Geodätisch - "
+    IDS_BESSEL_ELLIPSE      "Bessel-Ellipsoid [System 40/83]"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEX_MESSAGE         "TriasExtensionMessage"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CTFPRECISION        "CoordPrecision  "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_KRASSOVSKY_ELLIPSE  "Krassovsky-Ellipsoid [System 42/83]"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#if defined(ELLIPSE_BESSEL)
+#include "begeod.rcv"
+#else
+#include "krgeod.rcv"
+#endif
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

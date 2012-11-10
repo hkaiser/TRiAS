@@ -1,0 +1,32 @@
+HKCR
+{
+	TRiASEx.CopyObjects.1 = s 'Doppeln aller Eingabeobjekte'
+	{
+		CLSID = s '{4480D1A5-481C-11D2-9EBF-006008447800}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {4480D1A5-481C-11D2-9EBF-006008447800} = s 'Doppeln aller Eingabeobjekte'
+		{
+			ProgID = s 'TRiASEx.CopyObjects.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.2
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove TRiASEx.CopyObjects.1 = s '{4480D1A5-481C-11D2-9EBF-006008447800}'
+			}
+		}
+	}
+}

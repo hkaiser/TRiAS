@@ -1,0 +1,784 @@
+// Dialogfenster fuer die Einstellung der DruckLayoutParameter 
+// File PRNTLAYT.CXX
+
+#include "prntlayt.htp"
+
+extern "C" {
+	#include <windows.h>
+	#include <stdlib.h>
+	#include <math.h>
+
+	#include <resstrg.h>
+	#include <protos.h>
+	#include <zprotos.h>
+	#include "prntlayt.h"
+}
+
+#include <commonvu.hxx>
+#include <containr.hxx>
+#include <drawobj.hxx>
+#include <cvext.hxx>
+#include <dcreator.hxx>
+#include <deltree.hxx>
+
+#include <muscroll.hxx>
+#include <spinctrl.hxx>
+#include <errcodes.hxx>
+
+#include <geo_obj.hxx>
+#include <printer.hxx>
+#include <errinst.hxx>
+#include <dblnumed.hxx>
+
+#include <oddlgwin.hxx>
+#include <owncombo.hxx>
+#include <strdup.hxx>
+
+#include <dllbind.hxx>
+#include "ctf.hxx"
+
+#include "prntlayt.hxx"
+
+// sonstige FunktionsprotoTypen -----------------------------------------------
+ErrCode EvalKoeffs (double *, double *, double *, double *);
+
+// Konstruktor ----------------------------------------------------------------
+PrintLayoutDlg :: PrintLayoutDlg (pWindow pW, ObjContainer &actRect, 
+				  CoordTrans *pCTF) 
+		: OwnerDrawDialogWindow (pW, PRINTLAYOUTDLG),
+		  _isValid (FALSE),
+	// Kartenausschnitt
+		  _ObenHoch (this, IDE_PRINTOBENHOCH),
+		  _ObenRechts (this, IDE_PRINTOBENRECHTS),
+		  _UntenHoch (this, IDE_PRINTUNTENHOCH),
+		  _UntenRechts (this, IDE_PRINTUNTENRECHTS),
+		  _Masstab (this, IDC_MASSTAB),
+		  _RKoord (this, IDR_PRINTRECHTS),
+		  _RMasstab (this, IDR_PRINTMASSTAB),
+	// Buttons
+		  _OKButton (this, IDOK),
+		  _CancelButton (this, IDCANCEL),
+		  _HelpButton (this, IDB_PRINTFORMATHELP),
+	// Kartenlayout
+		  _CBLegende (this, IDCB_PRINTLEGENDE),
+		  _CBRahmen (this, IDCB_PRINTRAHMEN),
+		  _RahmenTyp (this, IDC_RAHMENTYP),
+		  _CBMasstab (this, IDCB_PRINTMASSTAB),
+		  _MasstabTyp (this, IDC_PRINTFORMATMASSTAB),
+		  _CBHeadLine (this, IDCB_PRINTHEADLINE),
+		  _HeadLine (this, IDE_HEADLINE),
+	// SeitenrÑnder
+		  _RandLinks (this, IDE_PRINTFORMATLINKS, IDMS_PRINTFORMATLINKS, Range (0, 100)),
+		  _RandOben (this, IDE_PRINTFORMATOBEN, IDMS_PRINTFORMATOBEN, Range (0, 100)),
+		  _RandRechts (this, IDE_PRINTFORMATRECHTS, IDMS_PRINTFORMATRECHTS, Range (0, 100)), 
+		  _RandUnten (this, IDE_PRINTFORMATUNTEN, IDMS_PRINTFORMATUNTEN, Range (0, 100)),
+	// Format des Kartenausschnittes
+		  _SizeX (this, IDE_PRINTFORMATX, IDMS_PRINTFORMATX, Range (0, 1500)),
+		  _SizeY (this, IDE_PRINTFORMATY, IDMS_PRINTFORMATY, Range (0, 1500)),
+	// Koordinatentransformation
+		  _pCT (pCTF)
+{
+	_isValid = TRUE;
+// Controls initialisieren
+// 1. RadioButtons
+	_RKoord.SetState (TRUE);
+	_RMasstab.SetState (FALSE);	// default: Masstabseingabe
+
+// Legende und Rahmen standardmÑ·ig nicht drucken
+	_CBLegende.SetChecked (FALSE);
+	_CBRahmen.SetChecked (FALSE);		// Rahmen
+_RahmenTyp.Hide();
+	_CBMasstab.SetChecked (FALSE);		// Ma·stab
+_CBMasstab.Hide();
+_MasstabTyp.Hide();
+	_CBHeadLine.SetChecked (FALSE);		// öberschrift
+	_HeadLine.SetTextLimit (HEADLINELENGTH);
+
+// Papierformat einstellen
+ActPrinterPars ActPPDev;
+
+	_PageSize = ActPPDev.GetPageSize();
+	_DotsPerMM = ActPPDev.GetDotsPerMM();
+
+	_SizeX.SetValue (_PageSize.Width()-20);	// 10 mm Rand Rechts und Unten
+	_SizeY.SetValue (_PageSize.Height()-20);
+
+_SizeX.HideSpin();		// fÅr Neef
+_SizeY.HideSpin();
+
+	_RandLinks.SetValue (10);		// 10 mm Rand Links und Oben
+	_RandOben.SetValue (10);
+	_RandRechts.SetValue (10);
+	_RandUnten.SetValue (10);
+
+// linke obere Ecke und Ma·stab setzen
+char locBuff[40];
+
+	_ObenRechts.SetNumEditMode (NumEdit :: NEM_NoTest);
+	_ObenHoch.SetNumEditMode (NumEdit :: NEM_NoTest);
+	_UntenRechts.SetNumEditMode (NumEdit :: NEM_NoTest);
+	_UntenHoch.SetNumEditMode (NumEdit :: NEM_NoTest);
+
+// echte Koordinaten der Ecken berechnen
+double X, Y;
+
+	pCT() -> UnScale (actRect.XMin(), actRect.YMin(), &X, &Y);
+	pCT() -> Transform (&X, &Y);
+	pCT() -> CoordTransToString (X, TRUE, locBuff, sizeof(locBuff));
+	_ObenRechts.SetText (locBuff);
+	pCT() -> CoordTransToString (Y, FALSE, locBuff, sizeof(locBuff));
+	_UntenHoch.SetText (locBuff);
+
+	pCT() -> UnScale (actRect.XMax(), actRect.YMax(), &X, &Y);
+	pCT() -> Transform (&X, &Y);
+	pCT() -> CoordTransToString (X, TRUE, locBuff, sizeof(locBuff));
+	_UntenRechts.SetText (locBuff);
+	pCT() -> CoordTransToString (Y, FALSE, locBuff, sizeof(locBuff));
+	_ObenHoch.SetText (locBuff);
+
+	_actMasstab = 10000L;
+
+// Ma·stabsComboBox fÅllen
+	for (short i = 0; i < CNT_MASSTAB; i++) 
+		_Masstab.AddString (ResString (IDS_MASSTAB250+i, 10));
+
+// RahmenTypen einzeichnen
+#if 0
+	for (i = 0; i < 4; i++) {
+	RahmenTyp *pRT = new RahmenTyp (i);
+
+		if (pRT != NULL) _RahmenTyp.AddItem (pRT);
+	}
+#endif
+
+// HelpButton passivieren
+	_HelpButton.Disable();		// zeitweilig
+}
+
+PrintLayoutDlg :: ~PrintLayoutDlg (void) 
+{
+	// nothing to do
+}
+
+void PrintLayoutDlg :: ButtonClick (ControlEvt e) 
+{
+	switch ((unsigned int)e.GetControlID()) {
+	case IDOK:
+	// alle Spins aktualisieren
+		if (_SizeX.isModified()) _SizeX.CopyToSpin();
+		if (_SizeY.isModified()) _SizeY.CopyToSpin();
+		if (_RandOben.isModified()) _RandOben.CopyToSpin();
+		if (_RandUnten.isModified()) _RandUnten.CopyToSpin();
+		if (_RandLinks.isModified()) _RandLinks.CopyToSpin();
+		if (_RandRechts.isModified()) _RandRechts.CopyToSpin();
+		EndDlg (1);
+		break;
+
+	case IDCANCEL:
+		EndDlg (0);	// abbrechen und raus
+		break;
+
+	case IDR_PRINTRECHTS:
+		{
+		char Buff[30]; 
+
+			_Masstab.GetText (Buff, sizeof(Buff)-1);
+			_actMasstab = atol (Buff);
+//			_Masstab.ChangeCurrentIndex (-1);
+		}
+		break;
+
+	case IDR_PRINTMASSTAB:
+		{
+		char Buff[30];
+
+			_Masstab.SetText (ltoa (_actMasstab, Buff, 10));
+		}
+		break;
+
+	case IDB_PRINTFORMATHELP:
+		break;
+
+	case IDCB_PRINTLEGENDE:
+		EvalSizeX();
+		break;
+
+	case IDCB_PRINTRAHMEN:
+		if (_CBLegende.isChecked())	_RahmenTyp.Enable();
+		else				_RahmenTyp.Disable();
+		break;
+
+	case IDCB_PRINTHEADLINE:
+		EvalSizeY();
+		break;
+
+	case IDCB_PRINTMASSTAB:
+		break;		// _MasstabTyp ist noch disabled/hidden
+	}	
+}
+
+void PrintLayoutDlg :: ListBoxSel (ControlEvt e)
+{
+	switch ((unsigned int)e.GetControlID()) {
+	case IDC_MASSTAB:
+		{
+		// Masstab ausgewÑhlt
+		short iIndex = _Masstab.GetCurrentIndex();
+		char locBuff[20];
+
+			if (iIndex >= 0 && iIndex < CNT_MASSTAB) {
+				_Masstab.SetText (
+					ltoa (_actMasstab = GetMasstab (iIndex), 
+					      locBuff, 10
+					     )
+				);
+			} else {
+				_Masstab.SetText (ltoa (_actMasstab, locBuff, 10));
+//				_Masstab.ChangeCurrentIndex (-1);
+			}
+
+		// RadioButton umsetzen
+			_RMasstab.SetState (TRUE);
+			_RKoord.SetState (FALSE);
+
+		// Rechte untere Koordinate Ñndern
+			EvalRechtsUnten();
+		}
+		break;
+
+	case IDC_RAHMENTYP:
+		break;
+
+	case IDC_PRINTFORMATMASSTAB:
+		break;		// nothing to do, because disabled
+	}
+}
+
+void PrintLayoutDlg :: EditFocusChg (EditFocusChgEvt e) 
+{
+	if (e.gotFocus()) {		// Focus erhalten
+		switch ((unsigned int)e.GetControlID()) {
+		case IDE_HEADLINE:
+			_CBHeadLine.SetChecked (TRUE);
+			EvalSizeY();
+			break;
+
+		case IDE_PRINTUNTENHOCH:
+		case IDE_PRINTUNTENRECHTS:
+			_RMasstab.SetState (FALSE);
+			_RKoord.SetState (TRUE);
+			break;
+
+		case IDC_MASSTAB:
+			_RMasstab.SetState (TRUE);
+			_RKoord.SetState (FALSE);
+			break;
+		}
+		return;
+	}
+
+	switch ((unsigned int)e.GetControlID()) {
+	case IDE_PRINTFORMATX:
+		if (_SizeX.isModified()) _SizeX.CopyToSpin();
+		break;
+
+	case IDE_PRINTFORMATY:
+		if (_SizeY.isModified()) _SizeY.CopyToSpin();
+		break;
+
+	case IDE_PRINTFORMATLINKS:
+		if (_RandLinks.isModified()) {
+			_RandLinks.CopyToSpin();
+			EvalSizeX();
+		}
+		break;
+
+	case IDE_PRINTFORMATRECHTS:
+		if (_RandRechts.isModified()) {
+			_RandRechts.CopyToSpin();
+			EvalSizeX();
+		}
+		break;
+
+	case IDE_PRINTFORMATUNTEN:
+		if (_RandUnten.isModified()) {
+			_RandUnten.CopyToSpin();
+			EvalSizeY();
+		}
+		break;
+
+	case IDE_PRINTFORMATOBEN:
+		if (_RandOben.isModified()) {
+			_RandOben.CopyToSpin();
+			EvalSizeY();
+		}
+		break;
+
+	case IDE_PRINTUNTENHOCH:
+	case IDE_PRINTUNTENRECHTS:
+		EvalMasstab();
+		break;
+	}
+}
+
+void PrintLayoutDlg :: VertScroll (ScrollEvt e) 
+{
+	switch ((unsigned int)e.GetScrollBar() -> GetID()) {
+	case IDMS_PRINTFORMATX:		// SpinControl betÑtigt
+		_SizeX.CopyToEdit ();
+		break;
+
+	case IDMS_PRINTFORMATY:		// SpinControl betÑtigt
+		_SizeY.CopyToEdit ();
+		break;
+
+	case IDMS_PRINTFORMATLINKS:	// SpinControl betÑtigt
+		_RandLinks.CopyToEdit ();
+		EvalSizeX();
+		break;
+
+	case IDMS_PRINTFORMATOBEN:	// SpinControl betÑtigt
+		_RandOben.CopyToEdit ();
+		EvalSizeY();
+		break;
+
+	case IDMS_PRINTFORMATRECHTS:	// SpinControl betÑtigt
+		_RandRechts.CopyToEdit ();
+		EvalSizeX();
+		break;
+
+	case IDMS_PRINTFORMATUNTEN:	// SpinControl betÑtigt
+		_RandUnten.CopyToEdit ();
+		EvalSizeY();
+		break;
+	}
+}
+
+
+// sonstige Memberfunktionen --------------------------------------------------
+// GetPaperCanvas liefert den Bereich des KartenSpiegels ----------------------
+Rectangle *PrintLayoutDlg :: GetPaperCanvas (void) 
+{
+// PlausibilitÑtsprÅfung
+	if (_SizeX.GetValue() < 0 || _SizeY.GetValue() < 0) return NULL;
+
+// BlattrÑnder berÅcksichtigen
+CoOrd iLinks = _RandLinks.GetValue();
+CoOrd iUnten = _RandUnten.GetValue();
+
+	if (iLinks < 0 || iUnten < 0) return NULL;
+
+CoOrd l = (CoOrd)(iLinks * _DotsPerMM.Width());
+CoOrd r = (CoOrd)((_SizeX.GetValue()+iLinks) * _DotsPerMM.Width());
+CoOrd b = (CoOrd)(iUnten * _DotsPerMM.Height());
+CoOrd t = (CoOrd)((_SizeY.GetValue()+iUnten) * _DotsPerMM.Height());
+
+return new Rectangle (t, l, b, r);
+}
+
+// GetExtend liefert den Bereich der auszugebenden Karte in KartenKoordinaten
+ObjContainer *PrintLayoutDlg :: GetExtend (void) 
+{
+ErrCode RC;
+
+// Werte einlesen und in Eckpunkte umwandeln
+double lx, ly, rx, ry;
+char locBuff[40];
+
+	
+	if (!GetValue (_ObenRechts, lx) || !GetValue (_ObenHoch, ly))
+		return NULL;
+
+// RealKoordinaten in DB-Koordinaten umrechnen
+	pCT() -> InvTransform (&lx, &ly);
+
+	if (_RMasstab.GetState()) {
+	// Ma·stabsbezogene Formatbestimmung
+	short iIndex = _Masstab.GetCurrentIndex();
+	long lMasstab = 0L;
+
+		if (iIndex == -1) {
+		// nutzerdefinierter Ma·stab
+		char locBuff[30];
+
+			_Masstab.GetText(locBuff, sizeof (locBuff)-1);
+			lMasstab = atol (locBuff);
+		} else {
+		// vorgebener Ma·stab
+			lMasstab = GetMasstab (iIndex);
+		}
+		if (lMasstab == 0L) return NULL;
+
+	// PlausibilitÑtsprÅfung
+		if (_SizeX.GetValue() < 0 || _SizeY.GetValue() < 0) return NULL;
+
+	// Grî·e des Kartenspiegels besorgen
+	DoublePair Delta (((double)lMasstab*_SizeX.GetValue())/1000.0,
+			  -((double)lMasstab*_SizeY.GetValue())/1000.0);
+	DoublePair PIn (lx, ly);
+	DoublePair POut;
+
+	// zweiten Eckpunkt berechnen
+		pCT() -> CoordTransRectangle (&PIn, &Delta, &POut);
+
+		rx = POut.X();
+		ry = POut.Y();
+	} else {
+	// rechte untere Ecke gegeben
+		if (!GetValue (_UntenRechts, rx) || !GetValue (_UntenHoch, ry))
+			return NULL;	// Eingabe unvollstÑndig
+		pCT() -> InvTransform (&rx, &ry);
+	}
+
+// Eckpunkte umrechnen
+ObjContainer *pOC = new ObjContainer;
+
+	if (pOC) {
+	// Eckpunkte umrechnen
+		pCT() -> Scale (lx, ry, &(pOC -> XMin()), &(pOC -> YMin()));
+		pCT() -> Scale (rx, ly, &(pOC -> XMax()), &(pOC -> YMax()));
+
+	// Rechteck evtl. kippen
+		if (pOC -> XMin() > pOC -> XMax()) {
+		KoOrd tmp = pOC -> XMin();
+
+			pOC -> XMin() = pOC -> XMax();
+			pOC -> XMax() = tmp;
+		}
+		if (pOC -> YMin() > pOC -> YMax()) {
+		KoOrd tmp = pOC -> YMin();
+
+			pOC -> YMin() = pOC -> YMax();
+			pOC -> YMax() = tmp;
+		}
+	}
+
+return pOC;
+}
+
+// GetMasstab rechnet den ComboBoxIndex in einen Ma·stab um -------------------
+long PrintLayoutDlg :: GetMasstab (short iIndex) 
+{
+	switch (iIndex) {
+	case 0:		return 250L;
+	case 1:		return 500L;
+	case 2:		return 1000L;
+	case 3:		return 2000L;
+	case 4:		return 4000L;
+	case 5:		return 5000L;
+	case 6:		return 10000L;
+	case 7:		return 25000L;
+	case 8:		return 50000L;
+	case 9:		return 100000L;
+	case 10:	return 200000L;
+	case 11:	return 500000L;
+	case 12:	return 750000L;
+	case 13:	return 1000000L;
+	case 14:	return 2000000L;
+	case 15:	return 5000000L;
+	}
+
+return 0L;
+}
+
+Bool PrintLayoutDlg :: DrawEntireItem (DrawItemEvt) 
+{
+#if 0
+Rectangle Rc = e.ItemSize();			// aktuellen Bereich holen
+HDC hDC = e.Handle (API_CONTROL_HDC);
+short iItemTyp = ((RahmenTyp *)e.GetItemData()) -> iTyp();
+
+	switch (iItemTyp) {
+	case 0:
+	case 1:
+	case 2:
+	case 3:
+		break;
+	}
+#endif
+return TRUE;
+}
+
+Bool PrintLayoutDlg :: DeleteItem (DeleteItemEvt e)
+{
+#if 0
+RahmenTyp *pRT = (RahmenTyp *)e.GetItemData();
+
+	DELETE (pRT);	// != NULL) delete pRT;
+#endif
+return TRUE;
+}
+
+Bool PrintLayoutDlg :: MeasureItem (MeasureItemEvt e)
+{
+TEXTMETRIC tm;
+HWND hDlg = e.Handle (API_DLGWINDOW_HWND);
+HDC hDC = GetDC (hDlg);
+
+	GetTextMetrics (hDC, &tm);
+	e.SetItemHeight (tm.tmHeight);
+	ReleaseDC (hDlg, hDC);
+
+return TRUE;
+}
+
+int PrintLayoutDlg :: CompareItem (OwnerDrawEvt, void *pItem1, void *pItem2)
+{
+#if 0
+short iItem1 = ((RahmenTyp *)pItem1) -> iTyp();
+short iItem2 = ((RahmenTyp *)pItem2) -> iTyp();
+
+	return iItem1 - iItem2;
+#endif
+	return 0;
+}
+
+// Berechnung der Grî·e des KartenSpiegels in AbhÑngigkeit der anderen Bereiche
+void PrintLayoutDlg :: EvalSizeX (void) 
+{
+	if (!_isValid) return;
+
+CoOrd SizeX = _PageSize.Width() - _RandLinks.GetValue()
+				- _RandRechts.GetValue();
+
+	if (_CBLegende.isChecked())
+		SizeX = (SizeX*4)/5;	// Legende nimmt 1/5 des GesamtBlattes ein
+	_SizeX.SetValue (SizeX);
+	if (_RMasstab.GetState()) EvalRechtsUnten();
+	if (_RKoord.GetState()) EvalMasstab();
+}
+
+void PrintLayoutDlg :: EvalSizeY (void) 
+{
+	if (!_isValid) return;
+
+CoOrd SizeY = _PageSize.Height() - _RandOben.GetValue()
+				 - _RandUnten.GetValue();
+
+	if (_CBHeadLine.isChecked())
+		SizeY = (CoOrd)((SizeY*95L)/100L);	// öberschrift 5% der Hîhe
+	_SizeY.SetValue (SizeY);
+	if (_RMasstab.GetState()) EvalRechtsUnten();
+	if (_RKoord.GetState()) EvalMasstab();
+}
+
+void PrintLayoutDlg :: EvalRechtsUnten (void) 
+{
+// Linke obere Koordinate holen
+double lx, ly;
+
+	if (!GetValue (_ObenRechts, lx) || !GetValue (_ObenHoch, ly))
+		return;
+
+	pCT() -> InvTransform (&lx, &ly);
+
+short iIndex = _Masstab.GetCurrentIndex();
+long lMasstab = 0L;
+
+	if (iIndex == -1) {
+	// nutzerdefinierter Ma·stab
+	char locBuff[30];
+
+		_Masstab.GetText (locBuff, sizeof(locBuff)-1);
+		lMasstab = atol (locBuff);
+	} else {
+	// vorgebener Ma·stab
+		lMasstab = GetMasstab (iIndex);
+	}
+	if (lMasstab == 0L) return;
+
+// PlausibilitÑtsprÅfung
+	if (_SizeX.GetValue() < 0 || _SizeY.GetValue() < 0) return;
+
+// Grî·e des Kartenspiegels besorgen
+DoublePair Delta (((double)lMasstab*_SizeX.GetValue())/1000.0,
+		  -((double)lMasstab*_SizeY.GetValue())/1000.0);
+DoublePair PIn (lx, ly);
+DoublePair POut;
+
+// zweiten Eckpunkt berechnen
+	pCT() -> CoordTransRectangle (&PIn, &Delta, &POut);
+
+// zurÅckschreiben
+char OutBuff[40];
+
+	pCT() -> Transform (&POut, 1);
+
+	pCT() -> CoordTransToString (POut.X(), TRUE, OutBuff, sizeof(OutBuff));
+	_UntenRechts.SetText (OutBuff);
+	pCT() -> CoordTransToString (POut.Y(), FALSE, OutBuff, sizeof(OutBuff));
+	_UntenHoch.SetText (OutBuff);
+}
+
+
+// Masstab nachfÅhren, wenn rechte untere Koordinate verÑndert wird -----------
+void PrintLayoutDlg :: EvalMasstab (void)
+{
+// SeitenverhÑltnis von Bild und Bildausschnitt berechnen
+double lx, ly, rx, ry;
+
+	if (!GetValue (_ObenRechts, lx) || !GetValue (_ObenHoch, ly) ||
+	    !GetValue (_UntenRechts, rx) || !GetValue (_UntenHoch, ry))
+		return;
+
+	pCT() -> InvTransform (&lx, &ly);
+	pCT() -> InvTransform (&rx, &ry);
+
+DoublePair LO (lx, ly);
+DoublePair RO (rx, ly);
+DoublePair LU (lx, ry);
+
+double dX = pCT() -> CoordTransDistance (&LO, &RO);
+double dY = pCT() -> CoordTransDistance (&LO, &LU);
+
+double kBild = dX != 0.0 ? fabs (dY / dX) : 1.0;
+short sizeX = _SizeX.GetValue();
+short sizeY = _SizeY.GetValue();
+double kBAus = sizeX != 0 ? fabs (double (sizeY)/double (sizeX)) : 1.0;
+
+// Ma·stab ausrechnen
+long lMasstab = 0L;
+
+	if (kBild > kBAus) {
+	// Ma·stab aus Y-Koordinate ausrechnen
+		if (sizeY != 0)
+			lMasstab = (fabs (dY) * 1000.0) / double (sizeY);
+	} else {
+	// Ma·stab aus X-Koordinate ausrechnen
+		if (sizeX != 0)
+			lMasstab = (fabs (dX) * 1000.0) / double (sizeX);
+	}
+
+// Ma·stab anzeigen
+char locBuff[30];
+
+	if (lMasstab != 0)
+		_actMasstab = lMasstab;
+	_Masstab.SetText (ltoa (_actMasstab, locBuff, 10));
+}
+
+
+// Layout der Druckseite in einer Struktur zusammenstellen --------------------
+PrintLayout *PrintLayoutDlg :: GetLayout (void) 
+{
+PrintLayout *lpPL = new PrintLayout();
+
+	if (lpPL == NULL) return NULL;
+
+// Struktur fÅllen
+	lpPL -> plRcSpiegel = GetPaperCanvas();
+	lpPL -> plOCSpiegel = GetExtend();
+	lpPL -> plFullRect = GetFullRect();
+	lpPL -> plfsRahmen = GetFrameType();
+	lpPL -> pllsLegende = GetLegendType();
+	lpPL -> plRcLegende = GetLegendeRect();
+	lpPL -> pliHeadLine = GetHeadLineFlag();
+	lpPL -> pllpHeadLine = GetHeadLine();
+	lpPL -> plRcHeadLine = GetHeadLineRect();
+	lpPL -> plmsMasstab = GetMasstabType();
+	lpPL -> plRcMasstab = GetMasstabRect();
+
+return lpPL;
+}
+
+// Destruktor fÅr PrintLayoutStruktur -----------------------------------------
+PrintLayout :: ~PrintLayout (void) 
+{
+	DELETE (plRcSpiegel);
+	DELETE (plOCSpiegel);
+	DELETE (plFullRect);
+	DELETE (plRcLegende);
+	DELETE (pllpHeadLine);
+	DELETE (plRcHeadLine);
+	DELETE (plRcMasstab);
+}
+
+// Private Member des Dialogfensters zur Berechnung der Grî·en der einzelnen
+// Bereiche
+char *PrintLayoutDlg :: GetHeadLine (void)  
+{
+	if (!_CBHeadLine.isChecked())
+		return NULL;
+
+	if (_HeadLine.GetTextLen() == 0)
+		return NULL;
+
+char Buff[HEADLINELENGTH+1];
+
+	_HeadLine.GetText (Buff, HEADLINELENGTH);
+	return StrDup (Buff, RC_GetHeadLine);
+}
+
+Rectangle *PrintLayoutDlg :: GetHeadLineRect (void)
+{
+	if (!_CBHeadLine.isChecked())
+		return NULL;
+
+	return new Rectangle (
+			(CoOrd)((_PageSize.Height() - _RandOben.GetValue()) * _DotsPerMM.Height()),
+			(CoOrd)(_RandLinks.GetValue() * _DotsPerMM.Width()),
+			(CoOrd)((_RandUnten.GetValue() + _SizeY.GetValue()) * _DotsPerMM.Height()),
+// - rechts -		(CoOrd)((_RandLinks.GetValue() + _SizeX.GetValue()) * _DotsPerMM.Width())
+			(CoOrd)((_PageSize.Width() - _RandRechts.GetValue()) * _DotsPerMM.Width())
+		   );
+}
+
+
+Rectangle *PrintLayoutDlg :: GetMasstabRect (void)
+{
+	if (!_CBMasstab.isChecked())
+		return NULL;
+
+	return new Rectangle (
+			(CoOrd)((_RandUnten.GetValue() + 20) * _DotsPerMM.Height()),
+			(CoOrd)((_RandLinks.GetValue() + _SizeX.GetValue()) * _DotsPerMM.Width()),
+			(CoOrd)(_RandUnten.GetValue() * _DotsPerMM.Height()),
+			(CoOrd)((_PageSize.Width() - _RandRechts.GetValue()) * _DotsPerMM.Width())
+		   );
+}
+
+
+
+Rectangle *PrintLayoutDlg :: GetLegendeRect (void)
+{
+	if (!_CBLegende.isChecked())
+		return NULL;
+
+short iMRect = _CBMasstab.isChecked() ? 20 : 0;
+
+	return new Rectangle (
+// -oben - */		(CoOrd)((_PageSize.Height() - _RandOben.GetValue()) * _DotsPerMM.Height()),
+			(CoOrd)((_RandUnten.GetValue() + _SizeY.GetValue()) * _DotsPerMM.Height()),
+			(CoOrd)((_RandLinks.GetValue() + _SizeX.GetValue()) * _DotsPerMM.Width()),
+			(CoOrd)((_RandUnten.GetValue() + iMRect) * _DotsPerMM.Height()),
+			(CoOrd)((_PageSize.Width() - _RandRechts.GetValue()) * _DotsPerMM.Width())
+		   );
+}
+
+
+Rectangle *PrintLayoutDlg :: GetFullRect (void)
+{
+	return new Rectangle (
+			(CoOrd)((_PageSize.Height() - _RandOben.GetValue()) * _DotsPerMM.Height()),
+			(CoOrd)(_RandLinks.GetValue() * _DotsPerMM.Width()),
+			(CoOrd)(_RandUnten.GetValue() * _DotsPerMM.Height()),
+			(CoOrd)((_PageSize.Width() - _RandRechts.GetValue()) * _DotsPerMM.Width())
+		   );
+}
+
+
+// Einlesen und Transformieren in eine Zahlendarstellung einer Koordinate -----
+Bool PrintLayoutDlg :: GetValue (DoubleNumEdit &dblNED, double &dbl)
+{
+char inBuff[40];
+
+	if (dblNED.GetTextLen() > 0) {
+		dblNED.GetText (inBuff, sizeof(inBuff));
+		dbl = pCT() -> CoordTransToValue (inBuff);
+		return TRUE;
+	}
+	dbl = 0.0;
+
+return FALSE;
+}
+

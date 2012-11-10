@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiASEx.ExportImportFileScript.1 = s 'Export und Import ganzer Makroprojekte in eine Datei'
+	{
+		CLSID = s '{07963842-3123-101C-BB62-00AA0018497C}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {07963842-3123-101C-BB62-00AA0018497C} = s 'Export und Import ganzer Makroprojekte in eine Datei'
+		{
+			val AppID = s '{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}'
+			ProgID = s 'TRiASEx.ExportImportFileScript.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+}

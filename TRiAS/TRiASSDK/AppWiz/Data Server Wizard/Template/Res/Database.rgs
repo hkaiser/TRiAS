@@ -1,0 +1,64 @@
+HKCR
+{
+	TRiASDB.$$safe_root$$.DatabaseObject.1 = s '$$safe_root$$DatabaseObject Class'
+	{
+		CLSID = s '{$$GUID_DATABASE_OBJECT$$}'
+	}
+	TRiASDB.$$safe_root$$.DatabaseObject = s '$$safe_root$$DatabaseObject Class'
+	{
+		CLSID = s '{$$GUID_DATABASE_OBJECT$$}'
+		CurVer = s 'TRiASDB.$$safe_root$$.DatabaseObject.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {$$GUID_DATABASE_OBJECT$$} = s '$$safe_root$$DatabaseObject Class'
+		{
+			ProgID = s 'TRiASDB.$$safe_root$$.DatabaseObject.1'
+			VersionIndependentProgID = s 'TRiASDB.$$safe_root$$.DatabaseObject'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{$$GUID_LIBID$$}'
+		}
+	}
+	ForceRemove TRiASDB.$$safe_root$$.Database = s '$$safe_root$$Database Class'
+	{
+		CurVer = s 'TRiASDB.$$safe_root$$.Database.1'
+	}
+	ForceRemove TRiASDB.$$safe_root$$.Database.1 = s '$$safe_root$$Database Class'
+	{
+		VersionIndependendProgID = s 'TRiASDB.$$safe_root$$.Database'
+		TRiASDB
+		{
+			CLSID = s '{$$GUID_DATABASE_OBJECT$$}'
+			TypeLib = s '{$$GUID_LIBID$$}'
+			Description 
+			{
+				val DefaultExtension = s '.$$def_extension$$'
+				val LongName = s '$$dataserver_name$$ TRiASDB Datenquelle'
+				val ShortName = s '$$dataserver_name$$'
+				val NameDescription = s '$$dataserver_name$$ TRiASDB Datenquelle'
+$$IF(NAME_IS_FILE)
+				val NameIsDirectory = s '0'
+				val NameIsFile = s '1'
+				val FilterString = s '$$dataserver_name$$ TRiASDB Data Server (*.$$def_extension$$)|*.$$DEF_EXTENSION$$|'
+				val TempName = s 'Ohne Namen.$$def_extension$$'
+$$ELIF(NAME_IS_DIR)
+				val NameIsDirectory = s '1'
+				val NameIsFile = s '0'
+$$ELSE
+				val NameIsDirectory = s '0'
+				val NameIsFile = s '0'
+$$ENDIF
+$$IF(READ_WRITE)
+				val ReadWrite = s '1'
+$$ELSE
+				val ReadWrite = s '0'
+$$ENDIF
+				val Version = s '1.0'
+			}
+		}
+	}
+}

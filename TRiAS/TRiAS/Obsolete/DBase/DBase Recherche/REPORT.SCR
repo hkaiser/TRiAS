@@ -1,0 +1,51 @@
+/# define YYABORT return(1)/ {
+a\
+#ifdef YYIGNORE\
+# define yyignore *(yypi+1) = 1\
+#endif
+}
+/YYSTYPE yyv\[YYMAXDEPTH\]; \/\* where the values are stored \*\// {
+a\
+#ifdef YYIGNORE\
+char yyi[YYMAXDEPTH+1] = { 0 };\
+#endif
+}
+/	register short \*yyxi;/ {
+a\
+#ifdef YYIGNORE\
+\	register char \*yypi;\
+#endif
+}
+/	yypv= &yyv\[-1\];/ {
+a\
+#ifdef YYIGNORE\
+\	yypi= &yyi[0];\
+#endif
+}
+/		\*yypv = yyval;/ {
+a\
+#ifdef YYIGNORE\
+\		++yypi;\
+\		*(yypi+1) = *yypi;\
+#endif
+}
+/		yyval = yypv\[1\];/ {
+a\
+#ifdef YYIGNORE\
+\		yypi -= yyr2[yyn];\
+\		*(yypi+1) = *yypi;\
+#endif
+}
+/			   --yypv;/ {
+a\
+#ifdef YYIGNORE\
+\			   --yypi;\
+#endif
+}
+/		switch(yym){/ {
+i\
+#ifdef YYIGNORE\
+\	if(!*yypi)\
+#endif
+}
+

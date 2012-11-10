@@ -1,0 +1,12 @@
+#include <string.h>
+
+#if _MSC_VER >= 1100
+
+namespace ospace { namespace std {} }
+using namespace ospace::std;
+#include <ospace/std/string>			// standard string class
+
+#define __NOTRIASSTRINGS__
+#else
+#include <tstring.hpp>					// eigene 'string-Klasse
+#endif

@@ -1,0 +1,31 @@
+HKCR
+{
+    NoRemove TRiAS.Application.4
+    {
+        NoRemove TRiASEx
+        {
+            NoRemove TabServiceProviders
+            {
+                ForceRemove {16D14140-F8A4-4CD8-B3E8-D2F83A7D24AF} = s 'ProjektTabVerwaltung'
+                {
+                    val Name = s 'Projektinformationen'
+                    val Style = d 24341
+                    val StyleEx = d 3857
+                    val EnableDocking = d 20480
+                    val InitialDocking = d 59421
+                    val ShouldBeAddedToMenu = d 1
+                }
+                ForceRemove {16D14141-F8A4-4CD8-B3E8-D2F83A7D24AF} = s 'OverviewTabVerwaltung'
+                {
+                    val Name = s 'Gesamtübersicht'
+                    val Style = d 24341
+                    val StyleEx = d 3857
+                    val EnableDocking = d 20480
+                    val InitialDocking = d 59421
+                    val InitialRatio = s '0.3'
+                    val ShouldBeAddedToMenu = d 1
+                }
+            }
+        }
+    }
+}

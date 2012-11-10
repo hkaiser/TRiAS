@@ -1,0 +1,1476 @@
+			D_Lib LIBRARY
+			=============
+
+PRODUCT VERSION: 3.2b
+AUTHOR: Anatoly Kardash
+
+
+List of Contents
+----------------
+
+1. Introduction
+1.1. Scope
+1.2. Related books and documents
+2. Main Description
+2.1. Debugging Statement Macro D_()
+2.2. Debug Printing
+2.2.1. D_P() macros family
+2.2.2. D_PF() macros family
+2.2.3. D_S() macros family
+2.2.4. D_SF() macros family
+2.2.5. D_PRINT() macros family
+2.2.6. D_PRINTF() macros family
+2.2.7. D_OUT()/D_END macro
+2.2.8. D_OUTF() macros family
+2.2.9. Debug printing common note
+2.3. Self-Testing Code (D_SELFTEST() macro)
+2.4. Run-Time Configuration Support
+2.4.1. Scope and level specification
+2.4.2. Scope specification macros D_CLASS() and D_STACK()
+2.4.2.1. The D_CLASS() macro
+2.4.2.2. The D_STACK() macro
+2.4.3. Printing prefix format
+2.4.3.1. Prefix format
+2.4.3.2. File name printing format
+2.4.4. Output redirection
+2.4.5. Selective turning on/off debug printing
+2.4.6. Selective turning on/off self-test code execution
+2.4.7. Run-timing of the configuration
+2.4.8. Dumping of the current configuration
+2.4.8. The "dlib.cfg" file example
+2.4.9 Suppressing D_Lib internal diagnostics
+3. Processes and Concurrency
+4. Example of program
+5. D_Lib use guidelines
+6. Copyright and Disclaimer
+
+
+1. Introduction
+---------------
+
+The main purpose of the D_Lib library is to give to an
+end-programmer set of simple-to-use but powerful and easily
+configurable tools to perform his/her daily work debug. Another
+purpose is to provide a way for a maintainer to know what's
+going on with the system he/she maintains.
+
+The latest update of the library may anytime be obtained from:
+
+http://www.geocities.com/SiliconValley/Peaks/8778/pubdom.html
+
+Also D_Lib resides in some popular public domain software
+repositories, at least:
+- Garbo, A Shareware Programs Distribution Library
+- SimTel, the Coast to Coast Software Repository (tm)
+There may be not the latest version though.
+
+1.1. Scope
+----------
+
+The D_Lib library is destined to be used by all the programmers,
+so the scope of it is the daily development. Its facilities may
+be used by a system tester/maintainer also, so this fields are in
+the scope of D_Lib library as well.
+
+
+1.2. Related books and documents
+--------------------------------
+
+The D_Lib library is based on well-known in the C/C++ world ideas
+that are very good described in the book by D.Spuler [1]. Actions
+performed internally (dealing with the regular expressions)
+may use either the Tools.h++ library [2] or YACL library [3] or
+slightly modified REGEX library by Henry Spencer (the modified
+for C++ version called RE_lib may be obtained at the same place:
+http://www.geocities.com/SiliconValley/Peaks/8778/pubdom.html).
+
+1) David A. Spuler "C++ and C Debugging, Testing and Reliability",
+   Prentice Hall, 1994
+2) T. Keffer et.al., "Tools.h++ Introduction and Reference Manual",
+   Rogue Wave Software, Jan 1996 Fourth Printing
+3) M. A. Sridhar, "Building portable C++ applications with YACL",
+   Addison-Wesley Publishing Company, 1996
+
+
+2. Main Description
+-------------------
+
+From the user's point of view the D_Lib library is a set of macros
+and nothing more. All the macros are compiled-in if and only if the
+source file is compiled with the USE_DLIB defined (as a rule it is
+done with compiler flag -D USE_DLIB). In other case (i.e. if USE_DLIB
+undefined) all the macros are turned off, moreover some of them
+disappears at all from the compiled code.
+
+If the macros are turned on (USE_DLIB defined) then some of them
+may be configured from outside of the program (process, execution
+unit, however it is called) even at run-time without restart of the
+program (and, of course, without a need to rebuild it). All the
+details are discussed below.
+
+So the D_Lib library consists of the following parts:
+- debugging statement macro
+- debug printing macros
+- self-testing code
+- run-time configuration support
+- configuration support macros
+
+Although the D_Lib is a C++ library (i.e. written in C++) it may be
+used from either C or C++ program. The limitation is that about
+a half of the macros are unavailable in C-code. Each chapter
+describing macros has subtitle mentioning if the macros are
+available in C.
+
+
+2.1. Debugging Statement Macro D_()
+-----------------------------------
+(both C/C++)
+
+Each programmer wrote at least once in his/her code something like:
+
+	// Old-style, without use of D_Lib:
+	#ifdef DEBUG
+		cout << "Begin of my_func()" << endl << flush;
+	#endif
+
+Well, now we have one macro doing all this job, so you can write:
+
+	// New-style, using D_Lib:
+	D_( cout << "Begin of my_func()" << endl << flush; )
+
+The D_() macro allows to hide pieces of code from the production
+version (i.e. compiled with USE_DLIB undefined), i.e. the code
+inside the macro will not be compiled in production version at all.
+Please note that the macro can be used for any source code not
+containing the ',' (comma) characters on the top-level, i.e.
+
+	D_( int a = 0, b = 1; printf( "a=%d,b=%d", a, b); )
+
+will NOT work (will not pass the compilation) due to ',' between
+declarations while
+
+	int a = 0, b = 1; D_( printf( "a=%d,b=%d", a, b); )
+
+will work fine. This limitation comes from the preprocessor's way
+of macro arguments parsing.
+
+
+2.2. Debug Printing
+-------------------
+
+Very often a programmer wants to print out something from the
+program. There are 2 main cases:
+- to insert temporarily some debug print into the code to see value
+  of a variable or expression;
+- to print something more that just a variable/expression plus its
+  evaluation result.
+There are some different things in the D_Lib library supporting such a
+debug printing.
+
+First of all, the D_Lib library provides very simple and handy
+macros (mostly for current debugging purposes) - D_P(), D_PF(),
+D_S() and D_SF() macros families. Secondly there are ways to get
+much more powerful and configurable printing - D_PRINT(), D_PRINTF()
+and D_OUTF() macros families and D_OUT()/D_END macros. All of them are
+discussed in details below.
+
+
+2.2.1. D_P() macros family
+--------------------------
+(C++ only)
+
+The D_P() macros family is for the trivial case - when a programmer
+just wants to see what is value of something in some place of the
+program. As a rule he/she writes something like that:
+
+	// Old-style, without use of D_Lib:
+	cerr << "x = [" << x << "]" << endl << flush;
+
+keeping in mind to delete this printing afterward. With the D_Lib
+library it's possible to write simply:
+
+	// New-style, with D_Lib:
+	D_P( x);
+
+and this will print to standard error stream (see also the
+"2.4.4. Output redirection" chapter) something like:
+
+	junk.cpp(123): x = [5]
+
+(The prefix printed contains file name and line number where the
+macro D_P was written in the source code.)
+
+Furthermore you can use this macro to print any expression (not
+containing commas on the top level), i.e. lines
+
+	int a = 5, b = 6;
+	D_P( a + b);
+	D_P( sqrt( (float)( b - a)));
+
+will print:
+
+	junk.cpp(234): a + b = [11]
+	junk.cpp(235): sqrt( (float)( b - a)) = [1]
+
+The lack of this approach (actually this is a common lack of macro
+use) is that if we want to print in the same line more than one
+expression we have to have a family of such macros. OK, we have
+such: D_P1(), D_P2(), ..., D_P5() macros accept the number of
+parameters correspondent to the number at the end of their names,
+e.g. D_P3() macro accepts 3 arguments (note: D_P() macro is just a
+synonym of D_P1()). An example of use (for the same variables "a"
+and "b"):
+
+	D_P3( a+b, a-b, a*b);
+
+It will print (as you could expect):
+
+	junk.cpp(240): a+b = [11], a-b = [-1], a*b = [30]
+
+Please note the following things:
+- the same problem with commas (',') characters as in D_() macro;
+- the result of the expression(s) evaluation is sent to
+  "ostream& cerr", so this may be anything having defined the
+  appropriate operator "<<";
+- another possible problem may appear if you use the macro(s) in
+  constructor of a class that may have static instances. In this
+  case use of the macro may happen when the "cerr" is not initialized
+  yet (guess what you'll get);
+- the contents of the macros is deleted from version compiled without
+  USE_DLIB defined), so don't put there anything valuable;
+- the macros always print when compiled with USE_DLIB defined and
+  never print when compiled without it. The only configurable thing
+  here is style of file name printing (see below about configuration
+  of the D_Lib library). So the main purpose of the macros is to be
+  temporary inserted into the source code for short current debug
+  time only.
+
+
+2.2.2. D_PF() macros family
+---------------------------
+(both C/C++)
+
+The D_PF() macros family behaves like D_P() ones, i.e. they
+print unconditionally their argument(s) and the result of the
+argument(s) evaluation but according to specified format. The result
+is sent to the stderr stream. Like the D_P() macros the D_PF() macros
+are mostly useful when a programmer wants temporarily insert some
+debug print into the program (if he/she left them in the code then
+the output will always be generated for debug version and never for
+non-debug one). Please note again the same problem with commas
+as in macros D_() and D_P(). The D_PF() macros family includes the
+following macros: D_PF(), D_PF1(), D_PF2(), D_PF3(), D_PF4() and
+D_PF5(). Formats used in these macros are the standard format
+specifications of printf()-like functions.
+
+The following example of the D_PF() macros use:
+
+	int a=5, b =6; D_PF( "%04d", a + b)
+	D_PF2( "%d%%", a + b, "%d", a - b)
+
+will always print to the standard error stream something like:
+
+	junk.cpp(15): a + b = [0011]
+	junk.cpp(16): a + b = [11%], a - b = [-1]
+
+
+2.2.3. D_S() macros family
+--------------------------
+(C++ only)
+
+The D_S() macros are slightly changed (simplified) form of the D_P()
+ones. These macros do the same work but print the result of the
+argument(s) evaluation only not printing (unlike the D_P()) the
+argument itself. The main purpose of these macros is temporary
+printing of some message(s) to standard error stream. Please note:
+all the problems of the D_P() macros remain for the D_S() macros.
+E.g.:
+
+	D_S( "I'm here!");
+	int a = 5, b = 6;
+	D_S2( "I'm here too:", a + b);
+
+will print to the standard error (see also the "2.4.4. Output
+redirection" chapter):
+
+	junk.cpp(45): I'm here!
+	junk.cpp(47): I'm here too: 11
+
+
+2.2.4. D_SF() macros family
+---------------------------
+(both C/C++)
+
+The D_SF() macros are simplified form of the D_PF() ones.
+These macros do the same work but print the result of the
+argument(s) evaluation only not printing (unlike the D_PF()) the
+argument itself. The main purpose of these macros is temporary
+printing of some message(s) to standard error stream. All the
+problems of the D_PF() macros remain for the D_SF().
+E.g.:
+
+	D_SF( "%s", "I'm here!")
+	int a = 5, b = 6;
+	D_SF2( "I'm here too: x%02X", a + b)
+
+will print to the standard error:
+
+	junk.cpp(45): I'm here!
+	junk.cpp(47): I'm here too: x0B
+
+
+2.2.5. D_PRINT() macros family
+------------------------------
+(C++ only)
+
+The D_PRINT() macros are more general form of the D_P() macros. The
+D_PRINT() macros support all the features of the D_Lib  library
+configuration (selective turning on/off, output redirection, etc.).
+Moreover - by default these macros do not produce any output, they
+may be turned on using the D_Lib run-time configuration only. So
+the macro is predestined to be remained in the source code "forever".
+
+The only difference in the usage of the D_PRINT() macros family and
+the D_P's one is an additional argument - level. E.g.:
+
+	int a=5, b =6; D_PRINT( 2, a + b);
+	D_PRINT2( 1, a + b, a - b);
+
+will print to the current output stream (if the printing is turned
+on for both levels 1 and 2 in the current scope - please don't pay
+too much attention to these words for now, all the possibilities of
+run-time configuration of the D_Lib will be described later):
+
+	junk.cpp(15): a + b = [11]
+	junk.cpp(16): a + b = [11], a - b = [-1]
+
+and if debug printing is turned on for levels 2 only then we'll get:
+
+	junk.cpp(15): a + b = [11]
+
+All the notes mentioned above for the D_P() macros (except the last
+one - about configuration) are actual also for the D_PRINT() macros.
+All the details how to configure the D_Lib library - see below.
+
+
+2.2.6. D_PRINTF() macros family
+-------------------------------
+(both C/C++)
+
+The D_PRINTF() macros are more general form of the D_PF() macros
+and accepts also levelling argument. Also the macros support all
+the features of the debug library (run-time turning on/off,
+redirection, etc.) So the macro is predestinated to be remained
+in the source code "forever".
+E.g.:
+
+	int a=5, b =6; D_PRINTF( 2, "%04d", a + b)
+	D_PRINTF2( 1, "%d%%", a + b, "%d" a - b)
+
+will print to the current debug output (if debug printing is
+turned on for both levels 1 and 2):
+
+	junk.cpp(15): a + b = [0011]
+	junk.cpp(16): a + b = [11%], a - b = [-1]
+
+and will print if debug printing is turned on for levels 2 only:
+
+	junk.cpp(15): a + b = [0011]
+
+
+2.2.7. D_OUT()/D_END macro
+--------------------------
+(C++ only)
+
+The D_OUT() macro may be used like a standard "cout" and "cerr"
+streams but supports all the features of the D_Lib library run-time
+configuration, therefore it accepts a "level" argument. Please note
+that (unlike all the previous macros, namely D_P(), D_S() and
+D_PRINT()) the programmer's code following the D_OUT() macro remains
+after any compilation (regardless of use USE_DLIB flag) and takes
+space of the result binary (object, executable, etc.) file. This code
+will not be executed if compiled without USE_DLIB defined though. An
+example of usage:
+
+	D_OUT(1) << "a plus b = [" << a+b << "]- I'm here!\n" << D_END;
+
+will print to the current output stream (if the printing is turned
+on for the level 1, of course):
+
+	bar.cpp(321): a plus b = [11]- I'm here!
+
+Briefly, the main advantages of use of this macro instead of D_PRINT()
+macros are:
+- everything (having "operator<<( ostream&, ...)", of course) may be
+  printed, not only expressions plus their evaluation result but
+  arbitrary strings, etc.;
+- more C++-style (i.e. may be used just like standard cout/cerr
+  streams, moreover these macros may be used in any place of code -
+  including constructors and destructors of static instances - it is
+  safe);
+- no problem with commas;
+- no different macro names for different number of arguments.
+The disadvantages are:
+- the printing/printed code remains in the production version of the
+  software, although will never be executed;
+- there is no luxury possibility to write a real expression once and
+  to get in the output both expression itself and the result of its
+  evaluation (in fact this is the only reason for existence of
+  D_PRINT() macros!).
+
+
+2.2.8. D_OUTF() macros family
+-----------------------------
+(both C/C++)
+
+The D_OUTF() macros are simplified form of the D_PRINTF() ones.
+These macros do the same work but print the result of the
+argument(s) evaluation only without (unlike the D_PRINTF()) the
+argument itself. The advantage of these macros is that freely
+formatted output may be done using all the facilities of D_Lib.
+E.g.:
+
+	D_OUTF( 2, "%s", "I'm here!")
+	int a = 5, b = 6;
+	D_OUTF2( 1, "I'm here too: x%02X", a + b)
+
+will print to the current debug output (if debug printing is
+turned on for both levels 1 and 2):
+
+	junk.cpp(45): I'm here!
+	junk.cpp(47): I'm here too: x0B
+
+and will print if debug printing is turned on for levels 2 only:
+
+	junk.cpp(45): I'm here!
+
+
+2.2.5. Debug printing common note
+---------------------------------
+
+Please don't confuse the debug printing facility with the tracing
+service. They do different things:
+- debug printing can work in debug version of the programs only; the
+  trace is available always;
+- debug printing should output information understandable by the
+  end-programmer and is useful for the end-programmer only; the
+  trace should output information used by the system administrators
+  mainly, although it may be useful for programmer/tester/maintainer
+  also;
+- debug printing insertion in the source code MUST NOT contain
+  critical/significant/valuable part of the code, i.e. may be removed
+  from it painless at any moment; the trace is organic part of the
+  software and may perform important tasks.
+
+Please note that the macros provided by the D_Lib library may be used
+for both purposes, it is simply important to understand what you
+want to do (as usually though :-). So D_P(), D_PF(), D_S() and D_SF()
+macros are *really* debug printing macros and nothing more, while
+D_PRINT(), D_PRINTF(), D_OUT()/D_END and D_OUTF() macros may be used
+for both debug printing and tracing.
+
+This issue is discussed more detailed at the end of this document.
+
+
+2.3. Self-Testing Code (D_SELFTEST() macro)
+-------------------------------------------
+(both C/C++)
+
+During the development of a program, it can be very useful to have
+the program check itself for errors. This means that the program
+checks for some/any incorrect conditions, and if they occur, some
+action is taken. The trivial example of such an approach is well-known
+standard macro assert(). The D_Lib provides such a facility with the
+D_SELFTEST() macro.
+
+The D_SELFTEST() macro is a "prefix" for a code that performs
+self-testing actions. It may be turned on/off run-time by the level
+and scope information (see the run-time configuration information
+below) and therefore has argument - level. Please note that (like
+the D_OUT()/D_END macros) all the code following the D_SELFTEST()
+macro will remain even when compiled without USE_DLIB flag defined
+(although it will never be executed). E.g. take a look to the
+following fragment:
+
+	int a[10];
+	init_an_array( a, 10); // should initialize properly
+	D_SELFTEST(1) {
+	  for( int i = 0; i < 10; i ++)
+	    if( a[i] != i)
+	      report_internal_error( "illegal array initialization");
+	}
+
+Here the code following the D_SELFTEST() (in the braces) will be
+executed only if: 1. the source file code is compiled with USE_DLIB
+flag; 2. the self-testing for level 1 (in this scope, of course,
+but this will be described later in the run-rime configuration
+section) is turned on.
+
+As mentioned above this macro is a generalization of the standard
+"assert()" macro. This (the generalization, possibility to turn on/off
+the self-test code execution at run-time, etc.) is the advantage
+against the "assert()" while the disadvantages are:
+1) the code remains in the production version (although not executed)
+2) the D_SELFTEST() "expression" takes more place in the source code
+   then the "assert()".
+
+Please note: run-time configuration of the self-testing code execution
+does not intersects with the configuration of the debug printing -
+this is absolutely independent things. (The details of the run-time
+configuration see below.)
+
+
+2.4. Run-Time Configuration Support
+-----------------------------------
+
+For any nontrivial project, the direct use of debugging printing,
+tracing, etc. becomes very soon too inflexible - the amount of printed
+information becomes too large to be readable and understandable, the
+source of each specific printed message becomes undiscoverable and
+so on. Moreover to distinguish (to turn on/off, etc.) the output by
+one criteria (like output level) only is also insufficient. So the
+D_Lib library provides run-time configuration facility allowing to
+control:
+- output redirection
+- selective turning on/off debug printing
+- debug printing prefix format
+- selective turning on/off self-test code execution
+- run-time configuration refreshing
+
+All the control may be performed in 2 ways:
+- through an external config file (the usual and recommended way).
+- via direct call of C++ functions (from the source code that is
+  strongly not recommended, or from a symbolic debugger if it
+  supports this, e.g. dbx or gdb);
+
+The configuration is set using the following algorithm:
+1) the default parameters are set (the values see below)
+2) if there is the environment variable DLIB_CONFIG then its value is
+   treated as the config file name, otherwise the config file name
+   is assumed "dlib.cfg" (i.e. in the current directory);
+3) if the config file with such name exists - it is read and the
+   parameters from there are taken to overwrite/add the default
+   values. (See below more details about run-time configuration,
+   config file directives, etc.)
+
+The config file may contain empty lines or comment lines (beginning
+with the '#' character) - they all are successfully ignored. Other
+lines should be known directives whose formats are described below
+(with the principle "one line - one directive"). In case of
+unknown/illegal format of the directive an error message is printed
+to the current error output and the line is ignored. In case of known
+format which causes any action (i.e. not simply repeats a current
+setting) - an appropriate message is printed to the current error
+output.
+
+
+2.4.1. Scope and level specification
+------------------------------------
+
+First of all, let's define what we can manage. As you already saw in
+the description of macros there is a possibility to specify many
+different "levels" of the printing/self-testing. But it is too
+difficult to have the same leveling through all parts of the source
+code. Therefore the management also includes so called "scope" of the
+code. So the actions may be tuned per level and per scope. What is the
+"scope"? The scope may be:
+- just a base part of the current source file name (e.g. for
+  "d:/dir/file.cpp" it is "file");
+- class name specified by macro D_CLASS() - for C++ only;
+- stack name specified by macro D_STACK() - for C++ only.
+(The D_CLASS and D_STACK macros are discussed in the next chapter,
+you may want to reread this introduction chapter after you'll become
+familiar with them to understand this issue more clear.)
+
+So to specify scope you have to specify 2 things: the scope kind (i.e.
+file, class or stack) and the scope mask (i.e. the control may be
+performed using not only exact scope name but a regular expression
+also. That is, we can, for example, turn on print for level 2 in all
+files with name "MyFavorite_c", or all levels in all classes with
+names beginning with "My" and ending with "Class", or ... actually
+whatever you want).
+
+All the regular expressions here are evaluated using either Rogue
+Wave's Tools.h++ library or YACL public domain library or RE_Lib
+public domain library (depending on flags for building of the D_Lib
+library, see the D_String_c.h source file of the D_Lib library), so
+for all details of the possibilities - see the appropriate
+documentation.
+
+So, most directives setting what we want (don't want) to do have the
+following format:
+
+	directive@<scope_kind>@[<scope_mask>]@<level>@<val>
+
+The <scope_kind> may have one of the values:
+	file
+	class
+	stack
+
+The "scope_mask" is optional part that may be omitted and then will
+be assumed ".*" , i.e. everything.
+
+The <level> specify level(s) for which the directive will be applied.
+This field can have one of the forms:
+- non-negative integer value - specify one level (e.g. 1);
+- "all" (without quotas, of course) - specify all possible levels;
+- two non-negative integer values with dash between - specify interval
+  of the levels for which the directive will work. The second value
+  must be greater. (e.g. 2-10).
+
+In this way you can very flexible play with your debug printing from
+different parts of your source code. Furthermore this policy allows
+you to manage groups of files/classes/stacks (of course, if you have
+something common in the names of the related classes/files/stacks),
+e.g. if you have two classes: MyFileInput_c and MyStreamInput_c,
+then you can manage them together using scope_kind "class" and
+scope_mask "My.*Input_c". For example, if you want to turn off all
+the debug printing (details about printing configuration see below)
+except the printing going from everywhere in MyClass_c and from
+level 2 only of your "...Input_c" classes, then you have just to write
+at the end of the config file:
+
+	print@file@@all@off
+	print@class@MyClass_c@all@on
+	print@class@My.*Input_c@2@on
+
+
+2.4.2. Scope specification macros D_CLASS() and D_STACK()
+---------------------------------------------------------
+(C++ only)
+
+Well, the context in which current macro D_PRINT(), D_PRINTF(),
+D_OUT(), D_OUTF() or D_SELFTEST() acts may be defined in 3 possible
+ways.
+
+First of them is the simplest: the macros D_PRINT(), D_PRINTF(),
+D_OUT(), D_OUTF() and D_SELFTEST() use the standard predefined
+compiler's macro __FILE__ to know the current file name (and the
+macro __LINE__ to know the current line number as well). The D_Lib
+library extracts the base part of the file name (i.e. without path
+and extension) from the value of this macro. So we can manage the
+D_Lib library's behavior using the source file name.
+
+This approach is not sufficient frequently, especially for C++
+programs. It is so when, for example, you have a complicated class
+which implementation is in more that one .cpp file. Or, vice versa,
+you can have some close classes implemented in the same source
+file. Anyway you still want, for example, to turn on the printing
+in a specific class. The D_lib library has the solution! It is the
+macro D_CLASS() that the programmer has to put in the class
+declaration. (See the details later in the correspondent section.)
+
+Well, the solution for classes is good, but it is not good enough. It
+is because a class methods often calls regular functions that are not
+methods of any class (this is not pure object-oriented programming
+but such is life :-(). What to do? The answer is: to use the macro
+D_STACK() that allows you to specify identification (name) for this
+function and all functions that will be called from here (and all
+functions that will be called from the function that are called from
+here, and so on, and so on). So this macro does create name for
+the current stack state, and this name will be applicable up to exit
+from the current stack context. (See the details later in the
+correspondent section.)
+
+Unfortunately both macros D_CLASS() and D_STACK() are available for
+C++ programs only, sop the only way to manage output from C source
+code is the file scope (discussed above).
+
+Now the more detailed discussion of the macros.
+
+
+2.4.2.1. The D_CLASS() macro
+----------------------------
+(C++ only)
+
+The D_CLASS() macro is a class name definition that must be included
+in the class declaration if programmer wants to have the management
+facilities for printing/self-testing using the class name as well
+as file names.
+
+Please note that when the code is compiled without USE_DLIB flag
+then this macro is expanded to nothing, so it does not impact the
+result of compilation.
+
+The example of the macro use:
+
+	class My_c
+	{ D_CLASS( My_c)
+	public:
+		void my_method()
+		{
+			D_OUT(1) << "in my_method()\n" << D_END;
+			// do something
+		}
+		static void func()
+		{
+			D_OUT(1) << "in static func()\n" << D_END;
+			// do something else
+		}
+	};
+
+Such a class declaration allows, for example, to turn the printing
+on by the following line in the D_Lib config file:
+
+	print@class@My_c@1@on
+
+(or, of course, by calling the D_Support_c::SetDoPrintFor() function
+- see below in the printing manipulation discussion).
+
+
+2.4.2.2. The D_STACK() macro
+----------------------------
+(C++ only)
+
+The D_STACK() macro is a stack "name" definition that must be
+included in the place from which the stack scope is interested
+(i.e. if programmer wants to have the management facilities for
+printing/self-testing using the stack name as well as file and class
+names). When the real stack scope disappears (i.e. by leaving the
+function) the D_STACK() macro's domain is also left. So this macro
+allows to manipulate with printing/etc. in the current function and
+in all functions that are called from it.
+
+Please note that when the code is compiled without USE_DLIB flag
+then this macro is expanded to nothing, so it does not impact the
+result of compilation.
+
+The example of the macro use:
+
+	static void my_lovely_proc( int a)
+	{
+		D_OUT(3) << "my_lovely_proc() a = [" <<
+				a << "]\n" << D_END;
+	}
+
+	void my_lovely_func()
+	{
+	D_STACK( my_lovely_func)
+
+		D_OUT(1) << "my_lovely_func()\n" << D_END;
+		for( int a = 15; a >= 0; a--)
+			my_lovely_proc( a);
+	}
+
+This will allow to turn the printing on by the following line in the
+D_Lib config file:
+
+	print@stack@my_lovely_func@1@on
+
+(or, of course, by calling the D_Support_c::SetDoPrintFor() function
+- see below in the printing manipulation discussion).
+
+
+2.4.3. Printing prefix format
+-----------------------------
+
+
+2.4.3.1. Prefix format
+----------------------
+
+All the printing macros (D_P(), D_PF(), D_S(), D_SF(), D_PRINT(),
+D_PRINTF(), D_OUT() and D_OUTF()) print their argument(s) following
+some prefix that shows (actually may show, may not - read further)
+various useful information. By default this information includes
+process ID, source file name (that can be stripped somehow - see
+below) and source file line number. This prefix may be changed to
+arbitrary line you want. This may be done using direct call of
+the C++ function DbgSupport_c::SetPrefix() or by putting in the
+config file a line in the form:
+
+	prefix@<scope_kind>@[<scope_mask>]@<level>@<format>
+
+(the arguments of the mentioned function are self-explanatory and may
+be seen in the D_Support_c.h file).
+
+The <scope_kind>, <scope_mask> and <level> were discussed above (in
+the "2.4.1. Scope and level specification" chapter - see there if
+needed).
+
+The <format> may be any string, end of line is treated as its end, so
+it is impossible to create multi-line prefix. The following substrings
+in the specified string will be treated specially and replaced
+run-time for each printed message:
+
+	<%PID>	 - process ID
+	<%TID>	 - thread ID (if any, otherwise "<no thread>")
+	<%FILE>	 - source file name (see below how to get it more
+		   readable, i.e. stripped in various manners)
+	<%LINE>	 - source file line
+	<%CLASS> - current class (if any, otherwise "<no class name>")
+	<%LEVEL> - value of level argument of the macro (if this is
+		   D_P() or D_S() macro, then "-1")
+	<%YEAR>	 - current year (four digits)
+	<%MONTH> - current month (two digits)
+	<%DAY>	 - current day of month (two digits)
+	<%HOUR>	 - hour of current time (in 24-hour system)
+	<%MIN>	 - minutes of current time (two digits)
+	<%SEC>	 - seconds of current time (two digits)
+	<%MSEC>	 - milliseconds of current time (three digits)
+
+E.g. if you write in your debug config file line:
+
+	prefix@file@My.*Input_c@all@MyInput <%HOUR>:<%MIN>:<%SEC>
+
+then all the debug printing going from your sources files
+MyFileInput_c.*, MyStreamInput_c.*, etc. will look like:
+
+	MyInput 12:25:13 a = [5]
+
+The default value of the prefix is:
+
+	<%PID>:<%FILE>(<%LINE>):
+
+i.e. by default you'll get something like:
+
+	135:.../cpp/MyInput_c.cpp(321): a = [5]
+
+
+2.4.3.2. File name printing format
+----------------------------------
+
+If your prefix format contains field <%FILE> (see above) then often
+you will get a lot of not needed information about the source file
+paths. There is a directive setting file name printing form to have
+it more readable. The directive has the following format:
+
+	fstrip@<level>
+	
+where <level> is non-negative integer number.
+
+The meaning of the <level> is the following. Suppose your source file
+(i.e. the built-in predefined C/C++ macro __FILE__) has value
+
+	d:/dir1/dir2/dir3/dir4/file.ext
+	
+Now:
+- if <level> equals 0 then the file name is printed as is (i.e.
+  without any changes, i.e.:
+
+	d:/dir1/dir2/dir3/dir4/file.ext
+
+- if <level> equals 1 then the brief file name is printed (i.e.
+  without path at all, i.e.:
+
+	file.ext
+
+- if <level> is greater than 1 then the file name is truncated up
+  the last <level> parts, i.e. if <level> == 4 then we'll get:
+
+	.../dir2/dir3/dir4/file.ext
+
+The default value of the <level> is 3, so for our example the
+
+	.../dir3/dir4/file.ext
+
+will be printed.
+
+Of course, the same effect may be obtained by call the
+DbgSupport_c::SetFileNameStrip() function from the source code or
+from a symbolic debugger (if it supports this). The function accepts
+1 unsigned int argument that represents the desired file name stripping
+level.
+
+
+2.4.4. Output redirection
+-------------------------
+
+The directive setting debug printing output can have the following
+formats:
+
+	to_stream@{out|err|dbg}
+	to_file@<filename>
+	to_new_file@<filename>
+
+These directives control the output stream to where all the debug
+printing will go from now. So the output may be redirected to either
+standard output stream, standard error stream or arbitrary file.
+
+For example, if you want to send all the output to the standard
+output stream (stdout in C, cout in C++), then just put into the
+debug config file the following line:
+
+	to_stream@out
+
+If you want to send everything to some file, then you have 2
+possibilities - to add the output to an existing file (directive
+"to_file") or to overwrite the file if it exists (directive
+"to_new_file"). Of course, in the both cases, if the file does not
+exist, then it will be created.
+
+So if you want to send the output to file mydbg.out (adding the new
+output to the end fo the file), then you have to write in the debug
+config file:
+
+	to_file@mydbg.out
+
+If you want to rewrite the file (i.e. not to keep the old content
+of the file), then you write the following directive:
+
+	to_new_file@mydbg.out
+
+Please note: the use of the "to_new_file" directive in a parallel
+executing application (e.g. multi-processing one) may cause that
+only the output from the latest started thread/process will be
+stored in the file. Use the additional facilities in file name
+specification (see the next paragraph) in order to avoid this problem.
+
+You may want to create each time file with a new unique name to
+distinguish better between different launches, processes, etc. 
+So you can put in the file name for the "to_file" and "to_new_file"
+directives several fields, which will be substituted at the moment
+of the file opening. The fields are:
+
+	<%PID>	 - process ID
+	<%YEAR>	 - current year (four digits)
+	<%MONTH> - current month (two digits)
+	<%DAY>	 - current day of month (two digits)
+	<%HOUR>	 - hour of current time (in 24-hour system)
+	<%MIN>	 - minutes of current time (two digits)
+	<%SEC>	 - seconds of current time (two digits)
+
+So if you write in your debug config file:
+
+	to_new_file@my_app<%PID>.<%DAY>.<%MONTH>.<%YEAR>.out
+
+then there will be created new file with some name like:
+
+	my_app473.16.08.1999.out
+
+The default value is "to_stream@err" in most cases. The only exception
+for now is WindowNT/95 GUI applications where the standard output and
+standard error streams are redirected to null-device. For such
+application the output is stored to file "dlib.out" by default
+(i.e. the default value is "to_file@dlib.out").
+
+
+2.4.5. Selective turning on/off debug printing
+----------------------------------------------
+
+The directive setting what we want (don't want) to print has the
+following format:
+
+	print@<scope_kind>@[<scope_mask>]@<level>@{on|off|yes|no|0|1}
+
+The <scope_kind>, <scope_mask> and <level> were discussed above (in
+the "2.4.1. Scope and level specification" chapter - see there if
+needed).
+
+The last part of the directive is self-explanatory and sets on/off
+the printing. The same result may be obtained by call of the
+DbgSupport_c::SetDoPrintFor() function from the source code or from
+a symbolic debugger (if it supports this). The arguments of the
+function are self-explanatory and may be seen in the D_Support_c.h
+file.
+
+An example of the directive use:
+
+	print@file@.*@all@on
+
+This will turn on all the printing. Other examples you can find in
+other parts of this document.
+
+The default value is "print@file@.*@all@off", i.e. no printing caused
+by D_PRINT(), D_PRINTF(), D_OUT() and D_OUTF() macros. Please note
+that the macros D_P(), D_PF(), D_S() and D_S() are not configurable
+(almost) and will print independent on what is specified in the
+"print" directives.
+
+
+2.4.6. Selective turning on/off self-test code execution
+--------------------------------------------------------
+
+This part of run-time configuration works exactly in same way as the
+turning on/off of the debug printing. The only difference is that the
+directive's keyword is "selftest" instead of "print". The example
+of such a directive:
+
+	selftest@stack@read_history_file@1-3@on
+
+The default value is "selftest@file@.*@all@off", i.e. no self-testing
+code execution.
+
+
+2.4.7. Run-timing of the configuration
+--------------------------------------
+
+You can change/add/remove content of your debug config file and the
+changes will be accepted without restart of your program(s). Of course,
+the refresh is performed not always but once in some time interval (by
+default - each 5 sec., actually on call of some service of the debug
+library if were passed more then 5 seconds after the previous read of
+the file, moreover the file will be reread if it has been changed
+only - so the performance gap is not too big). Of course, the interval
+is configurable - you can use directive
+
+	refresh@<new_interval_in_seconds>
+
+in the config file (or the C++ function
+DbgSupport_c:: SetRefreshInterval()). The only problem is that if
+you changed the interval to some big value then any next changes will
+be checked after this time interval passed only, e.g. you will have
+no possibility in such a case to set the interval to less value
+immediately (beside of direct call of the C++ function).
+
+An example:
+
+	refresh@2
+
+This line sets that the setting in the config file will be checked if
+more than 2 seconds passed from the previous check.
+
+
+2.4.8. Dumping of the current configuration
+-------------------------------------------
+
+Well, all the current setting of the D_Lib library may be dumped in
+the format of its config file (i.e. may be copied-pasted from the
+current output to another config file for future use). The dumping
+is done very simply: either by putting in the config file directive
+
+	dump
+
+or by call of D_Support_c::Dump() function.
+
+
+2.4.8. The "dlib.cfg" file example
+----------------------------------
+
+# ------ begin of dlib.cfg example ------
+# The default values:
+#
+# - not more than 3 dirs in file name
+# fstrip@3
+#
+# - to standard error stream
+# to_stream@err
+#
+# - no debug printing
+# print@file@.*@all@off
+#
+# - no selftest code execution
+# selftest@.*@all@off
+#
+# - prefix for messages like: 32:.../mylib/cpp/mycpp.cpp(456):
+# prefix@.*@all@<%PID>:<%FILE>(<%LINE>):
+#
+# - to recheck this file each 5 sec (or more if not needed)
+# refresh@5
+
+	# Now let's set our values:
+   	
+# redirect to file
+to_file@dlib.out
+
+# to recheck the configuration each second
+refresh@1
+
+# to print file names only (without path)
+fstrip@1
+
+# this line turns on all the prints
+#print@file@@all@on
+
+print@file@main.*@1-4@on
+print@class@.*AAA.*@all@on
+print@class@AAA_c@2-3@off
+
+selftest@file@@1-2@on
+
+prefix@file@@@<%PID>:<%LEVEL>:<%FILE>(<%LINE>) ->
+prefix@class@BBB_c@@BBB_c <%LINE> - <%MIN>:<%SEC>.<%MSEC> :
+prefix@stack@recursive_func2@@recursive_func2 <%LINE> :
+#prefix@file@@1@My prefix <%LINE> - <%HOUR>:<%MIN>:<%SEC> ->
+#prefix@file@m..n@2@<%LINE> - <%MIN>:<%SEC>.<%MSEC> ->
+
+dump
+
+# ------ end of dlib.cfg example --------
+
+
+2.4.9 Suppressing D_Lib internal diagnostics
+---------------------------------------------
+
+Either the reading of the configuration file or calling of some
+function changing the status of D_Lib (or, of course, some internal
+error) cause printing to the current output stream, e.g.:
+
+	D_Lib: reading configuration from dlib.cfg...
+	D_Lib: refresh interval changed to 1
+	D_Lib: file name strip level changed to 1
+
+This diagnostics may cause problem if your program must work
+absolutely silently (e.g. if you are writing a CGI module). In
+this case it is enough to set the environment variable DLIB_SILENCE
+to any value (even empty - the fact of the variable existense is
+enough) and all this internal output will be suppressed.
+
+
+3. Processes and Concurrency
+----------------------------
+
+The library is tread-safe (although threads support is implemented
+for MS WindowsNT/95 and POSIX-threads on UNIXes only). It is compiled
+to DLL for MS WindowsNT/95 and as a regular library for UNIX platforms.
+
+
+4. Example of program
+---------------------
+
+This is a real program that you can copy/paste to a separate file
+(say main.cpp), build and test by yourself. Try to use config file
+presented above. Try to play with the definitions inside the config
+file. You'll get the picture.
+
+// ------ begin of program --------------
+#include <stdio.h>
+#include <iostream.h>
+
+#include <d_lib.h>
+
+class AAA_c
+{
+D_CLASS(AAA_c)
+public:
+	void func();
+	virtual void virt_func();
+	static void static_func();
+friend ostream& operator <<( ostream& s, const AAA_c&)
+	{ s << "AAA_c"; return( s); }
+};
+
+class BBB_c : public AAA_c
+{
+D_CLASS( BBB_c)
+public:
+	void func();
+	virtual void virt_func();
+	static void static_func();
+};
+
+template <class T>
+class AAATmpl
+{
+D_CLASS(AAATmpl)
+public:
+	AAATmpl( const T val)
+		: _val( val)
+	{}
+	void func()
+	{ D_OUT(1) << "in AAATmpl::func() for [" << _val << "]\n" <<
+					D_END; }
+	static void static_func()
+	{ D_OUT(1) << "in AAATmpl::static_func()\n" << D_END; }
+private:
+	const T _val;
+};
+
+struct AAAStr
+{
+D_CLASS( AAAStr)
+public:
+	void func();
+};
+
+void AAA_c::func()
+{
+	D_OUT(1) << "in AAA_c::func()\n" << D_END;
+}
+
+void AAA_c::virt_func()
+{
+	D_OUT(1) << "in AAA_c::virt_func()\n" << D_END;
+	static_func();
+}
+
+void AAA_c::static_func()
+{
+	D_OUT(1) << "in AAA_c::static_func()\n" << D_END;
+}
+
+void BBB_c::func()
+{
+	D_OUT(1) << "in BBB_c::func()\n" << D_END;
+}
+
+void BBB_c::virt_func()
+{
+	D_OUT(1) << "in BBB_c::virt_func()\n" << D_END;
+	static_func();
+}
+
+void BBB_c::static_func()
+{
+	D_OUT(1) << "in BBB_c::static_func()\n" << D_END;
+}
+
+void AAAStr::func()
+{
+	D_OUT(1) << "in AAAStr::func()\n" << D_END;
+}
+
+static void g( AAA_c* o)
+{
+	o->func();
+	o->virt_func();
+}
+
+static void AAA_c_test()
+{
+
+	int a = 7;
+	double b = 3.14159;
+
+	D_OUT(1) << "sum of a and b = [" << a + b <<
+		"] - I'm here 1!\n" << D_END;
+	D_OUT(2) << "sum of a and b = [" << a + b <<
+		"] - I'm here 2!\n" << D_END;
+	D_OUT(3) << "sum of a and b = [" << a + b <<
+		"] - I'm here 3!\n" << D_END;
+
+	AAA_c aaa;
+	aaa.func();
+	aaa.virt_func();
+	AAA_c::static_func();
+
+	BBB_c bbb;
+	bbb.func();
+	bbb.virt_func();
+	BBB_c::static_func();
+
+	g( &aaa);
+	g( &bbb);
+
+	AAATmpl<double> a1( 3.14159);
+	a1.func();
+	AAATmpl<double>::static_func();
+
+	AAAStr a2;
+	a2.func();
+
+	AAATmpl<AAA_c> a3( aaa);
+	a3.func();
+}
+
+static void my_lovely_proc( int a)
+{
+     D_OUT(3) << "my_lovely_proc() a = [" << a << "]\n" << D_END;
+}
+
+void my_lovely_func()
+{
+D_STACK( my_lovely_func)
+
+     D_OUT(1) << "my_lovely_func()\n" << D_END;
+     for( int a = 15; a >=0; a--)
+             my_lovely_proc( a);
+}
+
+static void recursive_func( int a)
+{
+D_STACK(recursive_func1)
+	D_OUT(1) << "In recursive_func( " << a << ")\n" << D_END;
+	if( a == 5)
+		return;
+D_STACK(recursive_func2)
+	recursive_func( a + 1);
+}
+
+static void recursive_functest()
+{
+D_STACK(recursive_functest)
+	int a = 0;
+	recursive_func( a);
+}
+
+static void stack_scope_test()
+{
+D_STACK(stack_scope_test)
+
+	int a = 3;
+	double b = 16.56;
+
+	D_OUT(1) << "sum of a and b = [" << a + b <<
+		"] - I'm here 1!\n" << D_END;
+	D_OUT(2) << "sum of a and b = [" << a + b <<
+		"] - I'm here 2!\n" << D_END;
+	D_OUT(3) << "sum of a and b = [" << a + b <<
+		"] - I'm here 3!\n" << D_END;
+
+	my_lovely_func();
+	recursive_functest();
+}
+
+static void init_int_array( int* arr, int sz)
+{
+	for( int i = 0; i < sz; i ++)
+		arr[i] = 0;
+}
+
+void try_dbg_macros()
+{
+	D_( cout << "This long message will be printed from the \n" <<
+		"debug version but will not be included even in \n" <<
+		"binary code of the production version\n"; )
+
+	int a = 5, b = 6; D_( cout << "a=" << a << " b=" << b << endl;)
+
+	D_P1( a * b);
+	D_P( a + b);
+	D_P2( a - b, a + b);
+
+	D_PF( "%04d", a + b);
+
+	D_S( "I'm here!");
+	D_S2( "I'm here too:", a + b);
+
+	D_SF( "I'm here again in hex: x%02X", a + b);
+
+	a = 10;
+	b = 15;
+	D_Support_c::SetFileNameStrip( 1);
+	D_PRINT( 2, a + b);
+	D_PRINT2( 1, a + b, a - b);
+	D_PRINTF( 1, "%d - in C++!", a + b);
+
+	D_OUT(1) << "sum of a and b = [" << a + b <<
+		"] - I'm here 1!\n" << D_END;
+	D_OUT(2) << "sum of a and b = [" << a + b <<
+		"] - I'm here 2!\n" << D_END;
+	D_OUT(3) << "sum of a and b = [" << a + b <<
+		"] - I'm here 3!\n" << D_END;
+
+	D_OUTF2(1, "From D_OUTF(1): sum = [%d]", a + b,
+			" diff = [%d]", a - b);
+
+	cout << "Now you can change your debug " <<
+		"config file...\n" <<
+		"And then enter a symbol and press " <<
+		"<enter>\n" << flush;
+	char c;
+	cin >> c;
+
+	int zero_arr[3];		// array to be zeroed
+	init_int_array( zero_arr, 3);	// right initialization
+	D_SELFTEST(2) {
+		for( int i = 0; i < 3; i ++)
+		{
+			D_OUT(2) << "D_SELFTEST(2) - checking [" <<
+				i  << "]\n" << D_END;
+			if( zero_arr[i] != 0)
+				D_OUT(2) << "Internal error: " <<
+				    "illegal array initialization\n" <<
+				    D_END;
+		}
+	}
+
+	int incr_arr[3];		// array to be incremental
+	init_int_array( incr_arr, 3);	// wrong initialization -
+					// will be warned if the
+					// D_SELFTEST's part is tuned on
+	D_SELFTEST(1) {
+		for( int i = 0; i < 3; i ++)
+		{
+			D_OUT(1) << "D_SELFTEST(1) - checking [" << i
+				<< "]\n" << D_END;
+			if( incr_arr[i] != i)
+				D_OUT(1) << "Internal error: " <<
+				    "illegal array initialization\n" <<
+				    D_END;
+		}
+	}
+
+	AAA_c_test();
+	stack_scope_test();
+}
+
+void main( int argc, char* argv[])
+{
+	cout << "main() began!\n" << flush;
+	try_dbg_macros();
+	exit( 0);
+}
+// ------ end of program --------------
+
+
+5. D_Lib use guidelines
+-----------------------
+
+First of all, you have to build the library. See README.TXT file
+for recommendations how to do it painlessly.
+
+Now: how to get the D_Lib Library in work. It's simple:
+
+1) write "#include <d_lib.h>" in all source files using the library;
+2) add name "D_lib" into list of used libraries for your executables
+   (note: if the library is used depends on not WinNT platform, i.e.
+   not as DLL, then it may require also other libraries, e.g. either
+   Rogue Wave's Tools.h++ or YACL or RE_Lib and/or pthread -
+   depending on how it was built, so you have to specify them also).
+
+Now, it is strongly recommended to use macros D_PRINT(<level>),
+D_PRINTF(<level>), D_OUT(<level>) and/or D_OUTF(<level>) to put the
+desired debug printing into your sources. If you want to use really
+temporary debug printing (i.e. you are sure that after a couple of
+minutes you'll delete it and *never* will regret about) then it is
+strongly recommended to use D_P(), D_PF(), D_S() and/or D_SF() macros.
+
+It is recommended in the (hopefully) rare cases to use the D_() macro
+- for example, when you have really long messages used in the debug
+version only.
+
+It is recommended to use the D_SELFTEST(<level>) macro for all pieces
+of code you're putting into your sources for various checks performing
+in the debug version only. Briefly: each time you want to use
+"assert()" think again: "May be the D_SELFTEST() is better here?"
+Note: the D_SELFTEST() macro is much more general than the "assert()"
+macro because the "assert()" does not provide any way to diagnose what
+is the reason of the fail, e.g. the code:
+
+	char* a = new char[100];
+	assert( a != 0);
+
+will cause output in case of unsuccessful "new" something like (in
+the best case):
+
+	bar.cpp(256): Assertion of a != 0 failed!
+
+Not too informative, ah? Anyway if you prefer to use the "assert()"
+- it is available as usually, the D_Lib library does not change it.
+
+The last thing must be mentioned: currently there is no support for
+locking the file during current printing. This may cause that in case
+of use of the same file from several parallel processes the result
+output will be mixed and therefore not too understandable. The way to
+avoid this problem is to use run-time generated file names (see
+"2.4.4. Output redirection").
+
+
+6. Copyright and Disclaimer
+---------------------------
+
+Copyright 1996-1999  Anatoly Kardash, anatoly-k@geocities.com
+
+Permission to use, copy, modify, and distribute, this software
+and its documentation for any purpose is hereby granted without
+fee, provided that the above copyright notice appear in all copies
+and that both that copyright notice and this permission notice
+appear in supporting documentation, and that the name of the
+copyright holders be used in advertising or publicity pertaining
+to distribution of the software with specific, written prior
+permission, and that no fee is charged for further distribution
+of this software, or any modifications thereof. The copyright
+holder make no representations about the suitability of this
+software for any purpose. It is provided "as is" without express
+or implied warranty.
+
+THE COPYRIGHT HOLDER DISCLAIM ALL WARRANTIES WITH REGARD TO THIS
+SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS, IN NO EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE FOR
+ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA, PROFITS, QPA OR GPA,
+WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
+ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
+OF THIS SOFTWARE.
+
+

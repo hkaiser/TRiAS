@@ -1,0 +1,15 @@
+# 	Makefile for treeview, Windows platform
+# 	$$
+
+include ..\Makefile.inc.java.NT
+
+SRCS = 	TreeView.java Node.java NodeDump.java SuperNode.java \
+	TreeDisplay.java TreeDisplayUI.java NodePanel.java NodeView.java \
+	GlobalView.java PaintScale.java PredInfoPack.java
+
+CLASSES = $(SRCS:.java=.class)
+
+all: $(CLASSES)
+
+clean:
+	del *.class *~

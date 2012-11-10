@@ -1,0 +1,80 @@
+/* Scanner fuer ATLAS-ASCII-Austauschformat                       */
+/* File: ATLPARS.LX                                               */
+
+%{
+
+#if defined(sccs)
+static char SccsId[] = "GDBTRPARS: %W%  %E%";
+#endif
+
+#include <stdlib.h>
+#include <string.h>
+#include "atlpars.h"
+#include "ytab.h"
+
+int yylineno = 0;
+
+%}
+
+S               [-+]?
+D               [0-9]
+E               [DEde]{S}?{D}+
+ID              ([a-zA-Z0-9_])*
+
+
+%%
+
+\n                      {       /* Zeilen zaehlen */
+				yylval.numtok.num_line = yylineno;
+				return ('\n');
+			}
+
+"-"                     {
+				return ('-');
+			}
+
+","                     {
+				return (',');
+			}
+
+\"                      |
+\'                      {
+			register int scope_char = yytext[0];
+			register int inchar;
+			register char *cptr = yylval.strtok.string;
+
+				inchar = input();
+				if (scope_char == '\"' && inchar == '*') {
+				int tmpchar = input();
+
+					if (tmpchar == '\"')
+						return T_STERN;
+					else {
+						unput (inchar);
+						unput (tmpchar);
+					}
+				} else
+					unput (inchar); 
+				while ((inchar = input()) != scope_char)
+					*cptr++ = inchar;
+				*cptr = '\0';
+				yylval.strtok.str_line = yylineno;
+				return (T_STRING);
+			}
+
+{S}{D}+                 {       /* Integerzahl */
+				yylval.numtok.intnum = atol (yytext);
+				yylval.numtok.num_line = yylineno;
+				return (T_INT);
+			}
+
+
+{S}{D}+"."{D}*({E})?    |
+{S}{D}*"."{D}+({E})?    |
+{S}{D}+{E}              {       /* Floatpointzahl */
+				yylval.flttok.fltnum = atof (yytext);
+				yylval.flttok.flt_line = yylineno;
+				return (T_FLOAT);
+			}
+
+[ \t]*                  ;               /* ignorieren */

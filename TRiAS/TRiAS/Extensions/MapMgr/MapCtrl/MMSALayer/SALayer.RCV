@@ -1,0 +1,113 @@
+#ifndef VS_FF_DEBUG
+// ----------------------------------------------------------------------------
+// In VER.H sind die notwendigen Konstantendefinitionen enthalten -------------
+#include <ver.h>
+#endif
+
+// ----------------------------------------------------------------------------
+// Die folgenden Zeilen sollten vom Produktverantwortlichen für jedes Build 
+// aktualisiert werden 
+
+#define VER_FILEVERSION_STR     "1.00.001\0"
+#define VER_FILEVERSION          1,00,0,001
+
+#define VER_PRODUCTVERSION_STR  "3.00\0"
+#define VER_PRODUCTVERSION      3,00,0,0
+
+// ----------------------------------------------------------------------------
+// Produkt-Spezifische Informationen ------------------------------------------
+
+// Default ist NODEBUG
+#ifndef DEBUG
+#define VER_DEBUG                   0
+#else
+#define VER_DEBUG                   VS_FF_DEBUG
+#endif
+
+// Default ist PrivateBuild
+#ifndef OFFICIAL
+#define VER_PRIVATEBUILD            VS_FF_PRIVATEBUILD
+#else
+#define VER_PRIVATEBUILD            0
+#endif
+
+// Default ist PreRelease
+#ifndef FINAL
+#define VER_PRERELEASE              VS_FF_PRERELEASE
+#else
+#define VER_PRERELEASE              0
+#endif
+
+#define VER_FILEFLAGSMASK    VS_FFI_FILEFLAGSMASK
+#define VER_FILEFLAGS        (VER_PRIVATEBUILD|VER_PRERELEASE|VER_DEBUG|VS_FF_SPECIALBUILD)
+
+#define VER_FILEOS           VOS_DOS_WINDOWS32
+
+#define VER_COMPANYNAME_STR  	"TRiAS\256 GmbH Potsdam\0"
+#define VER_LEGALCOPYRIGHT_STR	"Copyright© TRiAS\256 GmbH Potsdam 1991 - 2000\0"
+#define VER_PRODUCTNAME_STR  	"TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem\0"
+#define VER_LEGALTRADEMARKS_STR	"TRiAS® ist ein eingetragenes Warenzeichen der TRiAS\256 GmbH Potsdam.\0"
+
+// ----------------------------------------------------------------------------
+// Datei-Spezifische Informationen --------------------------------------------
+
+#define VER_FILETYPE                VFT_DLL
+
+#define VER_FILESUBTYPE             VFT2_UNKNOWN
+#define VER_FILEDESCRIPTION_STR		"TRiAS®, Mapmanager - Import von Layerkarten Sachsen/Anhalt\0"
+#define VER_INTERNALNAME_STR		"MMSALayer\0"
+#define VER_ORIGINALFILENAME_STR	"MMSALayer.DLL\0"
+#if defined(_DEBUG)
+#define VER_SPECIALBUILD_STR		"Mapmanager - Import von Layerkarten Sachsen/Anhalt, Version für den internen Gebrauch (Debug), © TRiAS\256 GmbH Potsdam,#KK001116\0"
+#elif defined(_RDEBUG)
+#define VER_SPECIALBUILD_STR		"Mapmanager - Import von Layerkarten Sachsen/Anhalt, Version für den internen Gebrauch (Prerelease), © TRiAS\256 GmbH Potsdam,#KK001116\0"
+#elif defined(NDEBUG)
+#define VER_SPECIALBUILD_STR		"Mapmanager - Import von Layerkarten Sachsen/Anhalt, © TRiAS\256 GmbH Potsdam,#KK001116\0"
+#else
+#error "You must define one of _DEBUG, _RDEBUG, NDEBUG"
+#endif
+
+// Die eigentliche VersionsStruktur -------------------------------------------
+#ifdef RC_INVOKED
+
+VS_VERSION_INFO	VERSIONINFO
+FILEVERSION		VER_FILEVERSION
+PRODUCTVERSION  VER_PRODUCTVERSION
+FILEFLAGSMASK   VER_FILEFLAGSMASK
+FILEFLAGS       VER_FILEFLAGS
+FILEOS          VER_FILEOS
+FILETYPE        VER_FILETYPE
+FILESUBTYPE     VER_FILESUBTYPE
+
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040704E4"	// Deutsch und multilinguale CodePage
+		BEGIN
+			VALUE "CompanyName",		VER_COMPANYNAME_STR
+			VALUE "FileDescription",	VER_FILEDESCRIPTION_STR
+			VALUE "FileVersion",		VER_FILEVERSION_STR
+			VALUE "InternalName",    	VER_INTERNALNAME_STR
+			VALUE "LegalCopyright",		VER_LEGALCOPYRIGHT_STR
+			VALUE "LegalTrademarks",	VER_LEGALTRADEMARKS_STR
+			VALUE "OriginalFileName",	VER_ORIGINALFILENAME_STR
+ 			VALUE "ProductName",		VER_PRODUCTNAME_STR
+			VALUE "ProductVersion",		VER_PRODUCTVERSION_STR
+			// Hier sollten zusätzliche Informationen für lokale Versionen 
+			// enthalten sein.
+			VALUE "SpecialBuild",		VER_SPECIALBUILD_STR
+			VALUE "OleSelfRegister\0", "\0"
+			VALUE "TRiASSelfRegister\0", "\0"
+		END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+	// Die folgende Informationen werden lediglich für lokalisierte 
+	// Produktversionen verändert. Jeweils ein WORD, WORD - Paar 
+	// definiert eine konkrete Sprache bzw. unterstützte CodeSeite.
+
+        VALUE "Translation", 0x407, 1252
+    END
+END
+
+#endif

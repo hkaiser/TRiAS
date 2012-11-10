@@ -1,0 +1,57 @@
+# If you are using RogueWave's Tools.h++ library then:
+#THIRD_PARTY_CFLAGS = -DUSE_3PARTY_ROGUE -I d:\usr\local\rogue
+#THIRD_PARTY_LFLAGS = d:\usr\local\rogue\lib\mtlmt.lib
+# otherwise if you are using YACL library then:
+THIRD_PARTY_CFLAGS = -DUSE_3PARTY_YACL -I $(YACLPATH)
+THIRD_PARTY_LFLAGS = yaclbasr.lib
+# otherwise you should use RE_Lib, so:
+#THIRD_PARTY_CFLAGS = -I ..\re_lib
+#THIRD_PARTY_LFLAGS = ..\re_lib\re_lib.lib
+# At last if you are using something yours then specify
+# something yours here:
+#THIRD_PARTY_CFLAGS = flags of your regular expression implementation
+#THIRD_PARTY_LFLAGS = flags of your regular expression implementation
+
+CC = cl.exe
+LIBRARIAN = link.exe
+CFLAGS = /nologo /MD /W3 /GX /O2 /I . \
+		/D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "USE_DLIB" /c \
+		$(THIRD_PARTY_CFLAGS) 
+LIBFLAGS = $(THIRD_PARTY_LFLAGS) \
+		kernel32.lib user32.lib gdi32.lib winspool.lib \
+		comdlg32.lib advapi32.lib shell32.lib ole32.lib \
+		oleaut32.lib uuid.lib /nologo /subsystem:windows \
+		/dll /incremental:no /pdb:d_lib.pdb /machine:I386 \
+		/nodefaultlib:libcd.lib \
+		/implib:d_lib.lib
+
+OBJECTS = d_support_c.obj d_time_c.obj d_list_c.obj
+
+d_lib.dll:	$(OBJECTS)
+	$(LIBRARIAN) $(LIBFLAGS) /out:d_lib.dll $(OBJECTS)
+
+d_support_c.obj:	d_support_c.cpp \
+			d_consts.h\
+			d_levelinfo_c.h\
+			d_lib_dll.h\
+			d_list_c.h\
+			d_macros.h\
+			d_maskinfo_c.h\
+			d_regexpr.h\
+			d_stackname_c.h\
+			d_string_c.h\
+			d_support_c.h\
+			d_time_c.h
+	$(CC) $(CFLAGS) d_support_c.cpp
+
+d_time_c.obj:		d_time_c.cpp \
+			d_time_c.h
+	$(CC) $(CFLAGS) d_time_c.cpp
+
+d_list_c.obj:		d_list_c.cpp \
+			d_list_c.h
+	$(CC) $(CFLAGS) d_list_c.cpp
+
+clean: 
+	-del d_support_c.obj d_time_c.obj d_lib.dll d_lib.exp d_lib.lib d_lib.pch
+

@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiASEx.GeneralMacroScript.1 = s 'Makromanagement Streams'
+	{
+		CLSID = s '{07963810-3123-101C-BB62-00AA0018497C}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {07963810-3123-101C-BB62-00AA0018497C} = s 'Makromanagement Streams Aggregat'
+		{
+			val AppID = s '{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}'
+			ProgID = s 'TRiASEx.GeneralMacroScript.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+}

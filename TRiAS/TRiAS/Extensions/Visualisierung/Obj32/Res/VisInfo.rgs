@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiAS.DefaultVisInfo.1 = s 'Allgemeine Standardvisualisierung'
+	{
+		CLSID = s '{289BE0C4-92F6-11D1-BA03-080036D63803}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {289BE0C4-92F6-11D1-BA03-080036D63803} = s 'Allgemeine Standardvisualisierung'
+		{
+			val AppID = s '{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}'
+			ProgID = s 'TRiAS.DefaultVisInfo.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+}

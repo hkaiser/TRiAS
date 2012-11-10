@@ -1,0 +1,211 @@
+'\"t
+.TH ARGQVALUE 3ARG "September 1991" "SDSC" "ARGUMENT PARSING"
+.SH NAME
+ArgQValue  -  query value for an option on the commandline
+.br
+ArgQNValue  -  query number of values for an option on the commandline
+.SH SYNOPSIS
+.if t \fB
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+#include "sdsc.h"
+
+int ArgErrNo;
+
+int ArgQNValue( keyword, noccur )
+	char *keyword;
+	int noccur;
+
+ArgValue *ArgQValue( keyword, noccur, nvalue )
+	char *keyword;
+	int noccur;
+	int nvalue;
+.if t \fR
+.fi
+.SH DESCRIPTION
+\fIArgQNValue\fR and \fIArgQValue\fR retrieve information about the
+commandline after it has been parsed by an earlier call to \fIArgParse(3ARG)\fR.
+.LP
+\fIArgQNValue\fR queries the number of values in the \fInoccur\fR-th
+occurrence of the option with keyword \fIkeyword\fR.
+The number of values is returned as the function value.
+.LP
+\fIArgQValue\fR queries the \fInvalue\fR-th value in the
+\fInoccur\fR-th occurrence of the option with keyword \fIkeyword\fR.
+Values are numbered from 0 for the first value and so on.
+A pointer to an \fIArgValue\fR structure containing the value is returned
+as the function value.
+.SH STRUCTURES
+.SS "\fIArgValue\fB struct"
+The \fIArgValue\fR structure describes a value argument for an option on
+the commandline.
+The type of the value (integer, float, string, integer range, float range)
+is determined by the \fIArgOption\fR structure passed to \fIArgParse(3ARG)\fR
+to describe the option during command-line parsing.
+The \fIArgValue\fR structure is defined as follows:
+.LP
+.ne 5
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+.TS
+l s s s
+l l l l.
+typedef struct ArgValue
+{
+	int	arg_type;
+	int	arg_rform;
+	union
+	{
+		int	arg_i1;
+		float	arg_f1;
+		char	*arg_s1;
+		int	arg_reserved1[4];
+	} arg_v1;
+	union
+	{
+		int	arg_i2;
+		float	arg_f2;
+		int	arg_reserved2[4];
+	} arg_v2;
+	int	arg_reserved[4];
+.TE
+} ArgValue;
+.fi
+.in -0.5i
+.LP
+.IP \fIarg_type\fR
+The \fIarg_type\fR field indicates the returned value type.
+The value is identical to the \fIarg_type\fR field of the
+\fIArgOption\fR structure describing the option (see \fIArgParse\fR(3ARG)).
+.IP \fIarg_rform\fR
+The \fIarg_rform\fR field indicates the format of a range value, if
+\fIarg_type\fR indicates the value is a range (integer or float).
+The following range formats are possible:
+
+.ne 4
+.in +0.5i
+.TS
+l l l.
+\fBName\fR	\fBForm\fR	\fBMeaning\fR
+ARGRCLOSED	n-m	Numbers \fIn\fR through \fIm\fR
+ARGROPEN	n-	Numbers \fIn\fR through the end
+ARGRSINGLE	n	Just the number \fIn\fR
+.TE
+.in -0.5i
+
+\fIARGRCLOSED\fR is a closed-ended range with explicit starting and
+ending values.
+The starting value is given in the \fIarg_v1\fR union, while the
+ending value is given in the \fIarg_v2\fR union.
+
+\fIARGROPEN\fR is an open-ended range with an explicit starting value
+but no ending value.  The ending value should be something reasonable
+for what the command's function is.  If dealing with line numbers, the
+ending value might be the last line in the input file.  If dealing
+with rotation angles, the ending value might be full-circle back to
+the starting value.  The starting value is given in the \fIarg_v1\fR
+union. 
+
+\fIARGRSINGLE\fR is a singlenumber; i.e., both the starting and
+ending values are the same.
+The single value is given in the \fIarg_v1\fR union.
+.IP "\fIarg_v1\fR and \fIarg_v2\fR"
+The \fIarg_v1\fR and \fIarg_v2\fR fields are unions that contain one
+field for each value type supported.
+.in +0.5i
+.RS +0.5i
+.IP "\fIarg_i1\fR and \fIarg_i2\fR"
+\fIarg_i1\fR and \fIarg_i2\fR contain integer values.
+\fIarg_i2\fR is only used for the ending value of an integer range.
+.IP "\fIarg_f1\fR and \fIarg_f2\fR"
+\fIarg_f1\fR and \fIarg_f2\fR contain floating point values.
+\fIarg_f2\fR is only used for the ending value of a floating point range.
+.IP "\fIarg_s1\fR\ \ \ \ \ \ \ \ "
+\fIarg_s1\fR contains a character pointer to a string value.
+Note that there is no \fIarg_s2\fR because string ranges are not supported.
+.IP "\fIarg_reserved1\fR and \fIarg_reserved2\fR
+\fIarg_reserved1\fR and \fIarg_reserved2\fR are fields containing space
+reserved for future enhancements.
+.RE
+.in -0.5i
+.IP \fIarg_reserved\fR
+\fIarg_reserved\fR is a field containing space reserved for future enhancements.
+.LP
+Shortcuts for the union field names are the following \fI#define\fR's
+provided in \fIarg.h\fR:
+.LP
+.ne 8
+.in +0.5i
+.TS
+l l l.
+\fBName\fR	\fBEquals\fR	\fBUsage\fR
+arg_i	arg_v1.arg_i1	Simple integer
+arg_f	arg_v1.arg_f1	Simple float
+arg_s	arg_v1.arg_s1	Simple string
+arg_ir1	arg_v1.arg_i1	First integer in range
+arg_ir2	arg_v2.arg_i2	Second integer in range
+arg_fr1	arg_v1.arg_f1	First float in range
+arg_fr2	arg_v2.arg_f2	Second float in range
+.TE
+.in -0.5i
+.LP
+.SH RETURNS
+\fIArgQNValue\fR returns the number of values in an
+occurrence of an option.
+If \fIArgQNValue\fR fails to complete, it returns -1 and sets the
+global \fIArgErrNo\fR to an error code indicating the cause of the failure.
+The following error codes may be generated by \fIArgQNValue:
+.LP
+.IP "\fIARGENOCCUR\fR = occurrence count is too high or too low"
+The \fInoccur\fR argument to \fIArgQNValue\fR was less than zero or
+greater than the number of occurrences of the option on the commandline.
+.IP "\fIARGENOVALUE\fR = option has no values"
+In the option's \fIArgOption\fR struct, \fIarg_minvalues\fR and
+\fIarg_maxvalues\fR were set to 0, indicating the option is just a keyword,
+with no values following it.
+Querying the number of values of a valueless option is meaningless.
+.IP "\fIARGEUNKEYWORD\fR = keyword unknown"
+The keyword is not one of the keywords supplied in the \fIoptions[]\fR or
+\fIequiv[]\fR arrays passed to \fIArgParse(3ARG)\fR and is not one of
+the truncation abbreviations.
+.LP
+\fIArgQValue\fR returns a pointer to an \fIArgValue\fR
+structure describing one value in an occurrence of an option.
+If \fIArgQValue\fR fails to complete, it returns a NULL and sets the
+global \fIArgErrNo\fR to an error code indicating the cause of the failure.
+The following error codes may be generated by \fIArgQValue\fR:
+.LP
+.IP "\fIARGENOCCUR\fR = occurrence count is too high or too low"
+See \fIArgQNValue\fR's error list.
+.IP "\fIARGENOVALUE\fR = option has no values"
+See \fIArgQNValue\fR's error list.
+.IP "\fIARGENVALUE\fR = value count is too high or too low"
+The \fInvalue\fR argument to \fIArgQValue\fR was less than zero or
+greater than the number of values in this occurrence
+of the option on the commandline.
+.IP "\fIARGEUNKKEYWORD\fR = keyword unknown"
+See \fIArgQNValue\fR's error list.
+.SH NOTES
+The \fIkeyword\fR argument may be any keyword, equivalent keyword, or
+unique abbreviation-by-truncation of keywords or equivalent keywords.
+For clarity, use the full keyword in all \fIArgQNValue\fR and
+\fIArgQValue\fR calls. 
+.SH "SEE ALSO"
+ArgIntro(3ARG),
+ArgParse(3ARG),
+ArgPError(3ARG),
+ArgQNOccur(3ARG),
+ArgQNOpt(3ARG),
+ArgQOccurOpt(3ARG),
+ArgQOpt(3ARG),
+errno(2),
+perror(3)
+.br
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

@@ -1,0 +1,27 @@
+' ---------------------------------------------------\r\n
+' "BeginAction" wird gerufen, bevor die erste\r\n
+'  Objektmenge verarbeitet werden soll\r\n
+Function BeginAction() As Boolean\r\n
+' Hier notwendige Initialisierungen durchführen\r\n
+\r\n
+' BeginAction für Abbruch auf 'False' setzen \r\n
+\tBeginAction = True\r\n
+End Function\r\n
+\r\n
+' ---------------------------------------------------\r\n
+' "DoAction" wird für jede der zu verarbeitenden\r\n
+' Objektmengen gerufen\r\n
+Function DoAction (Objs As GeoObjects) As GeoObjects\r\n
+\r\n
+\tSet DoAction = Objs\t' Resultatsmenge\r\n
+End Function\r\n
+\r\n
+' ---------------------------------------------------\r\n
+' "EndAction" wird nach der Verarbeitung der\r\n
+' letzten Objektmenge gerufen\r\n
+Sub EndAction()\r\n
+' Hier notwendige Aufräumarbeiten durchführen\r\n
+\r\n
+End Sub\r\n
+
+' "BeginAction()" wird gerufen, bevor das erste\r\n'  Objekt verarbeitet werden soll\r\nFunction BeginAction() As Integer\r\n' Hier notwendige Initialisierungen durchführen\r\n\r\n\tBeginAction=1\r\nEnd Function\r\n\r\n'__________________________________\r\n\r\n' "DoAction()" wird für jedes der zu\r\n' verarbeitenden Objekte gerufen\r\nFunction DoAction (Obj As GeoObject) As Integer\r\n\r\n' Wenn das Objekt nicht in die Ausgabemenge\r\n' übernommen werden soll, dann den\r\n' Rückgabewert auf '0' setzen\r\n\tDoAction=1\r\nEnd Function\r\n\r\n'__________________________________\r\n\r\n' "EndAction()" wird nach der Verarbeitung des\r\n' letzten Objektes gerufen\r\nSub EndAction() \r\n' Hier notwendige Aufräumarbeiten durchführen\r\n\r\nEnd Sub\r\n

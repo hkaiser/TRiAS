@@ -1,0 +1,22 @@
+HKCR 
+{
+	TRiAS.CS_PCSPpg.1 = s 'TRiAS® Koordinatensystem, projektiv, Eigenschaften'
+	{
+		CLSID = s '{59E3C095-13F7-11D2-8F77-0060085FC1CE}'
+	}
+	TRiAS.CS_PCSPpg = s 'TRiAS® Koordinatensystem, projektiv, Eigenschaften' 
+	{
+		CurVer = s 'TRiAS.CS_PCSPpg.1'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {59E3C095-13F7-11D2-8F77-0060085FC1CE} = s 'TRiAS® Koordinatensystem, projektiv, Eigenschaften' 
+		{
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%' 
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

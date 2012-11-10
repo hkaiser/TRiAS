@@ -1,0 +1,33 @@
+// $Header: $
+// Copyright© 1999-2004 Hartmut Kaiser, All rights reserved
+// Created: 12.11.2004 11:41:37
+//
+// @doc
+// @module LoadableCommands.idl | IDL source for LoadableCommands.ext
+
+// This file will be processed by the MIDL tool to
+// produce the type library (LoadableCommands.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(FD941F9F-7122-4E17-AFE7-60691A852C3C),
+	version(1.0),
+	helpstring("LoadableCommands 1.0 Type Library")
+]
+library LoadableCommands
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+// der eigentliche TRiAS-Zusatzmodul
+	[
+		uuid(BF1FF55E-FE11-4D24-BCDB-8F607019850A),
+		helpstring("LoadableCommands Class")
+	]
+	coclass LoadableCommands
+	{
+		[default] interface IUnknown;
+	};
+};

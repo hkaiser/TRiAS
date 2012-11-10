@@ -1,0 +1,721 @@
+This is Info file goose-ref.info, produced by Makeinfo version 1.68
+from the input file goose-ref.texi.
+
+   This file documents Goose.
+
+   Copyright (C) 1999 Jon Trowbridge
+
+   Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+   Permission is granted to copy and distribute modified versions of
+this manual under the conditions for verbatim copying, provided that
+the entire resulting derived work is distributed under the terms of a
+permission notice identical to this one.
+
+   Permission is granted to copy and distribute translations of this
+manual into another language, under the above conditions for modified
+versions, except that this permission notice may be stated in a
+translation approved by the author.
+
+
+File: goose-ref.info,  Node: Top,  Next: Preliminaries,  Prev: (dir),  Up: (dir)
+
+   Goose is a library of C++ routines for statistical analysis.
+
+* Menu:
+
+* Preliminaries:: The purpose and goals of Goose.
+* Utility Classes:: Random numbers, permutations, linear algebra.
+* The RealSet Class:: Goose's main repository for statistical data.
+* Linear Regression::
+* Bootstrapping Functions::
+* Special Functions:: Useful statistical functions provided by Goose.
+* Using Goose from Guile::
+* Using Goose from Perl::
+* Concept Index::
+* Function Index::
+
+
+File: goose-ref.info,  Node: Preliminaries,  Next: Utility Classes,  Prev: Top,  Up: Top
+
+Preliminaries
+*************
+
+   Someday, this will be some useful documentation for Goose.
+
+
+File: goose-ref.info,  Node: Utility Classes,  Next: The RealSet Class,  Prev: Preliminaries,  Up: Top
+
+Utility Classes
+***************
+
+Random Numbers
+==============
+
+   Certain types of statistical calculations require a large number of
+high-quality random numbers.  Since good random number generators are
+not universally available, Goose provides one in the form of the
+`Random' class.
+
+ - Method on Random: void seed (unsigned SEED_VALUE)
+     When a `Random' object is constructed, it is initially seeded with
+     values derived from the system.  On Unix-type systems, this
+     includes the time of day, the process ID, and data read in from
+     `/dev/random' (if available).  If you need a repeatable stream of
+     "Random" numbers, however, the seed value can be set explicitly
+     with this function.
+
+ - Method on Random: unsigned random ()
+     Returns a uniformly-distributed random unsigned integer.  (Note
+     that parts of the implementation of `Random' assume that an
+     `unsigned' is 32 bits wide.  If you are using a system where an
+     `unsigned' is larger than 32 bits, only the lower 32 bits are
+     randomized; any higher-order bits will always be zero.  If your
+     system's `unsigned' has less than 32 bits, expect all of this to
+     end badly.)
+
+ - Method on Random: void random (unsigned* BUFFER, int N)
+     Generates N uniformly-distributed random unsigned integers and
+     writes them into the array that begins at BUFFER.
+
+ - Method on Random: int random_integer (int A, int B)
+     Returns a random `int' that is greater than or equal to A and less
+     than or equal to B.
+
+ - Method on Random: int random_integer(int A, int B, int* BUFFER, int
+          N)
+     Generates N uniformly-distributed random integers between A and B
+     and copies them into the array that begins at BUFFER.
+
+ - Method on Random: double random_uniform (double A, double B)
+ - Method on Random: double random_uniform ()
+     Returns a uniformly-distributed random `double' that is greater
+     than or equal to A and less than B.  The version with no arguments
+     defaults to choosing values between 0 and 1.
+
+ - Method on Random: void random_uniform (double A, double B, double*
+          BUFFER, int N
+ - Method on Random: void random_uniform (double* BUFFER, int N)
+     Generates N uniformly-distributed random numbers between A and B
+     and stores them in the array starting at BUFFER.  The version with
+     only two arguments chooses values between 0 and 1.
+
+ - Method on Random: double random_normal (double M, double SD)
+ - Method on Random: double random_normal ()
+
+ - Method on Random: double random_normal (double M, double SD, double*
+          BUFFER, int N)
+ - Method on Random: double random_normal (double* BUFFER, int N)
+
+ - Method on Random: bool random_bool (double PROB_TRUE)
+ - Method on Random: bool random_bool ()
+     Returns a random boolean value, where PROB_TRUE is a value between
+     0 and 1 that specifies the probability that the returned value
+     will be true.  The version with no arguments returns true fifty
+     percent of the time.
+
+ - Method on Random: void scramble (X* DATA, size_t N)
+ - Method on Random: void scramble (vector<X>& DATA)
+     These are a pair of template functions that randomly scramble the
+     order of a linear container, either an array of length N or an STL
+     vector, containing objects of type `X'.
+
+   Goose's `Random' implements the "Mersenne Twister" method, as
+described in Matusumoto and Nishimura's "Mersenne Twister: A
+623-dimensional equidistributed uniform pseudorandom number generator"
+(`ACM Transactions on Modelling and Computer Simulation', 1998).  This
+algorithm only uses integer operations, and is therefore particularly
+efficient.  It is important to be aware, however, that there is
+non-negligible amount of overhead required to initialize the data
+structures that are used by the Mersenne Twister algorithm.  Because of
+this, the `Random' object is definitely best-suited for producing
+random numbers in bulk.  Code like
+       double sum = 0.0;
+       for (int i=0; i<1000; ++i) {
+         Random rnd;
+         sum += rnd.random_normal(0.0, 1.0);
+       }
+   will be wildly inefficient.  Consider using
+       double sum = 0.0;
+       Random rnd;
+       for (int i=0; i<1000; ++i)
+         sum += rnd.random_normal(0.0, 1.0);
+   instead.  This allows the cost of constructing the `Random' object
+to be borne only once, rather than once for each iteration in the loop.
+Another alternative is to use
+       double sum = 0.0;
+       double buffer[1000];
+       Random rnd;
+       rnd.random_normal(0.0, 1.0, buffer, 1000);
+       for (int i=0; i<1000; ++i)
+         sum += buffer[i];
+   and thereby avoid the function call overhead of repeated calls to
+`random_normal'.
+
+Permutations
+============
+
+   A permutation is nothing more than a precise mathematical
+specification for how a set of objects is to be re-ordered.  Since it
+will occasionally be useful for us to be able to re-order sets in a
+controlled way, Goose defines a Permutation class that encapsulates just
+such a specification.
+
+ - Method on Permutation: size_t size ()
+
+ - Method on Permutation: const size_t* map ()
+
+ - Method on Permutation: size_t map (size_t I)
+
+ - Method on Permutation: void initialize (size_t N, size_t* DATA);
+
+ - Method on Permutation: size_t cycle_count ()
+     Returns the number of distinct cycles of the Permutation.
+
+ - Method on Permutation: size_t orbit_size (size_t I)
+     Return the size of the orbit of I under the action of the
+     Permutation.
+
+ - Method on Permutation: size_t order ()
+     Return the order of the Permutation in the sense of group theory.
+     This is the smallest positive integer such that composing the
+     Permutation with itself that may times results in the identity
+     Permutation.
+
+ - Method on Permutation: void set_identity (size_t N)
+     Convert this Permutation to the identity permutation on N elements.
+
+ - Method on Permutation: void set_shift (size_t N, int K)
+     Convert this Permutation to one that shifts N elements, moving the
+     Ith element to the (I+K)th place and wrapping around as necessary.
+
+ - Method on Permutation: void set_reverse (size_t N)
+     Convert this Permutation to one that reverses the order of a list
+     of N elements.
+
+ - Method on Permutation: void scramble ()
+     Convert this Permutation to one that randomly scrambles a set of
+     elements.
+
+ - Method on Permutation: void precompose (const Permutation& P)
+     Convert this Permutation to one that corresponds to the
+     transformation experienced by a set of object permuted first
+     according to P and then according to this Permutation.
+
+ - Method on Permutation: void postcompose (const Permutation& P)
+     Convert this Permutation to one that corresponds to the
+     transformation experienced by a set of object permuted first
+     according this Permutation and then according to P.
+
+ - Method on Permutation: void invert ()
+     Replace this Permutation by one that transforms a set to reverse
+     the effects of this Permutation.
+
+ - Method on Permutation: void permute (X* DATA)
+     This is a template method that applies this Permutation to
+     re-order the array of X-objects in place.
+
+Linear Algebra: Vectors
+=======================
+
+Linear Algebra: Matrices
+========================
+
+
+File: goose-ref.info,  Node: The RealSet Class,  Next: Linear Regression,  Prev: Utility Classes,  Up: Top
+
+The RealSet Class
+*****************
+
+Manipulating the Contents of a RealSet
+======================================
+
+Performing Calculations on a RealSet
+====================================
+
+   The RealSet class defines a large number of methods for calculating
+quantities related to the stored data.  When it is possible and
+practical, associates statistics are calculated in constant time.
+
+ - Method on RealSet: size_t size ()
+     Returns the number of elements stored in the RealSet.
+
+ - Method on RealSet: double min ()
+     Returns the smallest value stored in the RealSet.
+
+ - Method on RealSet: double max ()
+     Returns the largest value stored in the RealSet.
+
+ - Method on RealSet: double range ()
+     Returns the difference between the largest and the smallest values
+     stored in the RealSet.
+
+ - Method on RealSet: double sum ()
+     Returns the sum of all of the elements in the RealSet.
+
+ - Method on RealSet: double mean ()
+     Returns the mean (or average) of the RealSet.
+
+ - Method on RealSet: double var ()
+     Returns the variance of the RealSet.
+
+ - Method on RealSet: double sdev ()
+     Returns ths population standard deviation of the RealSet, which is
+     equal to the square root of the variance.
+
+ - Method on RealSet: double sdevs ()
+     Returns the sample standard deviation of the RealSet.
+
+     This function is very similar to the population standard
+     deviation, and the values of `sdev()' and `sdevs()' will be almost
+     identical for moderately large data sets.  The difference is that
+     we divide by an N-1 term rather than N.  This removes a slight
+     downward bias caused by the fact that, in a random sample, there
+     is some unknown error in our estimate of the mean.  This is
+     something that has confused students for generations.
+
+ - Method on RealSet: double percentile (double P)
+     Returns a value X that has the property that P percent of the data
+     set is less than or equal to X.  By this definition, X is not
+     uniquely defined.  We construct our preferred value of X by
+     interpolating between RealSet elements as necessary.
+
+ - Method on RealSet: double median ()
+     Returns the median of the RealSet.
+
+ - Method on RealSet: double q1 ()
+     Returns the first quartile of the RealSet.
+
+ - Method on RealSet: double q3 ()
+     Returns the third quartile of the RealSet.
+
+ - Method on RealSet: double iqr ()
+     Returns the inter-quartile range of the RealSet.  The
+     inter-quartile range is defined to be the difference of the third
+     and first quartiles.
+
+ - Method on RealSet: double decile (int I)
+     Returns the Ith decile of the RealSet.
+
+ - Method on RealSet: double mean_trimmed (int L, int R)
+     Returns the mean of the elements of the RealSet, excluding the L
+     smallest and R largest values.  (Here the letters L and R refer to
+     the "left" and "right" sides of the data.  If we imagine the data
+     to be sorted from high to low and lined up in a single row across
+     a page, we would be removing L from the left side and R from the
+     right.)
+
+ - Method on RealSet: double mean_trimmed (int T)
+     Returns the mean of the elements of the RealSet, excluding the T
+     smallest and T largest values.
+
+ - Method on RealSet: double mean_winsorized (int L, int R)
+     Return the (L,R)-Winsorized mean of the RealSet.
+
+     In statistics, to winsorize a data set means to replacing the L
+     smallest and R largest values of the data set by the (L+1)st
+     smallest and (R+1)st largest elements, respectively.  This
+     operation throws out the most extreme values in the data and
+     replaces them by certain values that are presumed to be "more
+     representative".
+
+ - Method on RealSet: double mean_winsorized (int T)
+
+ - Method on RealSet: double moment (int K, int X)
+
+ - Method on RealSet: double moment (int K)
+
+ - Method on RealSet: double gmean ()
+
+ - Method on RealSet: double hmean ()
+
+ - Method on RealSet: double rms ()
+
+ - Method on RealSet: double meandev ()
+
+ - Method on RealSet: double meddev ()
+
+ - Method on RealSet: double kurtosis ()
+
+ - Method on RealSet: double skewness ()
+
+ - Method on RealSet: double excess_kurtosis ()
+
+ - Method on RealSet: double momental_skewness ()
+
+ - Method on RealSet: double durbin_watson ()
+     Returns the Durbin-Watson statistic for the RealSet.  Unlike most
+     of statistics discussed so far, this depends on the order of the
+     elements.
+
+ - Method on RealSet: double AR1_independence_z ()
+
+ - Method on RealSet: double autocorr (int LAG)
+
+ - Method on RealSet: double autocorr_z (int LAG)
+
+ - Method on RealSet: double covar (const RealSet& RS)
+
+ - Method on RealSet: double corr (const RealSet& RS)
+
+ - Method on RealSet: double pooled_mean (const RealSet& RS)
+
+ - Method on RealSet: double pooled_var (const RealSet& RS)
+
+ - Method on RealSet: double weighted_mean (const RealSet& RS)
+
+ - Method on RealSet: size_t greater_than (double X)
+     Returns the number of elements of the RealSet that are strictly
+     greater than X.
+
+ - Method on RealSet: size_t less_than (double X)
+     Returns the number of elements of the RealSet that are strictly
+     less than X.
+
+ - Method on RealSet: size_t between (double A, double B)
+     Returns the number of elements of the RealSet that are between A
+     and B, inclusive.
+
+ - Method on RealSet: size_t equal_to (double X)
+     Returns the number of elements of the RealSet that are equal to X.
+
+Global Transformations on a RealSet
+===================================
+
+ - Method on RealSet: void apply(FunctionObject F)
+     This is a template function that takes any function object F and
+     applies it to each element of the RealSet, replacing the elements
+     with the calculated values.
+
+ - Method on RealSet: void linear_transform(double A, double B)
+     Iterates across the elements of the RealSet, replacing each
+     element X by AX+B.
+
+ - Method on RealSet: void log_transform ()
+     Iterates across the elements of the RealSet, replacing each
+     elements by its natural logarithm.  An exception is thrown if any
+     element is less than or equal to zero.
+
+ - Method on RealSet: void exp_transform ()
+     Iterates across the elements of the RealSet, applying the
+     exponential function to each element.
+
+ - Method on RealSet: void logit_transform ()
+     Iterates across the elements, applying the logit transform to each
+     element.
+
+ - Method on RealSet: void reverse ()
+     Reverses the order of the elements in the RealSet.
+
+ - Method on RealSet: void sort (int DIR = 1)
+     If DIR is greater than zero, sorts the elements of the RealSet in
+     ascending order.  If DIR is less than zero, the sort is performed
+     in descending order.
+
+ - Method on RealSet: void scramble ()
+     Randomly permutes the elements of the RealSet.
+
+ - Method on RealSet: void rank ()
+     Replaces each element of the RealSet by its rank within that
+     RealSet.  In the case of ties, ranks are averages, following the
+     usual statistical convention.
+
+
+File: goose-ref.info,  Node: Linear Regression,  Next: Bootstrapping Functions,  Prev: The RealSet Class,  Up: Top
+
+Linear Regression
+*****************
+
+Simple Linear Regression
+========================
+
+Multiple Regression
+===================
+
+   Multiple Regression currently not implemented in Goose.
+
+
+File: goose-ref.info,  Node: Bootstrapping Functions,  Next: Special Functions,  Prev: Linear Regression,  Up: Top
+
+Bootstrapping Functions
+***********************
+
+Optimized Resampling Functions
+==============================
+
+ - Function: RealSet bootstrap_mean (size_t N, const RealSet& DATA, int
+          THREADS=1)
+ - Function: RealSet bootstrap_median (size_t N, const RealSet& DATA,
+          int THREADS=1)
+ - Function: RealSet bootstrap_sdev (size_t N, const RealSet& DATA, int
+          THREADS=1)
+ - Function: RealSet bootstrap_skewness (size_t N, const RealSet& DATA,
+          int THREADS=1)
+ - Function: RealSet bootstrap_kurtosis (size_t N, const RealSet& DATA,
+          int THREADS=1)
+     Each of these functions returns a RealSet containing a set of N
+     values, each of which represents the value of the appropriate
+     statistic calculated against a resampling of the elements in DATA.
+
+     Since these resampling calculations are highly parallelizable,
+     significant performance enhancements are possible in multiprocessor
+     environments.  If THREADS is set greater than one, that many
+     different threads are created and the computation is split amongst
+     them.  (If your system does not support threads, the THREADS
+     argument is ignored.)
+
+
+File: goose-ref.info,  Node: Special Functions,  Next: Using Goose from Guile,  Prev: Bootstrapping Functions,  Up: Top
+
+Special Functions
+*****************
+
+   One important part of Goose is a library called `libspecfns', which
+provides mathematical functions that are frequently needed when
+performing statistical calculations.  These functions are used
+internally by Goose, but you may find them to be useful for your own
+programs.
+
+   The majority of the code that makes up `libspecfns' is derived from
+parts of Stephen L. Moshier's Cephes library.  Moshier holds the
+copyright on Cephes, but it is distributed with no licensing
+restrictions of any kind.  Since `libspecfns' is derived from Cephes,
+Moshier is still the primary copyright holder.  However, this library,
+like Goose, is licensed under the LGPL.
+
+General Functions
+=================
+
+ - Function: double factorial (int N)
+     Returns N factorial.  For sufficiently small values of N (say, N
+     less than 24), it should be possible to obtain an exact answer by
+     casting the results to an int.  An exception will be thrown if N
+     is negative.
+
+ - Function: double log_factorial (int N)
+     Returns the natural logarithm of `factorial(n)'.  This function is
+     equivalent to `log(factorial(n))', but is much more numerically
+     stable for large values of N.
+
+ - Function: double choose (int N, int K)
+     Returns the binomial coefficient of N and K, which also happens to
+     be the number of different possible unordered sets of size K that
+     can be chosen (without replacement) from a set of N distinct
+     objects.  For sufficiently small values of N and K, it should be
+     possible to obtain an exact answer by casting the results to an
+     int.
+
+ - Function: double log_choose (int N, int K)
+     Returns the natural logarithm of `choose(n,k)'.
+
+ - Function: double log_gamma (double X)
+     Returns the logarithms of the value of the gamma function at X.
+
+ - Function: double incomplete_gamma (double A, double B)
+     Returns the value of the incomplete gamma integral of A,
+     integrated from 0 to B.
+
+Statistical Distributions
+=========================
+
+   For the functions that are associated with various statistical
+distributions, we have adopted the following convention:  For the Foo
+distribution, the cumulative distribution function (or CDF) is always
+named `foo_cdf'.  The inverse cumulative distribution function is
+always named `inv_foo_cdf'.
+
+ - Function: double normal_cdf (double X)
+     Returns the value at X of the CDF of a standard normal
+     distribution.
+
+ - Function: double normal_cdf (double M, double S, double X)
+     Returns the value at X of the CDF of a normal distribution with
+     mean M and standard deviation S.
+
+ - Function: double inv_normal_cdf (double P)
+     Returns the value at P of the inverse CDF of a standard normal
+     distribution.
+
+ - Function: double poisson_cdf (int K, double X)
+     Returns the value at X of the CDF of a Poisson distribution with
+     mean K.
+
+ - Function: double inv_poisson_cdf (int K, double P)
+     Returns the value at P of the inverse CDF of a Poisson
+     distribution with mean K.
+
+ - Function: double chisq_cdf (int DF, double X)
+     Returns the value at X of the CDF of a Chi-square distribution
+     with DF degrees of freedom.
+
+ - Function: double inv_chisq_cdf (int DF, double P)
+     Returns the value at P of the inverse CDF of a Chi-square
+     distribution with DF degrees of freedom.
+
+ - Function: double t_cdf (int DF, double X)
+     Returns the value at X of the CDF of a T-distribution with DF
+     degrees of freedom.
+
+ - Function: double inv_t_cdf (int DF, double P)
+     Returns the value at P of the inverse CDF of a T-distribution with
+     DF degrees of freedom.
+
+ - Function: double F_cdf (int DF1, int DF2, double X)
+     Returns the value at X of the CDF of an F-distribution with DF1
+     and DF2 degrees of freedom.
+
+ - Function: double inv_F_cdf (int DF, int DF2, double P)
+     Returns the value at P of the inverse CDF of an F-distribution with
+     DF1 and DF2 degrees of freedom.
+
+ - Function: double gamma_cdf (double A, double B, double X)
+
+ - Function: double binomial_cdf (int K, int K, double X)
+
+ - Function: double neg_binomial_cdf (int N, int K, double X)
+
+
+File: goose-ref.info,  Node: Using Goose from Guile,  Next: Using Goose from Perl,  Prev: Special Functions,  Up: Top
+
+Using Goose from Guile
+**********************
+
+   An incomplete set of guile bindings exist.
+
+
+File: goose-ref.info,  Node: Using Goose from Perl,  Next: Concept Index,  Prev: Using Goose from Guile,  Up: Top
+
+Using Goose from Perl
+*********************
+
+   Perl bindings don't exist yet.  They will someday.
+
+
+File: goose-ref.info,  Node: Concept Index,  Next: Function Index,  Prev: Using Goose from Perl,  Up: Top
+
+Concept Index
+*************
+
+* Menu:
+
+File: goose-ref.info,  Node: Function Index,  Prev: Concept Index,  Up: Top
+
+Function Index
+**************
+
+* Menu:
+
+* apply on RealSet:                      The RealSet Class.
+* AR1_independence_z on RealSet:         The RealSet Class.
+* autocorr on RealSet:                   The RealSet Class.
+* autocorr_z on RealSet:                 The RealSet Class.
+* between on RealSet:                    The RealSet Class.
+* binomial_cdf:                          Special Functions.
+* bootstrap_kurtosis:                    Bootstrapping Functions.
+* bootstrap_mean:                        Bootstrapping Functions.
+* bootstrap_median:                      Bootstrapping Functions.
+* bootstrap_sdev:                        Bootstrapping Functions.
+* bootstrap_skewness:                    Bootstrapping Functions.
+* chisq_cdf:                             Special Functions.
+* choose:                                Special Functions.
+* corr on RealSet:                       The RealSet Class.
+* covar on RealSet:                      The RealSet Class.
+* cycle_count on Permutation:            Utility Classes.
+* decile on RealSet:                     The RealSet Class.
+* durbin_watson on RealSet:              The RealSet Class.
+* equal_to on RealSet:                   The RealSet Class.
+* excess_kurtosis on RealSet:            The RealSet Class.
+* exp_transform on RealSet:              The RealSet Class.
+* F_cdf:                                 Special Functions.
+* factorial:                             Special Functions.
+* gamma_cdf:                             Special Functions.
+* gmean on RealSet:                      The RealSet Class.
+* greater_than on RealSet:               The RealSet Class.
+* hmean on RealSet:                      The RealSet Class.
+* incomplete_gamma:                      Special Functions.
+* initialize on Permutation:             Utility Classes.
+* inv_chisq_cdf:                         Special Functions.
+* inv_F_cdf:                             Special Functions.
+* inv_normal_cdf:                        Special Functions.
+* inv_poisson_cdf:                       Special Functions.
+* inv_t_cdf:                             Special Functions.
+* invert on Permutation:                 Utility Classes.
+* iqr on RealSet:                        The RealSet Class.
+* kurtosis on RealSet:                   The RealSet Class.
+* less_than on RealSet:                  The RealSet Class.
+* linear_transform on RealSet:           The RealSet Class.
+* log_choose:                            Special Functions.
+* log_factorial:                         Special Functions.
+* log_gamma:                             Special Functions.
+* log_transform on RealSet:              The RealSet Class.
+* logit_transform on RealSet:            The RealSet Class.
+* map on Permutation:                    Utility Classes.
+* max on RealSet:                        The RealSet Class.
+* mean on RealSet:                       The RealSet Class.
+* mean_trimmed on RealSet:               The RealSet Class.
+* mean_winsorized on RealSet:            The RealSet Class.
+* meandev on RealSet:                    The RealSet Class.
+* meddev on RealSet:                     The RealSet Class.
+* median on RealSet:                     The RealSet Class.
+* min on RealSet:                        The RealSet Class.
+* moment on RealSet:                     The RealSet Class.
+* momental_skewness on RealSet:          The RealSet Class.
+* neg_binomial_cdf:                      Special Functions.
+* normal_cdf:                            Special Functions.
+* orbit_size on Permutation:             Utility Classes.
+* order on Permutation:                  Utility Classes.
+* percentile on RealSet:                 The RealSet Class.
+* permute on Permutation:                Utility Classes.
+* poisson_cdf:                           Special Functions.
+* pooled_mean on RealSet:                The RealSet Class.
+* pooled_var on RealSet:                 The RealSet Class.
+* postcompose on Permutation:            Utility Classes.
+* precompose on Permutation:             Utility Classes.
+* q1 on RealSet:                         The RealSet Class.
+* q3 on RealSet:                         The RealSet Class.
+* random on Random:                      Utility Classes.
+* random_bool on Random:                 Utility Classes.
+* random_integer on Random:              Utility Classes.
+* random_normal on Random:               Utility Classes.
+* random_uniform on Random:              Utility Classes.
+* range on RealSet:                      The RealSet Class.
+* rank on RealSet:                       The RealSet Class.
+* reverse on RealSet:                    The RealSet Class.
+* rms on RealSet:                        The RealSet Class.
+* scramble on Permutation:               Utility Classes.
+* scramble on Random:                    Utility Classes.
+* scramble on RealSet:                   The RealSet Class.
+* sdev on RealSet:                       The RealSet Class.
+* sdevs on RealSet:                      The RealSet Class.
+* seed on Random:                        Utility Classes.
+* set_identity on Permutation:           Utility Classes.
+* set_reverse on Permutation:            Utility Classes.
+* set_shift on Permutation:              Utility Classes.
+* size on Permutation:                   Utility Classes.
+* size on RealSet:                       The RealSet Class.
+* size_t* on Permutation:                Utility Classes.
+* skewness on RealSet:                   The RealSet Class.
+* sort on RealSet:                       The RealSet Class.
+* sum on RealSet:                        The RealSet Class.
+* t_cdf:                                 Special Functions.
+* var on RealSet:                        The RealSet Class.
+* weighted_mean on RealSet:              The RealSet Class.
+
+
+
+Tag Table:
+Node: Top830
+Node: Preliminaries1383
+Node: Utility Classes1567
+Node: The RealSet Class8926
+Node: Linear Regression16043
+Node: Bootstrapping Functions16350
+Node: Special Functions17637
+Node: Using Goose from Guile21913
+Node: Using Goose from Perl22128
+Node: Concept Index22345
+Node: Function Index22491
+
+End Tag Table

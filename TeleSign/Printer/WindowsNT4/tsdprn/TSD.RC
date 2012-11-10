@@ -1,0 +1,27 @@
+#include <mindrvrc.h>
+
+1      RC_TABLES   PRELOAD MOVEABLE        TSD.GPC
+2      RC_TABLES   PRELOAD MOVEABLE        NT.GPC
+
+1      RC_FONT     LOADONCALL DISCARDABLE  IFI\STANDARD.IFI
+
+1      RC_TRANSTAB  LOADONCALL MOVEABLE     RLE\no_intl.RLE
+
+STRINGTABLE
+
+BEGIN
+       1                  "TeleSign-Visualisierer"
+       257                "%d dots per inch"
+END
+
+
+#include <windows.h>
+#include <ntverp.h>
+
+#define VER_FILETYPE                    VFT_DRV
+#define VER_FILESUBTYPE                 VFT2_DRV_PRINTER
+#define VER_FILEDESCRIPTION_STR         "TeleSign-Visualisierer"
+#define VER_INTERNALNAME_STR            "TSD.dll"
+#define VER_ORIGINALFILENAME_STR        "TSD.dll"
+
+#include "common.ver"

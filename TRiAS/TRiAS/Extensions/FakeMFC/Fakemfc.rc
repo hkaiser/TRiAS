@@ -1,0 +1,1423 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "fakemfc.h"
+
+// Generated Help ID header file
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "fakemfc.hm"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+#if defined(_USE_SEC_CLASSES)
+#include "secres.h"
+#endif // _USE_SEC_CLASSES
+#include "dlgs.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "fakemfc.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "#if defined(_USE_SEC_CLASSES)\r\n"
+    "#include ""secres.h""\r\n"
+    "#endif // _USE_SEC_CLASSES\r\n"
+    "#include ""dlgs.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""fakemfc.rcv""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+1536 DIALOG DISCARDABLE  109, 35, 204, 135
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Öffnen"
+FONT 8, "Helv"
+BEGIN
+    LTEXT           "File &Name:",1090,267,0,76,10
+    EDITTEXT        1152,267,10,90,12,ES_AUTOHSCROLL | ES_OEMCONVERT
+    LISTBOX         1120,267,26,90,68,LBS_SORT | LBS_OWNERDRAWFIXED | 
+                    LBS_HASSTRINGS | LBS_DISABLENOSCROLL | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "&Verzeichnisse:",-1,6,6,92,9
+    LTEXT           "",1088,6,18,128,9,SS_NOPREFIX
+    LISTBOX         1121,6,30,127,70,LBS_SORT | LBS_OWNERDRAWFIXED | 
+                    LBS_HASSTRINGS | LBS_DISABLENOSCROLL | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "List Files of &Type:",1089,267,98,90,9
+    COMBOBOX        1136,267,108,90,36,CBS_DROPDOWNLIST | CBS_AUTOHSCROLL | 
+                    WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Laufwerke:",1091,6,104,92,9
+    COMBOBOX        1137,6,114,127,68,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | 
+                    CBS_AUTOHSCROLL | CBS_SORT | CBS_HASSTRINGS | WS_BORDER | 
+                    WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,143,6,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,143,24,55,14,WS_GROUP
+    PUSHBUTTON      "&Help",1038,143,46,55,14,WS_GROUP
+    CONTROL         "&Schreibschutz",1040,"Button",BS_AUTOCHECKBOX | 
+                    WS_GROUP | WS_TABSTOP,138,68,60,12
+END
+
+IDD_TIP_STATIC DIALOGEX 0, 0, 231, 164
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Tipp des Tages"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_FRAME,"Static",SS_BLACKFRAME,7,7,217,127,
+                    WS_EX_STATICEDGE
+    CONTROL         22102,IDC_BULB,"Static",SS_BITMAP,19,17,192,107
+    CONTROL         "",IDC_DELIMITER,"Static",SS_BLACKFRAME | WS_DISABLED,19,
+                    57,192,1
+    LTEXT           "Eine Zeichenkette",IDC_TIPSTRING,19,64,192,60
+    CONTROL         "&Tipps beim Start anzeigen",IDC_STARTUP,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,7,145,97,10
+    PUSHBUTTON      "&Nächster Tipp",IDC_NEXTTIP,109,143,55,14,WS_GROUP
+    DEFPUSHBUTTON   "&Schließen",IDOK,169,143,55,14,WS_GROUP
+END
+
+IDD_SUMM_PAGE DIALOG DISCARDABLE  0, 0, 250, 111
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Datei-Info"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME | WS_DISABLED,3,3,
+                    57,57
+    CONTROL         "&Vorschaubild generieren",IDC_PREVIEW,"Button",
+                    BS_AUTOCHECKBOX | BS_TOP | BS_MULTILINE | WS_DISABLED | 
+                    WS_GROUP | WS_TABSTOP,3,65,57,19
+    LTEXT           "&Titel:",IDC_STATIC,72,5,37,8
+    EDITTEXT        IDC_TITLE,119,3,128,13,ES_AUTOHSCROLL
+    LTEXT           "T&hema:",IDC_STATIC,72,21,37,8
+    EDITTEXT        IDC_SUBJECT,119,19,128,13,ES_AUTOHSCROLL
+    LTEXT           "&Autor:",IDC_STATIC,72,37,37,8
+    EDITTEXT        IDC_AUTHOR,119,35,128,13,ES_AUTOHSCROLL
+    LTEXT           "&Stichworte:",IDC_STATIC,72,53,37,8
+    EDITTEXT        IDC_KEYWORDS,119,51,128,13,ES_AUTOHSCROLL
+    LTEXT           "&Kommentar:",IDC_STATIC,72,70,37,8
+    EDITTEXT        IDC_COMMENTS,119,67,128,41,ES_MULTILINE | ES_WANTRETURN | 
+                    WS_VSCROLL
+END
+
+IDD_STATISTIC_PAGE DIALOG DISCARDABLE  0, 0, 250, 111
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Zugriffsstatistik"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Zuletzt gespeichert von:",IDC_STATIC,27,10,85,8
+    LTEXT           "Static",IDC_SAVEDBY,118,9,105,11,SS_SUNKEN
+    LTEXT           "Versionsnummer:",IDC_STATIC,27,24,85,8
+    LTEXT           "Bearbeitungszeit:",IDC_STATIC,27,38,85,8
+    LTEXT           "Static",IDC_EDITTIME,118,37,105,11,SS_SUNKEN
+    LTEXT           "Erstellt am:",IDC_STATIC,27,52,85,8
+    LTEXT           "Static",IDC_CREATEDATE,118,51,105,11,SS_SUNKEN
+    LTEXT           "Zuletzt gespeichert am:",IDC_STATIC,27,66,85,8
+    LTEXT           "Static",IDC_LASTSAVE,118,65,105,11,SS_SUNKEN
+    LTEXT           "Static",IDC_REVNUM,118,23,105,11,SS_SUNKEN
+    LTEXT           "Sicherheitsstufe:",IDC_STATIC,27,94,85,8
+    LTEXT           "Static",IDC_SECURITY,118,93,105,11,SS_SUNKEN
+    LTEXT           "Zuletzt gedruckt am:",IDC_STATIC,27,80,85,8
+    LTEXT           "Static",IDC_LASTPRINT,118,79,105,11,SS_SUNKEN
+END
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDD_STARTUPDLG$(_DEBUG) DIALOGEX 0, 0, 250, 110
+#else
+IDD_STARTUPDLG DIALOGEX 0, 0, 250, 110
+#endif
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Willkommen zu TRiAS®"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    ICON            IDC_OPENPROJECT,IDC_STATIC,15,14,21,20
+    ICON            IDC_OPENPROJECT,IDC_OPENMRUPROJECTICON,15,38,21,20,0,0,
+                    HIDC_OPENMRUPROJECTICON
+    ICON            IDC_NEWPROJECT,IDC_STATIC,15,67,21,20
+    CONTROL         "&Ein existierendes Projekt öffnen",IDC_OPENOLDPROJECT,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,43,
+                    21,131,10,0,HIDC_OPENOLDPROJECT
+    CONTROL         "Ihr letztes &Projekt öffnen",IDC_OPENMRUPROJECT,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,43,45,131,10,0,
+                    HIDC_OPENMRUPROJECT
+    CONTROL         "Ein neues Projekt anlegen und öffnen",
+                    IDC_CREATENEWPROJECT,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,43,69,131,10,0,HIDC_CREATENEWPROJECT
+    CONTROL         "Diesen Dialog in Zukunft nicht mehr anzeigen",
+                    IDC_DONTSHOWFURTHER,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,6,94,190,10,0,HIDC_DONTSHOWFURTHER
+    DEFPUSHBUTTON   "OK",IDOK,189,8,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,189,27,55,14
+    PUSHBUTTON      "&Quick Tour",IDC_QUIKTOUR,189,75,55,14,NOT WS_VISIBLE | 
+                    WS_DISABLED,0,HIDC_QUIKTOUR
+    GROUPBOX        " Sie können folgende Aktionen ausführen: ",IDC_STATIC,6,
+                    4,177,84
+END
+#endif
+
+IDD_WIZARD_PAGE DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Willkommen zu %s - %s"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDC_OPENPROJECT,IDC_STATIC,107,30,20,20
+    ICON            IDC_OPENPROJECT,IDC_OPENMRUPROJECTICON,107,56,20,20
+    ICON            IDC_NEWPROJECT,IDC_STATIC,107,87,20,20
+    CONTROL         "&Ein existierendes Projekt öffnen",IDC_OPENOLDPROJECT,
+                    "Button",BS_AUTORADIOBUTTON | BS_NOTIFY | WS_GROUP | 
+                    WS_TABSTOP,135,37,131,10
+    CONTROL         "&Ihr letztes Projekt öffnen",IDC_OPENMRUPROJECT,"Button",
+                    BS_AUTORADIOBUTTON | BS_NOTIFY | WS_TABSTOP,135,63,131,
+                    10
+    CONTROL         "Ein neues &Projekt anlegen und öffnen",
+                    IDC_CREATENEWPROJECT,"Button",BS_AUTORADIOBUTTON | 
+                    BS_NOTIFY | WS_TABSTOP,135,89,131,10
+    CONTROL         "&Diesen Dialog in Zukunft nicht mehr anzeigen",
+                    IDC_DONTSHOWFURTHER,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,92,129,165,10
+    LTEXT           "Sie können folgende Aktionen ausführen:",IDC_STATIC,92,
+                    11,141,8
+    CONTROL         22141,IDC_CREATENEW_BMP,"Static",SS_BITMAP | 
+                    SS_CENTERIMAGE | WS_BORDER,1,1,80,138
+    LTEXT           "(C:\\TRiAS\\...\\Demo\\Demo.ris)",IDC_LASTPROJECT,147,
+                    73,119,8
+END
+
+IDD_CREATENEWWIZARD DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Anlegen eines neuen %s-Projektes"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Bitte wählen Sie ein &Koordinatensystem aus, welches Sie als Grundlage für das neu zu erzeugende %s- Projekt verwenden wollen:",
+                    IDC_DESCTEXT,92,3,183,25
+    CONTROL         "Tree1",IDC_COORDSYSTEMS,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | 
+                    TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,92,30,183,85
+    LTEXT           "",IDC_COORDDESCRIPTION,92,121,183,18
+    CONTROL         22141,IDC_CREATENEW_BMP,"Static",SS_BITMAP | 
+                    SS_CENTERIMAGE | WS_BORDER,1,1,80,138
+END
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDD_CREATENEWWIZARD_PARAMS$(_DEBUG) DIALOG DISCARDABLE  0, 0, 276, 140
+#else
+IDD_CREATENEWWIZARD_PARAMS DIALOG DISCARDABLE  0, 0, 276, 140
+#endif
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Erzeugen einer neuen %s-Datenquelle"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         22141,IDC_CREATENEW_BMP,"Static",SS_BITMAP | 
+                    SS_CENTERIMAGE | WS_BORDER,1,1,80,138
+    LTEXT           "Nach Erzeugen der neuen Datenquelle stehen Ihnen folgende Aktionen zur Verfügung:",
+                    IDC_STATIC,92,1,180,19
+    CONTROL         "&Import vorliegender externer Daten",IDC_IMPORTDATA,
+                    "Button",BS_AUTORADIOBUTTON | BS_NOTIFY | WS_GROUP | 
+                    WS_TABSTOP,135,37,133,10
+    CONTROL         "N&euerfassen noch nicht digital vorliegender Daten",
+                    IDC_EDITDATA,"Button",BS_AUTORADIOBUTTON | BS_TOP | 
+                    BS_MULTILINE | BS_NOTIFY,135,61,134,20
+    LTEXT           "Zusätzliche Einstellungen für die neue Datenquelle:",
+                    IDC_ADVANCEDDESC,92,109,183,8
+    PUSHBUTTON      "Er&weitert ...",IDC_ADVANCED,92,125,55,14
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,91,102,184,1
+    ICON            IDI_EDITDATA,IDC_STATIC,107,57,20,20
+    ICON            IDI_DATAIMPORT,IDC_STATIC,107,30,20,20
+END
+#endif
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDD_ADVANCEDPARAMS$(_DEBUG) DIALOGEX 0, 0, 250, 62
+#else
+IDD_ADVANCEDPARAMS DIALOGEX 0, 0, 250, 62
+#endif
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Zusätzliche Einstellungen für eine neue Datenbank"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        " Zahlenbasis für Identifikatoren ",IDC_STATIC,4,4,180,
+                    32,WS_GROUP
+    CONTROL         "&Hexadezimal",IDC_HEXADEZ,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,13,18,56,10
+    CONTROL         "&Dezimal",IDC_DEZIMAL,"Button",BS_AUTORADIOBUTTON,99,18,
+                    41,10
+    CONTROL         "&Kompatibilität zu 16 Bit Datenbanken gewährleisten",
+                    IDC_COMPATIBILITYMODE,"Button",BS_AUTOCHECKBOX | 
+                    WS_GROUP | WS_TABSTOP,13,43,178,10
+    DEFPUSHBUTTON   "OK",IDOK,191,4,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,191,22,55,14,WS_GROUP
+END
+#endif
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDD_TIP_EDIT$(_DEBUG) DIALOGEX 0, 0, 231, 165
+#else
+IDD_TIP_EDIT DIALOGEX 0, 0, 231, 165
+#endif
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Tip des Tages"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_FRAME,"Static",SS_BLACKFRAME,7,7,217,127,
+                    WS_EX_STATICEDGE
+    CONTROL         22102,IDC_BULB,"Static",SS_BITMAP,19,17,192,107
+    CONTROL         "",IDC_DELIMITER,"Static",SS_BLACKFRAME | WS_DISABLED,19,
+                    57,192,1
+    CONTROL         "&Tips beim Start anzeigen",IDC_STARTUP,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,7,148,97,10
+    PUSHBUTTON      "&Nächster Tip",IDC_NEXTTIP,109,144,55,14,WS_GROUP
+    DEFPUSHBUTTON   "&Schließen",IDOK,169,144,55,14,WS_GROUP
+    EDITTEXT        IDC_TIPSTRING,19,64,192,60,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | WS_GROUP | NOT WS_TABSTOP
+END
+#endif
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDD_CREATENEWWIZARD_PARAMS_NT$(_DEBUG) DIALOG DISCARDABLE  0, 0, 276, 140
+#else
+IDD_CREATENEWWIZARD_PARAMS_NT DIALOG DISCARDABLE  0, 0, 276, 140
+#endif
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Erzeugen eines neuen %s-Projektes"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         22141,IDC_CREATENEW_BMP,"Static",SS_BITMAP | 
+                    SS_CENTERIMAGE | WS_BORDER,1,1,80,138
+    LTEXT           "Nach Erzeugen des neuen Projektes stehen Ihnen folgende Aktionen zur Verfügung:",
+                    IDC_STATIC,92,1,180,19
+    CONTROL         "&Import vorliegender externer Daten",IDC_IMPORTDATA,
+                    "Button",BS_AUTORADIOBUTTON | BS_NOTIFY | WS_GROUP | 
+                    WS_TABSTOP,135,37,133,10
+    CONTROL         "N&euerfassen noch nicht digital",IDC_EDITDATA,"Button",
+                    BS_AUTORADIOBUTTON | BS_NOTIFY,135,61,134,10
+    LTEXT           "Zusätzliche Einstellungen für das neue Projekt:",
+                    IDC_STATIC,92,109,183,8
+    PUSHBUTTON      "Er&weitert ...",IDC_ADVANCED,92,125,55,14
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,91,102,184,1
+    ICON            IDI_EDITDATA,IDC_STATIC,107,57,20,20
+    ICON            IDI_DATAIMPORT,IDC_STATIC,107,30,20,20
+    LTEXT           " vorliegender Daten",IDC_STATIC,145,70,63,8
+END
+#endif
+
+IDD_PROPERTYCHOICE_DLG DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE DS_CONTROL | WS_CHILD | WS_CAPTION
+CAPTION "Auswahl mehrerer Geokomponenten"
+FONT 8, "MS Sans Serif"
+BEGIN
+END
+
+IDD_DUMMYPAGE DIALOG DISCARDABLE  0, 0, 270, 124
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+FONT 8, "MS Sans Serif"
+BEGIN
+END
+
+IDD_SELECT_CONNECTION DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Anlegen eines neuen %s-Projektes"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Bitte wählen sie den Typ der Datenquelle aus, die Sie einbinden möchten:",
+                    IDC_DESCTEXT,92,3,183,18
+    LTEXT           "",IDC_CONNECT_DESCRIPTION,92,121,183,18
+    CONTROL         22141,IDC_CREATENEW_BMP,"Static",SS_BITMAP | 
+                    SS_CENTERIMAGE | WS_BORDER,1,1,80,138
+    CONTROL         "Tree1",IDC_SELECTCONNECTIONTREE,"SysTreeView32",
+                    TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | 
+                    TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | WS_BORDER | 
+                    WS_TABSTOP,92,24,183,92
+END
+
+IDD_CONNECTION_PARAMS DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Anlegen eines neuen %s-Projektes"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         22141,IDC_CREATENEW_BMP,"Static",SS_BITMAP | 
+                    SS_CENTERIMAGE | WS_BORDER,1,1,80,138
+    LTEXT           "&Datenquelle (%s) auswählen:",
+                    IDC_SELECTFILEORDIR_PROMPT,92,3,183,8
+    EDITTEXT        IDC_SELECTFILEORDIR,92,13,183,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "&Im weiteren wird auf die Daten dieser '%s' Datenquelle unter folgendem Namen zugegriffen:",
+                    IDC_DESCTEXT,92,31,183,25
+    EDITTEXT        IDC_CONNECTION_NAME,92,59,183,14,ES_AUTOHSCROLL
+    LTEXT           "&Sie können der ausgewählten Datenquelle weitere beschreibende Informationen zuordnen:",
+                    IDC_CONNECT_DESCRIPTION_PROMPT,92,80,183,16
+    EDITTEXT        IDC_CONNECT_DESCRIPTION,92,99,183,40,ES_MULTILINE | 
+                    ES_AUTOVSCROLL
+END
+
+IDD_CONNECTION_OPENNEW DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Anlegen eines neuen %s-Projektes"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         22141,IDC_CREATENEW_BMP,"Static",SS_BITMAP | 
+                    SS_CENTERIMAGE | WS_BORDER,1,1,80,138
+    LTEXT           "Ein Projekt ist die Zusammenstellung von Daten einer oder mehrerer Datenquellen.",
+                    IDC_STATIC,92,6,182,20,NOT WS_GROUP
+    LTEXT           "Um mit dem neu angelegten Projekt arbeiten zu können, müssen Sie daher festlegen, welche Datenquelle Sie zuerst einbinden möchten:",
+                    IDC_STATIC,92,37,182,28
+    ICON            IDC_OPENPROJECT,IDC_STATIC,103,73,20,20,WS_GROUP
+    ICON            IDC_NEWPROJECT,IDC_STATIC,103,101,20,20,WS_GROUP
+    CONTROL         "&Existierende Datenquelle öffnen",IDC_OPENDATASOURCE,
+                    "Button",BS_AUTORADIOBUTTON | BS_NOTIFY | WS_GROUP | 
+                    WS_TABSTOP,136,83,131,10
+    CONTROL         "Datenquelle &neu anlegen und öffnen",
+                    IDC_CREATEDATASOURCE,"Button",BS_AUTORADIOBUTTON | 
+                    BS_NOTIFY | WS_TABSTOP,136,102,131,10
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,92,28,182,1
+END
+
+IDD_MANAGE_CONNECTIONS DIALOGEX 0, 0, 284, 162
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CLIPSIBLINGS | 
+    WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Verwalten von Datenquellen"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "&Zum Projekt gehörende Datenquellen:",IDC_STATIC,4,4,
+                    121,8
+    CONTROL         "List1",IDC_CONNECTIONS,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_SHAREIMAGELISTS | 
+                    WS_BORDER | WS_TABSTOP,4,16,276,122
+    LTEXT           "Datenquelle:",IDC_STATIC,5,147,41,8
+    CONTROL         "&Verwalten",IDC_ACTIONS,"Button",BS_OWNERDRAW | 
+                    WS_GROUP | WS_TABSTOP,51,144,70,14
+    PUSHBUTTON      "Abbrechen",IDCANCEL,162,144,55,14,WS_GROUP
+    DEFPUSHBUTTON   "OK",IDOK,225,144,55,14
+END
+
+IDD_CONNECTION_ADDDATASOURCE DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Hinzufügen einer Datenquelle zum aktuellen Projekt"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         22141,IDC_CREATENEW_BMP,"Static",SS_BITMAP | 
+                    SS_CENTERIMAGE | WS_BORDER,1,1,80,138
+    LTEXT           "Ein Projekt ist die Zusammenstellung von Daten einer oder mehrerer Datenquellen.",
+                    IDC_STATIC,92,6,182,20,NOT WS_GROUP
+    LTEXT           "Sie haben folgende Möglichkeiten, eine weitere Datenquelle zum aktuellen Projekt hinzuzufügen:",
+                    IDC_STATIC,92,37,182,28
+    ICON            IDC_OPENPROJECT,IDC_STATIC,103,73,20,20,WS_GROUP
+    ICON            IDC_NEWPROJECT,IDC_STATIC,103,101,20,20,WS_GROUP
+    CONTROL         "&Existierende Datenquelle öffnen",IDC_OPENDATASOURCE,
+                    "Button",BS_AUTORADIOBUTTON | BS_NOTIFY | WS_GROUP | 
+                    WS_TABSTOP,136,83,131,10
+    CONTROL         "Datenquelle &neu anlegen und öffnen",
+                    IDC_CREATEDATASOURCE,"Button",BS_AUTORADIOBUTTON | 
+                    BS_NOTIFY | WS_TABSTOP,136,102,131,10
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,92,28,182,1
+END
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDD_SELECT_CONNECTIONLIST$(_DEBUG) DIALOG DISCARDABLE  0, 0, 276, 140
+#else
+IDD_SELECT_CONNECTIONLIST DIALOG DISCARDABLE  0, 0, 276, 140
+#endif
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Anlegen eines neuen %s-Projektes"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Bitte wählen sie den Typ der Datenquelle aus, die Sie einbinden möchten:",
+                    IDC_DESCTEXT,92,3,183,18
+    LTEXT           "",IDC_CONNECT_DESCRIPTION,92,121,183,18
+    CONTROL         22141,IDC_CREATENEW_BMP,"Static",SS_BITMAP | 
+                    SS_CENTERIMAGE | WS_BORDER,1,1,80,138
+    CONTROL         "List1",IDC_CONNECTIONS,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_SHAREIMAGELISTS | 
+                    LVS_ALIGNLEFT | LVS_NOSORTHEADER | WS_BORDER | 
+                    WS_TABSTOP,92,24,183,92
+END
+#endif
+
+IDD_CUSTOMIZE_TOOLBAR DIALOG DISCARDABLE  0, 0, 250, 135
+STYLE DS_CONTROL | WS_CHILD | WS_CAPTION
+CAPTION "Befehle"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Kategorie:",IDC_STATIC,4,4,33,8
+    COMBOBOX        IDC_TOOLBAR_LIST,4,15,66,74,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Beschreibung:",IDC_STATIC,76,4,46,8
+    LTEXT           "",IDC_TOOLBAR_DESCRIPTION,76,15,170,27
+    GROUPBOX        " Schaltflächen ",IDC_TOOLBAR_FRAME,4,40,242,63
+    LTEXT           "Hinweis: Wählen Sie eine Kategorie aus und klicken Sie auf eine Schaltfläche, um ihre Beschreibung zu sehen. Ziehen Sie die Schaltfläche auf eine der Symbolleisten.",
+                    IDC_STATIC,4,105,242,26,SS_SUNKEN
+END
+
+IDD_TRIASTOOLBARSPAGE DIALOG DISCARDABLE  0, 0, 250, 135
+STYLE DS_CONTROL | WS_CHILD | WS_CAPTION
+CAPTION "Symbolleisten"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Existierende &Symbolleisten:",IDC_TOOLBARS,4,4,86,8
+    LISTBOX         IDC_TOOLBARLIST,4,15,122,89,LBS_OWNERDRAWFIXED | 
+                    LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Na&me der Symbolleiste:",IDC_STATIC,4,107,74,8
+    EDITTEXT        IDC_TOOLBARNAME,4,117,122,14,ES_AUTOHSCROLL
+    CONTROL         "&Quickinfo anzeigen",IDC_TOOLTIPS,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,132,15,85,10
+    CONTROL         "&Flache Schaltflächen",IDC_COOLLOOK,"Button",
+                    BS_AUTO3STATE | WS_TABSTOP,132,29,83,10
+    PUSHBUTTON      "&Neu ...",IDC_NEWTOOLBAR,188,48,58,14,WS_GROUP
+    PUSHBUTTON      "&Enfernen",IDC_REMOVE,188,66,58,14,WS_GROUP
+    PUSHBUTTON      "&Rücksetzen",IDC_RESET,188,99,58,14,WS_GROUP
+    PUSHBUTTON      "&Alle rücksetzen",IDC_RESETALL,188,117,58,14,WS_GROUP
+END
+
+IDD_CONNECTION_PARAMS_DBMS DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Anlegen eines neuen %s-Projektes"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         22141,IDC_CREATENEW_BMP,"Static",SS_BITMAP | 
+                    SS_CENTERIMAGE | WS_BORDER,1,1,80,138
+    LTEXT           "&Der Name, unter dem im folgenden auf diese Datenquelle zugegriffen werden soll:",
+                    IDC_CONNECTION_NAME_PROMPT,92,40,183,18
+    EDITTEXT        IDC_CONNECTION_NAME,92,59,183,14,ES_AUTOHSCROLL
+    LTEXT           "&Weitere beschreibende Informationen, die dieser Datenquelle zugeordnet werden sollen (optional):",
+                    IDC_CONNECT_DESCRIPTION_PROMPT,92,80,183,16
+    EDITTEXT        IDC_CONNECT_DESCRIPTION,92,99,183,40,ES_MULTILINE | 
+                    ES_AUTOVSCROLL
+    LTEXT           "Für das Einbinden dieser '%s' Datenquelle in Ihr Projekt ist die Vorgabe folgender Informationen notwendig:",
+                    IDC_DESCTEXT,92,3,183,31
+END
+
+IDD_PREVIEW DIALOG DISCARDABLE  0, 0, 246, 19
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",AFX_ID_PREVIEW_PRINT,"Button",BS_OWNERDRAW | 
+                    WS_TABSTOP,4,3,15,13
+    CONTROL         "",ID_PREVIEW_CONFIG,"Button",BS_OWNERDRAW | WS_TABSTOP,
+                    23,3,15,13
+    CONTROL         "",ID_PREVIEW_REPAINT,"Button",BS_OWNERDRAW | WS_TABSTOP,
+                    43,3,15,13
+    CONTROL         "",AFX_ID_PREVIEW_NEXT,"Button",BS_OWNERDRAW | 
+                    WS_TABSTOP,76,3,15,13
+    CONTROL         "",AFX_ID_PREVIEW_PREV,"Button",BS_OWNERDRAW | 
+                    WS_TABSTOP,95,3,15,13
+    CONTROL         "",AFX_ID_PREVIEW_NUMPAGE,"Button",BS_OWNERDRAW | 
+                    WS_TABSTOP,114,3,15,13
+    CONTROL         "",AFX_ID_PREVIEW_ZOOMIN,"Button",BS_OWNERDRAW | 
+                    WS_TABSTOP,133,3,15,13
+    CONTROL         "",AFX_ID_PREVIEW_ZOOMOUT,"Button",BS_OWNERDRAW | 
+                    WS_TABSTOP,152,3,15,13
+    PUSHBUTTON      "&Schließen",AFX_ID_PREVIEW_CLOSE,175,3,51,13
+END
+
+IDD_LICENSE DIALOGEX 0, 0, 279, 90
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Lizenzierungsfehler"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "1\n2\n3\n4\n5",IDC_LICENSETEXT,35,6,175,40,NOT WS_GROUP
+    DEFPUSHBUTTON   "OK",IDOK,218,7,55,14,WS_GROUP
+    ICON            IDI_LICENSE,IDC_STATIC,6,7,21,20
+    LTEXT           "info@trias-gis.de",IDC_EMAIL,71,77,73,8
+    LTEXT           "email:",IDC_STATIC,35,77,36,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,35,70,238,1
+    LTEXT           "Um die gewünschte Funktion ausführen zu können, wenden Sie sich bitte Zwecks Lizenzierung an:",
+                    IDC_LICENSETEXT_ADDRESS,35,49,175,18
+END
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDD_PROJECTVALUES$(_DEBUG) DIALOG DISCARDABLE  0, 0, 139, 105
+#else
+IDD_PROJECTVALUES DIALOG DISCARDABLE  0, 0, 139, 105
+#endif
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Kategorien:",IDC_STATIC_CATEGORIES,3,5,40,8
+    CONTROL         "",IDC_CATEGORIES,"ComboBoxEx32",CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP,46,3,90,67
+    LISTBOX         241,3,19,133,83,LBS_SORT | LBS_OWNERDRAWFIXED | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+END
+#endif
+
+IDD_MANAGE_CONNECTIONFILTERS DIALOGEX 0, 0, 250, 134
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Verwalten der räumlichen Filter"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Im &Projekt definierte räumliche Filter:",IDC_STATIC,6,
+                    6,114,8
+    CONTROL         "List2",IDC_CONNECTFILTERS,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOCOLUMNHEADER | 
+                    WS_BORDER | WS_TABSTOP,6,17,174,100
+    PUSHBUTTON      "&Neu",IDC_NEW,189,65,55,14,WS_GROUP
+    PUSHBUTTON      "&Löschen",IDC_DELETE,189,84,55,14
+    PUSHBUTTON      "&Eigenschaften",IDC_PROPERTIES,189,103,55,14
+    CONTROL         "&Räumliche Filter anzeigen",IDC_SHOWCONNECTFILTERS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,122,174,10
+    DEFPUSHBUTTON   "&Schließen",IDOK,189,6,55,14,WS_GROUP
+END
+
+IDD_CREATENEW_FILTER DIALOGEX 0, 0, 250, 177
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Definieren eines räumlichen Filters"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "&Name des neuen räumlichen Filters:",
+                    IDC_FILTERNAME_PROMPT,6,7,113,8
+    CONTROL         "",IDC_CONNECTIONFILTERS,"ComboBoxEx32",CBS_DROPDOWN | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP,6,18,172,30
+    GROUPBOX        " Auswahl des Filterbereiches ",IDC_STATIC,6,42,238,56
+    LTEXT           "Als Filterbereich wird der aktuelle Bildausschnitt oder, wenn vorhanden, das aktuelle Selektionsrechteck verwendet.",
+                    IDC_FILTER_DESCRIPTION,13,55,223,32
+    GROUPBOX        " Ausgewertete räumliche Beziehung ",IDC_STATIC,6,103,
+                    238,67,WS_GROUP
+    CONTROL         "Überla&ppend",IDC_OVERLAPPED,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,13,118,57,10
+    CONTROL         "&Innerhalb",IDC_CONTAINED,"Button",BS_AUTORADIOBUTTON,
+                    88,118,57,10
+    LTEXT           "Es sind nur diejenigen Objekte verfügbar, deren umschließendes Rechteck vollständig in dem ausgewählten Bereich enthalten ist oder sich mit diesem überlappt.",
+                    IDC_OPERATOR_DESC,13,134,223,27
+    DEFPUSHBUTTON   "OK",IDOK,189,6,55,14
+    PUSHBUTTON      "Abbrechen",IDCANCEL,189,24,55,14
+    CONTROL         "&Räumlichen Filter auf alle geöffneten Datenquellen anwenden",
+                    IDC_ATTACH_FILTER,"Button",BS_AUTOCHECKBOX | NOT 
+                    WS_VISIBLE | WS_GROUP | WS_TABSTOP,6,161,238,10
+END
+
+IDD_CREATENEW_FILTER_APPLY DIALOGEX 0, 0, 250, 190
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Definieren eines räumlichen Filters"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "&Name des neuen räumlichen Filters:",
+                    IDC_FILTERNAME_PROMPT,6,7,113,8
+    CONTROL         "",IDC_CONNECTIONFILTERS,"ComboBoxEx32",CBS_DROPDOWN | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP,6,18,172,30
+    GROUPBOX        " Auswahl des Filterbereiches ",IDC_STATIC,6,42,238,56
+    LTEXT           "Als Filterbereich wird der aktuelle Bildausschnitt oder, wenn vorhanden, das aktuelle Selektionsrechteck verwendet.",
+                    IDC_FILTER_DESCRIPTION,13,55,223,32
+    GROUPBOX        " Ausgewertete räumliche Beziehung ",IDC_STATIC,6,103,
+                    238,67,WS_GROUP
+    CONTROL         "Überla&ppend",IDC_OVERLAPPED,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,13,118,57,10
+    CONTROL         "&Innerhalb",IDC_CONTAINED,"Button",BS_AUTORADIOBUTTON,
+                    88,118,57,10
+    LTEXT           "Es sind nur diejenigen Objekte verfügbar, deren umschließendes Rechteck vollständig in dem ausgewählten Bereich enthalten ist oder sich mit diesem überlappt.",
+                    IDC_OPERATOR_DESC,13,134,223,27
+    CONTROL         "&Räumlichen Filter auf alle geöffneten Datenquellen anwenden",
+                    IDC_ATTACH_FILTER,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,6,174,238,10
+    DEFPUSHBUTTON   "OK",IDOK,189,6,55,14
+    PUSHBUTTON      "Abbrechen",IDCANCEL,189,24,55,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_LIGHTBULB           BITMAP  DISCARDABLE     "res\\litebulb.bmp"
+IDR_MAINFRAME           BITMAP  MOVEABLE PURE   "res\\Tools.bmp"
+IDR_STANDARD            BITMAP  DISCARDABLE     "res\\standard.bmp"
+IDR_GEOVIEW             BITMAP  DISCARDABLE     "res\\geoview.bmp"
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDB_ALLBMPS$(_DEBUG)    BITMAP  DISCARDABLE     "res\\Copy of Toolneu1.bmp"
+#else
+IDB_ALLBMPS             BITMAP  DISCARDABLE     "res\\Copy of Toolneu1.bmp"
+#endif
+#endif
+IDR_GEOCLASS            BITMAP  DISCARDABLE     "res\\geoclass.bmp"
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDR_GEOOBJECT$(_DEBUG)  BITMAP  DISCARDABLE     "res\\geoobjec.bmp"
+#else
+IDR_GEOOBJECT           BITMAP  DISCARDABLE     "res\\geoobjec.bmp"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDR_OBJOPER$(_DEBUG)    BITMAP  DISCARDABLE     "res\\objoper.bmp"
+#else
+IDR_OBJOPER             BITMAP  DISCARDABLE     "res\\objoper.bmp"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDB_STECKNADEL$(_DEBUG) BITMAP  DISCARDABLE     "res\\SteckBtn.bmp"
+#else
+IDB_STECKNADEL          BITMAP  DISCARDABLE     "res\\SteckBtn.bmp"
+#endif
+#endif
+ID_MACROBUTTON          BITMAP  DISCARDABLE     "res\\macrobtn.bmp"
+IDR_FULLSCREEN          BITMAP  DISCARDABLE     "res\\fullscrn.bmp"
+IDR_COORDS              BITMAP  DISCARDABLE     "res\\toolbar2.bmp"
+IDB_COORDSYSTEM         BITMAP  DISCARDABLE     "res\\bitmap3.bmp"
+IDB_CREATENEW           BITMAP  DISCARDABLE     "res\\Topkarte.bmp"
+IDB_TOOL1               BITMAP  DISCARDABLE     "Res\\Tool1.bmp"
+IDB_TOOL2               BITMAP  DISCARDABLE     "res\\tool2.bmp"
+IDB_TOOL3               BITMAP  DISCARDABLE     "res\\tool3.bmp"
+IDB_TOOL4               BITMAP  DISCARDABLE     "res\\tool4.bmp"
+IDB_TOOL5               BITMAP  DISCARDABLE     "res\\tool5.bmp"
+IDB_TOOL6               BITMAP  DISCARDABLE     "res\\tool6.bmp"
+IDB_TOOL7               BITMAP  DISCARDABLE     "res\\tool7.bmp"
+IDB_TOOL8               BITMAP  DISCARDABLE     "res\\tool8.bmp"
+IDB_TOOL9               BITMAP  DISCARDABLE     "res\\tool9.bmp"
+IDB_TOOL10              BITMAP  DISCARDABLE     "res\\tool10.bmp"
+IDB_TOOL11              BITMAP  DISCARDABLE     "res\\tool11.bmp"
+IDB_TOOL12              BITMAP  DISCARDABLE     "res\\tool12.bmp"
+IDB_TOOL13              BITMAP  DISCARDABLE     "res\\tool13.bmp"
+IDB_TOOL14              BITMAP  DISCARDABLE     "res\\tool14.bmp"
+IDB_TOOL15              BITMAP  DISCARDABLE     "res\\tool15.bmp"
+IDB_TOOL16              BITMAP  DISCARDABLE     "res\\tool16.bmp"
+IDB_TOOL17              BITMAP  DISCARDABLE     "res\\tool17.bmp"
+IDB_TOOL18              BITMAP  DISCARDABLE     "res\\tool18.bmp"
+IDB_TOOL19              BITMAP  DISCARDABLE     "res\\tool19.bmp"
+IDB_TOOL20              BITMAP  DISCARDABLE     "res\\tool20.bmp"
+IDB_TOOL21              BITMAP  DISCARDABLE     "res\\tool21.bmp"
+IDB_TOOL22              BITMAP  DISCARDABLE     "res\\tool22.bmp"
+IDB_TOOL23              BITMAP  DISCARDABLE     "res\\tool23.bmp"
+IDB_TOOL24              BITMAP  DISCARDABLE     "res\\tool24.bmp"
+IDB_TOOL25              BITMAP  DISCARDABLE     "res\\tool25.bmp"
+IDB_TOOL26              BITMAP  DISCARDABLE     "res\\tool26.bmp"
+IDB_TOOL27              BITMAP  DISCARDABLE     "res\\tool27.bmp"
+IDB_TOOL28              BITMAP  DISCARDABLE     "res\\tool28.bmp"
+IDB_TOOL29              BITMAP  DISCARDABLE     "res\\tool29.bmp"
+IDB_TOOL30              BITMAP  DISCARDABLE     "res\\tool30.bmp"
+IDB_TOOL31              BITMAP  DISCARDABLE     "res\\tool31.bmp"
+IDB_TOOL32              BITMAP  DISCARDABLE     "res\\tool32.bmp"
+IDB_TOOL33              BITMAP  DISCARDABLE     "res\\tool33.bmp"
+IDB_TOOL34              BITMAP  DISCARDABLE     "res\\tool34.bmp"
+IDB_TOOL35              BITMAP  DISCARDABLE     "res\\tool35.bmp"
+IDB_TOOL36              BITMAP  DISCARDABLE     "res\\tool36.bmp"
+IDB_TOOL37              BITMAP  DISCARDABLE     "res\\tool37.bmp"
+IDB_TOOL38              BITMAP  DISCARDABLE     "res\\tool38.bmp"
+IDB_TOOL39              BITMAP  DISCARDABLE     "res\\tool39.bmp"
+IDB_TOOL40              BITMAP  DISCARDABLE     "res\\tool40.bmp"
+IDB_TOOL41              BITMAP  DISCARDABLE     "res\\tool41.bmp"
+IDB_TOOL42              BITMAP  DISCARDABLE     "res\\tool42.bmp"
+IDB_TOOL43              BITMAP  DISCARDABLE     "res\\tool43.bmp"
+IDB_TOOL44              BITMAP  DISCARDABLE     "res\\tool44.bmp"
+IDB_TOOL45              BITMAP  DISCARDABLE     "res\\tool45.bmp"
+IDB_TOOL46              BITMAP  DISCARDABLE     "res\\tool46.bmp"
+IDB_TOOL47              BITMAP  DISCARDABLE     "res\\tool47.bmp"
+IDB_TOOL48              BITMAP  DISCARDABLE     "res\\tool48.bmp"
+IDB_DATASERVER          BITMAP  DISCARDABLE     "res\\dataserv.bmp"
+IDB_TOOL49              BITMAP  DISCARDABLE     "res\\tool49.bmp"
+IDB_TOOL50              BITMAP  DISCARDABLE     "res\\tool50.bmp"
+IDB_TOOL51              BITMAP  DISCARDABLE     "res\\tool51.bmp"
+IDB_TOOL52              BITMAP  DISCARDABLE     "res\\tool52.bmp"
+IDB_TOOL53              BITMAP  DISCARDABLE     "res\\tool53.bmp"
+IDB_TOOL54              BITMAP  DISCARDABLE     "res\\tool54.bmp"
+IDB_TOOL55              BITMAP  DISCARDABLE     "res\\tool55.bmp"
+IDB_TOOL56              BITMAP  DISCARDABLE     "res\\tool56.bmp"
+IDB_TOOL57              BITMAP  DISCARDABLE     "res\\tool57.bmp"
+IDB_TOOL58              BITMAP  DISCARDABLE     "res\\tool58.bmp"
+IDB_AUTOPAN             BITMAP  DISCARDABLE     "res\\autopan.bmp"
+IDB_PREV_END            BITMAP  DISCARDABLE     "RES\\PrevEnd.BMP"
+IDB_PREV_HOME           BITMAP  DISCARDABLE     "RES\\PreviewHome.BMP"
+IDB_PREV_NEXT           BITMAP  DISCARDABLE     "RES\\PreviewNext.BMP"
+IDB_PREV_ONE            BITMAP  DISCARDABLE     "RES\\PreviewOne.BMP"
+IDB_PREV_PREVIOUS       BITMAP  DISCARDABLE     "RES\\PrevPrevious.BMP"
+IDB_PREV_PRINT          BITMAP  DISCARDABLE     "RES\\PrevPrint.BMP"
+IDB_PREV_TWO            BITMAP  DISCARDABLE     "RES\\PreviewTwo.BMP"
+IDB_PREV_ZOOMIN         BITMAP  DISCARDABLE     "res\\PrevZoomin.bmp"
+IDB_PREV_ZOOMOUT        BITMAP  DISCARDABLE     "RES\\PrevZoomout.BMP"
+IDB_PREV_CONFIG         BITMAP  DISCARDABLE     "res\\prev_con.bmp"
+IDB_PREV_REPAINT        BITMAP  DISCARDABLE     "res\\prev_rep.bmp"
+IDB_DATASERVERMASK      BITMAP  DISCARDABLE     "res\\DataServerMask.bmp"
+IDB_TOOL59              BITMAP  DISCARDABLE     "res\\tool59.bmp"
+IDR_CONNECTFILTER       BITMAP  DISCARDABLE     "res\\ConnectFilter.bmp"
+IDB_CONNECTFILTER_DLG   BITMAP  DISCARDABLE     "res\\ConnectFilterDlg.bmp"
+IDB_CONNECTFILTER_DLG_MASK BITMAP  DISCARDABLE     "res\\ConnectFilterDlgMask.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_TOOL_SELECT
+    BUTTON      ID_TOOL_ZOOM
+    BUTTON      ID_BUTTON22583
+    BUTTON      ID_TOOL_DISTANCE
+    BUTTON      ID_TOOL_TEXT
+    BUTTON      ID_TOOL_SEARCH
+END
+
+IDR_STANDARD TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_STANDARD_NEWPRJ
+    BUTTON      ID_BUTTON22365
+    BUTTON      ID_STANDARD_OPEN
+    BUTTON      ID_STANDARD_SAVEDB
+    BUTTON      ID_STANDARD_CLOSE
+    BUTTON      ID_STANDARD_PRINT
+    BUTTON      ID_STANDARD_UNDO
+    BUTTON      ID_STANDARD_REDO
+    BUTTON      ID_STANDARD_CUSTOMIZE
+    BUTTON      ID_STANDARD_LEGENDE
+    BUTTON      ID_STANDARD_OVERVIEW
+    BUTTON      ID_STANDARD_DATASOURCES
+    BUTTON      ID_STANDARD_SEARCH
+    BUTTON      ID_STANDARD_PRINTPREVIEW
+    BUTTON      ID_STANDARD_REPLACE
+END
+
+IDR_GEOVIEW TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_GEOVIEW_ZOOMIN
+    BUTTON      ID_GEOVIEW_ZOOMOUT
+    BUTTON      ID_GEOVIEW_NEW
+    BUTTON      ID_GEOVIEW_DELETE
+    BUTTON      ID_GEOVIEW_NEWCONT
+    BUTTON      ID_GEOVIEW_DELCONT
+    BUTTON      ID_GEOVIEW_SELSCALE
+    BUTTON      ID_GEOVIEW_SELECTVIEW
+    BUTTON      ID_GEOVIEW_REPAINT
+    BUTTON      ID_GEOVIEW_HOLDZOOM
+    BUTTON      ID_GEOVIEW_PREVENT_REPAINT
+END
+
+IDR_GEOCLASS TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_BUTTON22584
+    BUTTON      ID_GEOCLASS_DELETE
+    BUTTON      ID_GEOCLASS_MODIFY
+    BUTTON      ID_GEOCLASS_VISPARAMS
+    BUTTON      ID_GEOCLASS_PRIORITY
+    BUTTON      ID_GEOCLASS_OBJPROP
+    BUTTON      ID_GEOCLASS_COPYOBJECTS
+    BUTTON      ID_GEOCLASS_SELECT
+    BUTTON      ID_GEOCLASS_DELOBJPROP
+END
+
+ID_MACROBUTTON TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_MACROBUTTON
+    BUTTON      ID_MACROBUTTON
+    BUTTON      ID_MACROBUTTON
+    BUTTON      ID_MACROBUTTON
+    BUTTON      ID_MACROBUTTON
+    BUTTON      ID_MACROBUTTON
+    BUTTON      ID_MACROBUTTON
+    BUTTON      ID_MACROBUTTON
+    BUTTON      ID_MACROBUTTON
+    BUTTON      ID_MACROBUTTON
+    BUTTON      ID_MACROBUTTON
+    BUTTON      ID_MACROBUTTON
+    BUTTON      ID_MACROBUTTON
+    BUTTON      ID_MACROBUTTON
+    BUTTON      ID_MACROBUTTON
+    BUTTON      ID_MACROBUTTON
+END
+
+IDR_FULLSCREEN TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_FULLSCREEN_TOGGLE
+END
+
+IDR_COORDS TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_COORDS_SELECTFORMAT
+    BUTTON      ID_COORDS_SHOWCOORDS_STATIC
+END
+
+IDR_CONNECTFILTER TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_CONNECTFILTERS_MANAGE
+    BUTTON      ID_CONNECTFILTERS_CREATE
+    BUTTON      ID_CONNECTFILTERS_TOGGLESHOW
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+CG_IDR_POPUP_TRIASTOOL_BAR MENU DISCARDABLE 
+BEGIN
+    POPUP "&Symbolleisten"
+    BEGIN
+        MENUITEM SEPARATOR
+        MENUITEM "&Anpassen ...",               ID_STANDARD_CUSTOMIZE2
+        , GRAYED
+    END
+END
+
+CG_IDR_POPUP_TRIASTOOL_BARMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&Symbolleisten"
+    BEGIN
+        MENUITEM SEPARATOR
+        MENUITEM "&Anpassen ...",               IDM_CUSTOMIZEDLG
+    END
+END
+
+IDR_PRINTPREVIEW_FRAME MENU DISCARDABLE 
+BEGIN
+    MENUITEM "    ",                        ID_MENUITEM22585
+END
+
+IDR_MANAGE_CONNECTIONS MENU DISCARDABLE 
+BEGIN
+    POPUP "ManageConnectionsClosed"
+    BEGIN
+        MENUITEM "&Hinzufügen ...",             ID_ADD_CONNECTION
+        MENUITEM "Ö&ffnen",                     ID_OPEN_CONNECTION
+        MENUITEM "&Entfernen",                  ID_REMOVE_CONNECTION
+        MENUITEM SEPARATOR
+        MENUITEM "&Abbrechen",                  ID_CANCELMENU
+    END
+    POPUP "ManageConnectionsOpened"
+    BEGIN
+        MENUITEM "&Hinzufügen ...",             ID_ADD_CONNECTION
+        MENUITEM "S&chließen",                  ID_CLOSE_CONNECTION
+        MENUITEM "&Entfernen",                  ID_REMOVE_CONNECTION
+        MENUITEM SEPARATOR
+        MENUITEM "&Speichern",                  ID_SAVE_CONNECTION
+        MENUITEM "Speichern &unter ...",        ID_SAVEAS_CONNECTION
+        MENUITEM "&Kopie speichern als ...",    ID_COPYSAVEAS_CONNECTION
+        MENUITEM SEPARATOR
+        MENUITEM "Schreib&geschützt",           ID_TOGGLE_MODE
+        MENUITEM SEPARATOR
+        MENUITEM "&Namen ändern ...",           ID_EDIT_NAME
+        MENUITEM "&Beschreibung ändern ...",    ID_EDIT_DESCRIPTION
+        MENUITEM SEPARATOR
+        MENUITEM "&Abbrechen",                  ID_CANCELMENU
+    END
+END
+
+IDR_POPUP_TRIASTOOL_CONNECTFILTERMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&Räumliche Filter"
+    BEGIN
+        MENUITEM "&Verwalten ...",              IDM_MANAGECONNECTFILTERS
+        MENUITEM "&Erzeugen ...",               IDM_CREATECONNECTFILTER
+        MENUITEM "&Anzeigen",                   IDM_SHOWCONNECTFILTERS
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// TYPELIB
+//
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDR_TYPELIB$(_DEBUG)    TYPELIB DISCARDABLE     "Fakeot.deb\\toolbar.tlb"
+#else
+IDR_TYPELIB             TYPELIB DISCARDABLE     "Fakeot.deb\\toolbar.tlb"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(NDEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDR_TYPELIB$(NDEBUG)    TYPELIB DISCARDABLE     "Fakeot.rel\\toolbar.tlb"
+#else
+IDR_TYPELIB             TYPELIB DISCARDABLE     "Fakeot.rel\\toolbar.tlb"
+#endif
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME_ESC ACCELERATORS DISCARDABLE 
+BEGIN
+    VK_ESCAPE,      IDM_SWITCHFULLSCREENMODE, VIRTKEY, NOINVERT
+END
+
+IDR_MAINFRAME_MISC ACCELERATORS DISCARDABLE 
+BEGIN
+    "N",            IDM_CREATENEWPROJECT,   VIRTKEY, CONTROL, NOINVERT
+    "O",            IDM_OPENPROJECT,        VIRTKEY, CONTROL, NOINVERT
+    VK_F5,          ID_SELECT_ACTVIEW,      VIRTKEY, CONTROL, NOINVERT
+    VK_F6,          ID_EDIT_SCALING,        VIRTKEY, CONTROL, NOINVERT
+    "W",            IDM_MANAGEDATASOURCES,  VIRTKEY, CONTROL, NOINVERT
+END
+
+IDR_PRINTPREVIEW_FRAME ACCELERATORS DISCARDABLE 
+BEGIN
+    VK_ESCAPE,      IDCANCEL,               VIRTKEY, NOINVERT
+    VK_F3,          ID_PREVIEW_REPAINT,     VIRTKEY, NOINVERT
+    VK_F5,          ID_PREVIEW_REPAINT,     VIRTKEY, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_FAKEMFC             ICON    DISCARDABLE     "res\\fakemfc.ico"
+IDC_NEWPROJECT          ICON    DISCARDABLE     "idc_newp.ico"
+IDC_OPENPROJECT         ICON    DISCARDABLE     "idc_open.ico"
+IDI_DATAIMPORT          ICON    DISCARDABLE     "res\\dataimpo.ico"
+IDI_EDITDATA            ICON    DISCARDABLE     "res\\editnew.ico"
+IDI_DOCUMENT            ICON    DISCARDABLE     "res\\documentnew.ico"
+IDR_PRINTPREVIEW_FRAME  ICON    DISCARDABLE     "res\\PrintPreview.ico"
+IDI_LICENSE             ICON    DISCARDABLE     "res\\license.ico"
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDI_STATISTICS$(_DEBUG) ICON    DISCARDABLE     "res\\Statistics.ico"
+#else
+IDI_STATISTICS          ICON    DISCARDABLE     "res\\Statistics.ico"
+#endif
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_PROPERTYCHOICE_REG  REGISTRY DISCARDABLE    "res\\PropertyChoice.rgs"
+IDR_TRIASBAROBJ_REG     REGISTRY DISCARDABLE    "res\\TRiASBarObj.rgs"
+IDR_TOOLBARBTTN_RGS     REGISTRY DISCARDABLE    "res\\ToolBarButton.rgs"
+IDR_STATUSPROGRESS      REGISTRY DISCARDABLE    "res\\StatusProgress.rgs"
+IDR_TOOLBARCUSTOMIZE_REG REGISTRY DISCARDABLE    "res\\TRiASToolBarCustomizePage.rgs"
+IDR_TOOLBAR_REG         REGISTRY DISCARDABLE    "res\\TRiASToolBarPage.rgs"
+IDR_MANAGETABWINDOW     REGISTRY DISCARDABLE    "ManageTabWindow.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+#if defined(APSTUDIO_INVOKED) || defined(_USE_SEC_CLASSES)
+#if defined(APSTUDIO_INVOKED)
+IDC_TOOLBAR_HORZDRAG$(_USE_SEC_CLASSES) CURSOR  DISCARDABLE     "RES\\horzdrag.cur"
+#else
+IDC_TOOLBAR_HORZDRAG    CURSOR  DISCARDABLE     "RES\\horzdrag.cur"
+#endif
+#endif
+IDC_PAN_ALL             CURSOR  DISCARDABLE     "res\\pan_all.cur"
+IDC_PAN_DOWN            CURSOR  DISCARDABLE     "res\\pan_down.cur"
+IDC_PAN_LEFT            CURSOR  DISCARDABLE     "res\\pan_left.cur"
+IDC_PAN_RIGHT           CURSOR  DISCARDABLE     "res\\pan_right.cur"
+IDC_PAN_UP              CURSOR  DISCARDABLE     "res\\pan_up.cur"
+#if defined(APSTUDIO_INVOKED) || defined(_USE_SEC_CLASSES)
+#if defined(APSTUDIO_INVOKED)
+IDC_HSPLITBAR$(_USE_SEC_CLASSES) CURSOR  DISCARDABLE     "res\\SplitH.cur"
+#else
+IDC_HSPLITBAR           CURSOR  DISCARDABLE     "res\\SplitH.cur"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(_USE_SEC_CLASSES)
+#if defined(APSTUDIO_INVOKED)
+IDC_VSPLITBAR$(_USE_SEC_CLASSES) CURSOR  DISCARDABLE     "res\\SplitV.cur"
+#else
+IDC_VSPLITBAR           CURSOR  DISCARDABLE     "res\\SplitV.cur"
+#endif
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "CWinApp für MFC-Erweiterungen"
+    IDS_LONGCLASSNAMEEX     "Summary Info Property Page"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "TRiAS"
+    AFX_IDS_IDLEMESSAGE     "Bereit."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_SECURITYLEVEL       "Keine Zugriffsbeschränkung"
+    IDS_SECURITYLEVEL1      "Durch Paßwort geschützt"
+    IDS_SECURITYLEVEL2      "Schreibschutz empfohlen"
+    IDS_SECURITYLEVEL3      "Schreibschutz erforderlich"
+    IDS_SECURITYLEVEL4      "Für Überarbeitung gesperrt"
+    IDS_GEOVIEWTOOLCAPTION  "Ansichten"
+    CG_IDS_TIPOFTHEDAY      "Zeigt ein Fenster mit dem Tipp des Tages an."
+    CG_IDS_TIPOFTHEDAYMENU  "Ti&pp des Tages ..."
+    CG_IDS_DIDYOUKNOW       "Wussten Sie schon, dass ..."
+    CG_IDS_FILE_ABSENT      "Die Tipps-Datei existiert nicht im vorgeschriebenen Verzeichnis."
+    CG_IDP_FILE_CORRUPT     "Problem beim Lesen der Tipps-Datei."
+    CG_IDS_TIPOFTHEDAYHELP  "&Hilfe"
+    IDS_MAINTOOLCAPTION     "Werkzeuge"
+    IDS_UIOWNER_DESC        "Userinterface Objekt für Werkzeug-Symbolleiste"
+    IDS_TRIASTOOLBAR_DESC   "Toolbarobjekt class"
+    IDS_STANDARDTOOLCAPTION "Standard"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_STANDARD_SAVEDB      "Speichert das aktuelle Projekt.\nProjekt speichern"
+    ID_STANDARD_NEWPRJ      "Erzeugt ein neues Projekt.\nProjekt neu"
+    IDS_CONTRACTWINDOW      "Fenster kontrahieren"
+    IDS_PROJECTVALUES       "Statistiken"
+    IDS_OVERVIEWCAPTION     "Gesamtübersicht"
+    IDS_ALLOWDOCKING        "Andocken erlauben"
+    IDS_DEFAULTPRODUCTNAME  "Das Geo-Informationssystem"
+    IDS_COORDSYS_PRJ        "Bitte wählen Sie ein &Koordinatensystem aus, welches Sie als Grundlage für das neu zu erzeugende %s- Projekt verwenden wollen:"
+    IDS_COORDSYS_DS         "Bitte wählen Sie das Koordinatensystem aus, welches für die einzubindende Datenquelle verwendet werden soll:"
+    IDS_SABiSCAPTION        "Sachdaten"
+    ID_STANDARD_UNDO        "Macht den letzten Befehl rückgängig.\nRückgängig"
+    ID_STANDARD_REDO        "Stellt die Gegebenheiten vor der Wahl des Befehles ""Rückgängig"" wieder her.\nWiederholen"
+    ID_STANDARD_SAVEAS      "Speichert das aktuelle Projekt unter einem andern Namen.\nProjekt speichern unter"
+    IDS_DEFAULTTABNAME      "DefaultTabName"
+    ID_GEOCLASS_OBJPROP     "Zeigt Objekteigenschaften für alle Objekte einer Objektklasse an.\nObjekteigenschaften ausgeben"
+    ID_COORDS_SELECTFORMAT  "Wählt das Format der Koordinatendarstellung aus.\nKoordinatenformat auswählen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_HOCHWERT            "Hochwert"
+    IDS_DISTANCE            "Abstand [km]: "
+    ID_TOOL_SELECT          "Wählt das Hilfsmittel zum Markieren eines Ausschnittes aus.\nAusschnitt markieren"
+    ID_TOOL_ZOOM            "Wählt das Hilfsmittel zum Vergrößern und Verkleinern des aktuellen Bildausschnittes aus.\nZoom einstellen"
+    ID_TOOL_SEARCH          "Wählt das Hilfsmittel zum Recherchieren von Objekten aus.\nObjekte recherchieren"
+    ID_TOOL_DISTANCE        "Wählt das Hilfsmittel zum Messen von Entfernungen aus.\nEntfernungen messen"
+    ID_TOOL_TEXT            "Wählt das Hilfsmittel zum Bearbeiten von Textobjekten aus.\nTextobjekte bearbeiten"
+    IDS_SEARCHENGINECHOICE_DESC "Auswahl mehrerer PropertyActions"
+    IDS_SEARCHENGINECHOICE_HELPINFO 
+                            "Erlaubt, aus mehreren Property-Aktionen eine auszuwählen und für die aktuelle Aktion verfügbar zu machen."
+    IDS_CREATENEWWIZARD     "Anlegen eines neuen %s-Projektes"
+    IDS_WELCOMEDLG          "Willkommen zu %s - %s"
+    IDS_OPENEXISTINGWIZARD  "Öffnen eines existierenden %s-Projektes"
+    IDP_FAILED_TO_CREATE    "Fehler beim Erzeugen des Objekts. Stellen Sie sicher, daß das Objekt in der Systemregistrierung eingetragen ist."
+    IDR_MAINFRAME           "%s\n%s GIS-Projekt\nGIS-Projekt\n%s GIS-Projekt (%s)\n%s\nTRiAS.Document.2\n%s GIS-Projekt"
+    IDS_DEFAULTTOOLBARCAPTION "Toolbar %ld"
+    IDS_DDX_GF_TT_MODIFY    "Datei auswählen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_GEOVIEW_REPAINT      "Zeichnet den aktuellen Bildausschnitt neu.\nBildausschnitt neu zeichnen"
+    ID_GEOVIEW_NEW          "Definiert eine neue Ansicht oder verändert die aktuelle Ansicht.\nAnsicht definieren"
+    ID_GEOVIEW_PREVENT_REPAINT 
+                            "Unterbindet, daß der aktuelle Bildausschnitt neu gezeichnet wird.\nNeuzeichnen unterbinden"
+    ID_STANDARD_LEGENDE     "Zeigt die Zeichenerklärung für die aktuelle Ansicht und den aktuellen Bildausschnitt an.\nZeichenerklärung anzeigen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_GEOVIEW_SELSCALE     "Legt einen neuen Bildausschnitt anhand von Maßstab oder Koordinaten fest bzw. zeigt diesen an.\nMaßstab des Bildausschnittes"
+    ID_GEOVIEW_NEWCONT      "Legt den maximalen Bildausschnitt für die aktuelle Ansicht fest.\nBildausschnitt für diese Ansicht definieren"
+    ID_GEOVIEW_DELCONT      "Gibt den festgelegten maximalen Bildausschnitt für die aktuelle Ansicht frei.\nBildausschnitt für diese Ansicht freigeben"
+    ID_GEOVIEW_DELETE       "Löscht eine oder mehrere Ansichten.\nAnsicht löschen"
+    ID_STANDARD_OVERVIEW    "Zeigt das Hilfsmittel zur Auswahl eines Bildausschnittes in der Gesamtübersicht an.\nGesamtübersicht anzeigen"
+    ID_GEOVIEW_ZOOMOUT      "Halbiert den aktuellen Bildausschnitt. Kehrt bei gleichzeitig betätigter Strg-Taste zum Anfangsausschnitt zurück.\nBildausschnitt verkleinern"
+    ID_GEOVIEW_ZOOMIN       "Vergrößert den aktuellen Bildausschnitt um das Doppelte.\nBildausschnitt vergrößern"
+    ID_GEOCLASS_SELECT      "Zeigt alle Objekte einer Objektklasse in einem Objektrecherchefenster an.\nObjektklassen auswählen"
+    ID_GEOCLASS_DELETE      "Löscht alle Objekte einer Objektklasse.\nObjektklassen löschen"
+    ID_GEOCLASS_MODIFY      "Ordnet alle Objekte einer Objektklasse einer anderen Objektklasse zu.\nObjektklassen modifizieren"
+    IDS_CREATENEWPROJECT    "&Neu ...\tStrg+N"
+    IDS_OPENPROJECT         "Ö&ffnen ...\tStrg+O"
+    IDS_UPDATECLIENT        "&Dokument aktualisieren"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_GEOVIEW_SELECTVIEW   "Wählt eine Ansicht aus der Liste der bereits existierenden Ansichten aus.\nAnsicht auswählen"
+    ID_GEOVIEW_SELECTVIEW_BOX 
+                            "Wählt eine Ansicht aus der Liste der bereits existierenden Ansichten aus (Combo).\nAnsicht auswählen"
+    ID_GEOVIEW_SELECTZOOM_BOX 
+                            "Wählt einen Darstellungsmaßstab aus.\nDarstellungsmaßstab auswählen"
+    ID_COORDS_SHOWCOORDS_STATIC "Koordinatenanzeige\nKoordinatenanzeige"
+    IDS_STATUSTIPTEXT       "%s: %s"
+    IDS_NONAME              "Projekt ohne Namen.riw"
+    IDS_OPENCOPYTEXT        "Das zu öffnende Projekt ('%s') wird zur Zeit vom einem anderen Nutzer mit vollen Schreibrechten benutzt.\r\n\r\nWollen Sie dieses Projekt trotzdem öffnen?\r\nIn diesem Fall wird eine Kopie erstellt, welche Sie frei editieren können."
+    IDS_SELECTNEWDATASOURCE_PROMPT "&Datenquelle (%s) festlegen:"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_RISFILTER           "%s GIS-Datenbank (*.ris)"
+    IDS_COULDNOTCONVERTTOPROJECT 
+                            "Die Datenbank '%s' konnte nicht direkt geöffnet werden, da deren direkte Konvertierung nicht unterstützt wird (Fehlercode %lx).\r\nErzeugen Sie ein neues %s-Projekt und fügen Sie die Datenbank als neue Datenquelle ein."
+    IDS_DATASOURCEALREADYOPENED 
+                            "Die zu öffnende Datenquelle '%s'  ist von Ihnen in diesem Projekt bereits geöffnet.\r\nBitte verwenden Sie für den Datenzugriff die existierende Datenquelle."
+    IDS_ASKTOOVERWRITE      "Das zu erzeugende Projekt '%s' existiert bereits. Wollen Sie das bestehende Projekt überschreiben ?"
+    IDS_CONNECTNAMEISNOTUNIQUE 
+                            "Der Name einer Datenquelle muß innerhalb eines Projektes eindeutig sein.\r\n\r\nDer von Ihnen vorgegebene Name '%s' wird im aktuellen Projekt bereits verwendet und muß daher verändert werden um die Datenquelle '%s' erfolgreich einbinden zu können.\r\n\r\nDie von Ihnen vorgegebene Datenquelle wird unter dem Namen '%s' eingebunden."
+    ID_STANDARD_OPEN        "Öffnet ein existierendes Projekt.\nProjekt öffnen"
+    ID_STANDARD_CLOSE       "Schließt das aktuelle Projekt.\nProjekt schließen"
+    IDS_EMBEDDED_DATASOURCE "Das Entfernen der Datenquelle '%ls' aus dem Projekt würde zum Verlust aller dort gespeicherten Informationen führen. \nWollen Sie die Datenquelle vor dem Entfernen unter einem anderen Namen speichern?"
+    IDS_PRINTPREVIEW        "Druckvorschau"
+    IDS_PRINTPREVIEW_MENU   "Druck&vorschau"
+    IDS_DATASOURCEOPENCAPTION "Öffnen einer %s"
+    IDS_NOTIMPLEMENTED_YET  "Die auszuführende Funktion ist derzeit (noch) nicht implementiert. Bitte wenden Sie sich an: email: info@trias-gis.de."
+    IDS_PROJECTCAPTION      "Projektinformationen"
+    IDS_HIDEWINDOW          "Fenster ausblenden"
+    ID_STANDARD_PRINT       "Druckt die aktuelle Ansicht.\nAnsicht drucken"
+    IDS_EXPANDWINDOW        "Fenster expandieren"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEFAULT_FONT        "MS Sans Serif"
+    IDS_NOACTIVEVIEW        "<Keine aktuelle Ansicht>"
+    ID_STANDARD_UNDO2       "Macht den letzten Befehl (%s) rückgängig.\nRückgängig: %s"
+    ID_STANDARD_REDO2       "Stellt die Gegebenheiten vor der Wahl des Befehles ""Rückgängig: %s"" wieder her.\nWiederholen: %s"
+    ID_STANDARD_LEGENDE_ON  "Blendet die Zeichenerklärung aus.\nZeichenerklärung ausblenden"
+    IDS_GEOCLASSTOOLCAPTION "Objektklassen"
+    ID_STANDARD_OVERVIEW_ON "Blendet das Hilfsmittel zur Auswahl eines Bildusschnitts in der Gesamtübersicht aus.\nGesamtübersicht ausblenden"
+    IDS_TOOLBARSDLG         "S&ymbolleisten ..."
+    IDS_TEMPACTIVEVIEW      "<Temporäre Ansicht>"
+    IDM_SHOWTOOLBARSDLG_STATUS 
+                            "Legt fest, welche Symbolleisten angezeigt werden."
+    IDS_TRIASTOOLBARBTTN_DESC "Toolbarschaltflächeobjekt class"
+    ID_MACROBUTTON          "Startet ein zugeordnetes Makro\nMakro starten"
+    IDS_MASSTAB250          "250"
+    IDS_MASSTAB500          "500"
+    IDS_MASSTAB1000         "1.000"
+    IDS_MASSTAB2000         "2.000"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_STANDARD_CUSTOMIZE2  "Paßt die Nutzeroberfläche an persönliche Erfordernisse an (Zusatzmodule, Objekteigenschaften, Symbolleisten).\nAnpassen"
+    ID_STANDARD_CUSTOMIZE   "Paßt die Nutzeroberfläche an persönliche Erfordernisse an (Zusatzmodule, Objekteigenschaften, Symbolleisten).\nAnpassen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_GEOCLASS_VISPARAMS   "Definiert die Darstellungsparameter für alle Objekte einer Objektklasse.\nDarstellungsparameter definieren"
+    ID_GEOCLASS_PRIORITY    "Modifiziert die Darstellungsreihenfolge alle Objekte einer Objektklasse.\nDarstellungsreihenfolge modifizieren"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MASSTAB4000         "4.000"
+    IDS_MASSTAB5000         "5.000"
+    IDS_MASSTAB10000        "10.000"
+    IDS_MASSTAB25000        "25.000"
+    IDS_MASSTAB50000        "50.000"
+    IDS_MASSTAB100000       "100.000"
+    IDS_MASSTAB200000       "200.000"
+    IDS_MASSTAB500000       "500.000"
+    IDS_MASSTAB750000       "750.000"
+    IDS_MASSTAB1000000      "1.000.000"
+    IDS_MASSTAB2000000      "2.000.000"
+    IDS_MASSTAB5000000      "5.000.000"
+    IDS_SWITCHFULLSCREENMODE "&Ganzer Bildschirm"
+    IDS_SWITCHFULLSCREENMODE_STATUS 
+                            "Blendet die Menü-, Bearbeitungs- und Statusleisten ein und aus.\nGanzer Bildschirm"
+    IDS_COORDSTOOLCAPTION   "Koordinaten"
+    IDS_RECHTSWERT          "Rechtswert"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_PREVIEW_CONFIG       "Richtet das Layout der Druckausgabe ein.\nDruckoptionen auswählen"
+    ID_GEOVIEW_HOLDZOOM     "Die Einstellungen zur Recherchierbarkeit von Objekten bestimmter Objektklassen werden ignoriert.\nEinstellungen zu Recherchierbarkeit ignorieren"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_RETURN              "Schließen und zurück zum Dokument"
+    IDS_TRIASBUTTONCONT_DESC "TRiASButtonCont Class"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DDX_GF_OK           "OK"
+    IDS_DDX_GF_EDIT_TEXT    "&..."
+    IDS_DDX_GF_OVERWRITE_PROMPT 
+                            "%1\nDiese Datei existiert bereits.\nSoll diese Datei überschrieben werden ?"
+    IDS_FOLDERCAPTION       "%s auswählen"
+    IDS_FILEOPENCAPTION     "Öffnen eines %s Projektes"
+    IDS_DDX_GFLDR_TT_MODIFY "Verzeichnis auswählen"
+    IDS_SHORTNAMECOLUMN     "Datenquelle"
+    IDS_LONGNAMECOLUMN      "Beschreibung"
+    IDS_FILECREATECAPTION   "%s anlegen"
+    IDS_CONNECTDESCRIPTION  "Datenquelle %s (%s)"
+    IDS_GDODESCTEXT         "&Datenquelle (%s) auswählen:"
+    IDS_GDOSELECTPROMPT     "&Im weiteren wird auf die Daten dieser '%s' Datenquelle unter folgendem Namen zugegriffen:"
+    IDS_MANAGEDATASOURCES   "Daten&quellen verwalten ...\tStrg+W"
+    IDS_MANAGECONNECTFILTERS "Räumliche &Filter verwalten ..."
+    IDS_TYPCOLUMN           "Typ"
+    IDS_STATUSCOLUMN        "Status"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PATHCOLUMN          "Verzeichnis"
+    IDS_BADREGISTRATION_CAP "%s - Fehlerhafte Systemeinstellung"
+    IDS_BADREGISTRATION     "Es wurde kein installiertes Projektverwaltungsobjekt gefunden.\nÜberprüfen und wiederholen Sie gegebenenfalls die Installation von %s."
+    IDS_DBENGINITFAILURE_CAP "%s - Initialisierungsfehler"
+    IDS_DBENGINITFAILURE    "Es ist ein Fehler bei der Initialisierung der Projektverwaltungsobjekte aufgetreten (Fehlercode: %lx).\nÜberprüfen und wiederholen Sie gegebenenfalls die Installation von %s."
+    IDS_CLOSED              "Nicht geöffnet"
+    IDS_READONLY            "Schreibgeschützt"
+    IDS_READWRITE           "Beschreibbar"
+    IDS_DATASOURCEERROR_CAP "%s - Verwaltung der Datenquellen"
+    IDS_DISCONNECTERROR     "Die Verbindung '%ls' zur Datenquelle '%ls' konnte nicht entfernt werden (Fehlercode %lx)."
+    IDS_PROJECTERROR_CAP    "%s - Projektverwaltung"
+    IDS_COULDNOTCREATEPROJECT 
+                            "Das Projekt '%s' konnte nicht erzeugt werden (Fehlercode: %lx)."
+    IDS_ADDDATASOURCE       "Hinzufügen einer Datenquelle"
+    IDS_COULDNOTCREATEDATASOURCE 
+                            "Die Datenquelle '%s' konnte nicht erzeugt werden (Fehlercode: %lx)."
+    IDS_COULDNOTOPENDATASOURCE 
+                            "Die Verbindung '%s' zur Datenquelle '%s' konnte nicht hergestellt werden (Fehlercode: %lx)."
+    IDS_COULDNOTOPENPROJECT "Das Projekt '%s' konnte nicht eröffnet werden (Fehlercode: %lx)."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_STANDARD_SAVECOPYAS  "Speichert eine Kopie des aktuellen Projektes unter einem anderen Namen.\nKopie des Projektes speichern"
+    ID_STANDARD_SEARCH      "Ermöglicht die Recherche nach Objekteigenschaften für Objekte ausgewählter Objektklassen.\nRecherche nach Objekteigenschaften"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_GEOCLASS_COPYOBJECTS "Doppelt alle Objekte ausgewählter Objektklassen.\nObjekte doppeln"
+    ID_STANDARD_REPLACE     "Sucht und ersetzt Werte in einer Objekteigenschaft der ausgewählten Objekte.\nSuchen und ersetzen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_STANDARD_DATASOURCES "Ermöglich das Editieren, Hinzufügen und Entfernen von Datenquellen zum aktuellen Projekt.\nDatenquellen verwalten"
+    ID_PREVIEW_REPAINT      "Zeichnet den aktuellen Bildausschnitt neu.\nNeu zeichnen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_GEOCLASS_DELOBJPROP  "Löscht Objekteigenschaften für alle Objekte einer Objektklasse.\nObjekteigenschaften löschen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CONVERTINGVIEWS     "Übernehmen der Ansichten aus der Datenquelle: '%ls'"
+    IDS_GDOSELECTPROMPT_DBMS 
+                            "Für das Einbinden dieser '%s' Datenquelle in Ihr Projekt ist die Vorgabe folgender Informationen notwendig:"
+    IDS_CONNECTDESCRIPTION_DBMS "Datenquelle %s_%d (%s)"
+    IDS_CONNECTNAME_DBMS    "%s_%d"
+    IDS_FILENAMETEMPLATE_DBMS "Datasource%d"
+    ID_STANDARD_PRINTPREVIEW 
+                            "Zeigt die Druckvorschau für den aktuell ausgewählten Drucker an.\nDruckvorschau anzeigen"
+    IDR_PRINTPREVIEW_FRAME  "PrintPreview\n\nPrintP\n\n\nPrintPreview.Document\nPrintPreview Document"
+    IDS_SAVEPROMPT          "Die Datenquelle '%ls' wurde modifiziert. Sollen die Daten dieser Datenquelle vor dem Entfernen aus dem Projekt gespeichert werden?"
+    IDS_EMAILURL            "mailto:info@trias-gis.de"
+    IDS_EMAILBODY           "mailto:info@trias-gis.de?subject=Lizenzierung von TRiAS&body=%s%s%%0D%%0ATRiAS Version: %s%%0D%%0AStandortcode: %s%%0D%%0AInstalliert am: %s%%0D%%0A"
+    IDS_LICENSETEXT         "Die auszuführende Funktion '%s' ist in dieser Kopie von %s nicht lizenziert und kann daher nicht benutzt werden."
+    IDS_EMAILBODY_PREFIX    "Hiermit bestellen wir verbindlich folgende Konfigurationen von TRiAS®:%0D%0A%0D%0A...Module und Konfigurationen finden Sie in Internet unter www.geopunkt.de...%0D%0A%0D%0AUnsere Rechnungs- und Lieferadresse(n):%0D%0A%0D%0A... Bitte geben Sie hier Ihre Adresse(n) an ...%0D%0A%0D%0AFür die erfolgreiche Lizenzierung von TRiAS werden folgende Informationen benötigt:%0D%0A"
+    IDS_LICENSETEXT_AUX     "Die auszuführende Funktion ist in dieser Kopie von %s nicht lizenziert und kann daher nicht benutzt werden."
+    IDS_CONNECTFILTERCOLUMN "Räumlicher Filter"
+    IDS_CREATENEWCONNECTFILTER_CMD "<Neuer räumlicher Filter ...>"
+    IDS_DESELECTCONNECTFILTER_CMD "<Kein räumlicher Filter>"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_ID_PREVIEW_CLOSE    "Schließt die Druckvorschau und zeigt das Hauptfenster wieder an.\nDruckvorschau schließen"
+    AFX_ID_PREVIEW_NUMPAGE  "Schaltet zwischen der Anzeige von gleichzeitig einer bzw. zwei Seiten um.\n1 Seite / 2 Seiten"
+    AFX_ID_PREVIEW_NEXT     "Zeigt die nächste Seite an.\nNächste Seite"
+    AFX_ID_PREVIEW_PREV     "Zeigt die vorhergehende Seite an.\nVorhergehende Seite"
+    AFX_ID_PREVIEW_PRINT    "Druckt das Vorschaubild aus.\nAnsicht Drucken"
+    AFX_ID_PREVIEW_ZOOMIN   "Vergrößert das Vorschaubild.\nVergrößern"
+    AFX_ID_PREVIEW_ZOOMOUT  "Verkleinert das Vorschaubild.\nVerkleinern"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_FILTER_OVERLAP_DESC "Es sind nur diejenigen Objekte verfügbar, die vollständig in dem ausgewählten Bereich enthalten sind oder sich mit diesem überlappen."
+    IDS_FILTER_CONTAINS_DESC 
+                            "Es sind nur diejenigen Objekte verfügbar, die vollständig in dem ausgewählten Bereich enthalten sind."
+    IDS_NOCONNECTFILTERS    "Es sind keine räumlichen Filter definiert"
+    IDS_NEWCONNFILTERNAME   "Räumlicher Filter %d"
+    IDS_CONNECTFILTERCAPTION "Räumliche Filter"
+    IDS_CONNECTFILTERNAME   "Name des räumlichen Filters"
+    IDS_CONNECTFILTERPROPS_CAP "Eigenschaften eines räumlichen Filters"
+    IDS_FILTERNAME_PROPS    "&Name des räumlichen Filters:"
+    IDS_FILTER_RECTANGLE    "Als Filterbereich wird der aktuelle Bildausschnitt oder, wenn vorhanden, das aktuelle Selektionsrechteck verwendet."
+    IDS_FILTER_POLYGON      "Als Filterbereich wird die Geometrie des aktivierten (blinkenden) Objektes des Recherchefensters verwendet, aus dem dieser Befehl ausgelöst wurde."
+    IDS_LICENSE_WARNING     "Lizensierungswarnung"
+    IDS_NEWLICENSE_SCHEME   "Beginnend mit der %s Version 5.10 ist es erforderlich einen neuen Lizensierungschlüssel anzufordern. %s wird daher ab sofort im Demo-Mode ausgeführt."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_CONNECTFILTERS_MANAGE 
+                            "Ermöglicht das Hinzufügen, Löschen und Verwalten von räumlichen Filtern.\nRäumliche Filter verwalten "
+    ID_CONNECTFILTERS_CREATE 
+                            "Erzeugt einen neuen räumlichen Filter auf der Grundlage des aktuellen Bildausschnittes oder Selektionsbereiches.\nRäumlichen Filter erzeugen"
+    ID_CONNECTFILTERS_TOGGLESHOW 
+                            "Zeigt alle definierten räumlichen Filter an.\nRäumliche Filter anzeigen"
+    ID_CONNECTFILTERS_TOGGLESHOW_ON 
+                            "Blendet alle definierten räumlichen Filter aus.\nRäumliche Filter ausblenden"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "fakemfc.rcv"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

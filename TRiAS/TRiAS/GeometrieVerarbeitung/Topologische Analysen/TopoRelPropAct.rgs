@@ -1,0 +1,39 @@
+HKCR
+{
+	TRiASEx.TopoRelPropAct.1 = s 'TopoRelPropAct Class'
+	{
+		CLSID = s '{98B9B6D3-86F1-4D35-B613-D47267BD1EDC}'
+	}
+	TRiASEx.TopoRelPropAct = s 'TopoRelPropAct Class'
+	{
+		CLSID = s '{98B9B6D3-86F1-4D35-B613-D47267BD1EDC}'
+		CurVer = s 'TRiASEx.TopoRelPropAct.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {98B9B6D3-86F1-4D35-B613-D47267BD1EDC} = s 'TopoRelPropAct Class'
+		{
+			ProgID = s 'TRiASEx.TopoRelPropAct.1'
+			VersionIndependentProgID = s 'TRiASEx.TopoRelPropAct'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{5AB53632-BEB9-4AB2-9885-B5D1E8EFE77B}'
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiASEx.TopoRelPropAct.1' = s '{98B9B6D3-86F1-4D35-B613-D47267BD1EDC}'
+			}
+		}
+	}
+}

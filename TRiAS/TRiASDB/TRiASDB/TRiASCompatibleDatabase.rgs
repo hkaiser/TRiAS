@@ -1,0 +1,50 @@
+HKCR
+{
+	TRiASDB.TRiASCompatibleDatabase.1 = s 'TRiASCompatibleDatabase 1.30 Class'
+	{
+		CLSID = s '{AD0D7076-39B0-11D1-96B9-00A024D6F582}'
+		TRiASDB = s 'TRiAS.Document.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {AD0D7076-39B0-11D1-96B9-00A024D6F582} = s 'TRiASCompatibleDatabase 1.30 Class'
+		{
+			ProgID = s 'TRiASDB.TRiASCompatibleDatabase.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{1CB3AB53-2E87-11D1-969D-00A024D6F582}'
+		}
+	}
+
+	.stb = s 'TRiAS.Document.1'
+	TRiAS.Document.1 = s 'TRiAS 1.30 GIS-Datenbank'
+	{
+		shell 
+		{
+			open = s '&Datenbank öffnen'
+			{
+				command = s '%MAINMODULE% /convert "%%1"'
+			}
+		}
+		ForceRemove TRiASDB
+		{
+			CLSID = s '{AD0D7076-39B0-11D1-96B9-00A024D6F582}'
+			Description 
+			{
+				val DefaultExtension = s '.stb'
+				val LongName = s 'Datenquellen der TRiAS V1.x (schreibgeschützt)'
+				val ShortName = s 'TRiAS 1.30'
+				val NameDescription = s 'TRiAS 1.30 GIS-Datenbank'
+				val NameIsDirectory = s 0
+				val NameIsFile = s 1
+				val ReadWrite = s 0
+				val FilterString = s 'TRiAS 1.30 GIS-Datenbank (*.ris,*.stb)|*.ris;*.stb|'
+				val Version = s '1.30'
+				val ToolboxBitmap32 = d 15
+			}
+		}
+	}
+}

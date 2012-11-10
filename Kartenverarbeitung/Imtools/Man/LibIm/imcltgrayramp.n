@@ -1,0 +1,72 @@
+'\"t
+.if t .TH IMCLTGRAYRAMP 3IM "August 31, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMCLTGRAYRAMP 3IM "August 31, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImCltGrayRamp - fill a CLT with a grayscale ramp
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+.if t ImClt *ImCltGrayRamp( srcClt, startIndex, endIndex, startGray, endGray, dstClt )
+.if n ImClt *ImCltGrayRamp( srcClt, startIndex, endIndex, startGray,
+.if n 					endGray, dstClt )
+	ImClt	*srcClt;
+	int	startIndex;
+	int	endIndex;
+	int	startGray;
+	int	endGray;
+	ImClt	*dstClt;
+.fi
+\fR
+.SH DESCRIPTION
+\fBImCltGrayRamp\fR creates a grayscale ramp, a linear progression
+of grayscales, from \fIstartGray\fR value to \fIendGray\fR value.
+The valid range for both \fIstartGray\fR and \fIendGray\fR is
+from 0 to 255.  \fIendGray\fR value need not be larger than
+\fIstartGray\fR value.
+.LP
+The grayscale values are filled in from \fIstartIndex\fR to
+\fIendIndex\fR.  \fIendIndex\fR need not be larger than \fIstartIndex\fR.
+.LP
+\fIsrcClt\fR is the source CLT to be referenced.  \fIdstClt\fR is the
+destination CLT to be returned.
+.IP "\fIsrcClt\fR = \fBIMCLTNULL\fR and \fIdstClt\fR = \fBIMCLTNEW\fR"
+A new \fIdstClt\fR is allocated with size \fIstartIndex\fR+1 or \fIendIndex\fR+1 (whichever is larger) and then grayscale ramped.
+.IP "\fIsrcClt\fR = \fBIMCLTNULL\fR and \fIdstClt\fR points to a CLT"
+The \fIdstClt\fR is grayscale ramped.
+.IP "\fIsrcClt\fR points to a CLT and \fIdstClt\fR = \fBIMCLTNEW\fR"
+The \fIsrcClt\fR is duplicated into \fIdstClt\fR and \fIdstClt\fR is
+grayscale ramped.
+.if t .IP "\fIsrcClt\fR points to a CLT and \fIdstClt\fR points to a CLT and \fIsrcClt\fR == \fIdstClt\fR"
+.if n .IP "\fIsrcClt\fR points to a CLT and \fIdstClt\fR points to a CLT"
+.if n and \fIsrcClt\fR == \fIdstClt\fR
+.if n .br
+.if n .sp
+The \fIdstClt\fR is grayscale ramped.
+.if t .IP "\fIsrcClt\fR points to a CLT and \fIdstClt\fR points to a CLT and \fIsrcClt\fR != \fIdstClt\fR"
+.if n .IP "\fIsrcClt\fR points to a CLT and \fIdstClt\fR points to a CLT"
+.if n and \fIsrcClt\fR != \fIdstClt\fR
+.if n .br
+.if n .sp
+As many CLT entries in \fIsrcClt\fR that will fit into \fIdstClt\fR are
+copied into \fIdstClt\fR and then \fIdstClt\fR is grayscale ramped.
+.SH NOTES
+The \fIsrcClt\fR and \fIdstClt\fR may be the same CLT without unpleasant
+side effects.
+.SH RETURNS
+\fBImCltGrayRamp\fR returns a pointer to the grayscale ramp filled
+CLT or \fBIMCLTNULL\fR.
+.SH SEE ALSO
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBImCltAlloc\fR (3IM),
+\fBImCltDup\fR (3IM)
+.SH AUTHORS
+Dave Nadeau and Toan-Vinh Le
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

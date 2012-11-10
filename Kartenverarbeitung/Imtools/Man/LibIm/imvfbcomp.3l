@@ -1,0 +1,530 @@
+
+
+
+IMVFBCOMP(3IM)         SDSC IMAGE LIBRARY          IMVFBCOMP(3IM)
+
+
+
+NAME
+     ImVfbComp - composite two vfb's together
+
+SYNOPSIS
+     #include "im.h"
+     ImVfb *ImVfbComp( fgVfb, fgX, fgY, fgXSize, fgYSize, fieldMask, operator,
+          bgVfb, bgXInto, bgYInto )
+          ImVfb   *fgVfb;
+          int     fgX;
+          int     fgY;
+          int     fgXSize;
+          int     fgYSize;
+          int     fieldMask;
+          int     operator;
+          ImVfb   *bgVfb;
+          int     bgXInto;
+          int     bgYInto;
+
+
+DESCRIPTION
+     ImVfbComp combines the two  source  VFB's  _f_g_V_f_b  and  _b_g_V_f_b
+     together  using  a  digital  compositing operation and alpha
+     channels (coverage masks) on one or both VFB's.  The result-
+     ing  composite  image  is returned in _b_g_V_f_b.  The foreground
+     image may be positioned and sized.  Variables  _f_g_X  and  _f_g_Y
+     tell  the function from what left and top edges of the fore-
+     ground to composite,  respectively.  Variables  _f_g_X_S_i_z_e  and
+     _f_g_Y_S_i_z_e  tell the function the width and height of the fore-
+     ground region  to  composite.  The  quantities  _b_g_X_I_n_t_o  and
+     _b_g_Y_I_n_t_o allow the foreground to be positioned into the back-
+     ground so that the upper left hand corner is at a specific x
+     and y position.
+
+
+  Compositing
+     _C_o_m_p_o_s_i_t_i_n_g is a technique that combines pixels of two input
+     images  together  to create a third _c_o_m_p_o_s_i_t_e image.  Compo-
+     siting is commonly used  to  take  two  separately  computed
+     images and combine them, with portions of one obscuring por-
+     tions of the other.  In such cases  the  first  input  image
+     would  act  as a _f_o_r_e_g_r_o_u_n_d image, and the second as a _b_a_c_k_-
+     _g_r_o_u_n_d image.
+
+     Foreground and background images can be composited  together
+     to  create  a  variety  of  special effects, or as an aid to
+     speeding up the rendering of complex scenery.  For instance,
+     perhaps  a complex computer-generated robot must walk across
+     the screen in front of a computer-generated  library  filled
+     with books.  The library could be modeled, book by book, and
+     the robot modeled, joint for joint.  An  image  showing  the
+     robot  in  the  library  could be rendered by combining both
+     models and sending the entire mass of geometry  off  to  the
+
+
+
+SDSC             Last change: November 18, 1992                 1
+
+
+
+
+
+
+IMVFBCOMP(3IM)         SDSC IMAGE LIBRARY          IMVFBCOMP(3IM)
+
+
+
+     renderer all at once.  A single image would result.
+
+     To render an animation of the robot moving in front  of  the
+     library  one  could  send  both  masses  of  geometry to the
+     renderer for each frame.  However, the library is static  in
+     this  scene  and  the  interaction between the robot and its
+     books nil.  The time spent rendering, and rerendering,  each
+     library  book  frame after frame is a waste and dramatically
+     increases the rendering time of the animation.
+
+     A more efficient approach would  be  to  render  the  static
+     library  just once, without the robot.  The robot would then
+     be rendered for each frame, but without the  library  behind
+     it  (just a solid black background).  Once rendering is com-
+     plete,  the  separate  foreground  (robot)  and   background
+     (library)  images  can  be  composited  together to create a
+     series of frames showing the robot moving in  front  of  the
+     library.   The  total rendering time for such an approach is
+     considerably less.
+
+     Such compositing tricks are regularly used in  Hollywood  in
+     order  to place actors in front of locations they aren't in,
+     or to make spaceships fly all about  in  front  of  swirling
+     planets  or  sparkley  star fields.  In video the same tech-
+     nique, called _k_e_y_i_n_g, is used to place the  weather  man  in
+     front of a computer-generated weather map.
+
+     In each of these cases, the compositing operation must  know
+     what  portions  of  the  foreground  image to paste over the
+     background image.  This information is supplied in a  _c_o_v_e_r_-
+     _a_g_e _m_a_s_k, historically referred to as an _a_l_p_h_a _c_h_a_n_n_e_l.
+
+     Alpha channels are usually generated at the  same  time  the
+     color  portion  of the image is rendered.  Alpha information
+     is stored as a one-byte integer value  "behind"  each  image
+     pixel.   An  alpha  value  of 0 indicates the pixel is _t_r_a_n_-
+     _s_p_a_r_e_n_t, or wild.  An alpha value of 255 indicates the pixel
+     is  _o_p_a_q_u_e.   For instance, in the robot example, all pixels
+     showing colors for the robot itself would have alpha  values
+     of  255.   All  pixels  for  the blank background behind the
+     robot (remember the robot's  rendered  separately  from  the
+     library)  would  be  transparent,  or  wild,  and have alpha
+     values of 0.
+
+     When compositing a foreground image over a background image,
+     the  portions of the foreground image that are opaque (alpha
+     = 255) will obscure the background image.  Portions  of  the
+     foreground  image  that are transparent (alpha = 0) will let
+     the background image show through.
+
+     Alpha values between 0 and 255 indicate  a  level  of  tran-
+     sparency.  Foreground image pixels with alpha values of 128,
+
+
+
+2                Last change: November 18, 1992              SDSC
+
+
+
+
+
+
+IMVFBCOMP(3IM)         SDSC IMAGE LIBRARY          IMVFBCOMP(3IM)
+
+
+
+     for instance, would be blended  with  background  pixels  to
+     create  a  pseudo-translucency  effect.   This is most often
+     used to blend the edges of foreground objects so that crisp,
+     noticeable jaggies don't result.
+
+     ImVfbComp supports four  compositing  operations  considered
+     standard  in digital compositors.  The compositing operation
+     is selected by the _o_p_e_r_a_t_i_o_n argument to ImVfbComp:
+
+          _o_p_e_r_a_t_i_o_n       Meaning
+8          _______________________
+          IMCOMPOVER      Over
+          IMCOMPATOP      Atop
+          IMCOMPINSIDE    Inside
+          IMCOMPOUTSIDE   Outside
+
+     The _o_v_e_r operation is that  most  often  used  and  the  one
+     appropriate  for placing portions of a foreground image over
+     a background image.
+
+     _a_t_o_p is rarely used, but can  be  appropriate  when  certain
+     special effects are desired.
+
+     _i_n_s_i_d_e and _o_u_t_s_i_d_e are opposites of each other and are typi-
+     cally  used when creating _m_a_t_t_e_s, black and white masks that
+     isolate portions of an image (see matte descriptions in  the
+     NOTES section below).
+
+     Each of these composition operations  are  discussed  below.
+     Discussions use the following nomenclature:
+
+          In1Field
+               A pixel's field (usually a color  attribute)  from
+               input image 1.
+
+          In2Field
+               A pixel's field (usually a color  attribute)  from
+               input image 2.
+
+          OutField
+               A pixel's field (usually a  color  attribute)  for
+               the output image.
+
+          In1Alpha
+               A pixel's alpha field from input image 1.
+
+          In2Alpha
+               A pixel's alpha field from input image 2.
+
+  Over
+     IMCOMPOVER selects the _o_v_e_r compositing operation.  _O_v_e_r  is
+     used  to place opaque portions of the first input image over
+     the second input image.  _O_v_e_r is  by  far  the  most  common
+
+
+
+SDSC             Last change: November 18, 1992                 3
+
+
+9
+
+
+IMVFBCOMP(3IM)         SDSC IMAGE LIBRARY          IMVFBCOMP(3IM)
+
+
+
+     compositing operation.
+
+     _O_v_e_r evaluates the following formula for each pixel:
+
+            OutField = In1Field * (In1Alpha/255.0) +
+                         In2Field * (1.0 - (In1Apha/255.0))
+
+
+     The first input image must have an alpha channel.  ImVfbComp
+     will return an error if it does not.
+
+     An alpha channel on the second input image is not needed  or
+     used by the _o_v_e_r operation.
+
+  Atop
+     IMCOMPATOP selects the _a_t_o_p compositing operation.  _A_t_o_p  is
+     used to combine the opaque portions of the two input images,
+     merging their colors by addition of their field values.  The
+     _a_t_o_p  operation is mostly used for special effects and has a
+     rather non-intuitive effect that can cause unexpected  color
+     shifts.
+
+     _A_t_o_p uses the following formula for each pixel:
+
+            OutField = In1Field * (In2Alpha/255.0) +
+                         In2Field * (1.0 - (In1Alpha/255.0))
+
+
+     Both input images must have alpha channels.  ImVfbComp  will
+     return an error if they do not.
+
+  Inside
+     IMCOMPINSIDE  selects  the  _i_n_s_i_d_e  compositing   operation.
+     _I_n_s_i_d_e  uses pixels from the first image whenever the second
+     image is opaque.  This has the effect  of  substituting  the
+     first image into the second image in a controlled way and is
+     most often used when creating _m_a_t_t_e_s, a special form of cov-
+     erage  mask that may be used in chains of compositing opera-
+     tions.  _i_n_s_i_d_e's specialized function makes it rare for typ-
+     ical compositing work.
+
+     _I_n_s_i_d_e uses the following formula for each pixel:
+
+            OutField = In1Field * (In2Alpha/255.0)
+
+
+     The  second  input  image  must  have  an   alpha   channel.
+     ImVfbComp will return an error if it does not.
+
+     An alpha channel on the first input image is not  needed  or
+     used by the _i_n_s_i_d_e operation.
+
+
+
+
+4                Last change: November 18, 1992              SDSC
+
+
+
+
+
+
+IMVFBCOMP(3IM)         SDSC IMAGE LIBRARY          IMVFBCOMP(3IM)
+
+
+
+  Outside
+     IMCOMPOUTSIDE selects  the  _o_u_t_s_i_d_e  compositing  operation.
+     _O_u_t_s_i_d_e  is the reverse of _i_n_s_i_d_e.  Where _i_n_s_i_d_e uses pixels
+     from the first image where the  second  is  opaque,  _o_u_t_s_i_d_e
+     uses  pixels  from the first image where the second is tran-
+     sparent.  Like _i_n_s_i_d_e, _o_u_t_s_i_d_e is most often used for creat-
+     ing _m_a_t_t_e_s for use in chains of compositing operations.
+
+     _O_u_t_s_i_d_e uses the following formula for each pixel:
+
+            OutField = In1Field * (1.0 - (In2Alpha/255.0))
+
+
+     The  second  input  image  must  have  an   alpha   channel.
+     ImVfbComp will return an error if it does not.
+
+     An alpha channel on the first input image is not  needed  or
+     used by the _o_u_t_s_i_d_e operation.
+
+  Field(s)
+     ImVfbComp applies the compositing  operation  to  the  fore-
+     ground  VFB  fields selected by _f_i_e_l_d_M_a_s_k in order to modify
+     the background VFB.  _f_i_e_l_d_M_a_s_k is the bitwise-OR of  one  or
+     more of the following field names:
+
+          _f_i_e_l_d_M_a_s_k      Composite
+8          ______________________________________________
+          IMMONO         the monochrome field
+          IMINDEX8       the 8-bit color index field
+          IMINDEX16      the 16-bit color index field
+8          ______________________________________________
+          IMRED          the red field
+          IMGREEN        the green field
+          IMBLUE         the blue field
+8          ______________________________________________
+          IMHUE          on the virtual hue field
+          IMSATURATION   on the virtual saturation field
+          IMINTENSITY    on the virtual intensity field
+8          ______________________________________________
+          IMALPHA        the alpha field
+          IMWPROT        the write-protect field
+          IMZ            the Z-buffer field
+          IMIDATA        the integer data field
+          IMFDATA        the floating point data field
+
+     Composite fields given in _f_i_e_l_d_M_a_s_k must exist in  both  the
+     foreground and background VFBs.  Hue, saturation, and inten-
+     sity virtual fields may be composited by any VFB with  color
+     information (mono, grayscale, color indexes or RGB).
+
+     Compositing may occur on more than one field at once.
+
+     Composite results will be stored into the _b_g_V_f_b.
+
+
+
+
+SDSC             Last change: November 18, 1992                 5
+
+
+
+
+
+
+IMVFBCOMP(3IM)         SDSC IMAGE LIBRARY          IMVFBCOMP(3IM)
+
+
+
+NOTES
+     Compositing historically originated  in  the  analog  domain
+     where it was (and still is) used for combining separate film
+     footage into a single composite result.  This  is  used  for
+     special effects that can place an alien spaceship in the sky
+     above a sleepy suburban neighborhood, or a giant dinosaur on
+     the  streets  of  New York.  It is also used for more subtle
+     effects like stars in a night sky (stars don't film well, so
+     they are usually faked using compositing special effects).
+
+     In film, two rolls of film are processed to produce  _m_a_t_t_e_s.
+     If the matte changes from frame to frame, such as for a mov-
+     ing object, then it's called a _t_r_a_v_e_l_i_n_g _m_a_t_t_e.   In  either
+     case  the matte is a black and white coverage mask that del-
+     imits the area of interest of each source film footage.
+
+     For instance, to place a starship in front of a planet takes
+     several steps:
+
+          1.   Film the starship model in front of a  solid  blue
+               screen  (or  any  color  not in the model itself).
+               Move the camera or model around to simulate flying
+               acrobatics.
+
+          2.   Film a model or painting  of  a  planet,  complete
+               with star-filled sky.
+
+          3.   Create the first traveling matte of  the  starship
+               model  footage.   Everywhere  there's a blue back-
+               ground in the starship  footage,  make  the  matte
+               film  black.   Everywhere else (where the starship
+               is) make it white.  If you watched this film you'd
+               just  see  a  flat  white blobby silhouette of the
+               spaceship flying about on a black background.
+
+          4.   Create the second traveling  matte  by  doing  the
+               same  thing,  but  make  the  blue background area
+               white, and  the  spaceship  area  black.   If  you
+               watched  this  film  you'd see a flat black blobby
+               silhouette of the  spaceship  flying  about  on  a
+               white background.
+
+          5.   Run the first matte (white where the starship  is)
+               and  the  raw starship footage through a projector
+               back-to-back.  Light from the projector bulb  will
+               only  make it through the combined matte and star-
+               ship film where it is  light  in  both  pieces  of
+               film.   Because  the matte only lets light through
+               in areas the starship is, only the starship  shows
+               up  on  the  projection.  The blue background (and
+               model stand, strings,  stray  cables,  floor,  and
+               other  stage  clutter) of the raw starship footage
+
+
+
+6                Last change: November 18, 1992              SDSC
+
+
+
+
+
+
+IMVFBCOMP(3IM)         SDSC IMAGE LIBRARY          IMVFBCOMP(3IM)
+
+
+
+               doesn't show up.  Expose a new roll of  film  with
+               this starship-only result.
+
+          6.   Do the same kind of thing but this  time  use  the
+               second  matte (white where the starship isn't) and
+               the planet footage.  When run through the  projec-
+               tor,  light  will  only make it through the planet
+               film and the second matte for the areas the  star-
+               ship  isn't covering.  Double-expose the same roll
+               of film from step 5 with this planet-only  result.
+               You  now  have one piece of film with the starship
+               and the planet, and neither overlaps the other.
+
+     If we didn't go through all this  hassle  and  just  double-
+     exposed  one  roll  of film with both the space ship and the
+     planet, we'd see the planet through the darker parts of  the
+     spaceship  and it would look weird.  If you watch old cheesy
+     science fiction movies you see this kind of  effect  a  lot.
+     It's cheap, but not very realistic.  To get realism you have
+     to do compositing using the steps above.
+
+     Obviously the above procedure is  pretty  tedious.   If  you
+     want two separately filmed spaceships in the scene, then you
+     need to go through another compositing stage.  Three  space-
+     ships  and you've got yet another stage.  And so on for each
+     additional independently filmed  scene  element.   The  Star
+     Wars  epic,  for  instance,  went to extraordinary levels of
+     compositing to  get  all  those  independently  moving  Tie-
+     fighters,  X-wing fighters, Y-wing fighters, the Death Star,
+     and the Millennium Falcon all into one scene.
+
+     The difficulty with film compositing is that it  experiences
+     generation  loss.  Each time footage is transferred to a new
+     roll of film (steps 5 and 6 of  the  procedure  above),  the
+     footage gets grainier and less crisp.  The darks get lighter
+     and the image quality goes down a bit.  In a complex  compo-
+     siting nightmare like a Star Wars film, the number of compo-
+     siting passes is huge and this generation loss becomes quite
+     noticeable.  The next time you watch a Star Wars film, watch
+     for differences in scene quality from cut to  cut  during  a
+     frantic  battle.   Scenes with fewer ships in them will look
+     crisper and the darks darker.
+
+     It is this generation  loss  problem  that  prompted  George
+     Lucas  to  have  PIXAR develop its original PIXAR Image Com-
+     puter.  The PIXAR system was used to do digital compositing,
+     much like ImVfbComp does.  Raw footage was scanned in, frame
+     by frame, and matte's generated digitally.  The  mattes  and
+     footage  could  then  be combined any number of times, digi-
+     tally, without any generation loss.   The  final  result  is
+     then  recorded  back  to film just as crisp and clean as the
+     original footage.  It is this type  of  system  that  Disney
+
+
+
+SDSC             Last change: November 18, 1992                 7
+
+
+
+
+
+
+IMVFBCOMP(3IM)         SDSC IMAGE LIBRARY          IMVFBCOMP(3IM)
+
+
+
+     uses  today for combining cell animation and computer anima-
+     tion.
+
+     ImVfbComp's compositing operations perform this same kind of
+     digital compositing.  _i_n_s_i_d_e and _o_u_t_s_i_d_e may be used to gen-
+     erate mattes.  However,  more  commonly,  _o_v_e_r  is  used  to
+     accomplish in one step the full 6-step compositing operation
+     outlined earlier.
+
+     ImVfbComp allows users to composite individual image fields,
+     and  to composite in the HSI color space instead of just the
+     RGB color space.  This is significantly cool.  The red  pix-
+     els in the first image can be composited on to the red chan-
+     nel of the second to generate a third image.  Blue and green
+     pixels  are  unchanged.   Or,  the  saturation values of one
+     image can be composited over  a  second  image's  colors  to
+     create an interesting form of double exposure.  Pretty cool.
+
+     Color index compositing is rarely a good thing to do.   Com-
+     positing  operations  apply math operations to calculate new
+     color index values.  Those new values will  point  into  the
+     output  image's  color  table,  cloned from the second input
+     image.  It is unlikely that  those  new  index  values  will
+     point  to  colors  that  look right.  The operation may even
+     create illegal color indexes that point to CLT slots  beyond
+     the  end  of  the  CLT.  Beware color index compositing!  It
+     usually makes more sense to composite in RGB space instead.
+
+RETURNS
+     Upon  success,  ImVfbComp   returns   a   pointer   to   the
+     destination/background  Vfb.   Upon  failure,  IMVFBNULL  is
+     returned and ImErrNo set to one of the following:
+
+          IMEFIELD       _f_i_e_l_d_M_a_s_k selects fields not in both source images
+          IMEMALLOC      Malloc error
+          IMENOALPHA     There was no alpha field present in one of the images
+          IMENOVFB       The foreground or background VFB was IMVFBNULL
+          IMEOPERATION   An unknown _o_p_e_r_a_t_i_o_n was passed
+
+SEE ALSO
+     ImIntro (3IM), ImErrNo (3IM), imadjust (1IM), imcomp  (1IM),
+     imfill  (1IM),  impaste  (1IM), ImVfbAdjust (3IM), ImVfbFill
+     (3IM)
+
+AUTHOR
+     Chris Groening, Dave Nadeau and Shane Cooper
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+8                Last change: November 18, 1992              SDSC
+
+
+

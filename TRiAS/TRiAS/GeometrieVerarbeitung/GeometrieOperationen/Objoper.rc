@@ -1,0 +1,371 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "ObjOperR.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resstrg.h"
+
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Deutsch (Deutschland) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SETSOPERATPROPACT DIALOGEX 0, 0, 270, 124
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Mengenoperation auswählen",IDC_STATIC,20,2,105,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,115,7,130,1
+    CONTROL         " &Vereinigung (OR)",IDC_OROPERAT,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,22,14,72,10
+    CONTROL         " &Durchschnitt (AND)",IDC_ANDOPERAT,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,95,14,79,10
+    CONTROL         " &Exklusiv-Oder (XOR)",IDC_XOROPERAT,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,175,14,83,10
+    CONTROL         122,IDP_OR,"Static",SS_BITMAP | SS_SUNKEN,36,27,53,26
+    CONTROL         123,IDP_AND,"Static",SS_BITMAP | SS_SUNKEN,112,27,53,26
+    CONTROL         124,IDP_XOR,"Static",SS_BITMAP | SS_SUNKEN,189,27,39,20
+    LTEXT           "Parameter",IDC_STATIC,20,55,46,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,60,60,185,1
+    LTEXT           "&Fangbereich zweier Endpunkte (in Meter)\nbei Vereinigung von Linienobjekten:",
+                    IDT_FUZZY1,28,67,161,21
+    EDITTEXT        IDE_FUZZY1,190,69,35,12,ES_AUTOHSCROLL,WS_EX_RIGHT
+    LTEXT           "Beschreibung",IDC_STATIC,20,88,55,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,69,93,176,1
+    LTEXT           "",IDT_SETSDESCRIPT,20,98,225,26,NOT WS_GROUP
+END
+
+IDD_REGOPERATPROPACT DIALOG DISCARDABLE  0, 0, 270, 124
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Parameter",IDC_STATIC,20,4,33,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,60,9,188,1
+    LTEXT           "Neue Objekte liegen bezüglich der schneidenden (aktivierten) Fläche",
+                    IDT_LOCATION,28,21,239,8
+    CONTROL         " &Innerhalb",IDC_INTER,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,38,32,47,10
+    CONTROL         " &Außerhalb",IDC_EXTER,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,105,32,50,10
+    CONTROL         " Auf dem &Rand",IDC_BOUND,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,172,32,63,10
+    LTEXT           "Beschreibung der zuletzt veränderten Auswahl",
+                    IDC_STATIC,20,80,149,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,173,84,73,1
+    LTEXT           "",IDT_REGDESCRIPT,20,90,228,34,NOT WS_GROUP
+    CONTROL         121,IDP_BOUND,"Static",SS_BITMAP | SS_SUNKEN,178,45,53,
+                    26
+    CONTROL         120,IDP_EXTER,"Static",SS_BITMAP | SS_SUNKEN,111,45,53,
+                    26
+    CONTROL         119,IDP_INTER,"Static",SS_BITMAP | SS_SUNKEN,44,45,53,26
+END
+
+IDD_OPTIONSPROPACT DIALOG DISCARDABLE  0, 0, 270, 135
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Optionen",IDC_STATIC,25,3,43,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,60,8,188,1
+    CONTROL         " &Objekteigenschaften der Ursprungsobjekte übernehmen",
+                    IDC_FEATFROMORIGIN,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,33,16,198,10
+    CONTROL         " &Ursprungsobjekte löschen",IDC_ORIGINDEL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,33,27,112,10
+    CONTROL         " Verwendete Ursprungsobjekte &kennzeichnen",
+                    IDC_ORIGINMARK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,33,
+                    38,175,10
+    LTEXT           "Ergebnisanzeige",IDC_STATIC,25,56,67,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,84,61,164,1
+    CONTROL         " Fenster mit &neuen Objekten",IDC_SHOWNEW,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,33,68,105,10
+    CONTROL         " Fenster mit verwendeten &Ursprungsobjekten",
+                    IDC_SHOWORIG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,33,80,
+                    163,10
+    LTEXT           "Beschreibung der zuletzt veränderten Auswahl",
+                    IDC_STATIC,25,98,147,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,175,103,71,1
+    LTEXT           "",IDT_OPTDESCRIPT,25,109,222,26,NOT WS_GROUP
+END
+
+IDD_LINESPLITPROPACT DIALOGEX 0, 0, 270, 124
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Parameter",IDC_STATIC,20,11,33,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,61,17,185,1
+    LTEXT           "&Fangbereich zweier Linien (in Meter):",IDT_FUZZY2,33,
+                    29,156,8
+    EDITTEXT        IDE_FUZZY2,195,27,35,12,ES_AUTOHSCROLL | WS_GROUP,
+                    WS_EX_RIGHT
+    LTEXT           "&Minimale Länge einer erzeugten Linie (in Meter):",
+                    IDT_DANGLE,33,45,155,8
+    EDITTEXT        IDE_DANGLE,195,43,35,12,ES_AUTOHSCROLL | WS_GROUP,
+                    WS_EX_RIGHT
+    LTEXT           "Beschreibung",IDC_STATIC,20,80,55,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,69,85,179,1
+    LTEXT           "",IDT_LINEDESCRIPT,20,90,228,34,NOT WS_GROUP
+END
+
+IDD_AREABUILDPROPACT DIALOGEX 0, 0, 270, 124
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Optionen",IDC_STATIC,20,7,35,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,55,12,190,1
+    CONTROL         " &Restliche Objekte zu Linienobjekten vereinigen",
+                    IDC_LINESUNION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,33,
+                    21,165,10
+    LTEXT           "Parameter",IDC_STATIC,20,39,34,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,59,44,187,1
+    LTEXT           "&Fangbereich zweier Endpunkte (in Meter)\nbei Vereinigung zu Linienobjekten:",
+                    IDT_FUZZY3,33,54,157,21
+    EDITTEXT        IDE_FUZZY3,195,56,35,12,ES_AUTOHSCROLL | WS_GROUP,
+                    WS_EX_RIGHT
+    LTEXT           "Beschreibung",IDC_STATIC,20,80,55,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,69,85,179,1
+    LTEXT           "",IDT_AREADESCRIPT,20,90,228,34,NOT WS_GROUP
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "ObjOperR.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""resstrg.h""\r\n"
+    "\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""ObjOper.rcv""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_SETSOPERATPROPACT   REGISTRY DISCARDABLE    "SetsOperatPropAct3.rgs"
+IDR_OBJEKTEVEREINIGEN   REGISTRY DISCARDABLE    "ObjekteVereinigen3.rgs"
+IDR_REGOPERATPROPACT    REGISTRY DISCARDABLE    "RegOperatPropAct3.rgs"
+IDR_OPTIONSPROPACT      REGISTRY DISCARDABLE    "OptionsPropAct3.rgs"
+IDR_AREABUILDROPACT     REGISTRY DISCARDABLE    "AreaBulidPropAct3.rgs"
+IDR_LINESPLITPROPACT    REGISTRY DISCARDABLE    "LineSplitPropAct3.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// SCRIPT
+//
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDR_SCRIPT_UNIONOBJECTS$(_DEBUG) SCRIPT  DISCARDABLE     "Debug\\ObjekteVereinigen.ebc"
+#else
+IDR_SCRIPT_UNIONOBJECTS SCRIPT  DISCARDABLE     "Debug\\ObjekteVereinigen.ebc"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(NDEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDR_SCRIPT_UNIONOBJECTS$(NDEBUG) SCRIPT  DISCARDABLE     "Release\\ObjekteVereinigen.ebc"
+#else
+IDR_SCRIPT_UNIONOBJECTS SCRIPT  DISCARDABLE     "Release\\ObjekteVereinigen.ebc"
+#endif
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDM_OPERATMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Geometrie&operationen"
+    BEGIN
+        MENUITEM "&Geometrieoperation auswählen ...", IDM_OPERATIONEN
+        MENUITEM "&Neu erzeugte Objekte löschen", IDM_OPLOESCHEN
+        MENUITEM "&Ursprungsobjekte löschen",   IDM_OPORIGLOESCHEN
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_AND                 BITMAP  DISCARDABLE     "And_reduced.bmp"
+IDB_OR                  BITMAP  DISCARDABLE     "Or.bmp"
+IDB_XOR                 BITMAP  DISCARDABLE     "Xor_reduced.bmp"
+IDB_BOUND               BITMAP  DISCARDABLE     "Bound.bmp"
+IDB_INTER               BITMAP  DISCARDABLE     "Inter.bmp"
+IDB_EXTER               BITMAP  DISCARDABLE     "Exter.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Geometrieoperationen"
+    IDS_GEOREIN             "TRiAS.Bereinigung.1"
+    IDS_NEUEOBJ             "Neu erzeugte Objekte"
+    IDS_ALTEOBJ             "Ursprungsobjekte"
+    IDS_BOXTEXT1            "Die markierten Objekte lassen sich nicht schneiden\n(evtl. weil sie fehlerbehaftet sind)\nbzw. Abbruch durch den Anwender."
+    IDS_BOXTEXT2            "Die markierten Objekte lassen sich nicht vereinigen\n(evtl. weil ein Geometriefehler entstehen würde\noder weil sie selbst fehlerbehaftet sind)\nbzw. Abbruch durch den Anwender."
+    IDS_BOXTEXT3            "Die markierten Flächen haben keinen gemeinsamen Durchschnitt\n(evtl. weil sie fehlerbehaftet sind)  bzw. Abbruch durch den Anwender."
+    IDS_BOXTEXT4            "Mit den markierten Flächen lässt sich kein Exklusiv-Oder durchführen\n(evtl. weil sie fehlerbehaftet sind)  bzw. Abbruch durch den Anwender."
+    IDS_BOXTEXT5            "Die ausgewählten Linienobjekte lassen sich nicht splitten."
+    IDS_BOXTEXT6            "Aus den ausgewählten Linienobjekten lassen sich keine Flächenobjekte bilden."
+    IDS_BOXTEXT7            "Die Operation hat kein Ergebnis geliefert\n(evtl. weil eines der beteiligten Objekte fehlerbehaftet ist)\nbzw. Abbruch durch den Anwender."
+    IDS_KOMM1               "Alle ausgewählten Objekte werden durch die aktivierte Fläche geschnitten. Als Ergebnis können sowohl die innerhalb, außerhalb als auch auf dem Rand dieser Fläche liegenden Teilobjekte erzeugt werden."
+    IDS_KOMM2               "Alle ausgewählten Objekte werden durch die aktivierte Linie geschnitten."
+    IDS_KOMM3               "Alle ausgewählten Linien werden durch den aktivierten Punkt geteilt."
+    IDS_KOMM4               "Achtung: Das schneidende Objekt ist weder ein Punkt noch eine Linie noch eine Fläche!"
+    IDS_KOMM5               "Die neu zu bildenden Objekte werden der gleichen Objektklasse zugeordnet, wie die Ursprungsobjekte, aus denen sie entstanden sind."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_KOMM6               "Die neu zu bildenden Objekte entstehen aus den Teilen der zu schneidenden Objekte, die innerhalb der schneidenden Fläche liegen."
+    IDS_KOMM7               "Die neu zu bildenden Objekte entstehen aus den Teilen der zu schneidenden Objekte, die außerhalb der schneidenden Fläche liegen."
+    IDS_KOMM8               "Die neu zu bildenden Objekte entstehen aus den Teilen der zu schneidenden Objekte, die auf dem äußeren Rand der schneidenden Fläche liegen. Diese Vorgabe ist nur beim Schneiden von Linien sinnvoll."
+    IDS_KOMM9               "Für die Lage der neu zu bildenden Objekte muss mindestens eine Auswahl getroffen werden."
+    IDS_KOMM10              "Sich überlappende Flächen bzw. sich berührende Linien werden vereinigt. Bei der Linienvereinigung ist ein vorgebbarer Fangbereich zwischen den Linienenden zulässig."
+    IDS_KOMM11              "Aus den Bereichen, die zu allen ausgewählten Flächen gehören, werden neue Flächen gebildet."
+    IDS_KOMM12              "Aus allen Bereichen, die nur zu einer der beiden ausgewählten Flächen gehören, werden neue Flächen gebildet."
+    IDS_KOMM13              "Achtung: Mit den selektierten Objekten sind keine Mengenoperationen möglich!"
+    IDS_KOMM14              "2 Linien werden dann vereinigt, wenn der Abstand zweier Endpunkte kleiner oder gleich dem angezeigten Wert ist."
+    IDS_KOMM15              "Die ausgewählten Linien werden an den Stellen geteilt, an denen der Abstand zu einer anderen Linie kleiner oder gleich dem angezeigten Fangbereich ist."
+    IDS_KOMM16              "Toleranz innerhalb derer noch eine Gemeinsamkeit zwischen 2 zu splittenden Linienobjekten angenommen wird."
+    IDS_KOMM17              "Teillinien, deren Länge kleiner oder gleich dem angezeigten Wert ist, werden nicht erzeugt."
+    IDS_KOMM18              "Linienelemente werden möglichst zu geschlossenen Linienzügen vereinigt, die in Flächenobjekte umgewandelt werden."
+    IDS_KOMM19              "Linienelemente, die sich nicht zu Flächen vereinigen lassen, werden möglichst noch zu größeren Linienobjekten vereinigt."
+    IDS_KOMM20              "Linienelemente, deren Endpunkte einen Abstand kleiner oder gleich dem angezeigten Wert haben, werden vereinigt."
+    IDS_KOMM21              "Hier können für die ausgewählte Geometrieoperation noch Optionen vorgegeben werden."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_KOMM22              "Die neu zu bildenden Objekte erhalten die Objekteigenschaften der  Ursprungsobjekte, aus denen sie entstanden sind."
+    IDS_KOMM23              "Alle Urspungsobjekte, die zur Bildung der neuen Objekte beigetragen haben, werden gelöscht."
+    IDS_KOMM24              "Alle Urspungsobjekte, die zur Bildung der neuen Objekte beigetragen haben, erhalten in der Objekteigenschaft 'Kennzeichen/Geometrieoperation' einen Eintrag."
+    IDS_KOMM25              "Die neu gebildeten Objekte werden in einem Objektrecherchefenster angezeigt."
+    IDS_KOMM26              "Alle Urspungsobjekte, die zur Bildung der neuen Objekte beigetragen haben, werden in einem Objektrecherchefenster angezeigt."
+    IDS_KOMM27              "Für das Liniensplitten müssen mindestens 2 Linien ausgewählt werden."
+    IDS_KOMM28              "Für die Flächenbildung müssen mindestens 2 Linien ausgewählt werden."
+    IDS_GEOFEHL1            "Das aktivierte Objekt (Objekt-Nr. %ld) enthält einen Geometriefehler.\r\nDeshalb kann es bei keiner Operation verwendet  werden."
+    IDS_GEOFEHL2            "Das Objekt %ld enthält einen Geometriefehler.\r\nDeshalb kann die ausgewählte Operation nicht\r\nausgeführt werden."
+    IDS_SCHNITT_CAPTION     "Schnitt geometrischer Objekte"
+    IDS_DURCHSCHNITT_CAPTION "Durchschnitt von Flächenobjekten"
+    IDS_VEREINIGUNG_CAPTION "Vereinigung geometrischer Objekte"
+    IDS_EXKLUSIVODER_CAPTION "Exklusiv-Oder von Flächenobjekten"
+    IDS_GEMKONTUR_CAPTION   "Ermittlung der gemeinsamen Kontur"
+    IDS_VERSCHNITT_CAPTION  "Verschnitt geometrischer Objekte"
+    IDS_BEARB_OBJEKT        "Objekt: %ld"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_STATUS_STAND        "Es wurden bereits %ld %% bearbeitet"
+    IDS_DELOBJECTS          "Objekte löschen"
+    IDS_DELETE_STATUS       "Es wurden bereits %ld %% der Objekte gelöscht"
+    IDS_NOMASCHBLD          "Das Zusatzmodul ""MaschBld.ext"" wurde nicht gefunden.\r\nDeshalb kann die Linienvereinigung nicht durchgeführt werden."
+    IDS_TOLERANZ            "Fangbereich"
+    IDS_SHIFTEDLINE         "verschobener Abschnitt des Objektes Nr. %ld"
+    IDS_REGADCAPT           "Schnittoperation"
+    IDS_HELPINFO_REGOPERAT  "Die ausgewählten Objekte werden durch die Bezugsobjekte geschnitten."
+    IDS_SETSCAPT            "Mengenoperationen"
+    IDS_HELPINFO_SETSOPERAT "Die ausgewählten Objekte werden in ihrer Gesamtheit verarbeitet."
+    IDS_SPLITCAPT           "Liniensplitting"
+    IDS_HELPINFO_LINESPLIT  "Die ausgewählten Linienobjekte werden an den Schnittpunkten gesplittet."
+    IDS_AREACAPT            "Flächenbildung"
+    IDS_HELPINFO_AREABUILD  "Die ausgewählten Linien werden werden (wenn möglich) zu Flächenobjekten oder größeren Linienobjekten vereinigt."
+    IDS_OPTIONSCAPT         "Optionen"
+    IDS_HELPINFO_OPTIONS    "Für die Geometrieoperationen sind optionale Eingaben möglich."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MARK_OBJECT         "1"
+    IDS_NOGEOREIN           "Das Zusatzmodul """"GeoRein.ext"""" wurde nicht gefunden.\r\nDeshalb kann nicht getestet werden, ob das betreffende Objekt fehlerfrei ist."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UNIQUEIDENT         "Unique Ident    "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UIFORMAT            "OPER_%ld"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXEXTENSIONPROC    "DEXEXTENSIONPROC"
+    IDS_DEXXEXTENSIONPROC   "DEXXEXTENSIONPROC"
+    IDS_DEXNOTIFICATIONPROC "DEXNOTIFICATIONPROCEX"
+END
+
+#endif    // Deutsch (Deutschland) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "ObjOper.rcv"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

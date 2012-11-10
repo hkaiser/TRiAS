@@ -1,0 +1,27 @@
+This directory contains a collection of test programs and a Perl
+script, runtests.pl, that runs them all in an orderly fashion.
+
+runtests.pl considers a test to have failed if it either:
+(a) sees the string "failed" somewhere in the output of the test program.
+(b) finds a that core file appeared after the test program was run.
+
+The script traps and buffers a test programs output.  In the event of
+failure, it spews all of the program's output to stdout.
+
+Test programs are given names like test_Xnnn, where X is a category
+code and nnn is a test number.  Category codes are capital letters,
+and the category assigned to the test should (more or less) indicate
+which chunk of Goose's functionality is being tested.
+
+Here is how we assign category codes to various Goose-isms:
+
+A = Vectors, Matrices, Permutations
+B = Special Functions
+E = RealSets and Other Containers
+F = General Statistics
+G = Regression
+H = Bootstrapping
+
+BTW, runtests.pl actually reads this file.  You might want to avoid
+changing it in strange ways.
+

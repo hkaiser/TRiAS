@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASCS.TRiASCSPolygonGeometry.1 = s 'TRiASCSPolygonGeometry Class'
+	{
+		CLSID = s '{3327AD98-A2B1-11D1-A051-0060975566B4}'
+	}
+	TRiASCS.TRiASCSPolygonGeometry = s 'TRiASCSPolygonGeometry Class'
+	{
+		CLSID = s '{3327AD98-A2B1-11D1-A051-0060975566B4}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {3327AD98-A2B1-11D1-A051-0060975566B4} = s 'TRiASCSPolygonGeometry Class'
+		{
+			ProgID = s 'TRiASCS.TRiASCSPolygonGeometry.1'
+			VersionIndependendProgID = s 'TRiASCS.TRiASCSPolygonGeometry'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Both'
+			}
+			'TypeLib' = s '{6A0120C3-70C6-11D1-974B-00A024D6F582}'
+			'Version' = s '1.0'
+		}
+	}
+}

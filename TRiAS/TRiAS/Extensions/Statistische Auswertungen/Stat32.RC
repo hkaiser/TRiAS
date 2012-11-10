@@ -1,0 +1,717 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resstrg.h"
+#include "about.h"
+#include "geostat.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Deutsch (Deutschland) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+STATISTICON             ICON    DISCARDABLE     "LUPE.ICO"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+STATISTEXTENSIONMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Obje&ktklassenübersicht"
+    BEGIN
+        MENUITEM "&Gesamtansicht",              IDM_SICHTINFO
+        MENUITEM "&Bildausschnitt ...",         IDM_SICHTPART
+        MENUITEM "Objektklassen&parameter ...", IDM_SICHTPARAM
+    END
+    POPUP "&Statistische Auswertungen"
+    BEGIN
+        MENUITEM "Ma&rkierte Objekte ...",      IDM_DEFORWIND
+        MENUITEM "&Geometrieklassifikation ...", IDM_DEFKLASSIFIZ
+        MENUITEM SEPARATOR
+        MENUITEM "&Minimum/Maximum ",           IDM_DEFMINMAX
+        MENUITEM "&Arithmetisches Mittel",      IDM_DEFMITTELWERT
+        MENUITEM "M&edianwert",                 IDM_DEFMEDIAN
+        MENUITEM SEPARATOR
+        MENUITEM "&Objektcontainer ...",        IDM_DEFOBJCONT
+        MENUITEM SEPARATOR
+        MENUITEM "&Flächenverschnitt ...",      DM_ORWINOBJTOPOL
+        MENUITEM "F&lächentopologie ...",       IDM_ORWINOBJTOPOLOG
+    END
+END
+
+STATISTORMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&Statistische Auswertungen"
+    BEGIN
+        MENUITEM "Ma&rkierte Objekte ...",      IDM_DEFORWIND
+        MENUITEM "&Geometrieklassifikation ...", IDM_DEFKLASSIFIZ
+        MENUITEM SEPARATOR
+        MENUITEM "&Minimum/Maximum",            IDM_DEFMINMAX
+        MENUITEM "&Arithmetisches Mittel",      IDM_DEFMITTELWERT
+        MENUITEM "M&edianwert",                 IDM_DEFMEDIAN
+        MENUITEM SEPARATOR
+        MENUITEM "&Objektcontainer ...",        IDM_DEFOBJCONT
+        MENUITEM SEPARATOR
+        MENUITEM "&Flächenverschnitt ...",      IDM_ORWINOBJTOPOL
+        MENUITEM "F&lächentopologie ...",       IDM_ORWINOBJTOPOLOG
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+SHOWOBJECTCLASSVIEW DIALOG DISCARDABLE  27, 30, 258, 279
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Ansicht: %s"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Schließen",IDOK,195,9,59,14
+    PUSHBUTTON      "&Details",IDB_OCLDETAILS,195,27,59,14
+    PUSHBUTTON      "Alle &Klassen",IDB_OCLALLEKLASSEN,195,47,58,14
+    PUSHBUTTON      "&Anzeigen",IDB_OCLANZEIGEN,188,205,55,14,WS_GROUP
+    LISTBOX         IDLB_OCLOBJCLASSLIST,5,13,168,64,LBS_SORT | 
+                    LBS_EXTENDEDSEL | WS_VSCROLL
+    COMBOBOX        IDCB_OCLMERKMALLIST,11,97,162,79,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL
+    GROUPBOX        " Kumulative Werte ",-1,5,124,167,100
+    CONTROL         "%s Punkte",IDC_OCLPUNKTE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,188,139,60,10
+    CONTROL         "%s Linien",IDC_OCLLINIEN,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,188,152,60,10
+    CONTROL         "%s Flächen",IDC_OCLFLAECHEN,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,188,165,60,10
+    CONTROL         "%s Texte",IDC_OCLTEXTE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,188,178,60,10
+    CONTROL         "%s Sonstige",IDC_OCLSONSTIGE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,188,191,60,10
+    EDITTEXT        IDT_OCLFLINHALT,65,189,47,12,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    EDITTEXT        IDT_OCLLINLAENGE,65,204,47,12,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "Flächeninhalt:",-1,13,191,49,9
+    LTEXT           "Linienlänge:",-1,13,206,49,9
+    LTEXT           "[km²]",IDT_OCLFLMASS,117,191,22,9
+    LTEXT           "[km]",IDT_OCLLINMASS,117,207,22,9
+    LTEXT           "%d &Objektklassen:",IDT_OCLOBJEKTKLASSEN,5,2,84,8
+    LTEXT           "Rechtswert",-1,66,137,41,8
+    LTEXT           "Hochwert",-1,119,137,42,8
+    LTEXT           "&Links oben:",-1,13,150,49,8
+    EDITTEXT        IDK_OCLLORECHTS,65,149,47,12,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    EDITTEXT        IDK_OCLLOHOCH,117,148,47,12,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "&Rechts unten:",-1,13,165,49,8
+    EDITTEXT        IDK_OCLRURECHTS,65,164,47,12,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    EDITTEXT        IDK_OCLRUHOCH,117,164,47,12,ES_AUTOHSCROLL | ES_READONLY
+    CONTROL         "",-1,"Static",SS_BLACKFRAME,14,183,152,1
+    GROUPBOX        " %s Objekte ",IDT_OCLOBJEKTE,178,124,75,100
+    GROUPBOX        "   ",-1,5,85,248,33
+    LTEXT           "",-1,110,83,54,8
+    LTEXT           "",-1,177,83,71,8
+    CONTROL         "Objekt&eigenschaften: ",IDC_OCLOBJEKTEIGENSCH,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,83,85,10
+    CONTROL         "An&zeigen",IDC_OCLMERKMALANZEIGE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,188,99,61,10
+    CONTROL         "&vorhanden",IDC_OCLONLYMERKMAL,"Button",
+                    BS_AUTORADIOBUTTON,115,83,47,10
+    CONTROL         "&nicht vorhanden",IDC_OCLINVERSMERKMAL,"Button",
+                    BS_AUTORADIOBUTTON,181,83,64,10
+    PUSHBUTTON      "&Zwischenablage",IDB_OCLPUTCLIPBOARD,195,66,58,14
+    LTEXT           "Beschreibung :",-1,7,232,54,10
+    EDITTEXT        IDT_OCLBESCHREIBUNG,4,244,251,28,ES_MULTILINE | 
+                    ES_READONLY | WS_VSCROLL
+END
+
+GICLASSIFICATION DIALOG DISCARDABLE  20, 48, 307, 185
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Bilden von Objektklassen nach Geometriekriterien"
+FONT 8, "MS Sans Serif"
+BEGIN
+    COMBOBOX        IDC_LISTOBJCLASS,6,22,138,63,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_LISTMATHOPONE,22,122,55,66,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_LISTMASSEINH,151,22,40,63,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDT_VERGLWERTMAX,229,122,49,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Anzeigen",IDOK,246,7,53,14
+    PUSHBUTTON      "A&bbrechen",IDCANCEL,246,29,53,14
+    LTEXT           "Objektklassenauswahl :",-1,13,10,77,8
+    LTEXT           "Maximalwert",-1,230,110,44,8
+    LTEXT           "Maßeinheit",-1,152,11,46,8
+    EDITTEXT        IDT_VERGLWERTMIN,82,122,50,12,ES_AUTOHSCROLL
+    GROUPBOX        " Vergleichsoperationen ",-1,5,46,295,95
+    EDITTEXT        IDT_OBJEKTKLASSE,22,94,147,12,ES_READONLY
+    LTEXT           "Minimalwert",-1,84,111,41,8
+    COMBOBOX        IDC_LISTMATHOPTWO,167,122,57,66,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        " Beschreibung ",-1,5,144,294,40
+    LTEXT           "Elemente der Objektklasse",-1,24,82,109,8
+    EDITTEXT        IDT_INTERVALLWERT,232,60,45,12,ES_AUTOHSCROLL
+    LTEXT           "Schrittweite :",IDT_INTERVALLTEXT,179,62,45,8,NOT 
+                    WS_GROUP
+    CONTROL         "Klassifikation",IDC_BUTTONINTERVALL,"Button",
+                    BS_AUTORADIOBUTTON,109,61,65,10
+    CONTROL         "Einzelkriterium",IDC_BUTTONEINZEL,"Button",
+                    BS_AUTORADIOBUTTON,24,61,70,10
+    LTEXT           "",IDT_HILFETEXT,10,157,284,22,NOT WS_GROUP | WS_TABSTOP
+    CTEXT           "",IDT_NUMBERELEMENTS,204,25,30,7,NOT WS_GROUP
+    LTEXT           "Elemente",IDT_TEXTELEMENTS,204,11,30,7
+    LTEXT           "sind",-1,179,97,30,10
+    LTEXT           "und",-1,141,124,20,7
+END
+
+SHOWIDENTIFIKATOR DIALOG DISCARDABLE  60, 60, 190, 56
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION " %ld Objektklassen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Abbrechen",IDCANCEL,71,39,50,14,NOT WS_TABSTOP
+    CONTROL         "%3d%%",IDG_SHOWSTATUSGAUGE,"GaugeBox32",0x0,9,19,171,14
+    LTEXT           "Anteil der bereits recherchierten Informationen :",-1,
+                    10,6,162,9
+END
+
+SHOWOBJECTCLASS DIALOG DISCARDABLE  60, 60, 247, 234
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Parameterübersicht"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "&Schließen",IDCANCEL,185,4,58,14
+    LISTBOX         IDLB_OCLPCLASSLIST,3,17,142,81,LBS_SORT | 
+                    LBS_EXTENDEDSEL | WS_VSCROLL
+    LTEXT           "Objektklassen :",-1,5,5,52,9
+    GROUPBOX        " Objekte",IDT_OCLPOBJECTCOUNT,150,23,94,110
+    LTEXT           " Minimum     /  Maximum",-1,154,59,85,9
+    CTEXT           "",IDT_OCLPMINIMUM,153,70,39,8
+    CTEXT           "",IDT_OCLPMAXIMUM,198,69,43,8
+    LTEXT           " Medianwert /  Mittelwert",-1,154,86,85,8
+    CTEXT           "",IDT_OCLPMEDIANWERT,155,98,35,8
+    CTEXT           "",IDT_OCLPMITTELWERT,198,98,43,8
+    LTEXT           "",IDT_OCLPCLASSCOUNT,65,5,30,8
+    CTEXT           "",IDT_OCLPCUMULCLASS,153,45,39,8
+    CTEXT           "",IDT_OCLPPROZANTEIL,200,45,38,8
+    LTEXT           " Summe      /  Anteil in '%'",-1,156,34,83,8
+    COMBOBOX        IDCB_OCLPBEZUGSKLASSE,2,110,143,52,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Bezugsobjektklasse",IDC_OCLPBEZUGEINAUS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,4,94,84,12
+    GROUPBOX        "  Objekte",IDT_OCLPALLOBJECTSCOUNT,2,135,243,45
+    LTEXT           "  Minimum  /  Maximum",-1,59,148,83,9
+    CTEXT           "",IDT_OCLPBEZMINIMUM,55,163,36,8
+    CTEXT           "",IDT_OCLPBEZMAXIMUM,98,163,36,8
+    LTEXT           " Medianwert / Mittelwert",-1,154,149,81,9
+    CTEXT           "",IDT_OCLPBEZMEDIANWERT,153,163,35,8
+    CTEXT           "",IDT_OCLPBEZMITTELWERT,200,163,40,8
+    LTEXT           "Summe",-1,13,148,30,8
+    CTEXT           "",IDT_OCLPCLASSSUMME,8,163,37,8
+    EDITTEXT        IDT_OCLPBESCHREIBUNG,3,196,241,35,ES_MULTILINE | 
+                    ES_READONLY | WS_VSCROLL
+    LTEXT           "Beschreibung :",-1,4,184,62,8
+    PUSHBUTTON      "Zwischenablage",IDB_OCLPCLIPBOARD,170,114,57,14
+END
+
+CLIPBOARDVIEW DIALOG DISCARDABLE  60, 60, 199, 171
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Ausgabe von statistischen Auswertungen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Ausgeben",IDOK,143,6,50,14
+    PUSHBUTTON      "A&bbrechen",IDCANCEL,143,23,50,14
+    LISTBOX         IDLB_CLIPPARMLISTE,5,16,122,63,LBS_SORT | 
+                    LBS_EXTENDEDSEL | WS_VSCROLL
+    LTEXT           "Ausgabe statistischer Größen :",IDC_STATIC,5,3,114,9
+    PUSHBUTTON      "&Reihenfolge ...",IDB_CLIPREIHENFOLGE,141,60,51,15
+    GROUPBOX        " Beschreibung ",IDC_STATIC,4,128,189,40
+    LTEXT           "",IDS_CLIPBESCHREIBUNG,9,140,167,22
+    GROUPBOX        " Generierte Informationen ",IDC_STATIC,5,80,187,44
+    CONTROL         "Objektklasseneigenschaften",IDC_CLIPOKLEIGENSCH,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,11,107,103,10
+    CONTROL         "Überschrift",IDC_CLIPUEBERSCHRIFT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,11,94,64,10
+    CONTROL         "Anzahl der Einträge",IDC_CLIPCOUNTEINTRAG,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,116,107,73,10
+    CONTROL         "Kumulierter Index",IDC_CLIPKUMULATIV,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,116,94,69,10
+END
+
+PARAMETERSORT DIALOG DISCARDABLE  70, 70, 183, 101
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION " Statistische Größen sortieren"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&OK",IDOK,123,6,54,14
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,123,23,54,14
+    LISTBOX         IDLB_CLIPSORTPARMCLASS,5,18,112,76,WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Statistische Größen :",-1,8,4,82,10
+    GROUPBOX        " Verschieben ",-1,124,42,54,33
+    PUSHBUTTON      " + ",IDB_CLIPSORTPLUS,153,53,15,14
+    PUSHBUTTON      " - ",IDB_CLIPSORTMINUS,133,53,14,14
+    PUSHBUTTON      "&Hilfe",IDB_CLIPSORTHILFE,123,80,54,14
+END
+
+SHOWDATABASEOBJECT DIALOG DISCARDABLE  100, 100, 161, 50
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Objekt der Datenbasis"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,104,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,104,24,50,14
+    EDITTEXT        IDS_DBOBJECTANZEIGE,15,15,61,14,ES_AUTOHSCROLL
+    LTEXT           "Objektnummer :",-1,18,3,53,8
+END
+
+IDD_STATISTIK_PAGE DIALOG DISCARDABLE  0, 0, 250, 111
+STYLE WS_CHILD | WS_BORDER
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Anzahl der Objekte:",IDC_STATIC,27,21,85,8
+    LTEXT           "Static",IDC_OBJECTCOUNT,118,20,105,11,SS_SUNKEN
+    LTEXT           "Anzahl der Objektklassen:",IDC_STATIC,27,35,85,8
+    LTEXT           "Anzahl der Ansichten:",IDC_STATIC,27,49,85,8
+    LTEXT           "Static",IDC_VIEWCOUNT,118,48,105,11,SS_SUNKEN
+    LTEXT           "Feld 4:",IDC_STATIC,27,63,85,8,NOT WS_VISIBLE
+    LTEXT           "Static",4,118,62,105,11,SS_SUNKEN | NOT WS_VISIBLE
+    LTEXT           "Feld 5:",IDC_STATIC,27,77,85,8,NOT WS_VISIBLE
+    LTEXT           "Static",5,118,76,105,11,SS_SUNKEN | NOT WS_VISIBLE
+    LTEXT           "Static",IDC_CLASSCOUNT,118,34,105,11,SS_SUNKEN
+    LTEXT           "Feld 6:",IDC_STATIC,27,91,85,8,NOT WS_VISIBLE
+    LTEXT           "Static",8,118,90,105,11,SS_SUNKEN | NOT WS_VISIBLE
+    LTEXT           "Static",IDC_PROJECTNAME,27,7,196,11,SS_SUNKEN
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""resstrg.h""\r\n"
+    "#include ""about.h""\r\n"
+    "#include ""geostat.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""stat32.rcv""\r\n"
+    "#include ""about.src""\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    SHOWDATABASEOBJECT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 154
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 43
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_STATPROPPAGE_REG    REGISTRY DISCARDABLE    "Res\\StatistikPageExt.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// SCRIPT
+//
+
+IDR_SCRIPTTOPO          SCRIPT  DISCARDABLE     "MACRO\\Topolog.ebc"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_OBJPROPAREARADIUS   "Flächenradius"
+    IDT_DEXNOTEXT           "Keine Textinformation."
+    IDS_OBJPROPROBJEKT      "BegleitObjekt"
+    IDH_HELPROBJEKT         "Liefert die Objektnummer des abhängigen Textobjektes eines Geometrieobjektes"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Statistische Auswertungen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_KEINEANSICHT        " <kein Ansichtsname>"
+    IDS_SICHTAUSSCHNITT     " <Ausschnitt>"
+    IDH_LINIENINTERVALL     "Linienobjekte im Intervall  ' %s  %s '."
+    IDH_FLAECHENINTERVALL   "Flächenobjekte im Intervall  ' %s  %s '."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDT_UNITKM              "[km]"
+    IDT_UNITM               "[m]"
+    IDT_UNITQM              "[m²]"
+    IDT_UNITHA              "[ha]"
+    IDT_UNITQKM             "[km²]"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDT_OCLOBJEKTE          " %s Objekte "
+    IDT_OCLOBJEKT           " %s Objekt "
+    IDC_OCLPUNKTE           "%s Punkte"
+    IDC_OCLPUNKT            "%s Punkt"
+    IDC_OCLLINIEN           "%s Linien"
+    IDC_OCLLINIE            "%s Linie"
+    IDC_OCLFLAECHEN         "%s Flächen"
+    IDC_OCLFLAECHE          "%s Fläche"
+    IDC_OCLTEXTE            "%s Texte"
+    IDC_OCLTEXT             "%s Text"
+    IDC_OCLSONSTIGE         "%s Sonstige"
+    IDC_OCLSONSTIG          "Sonstige"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDT_KEINE               "Keine"
+    IDT_NOOBJEKTE           " Objekte "
+    IDT_KEINIDLANGTEXT      "Für diese Objektklasse ist kein Langtext definiert"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LINIEN              "Linien"
+    IDS_FLAECHEN            "Flächen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_KLEINER             "kleiner"
+    IDS_KLEINERGLEICH       "kleinergleich"
+    IDS_GLEICH              "gleich"
+    IDS_UNGLEICH            "ungleich"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_GROESSER            "größer"
+    IDS_GROESSERGLEICH      "größergleich"
+    IDT_KEININTERVALLWERT   "Für die Intervallbildung ist kein Wert definiert."
+    IDT_HEADAENDATUM        "AENDERUNGSDATUM "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CLIPOBJCLASSKEY     "Objektklasse[Schlüssel]"
+    IDS_CLIPOBJCLASSSHORT   "Objektklasse[Kurztext]"
+    IDS_CLIPOBJCLASSLONG    "Objektklasse[Langtext]"
+    IDS_CLIPFLAECHENGROESSE "Flächengröße"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CLIPLINIENLAENGE    "Linienlänge"
+    IDS_CLIPMEDIANWERT      "Medianwert"
+    IDS_CLIPARITHMITTEL     "Arithmetisches Mittel"
+    IDS_CLIPCOUNTER         "Objektzähler"
+    IDS_CLIPMINIMUM         "Minimum"
+    IDS_CLIPMAXIMUM         "Maximum"
+    IDH_CLIPOBJCLASSKEY     "Liefert den Objektklassenschlüssel als Zeichenkette."
+    IDH_CLIPOBJCLASSSHORT   "Liefert die Kurzbeschreibung für die Objektklasse."
+    IDH_CLIPOBJCLASSLONG    "Liefert die ausführliche Beschreibung für die Objektklasse."
+    IDH_CLIPFLAECHENGROESSE "Liefert für die Flächenobjekte der Objektklasse die kumulativ ermittelte Flächengröße."
+    IDH_CLIPLINIENLAENGE    "Liefert für die Linienobjekte der Objektklasse die kumulativ ermittelte Linienlänge."
+    IDH_CLIPMEDIANWERT      "Liefert für Flächenobjekte bzw. Linienobjekte der Objektklasse den Medianwert."
+    IDH_CLIPARITHMITTEL     "Liefert für Flächenobjekte bzw. Linienobjekte der Objektklasse das arithmetische Mittel."
+    IDH_CLIPCOUNTER         "Liefert die Zahl der Punkt-, Linien-, Flächen- bzw. Textobjekte der Objektklasse."
+    IDH_CLIPMINIMUM         "Liefert für Flächenobjekte bzw. Linienobjekte der Objektklasse das Minimum."
+    IDH_CLIPMAXIMUM         "Liefert für Flächenobjekte bzw. Linienobjekte der Objektklasse das Maximum."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CLIPPUNKT           "Punkte"
+    IDS_CLIPLINIE           "Linien"
+    IDS_CLIPFLAECHE         "Flächen"
+    IDS_CLIPTEXT            "Texte"
+    IDS_CLIPPROZENT         "Prozentualer Anteil"
+    IDH_CLIPPROZENT         "Liefert den prozentualer Anteil zu einer Bezugsklasse."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_STATPAGE_DESC       "Projektstatistik Property Page "
+    IDS_STATPAGECAPTION     "Statistik"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_GICLASSIFICATION    "Geometrieklassifikation"
+    IDS_GICLASSNOOBJECTS    "Keine Objekte gefunden"
+    IDS_GICLASSNORECH       "Recherchekriterium fehlerhaft"
+    IDS_GICLASSSTOPWORK     "Sie haben die Verarbeitung abgebrochen !"
+    IDS_GICLASSCOUNTINTERVALL 
+                            "Achtung - es werden %ld Intervalle gebildet ( zeitintensiv ) !!!\n Verarbeitung fortsetzen ?"
+    IDS_GICLASSCREATEINTERVALL "Zusammenstellen der Intervalle"
+    IDS_GICLASSOBJEKT       " Objekt "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_OCLASSRECHERCHE     "Objektklassenrecherche"
+    IDS_OCLCOUNTOBJECTS     "Achtung - es werden %ld Objekte analysiert ( zeitintensiv ) !!!\n Soll die Berechnung der Flächengröße/Linienlänge durchgeführt werden ?"
+    IDS_OCLSTOPWORK         "Sie haben abgebrochen - damit ist die nachfolgende Statistik unvollständig !"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDT_HEADKOEFF11         "Koeff11         "
+    IDT_HEADKOEFF12         "Koeff12         "
+    IDT_HEADKOEFF21         "Koeff21         "
+    IDT_HEADKOEFF22         "Koeff22         "
+    IDT_HEADOFFSETX         "OffsetX         "
+    IDT_HEADOFFSETY         "OffsetY         "
+    IDS_CREATEDBOBJECTS     "Erfassen der Datenbankobjekte"
+    IDS_CREATEOBJCLASS      "Zusammenstellen der Objektklassen"
+    IDS_ARITHMITTEL         "Arithmetisches Mittel der selektierten Elemente"
+    IDS_MEDIANWERT          "Medianwert der selektierten Elemente"
+    IDS_STARTRECHERCHE      " - Vorbereitung der Recherche -"
+    IDS_OBJEKTRECHERCHE     " Objektrecherche - ( %5ld Objekte )"
+    IDS_GAUGEBOX            "%%3d%%%% - %s"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NODEFOBJCLASS       "Fehlende Objektklassendefinition."
+    IDS_NODEFMERKMAL        "Fehlende Merkmalcodedefinition."
+    IDS_FLAECHENTEXT        "Der mittlere Flächeninhalt der selektierten Flächen beträgt\n\t"
+    IDS_LINIENTEXT          "\nDie mittlere Linienlänge der selektierten Linienelemente beträgt\n\t"
+    IDS_DBUEBERSICHT        "Datenbankübersicht"
+    IDS_ORWINDOWTEXT        "Objektstatistik"
+    IDS_FLAECHENKLASSE      "Flächenklasse - "
+    IDS_LINIENKLASSE        "Linienklasse - "
+    IDS_MINIMUMMAXIMUM      "Minimum/Maximum"
+    IDS_TIMERCAPTION        "  %5ld Datenbankobjekte "
+    IDS_OBJCLASSCAPTION     "  %ld Objektklassen "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DBDATABASESIGHT     "Sichten : %ld"
+    IDS_DBDATABASEOBJCLASS  "Objektklassen : %ld"
+    IDS_DBDATABASEMCODE     "Merkmalscode : %ld"
+    IDS_DBDATABASETPROJECT  "Teilprojekte : %ld"
+    IDS_DBDATABASEDBASE     "dBase-Zuordnungen : %ld"
+    IDS_DBDATABASEPROJECTS  "PROJECTS"
+    IDS_DBDATABASEPROFEXT   "INI"
+    IDS_DBDATABASEDBDAT     "DBASE"
+    IDS_DBDATABASEPERM      "Vorgangs-Daten : %ld"
+    IDS_DBDATABASEPERMHCODE "PermDBBaseObject"
+    IDS_DBDATABASEPERMMCODE "900000013"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDT_KEINMKLANGTEXT      "Für dieses Merkmal ist kein Langtext definiert."
+    IDH_HELPOBJEIGENSCH     "In die Recherche wird die ausgewählte Objekteigenschaft einbezogen."
+    IDH_HELPMKANZEIGE       "Im Objektrecherchefenster sollen anstelle der Objektklassenkurztexte die Objekteigenschaften angezeigt werden."
+    IDH_HELPOBJTYP          "Dieser Objekttyp soll im Objektrecherchefenster angezeigt werden."
+    IDH_HELPNOOBJTYP        "Dieser Objekttyp soll im Objektrecherchefenster nicht angezeigt werden."
+    IDH_HELPALLEKLASSEN     "Alle Objektklassen werden recherchiert."
+    IDH_HELPOKLSUMM         "Analysiert alle selektierten Objektklassen."
+    IDH_HELPTEMPOKL         "Objektklasse ist temporär."
+    IDH_HELPCLIPBOARD       "Ausgabe der selektierten Objektklasse[n] in die Zwischenablage."
+    IDS_DEXEXTENSIONPROC    "_DexExtensionProc@8"
+    IDS_DEXXEXTENSIONPROC   "_DexxExtensionProc@8"
+    IDS_DEXNOTIFICATIONPROC "_DexNotificationProcEx@12"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDH_HELPNOOBJEIGENSCH   "Alle Elemente der selektierten Objektklasse[n] werden recherchiert."
+    IDH_HELPMKEXISTIERT     "Recherchiert alle Elemente der selektierten Objektklasse[n], die die ausgewälte Objekteigenschaft besitzen."
+    IDH_HELPNOMKEXISTIERT   "Recherchiert alle Elemente der selektierten Objektklasse[n] , die die ausgewählte Objekteigenschaft nicht besitzen."
+    IDH_HELPNOMKANZEIGE     "Im Objektrecherchefenster sollen die Objektklassenkurztexte angezeigt werden."
+    IDH_HELPBEZLINIENOKL    "Anstelle einer Bezugsobjektklasse werden alle in der Objektklassenliste vorkommenden Linienobjektklassen analysiert."
+    IDH_HELPBEZFLAECHENOKL  "Anstelle einer Bezugsobjektklasse werden alle in der Objektklassenliste vorkommenden Flächenobjektklassen analysiert."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDH_HELPMASSEINHEIT     "Wechseln der Maßeinheit."
+    IDH_HELPEINZELKRITERIUM "Einzelabfrage  : ' %s '."
+    IDH_HELPINTERVALLANGABE "Bilden von Intervallen [0.0 <= Objekt < 0.0 + Schrittweite] bis Erreichen des Maximalwertes."
+    IDH_HELPWIDERSPRUCH     "Widerspruch in der Abfrage."
+    IDH_HELPOKLBESCHREIBUNG "Analysiert die Objektklasse  ' %s '."
+    IDH_HELPBEZOKLBESCHREIBUNG "Analysiert die Bezugsobjektklasse  ' %s '."
+    IDH_HELPMKBESCHREIBUNG  "Analysiert alle Elemente der Objektklasse[n], die das Merkmal ' %s ' besitzen."
+    IDH_HELPNOBESCHREIBUNG  "Keine Objektklasse wurde selektiert."
+    IDE_ERRNOOKL            "Fehlende Objektklassendefinition."
+    IDE_ERRNOMK             "Fehlende Merkmalcodedefinition."
+    IDE_ERRNOPBD            "Fehlende Beschreibungsdatenbasis."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDT_HEADKOORDTYP        "KOORD.TYP       "
+    IDT_HEADUNIQUEIDENT     "Unique Ident    "
+    IDT_HEADTPMCODE         "TPMcodeIdent    "
+    IDT_HEADTEXTMCODE       "TextObjMCode    "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDH_HELPAREA            "Berechnet den Flächeninhalt eines Flächenobjektes/Komplexobjektes."
+    IDS_OBJPROPAREA         "Flächeninhalt"
+    IDH_HELPPOINT           "Berechnet den Flächenschwerpunkt eines Flächenobjektes."
+    IDS_OBJPROPPOINT        "Flächenschwerpunkt"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDH_HELPBIGRANGE        "Berechnet die gesamte Flächenumrandung ( einschließlich Insel) eines Flächenobjektes/Komplexobjektes."
+    IDS_OBJPROPBIGRANGE     "Flächenumrandung"
+    IDH_HELPRANGE           "Berechnet den Flächenumfang eines Flächenobjektes/Komplexobjektes."
+    IDS_OBJPROPRANGE        "Flächenumfang"
+    IDH_HELPDIFF            "Differenz der Flächeninhalte des größten Flächenobjektes und der Summe der restlichen Flächenobjekte eines Komplexobjektes."
+    IDS_OBJPROPDIFF         "Flächendifferenz"
+    IDH_HELPLINE            "Berechnet die Länge eines Linienobjektes/Komplexobjektes."
+    IDS_OBJPROPLINE         "Linienlänge"
+    IDH_HELPRPOINTX         "Liefert Rechtswert bzw. Länge des Referenzpunktes eines Geometrieobjektes."
+    IDS_OBJPROPRPOINTX      "ReferenzpunktX"
+    IDH_HELPRPOINTY         "Liefert Hochwert bzw. Breite des Referenzpunktes eines Geometrieobjektes."
+    IDS_OBJPROPRPOINTY      "ReferenzpunktY"
+    IDH_HELPRTEXT           "Liefert den Text des zugeordneten Begleitobjektes eines Datenbankobjektes."
+    IDS_OBJPROPRTEXT        "Begleittext"
+    IDH_HELPAREARADIUS      "Berechnet den Radius eines Flächenobjektes/Komplexobjektes."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_OBJPROPCLASSNAME    "Statistik"
+    IDS_BASICUROBJEKT       "Ursprungsobjekt"
+    IDS_CATCHTOPTEST        "Topologietest"
+    IDS_CATCHKLASSEN        "Zuordnen Objekt %ld zu Objektklasse"
+    IDS_CATCHCAPTION        "Statistik-Ausnahmebedingung"
+    IDS_CATCHDATEN          "Statistik-Datenrecherche bei Objekt %ld"
+    IDS_CATCHLINIE          "Bestimmen Linienlänge von Objekt %ld"
+    IDS_CATCHFLAECHE        "Bestimmen Flächengröße bei Objekt %ld"
+    IDS_CATCHPOLYLEN        "GetPolyLen bei Objekt %ld"
+    IDS_OBJPROPRSPOINTX     "FlächenschwerpunktX"
+    IDH_HELPRSPOINTX        "Liefert Rechtswert bzw. Länge des Schwerpunkts eines Flächenobjekts"
+    IDS_OBJPROPRSPOINTY     "FlächenschwerpunktY"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDH_HELPRSPOINTY        "Liefert Hochwert bzw. Breite des Schwerpunkt eines Flächenobjekts"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_STAT_SICHTINFO       "Liefert statistische Gesamtübersicht der Objektklassen einer Ansicht.\nGesamtansicht"
+    ID_STAT_SICHTPART       "Liefert statistische Angaben zu Objekten eines Ansichtausschnittes.\nAnsichtausschnitt"
+    ID_STAT_SICHTORWIND     "Liefert statistische Angaben von in Objektrecherchefenstern selektierten Objekten.\nSelektierte Objekte"
+    ID_STAT_SICHTPARAM      "Liefert statistische Parameter ausgewählter Objektklassen einer Ansicht.\nObjektklassenparameter "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_STAT_ORWIND          "Liefert statistische Angaben von selektierten Objekten eines Objektrecherchefensters.\nSelektierte Objekte"
+    ID_STAT_KLASSIFIZ       "Klassifziert selektierte Flächen- bzw. Linienobjekte eines Objektrecherchefensters nach Objektklasse, Geometrietyp, Geometrieparameter.\nGeometrieklassifikation"
+    ID_STAT_MINMAX          "Liefert je Geometrietyp Minimum- bzw. Maximumobjekt aller selektierten Flächen- bzw. Linienobjekte eines Objektrecherchefensters.\nMinimum/Maximum"
+    ID_STAT_MITTELWERT      "Liefert je Geometrietyp den arithmetischen Mittelwert aller selektierten Flächen- bzw. Linienobjekten eines Objektrecherchefensters"
+    ID_STAT_MEDIAN          "Liefert je Geometrietyp den Medianwert aller selektierten Flächen- bzw. Linienobjekte eines Objektrecherchefensters.\nMedianwert"
+    ID_STAT_OBJCONT         "Liefert statistische Angaben zu allen in einem Objektcontainer liegenden Objekten.\nObjektcontainer"
+    ID_STAT_TOPOL           "Liefert statistische Angaben zu allen in einem ausgewähltem Flächenobjekt liegenden Objekten.\nEinfache Flächenanalyse"
+    ID_STAT_TOPOLOG         "Liefert statistische Angaben zu allen in einem ausgewähltem Flächenobjekt liegenden ( verschnittenen) Objekten.\nErweiterte Flächenanalyse"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_OBJEKTCONTAINER     "Objekt %ld : Objektcontainer"
+    IDS_OBJEKTTOPOLOGIE     "Topologie zum Objekt %ld"
+END
+
+#endif    // Deutsch (Deutschland) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "stat32.rcv"
+#include "about.src"
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

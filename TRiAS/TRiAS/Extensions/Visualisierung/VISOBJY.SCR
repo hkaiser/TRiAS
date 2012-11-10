@@ -1,0 +1,17 @@
+/#line/		d
+/yylval/ 	s/yylval/(*pyylval)/g
+/yyval/  	s/yyval/(*pyyval)/g
+
+/ = yypv\[1\];/	d
+/		goto yystack;  \/\* stack new state and value \*\// {
+i\
+\		(*pyy1val) = yy1pv[1];
+}
+
+		s/int yyparse(void)/short CVisObjExtension :: ParseVisString (long lGlobONr, VisInfo *\& pGlobVI, short fFlags, char **cbModuleInfo)/
+		s/return(0)/return(DrawResult)/
+		s/return(1)/return(DO_UnChanged)/
+		s/yy/yy1/g
+
+
+

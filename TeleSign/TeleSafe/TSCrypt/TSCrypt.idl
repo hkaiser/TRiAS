@@ -1,0 +1,88 @@
+// TSCrypt.idl : IDL-Quellcode für TSCrypt.dll
+//
+
+// Diese Datei wird mit dem MIDL-Tool bearbeitet,
+// um den Quellcode für die Typbibliothek (TSCrypt.tlb)und die Abruffunktionen zu erzeugen.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+	[
+		object,
+		uuid(2B07B6E0-D5A6-11D2-BA4C-000000000000),
+		dual,
+		helpstring("ITSCryptSvr Interface"),
+		pointer_default(unique)
+	]
+	interface ITSCryptSvr : IDispatch
+	{
+//		[id(1), helpstring("Methode GetPassword")] HRESULT GetPassword([in] long hWnd, [out,retval] long* pResult);
+//		[id(2), helpstring("Methode SignFile")] HRESULT SignFile([in] long hWnd, [in] BSTR strFileName, [out] BSTR* strSigFileName, [out,retval] long* pResult);
+//		[id(3), helpstring("Methode Logon")] HRESULT Logon([in] long hWnd, [out,retval] long* pResult);
+//		[id(4), helpstring("Methode Logoff")] HRESULT Logoff([in] long hWnd, [out,retval]long* pResult);
+//		[propget, id(5), helpstring("Eigenschaft AlgID_Sign")] HRESULT AlgID_Sign([out, retval] long *pVal);
+//		[propput, id(5), helpstring("Eigenschaft AlgID_Sign")] HRESULT AlgID_Sign([in] long newVal);
+//		[id(6), helpstring("Methode VerifyFile")] HRESULT VerifyFile([in] long hWnd, [in] BSTR strFilName, [in] BSTR strSigFileName, [out,retval] long *pResult);
+//		[id(7), helpstring("Methode SetPassword")] HRESULT SetPassword([in] BSTR strPassowrd, [out,retval] long * pResult);
+//		[id(8), helpstring("Methode EncryptFile")] HRESULT EncryptFile([in] long hWnd, [in] BSTR strFileName, [out] BSTR* strCryptedFileName, [out,retval] long* pResult);
+//		[id(9), helpstring("Methode Initialize_CS")] HRESULT Initialize_CS([out,retval]long* pResult);
+		[id(10), helpstring("Methode SetDatabase")] HRESULT SetDatabase([in]BSTR strPathName, [out,retval]long* pResult);
+		[id(11), helpstring("Methode SetPassword")] HRESULT SetPassword([in]BSTR strPassword, [out,retval]long* pResult);
+		[id(12), helpstring("Methode Open")] HRESULT Open([out,retval]long* pResult);
+		[id(13), helpstring("Methode Close")] HRESULT Close([out,retval]long* pResult);
+		[id(14), helpstring("Methode GetSCardLabel_CS")] HRESULT GetSCardLabel_CS([out]BSTR* strLabel, [out,retval]long* pResult);
+		[id(15), helpstring("Methode GetSCardOwnerCommonName_CS")] HRESULT GetSCardOwnerCommonName_CS([out]BSTR* strOwnerCommonName, [out,retval]long* pResult);
+		[id(16), helpstring("Methode GetSCardIssuerCommonName_CS")] HRESULT GetSCardIssuerCommonName_CS([out]BSTR* strIssuerCommonName, [out,retval]long* pResult);
+		[id(17), helpstring("Methode ImportCertificates")] HRESULT ImportCertificates([in]BSTR strFileName, [out,retval]long* pResult);
+		[id(18), helpstring("Methode LoadContent")] HRESULT LoadContent([in]BSTR strFileName, [out,retval]long* pResult);
+		[id(19), helpstring("Methode Sign_CS")] HRESULT Sign_CS([out,retval]long* pResult);
+		[id(20), helpstring("Methode GetSignature")] HRESULT GetSignature([out] VARIANT* pvSignature, [out,retval] long* pResult);
+		[id(21), helpstring("Methode SetSignature")] HRESULT SetSignature([in] VARIANT* pvSignature, [out,retval] long* pResult);
+		[id(22), helpstring("Methode GetContent")] HRESULT GetContent([out]VARIANT* pvContent, [out,retval]long* pResult);
+		[id(23), helpstring("Methode GetDocument")] HRESULT GetDocument([out]VARIANT* pvDocument, [out,retval]long* pResult);
+		[id(24), helpstring("Methode LoadDocument")] HRESULT LoadDocument([in]BSTR strFileName, [out,retval]long* pResult);
+		[id(25), helpstring("Methode GetFirstCertificate")] HRESULT GetFirstCertificate([out]long* phCertificate, [out,retval]long* pResult);
+		[id(26), helpstring("Methode GetNextCertificate")] HRESULT GetNextCertificate([out]long* phCertificate, [out,retval]long* pResult);
+		[id(27), helpstring("Methode GetOwnerCommonName")] HRESULT GetOwnerCommonName([in]long hCertificate, [out]BSTR* strOwnerCommonName, [out,retval]long* pResult);
+		[id(28), helpstring("Methode GetErrorDescription")] HRESULT GetErrorDescription([in]long lErrorCode, [out]BSTR* strErrorDescription, [out,retval]long* pResult);
+		[id(29), helpstring("Methode GetIssuerCommonName")] HRESULT GetIssuerCommonName([in]long hCertificate, [out]BSTR* strIssuerCommonName, [out,retval]long* pResult);
+		[id(30), helpstring("Methode ExportCertificate")] HRESULT ExportCertificate([in]BSTR strFileName, [in]long pCertificate, [out,retval]long* pResult);
+		[id(31), helpstring("Methode GetLabel")] HRESULT GetLabel([in]long pCertificate, [out]BSTR* strLabel, [out,retval]long* pResult);
+		[id(32), helpstring("Methode SetLabel")] HRESULT SetLabel([in]long pCertificate, [in]BSTR strLabel, [out,retval]long* pResult);
+		[id(33), helpstring("Methode GetNotAfter")] HRESULT GetNotAfter([in]long pCertificate, [out]BSTR* strNotAfter, [out,retval]long* pResult);
+		[id(34), helpstring("Methode GetNotBefore")] HRESULT GetNotBefore([in]long pCertificate, [out]BSTR* strNotBefore, [out,retval]long* pResult);
+		[id(35), helpstring("Methode IsOwnCertificate")] HRESULT IsOwnCertificate([in]long hCerificate, [out,retval]long* pResult);
+		[id(36), helpstring("Methode SaveDocument")] HRESULT SaveDocument([in]BSTR strFileName, [out,retval]long* pResult);
+		[id(37), helpstring("Methode SaveContent")] HRESULT SaveContent([in]BSTR strFileName, [out,retval]long* pResult);
+		[id(38), helpstring("Methode SetEncryptionType")] HRESULT SetEncryptionType([in]long lType, [out,retval]long* pResult);
+		[id(39), helpstring("Methode AddUser")] HRESULT AddUser([in]long pCertificate, [out,retval]long* pResult);
+		[id(40), helpstring("Methode GetUserCount")] HRESULT GetUserCount([out]long* lUserCount, [out,retval]long* pResult);
+		[id(41), helpstring("Methode GetSignerCount")] HRESULT GetSignerCount([out]long* lSignerCount, [out,retval]long* pResult);
+		[id(42), helpstring("Methode GetUser")] HRESULT GetUser([in]long index, [out]long* hUser, [out,retval]long* pResult);
+		[id(43), helpstring("Methode GetUserCertificate")] HRESULT GetUserCertificate([in]long hUser, [out]long* hCertificate, [out,retval]long* pResult);
+		[id(44), helpstring("Methode ValidateSignature")] HRESULT ValidateSignature([in]long hUser, [out,retval]long* pResult);
+		[id(45), helpstring("Methode SaveSignerInfo")] HRESULT SaveSignerInfo([in]long hUser, [in]BSTR strFileName, [out,retval]long* pResult);
+		[id(46), helpstring("Methode LoadSignerInfo")] HRESULT LoadSignerInfo([in]long hUser, [in]BSTR strFileName, [out,retval]long* pResult);
+		[id(47), helpstring("Methode AddUserBySignerInfoFile")] HRESULT AddUserBySignerInfoFile([in]BSTR strFileName, [out,retval]long* pResult);
+		[id(48), helpstring("Methode GetOwnerEmailAddress")] HRESULT GetOwnerEmailAddress([in]long hCertificate, [out]BSTR* strOwnerEmailAddress, [out,retval]long* pResult);
+	}; 
+	
+[
+	uuid(2B07B6D1-D5A6-11D2-BA4C-000000000000),
+	version(1.0),
+	helpstring("TSCrypt 1.0 Typbibliothek")
+]
+library TSCRYPTLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(2B07B6E1-D5A6-11D2-BA4C-000000000000),
+		helpstring("TSCryptSvr Class")
+	]
+	coclass TSCryptSvr
+	{
+		[default] interface ITSCryptSvr;
+	};
+};

@@ -1,0 +1,264 @@
+
+
+
+IMFORMATS(1IM)             IMAGE TOOLS             IMFORMATS(1IM)
+
+
+
+NAME
+     imformats - List information on image file formats
+
+SYNOPSIS
+     imformats [_o_p_t_i_o_n_s]
+
+DESCRIPTION
+     imformats displays a list of the  image  file  formats  sup-
+     ported by the SDSC image tools (such as imconv(1IM)) and the
+     underlying SDSC image library libim.a (see imintro(3IM)).
+
+OPTIONS
+     With no options given, imformats prints to stdout a list  of
+     supported image file formats.  For instance:
+
+          imformats
+
+     The above command displays:
+
+          Format    Description
+          -------   ----------------------------------------------
+          bmp       Microsoft Windows BitMaP file
+          cur       Microsoft Windows CURsor file
+          eps       Adobe Encapsulated Postscript file
+          gif       CompuServe Graphics Image Format File
+          hdf       NCSA Hierarchical Data Format File
+          etc...
+
+     To restrict the table to one or more formats, list the names
+     of the formats on the command line, as in the following:
+
+          imformats -ras -tiff -hdf
+
+     which displays:
+
+          Format    Description
+          -------   ----------------------------------
+          ras       Sun Rasterfile
+          tiff      Tagged Image File Format
+          hdf       Hierarchical Data File
+
+     Information on file formats is displayed in  the  order  you
+     specify on the command line.
+
+     The -long option elaborates on the list by including  infor-
+     mation on the format's creator or vendor, other common names
+     for the format, and a summary of the supported format  vari-
+     ants  for  read and write operations.  For instance, to find
+     out more about support for TIFF files, enter the following:
+
+          imformats -tiff -long
+
+
+
+
+SDSC               Last change: June 27, 1995                   1
+
+
+
+
+
+
+IMFORMATS(1IM)             IMAGE TOOLS             IMFORMATS(1IM)
+
+
+
+     which displays:
+
+          tiff    Tagged image file
+               a.k.a.:    tif
+               Creator:   Aldus, Microsoft, and NeXT
+               Read support:
+                 1-, 4-, 8-, and 32-bit color index images.   24-
+                 bit  RGB  and 32-bit RGB+alpha images.  Standard
+                 (uncompressed), Mac Packbits, and  Lempel-Ziv  &
+                 Welsh compression.
+               Write support:
+                 1-, 8-, and 32-bit color index  images.   24-bit
+                 RGB   and  32-bit  RGB+alpha  images.   Standard
+                 (uncompressed), Mac Packbits, and  Lempel-Ziv  &
+                 Welsh compression.
+
+     If you specify -long twice, you receive a detailed  list  of
+     the  variants  of the file format that can be read and writ-
+     ten.  For instance:
+
+          imformats -tiff -long -long
+
+     displays:
+
+          tiff    Tagged image file
+               a.k.a.:    tif
+               Creator:   Aldus, Microsoft, and NeXT
+               Read support:
+                 Type    #chan   #bits   CLT?   Alpha?   Compression   Interleaving
+                 -----   -----   -----   ----   ------   -----------   ------------
+                 index   1       1       no     no       none          none
+                 index   1       4       no     no       none          none
+                 index   1       8       no     no       none          none
+                 index   1       8       no     no       none          none
+                 index   1       8       yes    no       none          none
+                 index   1       32      no     no       none          none
+                 index   1       32      yes    no       none          none
+                 rgb     3       8       no     no       none          none
+                 rgb     3       8       no     yes      none          none
+                 index   1       1       no     no       PackBits      none
+                 index   1       4       no     no       PackBits      none
+                 index   1       8       no     no       PackBits      none
+                 index   1       8       no     no       PackBits      none
+                 index   1       8       yes    no       PackBits      none
+                 index   1       32      no     no       PackBits      none
+                 index   1       32      yes    no       PackBits      none
+                 rgb     3       8       no     no       PackBits      none
+                 rgb     3       8       no     yes      PackBits      none
+                 index   1       1       no     no       LZW           none
+                 index   1       4       no     no       LZW           none
+                 index   1       8       no     no       LZW           none
+                 index   1       8       no     no       LZW           none
+
+
+
+2                  Last change: June 27, 1995                SDSC
+
+
+
+
+
+
+IMFORMATS(1IM)             IMAGE TOOLS             IMFORMATS(1IM)
+
+
+
+                 index   1       8       yes    no       LZW           none
+                 index   1       32      no     no       LZW           none
+                 index   1       32      yes    no       LZW           none
+                 rgb     3       8       no     no       LZW           none
+                 rgb     3       8       no     yes      LZW           none
+               Write support:
+                 Type    #chan   #bits   CLT?   Alpha?   Compression   Interleaving
+                 -----   -----   -----   ----   ------   -----------   ------------
+                 index   1       1       no     no       LZW           none
+                 index   1       1       no     no       PackBits      none
+                 index   1       1       no     no       none          none
+                 index   1       8       yes    no       LZW           none
+                 index   1       8       yes    no       PackBits      none
+                 index   1       8       yes    no       none          none
+                 index   1       8       no     no       LZW           none
+                 index   1       8       no     no       PackBits      none
+                 index   1       8       no     no       none          none
+                 rgb     3       8       no     yes      none          none
+                 rgb     3       8       no     yes      PackBits      none
+                 rgb     3       8       no     yes      LZW           none
+                 rgb     3       8       no     no       LZW           none
+                 rgb     3       8       no     no       PackBits      none
+                 rgb     3       8       no     no       none          none
+
+     The double -long output is a dump of internal tables listing
+     what  each  format  can and cannot handle.  These tables are
+     ordered in a way that makes sense to imformats and the  SDSC
+     image library, but not necessarily to human beings.
+
+     imformats  also  recognizes  the  following  standard   SDSC
+     options:
+
+     -feedback
+          Create a software feedback (bug  report)  form  in  the
+          file imformats.fbk.0.
+
+     -fullhelp
+          Display a detailed list of the arguments and how to use
+          imformats.
+
+     -help
+          Display an abbreviated list of the arguments and how to
+          use imformats.
+
+     -register
+          Create a software user registration form  in  the  file
+          imformats.reg.0.
+
+     -version
+          Display the version number and copyright for imformats.
+
+
+
+
+
+SDSC               Last change: June 27, 1995                   3
+
+
+
+
+
+
+IMFORMATS(1IM)             IMAGE TOOLS             IMFORMATS(1IM)
+
+
+
+     All options can be abbreviated to the first few unique char-
+     acters.
+
+NOTES
+     Because of the length of imformat's output, we recommend you
+     pipe  the  output  of  imformats  into  a  screen pager like
+     more(1) or less(1).
+
+     The Format and Description column headings  only  appear  if
+     information on more than one format is displayed.
+
+SEE ALSO
+     imfile (1IM)
+
+     For information on the SDSC image library, see imintro(3IM).
+
+AUTHOR
+     Dave Nadeau
+     San Diego Supercomputer Center
+
+     See the individual file format man pages for the authors  of
+     the  underlying  format  read  and write code.  The names of
+     these man pages begin with the letters "im" followed by  the
+     format  name.  For example, the name of the TIFF man page is
+     imtiff.  To display it, enter man imtiff.
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4                  Last change: June 27, 1995                SDSC
+
+
+

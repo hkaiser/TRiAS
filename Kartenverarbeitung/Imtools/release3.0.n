@@ -1,0 +1,687 @@
+.if n .ll 7.5i
+.if n .nr LL 7.5i
+.LP
+.ce 1000
+\s+2\fBSan Diego Supercomputer Center\fR\s-2
+.sp 1
+\s+4\fBImage Tools\fR\s-4
+.sp 1
+\s+2\fBRelease Notes\fR\s-2
+.sp 1
+\s+1\fBRelease 3.0\fR\s-1
+\s+1\fBAugust 1995\fR\s-1
+.ce 0
+.sp 3
+\fB1.  Introduction\fR
+.LP
+These notes describe the August 1995 binary and source release of version
+3.0 of the San Diego Supercomputer Center (SDSC) Image Tools.
+.LP
+The SDSC Image Tools
+are a suite of portable image manipulation tools coupled with extensive
+support for a wide range of image file formats.  Tool functionality and
+file format support are implemented within a portable,
+user-callable function library.  All tools, image file formats, and
+library functions are fully documented.
+.sp 2
+.LP
+\fB2.  Image Tools\fR
+.LP
+Release 3.0 includes the following command-line tools:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+\fBimadjust\fR	Adjust image colors, desaturate, brighten, etc.
+\fBimcat\fR	Concatenate images into multi-image files
+\fBimcltroll\fR	Cycle a color lookup table
+\fBimcomp\fR	Digitally composite images
+\fBimconv\fR	Convert between all supported image file formats
+\fBimcopy\fR	Copy a portion of an image into a new file
+\fBimdissolve\fR	Dissolve between two images
+\fBimfile\fR	Display image attributes
+\fBimfill\fR	Fill a region of an image with a color or gradient
+\fBimflip\fR	Flip an image horizontally or vertically
+\fBimformats\fR	Describe image file format support
+\fBimgray\fR	Convert to grayscale
+\fBimhist\fR	Compute an image histogram
+\fBimkey\fR	Chroma key two images together
+\fBimlighten\fR	Lighten or darken an image
+\fBimmono\fR	Convert to monochrome
+\fBimpaste\fR	Paste an image into another
+\fBimroll\fR	Cycle an image horizontally or vertically
+\fBimrotate\fR	Free rotate an image
+\fBimscale\fR	Scale an image up or down
+\fBimshear\fR	Shear an image horizontally or vertically
+\fBimsplit\fR	Split apart multi-image files
+\fBimstoryboard\fR	Build a storyboard grid of images
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+Source code and man pages for all tools are included.
+.sp 2
+.ne 5
+.LP
+\fB3.  Image File Formats\fR
+.LP
+Release 3.0 includes support for the following image file formats:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+\fBbmp\fR	Microsoft Windows bitmap image file
+\fBcur\fR	Microsoft Windows cursor image file
+\fBeps\fR	Adobe Encapsulated PostScript file
+\fBgif\fR	Compuserve Graphics image file
+\fBhdf\fR	Hierarchical Data File
+\fBico\fR	Microsoft Windows icon image file
+\fBicon\fR	Sun Icon and Cursor file
+\fBiff\fR	Sun TAAC Image File Format
+\fBjpeg\fR	JPEG image file format
+\fBmiff\fR	ImageMagick's image file format
+\fBmpnt\fR	Apple Macintosh MacPaint file
+\fBpbm\fR	PBM Portable Bit, Gray, and Pixel Map files
+\fBpcx\fR	ZSoft IBM PC Paintbrush file
+\fBpic\fR	PIXAR picture file
+\fBpict\fR	Apple Macintosh QuickDraw/PICT file
+\fBpix\fR	Alias image file
+\fBps\fR	Adobe PostScript file
+\fBras\fR	Sun Rasterfile
+\fBrgb\fR	SGI RGB image file
+\fBrla\fR	Wavefront raster image file
+\fBrle\fR	Utah Run length encoded image file
+\fBsynu\fR	SDSC Synu image file
+\fBtga\fR	Truevision Targa image file
+\fBtiff\fR	Tagged image file
+\fBviff\fR	Khoros Visualization image file
+\fBx\fR	AVS X image file
+\fBxbm\fR	X11 bitmap file
+\fBxpm\fR	X11 pixmap file
+\fBxwd\fR	X Window System window dump image file
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+Formats with multiple variants for handling different image depths and
+compression schemes are supported (see exceptions later in this document).
+You can obtain information on the supported variants by executing
+the \fBimformats\fR tool with the \fB-long\fR option.  For instance:
+.sp 0.5
+.LP
+.if t .in +0.5i
+.if n .in +5
+%  \fBimformats -long -hdf\fR
+.br
+.if t .ts 0.5i,1.0i,1.5i,2.0i,2.5i,3.0i
+.if n .ts 8,16,24,32,40,48,56
+hdf	Hierarchical Data File
+.br
+.if t .in +0.5i
+.if n .in +8
+.if t .ts 0.5i,1.0i,1.5i,2.0i,2.5i,3.0i
+.if n .ts 8,16,24,32,40,48,56
+a.k.a.:		df, ncsa
+.br
+.if t .ts 0.5i,1.0i,1.5i,2.0i,2.5i,3.0i
+.if n .ts 8,16,24,32,40,48,56
+Creator:	NCSA
+.br
+Read support:
+.br
+.if t .in +0.25i
+.if n .in +2
+8-bit color index images, un- and RLE-compressed.  16-, 24-, and
+32-bit color index images, un-compressed.  24-bit RGB, un- and RLE-
+compressed, un-, scanline- and plane-interleaved.  Raster image
+groups as well as older Raster-8 files.
+.br
+.if t .in -0.25i
+.if n .in -2
+Write support:
+.br
+.if t .in +0.25i
+.if n .in +2
+8-bit color index images, un- and RLE-compressed.  16-bit color
+index images, un-compressed.  24-bit RGB, uncompressed, un-,
+scanline-, and plane-interleaved.  Raster image group and older
+Raster-8 tags included.
+.if t .in -0.25i
+.if n .in -2
+.if t .in -0.5i
+.if n .in -8
+.if t .in -0.5i
+.if n .in -5
+.sp 1
+.LP
+Release 3.0 includes support for the integration of additional site-specific
+image file formats.
+.LP
+Source code and man pages on each of the supported file formats are included.
+.sp 2
+.ne 5
+.LP
+\fB4.  Image Library Functions.\fR
+.LP
+Release 3.0 includes a function library providing features for
+image manipulation and image file format I/O.  Library calls may be made
+from K&R C, ANSI C, or C++.  A complete list of library
+functionality is provided in the \fBimintro\fR(3IM) man page.
+.LP
+Source code and man pages for all library functions are included.
+.sp 2
+.LP
+.ne 5
+\fB5.  Documentation\fR
+.LP
+\fBMan\fR pages are included that describe the tools, library functions,
+and all supported image file formats.  \fBnroff\fR source is provided in files
+with \fB.n\fR filename
+suffixes and should be processed through \fBtbl\fR and \fBnroff\fR.
+For example:
+.if t .in +0.5i
+.if n .in +5
+.LP
+\fBtbl imconv.n | nroff -man > imconv.1l\fR
+.br
+	or
+.br
+\fBtbl imtiff.n | nroff -man > imtiff.3l\fR
+.br
+	or
+.br
+\fBtbl imintro.n | nroff -man > imintro.3l\fR
+.if t .in -0.5i
+.if n .in -5
+.LP
+A \fBMakefile\fR is provided to build man pages using \fBnroff\fR and \fBtbl\fR.
+.LP
+For sites without access to \fBnroff\fR and \fBtbl\fR, post-processed text
+versions of all man pages are included in files
+with \fB.1l\fR and \fB.3l\fR filename suffixes.
+.LP
+For sites with PostScript laserprinters, PostScript versions of the manual
+pages are provided in files with \fB.ps\fR filename suffixes.
+.sp 2
+.LP
+\fB6.  Binary and Source Releases\fR
+.LP
+Release 3.0 of the SDSC Image Tools is available as both a binary release
+for selected architectures, and a full source code release.  Binary
+releases are available for the following architectures:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+Cray Research Inc.	C-90 supercomputers, UNICOS
+Digital Equipment Corp.	Alpha workstations, OSF/1
+Silicon Graphics Inc.	R3000 and R4000 workstations, IRIX 5.x and IRIX 6.x
+Sun Microsystems Inc.	SPARC workstations, SunOS
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+The same source code has been built and verified on additional architectures,
+including the following:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+Alliant Computer Systems	FX/80 and FX/2800 minisupercomputers
+Cray Research Inc.	X-MP and Y-MP supercomputers, UNICOS
+Digital Equipment Corp.	DECStation workstations, ULTRIX
+Digital Equipment Corp.	DEC VAX and VAXStation workstations, ULTRIX
+IBM	RS/6000 workstations, AIX
+NeXT Computers	NeXTStation workstations
+Sun Microsystems Inc.	Sun3 workstations
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+We believe that the source code is fully portable to 32-bit or 64-bit
+architectures of any byte order or word size.
+.LP
+Use of the
+SDSC Image Tools library requires the companion SDSC Utility Library
+\fBlibsdsc.a\fR.
+\fBlibsdsc.a\fR includes C packages to handle portable binary I/O,
+command-line argument parsing, and the tag table data structure used
+by the SDSC Image Tools.
+The SDSC Utility Library and its documentation may be separately
+uploaded via anonymous ftp from \fBftp.sdsc.edu\fR.
+.sp 2
+.ne 5
+.LP
+\fB7.  Changes since the last release\fR
+.LP
+The SDSC Image Tools have been expanded to include a variety of new library
+routines and command-line tools, as well as support for additional image
+file formats and additional variants of previously supported file formats.
+.sp 1
+\fB7.1.  Image Tools.\fR
+.LP
+\fBNew Tools:\fR
+.if t .in +0.5i
+.if n .in +5
+.IP \(bu 0.1i
+\fBimdissolve\fR.  Dissolve two images together.
+.IP \(bu 0.1i
+\fBimkey\fR.  Composite one image atop another by keying on fields
+of a foreground image.
+.IP \(bu 0.1i
+\fBimlighten\fR.  Lighten or darken an image.
+.IP \(bu 0.1i
+\fBimstoryboard\fR.  Create a storyboard grid of images.
+.if t .in -0.5i
+.if n .in -5
+.LP
+\fBTool Enhancements:\fR
+.if t .in +0.5i
+.if n .in +5
+.IP \(bu 0.1i
+\fBall tools\fR.  Changed the method of selecting the format for a file.
+Instead of \fB-ras\fR, \fB-gif\fR, or \fB-tiff\fR, we now use
+\fB-informat ras\fR, \fB-outformat gif\fR flags to more clearly choose the
+format to use for input or output files.
+.IP \(bu 0.1i
+\fBall tools\fR.  Added support for file compression.  A specific compression
+scheme may be specified using the \fB-infilecompression\fR and
+\fB-outfilecompression\fR options.
+.IP \(bu 0.1i
+\fBall tools\fR.  Added help for individual flags.  For instance,
+\fBimcomp -help -over\fR gives you help on what the \fB-over\fR option
+on \fBimcomp\fR does.
+.IP \(bu 0.1i
+\fBall tools\fR.  Added the capability to permute channels when reading or
+writing a file.  For instance, \fBimconv -inmap red=blue -inmap blue=red
+infile.ras outfile.ras\fR will switch the red and the blue channels in your
+image immediately after reading it in.
+.IP \(bu 0.1i
+\fBall tools\fR.  Added \fB-outtransparency\fR, \fB-outtransparencyrgb\fR,
+and \fB-outtransparencyindex\fR options for specifying a transparency color
+for GIF and XPM images.
+.IP \(bu 0.1i
+\fBall tools\fR.  Added the \fB-outquality\fR option to specify the quality
+of compression for JPEG images.
+.IP \(bu 0.1i
+\fBall tools\fR.  Added the \fB-outgroup\fR option to select whether to
+group pixels by scanlines or tiles for TIFF images.
+.IP \(bu 0.1i
+\fBall tools\fR.  Added the \fB-inpagewidth\fR, \fB-inpageheight\fR, and
+\fB-indpi\fR options to select the width, height, and dpi for PostScript
+images rasterized by GhostScript (available from Gnu).
+.IP \(bu 0.1i
+\fBall tools\fR.  Added values for \fB-outcompress\fR to support ASCII
+uncompressed output (for PBM images) and discrete cosine transform compression
+(for JPEG and TIFF images).
+.IP \(bu 0.1i
+\fBimadjust\fR.  Added the capability to adjust monochrome, write protect,
+Z-buffer, integer data, and floating point data fields.
+.IP \(bu 0.1i
+\fBimcomp\fR.  Added the \fB-inalpha\fR option to use an alpha channel from
+another file when compositing.  Using this option with the \fBinalphamap\fR
+option will allow you to specify which channel of the input file should be
+considered the alpha channel.
+.IP \(bu 0.1i
+\fBimmono\fR.  Added the \fB-dither\fR option to do Floyd-Steinberg dithering.
+.if t .in -0.5i
+.if n .in -5
+.LP
+\fBTool Compression Schemes:\fR
+.if t .in +0.5i
+.if n .in +5
+All tools now recognize compressed files and automatically compress or
+decompress if you have the compression/decompression tools installed from
+Gnu or your computer manufacturer.  Compression schemes recognized include:
+.IP \(bu 0.1i
+\fBZ\fR.  Lempel-Ziv Encoding (UNIX compress/uncompress).
+.IP \(bu 0.1i
+\fBz\fR.  Huffman encoding (UNIX pack/unpack).
+.IP \(bu 0.1i
+\fBgz\fR.  Gnu Lempel-Ziv Encoding (Gnu gzip/gunzip).
+.IP \(bu 0.1i
+\fBuu\fR.  UU Encoding (UNIX uuencode/uudecode).
+.if t .in -0.5i
+.if n .in -5
+.LP
+\fBTool Bug Fixes:\fR
+.if t .in +0.5i
+.if n .in +5
+.IP \(bu 0.1i
+\fBimadjust\fR.  Fixed problems with ramping of hue, saturation, and intensity.
+.IP \(bu 0.1i
+\fBimcat\fR.  Fixed problems with reading from stdin, and use of
+the \fB-frames\fR option.
+.IP \(bu 0.1i
+\fBimcopy\fR.  Fixed handling of multi-image files.
+.IP \(bu 0.1i
+\fBimadjust\fR.  Fixed problems with ramping of hue, saturation, and intensity.
+.IP \(bu 0.1i
+\fBimrotate\fR.  Fixed bug with putting alpha channel in the background.
+Also fixed problems with ramping of hue, saturation, and intensity.
+.IP \(bu 0.1i
+\fBimscale\fR.  Fixed handling of multi-image files.
+.IP \(bu 0.1i
+\fBimshear\fR.  Fixed bug with putting alpha channel in the background.
+Also fixed problems with ramping of hue, saturation, and intensity.
+.if t .in -0.5i
+.if n .in -5
+.LP
+\fBFunctions removed from imtools.c:\fR
+.if t .in +0.5i
+.if n .in +5
+.IP \(bu 0.1i
+\fBImToolsBuildFlagsTable\fR.  This function created a single flags table
+for all incoming or outgoing image files.  There are now separate flags
+tables for each incoming and outgoing file.
+.if t .in -0.5i
+.if n .in -5
+.LP
+\fBFunctions added to imtools.c:\fR
+.if t .in +0.5i
+.if n .in +5
+.IP \(bu 0.1i
+\fBImToolsMakeStandardFlagsTable\fR.  Make a standard flags table.
+.IP \(bu 0.1i
+\fBImToolsAddReadWriteflags\fR.  Add the reading and writing flags to
+the flags table.
+.IP \(bu 0.1i
+\fBImToolsGetNameAndFormat\fR.  Get a file's name and format.
+.if t .in -0.5i
+.if n .in -5
+.LP
+.sp 1
+.LP
+\fB7.2.  Image File Formats.\fR
+.LP
+\fBNew Image File Formats:\fR
+.if t .in +0.5i
+.if n .in +5
+.IP \(bu 0.1i
+\fBsi\fR.  Microsoft SoftImage image file format.
+.IP \(bu 0.1i
+\fBjpeg\fR.  JPEG image file format.
+.IP \(bu 0.1i
+\fBmiff\fR.  ImageMagick's image file format.
+.IP \(bu 0.1i
+\fBxpm\fR.  X11 PixMap file format.
+.if t .in -0.5i
+.if n .in -5
+.LP
+\fBImage File Format Enhancements:\fR
+.if t .in +0.5i
+.if n .in +5
+.IP \(bu 0.1i
+\fBgif\fR.  Added support for the transparency field.  Updated to 89a version.
+.IP \(bu 0.1i
+\fBpict\fR.  Added support for 16- and 32-bit images.
+.IP \(bu 0.1i
+\fBpix\fR.  Added support for Alias matte files.
+.IP \(bu 0.1i
+\fBpbm\fR.  Combined the pgm, pnm, ppm, rppm, rpbm, rpgm, and rpnm formats
+together in to one collective format.  The \fB-outcompression ascii\fR
+option will create the ascii variants of these formats.
+.IP \(bu 0.1i
+\fBps\fR.  Added support for reading PostScript files if you have Gnu's
+GhostScript installed.
+.IP \(bu 0.1i
+\fBrgb\fR.  Added support for alpha channels.
+.IP \(bu 0.1i
+\fBtiff\fR.  Rewritten to use Sam Leffler's TIFF library.  This adds support
+for a much wider variety of TIFF file variants.
+.if t .in -0.5i
+.if n .in -5
+.LP
+\fBImage File Format Bug Fixes:\fR
+.if t .in +0.5i
+.if n .in +5
+.IP \(bu 0.1i
+\fBcur\fR.  Fixed a bug with hot spots.
+.IP \(bu 0.1i
+\fBico\fR.  Fixed reading of alpha channels.
+.IP \(bu 0.1i
+\fBps\fR. Fixed a bug that caused the sides of images to sometimes be
+cut off.
+.IP \(bu 0.1i
+\fBtga\fR.  Fixed a problem with the RLE encoding algorithm.
+.IP \(bu 0.1i
+\fBxbm\fR.  Fixed a bug with hot spots.
+.if t .in -0.5i
+.if n .in -5
+.sp 1
+.LP
+\fB7.3.  Image Library.\fR
+.LP
+\fBNew Library Functions:\fR
+.if t .in +0.5i
+.if n .in +5
+.IP \(bu 0.1i
+\fBImVfbFSDitherToMono\fR.  Dither a VFB to monochrome using Floyd-Steinberg
+dithering.
+.IP \(bu 0.1i
+\fBImVfbPrint\fR.  Print's a VFB as ascii for debugging.
+.IP \(bu 0.1i
+\fBImGetFileFormats\fR.  Get's the master list of file formats.
+.IP \(bu 0.1i
+\fBImGetCompressSchemes\fR.  Get's the master list of compression schemes.
+.IP \(bu 0.1i
+\fBImFileQCompression\fR.  Queries the compression scheme used by a file
+or stream.
+.IP \(bu 0.1i
+\fBImVfbCopyChannel\fR.  Copies a selected channel from one VFB to another.
+.IP \(bu 0.1i
+\fBImVfbSameRGB, ImVfbSameRGBA, ImVfbSameIndex8,\fR and \fBImVfbSameIndex16\fR.
+Compare values in two VFBs to see if they are the same.
+.IP \(bu 0.1i
+\fBImFileFindFormat\fR.  Looks up the file's format in the master list.
+.IP \(bu 0.1i
+\fBImFileFindCompressScheme\fR.  Looks up the file's compression scheme in
+the master list.
+.IP \(bu 0.1i
+\fBImVfbFade\fR.  Fades a VFB's colors towards zero.
+.IP \(bu 0.1i
+\fBImVfbMix\fR.  Mixes the colors in two VFB's based upon weights.
+.IP \(bu 0.1i
+\fBImVfb90Rotate\fR.  Efficiently rotates a VFB 90 degrees counterclockwise.
+.if t .in -0.5i
+.if n .in -5
+.LP
+\fBLibrary Function Enhancements:\fR
+.if t .in +0.5i
+.if n .in +5
+.IP \(bu 0.1i
+\fBImFileRead\fR and \fBImFileFRead\fR.  A NULL format name causes both
+functions to automatically determine the file's format.
+.IP \(bu 0.1i
+.if t .in -0.5i
+.if n .in -5
+.sp 1
+.LP
+\fB7.4.  General.\fR
+.LP
+\fBRemoved Library Functions:\fR
+.if t .in +0.5i
+.if n .in +5
+.IP \(bu 0.1i
+\fBImCltGamma\fR.
+.IP \(bu 0.1i
+\fBImCltToGray\fR.
+.if t .in -0.5i
+.if n .in -5
+.LP
+\fBRemoved Architectures:\fR
+.if t .in +0.5i
+.if n .in +5
+.IP \(bu 0.1i
+Alliant, NeXT, and Sun3 systems are no longer supported.
+.if t .in -0.5i
+.if n .in -5
+.sp 2
+.ne 5
+.LP
+\fB8.  Items that may cause confusion\fR
+.LP
+The following features of the SDSC Image Tools may confuse some users.
+.if t .in +0.5i
+.if n .in +5
+.IP \(bu 0.1i
+IFF format files are Sun's TAAC images, not Amiga images.  Both Sun and
+Commodore used the same mnemonic for their image files.
+.IP \(bu 0.1i
+PICT handles PICT2 as well.
+.IP \(bu 0.1i
+PICT files are always mapped to RGB images during conversion.  This is an
+artifact made necessary by support of multi-image, multi-color map features
+of the PICT and PICT2 formats.  A command line
+like the following will result in an RGB HDF file instead of the
+expected color index HDF file:
+.sp 0.5
+.ce 1
+\fBimconv image.pict image.hdf\fR
+.IP \(bu 0.1i
+PICT support does not handle many drawing operations.  To do so would require
+reimplementing Apple's QuickDraw and is beyond the scope of an image handling
+package.  PICT files containing drawing operations should be converted to
+bitmaps on the Macintosh, then uploaded to the UNIX host.  Bitmap conversion
+may be accomplished with a variety of tools, including SuperPaint, PhotoShop,
+and others.
+.IP \(bu 0.1i
+PICT support does not handle fonts.  Text stored in a PICT file references a
+font, but does not include the font's bitmap.  When uploaded to a UNIX host,
+the font bitmaps are no longer available.  This makes it impossible to support
+PICT text operations.  PICT files containing text should be converted to
+bitmaps on the Macintosh, then uploaded to the UNIX host.  Bitmap conversion
+may be accomplished with a variety of tools, including SuperPaint, PhotoShop,
+and others.
+.IP \(bu 0.1i
+Wavefront RLA handles RLB as well.
+.IP \(bu 0.1i
+The Image Tools support PostScript and EPS image writing directly.  To
+read PostScript and EPS files, the Image Tools invoke GhostScript if you
+have it installed.
+.if t .in -0.5i
+.if n .in -5
+.sp 2
+.LP
+\fB9.  Known Problems\fR
+.LP
+The following are known problems present in the 3.0 release of the SDSC
+Image Tools:
+.if t .in +0.5i
+.if n .in +5
+.IP \(bu 0.1i
+XWD files stored in the XY format (instead of Z format) are not supported yet.
+.if t .in -0.5i
+.if n .in -5
+.sp 2
+.LP
+\fB10.  Bug Reports and User Registration\fR
+.LP
+This software is developed and
+supported by the San Diego Supercomputer Center, and we want
+to hear from you.  If you find bugs (heaven forbid), or want to be put on
+our mailing list for future software releases, please fill out
+and send us a bug report and/or user registration form.  These forms may be
+obtained by executing any one of our tools with the \fB-feedback\fR
+or \fB-register\fR options.
+.LP
+For instance, to generate a bug report feedback form for \fBimconv\fR, type:
+.if t .in +0.5i
+.if n .in +5
+.LP
+% \fBimconv -feedback\fR
+.if t .in -0.5i
+.if n .in -5
+.LP
+The feedback (bug report) form is written to a file named \fBimconv.fbk.0\fR
+in the current directory.
+When generating a feedback form, the tool writes the form and exits without
+executing further.
+.LP
+To generate a user registration form for \fBimconv\fR, type:
+.if t .in +0.5i
+.if n .in +5
+.LP
+% \fBimconv -register\fR
+.if t .in -0.5i
+.if n .in -5
+.LP
+Like the feedback form, the registration form is written to a file
+named \fBimconv.reg.0\fR
+in the current directory.  When
+generating a registration form, the tool writes the form and exits without
+executing further.
+.LP
+User registration is not required, but we'd like to hear from you anyway.
+We'll put you on a mailing list for notification of future releases of
+SDSC software tools, and read with interest who you are and what you
+are doing with our software.
+.LP
+After you have filled out the form, please send the form, and any
+accompanying data, source fragments, sample output, or whatever, to SDSC:
+.if t .in +0.5i
+.if n .in +5
+.if n .bp
+.ne 8
+.LP
+.TS
+l l.
+E-mail:	info@sdsc.edu
+
+Surface mail:	Software Products Information
+	San Diego Supercomputer Center
+	P.O. Box 85608
+	San Diego, CA  92186-9784
+
+FAX:	(619) 534-5113
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+If you have questions about this form or any of our software products, please
+contact us via any of the above methods or call us at:
+.if t .in +0.5i
+.if n .in +5
+.LP
+(619) 534-5100  M-F, 8am-5pm, Pacific time
+.if t .in -0.5i
+.if n .in -5
+.sp 2
+.LP
+\fB11.  Copyright\fR
+.LP
+Users and possessors of the files of this release are hereby granted a
+nonexclusive, royalty-free copyright and design patent license to use
+this code in individual software.  License is not granted for commercial
+resale, in whole or in part, without prior written permission from SDSC.
+This release is provided "AS IS" without express or implied warranty of any
+kind.
+.LP
+We ask that the following message be included in all
+derived works:  \fIPortions developed at the San Diego Supercomputer Center\fR.
+.LP
+Please do not redistribute this software.  We would prefer that interested
+parties upload the software directly from our anonymous ftp account.  This
+guarantees that they get the latest release, and helps us to keep track of
+roughly how many sites out there are using our software.
+.sp 2
+.LP
+\fB12.  Conclusion\fR
+.LP
+Please use these tools and send us feedback:  let us know what you like and what
+you don't like about this software.  Tell us how you are using the SDSC
+Image Tools and what you would like to see in the future, both as enhancements
+to this product, and as additional products from SDSC.
+.LP
+We encourage you to cite in your publications
+the use of the SDSC Image Tools, and any other
+SDSC software you have used.  Your publication references and
+your feedback support are what makes this project work, and what gives
+us the opportunity to continue to develop portable free tools like
+the SDSC Image Tools, and our other products.
+We look forward to hearing from you!
+.LP

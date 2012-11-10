@@ -1,0 +1,25 @@
+#include <string.h>
+
+#if _MSC_VER >= 1100
+
+#if !defined(OS_USE_ALTERNATE_STD)
+namespace ospace { namespace std { namespace rel_ops {} } }
+using namespace ospace::std;
+using namespace ospace::std::rel_ops;
+#endif // !defined(OS_USE_ALTERNATE_STD)
+
+#include <ospace/std/string>			// standard string class
+
+///////////////////////////////////////////////////////////////////////////////
+// Zurodnungen, damit die tstring.hpp Klasse nahtlos ersetzt werden kann
+#if !defined(OS_USE_ALTERNATE_STD)
+typedef os_string string;				// alte StringKlasse ist gleich neuer
+#define NPOS os_npos
+#else
+#define NPOS npos
+#endif // !defined(OS_USE_ALTERNATE_STD)
+
+#define __NOTRIASSTRINGS__
+#else
+#include <tstring.hpp>					// eigene 'string-Klasse
+#endif

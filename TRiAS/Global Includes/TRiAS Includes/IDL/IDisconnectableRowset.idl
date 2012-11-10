@@ -1,0 +1,20 @@
+// $Header: $
+// Copyright© 1999-2001 TRiAS GmbH Potsdam, All rights reserved
+// Created: 05.05.2001 21:56:41 
+//
+// @doc
+// @module IDisconnectableRowset.idl | Definition of the <i IDisconnectableRowset> interface
+
+[ 
+	object,
+	hidden,
+	uuid(2A29F476-1C19-11d4-801F-00508B6BAA48),
+	helpstring("IDisconnectableRowset Interface"),
+	pointer_default(unique)
+]
+interface IDisconnectableRowset : IUnknown
+{
+	import "objidl.idl";		// For IUnknown etc.
+
+	HRESULT DisconnectRowset();
+};

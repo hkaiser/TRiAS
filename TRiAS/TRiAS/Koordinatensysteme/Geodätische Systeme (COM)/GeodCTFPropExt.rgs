@@ -1,0 +1,24 @@
+HKCR
+{
+	TRiASEx.GeodCTFPropExt.1 = s 'GeodCTFPropExt Class'
+	{
+		CLSID = s '{D5FB8137-DF7F-11D1-8607-00600875138A}'
+	}
+	TRiASEx.GeodCTFPropExt = s 'GeodCTFPropExt Class'
+	{
+		CurVer = s 'TRiASEx.GeodCTFPropExt.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {D5FB8137-DF7F-11D1-8607-00600875138A} = s 'GeodCTFPropExt Class'
+		{
+			ProgID = s 'TRiASEx.GeodCTFPropExt.1'
+			VersionIndependentProgID = s 'TRiASEx.GeodCTFPropExt'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

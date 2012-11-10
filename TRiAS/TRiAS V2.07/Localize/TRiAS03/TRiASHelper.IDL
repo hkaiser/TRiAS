@@ -1,0 +1,180 @@
+// TRiASHelper.idl : IDL source for objects in TRiAS03.dll
+//
+
+// forward declarations
+interface ITRiASRegistryHelper;
+
+interface DMatchString;
+interface DSearchObjects;
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface für RegistryHelper
+cpp_quote("#ifndef _TRIASREGISTRYHELPER_DEFINED")
+cpp_quote("#define _TRIASREGISTRYHELPER_DEFINED")
+[
+	object,
+	uuid(0796388C-3123-101C-BB62-00AA0018497C),
+	dual,
+	helpstring("ITRiASRegistryHelper Interface"),
+	pointer_default(unique)
+]
+interface ITRiASRegistryHelper : IDispatch
+{
+	import "oaidl.idl";
+
+//////////////////////////////////////////////////////////
+// Script based methods
+//////////////////////////////////////////////////////////
+	[id(100)] HRESULT AddReplacement([in] BSTR key, [in] BSTR item);
+	[id(101)] HRESULT ClearReplacements();
+	[id(102)] HRESULT ResourceRegister([in] BSTR resFileName, [in] VARIANT ID, [in] VARIANT type);
+	[id(103)] HRESULT ResourceUnregister([in] BSTR resFileName, [in] VARIANT ID, [in] VARIANT type);
+	[id(104)] HRESULT FileRegister([in] BSTR fileName);
+	[id(105)] HRESULT FileUnregister([in] BSTR fileName);
+	[id(106)] HRESULT StringRegister([in] BSTR data);
+	[id(107)] HRESULT StringUnregister([in] BSTR data);
+
+//////////////////////////////////////////////////////////
+// Key based methods
+//////////////////////////////////////////////////////////
+	[id(108)] HRESULT AddKey([in] BSTR keyName);
+	[id(109)] HRESULT DeleteKey([in] BSTR keyName);
+	[id(110)] HRESULT AddKeyValue([in] BSTR keyName, [in] BSTR valueName, [in] VARIANT value);
+	[id(111)] HRESULT GetKeyValue([in] BSTR keyName, [in] BSTR valueName, [out, retval] VARIANT* value);
+	[id(112)] HRESULT SetKeyValue([in] BSTR keyName, [in] BSTR valueName, [in] VARIANT value);
+};
+cpp_quote("#endif // _TRIASREGISTRYHELPER_DEFINED")
+
+#include <EnumONr.idl>
+#include <ProgInd2.idl>
+
+///////////////////////////////////////////////////////////////////////////////
+// Typelibrary für ITRiASRegistryHelper et. al.
+
+cpp_quote("#define TYPELIB_HELPER_VERSION_MAJOR 1")
+cpp_quote("#define TYPELIB_HELPER_VERSION_MINOR 0")
+cpp_quote("#define TYPELIB_HELPER_VERSION \"1.0\"")
+cpp_quote("#define TYPELIB_HELPER_LCID 0")
+
+#define TYPELIB_HELPER_VERSION 1.0
+#define TYPELIB_HELPER_LCID 0
+
+[
+	uuid(0796388E-3123-101C-BB62-00AA0018497C),
+	version(TYPELIB_HELPER_VERSION), lcid(TYPELIB_HELPER_LCID),
+	helpstring("TRiAS Helper 1.0 Type Library")
+]
+library TRiASHelperLib
+{
+	importlib("stdole32.tlb");
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface für Objekte, die beim Suchen von Texten helfen
+	[
+		object,
+		uuid(079638B4-3123-101C-BB62-00AA0018497C),
+		dual, oleautomation,
+		helpstring("DMatchString Interface"),
+		pointer_default(unique)
+	]
+	interface DMatchString : IDispatch
+	{
+		import "oaidl.idl";
+
+		[id(200)] HRESULT MatchString (
+			[in] BSTR bstrToMatch, 
+			[out, retval] int *piMatched);
+		[id(201), propput] HRESULT MatchText (
+			[in] BSTR bstrMatching);
+		[id(201), propget] HRESULT MatchText (
+			[out, retval] BSTR *pbstrMatching);
+		[id(202), propput] HRESULT MatchCase (
+			[in] VARIANT_BOOL fFlag);
+		[id(202), propget] HRESULT MatchCase (
+			[out, retval] VARIANT_BOOL *pfMatchCase);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface für ObjektEigenschaft, das beim Suchen von Objekten hilft,
+// sollte von jeder Objekteigenschaft implementiert werden
+	interface IEnumObjectsByNumber;		// forward decl
+
+	[
+		object,
+		uuid(079638C4-3123-101C-BB62-00AA0018497C),
+		dual, oleautomation,
+		helpstring("DSearchObjects Interface"),
+		pointer_default(unique)
+	]
+	interface DSearchObjects : IDispatch
+	{
+		import "oaidl.idl";
+
+		typedef enum tagSEARCHMODE {
+		// Matching
+			SEARCHMODE_NORMAL = 0,
+			SEARCHMODE_REGEXPR = 0x01,
+			SEARCHMODE_LIKE = 0x02,
+			SEARCHMODE_ONLYEXISTANCE = 0x04,
+
+		// MatchMode
+			SEARCHMODE_FULLMATCH = 0,
+			SEARCHMODE_PARTIALMATCH = 0x0100,
+			SEARCHMODE_PARTIALMATCHBOB = 0x0200,
+			SEARCHMODE_NOMATCHCASE = 0x0400,
+
+		// alle Flags zusammen
+			SEARCHMODE_SEARCHMODIFIERS = 0x0700,
+		} SEARCHMODE;
+
+		[id(300)] HRESULT ConsiderSearch (
+			[in] BSTR bstrToMatch, [in] SEARCHMODE rgFlags, [in] ULONG ulCnt);
+		[id(301)] HRESULT SearchObjects (
+			[in] BSTR bstrToMatch, [in] SEARCHMODE rgFlags,
+			[out] IEnumObjectsByNumber **ppvObj);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// CoClass für RegistryHelper
+	[
+		uuid(0796388D-3123-101C-BB62-00AA0018497C),
+		helpstring("TRiAS Registry Helper Class")
+	]
+	coclass TRiASRegistryHelper
+	{
+		[default] interface ITRiASRegistryHelper;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// CoClass für EnumObjectsByNumer
+	[
+		uuid(0796381C-3123-101C-BB62-00AA0018497C),		// GUID identisch mit CLSID_EnumObjectsByNumber
+		helpstring("Enumerator für Objektnummern")
+	]
+	coclass EnumObjectNumbers
+	{
+		[default] interface IEnumObjectsByNumber;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// CoClass für ProgressIndicator
+	[
+		uuid(07963819-3123-101C-BB62-00AA0018497C),
+		helpstring("General purpose ProgressIndcator")
+	]
+	coclass ProgressIndicator
+	{
+		[default] interface IProgressIndicator2;
+	}
+
+///////////////////////////////////////////////////////////////////////////////
+// CoClass für MultiProgressIndicator
+	[
+		uuid(079638D2-3123-101C-BB62-00AA0018497C),
+		helpstring("Multi-ProgressIndicator")
+	]
+	coclass MultiProgressIndicator
+	{
+		[default] interface IMultiProgressIndicator;
+	};
+};

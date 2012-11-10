@@ -1,0 +1,197 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_ImportDBEngine      REGISTRY DISCARDABLE    "ImportDBEngine.rgs"
+IDR_FAKEIMPSERVER       REGISTRY DISCARDABLE    "FakeImportServer.rgs"
+IDR_DATABASEBASE        REGISTRY DISCARDABLE    "DatabaseBase.rgs"
+IDR_IMPORTDLGEXT        REGISTRY DISCARDABLE    "ImportDlgExt.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_IMPORTOPT_OLD DIALOG DISCARDABLE  0, 0, 243, 93
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Importoptionen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,186,7,50,14
+    PUSHBUTTON      "Abbrechen",IDCANCEL,186,24,50,14
+    PUSHBUTTON      "&Koordinaten",IDC_KOORD,186,55,50,14,WS_DISABLED
+    PUSHBUTTON      "K&onfiguration",IDC_KONFIG,186,72,50,14
+    CONTROL         "Geometrie",IDC_GEOMETRY,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,30,48,10
+    CONTROL         "Merkmale",IDC_FEATURES,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,44,47,10
+    CONTROL         "DOS-Zeichensatz",IDC_ANSIOEM,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,59,72,10
+    CONTROL         "Relationen",IDC_RELATIONS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,88,30,50,10
+    CONTROL         "Visualisierung",IDC_VISU,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,88,44,59,10
+END
+
+IDD_IMPORTOPT DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Optionen für den '%s'-Import"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         22141,IDC_CREATENEW_BMP,"Static",SS_BITMAP | 
+                    SS_CENTERIMAGE | WS_BORDER,1,1,80,138
+    LTEXT           "Beim Importieren von Daten aus einer '%s' - Datei können folgende zusätzliche Einstellungen vorgenommen werden. ",
+                    IDC_ADVANCEDDESC,92,6,183,26
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,91,36,182,1
+    LTEXT           "Import von:",IDC_STATIC,92,43,36,8
+    LTEXT           "Erweiterte Einstellungen:",IDC_STATIC,92,76,78,8
+    LTEXT           "Konfiguration des Importmodules: ",IDC_STATIC,92,109,
+                    107,8
+    PUSHBUTTON      "K&onfiguration ...",IDC_KONFIG,97,121,59,14
+    CONTROL         "&Geometrie",IDC_GEOMETRY,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,107,52,48,10
+    CONTROL         "&Merkmale",IDC_FEATURES,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,107,63,47,10
+    CONTROL         "DOS-Zeichensatz",IDC_ANSIOEM,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,107,86,72,10
+    CONTROL         "&Relationen",IDC_RELATIONS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,188,52,50,10
+    CONTROL         "&Visualisierung",IDC_VISU,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,188,63,59,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_IMPORTOPT_OLD, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 236
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 86
+    END
+
+    IDD_IMPORTOPT, DIALOG
+    BEGIN
+        LEFTMARGIN, 1
+        RIGHTMARGIN, 275
+        VERTGUIDE, 92
+        TOPMARGIN, 1
+        BOTTOMMARGIN, 139
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_TOPKARTE            BITMAP  FIXED IMPURE    "topkarte.bmp"
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "// Typelibrary\r\n"
+    "1 TYPELIB ""TRiASImport.tlb""\r\n"
+    "// VersionsResource\r\n"
+    "#include ""TRiASImport.Rcv""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PROJNAME            "TRiASImport"
+    IDS_DBENGINE_DESC       "DBEngine für TRiAS-Importmodule"
+    IDS_IMPORTDBENGINE_DESC "ImportDBEngine Class"
+    IDS_IMPORTDATEI         "%s Importdatei (%s)"
+    IDS_IMPORTDATEI2        "%s Importdatei"
+    IDS_ADVDESCTEXT         "Beim Importieren einer '%s' können folgende zusätzliche Einstellungen vorgenommen werden. "
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+// Typelibrary
+1 TYPELIB "TRiASImport.tlb"
+// VersionsResource
+#include "TRiASImport.Rcv"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

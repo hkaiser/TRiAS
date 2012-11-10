@@ -1,0 +1,55 @@
+Folgende Ankopplungen von dBase-Daten an Objekte sind ab dem 20.8.93 
+verfÅgbar:
+
+[dBase]
+; Der 2. Parameter ist der in spitzen Klammern angegeben Name der Index-Datei
+; (beschleunigt das Suchen der entspr. Daten):
+Id12122000=3,"rath",<Objektname>,51100000
+
+; Lesen des Indizes als Merkmalswert:
+Id12122000=3,"rath",<51300000>,51100000
+
+; Anbindung eines boolschen dBase-Expressions als 2. Parameter (der 3. entfÑllt).
+; Der Expression kann in geschweifte Klammern begrenzte Merkmalskodes 
+; enthalten:
+Id12122000=2,"rath",`val("{51300000}")=Feld1'
+Id12122000=2,"rath",`val("{51100000}")=Objektname'
+
+; Mehrere Bedingungen kînnen ausgewertet werden:
+Id12122000=2,"rath",`val("{51100000}")=Objektname .and. val("{51300000}")=Feld1'
+; Bitte den logischen Operator mit fÅhrendem und abschlie·endem Leerzeichen
+; schreiben (" .and . ").
+
+; Die "alte" Variante: Ankopplung der Daten Åber Feldname und Feldinhalt.
+; Im Feldinhalt mÅssen die ersten 3 Zeichen "511" sein
+Id12122000=3,"rath","Objektname","511*"
+
+; Feldname und Feldinhalt sind in der TRIAS-Datenbank gespeichert
+;Id12122000=3,"rath",51300000,51100000
+
+
+                                                        JB
+
+Erweiterungen vom 24.8.93:
+
+Die Ankopplung der dBase-Daten kann nunmehr auch Åber einen Datums-SchlÅssel 
+erfolgen, d.h., das Feld des verwendeten Tags ist vom Typ "DATUM":
+Id12122000=3,"rath",<Date>,"19930824"
+
+Zu beachten ist, da· der SchlÅssel im oben angegebenen Format verwendet wird
+"JJJJMMTT". In der dBase-Datei lautet der entsprechende Eintrag "TT.MM.JJ".
+
+DBase-Dateien von Windows-Systemen (z.B. "FoxPro") speichern ihre Texte im
+Windows-Ansii-Format. FÅr das richtige Anzeigen der deutschen Umlaute ist
+die Standard-Konvertierung von DOS nach Windows zu unterdrÅcken:
+
+[dBase]
+OemToAnsii=0
+
+                                                        JB
+
+
+
+
+
+

@@ -1,0 +1,725 @@
+// TRiASToolbars.idl: Interfaces for TRiAS toolbar-objects
+//
+
+#if !defined(_TRIASTOOLBARS_IDL)
+#define _TRIASTOOLBARS_IDL
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declarations
+interface DControlToolBar;
+interface DControlToolBars;
+interface DControlToolBarButton;
+interface DControlToolBarButtons;
+interface DTRiASCmdUI;
+interface DToolBarUIOwner;
+interface IManageTabWindows;
+
+///////////////////////////////////////////////////////////////////////////////
+// Interfaces
+[
+	uuid(07963871-3123-101C-BB62-00AA0018497C), 
+	odl, 
+	oleautomation, 
+	dual,
+	object, 
+	helpstring("Einer Schaltflächenleiste.")
+]  
+interface DControlToolBar : DTRiASBaseClass 
+{
+///////////////////////////////////////////////////////////////////////////////
+// TypeDefs
+	typedef 
+	[
+		public,
+		helpstring("Positionierungsmode einer Toolbar.")
+	]
+	enum _tagDOCKSTATE {
+		DOCKSTATE_FLOATING = 0,
+		DOCKSTATE_DOCKEDLEFT = 1,
+		DOCKSTATE_DOCKEDRIGHT = 2,
+		DOCKSTATE_DOCKEDTOP = 3,
+		DOCKSTATE_DOCKEDBOTTOM = 4,
+	} DOCKSTATE;
+
+	typedef 
+	[
+		public,
+		helpstring("Ausrichtungmode einer Toolbar.")
+	]
+	enum _tagALIGNMODE {
+		ALIGNMODE_HORIZONTAL = 1,
+		ALIGNMODE_VERTICAL = 2,
+	} ALIGNMODE;
+
+// Properties verwalten
+	[
+		id(9), propget
+	] 
+	HRESULT Properties ([out, retval]DTRiASProperties **ppIProps);
+	
+	[
+		id(10)
+	] 
+	HRESULT CreateProperty ([in, optional]VARIANT vName, [in, optional]VARIANT vType, 
+		[in, optional]VARIANT vValue, [out, retval]DTRiASProperty **ppIProp);
+
+// IControlToolbar properties
+	[
+		id(DISPID_VALUE), 
+		propget,
+		helpstring("Liefert den Bezeichner dieser Schaltflächenleiste.")
+	] 
+	HRESULT Name ([out, retval]BSTR *pbstrName);
+	[
+		id(DISPID_VALUE), 
+		propput,
+		helpstring("Modifiziert den Bezeichner dieser Schaltflächenleiste.")
+	]
+	HRESULT Name ([in]BSTR bstrName);
+
+	[
+		id(11), 
+		propget,
+		helpstring("Liefert die Breite dieser Schaltflächenleiste.")
+	]
+	HRESULT Width ([out, retval]long *piWidth);
+	[
+		id(11), 
+		propput,
+		hidden,
+		restricted,
+		helpstring("Obsolete! Modifiziert die Breite dieser Schaltflächenleiste.")
+	]
+	HRESULT Width ([in]long iWidth);
+	
+	[
+		id(12), 
+		propget,
+		helpstring("Liefert die Höhe dieser Schaltflächenleiste.")
+	]
+	HRESULT Height ([out, retval]long *piHeight);
+	[
+		id(12), 
+		propput,
+		hidden,
+		restricted,
+		helpstring("Obsolete! Modifiziert die Höhe dieser Schaltflächenleiste.")
+	]
+	HRESULT Height ([in]long iHeight);
+
+	[
+		id(13), 
+		propget,
+		helpstring("Liefert die linke Position dieser Schaltflächenleiste.")
+	]
+	HRESULT Left ([out, retval]long *piLeft);
+	[
+		id(13), 
+		propput,
+		hidden,
+		helpstring("Obsolete! Modifiziert die linke Position dieser Schaltflächenleiste.")
+	]
+	HRESULT Left ([in]long iLeft);
+
+	[
+		id(14), 
+		propget,
+		helpstring("Liefert die obere Position dieser Schaltflächenleiste.")
+	]
+	HRESULT Top ([out, retval]long *piTop);
+	[
+		id(14), 
+		propput,
+		hidden,
+		helpstring("Obsolete! Modifiziert die obere Position dieser Schaltflächenleiste.")
+	]
+	HRESULT Top ([in]long iTop);
+	
+	[
+		id(15), 
+		propget,
+		helpstring("Liefert den Positionierungsmode dieser Schaltflächenleiste.")
+	]
+	HRESULT DockState ([out, retval]DOCKSTATE *prgState);
+	[
+		id(15), 
+		propput,
+		helpstring("Modifiziert den Positionierungsmode dieser Schaltflächenleiste.")
+	]
+	HRESULT DockState ([in]DOCKSTATE rgDockState);
+
+	[
+		id(16), 
+		propget,
+		helpstring("Liefert, ob diese Schaltflächenleiste sichtbar ist.")
+	]
+	HRESULT Visible ([out, retval]VARIANT_BOOL *pfVisible);
+	[
+		id(16), 
+		propput,
+		helpstring("Modifiziert die Sichtbarkeit dieser Schaltflächenleiste.")
+	]
+	HRESULT Visible ([in]VARIANT_BOOL fVisible);
+
+	[
+		id(17), 
+		propget,
+		helpstring("Liefert den Darstellungsmode dieser Schaltflächenleiste.")
+	]
+	HRESULT Style ([out, retval]long *pdwStyle);
+	[
+		id(17), 
+		propput,
+		helpstring("Modifiziert den Darstellungsmode dieser Schaltflächenleiste.")
+	]
+	HRESULT Style ([in]long dwStyle);
+
+	[
+		id(18),
+		helpstring("Liefert die Sammlung aller Schaltflächen dieser Schaltflächenleiste.")
+	]
+	HRESULT ToolBarButtons ([out, retval]DControlToolBarButtons **ppIBttns);
+	
+	[
+		id(19)
+	]
+	HRESULT Reset (void);
+	
+	[
+		id(20), 
+		hidden
+	]
+	HRESULT InsertButton ([in]int iIndex, [in]DControlToolBarButton *pIBttn, 
+		[in]DToolBarUIOwner *pUIOwner, [in]IUnknown *pReserved2);
+	
+	[
+		id(21),
+		helpstring("Löscht die Schaltfläche an der angegebenen Position der Schaltflächenleiste.")
+	]
+	HRESULT DeleteButton ([in]int iIndex);
+	
+	[
+		id(22),
+		helpstring("Löscht die Schaltflächenleiste.")
+	]
+	HRESULT Remove (void);
+
+	[
+		id(23),
+		helpstring("Liefert die Schaltfläche an der angegebenen Position der Schaltflächenleiste.")
+	]
+	HRESULT GetButton ([in]int iIndex, [out, retval] DControlToolBarButton **ppIBttn);
+
+	[
+		id(24),
+		helpstring("Erzeugt eine neue Schaltfläche an der angegebenen Position der Schaltflächenleiste.")
+	]
+	HRESULT AddButton (
+		[in]int iIndex, [in]DToolBarUIOwner *pUIOwner, 
+		[in, optional]VARIANT vBttn, [out, retval] DControlToolBarButton **ppIBttn);
+
+	[
+		id(32), 
+		propget,
+		helpstring("Liefert den Ident dieser Schaltflächenleiste.")
+	]
+	HRESULT CtrlID ([out, retval]int *piCtrlID);
+	[
+		id(32), 
+		propput,
+		helpstring("Modifiziert den Ident dieser Schaltflächenleiste.")
+	]
+	HRESULT CtrlID ([in]int iCtrlID);
+
+	[
+		id(33), 
+		propget,
+		helpstring("Liefert den erweiterten Darstellungsmode dieser Schaltflächenleiste.")
+	]
+	HRESULT StyleEx ([out, retval]long *pdwStyleEx);
+	[
+		id(33), 
+		propput,
+		helpstring("Modifiziert den erweiterten Darstellungsmode dieser Schaltflächenleiste.")
+	]
+	HRESULT StyleEx ([in]long dwStyleEx);
+
+	[
+		id(25),
+		helpstring("Liefert die Position einer Schaltfläche auf der Grundlage ihres ID's.")
+	]
+	HRESULT CommandToIndex ([in] int uiBttnID, [out, retval]int *Index);
+
+	[
+		id(26),
+		helpstring("Dockt die Toolbar an der gegebenen Position und Lage.")
+	]
+	HRESULT DockBar ([in] DOCKSTATE rgWhere, [in] int iLeft, [in] int iTop, [in] int iRight, [in] int iBottom);
+	[
+		id(27),
+		helpstring("Floatet die Toolbar an der gegebenen Position und Ausrichtung.")
+	]
+	HRESULT FloatBar ([in] ALIGNMODE rgMode, [in] int iLeft, [in] int iTop);
+	[
+		id(28),
+		propget,
+		helpstring("Liefert, ob eine Toolbar gedockt oder floatend ist.")
+	]
+	HRESULT IsFloating ([out, retval] VARIANT_BOOL *pfFloating);
+};
+
+[
+	uuid(07963876-3123-101C-BB62-00AA0018497C), 
+	odl, 
+	oleautomation, 
+	dual,
+	object, 
+	helpstring("Eine Sammlung von Schaltflächenleisten.")
+]  
+interface DControlToolBars : DTRiASCollection 
+{
+	[
+		id(50),
+		helpstring("Speichert den aktuellen Zustand der Toolbars unter dem angegebenen Namen.")
+	]
+	HRESULT SaveState (
+		[in, optional]VARIANT vKey, 
+		[in, optional]VARIANT vProject);
+
+	[
+		id(51),
+		helpstring("Liest den Zustand der Toolbars unter dem angegebenen Namen ein.")
+	]
+	HRESULT LoadState (
+		[in, optional]VARIANT vKey, 
+		[in, optional]VARIANT vProject);
+};
+
+[
+	uuid(07963873-3123-101C-BB62-00AA0018497C), 
+	odl, 
+	oleautomation, 
+	dual,
+	object, 
+	helpstring("Eine Schaltfläche einer Schaltflächenleiste.")
+]  
+interface DControlToolBarButton : DTRiASBaseClass
+{
+///////////////////////////////////////////////////////////////////////////////
+// TypeDefs
+	typedef 
+	[
+		public,
+		helpstring("Typ und Darstellungsstil eines ToolBarButtons.")
+	]
+	enum _tagBUTTONSTYLE {
+		BUTTONSTYLE_BUTTON = 0x00,		// TBSTYLE_BUTTON
+		BUTTONSTYLE_SEPARATOR = 0x01,	// TBSTYLE_SEP
+		BUTTONSTYLE_CHECK = 0x04,		// TBSTYLE_CHECK
+		BUTTONSTYLE_GROUP = 0x08,		// TBSTYLE_GROUP
+		BUTTONSTYLE_CHECKGROUP = 0x0c,	// TBSTYLE_CHECKGROUP
+		BUTTONSTYLE_NOKICKIDLE = 0x8000,
+	} BUTTONSTYLE;
+
+	typedef 
+	[
+		public,
+		helpstring("Status eines ToolBarButtons.")
+	]
+	enum _tagBUTTONSTATE {
+		BUTTONSTATE_CHECKED = 0x01,		//  TBSTATE_CHECKED
+		BUTTONSTATE_PRESSED = 0x02,		//  TBSTATE_PRESSED
+		BUTTONSTATE_ENABLED = 0x04,		//  TBSTATE_ENABLED
+		BUTTONSTATE_HIDDEN = 0x08,		//  TBSTATE_HIDDEN
+		BUTTONSTATE_INDETERMINATE = 0x10,	//  TBSTATE_INDETERMINATE
+		BUTTONSTATE_WRAP = 0x20,		//  TBSTATE_WRAP
+		BUTTONSTATE_ELLIPSES = 0x40,	// TBSTATE_ELLIPSES
+		BUTTONSTATE_NOKICKIDLE = 0x8000,
+	} BUTTONSTATE;
+
+// Properties verwalten
+	[
+		id(9), propget
+	] 
+	HRESULT Properties ([out, retval]DTRiASProperties **ppIProps);
+	
+	[
+		id(10)
+	] 
+	HRESULT CreateProperty ([in, optional]VARIANT vName, [in, optional]VARIANT vType, 
+		[in, optional]VARIANT vValue, [out, retval]DTRiASProperty **ppIProp);
+
+// ToolBarButton specifics
+	[
+		id(DISPID_VALUE), 
+		propget
+	]
+	HRESULT Name ([out, retval]BSTR *pbstrName);
+	[
+		id(DISPID_VALUE), 
+		propput
+	]
+	HRESULT Name ([in]BSTR bstrName);
+
+	[
+		id(30), 
+		propget,
+		helpstring("Liefert die Breite dieser Schaltfläche.")
+	]
+	HRESULT Width ([out, retval]long *piWidth);
+	[
+		id(30), 
+		propput,
+		helpstring("Modifiziert die Breite dieser Schaltfläche.")
+	]
+	HRESULT Width ([in]long iWidth);
+	
+	[
+		id(31), 
+		propget,
+		helpstring("Liefert den Beschreibungstext dieser Schaltfläche.")
+	]
+	HRESULT HelpText ([out, retval]BSTR *pbstrHelpText);
+	[
+		id(31), 
+		propput,
+		helpstring("Modifiziert den Beschreibungstext dieser Schaltfläche.")
+	]
+	HRESULT HelpText ([in]BSTR bstrHelpText);
+	
+	[
+		id(32), 
+		propget,
+		helpstring("Liefert den Kommando-Ident dieser Schaltfläche.")
+	]
+	HRESULT CmdID ([out, retval]int *piCmdID);
+	[
+		id(32), 
+		propput,
+		helpstring("Modifiziert den Kommando-Ident dieser Schaltfläche.")
+	]
+	HRESULT CmdID ([in]int iCmdID);
+
+	[
+		id(33), 
+		propget,
+		helpstring("Liefert den Darstellungsstil dieser Schaltfläche.")
+	]
+	HRESULT Style ([out, retval]BUTTONSTYLE *pdwStyle);
+	[
+		id(33), 
+		propput,
+		helpstring("Modifiziert den Darstellungsstil dieser Schaltfläche.")
+	]
+	HRESULT Style ([in]BUTTONSTYLE dwStyle);
+
+	[
+		id(34), 
+		propget,
+		helpstring("Liefert den Status dieser Schaltfläche.")
+	]
+	HRESULT State ([out, retval]BUTTONSTATE *pdwState);
+	[
+		id(34), 
+		propput,
+		helpstring("Modifiziert den Status dieser Schaltfläche.")
+	]
+	HRESULT State ([in]BUTTONSTATE dwState);
+
+	[
+		id(35),
+		helpstring("Liefert die zu dieser Schaltfläche zugeordnete Bitmap.")
+	]
+	HRESULT GetImage ([in, out]long *phBitmap, [in, out]int *piCnt, [out, retval]int *piOffsetInBmp);
+	
+	[
+		id(36),
+		helpstring("Ornet dieser Schaltfläche eine neue Bitmap zu.")
+	]
+	HRESULT AttachImage ([in]VARIANT vPicture, [in, optional]VARIANT iIndex, [in, optional]VARIANT vSizeX);
+
+	[
+		id(37), 
+		propput,
+		helpstring("Löst das zu der Schaltfläche zugeornete Kommando aus.")
+	]
+	HRESULT Value ([in]VARIANT_BOOL fClick);
+};
+
+[
+	uuid(07963878-3123-101C-BB62-00AA0018497C), 
+	odl, 
+	oleautomation, 
+	dual,
+	object, 
+	helpstring("Eine Sammlung von Schaltflächen einer Schaltflächenleiste.")
+]  
+interface DControlToolBarButtons : DTRiASCollection
+{
+	// intentionally left free
+};
+
+[
+	uuid(0796387C-3123-101C-BB62-00AA0018497C), 
+	odl, 
+	oleautomation, 
+	dual,
+	object, 
+	helpstring("Ein Steuerobjekt zur Modifikation des aktuellen Darstellungszustandes einer Schaltfläche.")
+]  
+interface DTRiASCmdUI : IDispatch 
+{
+// specific methods
+	[
+		id(DISPID_VALUE),
+		propput,
+		helpstring("Legt fest, ob das zugeordnete Steuerelement bedienbar ist.")
+	]
+	HRESULT IsEnabled ([in]VARIANT_BOOL fEnable);
+
+	[
+		id(40),
+		propput,
+		helpstring("Legt fest, ob wie zugeordnete Steuerelement aktiviert ist.")
+	]
+	HRESULT CheckState ([in]int iState);
+
+	[
+		id(41),
+		propput,
+		helpstring("Legt fest, ob das zugeordnete Steuerelement zugeschaltet ist.")
+	]
+	HRESULT IsOn ([in]VARIANT_BOOL fOn);
+
+	[
+		id(42),
+		propput,
+		helpstring("Legt den Beschreibungstext für das zugeordnete Steuerelement fest.")
+	]
+	HRESULT Text ([in]BSTR bstrNewText);
+
+	[
+		id(43),
+		propget,
+		helpstring("Liefert den Kommando-Ident des zugeordneten Steuerelementes.")
+	]
+	HRESULT CmdID ([out, retval]int *puiID);
+};
+
+[
+	uuid(0796387B-3123-101C-BB62-00AA0018497C), 
+	odl, 
+	oleautomation, 
+	dual,
+	object, 
+	helpstring("Callback-Interface für eine Schaltfläche.")
+]  
+interface DToolBarUIOwner : IDispatch 
+{
+// specific methods
+	[
+		id(30),
+		helpstring("Wird gerufen, um dem Steuerelement die Schaltflächenleiste zuzuordnen.")
+	]
+	HRESULT SetToolBarUIOwnerSite ([in]int uiID, [in]DControlToolBar *pIToolBar);
+
+	[
+		id(31),
+		helpstring("Wird gerufen, wenn das Nutzerinterface des Steuerelementes beeinflußt werden muß.")
+	]
+	HRESULT UpdateUI ([in]DTRiASCmdUI *pICmdUI);
+
+	[
+		id(32),
+		helpstring("Wird gerufen, wenn der Beschreibungstext des Steuerelementes benötigt wird.")
+	]
+	HRESULT GetDescription ([in]int uiID, [out, retval]BSTR *pbstrDesc);
+
+	[
+		id(DISPID_VALUE),
+		helpstring("Wird gerufen, wenn das zum Steueelement gehörige Kommando ausgelöst wurde.")
+	]
+	HRESULT FireCommand ([in]int uiID, [in]int nCode);
+};
+
+[
+	object,
+	uuid(8FB5DAD3-E4BD-11D1-8610-00600875138A),
+	dual,
+	helpstring("IStatusProgress Interface"),
+	pointer_default(unique)
+]
+interface IStatusProgress : IDispatch
+{
+	[
+		id(100),
+		propget,
+		helpstring("Liefert, ob das ProgressControl aktiv ist.")
+	]
+	HRESULT ProgressControlActive([out, retval] VARIANT_BOOL *pVal);
+
+	[
+		id(101),
+		helpstring("Setzt das ProgressControl einen Schritt weiter.")
+	]
+	HRESULT StepProgress();
+
+	[
+		id(102),
+		helpstring("Setzt das ProgressControl auf eine gegebene Position.")
+	]
+	HRESULT SetProgress ([in] int iPos);
+
+	[
+		id(103),
+		helpstring("Initialisiert das ProgressControl.")
+	]
+	HRESULT InitializeProgressControl([in] BSTR pcszMsg, [in] int iLow, [in] int iHigh, [in] VARIANT_BOOL bResetPos, [out, retval] VARIANT_BOOL *pSuccess);
+
+	[
+		id(104),
+		helpstring("Entfernt das ProgressControl.")
+	]
+	HRESULT UninitializeProgressControl();
+
+	[
+		id(105),
+		propput,
+		helpstring("Setzt den aktuell innerhalb des Progresscontrols angezeigten Text.")
+	]
+	HRESULT ProgressText ([in] BSTR bstrText);
+	[
+		id(105),
+		propget,
+		helpstring("Liefert den aktuell innerhalb des Progresscontrols angezeigten Text.")
+	]
+	HRESULT ProgressText ([out, retval] BSTR *pbstrText);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface zum verzögerten Hinzufügen einer Tablasche
+[ 
+	object,
+	uuid(880B0AC5-F55A-4D81-BEE5-7E56D57BC590), 
+	dual,
+	helpstring("ITabWindowCallback Interface"),
+	pointer_default(unique)
+]
+interface ITabWindowCallback : IDispatch
+{
+	[
+		id(1),
+		propget,
+		helpstring("Zugehöriges Tabfenster darf hinzugefügt werden")
+	]
+	HRESULT MayAddTabWindow([out, retval] VARIANT_BOOL *MayAdd);
+
+	[
+		id(100),
+		helpstring("Zugehöriges Tabfenster soll hinzugefügt werden")
+	]
+	HRESULT AddTabWindow();
+
+	[
+		id(101),
+		helpstring("Zugehöriges Tabfenster soll entfernt werden")
+	]
+	HRESULT DeleteTabWindow();
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface zur Verwaltung der Tablaschen 
+[ 
+	object,
+	uuid(CD52F6C5-B7F1-419E-B6B0-03CFFC81F4AE), 
+	dual,
+	helpstring("IManageTabWindows Interface"),
+	pointer_default(unique)
+]
+interface IManageTabWindows : IDispatch
+{
+	[
+		id(1), 
+		propget,
+		helpstring("Liefert, ob der Rahmen für die Tabfenster sichtbar ist.")
+	]
+	HRESULT Visible ([out, retval]VARIANT_BOOL *pfVisible);
+	[
+		id(1), 
+		propput,
+		helpstring("Modifiziert die Sichtbarkeit des Rahmens für die Tabfenster.")
+	]
+	HRESULT Visible ([in]VARIANT_BOOL fVisible);
+
+	[
+		id(2),
+		propget,
+		helpstring("Liefert die Anzahl der derzeit existierenden Tabfenster")
+	]
+	HRESULT Count ([out, retval] int *Cnt);
+
+	[
+		id(3),
+		propget,
+		helpstring("Liefert derzeit aktives Tabfenster")
+	]
+	HRESULT ActiveTabWindow ([out, retval] INT_PTR *Handle);
+
+	[
+		id(4),
+		propget,
+		helpstring("Liefert zu verwendendes Parentfenster")
+	]
+	HRESULT ParentWindow ([out, retval] INT_PTR *Handle);
+
+	[
+		id(100),
+		helpstring("Hinzufügen eines Tabfensters")
+	]
+	HRESULT AddTabWindow ([in] INT_PTR Wnd, [in] BSTR Name, [in] VARIANT Pict, [out, retval] INT_PTR *Handle);
+
+	[
+		id(101),
+		helpstring("Entfernen eines Tabfenster")
+	]
+	HRESULT DeleteTabWindow ([in] INT_PTR Handle);
+
+	[
+		id(102),
+		helpstring("Finden eines Tabfenster")
+	]
+	HRESULT FindTabWindow ([in] BSTR Name, [out, retval] INT_PTR *Handle);
+
+	[
+		id(103),
+		helpstring("Aktiviert ein Tabfenster")
+	]
+	HRESULT ActivateTabWindow ([in] INT_PTR Handle);
+
+	[
+		id(104),
+		helpstring("(Verzögertes) Hinzufügen eines Tabfensters")
+	]
+	HRESULT AddTabWindowDelayed ([in] BSTR Name, [in] ITabWindowCallback *CallBack);
+
+	[
+		id(105),
+		helpstring("Umbenennen eines Tabfenster")
+	]
+	HRESULT RenameTabWindow ([in] BSTR OldName, [in] BSTR NewName);
+
+	[
+		id(106),
+		helpstring("Setzt das anzuzeigende Bildchen")
+	]
+	HRESULT SetTabIcon ([in] INT_PTR hHandle, [in] VARIANT vIcon);
+
+	[
+		id(107),
+		helpstring("Freigeben eines (verzögerten) Tabfenster-Callbacks")
+	]
+	HRESULT DeleteTabWindowDelayed ([in] INT_PTR Handle);
+};
+
+#endif // _TRIASTOOLBARS_IDL
+

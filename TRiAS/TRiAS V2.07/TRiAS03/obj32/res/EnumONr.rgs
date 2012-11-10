@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiAS.EnumGeoObjects.1 = s 'Enumerator für TRiAS GeoObjekte'
+	{
+		CLSID = s '{0796381C-3123-101C-BB62-00AA0018497C}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {0796381C-3123-101C-BB62-00AA0018497C} = s 'Enumerator für TRiAS GeoObjekte'
+		{
+			val AppID = s '{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}'
+			ProgID = s 'TRiAS.EnumGeoObjects.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+}

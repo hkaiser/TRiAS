@@ -1,0 +1,23 @@
+HKEY_CLASSES_ROOT
+{
+	Registrar.RegisterObject.1 = s 'Registrar 1.0 Class'
+	{
+		CLSID = s '{CC118C85-B379-11CF-84E3-00AA0021F337}'
+	}
+	Registrar.RegisterObject = s 'Registrar 1.0 Class'
+	{
+		CLSID = s '{CC118C85-B379-11CF-84E3-00AA0021F337}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {CC118C85-B379-11CF-84E3-00AA0021F337} = s 'Registrar 1.0 Class'
+		{
+			ProgID = s 'Registrar.RegisterObject.1'
+			VersionIndependentProgID = s 'Registrar.RegisterObject'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'both'
+			}
+		}
+	}
+}

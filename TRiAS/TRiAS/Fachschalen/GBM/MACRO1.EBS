@@ -1,0 +1,1419 @@
+' **************************************************************************************
+' *                                                                                    *
+' *  Berechnung der Gebäude-, Dach- und versiegelten Flächen eines Grundstücks und     *
+' *  Speicherung der Ergebnisse in externen Access-Tabellen                            *
+' *  W. Mörtl (17. 02. 98)                                                             *
+' *                                                                                    *
+' *  An den mit >>> gekennzeichneten Stellen ist die notwendige Modifikation von der   *
+' *  Stand-alone- (dBASE) zur eingebundenen Variante (Access) erfolgt                  *
+' **************************************************************************************
+
+
+
+' ======================================================================================
+' anwendungsspezifische Konstanten
+Const strGrund = "Grundstück"			' Kurztexte der
+Const strGebaeude = "Gebäude"			' beteiligten Objektklassen
+Const strDach = "Dachteilfläche"
+Const strBeton = "versiegelte Fläche"
+Const strMTIdentNr = "Identifikationsnummer"	' Kurztext eines TRiAS-Merkmals
+
+Const strParamTabelle = "PARAMETER"		' >>> Access-Tabelle für die zu übergebenden Parameter
+Const strGlobal = "Global"				' >>> Abarbeitung aller Grundstücke (true) bzw.
+										' der nur recherchierten (false)
+Const strGebTabelle = "zw_pg1gb" 		' >>> Access-Tabelle für temporäre Ablage der Gebäude-Ergebnisse
+Const strIndex1 = "nfpg1gb"				' Index
+Const strGrundIdent1 = "nfp1_ide"		' Grundstücksidentifikationsnummer für strGebTabelle-Datei 
+Const strGebNummer = "nfp1_gnr"			' Gebäudenummer
+Const strGebFlaeche = "nfp1_gfl"		' Gebäudefläche
+Const strDachTabelle = "zw_pg2d"		' >>> Access-Tabelle für temporäre Ablage der Dachteile-Ergenisse
+Const strIndex2 = "nfpg2d"				' Index
+Const strGrundIdent2 = "nfp2_ide"		' Grundstücksidentifikationsnummer für strDachTabelle-Datei 
+Const strDachNummer = "nfp2_fln"		' Flächennummer eines Dachteils
+Const strDachFlaeche = "nfp2_flg"		' Flächengröße eines Dachteils
+Const strVersiegTabelle = "zw_pg2h"		' >>> Access-Tabelle für temporäre Ablage der
+										' Ergebnisse der versiegelte Flächen
+Const strIndex3 = "nfpg2h"				' Index
+Const strGrundIdent3 = "nfp2_ide"		' Grundstücksidentifikationsnummer für strVersiegTabelle-Datei 
+Const strVersiegNummer = "nfp2_fln"		' Nummer einer befestigten Fläche
+Const strVersiegFlaeche = "nfp2_flg"	' Größe einer befestigten Fläche
+
+Const strProjTabelle = "VERZ"			' Access-Tabelle der TRiAS-Projekte
+Const strLfdProjNr = "tridb_nr"			' laufende Nummer eines TRiAS-Projektes
+Const strProjPfad = "tridb_vz"			' vollständiger Pfadname eines TRiAS-Projektes
+Const strProjBez = "tridb_bz"			' >>> Beschreibung eines TRiAS-Projektes
+
+
+
+' ======================================================================================
+
+Option Explicit						' alle Variable müssen explizit deklariert sein
+
+' globale Variable
+Public strBasisPfad As String		' >>>
+Public strDatenPfad As String		' >>>
+Public strAccessDatei As String		' >>> Access-Datei (mit Attribut)
+
+Private docGD As GeoDocument		' Projekt
+Private clsGrund As GeoClass		' Objektklasse (Grundstück)
+Private objsGrund As GeoObjects		' GeometrieObjekte (Grundstück)
+Private objsTObj As GeoObjects		' Teilobjekte, die innerhalb von objGrund liegen
+
+Private dbsJet As Database			' Microsoft Jet-Datenbank
+Private rstParameter As Recordset	' >>> Recordset-Objekt (Access-Tabelle "PARAMETER")
+Private fldGlobal As Field			' >>> Spalte strGlobal der Access-Tabelle "PARAMETER"
+Private bGlobal As Boolean			' >>> Abarbeitung aller Grundstücke (true) bzw. nur
+									' der recherchierten (false)
+Private rstGebaeude As Recordset	' Recordset-Objekt (Acess-Tabelle "zw_pg1gb")
+Private rstDach As Recordset		' Recordset-Objekt (Acess-Tabelle "zw_pg2d")
+Private rstVersieg As Recordset		' Recordset-Objekt (Acess-Tabelle "zw_pg2h")
+Private rstProjekte As Recordset	' Recordset-Objekt (Acess-Tabelle "VERZ")
+Private fldProjNr As Field
+Private fldProjPfad  As Field
+Private fldProjBez  As Field		' >>>
+Private intAusgProj					' Anzahl der ausgewählten Projekte
+
+Private bErrFile1 As Boolean		' Fehlerdatei angelegt (True)
+Private bErrFile2 As Boolean		' Fehlerdatei für eines der nacheinander abzuarbeitenden
+									' Projekte angelegt (True)
+
+' einzugebende Parameter
+Private strProjAusw As String	' Nummern der ausgewählten Projekte (durch Kommata getrennt)
+Private bAktProj As Boolean		' nur aktuelles Projekt (True) bzw. mehrere Projekte (False) abarbeiten
+
+' Parameter für Button-Funktionen
+Private tbFlaeche As ToolBar
+Private tbbGebaeude As ToolBarButton
+Private tbbDach As ToolBarButton
+Private tbbBeton As ToolBarButton
+Private tbbKomplett As ToolBarButton
+Private tbbEnde As ToolBarButton
+
+' weitere Parameter
+Private bAbbr As Boolean			' Abbruch der Berechnug durch den Anwender
+Private lngONrErr As Long 			' Objektnummer des bearbeiteten Grundstücks bei
+									' unvorhergesehenem Abbruch wegen Programmfehler
+
+
+
+' ======================================================================================
+' Programmkonstanten
+Const NL = Chr$(13) + Chr$(10)		' NewLine
+
+' Titel der Message-Boxen
+Const strBoxTitel = "Flächenberechnung"
+
+' Text für Statuszeile und ToolTip
+Const strTool1 = "Berechnung der einzelnen Gebäudeflächen"+NL+"Gebäudeflächen"
+Const strTool2 = "Berechnung der einzelnen Dachteilflächen"+NL+"Dachteilflächen"
+Const strTool3 = "Berechnung der einzelnen versiegelten Flächen"+NL+"Versiegelte Flächen"
+Const strTool4 = "Berechnung der Gebäude-, Dachteil- und versiegelten Flächen"+NL+"Alle Flächen"
+Const strTool5 = "Programm beenden"+NL+"Programmende"
+
+' Fehlerausschriften für TRiAS-Routinen
+Const strErrGetIntersectObjects = "GetIntersectObjects"
+Const strErrTopRelation = "TopRelation"
+
+
+' ======================================================================================
+' Subroutine-Deklarationen
+Declare Sub Komplett_Click ()
+Declare Sub Ende_Click ()
+Declare Sub InitVariablen ()
+Declare Sub AccessOpen ()			' >>>
+Declare Sub ParameterTesten ()		' >>>
+Declare Sub InstallToolbar ()
+Declare Sub RecherchierteObjekte (objsBO As GeoObjects, strKText As String)
+Declare Sub ListBoxFill (Pfade() As String)
+Declare Sub AddProjNr (strAusw As String, intProjNr As Integer)
+Declare Sub ArrayFill (Pfade() As String, AusgProj() As String)
+Declare Sub Abarbeitung (clsTestObj As GeoClass, rstPG As Recordset, _
+						 fldGrundIdent As Field, fldNummer As Field, _
+						 fldFlInhalt As Field, strGeduld As String)
+Declare Sub ZugehoerigeObjekte (objGrund As GeoObject, clsTestObj As GeoClass, _
+								objsZugehObj As GeoObjects, bMehrf As Boolean)
+Declare Sub FlaechenErmitteln (objsZugehObj As GeoObjects, rstPG As Recordset, _
+							   fldGrundIdent As Field, fldNummer As Field, _
+							   fldFlInhalt As Field, strGrundIdent As String, _
+							   bMehrf As Boolean)
+Declare Sub WriteStringField (fldFeldName As Field, strInhalt As String)
+Declare Sub LoeschenInTRiAS (objsGO As GeoObjects)
+Declare Sub TempObjekteLoeschen ()
+Declare Sub RestObjekte ()
+Declare Sub RestObjekteSuchen (strKurzText As String, objsReste As GeoObjects) 
+Declare Sub ErrFile (strErrText As String)
+Declare Sub EndeBehandlung ()
+Declare Sub AbbruchBeiFehler (FehlerNr As Long)
+Declare Sub TRiASFehler (strFehlerText As String, Optional lngONr1 As Variant, _
+						 Optional lngONr2 As Variant)
+Declare Sub StatistikFehler (Optional lngONr As Variant)
+
+' Funktions-Deklarationen
+Declare Function SelectDlgFunc (ControlName$, Action%, SuppValue%) As Integer
+Declare Function NummerAktProjekt As Integer
+Declare Function RestZeit (datStart As Date, lngAkt As Long, lngEnde As Long) As String
+Declare Function FlaechenInhalt (objGO As GeoObject) As Double
+Declare Function MasseinheitAbtrennen (MWert$, MZahl#) As String
+Declare Function RecordExist (rstPG As Recordset, strGrundIdent As String, _
+							  strNummer As String) As Boolean
+Declare Function ThisNameMultiple (strLfdKennz As String, objsZugehObj As GeoObjects) _
+								   As Boolean
+Declare Function SatzAnzahl As Integer
+
+
+
+' ======================================================================================
+' zum Start von Main() aus dem Editor
+Sub BeginScript ()
+' Pfade für BasicScript und Daten
+	strBasisPfad = Basic.HomeDir$
+	Dim intLaen As Integer
+	intLaen = Len (strBasisPfad)
+    strDatenPfad = Left (strBasisPfad, intLaen - 5) + "DATEN" ' vom Script-Pfad "MACRO" abschneiden 
+    strAccessDatei = "\gbm_0.mdb"           ' >>> Access-Datei (mit Attribut)
+End Sub ' BeginScript
+
+
+
+' ======================================================================================
+' Hauptprogramm
+Sub Main()
+
+' Reaktion bei Runtime-Error
+	On Error GoTo CheckError0
+
+' Geduldsanzeige starten
+	Msg.Open NL+"  Die Berechnung wird vorbereitet ... bitte warten!  "+NL,,False,False
+
+' weitere Variablen initialisieren
+  	Set docGD = GetActiveDocument
+	InitVariablen
+	bErrFile2 = False	' für keines der nacheinander abzuarbeitenden Projekte wurde
+						' bisher ein Fehlerprotokoll angelegt
+
+' >>>-Anfang
+' Access-Datei für Zugriff öffnen
+	AccessOpen
+
+' Test, ob alle oder nur die recherchierten Grundstücke abgearbeitet werden sollen
+	ParameterTesten
+
+' nur Abarbeitung der recherchierten Grundstücke
+	If bGlobal = False Then
+	    Msg.Close			' Geduldsanzeige beenden
+		Komplett_Click		' kompletter Berechnungsteil (ohne Toolbar)
+		Ende_Click
+		End
+	End If
+
+' Abarbeitung aller Grundstücke von (möglicherweise) mehreren Projekten
+' >>>-Ende
+' Auswahl der zu bearbeitenden Projekte
+	Dim Pfade() As String
+	Begin Dialog ListBoxTemplate ,,285,145,"Auswahl der abzuarbeitenden GBM-Projekte", _
+								 .SelectDlgFunc
+		OptionGroup .ProjAnzahl
+			OptionButton 8,6,150,8,"Berechnung nur im aktuellen Projekt",.Einzel
+			OptionButton 8,16,150,8,"Berechnung in mehreren Projekten",.Mehrere
+		Text 8,30,70,8,"&Vorhandene Projekte:"
+		ListBox 8,42,210,72,Pfade$,.Pfade
+		Text 8,113,90,8,"&Ausgewählte Projekte:"
+		TextBox 8,125,210,10,.Auswahl,0
+		OKButton 230,8,45,14
+		PushButton 230,28,45,14,"Beenden",.EndButton
+		PushButton 230,123,45,14,"Löschen",.DelButton
+	End Dialog
+
+' ListBox mit Pfaden aus VERZ-Datei füllen
+	ListBoxFill	Pfade()
+
+' Projektauswahl-Dialog erneut/nicht mehr anzeigen (True/False)
+	Dim bWeiter As Boolean
+	Do
+		Dim ListBoxDialog As ListBoxTemplate
+		Dim intR2 As Integer
+		intR2 = Dialog(ListBoxDialog)
+
+		' Reaktion auf Nutzung des Projektauswahl-Dialogs
+		If intR2 = -1 Then			' OKButton
+		    Msg.Close	' Geduldsanzeige beenden
+
+			If bAktProj = True Then 	' nur das aktuelle Projekt bearbeiten (bisheriger Programmzweig)
+				InstallToolbar			' Toolbar installieren
+				SetBreakScript (False)	' Script soll noch nicht beendet werden
+				bWeiter = False
+			Else						' mehrere Projekte bearbeiten
+				Dim AusgProj() As String	' vollständige Pfadnamen der ausgewählten Projekte
+				ArrayFill Pfade(), AusgProj()
+				Dim i As Integer
+				For i = 0 To intAusgProj-1
+					If i > 0 Then
+						docGD.Save
+						docGD.CloseIt							' aktuelles Projekt schließen
+						Set docGD = OpenDocument (AusgProj(i))	' nächstes Projekt öffnen
+						InitVariablen
+					End If
+					Komplett_Click		' kompletter Berechnungsteil (ohne Toolbar)
+				Next i
+				bWeiter = True
+			End If
+		ElseIf intR2 = 1 Then		' EndButton "Beenden"
+			Ende_Click
+			End
+		End If
+	Loop While (bWeiter = True)
+
+	Exit Sub
+
+
+' Abbruch bei Runtime-Error
+CheckError0:
+	AbbruchBeiFehler Err.Number
+
+End Sub ' Main
+
+
+
+' ======================================================================================
+' >>> zum Start von Main() aus einer übergeordneten Ebene
+Sub Start (strPfad1 As String, strPfad2 As String)
+	strBasisPfad = strPfad1
+	strDatenPfad = strPfad2
+    strAccessDatei = ""
+	Main
+End Sub ' Start
+
+
+
+
+' ======================================================================================
+' Unterprogramme
+' --------------------------------------------------------------------------------------
+' Berechnung der einzelnen Grundflächen aller Gebäude eines Grundstücks
+' (Call-Back-Function)
+Sub Gebaeude_Click ()
+
+	On Error GoTo CheckError1	' Reaktion bei Runtime-Error
+
+	If bAktProj = True Then
+		tbbGebaeude.State = 0	' ToolBarButton deaktivieren, u.z. schon hier weil bis zum Aufruf
+		tbbDach.State = 0		' der Routine "Abarbeitung" mehrere Sekunden vergehen können
+		tbbBeton.State = 0
+		tbbKomplett.State = 0
+		tbbEnde.State = 0
+	End If
+
+	If bGlobal = True Then	' >>>
+		' Geduldsanzeige starten
+		Msg.Open NL+"  Die Berechnung wird weiter vorbereitet ... bitte noch etwas Geduld!  "+NL,,False,False
+	End If					' >>>
+
+	Dim clsGebaeude As GeoClass					' Objektklasse "Gebäude"
+	Set clsGebaeude = docGD.GetClass (strGebaeude)
+	If (clsGebaeude Is Nothing) Then
+		Msg.Close
+		ErrFile "Das Projekt hat keine Gebäude!"
+		Exit Sub
+	End If
+
+	Dim strGeduld As String
+	strGeduld = "Gebäudeflächen"
+
+	Dim fldGrundIdent As Field
+	Set fldGrundIdent = rstGebaeude.Fields (strGrundIdent1)
+	Dim fldGebNummer As Field
+	Set fldGebNummer = rstGebaeude.Fields (strGebNummer)
+	Dim fldGebFlaeche As Field
+	Set fldGebFlaeche = rstGebaeude.Fields (strGebFlaeche)
+
+	Abarbeitung clsGebaeude, rstGebaeude, fldGrundIdent, fldGebNummer, fldGebFlaeche, strGeduld
+
+	Exit Sub
+
+
+' Abbruch bei Runtime-Error
+CheckError1:
+	AbbruchBeiFehler Err.Number
+	If Err.Number = 18 Then bAbbr = True	' Abbruch durch den Anwender
+
+End Sub ' Gebaeude_Click ()
+
+
+' --------------------------------------------------------------------------------------
+' Berechnung der einzelnen Grundflächen aller Dachteile eines Grundstücks
+' (Call-Back-Function)
+Sub Dachteil_Click ()
+
+	On Error GoTo CheckError2	' Reaktion bei Runtime-Error
+
+	If bAktProj = True Then
+		tbbGebaeude.State = 0		' ToolBarButton deaktivieren
+		tbbDach.State = 0
+		tbbBeton.State = 0
+		tbbKomplett.State = 0
+		tbbEnde.State = 0
+	End If
+
+	If bGlobal = True Then	' >>>
+		' Geduldsanzeige starten
+		Msg.Open NL+"  Die Berechnung wird weiter vorbereitet ... bitte noch etwas Geduld!  "+NL,,False,False
+	End If					' >>>
+
+	Dim clsDach As GeoClass         	' Objektklasse "Dachteil"
+	Set clsDach = docGD.GetClass (strDach)
+	If (clsDach Is Nothing) Then
+		Msg.Close
+		ErrFile "Das Projekt hat keine Dachteile!"
+		Exit Sub
+	End If
+
+	Dim strGeduld As String
+	strGeduld = "Dachteilflächen"
+
+	Dim fldGrundIdent As Field
+	Set fldGrundIdent = rstDach.Fields (strGrundIdent2)
+	Dim fldDachNummer As Field
+	Set fldDachNummer = rstDach.Fields (strDachNummer)
+	Dim fldDachFlaeche As Field
+	Set fldDachFlaeche = rstDach.Fields (strDachFlaeche)
+
+	Abarbeitung clsDach, rstDach, fldGrundIdent, fldDachNummer, fldDachFlaeche, strGeduld
+
+	Exit Sub
+
+
+' Abbruch bei Runtime-Error
+CheckError2:
+	AbbruchBeiFehler Err.Number
+	If Err.Number = 18 Then bAbbr = True	' Abbruch durch den Anwender
+
+End Sub ' Dachteil_Click ()
+
+
+' --------------------------------------------------------------------------------------
+' Berechnung der einzelnen versiegelten Flächen eines Grundstücks (Call-Back-Function)
+Sub Versiegelung_Click ()
+
+	On Error GoTo CheckError3	' Reaktion bei Runtime-Error
+
+	If bAktProj = True Then
+		tbbGebaeude.State = 0	' ToolBarButton deaktivieren
+		tbbDach.State = 0
+		tbbBeton.State = 0
+		tbbKomplett.State = 0
+		tbbEnde.State = 0
+	End If
+
+	If bGlobal = True Then	' >>>
+		' Geduldsanzeige starten
+		Msg.Open NL+"  Die Berechnung wird weiter vorbereitet ... bitte noch etwas Geduld!  "+NL,,False,False
+	End If					' >>>
+
+	Dim clsBeton As GeoClass			' Objektklasse "versiegelte Fläche"
+	Set clsBeton = docGD.GetClass (strBeton)
+	If (clsBeton Is Nothing) Then
+		Msg.Close
+		ErrFile "Das Projekt hat keine versiegelten Flächen!"
+		Exit Sub
+	End If
+
+	Dim strGeduld As String
+	strGeduld = "versiegelten Flächen"
+
+	Dim fldGrundIdent As Field
+	Set fldGrundIdent = rstVersieg.Fields (strGrundIdent3)
+	Dim fldVersiegNummer As Field
+	Set fldVersiegNummer = rstVersieg.Fields (strVersiegNummer)
+	Dim fldVersiegFlaeche As Field
+	Set fldVersiegFlaeche = rstVersieg.Fields (strVersiegFlaeche)
+
+	Abarbeitung clsBeton, rstVersieg, fldGrundIdent, fldVersiegNummer, fldVersiegFlaeche, _
+				strGeduld
+
+	Exit Sub
+
+
+' Abbruch bei Runtime-Error
+CheckError3:
+	AbbruchBeiFehler Err.Number
+
+End Sub ' Versiegelung_Click ()
+
+
+' --------------------------------------------------------------------------------------
+' Berechnung aller Flächen (Gebäude, Dachteile, versiegelte Flächen) eines Grundstücks
+' (Call-Back-Function)
+Sub Komplett_Click ()
+
+'	' Suchen und (evtl.) anzeigen von ungewollten Restobjekten
+'	Msg.Open NL+"  Suche nach ungewollten Teilobjekten ... bitte warten!  "+NL,,False,False
+'
+'	Dim objsReste As GeoObjects
+'	Set objsReste = docGD.CreateGeoObjectsCollection()
+'	RestObjekteSuchen strGebaeude, objsReste
+'	RestObjekteSuchen strDach, objsReste
+'	RestObjekteSuchen strBeton, objsReste
+'
+'	Msg.Close
+'
+'	If objsReste.Count > 0 Then
+'		Dim objRWin As GeoObjectWin
+'		Set objRWin = objsReste.CreateGeoObjectWin()
+'		objRWin.Name$ = "Teilobjekte "	'Titel des Recherchefensters
+'		objRWin.Visible = True			'Recherchefenster anzeigen
+'		MsgBox "Stellen Sie sicher, daß die Objekte in dem neuen Recherchefenster" + _
+'				NL + "nicht in die Berechnung mit einbezogen werden!" + _
+'				NL + "Das Programm muß vorerst abgebrochen werden.", _
+'				ebExclamation, strBoxTitel
+'		End
+'	End If
+
+	bAbbr = False	' (noch) kein Abbruch durch den Anwender
+
+	Gebaeude_Click
+	If bAbbr = True Then Exit Sub
+	Dachteil_Click
+	If bAbbr = True Then Exit Sub
+	Versiegelung_Click
+
+End Sub ' Komplett_Click ()
+
+
+' --------------------------------------------------------------------------------------
+' Betätigung des EndeButtons (Call-Back-Function)
+Sub Ende_Click ()
+
+	On Error GoTo CheckError4	' Reaktion bei Runtime-Error
+
+	If bAktProj = True Then
+		tbbGebaeude.State = 0	' ToolBarButton deaktivieren
+		tbbDach.State = 0
+		tbbBeton.State = 0
+		tbbKomplett.State = 0
+		tbbEnde.State = 0
+	End If
+	
+	EndeBehandlung
+
+	Beep
+
+	If bErrFile2 = False Then
+		MsgBox "Die Berechnung wurde erfolgreich durchgeführt !", _
+			   ebInformation, strBoxTitel
+	Else
+		MsgBox "Die Berechnung wurde durchgeführt." & NL & _
+			   "Es wurde mindestens eine Fehlerdatei angelegt !", _
+			   ebInformation, strBoxTitel
+	End If
+
+	Exit Sub
+
+
+' Abbruch bei Runtime-Error
+CheckError4:
+	AbbruchBeiFehler Err.Number
+
+End Sub ' Ende_Click ()
+
+
+' --------------------------------------------------------------------------------------
+' Variablen nach Öffnen eines Projektes initialisieren
+Sub InitVariablen ()
+	Set clsGrund = docGD.GetClass (strGrund)	' Objektklasse "Grundstück"
+	If (clsGrund Is Nothing) Then
+	    Msg.Close
+		MsgBox "Das Projekt hat keine Grundstücke!", ebCritical, strBoxTitel
+		End
+	End If
+
+	' Test, ob Statistik-Erweiterung geladen ist durch den Versuch, von einem beliebigen
+	' Grundstück den Flächeninhalt zu ermitteln
+	Set objsGrund = clsGrund.GetObjects(OT_Area)
+	Dim ft As GeoFeature	
+	Set ft = objsGrund(1).GetFeature("Flächeninhalt")
+	If (ft Is Nothing) Then StatistikFehler
+
+	bErrFile1 = False	' Fehlerdatei (noch) nicht angelegt
+	lngONrErr = -1		' Objektnummer bei Abbruch wegen Programmfehler
+End Sub ' InitVariablen
+
+
+' --------------------------------------------------------------------------------------
+' ListBox mit den laufenden Nummern und den vollständigen Pfadnamen der möglichen
+' TRiAS-Projekte füllen
+Sub ListBoxFill (Pfade() As String)
+	
+	Dim intAnz As Integer
+	intAnz = SatzAnzahl	' Anzahl der Sätze in strProjTabelle (nicht RecordCount benutzen !!!)
+	ReDim Pfade(intAnz)
+
+	rstProjekte.MoveFirst
+	Dim i As Integer
+	i = 0
+	Dim strZK1 As String, strZK2 As String
+
+	Do Until rstProjekte.EOF
+		strZK1 = ""
+		If (Not IsNull(fldProjNr.Value)) Then
+			strZK1 = fldProjNr.Value
+		Else
+			ErrFile "In der Tabelle " & strProjTabelle & " fehlt eine laufende Projektnummer !"
+		End If
+		strZK2 = ""
+		If (Not IsNull(fldProjBez.Value)) Then
+			strZK2 = fldProjBez.Value
+		Else
+			ErrFile "In der Tabelle " & strProjTabelle & " fehlt ein Pfadname !"
+		End If
+		If strZK1 <> "" And strZK2 <> "" Then
+			Pfade(i) = strZK1 + ":  " + strZK2
+			i = i + 1
+		End If
+		rstProjekte.MoveNext
+	Loop
+
+End Sub ' ListBoxFill
+
+
+' --------------------------------------------------------------------------------------
+' weitere Projektnummer (evtl.) in die TextBox eintragen, aber vorher prüfen, ob diese
+' Nummer nicht schon vorhanden ist
+Sub AddProjNr (strAusw As String, intProjNr As Integer)
+	Dim intLaenge As Integer, i As Integer, intPos As Integer
+	Dim strProjNr As String, strTS As String
+	intLaenge = Len(strAusw)
+	strProjNr = Trim(Str(intProjNr))
+	i = 1	' Position in strAusw, ab der nach einem Komma gesucht wird
+	Do
+		intPos = InStr (i, strAusw, ",")
+		If intPos > 0 Then		' Komma gefunden
+			strTS = Mid$ (strAusw, i, intPos-i)
+			i = intPos + 1
+		Else				' kein Komma (mehr) enthalten
+			strTS = Mid$ (strAusw, i, i)
+			i = intLaenge + 1
+		End If
+		If strTS = strProjNr Then Exit Sub	' Test, ob intProjNr schon in strAusw enthalten ist
+	Loop While (i <= intLaenge)
+	DlgText "Auswahl", strAusw & "," & strProjNr
+	intAusgProj = intAusgProj + 1	' Anzahl der ausgewählten Projekte inkrementieren
+End Sub ' AddProjNr
+
+
+' --------------------------------------------------------------------------------------
+' Feld AusgProj() mit den vollständigen Pfadnamen der ausgewählten Projekte füllen
+Sub ArrayFill (Pfade() As String, AusgProj() As String)
+
+	ReDim AusgProj(intAusgProj)
+
+	Dim intLaenge As Integer, i As Integer, j As Integer, intPos As Integer
+	Dim strTS As String, strPfad As String
+	intLaenge = Len(strProjAusw)
+	i = 1	' Position in strProjAusw, ab der nach einem Komma gesucht wird
+	j = 0	' Index des zu füllenden Feldes AusgProj()
+	Do
+		intPos = InStr (i, strProjAusw, ",")
+		If intPos > 0 Then		' Komma gefunden
+			strTS = Mid$ (strProjAusw, i, intPos-i)
+			i = intPos + 1
+		Else					' kein Komma (mehr) enthalten
+			strTS = Mid$ (strProjAusw, i, i)
+			i = intLaenge + 1
+		End If
+		strPfad = Pfade(Val(strTS)-1)	' Zeile aus Feld Pfade() enthält noch die laufende Projektnummer,
+		intPos = InStr (strPfad, ": ")	' die mit ": " vom eigentlichen Pfadnamen getrennt ist
+		If intPos > 0 Then
+			AusgProj(j) = Right$ (strPfad, Len(strPfad)-intPos-2)
+		Else
+			ErrFile "Zeile im Feld Pfade() enthält nicht ':' !?"
+		End If
+		j = j + 1
+	Loop While (i <= intLaenge And j < intAusgProj)
+
+End Sub ' ArrayFill
+
+
+' --------------------------------------------------------------------------------------
+' Abarbeitung der Objekt der zu testenden Klasse clsTestObj (u.z. Gebäude, Dachteile bzw.
+' versiegelte Flächen)
+Sub Abarbeitung (clsTestObj As GeoClass, rstPG As Recordset, fldGrundIdent As Field, _
+				 fldNummer As Field, fldFlInhalt As Field, strGeduld As String)
+' >>>-Anfang
+	If bGlobal = True Then	' Abarbeitung aller Grundstücke
+		Set objsGrund = clsGrund.GetObjects(OT_Area)	' alle Objekte der Objektklasse "Grundstück"
+	Else						' nur Abarbeitung der recherchierten Grundstücke
+		Set objsGrund = docGD.CreateGeoObjectsCollection()
+		RecherchierteObjekte objsGrund, strGrund
+
+		If objsGrund.Count = 0 Then	' es wurden in TRiAS keine Grundstücke recherchiert
+			Msg.Close
+			MsgBox "Es wurden keine Grundstücke recherchiert !", ebCritical, strBoxTitel
+			EndeBehandlung
+			End
+		End If
+	End If
+' >>>-Ende
+
+    Msg.Close	' Geduldsanzeige beenden (wurde vor Aufruf von "Abarbeitung" gestartet)
+
+	' Geduldsanzeige starten
+    Msg.Open "Berechnung der "+strGeduld+NL+NL, , True, True
+
+	' alle markierten Grundstücke abarbeiten
+	Dim gftIdentNr As GeoFeature	' Merkmal eines TRiAS-Objektes
+	Dim strMWIdentNr As String		' Wert des Merkmals gftIdentNr
+	Dim lngAnzGrund As Long, j As Long
+	lngAnzGrund = objsGrund.Count	' Anzahl und
+	j = 1							' Zähler der recherchierten Grundstücke 
+	Dim objGrund As GeoObject
+	Dim objsZugehObj As GeoObjects	' Objekte, die ganz oder teilweise innerhalb von objGrund liegen
+	Dim strKopfText As String, strRZ As String	' Text für Geduldsanzeige
+	Dim bMehrf As Boolean	' aus mindestens einem Originalobjekt entstehen mehr als
+							' ein Teilobjekt (mit dem gleichen Objektnamen) (True)
+	Dim datStart As Date			' Startzeitpunkt
+	datStart = Now()
+
+	For Each objGrund In objsGrund
+
+		Msg.Thermometer = j / lngAnzGrund * 100
+
+		Set gftIdentNr = objGrund.GetFeature (strMTIdentNr)
+		If (gftIdentNr Is Not Nothing) Then
+			strMWIdentNr = Trim$(gftIdentNr.Feature$)	' Grundstück hat Identifikationsnummer
+		Else
+			strMWIdentNr = "unbenannt"
+		End If
+
+		strKopfText = "Berechnung der " & strGeduld & NL & _
+					"Projekt  " & LCase$(docGD.Name$) & ":  Grundstück  " & strMWIdentNr
+		Msg.Text = strKopfText
+
+		If j > 1 Then
+			strRZ = RestZeit (datStart, j, lngAnzGrund)
+			If Val(strRZ) > 0 Then Msg.Text = strKopfText & NL & _
+											"(verbleibende Zeit noch ca. " & strRZ & " min)"
+		End If
+		j = j + 1
+		lngONrErr = objGrund.Value		' Vorsichtsmaßnahme für unvorhergesehenen Fehlerfall
+
+		' alle Objekte bzw. Teilobjekte des Grundstückes zusammenstellen
+		bMehrf = False
+		ZugehoerigeObjekte objGrund, clsTestObj, objsZugehObj, bMehrf
+		FlaechenErmitteln objsZugehObj, rstPG, fldGrundIdent, fldNummer, fldFlInhalt, _
+						  strMWIdentNr, bMehrf
+		LoeschenInTRiAS objsTObj		' Teilobjekt(e) gleich wieder löschen
+	
+	Next objGrund
+
+    Msg.Close	' Geduldsanzeige beenden
+
+	If bAktProj = True Then
+		tbbGebaeude.State = BUTTONSTATE_Enabled		' ToolBarButton wieder aktivieren
+		tbbDach.State = BUTTONSTATE_Enabled
+		tbbBeton.State = BUTTONSTATE_Enabled
+		tbbKomplett.State = BUTTONSTATE_Enabled
+		tbbEnde.State = BUTTONSTATE_Enabled
+	End If
+
+End Sub ' Abarbeitung
+
+
+' --------------------------------------------------------------------------------------
+' Access-Datei für Zugriff öffnen
+Sub AccessOpen ()
+
+	Set dbsJet = OpenDatabase (strDatenPfad+strAccessDatei, False, False, "")
+	Set rstParameter = dbsJet.OpenRecordset (strParamTabelle)
+	Set fldGlobal = rstParameter.Fields (strGlobal)
+	Set rstProjekte = dbsJet.OpenRecordset (strProjTabelle)
+	Set fldProjNr = rstProjekte.Fields (strLfdProjNr)
+	Set fldProjPfad = rstProjekte.Fields (strProjPfad)
+	Set fldProjBez = rstProjekte.Fields (strProjBez)
+	Set rstGebaeude = dbsJet.OpenRecordset (strGebTabelle)
+	Set rstDach = dbsJet.OpenRecordset (strDachTabelle)
+	Set rstVersieg = dbsJet.OpenRecordset (strVersiegTabelle)
+
+	rstGebaeude.Index = strIndex1	' Indexfelder für Suche festlegen
+	rstDach.Index = strIndex2		' eines Access-Satzes
+	rstVersieg.Index = strIndex3	' festlegen
+End Sub ' AccessOpen
+
+
+' --------------------------------------------------------------------------------------
+' >>> eigentlich geht es nur darum zu testen, ob alle oder nur die recherchierten
+' Grundstücke abgearbeitet werden sollen;
+' da aber nicht ganz klar ist, wie der Inhalt des Ja/Nein-Access-Feldes fldGlobal auf
+' einfache Weise ausgelesen und getestet werden kann, dieser nachfolgende Aufwand
+Sub ParameterTesten ()
+
+	rstParameter.MoveFirst
+	If (IsNull(fldGlobal.Value)) Then
+		MsgBox "Feld '" & strGlobal & "' in der Tabelle '" & strParamTabelle & _
+				"' ist nicht belegt", ebCritical, strBoxTitel
+		Do
+			Dim strGlob As String
+			strGlob = AskBox$ ("Abarbeitung aller Grundstücke (Eingabe von 'a' )" & NL & _
+						"Abarbeitung der recherchierten Grundstücke (Eingabe von 'r' )")
+			If strGlob = "a" Then
+				fldGlobal.Value = True
+			ElseIf strGlob = "r" Then
+				fldGlobal.Value = False
+			End If
+		Loop While (IsNull(fldGlobal.Value))
+	End If
+
+	Dim vGlobal As Variant
+	vGlobal = fldGlobal.Value
+	bGlobal = CBool (vGlobal)
+
+End Sub ' ParameterTesten
+
+
+' --------------------------------------------------------------------------------------
+' Toolbar installieren
+Sub InstallToolbar ()
+	Dim tbbGebaeudeLoc As New ToolBarButton		' ToolBarButton "Gebaeude"
+	tbbGebaeudeLoc.Name$ = "Gebaeude"			' Name der Call-Back-Function
+	tbbGebaeudeLoc.State = BUTTONSTATE_Enabled
+	tbbGebaeudeLoc.HelpText$ = strTool1			' Text für Statuszeile und ToolTip
+	Dim tbbDachLoc As New ToolBarButton			' ToolBarButton "Dachteil"
+	tbbDachLoc.Name$ = "Dachteil"
+	tbbDachLoc.State = BUTTONSTATE_Enabled
+	tbbDachLoc.HelpText$ = strTool2
+	Dim tbbBetonLoc As New ToolBarButton		' ToolBarButton "Versiegelung"
+	tbbBetonLoc.Name$ = "Versiegelung"
+	tbbBetonLoc.State = BUTTONSTATE_Enabled
+	tbbBetonLoc.HelpText$ = strTool3
+	Dim tbbKomplettLoc As New ToolBarButton		' ToolBarButton "Komplett"
+	tbbKomplettLoc.Name$ = "Komplett"
+	tbbKomplettLoc.State = BUTTONSTATE_Enabled
+	tbbKomplettLoc.HelpText$ = strTool4
+	Dim tbbEndeLoc As New ToolBarButton			' ToolBarButton "Ende"
+	tbbEndeLoc.Name$ = "Ende"
+	tbbEndeLoc.State = BUTTONSTATE_Enabled
+	tbbEndeLoc.HelpText$ = strTool5
+
+	Dim tbFlaecheLoc As New ToolBar				' ToolBar "Diverse Flächen"
+	tbFlaecheLoc.Name$ = "Divers.Flächen" 
+	tbFlaecheLoc.InsertButton 0, tbbGebaeudeLoc
+	tbFlaecheLoc.InsertButton 1, tbbDachLoc
+	tbFlaecheLoc.InsertButton 2, tbbBetonLoc
+	tbFlaecheLoc.InsertButton 3, tbbKomplettLoc
+	tbFlaecheLoc.InsertButton 4, tbbEndeLoc
+	tbFlaecheLoc.DockState = DOCKSTATE_Floating	' auch möglich DOCKSTATE_DockedTop, DOCKSTATE_DockedBottom
+	tbFlaecheLoc.Visible = 1
+
+	Set tbFlaeche = tbFlaecheLoc
+	Set tbbGebaeude = tbbGebaeudeLoc
+	Set tbbDach = tbbDachLoc
+	Set tbbBeton = tbbBetonLoc
+	Set tbbKomplett = tbbKomplettLoc
+	Set tbbEnde = tbbEndeLoc
+End Sub ' InstallToolbar
+
+
+' --------------------------------------------------------------------------------------
+' Recherchierte Flächen der Objektklasse objsBO aufsammeln
+Sub RecherchierteObjekte (objsBO As GeoObjects, strKText As String)
+
+	Dim objsRWin As GeoObjectWins	' alle Recherchefenster
+	Set objsRWin = docGD.GetGeoObjectWins()
+
+	Dim objsRechObj As GeoObjects	' alle recherchierten Objekte
+	Dim objRO As GeoObject			' ein recherchiertes Objekt
+
+	Dim objRWin As GeoObjectWin		' ein Recherchefenster
+	Dim objDummy As GeoObject		' Rückgabewert von Add()
+	For Each objRWin In objsRWin	' alle geöffneten Recherchefenster abfragen
+		Set objsRechObj = objRWin.GetSelectedObjects()
+		For Each objRO In objsRechObj
+			If objRO.ObjClass.Name$ = strKText And _
+			   objRO.ObjType = OT_Area Then	' auch OT_Point, OT_Line, OT_Text
+				Set objDummy = objsBO.Add(objRO.Value)	' recherchierte objsGO-Objekte sammeln
+			End If
+		Next objRO
+	Next objRWin
+
+End Sub ' RecherchierteObjekte
+
+
+' --------------------------------------------------------------------------------------
+' Die zu dem Grundstück objGrund gehörigen Objekte der zu testenden Klasse clsTestObj
+' (Gebäude, Dachteilflächen bzw. versiegelte Flächen) in objsZugehObj bereitstellen; um
+' die erzeugten Teilobjekten nachfolgend wieder bequem löschen zu können, werden sie
+' außerdem noch in objsTObj bereitgestellt
+Sub ZugehoerigeObjekte (objGrund As GeoObject, clsTestObj As GeoClass, _
+						objsZugehObj As GeoObjects, bMehrf As Boolean)
+
+	Set objsZugehObj = docGD.CreateGeoObjectsCollection()
+	LoeschenInTRiAS objsTObj
+
+	Dim xmin As Double, ymin As Double, xmax As Double, ymax As Double
+	objGrund.GetGeometryRect xmin, ymin, xmax, ymax
+	Dim objsTestObj As GeoObjects
+	Set objsTestObj = clsTestObj.GetObjectsInRect (xmin, ymin, xmax, ymax)
+	If objsTestObj.Count = 0 Then Exit Sub
+
+	Dim intRel As Integer		' Rückkehrwert von TopRelation()
+	Dim objDummy As GeoObject	' Rückkehrwert von Add()
+	Dim objsTO As GeoObjects	' im Grundstück liegende Teilobjekte
+	Dim objTObj As GeoObject
+	For Each objTObj In objsTestObj
+		If objTObj.ObjType <> OT_Area Then GoTo Continue
+
+		' Relation des objTObj-Objektes zu dem objGrund-Grundstück
+		' Rückgabewert kann sein: innerhalb (0), außerhalb (1), inner/außerhalb (2) oder unklar (3)
+		intRel = objGrund.TopRelation (objTObj)
+		Select Case intRel		' Relation
+			Case 0		' innerhalb
+				Set objDummy = objsZugehObj.Add(objTObj.Value)
+			Case 2		' inner/außerhalb
+				Set objsTO = objGrund.GetIntersectObjects (objTObj)
+				If (objsTO Is Not Nothing) Then 
+					If (objsZugehObj Is Nothing) Then
+						Set objsZugehObj = objsTO
+		   			Else
+						Set objsZugehObj = objsZugehObj.Union(objsTO)
+					End If
+					' im Grundstück liegende Gebäudeteile für späteres Löschen in objsTObj sammeln
+					If (objsTObj Is Nothing) Then
+						Set objsTObj = objsTO
+					Else
+						Set objsTObj = objsTObj.Union(objsTO)
+					End If
+					If objsTO.Count > 1 Then bMehrf = True
+				Else
+					TRiASFehler strErrGetIntersectObjects, objGrund.Value
+				End If
+			Case 3		' unklar
+				TRiASFehler strErrTopRelation
+		End Select
+
+Continue:
+	Next objTObj
+
+End Sub ' ZugehoerigeObjekte
+
+
+' --------------------------------------------------------------------------------------
+' Fläche (in m², auf 2 Kommastellen gerundet) für alle objsZugehObj-Objekte ermitteln
+Sub FlaechenErmitteln (objsZugehObj As GeoObjects, rstPG As Recordset, _
+					   fldGrundIdent As Field, fldNummer As Field, _
+					   fldFlInhalt As Field, strGrundIdent As String, bMehrf As Boolean)
+
+	If (objsZugehObj Is Nothing) Then Exit Sub
+	If objsZugehObj.Count = 0 Then Exit Sub
+
+	' Wenn ein Gebäude, eine Dachteilfläche oder eine versiegelte Fläche mehrfach in
+	' ein Grundstück hineinragt, entstehen beim Bilden der zugehörigen Teilobjekte
+	' mehrere Teilobjekte mit der gleichen fortlaufenden Kennzeichnung (z.B. der
+	' gleichen Gebäudenummer). Damit jetzt nicht mehrere Datensätze mit der gleichen
+	' Identifikationsnummer und der gleichen fortlaufenden Kennzeichnung in die
+	' Datenbank eingetragen werden, wird in diesem Spezialfall ein kumulativer
+	' Flächeninhalt von allen den besagten Teilobjekten gebildet. Es gilt also
+	' bKumulativ = True, wenn
+	'  - ein Datensatz schon existiert, d.h. RecordExist() = True,
+	'  - dieses mehrfache Hineinragen aufgetreten ist, d.h. bMehrf = True und
+	'  - die aktuelle fortlaufende Kennzeichnung objZugehObj.Name$ unter den
+	'    zugehörigen Teilobjekten auch mehrfach vorkommt
+	Dim bKumulativ As Boolean	' Flächeninhalt kumulativ bilden (True)								'
+
+	Dim intNr As Integer	' fortlaufende Kennzeichnung als Integer-Wert
+	Dim dblEinzFl As Double
+	Dim objZugehObj As GeoObject
+
+	For Each objZugehObj In objsZugehObj
+		If objZugehObj.ObjType <> OT_Area Then GoTo Continue
+
+		bKumulativ = False
+		If InStr (objZugehObj.Name$, " & ") <> 0 Then RestObjekte
+
+		If RecordExist (rstPG, strGrundIdent, objZugehObj.Name$) = True Then
+			If bMehrf = True Then
+				If ThisNameMultiple (objZugehObj.Name$, objsZugehObj) = True Then
+					bKumulativ = True
+				End If
+			End If
+			If bKumulativ = False Then
+				ErrFile "Datensatz mit " & strMTIdentNr & " '" & strGrundIdent & _
+						"' und fortlaufender Kennzeichnung '" & objZugehObj.Name$ & _
+						"' schon in Datenbank vorhanden!"	'01.12.97 
+				GoTo Continue
+			End If
+		End If
+
+		dblEinzFl = FlaechenInhalt (objZugehObj)
+		If dblEinzFl >= 0 Then
+			If bKumulativ = False Then
+				rstPG.AddNew					' neuen Datensatz anfügen
+				WriteStringField fldGrundIdent, strGrundIdent	' Grundstücksidentifikationsnummer
+				If fldNummer.Type = 10 Then		' Access-Feld vom Typ "Zeichen"
+					WriteStringField fldNummer, objZugehObj.Name$	' Name des Objektes
+				ElseIf fldNummer.Type = 7 Then	' Access-Feld vom Typ "Numerisch"
+					intNr = Val(objZugehObj.Name$)
+					If intNr < 100 Then			' nur zweistellige Nummern zulassen
+						fldNummer = Val(objZugehObj.Name$)	' Abschneiden evtl. Alpha-Zeichen
+					Else
+						ErrFile "Objektname " & objZugehObj.Name$ & " falsch!"
+					End If
+				End If
+				fldFlInhalt = Int(dblEinzFl * 100 + 0.5) / 100	' Runden auf 2 Kommastellen
+			Else
+				rstPG.Edit
+				fldFlInhalt = fldFlInhalt + Int(dblEinzFl * 100 + 0.5) / 100	' kumulativ
+			End If
+			rstPG.Update	 				' neuen Datensatz speichern
+		Else	' Fehlerfall
+			ErrFile "Flächeninhalt für Objekt " & objZugehObj.Name$ & " ist negativ!"
+		End If
+
+Continue:
+	Next objZugehObj
+
+End Sub ' FlaechenErmitteln
+
+
+' --------------------------------------------------------------------------------------
+' Beschreiben eines Access-Feldes vom Typ "Zeichen"; bei zu langer Zeichenkette
+' strInhalt wird der zu schreibende Inhalt auf die Feldlänge gekürzt
+Sub WriteStringField (fldFeldName As Field, strInhalt As String)
+	Dim lngFL As Long
+	lngFL = fldFeldName.Size			' Länge des Access-Feldes fldFeldName
+	If Len(strInhalt) > lngFL Then
+		ErrFile "Zeichenkette '" & strInhalt & "' ist für Eintrag in Access-Feld zu lang."
+		ErrFile "Es sind nur " & lngFL & " Zeichen möglich!"
+	End If
+	fldFeldName = Left (strInhalt, lngFL)		' Feld beschreiben
+End Sub ' WriteStringField
+
+
+' --------------------------------------------------------------------------------------
+' Endebehandlung bei Programmabschluß
+Sub EndeBehandlung ()
+	Msg.Close		' Geduldsanzeige beenden
+	If (rstGebaeude Is Not Nothing) Then
+		rstGebaeude.Close	' Schließen der Access-Anbindung (strGebTabelle)
+		Set rstGebaeude = Nothing
+	End If
+	If (rstDach Is Not Nothing) Then
+		rstDach.Close	' Schließen der Access-Anbindung (strDachTabelle)
+		Set rstDach = Nothing
+	End If
+	If (rstVersieg Is Not Nothing) Then
+		rstVersieg.Close	' Schließen der Access-Anbindung (strVersiegTabelle)
+		Set rstVersieg = Nothing
+	End If
+	If (rstProjekte Is Not Nothing) Then
+		rstProjekte.Close	' Schließen der Access-Anbindung (strProjTabelle)
+		Set rstProjekte = Nothing
+	End If
+	If (dbsJet Is Not Nothing) Then
+		dbsJet.Close
+		Set dbsJet = Nothing
+	End If
+	If (bAktProj = True And tbFlaeche Is Not Nothing) Then
+		tbFlaeche.Visible = 0		' Toolbar herausnehmen
+		tbFlaeche.Remove
+	End If
+	SetBreakScript (True)			' Script soll beendet werden
+End Sub ' EndeBehandlung
+
+
+' --------------------------------------------------------------------------------------
+' ein Runtime-Error ist aufgetreten
+Sub AbbruchBeiFehler (FehlerNr As Long)
+	TempObjekteLoeschen	' temporär angelegte Objekte löschen
+
+	Dim strErrDatei As String, strZusatz As String, strZusatz2 As String
+	If bErrFile1 = True Then
+		strErrDatei = Left$(docGD.FullName$,Len(docGD.FullName$)-3)
+		strZusatz = "." & NL & "Es wurde die Fehlerdatei " & strErrDatei & "err angelegt !"
+	Else
+		strZusatz = " !"
+	End If
+
+	Beep
+	If FehlerNr = 18 Then	' User interrupt (z.B. Cancel bei Geduldsanzeige)
+		Msg.Close	' Geduldsanzeige beenden
+
+		MsgBox "Die Berechnung wurde durch den Anwender vorzeitig beendet" & strZusatz, _
+			   ebExclamation, strBoxTitel
+
+' >>>-Anfang
+		If bGlobal = True Then
+			If bAktProj = True Then
+				tbbGebaeude.State = BUTTONSTATE_Enabled	' ToolBarButton wieder aktivieren
+				tbbDach.State = BUTTONSTATE_Enabled
+				tbbBeton.State = BUTTONSTATE_Enabled
+				tbbKomplett.State = BUTTONSTATE_Enabled
+				tbbEnde.State = BUTTONSTATE_Enabled
+			End If
+		Else
+			EndeBehandlung
+			End
+		End If
+' >>>-Ende
+
+	Else
+		EndeBehandlung
+		If lngONrErr > -1 Then
+			strZusatz2 = NL & "(beteiligtes Objekt: " & lngONrErr & ")"
+		Else
+			strZusatz2 = ""
+		End If
+
+		MsgBox "Das Programm wurde abgebrochen mit"+NL+ _
+			   "Fehler " & FehlerNr & " ("+Error(FehlerNr)+")" & strZusatz2 & strZusatz, _
+			   ebCritical, strBoxTitel
+		End
+	End If
+End Sub ' AbbruchBeiFehler
+
+
+' --------------------------------------------------------------------------------------
+' Fehler bei Abarbeitung einer TRiAS-Routine aufgetreten
+Sub TRiASFehler (strFehlerText As String, Optional lngONr1 As Variant, _
+				 Optional lngONr2 As Variant)
+	Dim strZusatz As String
+	strZusatz = ""
+	If Not isMissing(lngONr1) Then
+		If Not isMissing(lngONr2) Then
+			strZusatz = " (beteiligte Objekte: " & lngONr1 & ", " &  lngONr2 & ")"
+		Else
+			strZusatz = " (beteiligtes Objekt: " & lngONr1 & ")"
+		End If
+	End If
+	ErrFile "In der Funktion '" & strFehlerText & "' ist ein Fehler aufgetreten!" & strZusatz
+End Sub ' TRiASFehler
+
+
+' --------------------------------------------------------------------------------------
+' Fehler bei Statistik aufgetreten
+Sub StatistikFehler (Optional lngONr As Variant)
+	TempObjekteLoeschen	' temporär angelegte Objekte löschen
+	EndeBehandlung
+	Beep
+
+	Dim strZusatz As String
+	strZusatz = "."
+	If Not isMissing(lngONr) Then
+		strZusatz = NL & "(beteiligtes Objekt: " & lngONr & ")."
+	End If
+	MsgBox "Das Programm mußte vorzeitig beendet werden" & strZusatz & NL & _
+		   "Prüfen Sie bitte, ob das Zusatzmodul" & NL & "'Statistische Auswertungen' geladen ist !", _
+		   ebCritical, strBoxTitel
+	End
+End Sub ' StatistikFehler
+
+
+' --------------------------------------------------------------------------------------
+' Löschen aller GeoObjekte einer GeoObjects-Collection und in der TRiAS-Datenbank
+Sub LoeschenInTRiAS (objsGO As GeoObjects)
+	If (objsGO Is Nothing) Then Exit Sub
+	Dim objGO As GeoObject
+	For Each objGO In objsGO		' alle GeoObjekte löschen
+		docGD.RemoveObject objGO
+	Next objGO
+	objsGO.Refresh
+	Set objsGO = Nothing
+End Sub ' LoeschenInTRiAS
+
+
+' --------------------------------------------------------------------------------------
+' temporär angelegte Objekte bei vorzeitigem Abbruch löschen
+Sub TempObjekteLoeschen ()
+	LoeschenInTRiAS objsTObj	' Teilobjekt(e) löschen
+End Sub ' TempObjekteLoeschen
+
+
+' --------------------------------------------------------------------------------------
+' Suchen und (evtl.) anzeigen von ungewollten Restobjekten
+Sub RestObjekte ()
+
+	Msg.Close
+	Beep
+	Msg.Open NL+"  Suche nach ungewollten Teilobjekten ... bitte warten!  "+NL,,False,False
+
+	Dim objsReste As GeoObjects
+	Set objsReste = docGD.CreateGeoObjectsCollection()
+	RestObjekteSuchen strGebaeude, objsReste
+	RestObjekteSuchen strDach, objsReste
+	RestObjekteSuchen strBeton, objsReste
+
+	Msg.Close
+
+	If objsReste.Count > 0 Then
+		Beep
+		Dim objRWin As GeoObjectWin
+		Set objRWin = objsReste.CreateGeoObjectWin()
+		objRWin.Name$ = "Teilobjekte "	'Titel des Recherchefensters
+		objRWin.Visible = True			'Recherchefenster anzeigen
+		MsgBox "Stellen Sie sicher, daß die Objekte in dem neuen Recherchefenster" + _
+				NL + "nicht in die Berechnung mit einbezogen werden!" + _
+				NL + "Das Programm muß vorerst abgebrochen werden.", _
+				ebExclamation, strBoxTitel
+
+		TempObjekteLoeschen	' temporär angelegte Objekte löschen
+		EndeBehandlung
+		End
+	End If
+
+End Sub ' RestObjekte
+
+
+' --------------------------------------------------------------------------------------
+' bei einem unordentlichen Abbruch dieses Makros kann es passieren, daß temporäre
+' Teilobjekte nicht mehr gelöscht werden; diese haben im Objektnamen ein " & ", das beim
+' späteren Arbeiten mit diesen ohnehin nutzlosen Objekten Probleme macht; deshalb werden
+' diese Objekte gesucht und in objsReste zurückgegeben
+Sub RestObjekteSuchen (strKurzText As String, objsReste As GeoObjects) 
+	Dim clsTestObj As GeoClass
+	Set clsTestObj = docGD.GetClass (strKurzText)
+	If (clsTestObj Is Nothing) Then Exit Sub
+
+	Dim objsTestObj As GeoObjects
+	Set objsTestObj = clsTestObj.GetObjects(OT_Area)
+	If objsTestObj.Count = 0  Then Exit Sub
+
+	Dim objDummy As GeoObject	' Rückgabewert von Add()
+	Dim objTestObj As GeoObject
+	Dim ftObjName As GeoFeature	' Objektname als GeoFeature
+	Dim strObjName As String	' Objektname als String
+
+	For Each objTestObj In objsTestObj
+		Set ftObjName = objTestObj.GetFeature("Objektname")
+		If (ftObjName Is Not Nothing) Then
+			strObjName = Trim$(ftObjName.Feature$)
+			If InStr (strObjName, " & ") > 0 Then	' " & " ist im Objektnamen enthalten
+				Set objDummy = objsReste.Add(objTestObj.Value)	' unseriöse Objekte sammeln
+			End If
+		End If
+	Next objTestObj
+
+End Sub ' RestObjekteSuchen
+
+
+' --------------------------------------------------------------------------------------
+' Fehlertext strErrText in Fehlerdatei (Name des aktuellen Projektes mit Attribut "err")
+' eintragen
+Sub ErrFile (strErrText As String)
+	Dim strErrDatei As String
+	strErrDatei = Left$(docGD.FullName$,Len(docGD.FullName$)-3) + "err"
+	Open strErrDatei For Append Lock Write As #1	' Fehler-Datei öffnen
+	Print #1, Date$() & ":  " & strErrText
+	Close										' Fehler-Datei schließen
+	bErrFile1 = True
+	bErrFile2 = True
+End Sub ' ErrFile
+
+
+' ======================================================================================
+' Funktionen
+' --------------------------------------------------------------------------------------
+' Dialogfunktion des Projektauswahl-Dialogs (Call-Back-Function)
+Function SelectDlgFunc (ControlName$, Action%, SuppValue%) As Integer
+	If Action = 1 Then		' Aktionen bevor Dialog sichtbar wird
+		DlgValue "ProjAnzahl",1
+		DlgFocus "Mehrere"
+		bAktProj = False
+		Dim intNrAktProj As Integer
+		intNrAktProj = NummerAktProjekt	' Nummer des aktuellen Projektes in der ListBox
+		If intNrAktProj > 0 Then
+			DlgValue "Pfade", intNrAktProj-1' aktuelles Projekt in der ListBox selektieren
+			DlgText "Auswahl", intNrAktProj	' in TextBox die Nummer des aktuellen Projektes eintragen
+			intAusgProj = 1					' Anzahl der ausgewählten Objekte
+		Else
+			intAusgProj = 0
+		End If
+		DlgEnable "Auswahl", False		' TextBox soll vom Benutzer nicht beschreibbar sein
+	End If
+
+	If Action = 2 Then		' Aktionen bei Click
+		Select Case ControlName$
+			Case "Einzel"
+				bAktProj = True
+				DlgEnable "Pfade", False
+			Case "Mehrere"
+				bAktProj = False
+				DlgEnable "Pfade", True
+			Case "Pfade"		' in ListBox
+				Dim strAusw As String
+				strAusw = DlgText$ ("Auswahl")
+				If strAusw = "" Then	' noch leer
+					DlgText "Auswahl", SuppValue+1	' Projektnummer in TextBox eintragen
+				Else				' mindestens schon eine Auswahl getroffen
+					AddProjNr strAusw, SuppValue+1	' (evtl.) weitere Projektnummer hinzufügen
+				End If
+			Case "OK"			' auf OKButton
+				strProjAusw = DlgText$ ("Auswahl")
+				SelectDlgFunc = 0		' DialogBox schließen
+			Case "EndButton"
+				SelectDlgFunc = 0		' DialogBox schließen
+			Case "DelButton"
+				intNrAktProj = NummerAktProjekt	' Nummer des aktuellen Projektes in der ListBox
+				If intNrAktProj > 0 Then
+					DlgValue "Pfade", intNrAktProj-1	' aktuelles Projekt in der ListBox selektieren
+					DlgText "Auswahl", intNrAktProj	' in TextBox die Nummer des aktuellen Projektes eintragen
+				End If
+				SelectDlgFunc = 1		' DialogBox noch nicht schließen
+		End Select
+	End If
+End Function ' SelectDlgFunc
+
+
+' --------------------------------------------------------------------------------------
+' laufende Nummer des aktuellen Projektes aus der strProjTabelle-Tabelle ermitteln;
+' wenn das aktuelle Projekt zwar in strProjTabelle vorhanden ist, aber die laufende
+' Nummer fehlt, wird 0 zurückgegeben; fehlt selbst das aktuelle Projekt in
+' strProjTabelle, wird -1 zurückgegeben
+Function NummerAktProjekt As Integer
+
+	Set docGD = GetActiveDocument
+	Dim strAktProjekt As String, strPfad As String
+	strAktProjekt = Trim(LCase$(docGD.FullName$))
+
+	rstProjekte.MoveFirst
+	Do Until rstProjekte.EOF
+		strPfad = ""
+		If (Not IsNull(fldProjPfad.Value)) Then strPfad = fldProjPfad.Value
+
+		If Trim(LCase$(strPfad)) = strAktProjekt Then
+			If (Not IsNull(fldProjNr.Value)) Then
+				NummerAktProjekt = fldProjNr.Value
+			Else
+				NummerAktProjekt = 0
+				ErrFile "Die laufende Nummer des aktuellen Projektes fehlt in der Tabelle " & _
+						 strProjTabelle & " !"
+			End If
+			Exit Function
+		End If
+		rstProjekte.MoveNext
+	Loop
+
+	NummerAktProjekt = -1
+	ErrFile "Das aktuelle Projekt ist in der Tabelle " & strProjTabelle & " nicht enthalten!"
+
+End Function ' NummerAktProjekt
+
+
+' --------------------------------------------------------------------------------------
+' Ermittlung der restlichen Zeit bis zur Beendigung einer Aktion
+Function RestZeit (datStart As Date, lngAkt As Long, lngEnde As Long) As String
+	If lngAkt = 0 Then	' Division durch Null vorbeugen
+		RestZeit = 0
+		Exit Function
+	End If
+
+	Dim intAbgelSek As Integer
+	intAbgelSek = DateDiff ("s", datStart, Now())	' die bisher abgelaufenen Sekunden
+	RestZeit = Int ((lngEnde * intAbgelSek / lngAkt - intAbgelSek) / 60 + 0.5)	' verbleibende Minuten
+End Function ' RestZeit
+
+
+' --------------------------------------------------------------------------------------
+' Flächeninhalt eines GeoObjetktes in m²; im Fehlerfall (unbekannte Maßeinheit) wird -1
+' zurückgegeben
+Function FlaechenInhalt (objGO As GeoObject) As Double
+	Dim ftFlInhalt As GeoFeature	
+	Set ftFlInhalt = objGO.GetFeature("Flächeninhalt")
+	If (ftFlInhalt Is Nothing) Then StatistikFehler objGO.Value
+
+	Dim strFl As String, strME As String
+	strFl = Trim$(ftFlInhalt.Feature$)	' Flächeninhalt und Maßeinheit
+	If strFl = "" Then	' kein Flächenobjekt
+		FlaechenInhalt = 0
+		Exit Function
+	End If
+
+	Dim Flaeche As Double				' Flächeninhalt ohne Maßeinheit
+	strME = MasseinheitAbtrennen (strFl, Flaeche)
+
+	Select Case LCase(Mid(strME,2,1))	' das 1. Zeichen von strME ist "["
+		Case "m"	' m²
+			FlaechenInhalt = Flaeche
+		Case "h"	' ha
+			FlaechenInhalt = 10000 * Flaeche
+		Case "k"	' km²
+			FlaechenInhalt = 1000000 * Flaeche
+		Case Else
+			ErrFile "Die ermittelte Maßeinheit des Flächeninhalts ist unbekannt!"
+			FlaechenInhalt = -1
+	End Select
+End Function ' FlaechenInhalt
+
+
+' --------------------------------------------------------------------------------------
+' Maßeinheit aus dem übergebenen String MWert eliminieren und in der Form "[...]"
+' zurückgeben; dabei wird vorausgesetzt, daß die Maßeinheit in eckige Klammern ' []' 
+' eingeschlossen ist
+Function MasseinheitAbtrennen (MWert$, MZahl#) As String
+	Dim intPos As Integer
+	intPos = InStr (MWert$,"[")		' Position der öffnenden Klammer "[" suchen
+	If intPos = 0 Then
+		ErrFile "Maßeinheit des Flächeninhalts beginnt nicht mit ["
+		MasseinheitAbtrennen = "  "	' Rückgabe bei Fehler
+	End If
+
+	intPos = InStr (MWert$," ")			' Position zwischen Zahlenwert und Dimension
+	MZahl# = Val (Left(MWert$,intPos))	' Dimension abschneiden
+	MasseinheitAbtrennen = Right(MWert$,Len(MWert$)-intPos)	' Maßzahl ohne Maßeinheit als Rückgabewert
+End Function ' MasseinheitAbtrennen
+
+
+' --------------------------------------------------------------------------------------
+' Testen, ob Datensatz mit Grundstücksidentifikationsnummer strGrundIdent und
+' Objektnummer strNummer in dBASE-Datei rstPG schon existiert (Rückgabe von True)
+Function RecordExist (rstPG As Recordset, strGrundIdent As String, strNummer As String) _
+					  As Boolean
+	RecordExist = False
+	rstPG.Seek "=", strGrundIdent, strNummer
+	If (Not rstPG.NoMatch) Then RecordExist = True
+End Function ' RecordExist
+
+
+' --------------------------------------------------------------------------------------
+' Testen, ob strLfdKennz in den objsZugehObj-Objekten mehrfach als Objektname auftritt,
+' dann Rückgabe von True
+Function ThisNameMultiple (strLfdKennz As String, objsZugehObj As GeoObjects) As Boolean
+	ThisNameMultiple = False
+
+	Dim objZugehObj As GeoObject
+	For Each objZugehObj In objsZugehObj
+		If objZugehObj.Name$ = strLfdKennz Then
+			ThisNameMultiple = True
+			Exit Function
+		End If
+	Next objZugehObj
+
+End Function ' ThisNameMultiple
+
+
+' --------------------------------------------------------------------------------------
+' Anzahl der Sätze der Access-Tabelle strProjTabelle ermitteln;
+' diese separate Funktion ist erforderlich, da RecordCount eigenartigerweise nicht immer
+' ein exaktes Ergebnis liefert
+Function SatzAnzahl As Integer
+	Dim strSQLStatement As String
+	strSQLStatement = "SELECT COUNT(*) FROM " & strProjTabelle
+	Dim rst As Recordset
+	Set rst = dbsJet.OpenRecordset (strSQLStatement, dbOpenSnapshot, dbReadOnly)
+	SatzAnzahl = rst.Fields(0).Value
+	If (rst Is Not Nothing) Then rst.Close
+End Function ' SatzAnzahl
+
+
+' --------------------------------------------------------------------------------------
+' Reaktion auf Schließen des TRiAS-Projektes
+Function ClosingDocument (strName As String) As Integer
+	TempObjekteLoeschen	' temporär angelegte Objekte löschen
+	If bAktProj = True Then
+		If (tbbGebaeude Is Not Nothing) Then tbbGebaeude.State = 0	' ToolBarButton deaktivieren
+		If (tbbDach Is Not Nothing) Then tbbDach.State = 0
+		If (tbbBeton Is Not Nothing) Then tbbBeton.State = 0
+		If (tbbKomplett Is Not Nothing) Then tbbKomplett.State = 0
+		If (tbbEnde Is Not Nothing) Then tbbEnde.State = 0
+	End If
+	EndeBehandlung
+	SetBreakScript (False)	
+	ClosingDocument = 0		
+End Function 

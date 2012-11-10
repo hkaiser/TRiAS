@@ -1,0 +1,18 @@
+HKCR
+{
+	TRiAS.ResetVisAddEntryCB.1 = s 'ResetVisAddEntryCB Class'
+	{
+		CLSID = s '{A4FAE30B-E5A3-11D2-9BD9-586A20524153}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {A4FAE30B-E5A3-11D2-9BD9-586A20524153} = s 'ResetVisAddEntryCB Class'
+		{
+			ProgID = s 'TRiAS.ResetVisAddEntryCB.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

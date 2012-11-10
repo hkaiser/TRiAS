@@ -1,0 +1,274 @@
+// TRiASBaseInterfaces.idl: Base-Interfaces for TRiAS-objects
+//
+
+#if !defined(_TRIASBASEINTERFACES_IDL)
+#define _TRIASBASEINTERFACES_IDL
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declarations
+interface DTRiASBaseClass;
+interface DTRiASProperty;
+interface DTRiASProperties;
+interface DTRiASCollection;
+
+///////////////////////////////////////////////////////////////////////////////	
+// ObjektTypen
+cpp_quote("#if !defined(_RTTI_DEFINED)")
+cpp_quote("#define _RTTI_DEFINED")
+enum _tagRTTI {
+	[helpstring("Unknown object")]	RTTI_Unknown = 0x00,
+	[helpstring("Application object")]	RTTI_Application = 0x01,
+	[helpstring("Document object")] RTTI_Document = 0x02,
+	[helpstring("Documents object")] RTTI_Documents = 0x03,
+	[helpstring("GeoView object")]	RTTI_GeoView = 0x04,
+	[helpstring("GeoViews object")] RTTI_GeoViews = 0x05,
+	[helpstring("GeoClass object")] RTTI_GeoClass = 0x06,
+	[helpstring("GeoClasses object")] RTTI_GeoClasses = 0x07,
+	[helpstring("GeoObject object")] RTTI_GeoObject = 0x08,
+	[helpstring("GeoObjects object")] RTTI_GeoObjects = 0x09,
+	[helpstring("GeoFeature object")] RTTI_GeoFeature = 0x0A,
+	[helpstring("GeoFeatures object")]	RTTI_GeoFeatures = 0x0B,
+	[helpstring("GeoObjectWin object")] RTTI_GeoObjectWin = 0x0C,
+	[helpstring("GeoObjectWins object")] RTTI_GeoObjectWins = 0x0D,
+	[helpstring("VisInfo object")]	RTTI_VisInfo = 0x0E,
+	// subtypes
+		[helpstring("PointVisInfo object")] RTTI_PointVisInfo = 0x0001000E,
+		[helpstring("LineVisInfo object")]	RTTI_LineVisInfo = 0x0002000E,
+		[helpstring("AreaVisInfo object")]	RTTI_AreaVisInfo = 0x0003000E,
+		[helpstring("TextVisInfo object")]	RTTI_TextVisInfo = 0x0004000E,
+	[helpstring("ToolBar object")]	RTTI_ToolBar = 0x0F,
+	[helpstring("ToolBars object")] RTTI_ToolBars = 0x10,
+	[helpstring("ToolBarButton object")] RTTI_ToolBarButton = 0x11,
+	[helpstring("ToolBarButtons object")] RTTI_ToolBarButtons = 0x12,
+	[helpstring("TRiASProperty object")] RTTI_Property = 0x13,
+	[helpstring("TRiASProperties object")]	RTTI_Properties = 0x14,
+};
+cpp_quote("#endif // _RTTI_DEFINED")
+
+///////////////////////////////////////////////////////////////////////////////
+// Interfaces
+
+///////////////////////////////////////////////////////////////////////////////
+// BasisInterface für alle hier definierten TRiAS-Interfaces
+[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+	helpcontext(Allgemeine_Eigenschaften),
+#endif // _INCLUDE_HELP_CONTEXTS
+	odl, 
+	object, 
+	oleautomation, 
+	dual, 
+	nonextensible, 
+	uuid(8DE4E3E0-4D53-101B-AAE1-E7E7E7E7E7E7), 
+	helpstring("Basisklasse für alle TRiAS®-Datenobjekte.")
+]
+interface DTRiASBaseClass : IDispatch 
+{
+	import "oaidl.idl";
+	import "objidl.idl";
+
+// StandardProperties
+	[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+		helpcontext(DataObject_isA),
+#endif // _INCLUDE_HELP_CONTEXTS
+		id(7), 
+		propget
+	] 
+	HRESULT isA ([out, retval]LONG *RTTI);		// ObjektTyp (RTTI)
+
+	[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+		helpcontext(DataObject_Parent),
+#endif // _INCLUDE_HELP_CONTEXTS
+		id(1), 
+		propget, 
+		hidden
+	]
+	HRESULT Parent ([out, retval]IDispatch **Base);	// übergeordnetes Objekt
+
+	[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+		helpcontext(DataObject_Parent),
+#endif // _INCLUDE_HELP_CONTEXTS
+		id(1), 
+		propput, 
+		hidden
+	] 
+	HRESULT Parent ([in]IDispatch *Base);
+
+	[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+		helpcontext(DataObject_Application),
+#endif // _INCLUDE_HELP_CONTEXTS
+		id(2), 
+		propget, 
+		hidden
+	] 
+	HRESULT Application ([out, retval]IDispatch **App);	// Anwendung
+
+	[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+		helpcontext(DataObject_Application),
+#endif // _INCLUDE_HELP_CONTEXTS
+		id(2), 
+		propput, 
+		hidden
+	]
+	HRESULT Application ([in]IDispatch *App);	// Anwendung
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Basisklasse für alle Collection-Interfaces von TRiAS
+[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+	helpcontext(TRiAS__Datenobjektsammlungen),
+#endif // _INCLUDE_HELP_CONTEXTS
+	odl, 
+	object, 
+	oleautomation, 
+	dual, 
+	nonextensible, 
+	uuid(8DE4E3DF-4D53-101B-AAE1-E7E7E7E7E7E7), 
+	helpstring("BasisKlasse für alle Sammlungen von TRiAS®-Datenobjekten.")
+]
+interface DTRiASCollection : DTRiASBaseClass 
+{
+	import "oaidl.idl";
+	import "objidl.idl";
+
+// StandardProperties
+	[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+		helpcontext(Collection_Count),
+#endif // _INCLUDE_HELP_CONTEXTS
+		id(4), 
+		propget
+	]
+	HRESULT Count ([out, retval]long *Count);		// Anzahl der Elemente
+
+// Methods
+	[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+		helpcontext(Collection_Item),
+#endif // _INCLUDE_HELP_CONTEXTS
+		id(DISPID_VALUE)
+	]
+	HRESULT Item ([in, optional]VARIANT Which, [out, retval]IDispatch **Item);
+	
+	[
+		id(DISPID_NEWENUM), restricted
+	]
+	HRESULT _NewEnum ([out, retval]IUnknown **NewEnum);
+		
+	[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+		helpcontext(Collection_Add),
+#endif // _INCLUDE_HELP_CONTEXTS
+		id(5)
+	]
+	HRESULT Add ([in]VARIANT ToAdd, [out, retval]IDispatch **NewItem);
+	
+	[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+		helpcontext(Collection_Remove),
+#endif // _INCLUDE_HELP_CONTEXTS
+		id(6)
+	]
+	HRESULT Remove ([in]VARIANT ToRemove);
+	
+	[
+		id(8)
+	]
+	HRESULT Refresh (void);
+};
+
+[
+	odl, 
+	object, 
+	dual,
+	uuid(079638C1-3123-101C-BB62-00AA0018497C),
+	helpstring("Eine Eigenschaft eines TRiAS®-Datenobjektes."),
+	oleautomation
+]
+interface DTRiASProperty : DTRiASBaseClass
+{
+	import "oaidl.idl";
+	import "objidl.idl";
+
+///////////////////////////////////////////////////////////////////////////////
+// Properties/Property
+	typedef 
+	[
+		public, 
+		helpstring("Typ einer Objekteigenschaft.")
+	]
+	enum _tagPROPERTYTYPE {
+		PROPERTYTYPE_INTEGER = VT_I4,	
+		PROPERTYTYPE_DOUBLE = VT_R8,
+		PROPERTYTYPE_BSTR = VT_BSTR,	
+		PROPERTYTYPE_DISPATCH = VT_DISPATCH,	
+		PROPERTYTYPE_VARIANT = VT_VARIANT,
+		PROPERTYTYPE_UNKNOWN = VT_UNKNOWN,
+	} PROPERTYTYPE;
+
+	[
+		id(DISPID_VALUE), 
+		propget
+	] 
+	HRESULT Value ([out, retval] VARIANT *Value);
+	
+	[
+		id(DISPID_VALUE), 
+		propput
+	] 
+	HRESULT Value ([in] VARIANT Value);
+	
+	[
+		id(3), 
+		propget
+	] 
+	HRESULT Name ([out, retval] BSTR *Name);
+	
+	[
+		id(3), 
+		propput
+	] 
+	HRESULT Name ([in] BSTR Name);
+	
+	[
+		id(1700), 
+		propget
+	] 
+	HRESULT Inherited ([out, retval] VARIANT_BOOL *IsInherited);
+	
+	[
+		id(1701), 
+		propget
+	] 
+	HRESULT Type ([out, retval] PROPERTYTYPE *PropType);
+	
+	[
+		id(1701), 
+		propput
+	] 
+	HRESULT Type ([in] PROPERTYTYPE PropType);
+}; 
+
+[
+	odl, 
+	object, 
+	dual, 
+	uuid(079638C2-3123-101C-BB62-00AA0018497C),
+	helpstring("Eine Sammlung von Eigenschaften von TRiAS®-Datenobjekten."),
+	oleautomation
+]
+interface DTRiASProperties : DTRiASCollection
+{
+	import "oaidl.idl";
+	import "objidl.idl";
+
+	// intentionally left free
+};
+
+#endif // _TRIASBASEINTERFACES_IDL

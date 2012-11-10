@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiASEx.ObjectFeatureFileScript.1 = s 'Makroerzeugung für Objekteigenschaften befindlich in Dateien'
+	{
+		CLSID = s '{079638AB-3123-101C-BB62-00AA0018497C}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {079638AB-3123-101C-BB62-00AA0018497C} = s 'Makroerzeugung fuer Objekteigenschaften befindlich in Dateien'
+		{
+			val AppID = s '{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}'
+			ProgID = s 'TRiASEx.ObjectFeatureFileScript.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+}

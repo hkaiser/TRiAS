@@ -1,0 +1,80 @@
+'\"t
+.if t .TH IMVFBFLIP 3IM "August 25, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY" 
+.if n .TH IMVFBFLIP 3IM "August 25, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImVfbFlip - Flip a virtual frame buffer vertically, horizontally, or both
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+ImVfb *ImVfbFlip( srcVfb, flipDirection, dstVfb )
+	ImVfb *srcVfb ;
+	int flipDirection ;
+	ImVfb *dstVfb ;
+.fi
+\fR
+.SH DESCRIPTION
+\fBImVfbFlip\fR flips a virtual frame buffer about the horizontal and/or
+vertical axis and returns a pointer to the flipped Vfb.
+.LP
+\fIsrcVfb\fR is the Vfb to be flipped.
+.LP
+\fIflipDirection\fR is the direction(s) about which to flip.
+Possible values for \fIflipDirection\fR are:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c
+l l.
+\fBValue	Meaning\fP
+_
+\fBIMVFBXFLIP\fR	Flip in X
+\fBIMVFBYFLIP\fR	Flip in Y
+\fBIMVFBXYFLIP\fR	Flip in X and Y
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+Note that specifying \fBIMVFBXYFLIP\fR causes a complete pixel transpose.
+.LP
+\fIdstVfb\fR is the Vfb to contain the flipped image.  If \fIdstVfb\fR is
+the constant \fBIMVFBNEW\fR, a new Vfb is allocated with the same
+size and the same fields as \fIsrcVfb\fR.  A pointer to the new Vfb is
+returned.
+.SH RETURNS
+Upon success, \fBImVfbDup\fR returns a pointer to the destination Vfb.
+Upon failure, \fBIMVFBNULL\fR is returned and \fBImErrNo\fR set
+to one of the following:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEMALLOC	Cannot allocate enough memory for the new Vfb
+IMEBADFLIP	\fIflipDirection\fR is not one of the legal values
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH SEE ALSO
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBimflip\fR (3IM),
+\fBimrotate\fR (3IM),
+\fBimroll\fR (3IM),
+\fBimshear\fR (3IM),
+\fBimscale\fR (3IM),
+\fBImVfbResize\fR (3IM),
+\fBImVfbRoll\fR (3IM),
+\fBImVfbRotate\fR (3IM),
+\fBImVfbXShear\fR (3IM),
+\fBImVfbYShear\fR (3IM)
+.SH AUTHOR
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

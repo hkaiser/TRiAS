@@ -1,0 +1,198 @@
+
+
+
+IMCLTROLL(1IM)             IMAGE TOOLS             IMCLTROLL(1IM)
+
+
+
+NAME
+     imcltroll  -  Roll color lookup table by a number of entries
+
+SYNOPSIS
+     imcltroll [_o_p_t_i_o_n_s] _i_n_f_i_l_e_n_a_m_e _o_u_t_f_i_l_e_n_a_m_e
+
+DESCRIPTION
+     imcltroll reads each image in the input file,  extracts  the
+     color  lookup  table, rolls it, then writes it and its image
+     to the output file.  The input and output image file formats
+     may be different.
+
+OPTIONS
+     imcltroll has a variety of options  in  the  following  five
+     categories:
+
+          File Selection     What input and output files to use
+          Format Selection   What image file format to use
+          Format Control     What variant of a file format to generate
+          Standard           Standard generic options on all SDSC tools
+          Rolling            How the image's CLT is rolled
+
+     _F_i_l_e _S_e_l_e_c_t_i_o_n, _F_o_r_m_a_t _S_e_l_e_c_t_i_o_n, _F_o_r_m_a_t _C_o_n_t_r_o_l, and  _S_t_a_n_-
+     _d_a_r_d options are common to all SDSC image tools and are dis-
+     cussed in depth in the man page for imconv(1IM).
+
+     All options can be abbreviated to the first few unique char-
+     acters.
+
+  Rolling Options
+     Rolling a color lookup table, or  CLT,  copies  entry  0  to
+     entry  _n, entry 1 to entry _n+1, entry 2 to entry _n+2, and so
+     on.  Entries that roll off the bottom of the CLT wrap around
+     back  to the top of the CLT, creating a rolling, or cycling,
+     effect in the copy.
+
+     The -roll _n option selects rolling of the CLT by _n  entries.
+     Positive  values  for  _n  roll entries downwards towards the
+     bottom of  the  CLT,  while  negative  values  roll  entries
+     upwards towards the top.
+
+     The input file must contain images that use  CLTs,  such  as
+     color-indexed  images.   RGB images, for instance, typically
+     do not have CLTs and are inappropriate for use by imcltroll.
+
+NOTES
+     CLT rolling is  a  technique  used  to  find  and  highlight
+     aspects  of  an image generated, for example, by a CAT-scan.
+     Different color indexes in a  CAT-scan  correspond  to  dif-
+     ferent  types  of matter, such as bone, muscle, and air.  To
+     highlight just the bone, a CLT may be constructed that  sets
+     a  range  of color indexes to, say, bright red, and sets the
+
+
+
+SDSC               Last change: June 27, 1995                   1
+
+
+
+
+
+
+IMCLTROLL(1IM)             IMAGE TOOLS             IMCLTROLL(1IM)
+
+
+
+     rest to black.
+
+     When the red range of the CLT corresponds to the  CAT-scan's
+     bone  indexes,  then  all  boney  matter  in  the  image  is
+     highlighted in red.  To highlight a different set  of  image
+     color  indexes,  roll  the  CLT far enough to bring the reds
+     into the right index range, such as those  for  muscle.   By
+     sweeping  the red values back and forth through the CLT, one
+     can zero in on color indexes of interest.
+
+     In rare, specialized applications, RGB images may have color
+     lookup  tables.   In  these  cases, imcltroll will correctly
+     roll the RGB image's color lookup table, store it, and place
+     the  RGB image back into the output file.  However, many RGB
+     image display tools choose to ignore  CLTs  associated  with
+     RGB  images.   These  tools will fail to show the effects of
+     rolling the color lookup table.  This is the  fault  of  the
+     RGB image display tool, and not imcltroll.
+
+     Sometimes RGB images have color  lookup  tables.   When  you
+     rotate  the  color  lookup  table,  you may not perceive any
+     changes in the image since some display programs  may  throw
+     this  color  lookup  table out and use just the RGB informa-
+     tion.
+
+     For notes regarding  file  format  conversion  and  standard
+     image tool options, see the man page on imconv(1IM).
+
+     With no roll arguments, the actions of imcltroll default  to
+     the   same   as   the  SDSC  image  format  conversion  tool
+     imconv(1IM), but they take a little longer.
+
+     Error messages are reported to stderr.
+
+EXAMPLES
+     Roll an XWD image's color lookup table by 30 entries:
+
+          imcltroll in.xwd -roll 30 out.xwd
+
+     Roll a color indexed Sun rasterfile backwards 5 entries  and
+     store the result as a GIF file:
+
+          imcltroll in.ras -roll -5 out.gif
+
+SEE ALSO
+     imroll (1IM), ImCltRoll (3IM)
+
+     For information on SDSC's image library, see imintro(3IM).
+
+AUTHOR
+     Chris Groening
+     San Diego Supercomputer Center
+
+
+
+2                  Last change: June 27, 1995                SDSC
+
+
+
+
+
+
+IMCLTROLL(1IM)             IMAGE TOOLS             IMCLTROLL(1IM)
+
+
+
+     See the individual file format man pages for the authors  of
+     the  underlying  format  read  and write code.  The names of
+     these man pages begin with the letters "im," followed by the
+     format  name.  For example, the name of the TIFF man page is
+     imtiff.  To display it, enter man imtiff.
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SDSC               Last change: June 27, 1995                   3
+
+
+

@@ -1,0 +1,462 @@
+
+
+
+     BBBBIIIINNNNWWWWRRRRIIIITTTTEEEE((((3333BBBBIIIINNNN))))          SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))           BBBBIIIINNNNWWWWRRRRIIIITTTTEEEE((((3333BBBBIIIINNNN))))
+
+
+
+     NNNNAAAAMMMMEEEE
+          BinWrite  -  write to a binary file
+          BinFWrite  -  write to a binary file
+          BinSWrite  -  write to a binary string
+
+     SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+          #include "sdsc.h"
+
+          extern int BinErrNo;
+
+          int BinWrite( fd, buf, type, nbytes, count )
+               int fd;
+               ? buf[ ];
+               int type, nbytes, count;
+
+          int BinFWrite( fp, buf, type, nbytes, count )
+               FILE *fp;
+               ? buf[ ];
+               int type, nbytes, count;
+
+          int BinSWrite( data, buf, type, nbytes, count )
+               char datap[ ];
+               ? buf[ ];
+               int type, nbytes, count;
+
+     DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+          _B_i_n_W_r_i_t_e, _B_i_n_F_W_r_i_t_e, and _B_i_n_S_W_r_i_t_e write multiple _n_b_y_t_e
+          quantities from _b_u_f to a destination as raw binary data.
+
+          _B_i_n_W_r_i_t_e writes to the open file or stream indicated by the
+          UNIX file descriptor _f_d.
+
+          _B_i_n_F_W_r_i_t_e writes to the open file or stream indicated by the
+          UNIX buffered I/O _F_I_L_E pointer _f_p.
+
+          _B_i_n_S_W_r_i_t_e writes to the caller's character string _d_a_t_a.
+          When complete, _d_a_t_a will contain raw binary data, possibly
+          including NULLs, and other unprintable characters.
+
+          All calls write _c_o_u_n_t items, each of length _n_b_y_t_e_s, from the
+          caller's _b_u_f array declared as of type _t_y_p_e.
+
+          _c_o_u_n_t and _n_b_y_t_e_s must both be greater than 0.
+
+          The known values of _t_y_p_e may vary from site to site and may
+          be found in the include file "bin.h" (automatically included
+          by "sdsc.h").  The following types are considered standard
+          and should be available at all sites:
+
+               _t_y_p_e      MMMMeeeeaaaannnniiiinnnngggg
+
+
+
+
+
+     Page 1                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNWWWWRRRRIIIITTTTEEEE((((3333BBBBIIIINNNN))))          SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))           BBBBIIIINNNNWWWWRRRRIIIITTTTEEEE((((3333BBBBIIIINNNN))))
+
+
+
+               BOOLEAN   boolean
+               CHAR      signed character
+               DOUBLE    double-percision floating point
+               FLOAT     single-percision floating point
+               INT       signed int
+               INT16     signed 16-bit (or greater) integer
+               INT32     signed 32-bit (or greater) integer
+               INT64     signed 64-bit (or greater) integer
+               INT8      signed 8-bit (or greater) integer
+               LONG      signed long
+               SHORT     signed short
+               UCHAR     unsigned character
+               UINT      unsigned int
+               UINT16    unsigned 16-bit (or greater) integer
+               UINT32    unsigned 32-bit (or greater) integer
+               UINT64    unsigned 64-bit (or greater) integer
+               UINT8     unsigned 8-bit (or greater) integer
+               ULONG     unsigned long
+               USHORT    unsigned short
+
+          INT64 and UINT64 are only available on systems supporting
+          integer types of at least 64-bits in length.
+
+     RRRREEEETTTTUUUURRRRNNNNSSSS
+          _B_i_n_W_r_i_t_e, _B_i_n_F_W_r_i_t_e, and _B_i_n_S_W_r_i_t_e return the number of
+          bytes written.  On an error, all calls return -1 and set the
+          global _B_i_n_E_r_r_N_o to an error code indicating the cause of the
+          error.  The following error codes may be returned by the
+          calls:
+
+          _B_I_N_E_C_O_U_N_T = count cannot be <= 0
+               The _c_o_u_n_t argument was less than or equal to zero.
+
+          _B_I_N_E_F_L_O_A_T_U_N_S_U_P_P_O_R_T_E_D = unsupported size for file float selection
+               The _n_b_y_t_e_s argument selected a size of floating-point
+               item to be written that is undefined for the file
+               floating-point format selected by _B_i_n_F_l_o_a_t_F_o_r_m_a_t(3BIN).
+
+          _B_I_N_E_M_A_L_L_O_C = Cannot malloc more host memory
+               Dynamic allocation of host memory needed by the write
+               call could not be completed.
+
+          _B_I_N_E_N_B_Y_T_E_S = nbytes cannot be <= 0
+               The _n_b_y_t_e_s argument was less than or equal to zero.
+
+          _B_I_N_E_S_Y_S = System error:  see errno
+               A system call error occurred when a write was attempted
+               on the file.  The global _e_r_r_n_o, set by UNIX system
+               calls, contains an error code indicating the cause of
+               the error (see _e_r_r_n_o(2)).
+
+          _B_I_N_E_T_Y_P_E = Unknown type selection
+
+
+
+     Page 2                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNWWWWRRRRIIIITTTTEEEE((((3333BBBBIIIINNNN))))          SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))           BBBBIIIINNNNWWWWRRRRIIIITTTTEEEE((((3333BBBBIIIINNNN))))
+
+
+
+               The _t_y_p_e argument did not indicate a type known by the
+               binary I/O package.  The include file "bin.h" includes
+               a list of #defined constants for the names of the known
+               types.
+
+     NNNNOOOOTTTTEEEESSSS
+          Binary data files and streams are a compact and speedy way
+          to store and transfer data.  The binary format of a value
+          can take fewer bytes to store than using the equivalent
+          ASCII format.  For instance, the number "32767" takes 16
+          bits to represent on a 2's complement integer machine.  When
+          written to a binary file or stream, the number can be stored
+          in 2 bytes.  The same number written to an ASCII file or
+          stream requires 5 bytes:  "3", "2", "7", "6", and "7".
+
+          While the UNIX _r_e_a_d(2) and _w_r_i_t_e(2) calls support reading
+          and writing binary data, they do not create binary files
+          that can be read in again on a machine with a different byte
+          order or larger or smaller word size (without additional
+          programing).  The calls in the binary I/O package provide a
+          portable means of reading and writing binary files and
+          streams.  Application code that calls _B_i_n_W_r_i_t_e to read in an
+          array of 32-bit integers from a binary file remains
+          unchanged whether being compiled for a SPARCstation, a VAX
+          running VMS, or a CRAY X-MP.  Differences in byte ordering,
+          word sizes, and structure-field padding are handled by the
+          binary I/O package.
+
+          The size (number of bytes) of an item in a binary file may
+          differ from the size of the same item when in memory in a C
+          variable.  This is the case, for instance, when writing a
+          CRAY's 64-bit _i_n_t into a file as a 32-bit integer.
+
+          The _t_y_p_e argument indicates the declared type of the
+          caller's _b_u_f array.  From the type the write routines
+          determine the number of bytes in _b_u_f that are used to form
+          each data item to be written out.
+
+          The _n_b_y_t_e_s argument indicates the number of bytes occupied
+          by the item IIIINNNN TTTTHHHHEEEE FFFFIIIILLLLEEEE.  This may be larger or smaller than
+          the size of the item as stored in the _b_u_f array.
+
+          IIIInnnntttteeeeggggeeeerrrr TTTTyyyyppppeeeessss
+
+               _n_b_y_t_e_s need not be a multiple of 2 or of the word-size
+               of the host.  Writing out 3- or 11-byte integers is
+               acceptable.
+
+               When _n_b_y_t_e_s is larger than the size of _t_y_p_e, zero
+               padding and sign extension (signed types only) occurs
+               as the data is written out.
+
+
+
+
+     Page 3                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNWWWWRRRRIIIITTTTEEEE((((3333BBBBIIIINNNN))))          SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))           BBBBIIIINNNNWWWWRRRRIIIITTTTEEEE((((3333BBBBIIIINNNN))))
+
+
+
+               When _n_b_y_t_e_s is smaller than the size of _t_y_p_e, outgoing
+               data is truncated to the least-significant bits.  If
+               significant bits are lost due to the truncation, the
+               error handling function nominated by
+               _B_i_n_E_r_r_H_a_n_d_l_e_r(3BIN) is called:
+
+                    handler( fd, BINOPWRITE, BINEINTEGERTRUNC, data,
+                    frombits, tobits )
+
+               _f_d is the file's file descriptor.  _d_a_t_a is _u_c_h_a_r
+               pointer to the array of bytes to be written to the file
+               that represents the integer that is too large to be
+               stored in the file.  _f_r_o_m_b_i_t_s is the length in bits of
+               the host integer, and _t_o_b_i_t_s is the length of an
+               integer in the file.
+
+          FFFFllllooooaaaattttiiiinnnngggg----PPPPooooiiiinnnntttt TTTTyyyyppppeeeessss
+
+               _n_b_y_t_e_s is restricted to those sizes supported by the
+               selected file floating-point format using
+               _B_i_n_F_l_o_a_t_F_o_r_m_a_t(3BIN).  For instance, IEEE floating-
+               point supports only 4- and 8-byte lengths, so an _n_b_y_t_e_s
+               value of 5 would be illegal.  When _n_b_y_t_e_s is
+               inconsistent with any legal size of the current
+               floating point format selection, the error
+               _B_I_N_E_F_L_O_A_T_U_N_S_U_P_P_O_R_T_E_D error is returned.
+
+               When the file's floating-point format selected by
+               _B_i_n_F_l_o_a_t_F_o_r_m_a_t(3BIN) has a larger exponent and mantissa
+               than the host's floating-point format, zero padding of
+               the exponent and mantissa occurs as the data is written
+               out.
+
+               When the file's floating-point format has a smaller
+               mantissa than the host's format, the least-significant
+               bits of the mantissa are silently truncated, causing a
+               reduction in the accuracy of the number.
+
+               When the file's floating-point format has a smaller
+               exponent than the host's format, then the host's format
+               may be able to represent floating-point numbers that
+               are too large (overflow) or too small (underflow) for
+               the file's format.  The error handling function
+               nominated by _B_i_n_E_r_r_H_a_n_d_l_e_r(3BIN) is called
+
+                    handler( fd, BINOPWRITE, reason, data, frombits,
+                    tobits )
+
+               where _r_e_a_s_o_n is _B_I_N_E_F_L_O_A_T_O_V_E_R_F_L_O_W or
+               _B_I_N_E_F_L_O_A_T_U_N_D_E_R_F_L_O_W.
+
+               _f_d is the file's file descriptor.  _d_a_t_a is _u_c_h_a_r
+
+
+
+     Page 4                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNWWWWRRRRIIIITTTTEEEE((((3333BBBBIIIINNNN))))          SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))           BBBBIIIINNNNWWWWRRRRIIIITTTTEEEE((((3333BBBBIIIINNNN))))
+
+
+
+               pointer to the array of bytes read from the file that
+               represents the float whose exponent is too large or
+               small to be stored in the file's format.  _f_r_o_m_b_i_t_s is
+               the length in bits of the host float exponent, and
+               _t_o_b_i_t_s is the length of a float's exponent in the file.
+
+          If the programmer has not indicated an error handling
+          function, the default handler prints a warning message to
+          _s_t_d_e_r_r.
+
+          To maintain portability of code written using the binary I/O
+          package, NNNNEEEEVVVVEEEERRRR use the C construct _s_i_z_e_o_f() to compute the
+          _n_b_y_t_e_s argument.  If a 32-bit quantity is to be written,
+          pass a "4", not "sizeof(int)".  The size of an _i_n_t is only
+          "4" on 32-bit machines.  Such code will fail to work
+          properly on a CRAY where integers are 64-bits long.
+
+          The byte order for data written to the file may be selected
+          by calling _B_i_n_B_y_t_e_O_r_d_e_r(3BIN) prior to making write calls.
+
+          Entire C structures may be written using the
+          _B_i_n_W_r_i_t_e_S_t_r_u_c_t(3BIN) and _B_i_n_F_W_r_i_t_e_S_t_r_u_c_t(3BIN) calls.
+
+     EEEEXXXXAAAAMMMMPPPPLLLLEEEESSSS
+        EEEExxxxaaaammmmpppplllleeee 1111
+          Write an array of 6 32-bit integers to a binary file:
+
+               int buf[6];
+               int fd;
+
+               BinWrite( fd, buf, INT, 4, 6 );
+
+          The _t_y_p_e argument is "INT" because the _b_u_f array was
+          declared as of type _i_n_t.
+
+          The _n_b_y_t_e_s argument is "4" to indicate that 4-byte
+          quantities are to be written to the file.
+
+        EEEExxxxaaaammmmpppplllleeee 2222
+          Write an array of run-length-encoded pixel values where each
+          encoded pixel is stored on the host as 4 consecutive
+          integers.  The first integer holds an 8-bit count, while the
+          second, third, and fourth integers hold 8-bit red (R), green
+          (G), and blue (B) values.  When written to the binary file,
+          each set of four integers are to be compacted to 4 1-byte
+          quantities.
+
+               int scanline[WIDTH][4];
+               FILE *fp;
+
+               BinFWrite( fp, scanline, INT, 1, WIDTH*4 );
+
+
+
+
+     Page 5                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNWWWWRRRRIIIITTTTEEEE((((3333BBBBIIIINNNN))))          SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))           BBBBIIIINNNNWWWWRRRRIIIITTTTEEEE((((3333BBBBIIIINNNN))))
+
+
+
+          The _t_y_p_e is "INT", but _n_b_y_t_e_s is only 1.  Since _n_b_y_t_e_s is
+          less than the size of _t_y_p_e (at least on non-8-bit machines),
+          each integer will be truncated to 8-bits before being
+          written.
+
+        EEEExxxxaaaammmmpppplllleeee 3333
+          Write an array of 64-bit integers from an _i_n_t array.
+
+               int data[COUNT];
+               int fd;
+
+               BinWrite( fd, data, INT, 8, COUNT );
+
+          The _t_y_p_e is "INT" and _n_b_y_t_e_s is 8 (64 bits).  If the host
+          represents _i_n_ts in less than 64 bits, integers are sign-
+          extended before being written out as a 64-bit quantity.
+
+        EEEExxxxaaaammmmpppplllleeee 4444
+          Write out an array of 3 floats in IEEE single-precision
+          format.
+
+               float numbers[3];
+               FILE *fp;
+
+               BinFloatFormat( BINIEEE );
+               BinFWrite( fp, numbers, FLOAT, 4, 3 );
+
+          The host's floating-point numbers are automatically
+          converted to IEEE single-precision (4 bytes).
+
+        EEEExxxxaaaammmmpppplllleeee 5555
+          Write four double-precision floats into a character array as
+          raw binary data representing CRAY 64-bit floating point
+          values.  Write that array to an output file using _w_r_i_t_e(2).
+
+               double numbers[4];
+               char   data[4*8];
+
+               BinFloatFormat( BINCRAY );
+               BinSWrite( data, numbers, DOUBLE, 8, 4 );
+               write( fd, data, 4 * 8 );
+
+     SSSSEEEEEEEE AAAALLLLSSSSOOOO
+          BinByteOrder(3BIN), BinErrorHandler(3BIN), BinFRead(3BIN),
+          BinFReadStruct(3BIN), BinFWriteStruct(3BIN),
+          BinFloatFormat(3BIN), BinPError(3BIN), BinQByteOrder(3BIN),
+          BinQFloatFormat(3BIN), BinQMachine(3BIN), BinRead(3BIN),
+          BinReadStruct(3BIN), BinSRead(3BIN), BinWriteStruct(3BIN),
+          errno(2), perror(3)
+
+     AAAAUUUUTTTTHHHHOOOORRRRSSSS
+          Dave Nadeau
+
+
+
+     Page 6                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNWWWWRRRRIIIITTTTEEEE((((3333BBBBIIIINNNN))))          SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))           BBBBIIIINNNNWWWWRRRRIIIITTTTEEEE((((3333BBBBIIIINNNN))))
+
+
+
+          San Diego Supercomputer Center
+
+     CCCCOOOONNNNTTTTAAAACCCCTTTT
+          SDSC consultants, (619)534-5100, ccccoooonnnnssssuuuulllltttt@@@@yyyy1111....ssssddddsssscccc....eeeedddduuuu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Page 7                                          (printed 6/30/95)
+
+
+

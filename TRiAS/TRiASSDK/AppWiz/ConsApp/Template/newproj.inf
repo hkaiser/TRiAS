@@ -1,0 +1,32 @@
+$$// newproj.inf = template for list of template files
+$$//  format is 'sourceResName' \t 'destFileName'
+$$//    The source res name may be preceded by any combination of '=', '-',  '!', '?', ':', '#', and/or '*'
+$$//       '=' => the resource is binary
+$$//       '-' => the file should not be added to the project (all files are added to the project by default)
+$$//       '!' => the file should be marked exclude from build
+$$//       '?' => the file should be treated as a help file
+$$//       ':' => the file should be treated as a resource
+$$//       '#' => the file should be treated as a template (implies '!')
+$$//       '*' => bypass the custom AppWizard's resources when loading
+$$//	if name starts with / => create new subdir
+
+
+
+
+ROOT.CLW	$$root$$.clw
+ROOT.CPP	$$root$$.cpp
+ROOT.H	$$root$$.h
+ROOT.RC	$$root$$.rc
+MAINAPP.CPP	$$root$$App.cpp
+MAINAPP.H	$$root$$App.h
+!MAKEFILE	version.mak
+RESOURCE.H	resource.h
+STDAFX.CPP	StdAfx.cpp
+STDAFX.H	StdAfx.h
+USAGE.CPP	Usage.cpp
+/res
+copystrt.tpl	res/copystrt.tpl
+MainAppV.tpl	res/$$root$$v.tpl
+
+=-ERSETZ.EXE	ersetz.exe
+

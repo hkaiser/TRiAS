@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASDB.$$safe_root$$.ObjectsCollection.1 = s '$$safe_root$$ObjectsCollection Class'
+	{
+		CLSID = s '{$$GUID_OBJECTSCOLLECTION_OBJECT$$}'
+	}
+	TRiASDB.$$safe_root$$.ObjectsCollection = s '$$safe_root$$ObjectsCollection Class'
+	{
+		CLSID = s '{$$GUID_OBJECTSCOLLECTION_OBJECT$$}'
+		CurVer = s 'TRiASDB.$$safe_root$$.ObjectsCollection.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {$$GUID_OBJECTSCOLLECTION_OBJECT$$} = s '$$safe_root$$ObjectsCollection Class'
+		{
+			ProgID = s 'TRiASDB.$$safe_root$$.ObjectsCollection.1'
+			VersionIndependentProgID = s 'TRiASDB.$$safe_root$$.ObjectsCollection'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{$$GUID_LIBID$$}'
+		}
+	}
+}

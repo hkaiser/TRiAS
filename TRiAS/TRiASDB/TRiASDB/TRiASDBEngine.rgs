@@ -1,0 +1,29 @@
+HKCR
+{
+	TRiASDB.TRiASDBEngine.1 = s '%TRIASNAME% Datenzugriff'
+	{
+		CLSID = s '{1CB3AB7C-2E87-11D1-969D-00A024D6F582}'
+		TRiASDB 
+		{
+			TRiAS.Document.1 = s '%TRIASNAME% 1.30 GIS-Datenbank'
+			TRiAS.Document.2 = s '%TRIASNAME% GIS-Datenbank'
+		}
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {1CB3AB7C-2E87-11D1-969D-00A024D6F582} = s '%TRIASNAME% Datenzugriff'
+		{
+			ProgID = s 'TRiASDB.TRiASDBEngine.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C6-3123-101C-BB62-00AA0018497C}
+			}
+			'TypeLib' = s '{1CB3AB53-2E87-11D1-969D-00A024D6F582}'
+		}
+	}
+}

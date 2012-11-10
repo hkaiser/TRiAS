@@ -1,0 +1,198 @@
+
+
+
+IMVFBXSHEAR(1IM)           IMAGE TOOLS           IMVFBXSHEAR(1IM)
+
+
+
+NAME
+     ImVfbXShear, ImVfbYShear  -  shear an image in the  X  or  Y
+     direction
+
+SYNOPSIS
+     #include "im.h"
+
+     ImVfb *ImVfbXShear( srcVfb, degree, dstVfb )
+             ImVfb   *srcVfb;
+             float    degree;
+             ImVfb   *dstVfb;
+
+     ImVfb *ImVfbYShear( srcVfb, degree, dstVfb )
+             ImVfb   *srcVfb;
+             float    degree;
+             ImVfb   *dstVfb;
+
+
+DESCRIPTION
+     ImVfbXShear and ImVfbYShear shear the _s_r_c_V_f_b  along  the  X-
+     axis  and Y-axis, respectively.  The resulting sheared image
+     is returned in _d_s_t_V_f_b, a pointer to which is returned as the
+     function value.
+
+     A shear operation can be viewed as a rotation of one edge of
+     an  image,  while  holding  the other edge where it is.  The
+     effect creates  a  parallelogram.   The  image  shear  angle
+     _d_e_g_r_e_e  is the edge rotation angle measured using the right-
+     hand rule:  positive angles rotate  counter-clockwise  while
+     negative angles rotate clockwise.
+
+     ImVfbXShear shears the image along the  X-axis  by  rotating
+     it's  vertical,  Y-axis,  edge  by _d_e_g_r_e_e.  A positive angle
+     will have the effect of shearing the top of the image to the
+     left,  relative  to  the bottom.  A negative angle will have
+     the effect of shearing the top of the image  to  the  right,
+     relative to the bottom.
+
+     ImVfbYShear shears the image along the  Y-axis  by  rotating
+     it's  horizontal,  X-axis, edge by _d_e_g_r_e_e.  A positive angle
+     will have the effect of shearing the right edge of the image
+     upwards,  relative  to the left edge.  A negative angle will
+     have the effect of shearing the  right  edge  of  the  image
+     downwards, relative to the left edge.
+
+     Both forms of shearing will create a new image larger in one
+     dimension than the original.
+
+     If _d_s_t_V_f_b is IMVFBNEW a new destination VFB will be automat-
+     ically  allocated  with  the proper size, the same fields as
+     _s_r_c_V_f_b, and initialized to zeroes in all fields.  A  pointer
+     to the new _d_s_t_V_f_b is returned by ImVfbXShear or ImVfbYShear.
+
+
+
+SDSC             Last change: November 24, 1992                 1
+
+
+
+
+
+
+IMVFBXSHEAR(1IM)           IMAGE TOOLS           IMVFBXSHEAR(1IM)
+
+
+
+     If _d_s_t_V_f_b is not IMVFBNEW, the VFB must have  at  least  the
+     same  fields  as _s_r_c_V_f_b and must be large enough to hold the
+     sheared image.  Sheared VFB sizes may be computed based upon
+     the shear angle using:
+          X Shears:
+               Width = ImVfbQWidth( _s_r_c_V_f_b ) +
+                    fabs( tan( _d_e_g_r_e_e ) * ImVfbQHeight( _s_r_c_V_f_b  )
+               )
+
+               Height = ImVfbQHeight( _s_r_c_V_f_b )
+
+          Y Shears:
+               Width = ImVfbQWidth( _s_r_c_V_f_b )
+
+               Height = ImVfbQHeight( _s_r_c_V_f_b ) +
+                    fabs( sin( _d_e_g_r_e_e ) * ImVfbQWidth( _s_r_c_V_f_b ) )
+
+     _d_s_t_V_f_b contents will be overwritten  by  those  pixels  from
+     _s_r_c_V_f_b that constitute the sheared image.  Pixels outside of
+     the image (two  corner  triangles)  will  be  unmodified  in
+     _d_s_t_V_f_b.
+
+NOTES
+     Providing  a  _d_s_t_V_f_b  to  ImVfbXShear  or   ImVfbYShear   is
+     appropriate for a variety of effects.  In the simplest case,
+     the _d_s_t_V_f_b may contain a background color that  matches  the
+     background of the _s_r_c_V_f_b.  When sheared, the _s_r_c_V_f_b's pixels
+     will blend seamlessly into the _d_s_t_V_f_b background rather than
+     leave empty black triangular corners.
+
+     In a more complex use of a _d_s_t_V_f_b, the _d_s_t_V_f_b may be intial-
+     ized to a transparent alpha channel value.  The _s_r_c_V_f_b, com-
+     plete with its own variety of transparent and  opaque  alpha
+     values,  will  be  sheared  and  placed into the transparent
+     background of _d_s_t_V_f_b.  The combination can then be used with
+     ImVfbComp  to  digitally  composite  the  sheared image atop
+     another image.
+
+     Finally, a _d_s_t_V_f_b could contain a complete image atop  which
+     the  sheared  image  is  to be placed.  This is usually less
+     satisfying that using  an  alpha-channel  based  compositing
+     approach  because the entire rectangle of the sheared _s_r_c_V_f_b
+     will be pasted atop the _d_s_t_V_f_b, leaving you a sheared  image
+     with _d_s_t_V_f_b only showing through in the corners.
+
+     _s_r_c_V_f_b is unaltered by this operation.
+
+RETURNS
+     Upon success, ImVfbXShear and ImVfbYShear return  a  pointer
+     to   the   destination  VFB.   Upon  failure,  IMVFBNULL  is
+     returned, and ImErrNo set to one of the following:
+
+
+
+
+2                Last change: November 24, 1992              SDSC
+
+
+
+
+
+
+IMVFBXSHEAR(1IM)           IMAGE TOOLS           IMVFBXSHEAR(1IM)
+
+
+
+          IMEFIELD      _s_r_c_V_f_b and dstVfb fields aren't compatible
+          IMEHEIGHT     Height not the right size for the resulting shear
+          IMEMALLOC     Cannot allocate enough memory for the new VFB
+          IMENOVFB      NULL _s_r_c_V_f_b
+          IMEWIDTH      Width not the right size for the resulting shear
+          IMEIMPSHEAR   An invalid shear was requested (<-90 or >90 degrees)
+
+SEE ALSO
+     ImIntro    (3IM),     ImErrNo     (3IM),     ImVfbComp(3IM),
+     ImVfbRotate(3IM)
+
+AUTHOR
+     Dave Nadeau and Chris Groening
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SDSC             Last change: November 24, 1992                 3
+
+
+

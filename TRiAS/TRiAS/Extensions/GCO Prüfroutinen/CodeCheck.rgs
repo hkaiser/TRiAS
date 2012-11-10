@@ -1,0 +1,39 @@
+HKCR
+{
+	TRiASEx.CodeCheckPropAct.1 = s 'CodeCheckPropertyAction Class'
+	{
+		CLSID = s '{F04E9701-1841-4817-BDAF-22A466F8E911}'
+	}
+	TRiASEx.CodeCheckPropAct = s 'CodeCheckPropertyAction Class'
+	{
+		CLSID = s '{F04E9701-1841-4817-BDAF-22A466F8E911}'
+		CurVer = s 'TRiASEx.CodeCheckPropAct.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {F04E9701-1841-4817-BDAF-22A466F8E911} = s 'CodeCheckPropertyAction Class'
+		{
+			ProgID = s 'TRiASEx.CodeCheckPropAct.1'
+			VersionIndependentProgID = s 'TRiASEx.CodeCheckPropAct'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{46537618-3D6B-4E6A-B438-7EB64BF92E53}'
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiASEx.CodeCheckPropAct.1' = s '{F04E9701-1841-4817-BDAF-22A466F8E911}'
+			}
+		}
+	}
+}

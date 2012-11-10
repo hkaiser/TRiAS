@@ -1,0 +1,322 @@
+'\"t
+.de Cb		\" Courier Begin
+.in +0.25i
+.ft CW
+\s-1
+.nf
+..
+.de Ce		\" Courier End
+.ft R
+.fi
+\s+1
+.in -0.25i
+..
+.TH ARGINTRO 3ARG "September 1991" "SDSC" "ARGUMENT PARSING"
+.SH NAME
+ArgIntro  -  information on the argument parsing package
+.SH SYNOPSIS
+.if t \fB
+#include "sdsc.h"
+.if t \fR
+.SH DESCRIPTION
+One of the larger hassles in writing a new command is writing code to
+parse its command-line.  Such code is rarely standardized, which often
+leads to a radiacally different command-line look-and-feel for different
+tools.
+.LP
+The argument parsing package is a set of data structures and subroutines
+to handle command-line argument parsing.  The package is flexible, quick
+and easy to use, and supports the prevailing UNIX conventions for
+command-line arguments.
+.LP
+The main routine in the argument parsing package is \fIArgParse\fR(3ARG).
+\fIArgParse\fR(3ARG) takes a set of C structures providing three sets
+of information:
+.RS 0.5i
+.LP
+.IP \(bu 0.25i
+General command information, such as its name, its version, and
+its help message text.
+.IP \(bu 0.25i
+Option details giving option keyword names and attributes.
+.IP \(bu 0.25i
+Equivalent keyword names for alternate names and abbreviations for selected
+keywords.
+.RE
+.LP
+Using this information and the command line \fIargc\fR and \fIargv\fR
+variables, \fIArgParse\fR(3ARG) breaks down the command line and groups values
+with options.
+In the process, the standard options \fB-feedback\fR, \fB-help\fR,
+\fB-fullhelp\fR, \fB-register\fR, and \fB-version\fR are handled automatically.
+.SH GOALS
+In addition to being easy to use and portable among UNIX systems, the argument parsing package was designed with the following:
+.IP \(bu 0.25i
+Options consisting of a single keyword and no values following it
+(such as \fB-verbose\fR). 
+.IP \(bu 0.25i
+Options consisting of a single keyword and one or more integer,
+floating point, or string values following it (such as \fB-infile
+filename\fR or \fB-xrotate 45.0\fR). 
+.IP \(bu 0.25i
+Options consisting of one or more values that are not preceded by a keyword.
+Such options are termed as having an "implied keyword."
+.IP \(bu 0.25i
+Abbreviation-by-unique-truncation of keywords so
+that "\-infile" and "\-in" are equally acceptable input from a user.
+.IP \(bu 0.25i
+Integer and floating-point range values, where a value is really two
+numbers indicating a set of numbers like \fB4-8\fR (four through eight).
+.IP \(bu 0.25i
+Standard options such as \fB-help\fR.
+.SH "PARSING THE COMMANDLINE"
+\fIArgParse\fR(3ARG) takes as arguments
+C structures describing the command-line options
+acceptable to the program and the \fIargc\fR and \fIargv\fR arguments to
+\fImain\fR.
+.LP
+.ne 8
+.RS 0.5i
+.nf
+int argc;
+char *argv[ ];
+int nopt, nequiv;
+ArgCommand cmnd = { ... };
+ArgOption opt[ ] = { ... };
+ArgEquiv equiv[ ] = { ... };
+
+ArgParse( argc, argv, &cmnd, nopt, &opt, nequiv, &equiv );
+.fi
+.RE
+.LP
+\fIcmnd\fR is an \fIArgCommand\fR structure that describes basic attributes
+of the command, such as its name, its current
+version number, and some help message text printed by the package when the
+user gives \fB-help\fR.
+.LP
+\fIopt\fR is a pointer to the first element of an array of \fInopt\fR
+\fIArgOption\fR structures, each one describing one possible option that the
+command can accept.
+Information in \fIopt\fR includes the option's keyword name, the number of
+values that are expected to follow it, their type (integer, float, string),
+and help message text on the option.
+.LP
+\fIequiv\fR is a pointer to the first element of an array of \fInequiv\fR
+\fIArgEquiv\fR structures, each one describing an alternate keyword
+name for one of the options in the \fIopt\fR array.
+.LP
+The commandline in \fIargv\fR is parsed and matched against the known options
+for the command.
+The keywords and values found are stored into an internal data structure that
+then may be queried using the other calls of the argument parsing package.
+.SH "QUERYING THE OCCURRENCE OF OPTIONS ON THE COMMANDLINE"
+After parsing the commandline, the argument parsing package can be queried
+to see if an option occurred, how many times it occurred, and what values
+where given for each occurrence.
+.LP
+.ne 6
+.RS 0.5i
+.nf
+int noccur, nvalue;
+ArgValue *value;
+
+noccur = ArgQNOccur( "infiles" );
+nvalue = ArgQNValue( "infiles", noccur );
+value = ArgQValue( "infiles", noccur, nvalue );
+.fi
+.RE
+.LP
+\fIArgQNOccur\fR(3ARG) takes the keyword of an option and returns the
+number of times that option occurred on the commandline.
+.LP
+\fIArgQNValue\fR(3ARG) takes the keyword of an option and which occurrence
+is being queried and returns the number of values associated with that
+occurrence of that option.
+In the following command, the option "list" occurs twice.
+The first occurrence has three values, while the second has four.
+.RS 0.5i
+.LP
+mycommand -list 1 2 3 -thing -list 4 8 10 12
+.RE
+.LP
+\fIArgQValue\fR(3ARG) takes the keyword, occurrence number, and value
+for that occurrence, and returns a pointer to an \fIArgValue\fR structure.
+The structure primarily contains a union of the various types of values
+supported by the package:  integer, float, string, integer range, and
+float range.
+.LP
+Using the above "list" option and commandline, code to
+collect the list integers into an array would be as follows:
+.LP
+.ne 11
+.RS 0.5i
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+.nf
+int i, j, k;
+int noccur, nvalue;
+int list[MAXLIST];
+
+noccur = ArgQNOccur( "list" );
+for ( k = i = 0; i < noccur; i++ )
+{
+	nvalue = ArgQNValue( "list", i );
+	for ( j = 0; j < nvalue; j++ )
+		list[k++] = ArgQValue( "list", i, j )->arg_i;
+}
+.RE
+.LP
+.SH "QUERYING THE ORDER OF OPTIONS ON THE COMMANDLINE"
+The order of options on the commandline is sometimes important and is
+maintained in the package's internal data structures.
+To walk the list of options in commandline order, \fIArgQNOpt\fR(3ARG)
+and \fIArgQOpt\fR(3ARG) are provided:
+.LP
+.ne 5
+.RS 0.5i
+.nf
+int nopt, noccur;
+char *keyword;
+
+nopt = ArgQNOpt( );
+keyword = ArgQOpt( nopt, &noccur );
+.fi
+.RE
+.LP
+\fIArgQNOpt\fR(3ARG) queries the number of options that were given on
+the commandline.  An option is a keyword and zero or more following
+values or one or more values with an implied (optional) keyword.
+.LP
+\fIArgQOpt\fR(3ARG) takes a commandline order option number (e.g., give
+me the 3rd option on the commandline) and returns the keyword for that
+option and what occurrence it is of that type of option (e.g., it's the
+2nd occurrence of "list").
+.LP
+Typical code to walk the commandline would read:
+.LP
+.ne 17
+.RS 0.5i
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+.nf
+int i, j, k;
+int nopt, noccur, nvalue;
+char *keyword;
+int list[MAXLIST];
+
+nopt = ArgQNOpt( );
+for ( k = i = 0; i < nopt; i++ )
+{
+	keyword = ArgQOpt( nopt, &noccur );
+	if ( strcmp( keyword, "list" ) == 0 )
+	{
+		nvalue = ArgQNValue( "list", noccur );
+		for ( j = 0; j < nvalue; j++ )
+			list[k++] = ArgQValue( "list", i, j )->arg_i;
+	}
+	...
+}
+.fi
+.RE
+.LP
+Occasionally it is necessary to determine where a particular occurrence of
+an option is on the commandline.  This may be done using
+\fIArgQOccurOpt\fR(3ARG):
+.LP
+.ne 2
+.RS 0.5i
+.nf
+int nopt, noccur;
+char *keyword;
+
+nopt = ArgQOccurOpt( keyword, noccur );
+.fi
+.RE
+.LP
+\fIArgQOccurOpt\fR(3ARG) takes the keyword of an option and which occurrence
+is being queried and returns the position of that option occurrence on
+the commandline.
+.SH "GENERATING HELP AND VERSION TEXT"
+\fIArgParse\fR(3ARG) automatically generates a help message in response
+to the \fB-help\fR and \fB-fullhelp\fR options, and generates
+a version number message in response to the \fB-version\fR option.
+Both the help and version number messages may be generated directly by
+the program by calling \fIArgHelp\fR(3ARG), \fIArgFullHelp\fR(3ARG),
+and \fIArgVersion\fR(3ARG):
+.LP
+.ne 2
+.RS 0.5i
+ArgHelp( );
+.br
+ArgFullHelp( );
+.br
+ArgVersion( );
+.RE
+.LP
+.SH "GENERATING FEEDBACK AND REGISTRATION FORMS"
+\fIArgParse\fR(3ARG) automatically generates feedback (bug report) and
+user registration forms to files in response to the \fB-feedback\fR
+and \fB-register\fR options.
+Both of these forms may be generated directly by the program by calling
+\fIArgFeedback\fR(3ARG) and \fIArgRegister\fR(3ARG):
+.LP
+.ne 2
+.RS 0.5i
+ArgFeedback( );
+.br
+ArgRegister( );
+.RE
+.LP
+.SH "RETURNS"
+All argument parsing
+package calls that can return errors do so by returning -1 or NULL pointers
+on failure and 0 or a valid pointer on success
+(per UNIX system call convention).
+The global variable \fIArgErrNo\fR is set to an error code describing the
+error (also per UNIX convention).
+The error text associated with the error code may be retrieved from the
+global \fIArgErrList\fR or printed to \fIstderr\fR using \fIArgPError\fR(3ARG).
+.SH "SUMMARY OF ARGUMENT PARSING ROUTINES"
+.nf
+.TS
+l l.
+int	ArgFeedback( )
+int	ArgFullHelp( )
+int	ArgHelp( )
+int	ArgParse( argc, argv, cmnd, noptions, options, nequiv, equiv )
+void	ArgPError( leader )
+char *	ArgQError( )
+int	ArgQNOccur( keyword )
+int	ArgQNOpt( )
+int	ArgQOccurOpt( keyword, noccur )
+char *	ArgQOpt( nopt, noccur )
+int	ArgQNValue( keyword, noccur )
+ArgValue *	ArgQValue( keyword, noccur, nvalue )
+int	ArgRegister( )
+int	ArgVersion( )
+.TE
+.fi
+.SH "SEE ALSO"
+ArgFeedback(3ARG),
+ArgFullHelp(3ARG),
+ArgHelp(3ARG),
+ArgIntro(3ARG),
+ArgParse(3ARG),
+ArgPError(3ARG),
+ArgQError(3ARG),
+ArgQNOccur(3ARG),
+ArgQNOpt(3ARG),
+ArgQOccurOpt(3ARG),
+ArgQOpt(3ARG),
+ArgQNValue(3ARG),
+ArgQValue(3ARG),
+ArgRegister(3ARG),
+ArgVersion(3ARG),
+errno(2),
+perror(3)
+.br
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

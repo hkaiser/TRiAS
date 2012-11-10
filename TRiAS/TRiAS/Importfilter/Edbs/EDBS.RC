@@ -1,0 +1,286 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""edbsimp.rcv""\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+#if defined(APSTUDIO_INVOKED) || defined(_USE_CONFIG_DIALOGS)
+#if defined(APSTUDIO_INVOKED)
+IDD_DIALOG2$(_USE_CONFIG_DIALOGS) DIALOG DISCARDABLE  20, 50, 338, 215
+#else
+IDD_DIALOG2 DIALOG DISCARDABLE  20, 50, 338, 215
+#endif
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Einstellungen für den EDBS - Import"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,257,6,76,14
+    PUSHBUTTON      "Abbrechen",IDCANCEL,257,22,76,14
+    GROUPBOX        " Objektklassen ",IDC_STATIC,9,9,239,134
+    COMBOBOX        IDC_COMBO1,69,26,170,100,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_LIST1,68,44,170,44,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_LIST2,68,95,170,44,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "EDBS-Objektart",IDC_STATIC,15,26,51,10
+    LTEXT           "Bedingungen",IDC_STATIC,15,44,51,10
+    LTEXT           "Ersetzungen",IDC_STATIC,15,95,51,10
+    GROUPBOX        " Erläuterungen ",IDC_STATIC,9,153,239,54
+    PUSHBUTTON      "Speichern",IDC_SAVE_AS,257,50,76,14
+    PUSHBUTTON      "Laden",IDC_LOAD,257,66,76,14
+    PUSHBUTTON      "Objektart ...",IDC_BTN_BEARB1,257,94,76,14
+    PUSHBUTTON      "Identifikatoren ...",IDC_BTN_BEARB2,257,110,76,14
+    PUSHBUTTON      "Attribute ...",IDC_BTN_BEARB3,257,142,76,14
+    LTEXT           "Objektart:",IDC_STEXT1,16,167,44,8
+    LTEXT           "2114: Fläche besonderer funktionaler Prägung",
+                    IDC_STEXT2,66,167,176,8
+    LTEXT           "Attribut:",IDC_STEXT3,16,179,44,8
+    LTEXT           "OFL: Lage zur Erdoberfläche",IDC_STEXT4,66,179,176,8
+    LTEXT           "Attributwert:",IDC_STEXT5,16,192,44,8
+    LTEXT           "ZUS=1200: außer Betrieb, stillgelegt, nicht befahrbar",
+                    IDC_STEXT6,66,192,176,8
+    PUSHBUTTON      "Merkmale ...",IDC_BTN_BEARB4,257,158,76,14
+    CONTROL         "nicht definierte",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,264,179,63,11
+    LTEXT           "Objektarten ignorieren",IDC_STATIC,275,190,51,18
+    PUSHBUTTON      "x Identifikatoren ...",IDC_BTN_BEARB5,257,126,76,14
+END
+#endif
+
+#if defined(APSTUDIO_INVOKED) || defined(_USE_CONFIG_DIALOGS)
+#if defined(APSTUDIO_INVOKED)
+IDD_TRIAS_ID$(_USE_CONFIG_DIALOGS) DIALOG DISCARDABLE  20, 20, 185, 79
+#else
+IDD_TRIAS_ID DIALOG DISCARDABLE  20, 20, 185, 79
+#endif
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "TRiAS - Identifikatoren"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,129,6,50,14
+    PUSHBUTTON      "Abbrechen",IDCANCEL,129,23,50,14
+    COMBOBOX        IDC_COMBO1,9,23,115,65,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT1,9,58,113,13,ES_AUTOHSCROLL
+    LTEXT           "Identifikator",IDC_TEXT1,9,10,69,10
+    LTEXT           "Kurztext",IDC_TEXT2,9,44,73,11
+    PUSHBUTTON      "Löschen",IDC_BUTTON1,129,58,50,14
+    PUSHBUTTON      "Ändern",IDC_BUTTON2,129,41,50,14
+END
+#endif
+
+#if defined(APSTUDIO_INVOKED) || defined(_USE_CONFIG_DIALOGS)
+#if defined(APSTUDIO_INVOKED)
+IDD_EDBS_ATTR$(_USE_CONFIG_DIALOGS) DIALOG DISCARDABLE  20, 20, 185, 164
+#else
+IDD_EDBS_ATTR DIALOG DISCARDABLE  20, 20, 185, 164
+#endif
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "EDBS - Attribute"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,129,5,50,14
+    PUSHBUTTON      "Abbrechen",IDCANCEL,129,21,50,14
+    COMBOBOX        IDC_COMBO1,9,20,115,60,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT1,9,58,113,13,ES_AUTOHSCROLL
+    LTEXT           "Abkürzung",IDC_STATIC,9,7,44,10
+    LTEXT           "Bezeichnung",IDC_STATIC,9,44,48,11
+    PUSHBUTTON      "Löschen",IDC_BUTTON1,129,58,50,14
+    GROUPBOX        " Werte ",IDC_STATIC,1,84,182,78
+    PUSHBUTTON      "Löschen",IDC_BUTTON3,129,140,50,14
+    PUSHBUTTON      "Ändern",IDC_BUTTON4,129,124,50,14
+    PUSHBUTTON      "Ändern",IDC_BUTTON2,129,42,50,14
+    COMBOBOX        IDC_COMBO2,9,104,115,59,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT2,9,141,113,13,ES_AUTOHSCROLL
+    LTEXT           "Bezeichnung",IDC_STATIC,9,128,48,11
+END
+#endif
+
+#if defined(APSTUDIO_INVOKED) || defined(_USE_CONFIG_DIALOGS)
+#if defined(APSTUDIO_INVOKED)
+IDD_EDBS_ART$(_USE_CONFIG_DIALOGS) DIALOG DISCARDABLE  20, 20, 211, 270
+#else
+IDD_EDBS_ART DIALOG DISCARDABLE  20, 20, 211, 270
+#endif
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "EDBS - Objektart"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,154,6,50,14
+    PUSHBUTTON      "Abbrechen",IDCANCEL,154,23,50,14
+    COMBOBOX        IDC_COMBO1,9,23,140,60,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT1,9,58,140,13,ES_AUTOHSCROLL
+    LTEXT           "Identifikator",IDC_STATIC,9,10,44,10
+    LTEXT           "Bezeichnung",IDC_STATIC,9,44,46,11
+    PUSHBUTTON      "Ändern",IDC_BUTTON2,154,58,50,14
+    PUSHBUTTON      "Löschen",IDC_BUTTON1,154,76,50,14
+    LTEXT           "TRiAS-Identifikator",IDC_STATIC,11,84,66,8
+    CONTROL         "mehrdeutig",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,85,82,52,11
+    COMBOBOX        IDC_COMBO2,9,97,140,60,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        " Merkmale ",IDC_STATIC,1,118,209,70
+    LISTBOX         IDC_LIST1,9,131,140,54,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Ändern ...",IDC_BUTTON3,154,131,50,14
+    PUSHBUTTON      "Löschen",IDC_BUTTON4,154,148,50,14
+    GROUPBOX        " Attribute ",IDC_STATIC,1,196,209,70
+    LISTBOX         IDC_LIST2,9,209,140,54,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Ändern ...",IDC_BUTTON5,154,209,50,14
+    PUSHBUTTON      "Löschen",IDC_BUTTON6,154,226,50,14
+    PUSHBUTTON      "Erweitert ...",IDC_BUTTON7,154,165,50,14
+    PUSHBUTTON      "Erweitert ...",IDC_BUTTON8,154,243,50,14
+END
+#endif
+
+#if defined(APSTUDIO_INVOKED) || defined(_USE_CONFIG_DIALOGS)
+#if defined(APSTUDIO_INVOKED)
+IDD_EDIT_MM$(_USE_CONFIG_DIALOGS) DIALOG DISCARDABLE  0, 0, 187, 95
+#else
+IDD_EDIT_MM DIALOG DISCARDABLE  0, 0, 187, 95
+#endif
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Merkmalsauswertung ändern"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Speichern",IDOK,131,6,50,14
+    PUSHBUTTON      "Abbrechen",IDCANCEL,131,23,50,14
+    LTEXT           "Merkmal",IDC_STATIC,3,7,34,8
+    COMBOBOX        IDC_COMBO1,44,7,75,56,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Wert",IDC_STATIC,3,27,34,8
+    COMBOBOX        IDC_COMBO2,44,27,75,51,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Zuordnung zu",IDC_STATIC,3,49,50,8
+    CONTROL         "(mehrdeutigem)",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,54,49,65,8
+    LTEXT           "TRiAS - Identifikator",IDC_STATIC,3,62,72,8
+    COMBOBOX        IDC_COMBO3,44,72,135,80,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+#endif
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// INIFILE
+//
+
+IDR_INIFILE2            INIFILE DISCARDABLE     "Edbs.ini"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+    IDS_PREPAREOBJECTS      "Objekte zusammenstellen."
+    IDS_OBJECTSPREPARED     "Gelesene Objekte zu %d%% zum Speichern vorbereitet!"
+    IDS_SAVEOBJECTS         "Objekte erzeugen."
+    IDS_OBJECTSSAVED        "Gelesene Objekte zu %d%% in TRiAS gespeichert!"
+    IDS_CANCELIMPORT        "Alle bisher gelesenen Informationen gehen beim Abbruch verloren!\nWollen Sie tatsächlich abbrechen?"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Import aus dem ATKIS/EDBS-Format"
+    IDS_FORMATDESCRIPTION   "ATKIS-Daten im EDBS-Austauschformat"
+    IDS_DEFAULTEXTENSION    "at;edb;edbs"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_GEOREINEXT          "TRiAS.Bereinigung.1"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_KOEFF11             "Koeff11         "
+    IDS_KOEFF12             "Koeff12         "
+    IDS_KOEFF21             "Koeff21         "
+    IDS_KOEFF22             "Koeff22         "
+    IDS_OFFSETX             "OffsetX         "
+    IDS_OFFSETY             "OffsetY         "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_IDENTBASE           "IdentBase       "
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "edbsimp.rcv"
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

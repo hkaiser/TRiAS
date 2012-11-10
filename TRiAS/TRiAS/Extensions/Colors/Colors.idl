@@ -1,0 +1,106 @@
+// Colors.idl : IDL source for Colors.dll
+//
+
+typedef enum tagDCOLOR {
+	DCOLOR_BLACK = 0x00000000,
+	DCOLOR_DARKGRAY = 0x00404040,
+	DCOLOR_GRAY = 0x00808080,
+	DCOLOR_LIGHTGRAY = 0x00c0c0c0,
+	DCOLOR_WHITE = 0x00ffffff,
+} DCOLOR;
+
+[
+	odl,
+	uuid(2CFAA6B4-4DCA-11D0-B0DC-00A024D6F582),
+	dual, oleautomation,
+	helpstring("IDoubleColor Interface"),
+	pointer_default(unique)
+]
+interface IDoubleColor : IDispatch
+{
+	import "oaidl.idl";
+
+	[id(0), propget]HRESULT RGB ([out, retval]long *plRGB);
+	[id(0), propput]HRESULT RGB ([in]long lRGB);
+	
+// native properties
+	[id(100), propget]HRESULT Red ([out, retval]double *pdRed);
+	[id(100), propput]HRESULT Red ([in]double dRed);
+	[id(101), propget]HRESULT Green ([out, retval]double *pdGreen);
+	[id(101), propput]HRESULT Green ([in]double dRed);
+	[id(102), propget]HRESULT Blue ([out, retval]double *pdBlue);
+	[id(102), propput]HRESULT Blue ([in]double dRed);
+
+// calculated properties
+	[id(103), propget]HRESULT Hue ([out, retval]double *pdRed);
+	[id(103), propput]HRESULT Hue ([in]double dRed);
+	[id(104), propget]HRESULT Saturation ([out, retval]double *pdGreen);
+	[id(104), propput]HRESULT Saturation ([in]double dRed);
+	[id(105), propget]HRESULT Brightness ([out, retval]double *pdBlue);
+	[id(105), propput]HRESULT Brightness ([in]double dRed);
+
+	[id(107), propget, helpstring("Liefert zugehörige Komplementärfarbe.")]
+		HRESULT Complement ([out, retval]IDoubleColor **ppIColor);
+	[id(108), propget, helpstring("Liefert zugehörige gesättigte Farbe.")]
+		HRESULT Saturated ([out, retval]IDoubleColor **ppIColor);
+	[id(109), propget, helpstring("Liefert zugehörige entsättigte Farbe.")]
+		HRESULT Grayed ([out, retval]IDoubleColor **ppIColor);
+	[id(110), propget, helpstring("Liefert zugehörige reine Farbe.")]
+		HRESULT Pure ([out, retval]IDoubleColor **ppIColor);
+
+// initialization functions
+	[id(111)]HRESULT InitRGB ([in]double dRed, [in]double dGreen, [in]double dBlue);
+	[id(112)]HRESULT InitHSB ([in]double dHue, [in]double dSat, [in]double dBright);
+
+	[id(113)]HRESULT RetrieveRGB ([out]double *pdRed, [out]double *pdGreen, [out]double *pdBlue);
+	[id(114)]HRESULT RetrieveHSB ([out]double *pdHue, [out]double *pdSat, [out]double *pdBright);
+};
+
+[
+	odl,
+	uuid(2CFAA6B5-4DCA-11D0-B0DC-00A024D6F582),
+	dual,
+	helpstring("IColorLookUp Interface"),
+	pointer_default(unique)
+]
+interface IColorLookUp : IDispatch
+{
+	import "oaidl.idl";
+
+// initialization functions
+	[id(200), helpstring("Initialisierung mit zwei bzw. drei Farben.")]
+		HRESULT Init([in]int iCnt, [in]IDoubleColor *pIColor1, 
+					 [in]IDoubleColor *pIColor2, [in, optional]VARIANT vColor3);
+// properties
+	[id(0), propget, helpstring("Liefert die nte Farbe des Farbverlaufes.")]
+		HRESULT Color ([in]int iIndex, [out, retval]IDoubleColor **pIColor);
+};
+
+
+[
+	uuid(2CFAA6B3-4DCA-11D0-B0DC-00A024D6F582),
+	version(1.0),
+	helpstring("TRiAS Colors Type Library")
+]
+library ColorLookUp
+{
+	importlib("stdole32.tlb");
+
+	[
+		uuid(2CFAA6B8-4DCA-11D0-B0DC-00A024D6F582),
+		helpstring("DoubleColor Class")
+	]
+	coclass DoubleColor
+	{
+		[default] interface IDoubleColor;
+	};
+
+	[
+		uuid(2CFAA6B9-4DCA-11D0-B0DC-00A024D6F582),
+		helpstring("ColorLookUp Class")
+	]
+	coclass ColorLookUp
+	{
+		[default] interface IColorLookUp;
+	};
+};

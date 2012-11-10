@@ -1,0 +1,30 @@
+HKCR
+{
+	TRiAS.Statistics.%VALUENAME%.1 = s '%CLASSNAME%'
+	{
+		CLSID = s '%GUID%'
+	}
+	TRiAS.Statistics.%VALUENAME% = s '%CLASSNAME%'
+	{
+		CLSID = s '%GUID%'
+		CurVer = s 'TRiAS.Statistics.%VALUENAME%.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove %GUID% = s '%CLASSNAME%'
+		{
+			ProgID = s 'TRiAS.Statistics.%VALUENAME%.1'
+			VersionIndependentProgID = s 'TRiAS.Statistics.%VALUENAME%'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{CF461D81-EE47-11D2-9BE4-BAF620524153}'
+			'Implemented Categories'
+			{
+				{19BBA822-01AA-4A90-B8E8-3F9D095A1216}
+			}
+		}
+	}
+}

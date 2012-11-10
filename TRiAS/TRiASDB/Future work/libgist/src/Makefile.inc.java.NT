@@ -1,0 +1,15 @@
+# Modify these paths as necessary on your system.
+
+
+CPATH=$(CLASSPATH)
+JFLAGS = -classpath "..\gui;..\analysis;..\amdbgist;..\treeview;$(CPATH)"
+JHFLAGS = -classpath "..\gui;..\analysis;..\amdbgist;..\treeview;$(CPATH)" -jni
+
+.SUFFIXES : .java .class
+
+.java.class:
+	javac $(JFLAGS) $<
+
+.class.h:
+	javah $(JHFLAGS) $*
+	echo // >> $@

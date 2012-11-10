@@ -1,0 +1,22 @@
+# 	Makefile for gui, Windows platform
+# 	$$
+
+include ..\Makefile.inc.java.NT
+
+SRCS = MainWindow.java \
+	ConsoleWindow.java \
+	OpThread.java \
+	Breakpoint.java \
+	BreakHandler.java \
+	Breakpoints.java \
+	BpTableModel.java \
+	BreakInfo.java \
+	Properties.java \
+	DbgOutput.java
+
+CLASSES = $(SRCS:.java=.class)
+
+all: $(CLASSES)
+
+clean:
+	del *.class *~

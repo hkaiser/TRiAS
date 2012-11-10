@@ -1,0 +1,126 @@
+//
+// *D_Lib* Copyright 1996-1998  Anatoly Kardash, anatoly-k@usa.net
+//
+// Permission to use, copy, modify, and distribute, this software
+// and its documentation for any purpose is hereby granted without
+// fee, provided that the above copyright notice appear in all copies
+// and that both that copyright notice and this permission notice
+// appear in supporting documentation, and that the name of the
+// copyright holders be used in advertising or publicity pertaining
+// to distribution of the software with specific, written prior
+// permission, and that no fee is charged for further distribution
+// of this software, or any modifications thereof. The copyright
+// holder make no representations about the suitability of this
+// software for any purpose. It is provided "as is" without express
+// or implied warranty.
+//
+// THE COPYRIGHT HOLDER DISCLAIM ALL WARRANTIES WITH REGARD TO THIS
+// SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
+// FITNESS, IN NO EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE FOR
+// ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+// WHATSOEVER RESULTING FROM LOSS OF USE, DATA, PROFITS, QPA OR GPA,
+// WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
+// ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
+// OF THIS SOFTWARE.
+//
+
+// must be included not directly but from D_List_c.h!
+
+template <class T>
+D_List_c<T>::D_List_c( const D_List_c<T>& src)
+	: _list( 0),
+	  _prev_node( 0),
+	  _prev_index( NO_SUCH_ELEMENT)
+{
+	D_ListNode_c<T>* cur = 0;
+	for( D_ListNode_c<T>* n = src._list; n != 0; n = n->next)
+	{
+		D_ListNode_c<T>* node = new D_ListNode_c<T>(
+				n->val, 0);
+		if( cur == 0)
+			_list = node;
+		else
+			cur->next = node;
+		cur = node;
+	}
+	_entries = src._entries;
+}
+
+template <class T>
+void D_List_c<T>::clear()
+{
+	for( D_ListNode_c<T>* n = _list; n != 0; )
+	{
+		D_ListNode_c<T>* next = n->next;
+		delete n;
+		n = next;
+	}
+	_list = 0;
+	_entries = 0;
+	_prev_node = 0;
+	_prev_index = NO_SUCH_ELEMENT;
+}
+
+template <class T>
+void D_List_c<T>::insert( const T& val)
+{
+	D_ListNode_c<T>* node = new D_ListNode_c<T>( val, _list);
+	_list = node;
+	_entries ++ ;
+	_prev_node = 0;
+	_prev_index = NO_SUCH_ELEMENT;
+}
+
+template <class T>
+void D_List_c<T>::remove()
+{
+	if( _list == 0)
+		return;
+	D_ListNode_c<T>* node = _list->next;
+	delete _list;
+	_list = node;
+	_entries -- ;
+	_prev_node = 0;
+	_prev_index = NO_SUCH_ELEMENT;
+}
+
+template <class T>
+size_t D_List_c<T>::index( int (*testFunc)( const T&, void*),
+		void* data) const
+{
+	size_t i = 0;
+	for( D_ListNode_c<T>* n = _list; n != 0; i ++, n = n->next)
+	{
+		int res = testFunc( n->val, data);
+		if( res)
+			return( i);
+	}
+	return( NO_SUCH_ELEMENT);
+}
+
+template <class T>
+T& D_List_c<T>::at( size_t index)
+{
+	// most often case is sequential retrieving
+	if( _prev_index != NO_SUCH_ELEMENT && index == _prev_index + 1)
+	{
+		_prev_node = _prev_node->next;
+		_prev_index ++ ;
+		return( (T&)( _prev_node->val));
+	}
+	size_t i = 0;
+	for( D_ListNode_c<T>* n = _list; n != 0; i ++, n = n->next)
+	{
+		if( i == index)
+		{
+			_prev_node = n;
+			_prev_index = index;
+			return( (T&)( n->val));
+		}
+	}
+	// illegal operation - returning of 1st element
+	_prev_node = 0;
+	_prev_index = NO_SUCH_ELEMENT;
+	return( (T&)( _list->val));
+}
+

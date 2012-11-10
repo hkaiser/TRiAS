@@ -1,0 +1,55 @@
+// DefaultCTF.idl : IDL source for DefaultCTF.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (CTF.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#include "idl/CTFInterfaces.idl"
+#include "idl/CTFEventInterfaces.idl"
+
+cpp_quote("#define TYPELIB_CTF_VERSION_MAJOR 1")
+cpp_quote("#define TYPELIB_CTF_VERSION_MINOR 0")
+cpp_quote("#define TYPELIB_CTF_VERSION \"1.0\"")
+cpp_quote("#define TYPELIB_CTF_LCID 0")
+
+#define TYPELIB_CTF_VERSION 1.0
+#define TYPELIB_CTF_LCID 0
+
+///////////////////////////////////////////////////////////////////////////////
+// typelibrary
+[
+	uuid(0BDC3C09-503F-11D1-96F0-00A024D6F582),
+	version(TYPELIB_CTF_VERSION),
+	lcid(TYPELIB_CTF_LCID),
+	helpstring("CoordTransform 1.0 Type Library")
+]
+library CoordTransLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+///////////////////////////////////////////////////////////////////////////////
+// coclasses
+	[
+		uuid(0BDC3C19-503F-11D1-96F0-00A024D6F582),
+		helpstring("DefaultCoordTrans Class")
+	]
+	coclass DefaultCoordTrans
+	{
+		[default] interface ICoordTransform;
+		interface ICoordTransformInit;
+		[default, source] interface ICoordTransformEvents;
+	};
+	
+	[
+		uuid(95F58F37-DF2C-11D1-8606-00600875138A),
+		helpstring("ManageCoordParam Class")
+	]
+	coclass ManageCoordParam
+	{
+		[default] interface IObjectWithSite;
+	};
+};

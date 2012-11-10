@@ -1,0 +1,26 @@
+HKCR
+{
+	CvrtCoords.Bna.1 = s 'Konvertieren von BNA-Textdateien'
+	{
+		CLSID = s '{6CD362C8-AD9E-4A03-818C-830ED299F5BF}'
+	}
+	CvrtCoords.Bna = s 'Konvertieren von BNA-Textdateien'
+	{
+		CLSID = s '{6CD362C8-AD9E-4A03-818C-830ED299F5BF}'
+		CurVer = s 'CvrtCoords.Bna.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {6CD362C8-AD9E-4A03-818C-830ED299F5BF} = s 'Konvertieren von BNA-Textdateien'
+		{
+			ProgID = s 'CvrtCoords.Bna.1'
+			VersionIndependentProgID = s 'CvrtCoords.Bna'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{35BF8356-1570-44C7-AAB4-8830576D7302}'
+		}
+	}
+}

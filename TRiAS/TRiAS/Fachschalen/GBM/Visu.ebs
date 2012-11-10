@@ -1,0 +1,132 @@
+' Visu.EBS		Einstellen der ObjektVisualisierung für Objekte einer Klass
+'				bei denen die übergebene Objekteigenschaften den angegebenen
+'	Wert aufweist.
+Option Explicit
+
+Const NL = Chr$(13) + Chr$(10)
+
+Private docGD as GeoDocument
+
+Declare Function AuswahlAnsicht() As Boolean
+Declare Sub ModVisInfo( obj As GeoObject, farbe As Long )
+
+Sub StartVisu( byval klasse as string, byval prop as string, byval wert as string, byval col as long )
+
+'Variablen initialisieren
+	Set docGD = GetActiveDocument
+
+Dim view As GeoView
+Dim AktViewName As String
+dim clsGS as GeoClass
+Dim objsGS As GeoObjects
+Dim obj As GeoObject
+
+	AktViewName = docGD.ActiveViewName
+	Set view = docGD.GetView( AktViewName )
+	Set clsGS = view.GetClass( klasse )
+
+	If clsGS Is Nothing Then
+		MsgBox "Diese Ansicht zeigt keine '" & klasse & "'! Wählen Sie eine andere Ansicht."
+
+		while clsGS is Nothing
+			If Not AuswahlAnsicht Then
+				Exit Sub
+			End If
+
+			AktViewName = docGD.ActiveViewName
+			Set view = docGD.GetView( AktViewName )
+			Set clsGS = view.GetClass( klasse )
+
+			If clsGS Is Nothing Then
+				MsgBox "Auch diese Ansicht zeigt keine '" & klasse & "'! Wählen Sie eine geeignete Ansicht."
+			end if
+		wend
+	End If
+
+dim i as integer, n as integer
+dim feat as GeoFeature
+dim strGeduld as String
+
+	set objsGS = clsGS.GetObjects( OT_Area )
+	i = 0
+	n = objsGS.Count
+
+	' Geduldsanzeige starten
+	strGeduld = "Einstellen der Visualisierung der " + klasse
+	strGeduld = strGeduld + " für " + prop + " = " + wert +NL+NL
+	Msg.Open strGeduld, , True, True
+
+	for each obj in objsGS
+		Msg.Thermometer = i / n * 100
+		i = i + 1
+
+		set feat = obj.GetFeature( prop )
+		if not feat is nothing then
+			if feat.Feature$ = wert then
+				ModVisInfo obj, col
+			end if
+		end if
+	next obj
+
+end sub
+
+
+Function AuswahlAnsicht() As Boolean
+
+Dim viewsGD as GeoViews
+	Set viewsGD = docGD.GetViews()
+
+Dim view As GeoView
+Dim i As Integer, idx As Integer
+Dim ViewName$(viewsGD.Count+i)
+Dim AktViewName As String
+
+	AktViewName = docGD.ActiveViewName
+
+	i = 0
+	idx = 0
+	For each view in viewsGD
+		ViewName$(i) = view.Name$
+		If ViewName$(i) = AktViewName Then idx = i
+		i = i + 1
+	Next view
+
+Begin Dialog AnsichtDialog ,,254,50,"Auswahl zu bearbeitende Ansicht"
+	OKButton 192,4,60,14
+	PushButton 192,20,60,14,"Abbrechen",.Cancel
+
+	DropListBox 8,14,172,50,ViewName,.Sicht
+	Text 8,2,100,8,"Ansicht ",.Text1
+End Dialog
+
+Dim myDialog As AnsichtDialog
+Dim r%
+
+	myDialog.Sicht = idx
+
+	r% = Dialog (myDialog)
+
+	If Not r = -1 Then
+		AuswahlAnsicht = False
+		Exit Function
+	End If
+	AuswahlAnsicht = True
+
+'	Ansicht auswählen
+	If Not AktViewName = ViewName$( myDialog.Sicht ) Then
+		docGD.ActiveViewName = ViewName$( myDialog.Sicht )
+		docGD.RePaint
+	End If
+End Function
+
+Sub ModVisInfo( obj As GeoObject, farbe As Long )
+
+	Dim aviAVis As AreaVisInfo
+	Set aviAVis = obj.GetAreaVisInfo()
+		If (aviAVis Is Not Nothing) Then
+'		aviAVis.Style = style
+		aviAVis.BkColor = farbe
+
+		obj.SetVisInfo aviAVis
+	End If
+End Sub 'ModVisInfo

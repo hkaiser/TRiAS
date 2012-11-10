@@ -1,0 +1,42 @@
+// $Header: $
+// Copyright© 1999-2002 Geopunkt GmbH & Co. KG, NL Potsdam, All rights reserved
+// Created: 19.07.2002 09:14:00
+//
+// @doc
+// @module Segment.idl | IDL source for Segment.ext
+
+// This file will be processed by the MIDL tool to
+// produce the type library (Segment.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "ProgInd2.idl";
+
+[
+	uuid(95C894AB-0B58-44A3-926D-2B2EBB21C791),
+	version(1.0),
+	helpstring("Segment 1.0 Type Library")
+]
+library Segment
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+// der eigentliche TRiAS-Zusatzmodul
+	[
+		uuid(BBD89FC4-352B-4A35-BFCD-ADF8D3BF2E3F),
+		helpstring("Segment Class")
+	]
+	coclass Segment
+	{
+		[default] interface IUnknown;
+	};
+	[
+		uuid(1406423B-4E7D-433F-B9FF-DB12573756CE),
+		helpstring("Strecken Class")
+	]
+	coclass Strecken
+	{
+		[default] interface IUnknown;
+	};
+};

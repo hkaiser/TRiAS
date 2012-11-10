@@ -1,0 +1,10 @@
+#define IDB_DELETE       406
+#define IDB_ENDSAVE      407
+#define IDB_HDEHELP      408
+#define IDB_SAVE         405
+#define IDCANCEL         2
+#define IDD_HEADERKEY    401
+#define IDD_HEADERTEXT   404
+#define IDL_HEADERKEY    402
+#define IDT_HEADERNAME   403
+#define EDITHEADER                  56

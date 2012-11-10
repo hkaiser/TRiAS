@@ -1,0 +1,413 @@
+'\"t
+.de Cb		\" Courier Begin
+.in +0.25i
+.ft CW
+\s-1
+.nf
+..
+.de Ce		\" Courier End
+.ft R
+.fi
+\s+1
+.in -0.25i
+..
+.if t .TH IMVFBCOMP 3IM "November 18, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY" 
+.if n .TH IMVFBCOMP 3IM "November 18, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImVfbComp - composite two vfb's together 
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+ImVfb *ImVfbComp( fgVfb, fgX, fgY, fgXSize, fgYSize, fieldMask, operator, 
+	bgVfb, bgXInto, bgYInto )
+	ImVfb   *fgVfb;
+	int     fgX;
+	int     fgY;
+	int     fgXSize;
+	int     fgYSize;
+	int     fieldMask;
+	int     operator;
+	ImVfb   *bgVfb;
+	int     bgXInto;
+	int     bgYInto;
+.fi
+\fR
+.SH DESCRIPTION
+\fBImVfbComp\fR combines the two source VFB's \fIfgVfb\fR and
+\fIbgVfb\fR together using a digital compositing
+operation and alpha channels (coverage masks) on one or both VFB's.
+The resulting composite image is returned in \fIbgVfb\fR.
+The foreground image may be positioned and sized. Variables \fIfgX\fR
+and \fIfgY\fR tell the function from what left and top edges of the
+foreground to composite, respectively. Variables \fIfgXSize\fR and
+\fIfgYSize\fR tell the function the width and height of the foreground
+region to composite. The quantities \fIbgXInto\fR and \fIbgYInto\fR
+allow the foreground to be positioned into the background so that the
+upper left hand corner is at a specific x and y position.
+
+.SS "Compositing"
+\fICompositing\fR is a technique that combines pixels of two input images
+together to create a third \fIcomposite\fR image.  Compositing is commonly
+used to take two separately computed images and combine them, with portions
+of one obscuring portions of the other.
+In such cases the first input image would act
+as a \fIforeground\fR image, and the second as a \fIbackground\fR image.
+.LP
+Foreground and background images can be composited together to create a variety
+of special effects, or as an aid to speeding up the rendering of complex
+scenery.  For instance, perhaps a complex computer-generated robot must walk
+across the screen in front of a computer-generated library filled with books.
+The library could
+be modeled, book by book, and the robot modeled, joint for joint.  An image
+showing the robot in the library could be rendered by combining both models
+and sending the entire mass of geometry off to the renderer all at once.
+A single image would result.
+.LP
+To render an animation of the robot moving in front of the library one could
+send both masses of geometry to the renderer for each frame.  However, the
+library is static in this scene and the interaction between the robot and
+its books nil.  The time spent rendering, and rerendering, each library book
+frame after frame is a waste and dramatically increases the rendering time
+of the animation.
+.LP
+A more efficient approach would be to render the static library just once,
+without the robot.  The robot would then be rendered for each frame, but
+without the library behind it (just a solid black background).
+Once rendering is
+complete, the separate foreground (robot) and background (library) images
+can be composited together to create a series of frames showing the robot
+moving in front of the library.  The total rendering time for such an
+approach is considerably less.
+.LP
+Such compositing tricks are regularly used in Hollywood in order to place
+actors in front of locations they aren't in, or to make spaceships fly all
+about in front of swirling planets or sparkley star fields.  In video the
+same technique, called \fIkeying\fR, is used to place the weather man in
+front of a computer-generated weather map.
+.LP
+In each of these cases, the compositing operation must know what portions of
+the foreground image to paste over the background image.  This information is
+supplied in a \fIcoverage mask\fR, historically referred to as an \fIalpha
+channel\fR.
+.LP
+Alpha channels are usually generated at the same time the color portion of
+the image is rendered.  Alpha information is stored as a one-byte integer
+value "behind" each image pixel.  An alpha value of 0 indicates the pixel
+is \fItransparent\fR, or wild.  An alpha value of 255 indicates the pixel
+is \fIopaque\fR.  For instance, in the robot example, all pixels showing
+colors for the robot itself would have alpha values of 255.  All pixels for
+the blank background behind the robot (remember the robot's rendered
+separately from the library) would be transparent, or wild, and have alpha
+values of 0.
+.LP
+When compositing a foreground image over a background image, the portions
+of the foreground image that are opaque (alpha = 255) will obscure the
+background image.  Portions of the foreground image that are transparent
+(alpha = 0) will let the background image show through.
+.LP
+Alpha values between 0 and 255 indicate a level of transparency.  Foreground
+image pixels with alpha values of 128, for instance, would be blended with
+background pixels to create a pseudo-translucency effect.  This is most often
+used to blend the edges of foreground objects so that crisp, noticeable jaggies
+don't result.
+.LP
+\fBImVfbComp\fR supports four compositing operations considered standard in
+digital compositors.  The compositing operation is selected by the
+\fIoperation\fR argument to \fBImVfbComp\fR:
+.LP
+.RS 0.5i
+.nf
+.TS
+l l.
+\fIoperation\fR	\fBMeaning\fR
+_
+IMCOMPOVER	Over
+IMCOMPATOP	Atop
+IMCOMPINSIDE	Inside
+IMCOMPOUTSIDE	Outside
+.fi
+.TE
+.RE
+.LP
+The \fIover\fR operation is that most often used and the one appropriate for
+placing portions of a foreground image over a background image.
+.LP
+\fIatop\fR is rarely used, but can be appropriate when certain special
+effects are desired.
+.LP
+\fIinside\fR and \fIoutside\fR are opposites of each other and are typically
+used when creating \fImattes\fR, black and white masks that isolate portions
+of an image (see matte descriptions in the NOTES section below).
+.LP
+Each of these composition operations are discussed below.  Discussions use
+the following nomenclature:
+.LP
+.RS 0.5i
+.IP "In1Field"
+A pixel's field (usually a color attribute) from input image 1.
+.IP "In2Field"
+A pixel's field (usually a color attribute) from input image 2.
+.IP "OutField"
+A pixel's field (usually a color attribute) for the output image.
+.IP "In1Alpha"
+A pixel's alpha field from input image 1.
+.IP "In2Alpha"
+A pixel's alpha field from input image 2.
+.RE
+.SS "Over"
+\fBIMCOMPOVER\fR selects the \fIover\fR compositing operation.  \fIOver\fR is
+used to place opaque portions of the first input image over the second
+input image.  \fIOver\fR is by far the most common compositing operation.
+.LP
+\fIOver\fR evaluates the following formula for each pixel:
+.RS 0.5i
+.Cb
+OutField = In1Field * (In1Alpha/255.0) +
+	In2Field * (1.0 - (In1Apha/255.0))
+.Ce
+.RE
+.LP
+The first input image must have an alpha channel.  \fBImVfbComp\fR will
+return an error if it does not.
+.LP
+An alpha channel on the second input image is not needed or used by the
+\fIover\fR operation.
+.SS "Atop"
+\fBIMCOMPATOP\fR selects the \fIatop\fR compositing operation.  \fIAtop\fR is
+used to combine the opaque portions of the two input images, merging their
+colors by addition of their field values.  The \fIatop\fR operation is
+mostly used for special effects and has a rather non-intuitive effect that
+can cause unexpected color shifts.
+.LP
+\fIAtop\fR uses the following formula for each pixel:
+.RS 0.5i
+.Cb
+OutField = In1Field * (In2Alpha/255.0) +
+	In2Field * (1.0 - (In1Alpha/255.0))
+.Ce
+.RE
+.LP
+Both input images must have alpha channels.  \fBImVfbComp\fR will
+return an error if they do not.
+.SS "Inside"
+\fBIMCOMPINSIDE\fR selects the \fIinside\fR compositing operation.  \fIInside\fR
+uses pixels from the first image whenever the second image is opaque.  This
+has the effect of substituting the first image into the second image in a
+controlled way and is most often used when creating \fImattes\fR, a special
+form of coverage mask that may be used in chains of compositing operations.
+\fIinside\fR's specialized function makes it rare for typical compositing work.
+.LP
+\fIInside\fR uses the following formula for each pixel:
+.RS 0.5i
+.Cb
+OutField = In1Field * (In2Alpha/255.0)
+.Ce
+.RE
+.LP
+The second input image must have an alpha channel.  \fBImVfbComp\fR will
+return an error if it does not.
+.LP
+An alpha channel on the first input image is not needed or used by the
+\fIinside\fR operation.
+.SS "Outside"
+\fBIMCOMPOUTSIDE\fR selects the \fIoutside\fR compositing operation.  \fIOutside\fR
+is the reverse of \fIinside\fR.  Where \fIinside\fR uses pixels from the
+first image where the second is opaque, \fIoutside\fR uses pixels from the
+first image where the second is transparent.  Like \fIinside\fR, \fIoutside\fR
+is most often used for creating \fImattes\fR for use in chains of compositing
+operations.
+.LP
+\fIOutside\fR uses the following formula for each pixel:
+.RS 0.5i
+.Cb
+OutField = In1Field * (1.0 - (In2Alpha/255.0))
+.Ce
+.RE
+.LP
+The second input image must have an alpha channel.  \fBImVfbComp\fR will
+return an error if it does not.
+.LP
+An alpha channel on the first input image is not needed or used by the
+\fIoutside\fR operation.
+.SS "Field(s)"
+\fBImVfbComp\fR applies the compositing operation to the foreground VFB fields
+selected by \fIfieldMask\fR in order to modify the background VFB.
+\fIfieldMask\fR is the bitwise-OR of one or more of the following field
+names:
+.LP
+.RS 0.5i
+.TS
+l l.
+\fIfieldMask\fR	\fBComposite\fR
+_
+\fBIMMONO\fR	the monochrome field
+\fBIMINDEX8\fR	the 8-bit color index field
+\fBIMINDEX16\fR	the 16-bit color index field
+_
+\fBIMRED\fR	the red field
+\fBIMGREEN\fR	the green field
+\fBIMBLUE\fR	the blue field
+_
+\fBIMHUE\fR	on the virtual hue field
+\fBIMSATURATION\fR	on the virtual saturation field
+\fBIMINTENSITY\fR	on the virtual intensity field
+_
+\fBIMALPHA\fR	the alpha field
+\fBIMWPROT\fR	the write-protect field
+\fBIMZ\fR	the Z-buffer field
+\fBIMIDATA\fR	the integer data field
+\fBIMFDATA\fR	the floating point data field
+.TE
+.RE
+.LP
+Composite fields given in \fIfieldMask\fR must exist in both the 
+foreground and background VFBs.  Hue, saturation, and intensity 
+virtual fields may be composited by any VFB with color information 
+(mono, grayscale, color indexes or RGB).
+.LP
+Compositing may occur on more than one field at once.
+.LP
+Composite results will be stored into the \fIbgVfb\fR.
+.LP
+.SH NOTES
+Compositing historically originated in the analog domain where it was (and
+still is) used for combining separate film footage into a
+single composite result.  This is used for special effects that can place
+an alien spaceship in the sky above a sleepy suburban neighborhood, or a
+giant dinosaur on the streets of New York.  It is also used for more subtle
+effects like stars in a night sky (stars don't film well, so they are usually
+faked using compositing special effects).
+.LP
+In film, two rolls of film are processed to produce \fImattes\fR.  If the
+matte changes from frame to frame, such as for a moving object, then it's
+called a \fItraveling matte\fR.  In either case the matte is a black and white
+coverage mask that delimits the area of interest of each source film footage.
+.LP
+For instance, to place a starship in front of a planet takes several steps:
+.LP
+.RS 0.5i
+.IP "1."
+Film the starship model in front of a solid blue screen (or any color not
+in the model itself).  Move the camera or model around to simulate flying
+acrobatics.
+.IP "2."
+Film a model or painting of a planet, complete with star-filled sky.
+.IP "3."
+Create the first traveling matte of the starship model footage.  Everywhere
+there's a blue background in the starship footage, make the matte film black.
+Everywhere else (where the starship is) make it white.  If you watched this
+film you'd just see a flat white blobby
+silhouette of the spaceship flying about on a black background.
+.IP "4."
+Create the second traveling matte by doing the same thing, but make the
+blue background area white, and the spaceship area black.  If you watched this
+film you'd see a flat black blobby
+silhouette of the spaceship flying about on a white background.
+.IP "5."
+Run the first matte (white where the starship is) and the raw starship
+footage through a projector back-to-back.  Light from the projector bulb
+will only make it through the combined matte and starship film where it
+is light in both pieces of film.  Because the matte only lets light through
+in areas the starship is, only the starship shows up on the projection.
+The blue background (and model stand, strings, stray cables, floor, and other
+stage clutter) of the raw starship
+footage doesn't show up.  Expose a new roll of film with this starship-only
+result.
+.IP "6."
+Do the same kind of thing but this time use the second matte (white where
+the starship isn't) and the planet footage.  When run through the projector,
+light will only make it through the planet film and the second matte for the
+areas the starship isn't covering.  Double-expose the same roll of film from
+step 5 with this planet-only result.  You now have one piece of film with
+the starship and the planet, and neither overlaps the other.
+.RE
+.LP
+If we didn't go through all this hassle and just double-exposed one roll of
+film with both the space ship and the planet, we'd see the planet through
+the darker parts of the spaceship and it would look weird.  If you watch
+old cheesy science fiction movies you see this kind of effect a lot.  It's
+cheap, but not very realistic.  To get realism you have to do compositing
+using the steps above.
+.LP
+Obviously the above procedure is pretty tedious.  If you want two separately
+filmed spaceships in the scene, then you need to go through
+another compositing stage.  Three spaceships and you've got yet another stage.
+And so on for each additional independently filmed scene element.  The Star
+Wars epic, for instance, went to extraordinary levels of compositing to get
+all those independently moving Tie-fighters, X-wing fighters, Y-wing fighters,
+the Death Star, and the Millennium Falcon all into one scene.
+.LP
+The difficulty with film compositing is that it experiences generation loss.
+Each time footage is transferred to a new roll of film (steps 5 and 6 of
+the procedure above), the footage gets grainier and less crisp.  The darks
+get lighter and the image quality goes down a bit.  In a complex compositing
+nightmare like a Star Wars film, the number of compositing passes is huge
+and this generation loss becomes quite noticeable.  The next time you watch
+a Star Wars film, watch for differences in scene quality from cut to cut during
+a frantic battle.  Scenes with fewer ships in them will look crisper and the
+darks darker.
+.LP
+It is this generation loss problem that prompted George Lucas to have PIXAR
+develop its original PIXAR Image Computer.  The PIXAR system was used to do
+digital compositing, much like \fBImVfbComp\fR does.  Raw footage was scanned
+in, frame by frame, and matte's generated digitally.  The mattes and footage
+could then be combined any number of times, digitally, without any generation
+loss.  The final result is then recorded back to film just as crisp and clean as
+the original footage.  It is this type of system that Disney uses today for
+combining cell animation and computer animation.
+.LP
+\fBImVfbComp\fR's compositing operations perform this same kind of digital
+compositing.  \fIinside\fR and \fIoutside\fR may be used to generate
+mattes.  However, more commonly, \fIover\fR is used to accomplish in one
+step the full 6-step compositing operation outlined earlier.
+.LP
+\fBImVfbComp\fR allows users to composite individual image fields, and to
+composite in the HSI color space instead of just the RGB color space.  This is
+significantly cool.  The red pixels in the first image can be composited on
+to the red channel of the second to generate a third image.  Blue and green
+pixels are unchanged.  Or, the saturation values of one image can be
+composited over a second image's colors to create an interesting form of
+double exposure.  Pretty cool.
+.LP
+Color index compositing is rarely a good thing to do.  Compositing operations
+apply math operations to calculate new color index values.  Those new values
+will point into the output image's color table, cloned from the second input
+image.  It is unlikely that those new index values will point to colors that
+look right.  The operation may even create illegal color indexes that point
+to CLT slots beyond the end of the CLT.  Beware color index compositing!
+It usually makes more sense to composite in RGB space instead.
+.SH RETURNS
+Upon success, \fBImVfbComp\fR returns a pointer to the destination/background Vfb.
+Upon failure, \fBIMVFBNULL\fR is returned and \fBImErrNo\fR set
+to one of the following:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+\fBIMEFIELD\fR	\fIfieldMask\fR selects fields not in both source images
+\fBIMEMALLOC\fR	Malloc error
+\fBIMENOALPHA\fR	There was no alpha field present in one of the images
+\fBIMENOVFB\fR	The foreground or background VFB was IMVFBNULL
+\fBIMEOPERATION\fR	An unknown \fIoperation\fR was passed
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH SEE ALSO
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBimadjust\fR (1IM),
+\fBimcomp\fR (1IM),
+\fBimfill\fR (1IM),
+\fBimpaste\fR (1IM),
+\fBImVfbAdjust\fR (3IM),
+\fBImVfbFill\fR (3IM)
+.SH AUTHOR
+Chris Groening, Dave Nadeau and Shane Cooper
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

@@ -1,0 +1,191 @@
+# -*- makefile -*-
+# Makefile for Microsoft Windows with Microsoft Visual C++ 5.0 compiler
+
+OBJS = class.obj compiler.obj database.obj hashtab.obj file.obj \
+	symtab.obj btree.obj cursor.obj query.obj pagepool.obj \
+	wwwapi.obj w32sock.obj 
+
+CLI_OBJS = cli.obj w32sock.obj
+
+INCS = gigabase.h stdtp.h class.h database.h cursor.h reference.h wwwapi.h \
+	array.h file.h hashtab.h btree.h sync.h query.h datetime.h pagepool.h
+
+GB_LIB = gigabase.lib 
+CLI_LIB = cli.lib
+
+EXES = subsql.exe cgistub.exe
+
+EXAMPLES = guess.exe testdb.exe testddl.exe testperf.exe testsync.exe testiref.exe testtrav.exe testidx.exe bugdb.exe clidb.exe clitest.exe
+
+CC = cl
+DEFS = -DUSE_LOCALE_SETTINGS
+#DEFS = -DUSE_LOCALE_SETTINGS -DUSE_QUEUE_MANAGER
+
+#CFLAGS = -c -nologo -Zi -W3 -MTd $(DEFS)
+#CFLAGS = -c -nologo -Zi -W3 -MTd -DDEBUG=DEBUG_TRACE $(DEFS)
+CFLAGS = -c -Ox -G6 -nologo -Zi -W3 -MT $(DEFS)
+
+LD = $(CC)
+#LDFLAGS = -MTd -Zi -nologo
+LDFLAGS = -MT -Zi -nologo
+
+AR = lib
+ARFLAGS = 
+
+STDLIBS = 
+
+SOCKLIBS = wsock32.lib
+
+all: $(GB_LIB) $(EXES) $(EXAMPLES)
+
+
+class.obj: class.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) class.cpp
+
+compiler.obj: compiler.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) compiler.cpp
+
+query.obj: query.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) query.cpp
+
+database.obj: database.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) database.cpp
+
+cursor.obj: cursor.cpp compiler.h compiler.d $(INCS)
+	$(CC) $(CFLAGS) cursor.cpp
+
+hashtab.obj: hashtab.cpp $(INCS)
+	$(CC) $(CFLAGS) hashtab.cpp
+
+pagepool.obj: pagepool.cpp $(INCS)
+	$(CC) $(CFLAGS) pagepool.cpp
+
+file.obj: file.cpp $(INCS)
+	$(CC) $(CFLAGS) file.cpp
+
+symtab.obj: symtab.cpp symtab.h $(INCS)
+	$(CC) $(CFLAGS) symtab.cpp
+
+btree.obj: btree.cpp $(INCS)
+	$(CC) $(CFLAGS) btree.cpp
+
+wwwapi.obj: wwwapi.cpp wwwapi.h stdtp.h sockio.h
+	$(CC) $(CFLAGS) wwwapi.cpp
+
+w32sock.obj: w32sock.cpp w32sock.h sockio.h stdtp.h
+	$(CC) $(CFLAGS) w32sock.cpp
+
+cli.obj: cli.cpp cli.h cliproto.h
+	$(CC) $(CFLAGS) cli.cpp
+
+
+gigabase.lib: $(OBJS)
+	$(AR) $(ARFLAGS) /OUT:gigabase.lib $(OBJS)
+
+cli.lib: $(CLI_OBJS)
+	$(AR) $(ARFLAGS) /OUT:cli.lib $(CLI_OBJS)
+
+subsql.obj: subsql.cpp compiler.h compiler.d subsql.h symtab.h $(INCS)
+	$(CC) $(CFLAGS) subsql.cpp
+
+server.obj: server.cpp compiler.h compiler.d subsql.h symtab.h $(INCS)
+	$(CC) $(CFLAGS) server.cpp
+
+subsql.exe: subsql.obj server.obj $(GB_LIB)
+	$(LD) $(LDFLAGS) subsql.obj server.obj $(GB_LIB) $(STDLIBS) $(SOCKLIBS)
+
+clitest.obj: clitest.c cli.h
+	$(CC) $(CFLAGS) clitest.c
+
+clitest.exe: clitest.obj $(CLI_LIB)
+	$(LD) $(LDFLAGS) clitest.obj $(CLI_LIB) $(STDLIBS) $(SOCKLIBS)
+
+
+bugdb.obj: bugdb.cpp bugdb.h $(INCS)
+	$(CC) $(CFLAGS) bugdb.cpp
+
+bugdb.exe: bugdb.obj  $(GB_LIB)
+	$(LD) $(LDFLAGS) bugdb.obj $(GB_LIB) $(STDLIBS) $(SOCKLIBS)
+
+clidb.obj: clidb.cpp clidb.h $(INCS)
+	$(CC) $(CFLAGS) clidb.cpp
+
+clidb.exe: clidb.obj  $(GB_LIB)
+	$(LD) $(LDFLAGS) clidb.obj $(GB_LIB) $(STDLIBS) $(SOCKLIBS)
+
+
+cgistub.obj: cgistub.cpp stdtp.h sockio.h
+	$(CC) $(CFLAGS) cgistub.cpp 
+
+cgistub.exe: cgistub.obj
+	$(LD) $(LDFLAGS) cgistub.obj $(GB_LIB) $(STDLIBS) $(SOCKLIBS)
+
+
+guess.obj: guess.cpp $(INCS)
+	$(CC) $(CFLAGS) guess.cpp 
+
+guess.exe: guess.obj $(GB_LIB)
+	$(LD) $(LDFLAGS) guess.obj $(GB_LIB) $(STDLIBS)
+
+testdb.obj: testdb.cpp $(INCS)
+	$(CC) $(CFLAGS) testdb.cpp 
+
+testdb.exe: testdb.obj $(GB_LIB)
+	$(LD) $(LDFLAGS) testdb.obj $(GB_LIB) $(STDLIBS)
+
+testddl.obj: testddl.cpp $(INCS)
+	$(CC) $(CFLAGS) testddl.cpp 
+
+testddl.exe: testddl.obj $(GB_LIB)
+	$(LD) $(LDFLAGS) testddl.obj $(GB_LIB) $(STDLIBS)
+
+testperf.obj: testperf.cpp $(INCS)
+	$(CC) $(CFLAGS) testperf.cpp 
+
+testperf.exe: testperf.obj $(GB_LIB)
+	$(LD) $(LDFLAGS) testperf.obj $(GB_LIB) $(STDLIBS)
+
+testidx.obj: testidx.cpp $(INCS)
+	$(CC) $(CFLAGS) testidx.cpp 
+
+testidx.exe: testidx.obj $(GB_LIB)
+	$(LD) $(LDFLAGS) testidx.obj $(GB_LIB) $(STDLIBS)
+
+testsync.obj: testsync.cpp $(INCS)
+	$(CC) $(CFLAGS) testsync.cpp 
+
+testsync.exe: testsync.obj $(GB_LIB)
+	$(LD) $(LDFLAGS) testsync.obj $(GB_LIB) $(STDLIBS)
+
+testiref.obj: testiref.cpp $(INCS)
+	$(CC) $(CFLAGS) testiref.cpp 
+
+testiref.exe: testiref.obj $(GB_LIB)
+	$(LD) $(LDFLAGS) testiref.obj $(GB_LIB) $(STDLIBS)
+
+testtrav.obj: testtrav.cpp $(INCS)
+	$(CC) $(CFLAGS) testtrav.cpp 
+
+testtrav.exe: testtrav.obj $(GB_LIB)
+	$(LD) $(LDFLAGS) testtrav.obj $(GB_LIB) $(STDLIBS)
+
+
+
+cleanobj:
+	del *.odb,*.obj,*.pch,*.pdb,*.ilk,*.dsp,*.dsw,*.ncb,*.opt
+
+cleandbs:
+	del *.dbs
+
+clean: cleanobj cleandbs
+	del *~,*.lib,*.exe
+
+
+zip: clean
+	cd ..
+	del gigabase.zip
+	zip -r gigabase.zip gigabase
+
+copyzip: zip
+	copy gigabase.zip a:
+

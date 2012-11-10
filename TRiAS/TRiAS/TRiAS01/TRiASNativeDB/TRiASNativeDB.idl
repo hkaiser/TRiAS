@@ -1,0 +1,364 @@
+// $Header: $
+// Copyright© 2001 Hartmut Kaiser, All rights reserved
+// Created: 10.04.2001 10:40:17 
+//
+// @doc
+// @module TRiASNativeDB.idl | Interface definitions for TRiASNativeDB
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+import "TRiASExpression.idl";	// Expression hierarchy interfaces
+
+cpp_quote("#define TYPELIB_TRIASNATIVEDB_VERSION_MAJOR 1")
+cpp_quote("#define TYPELIB_TRIASNATIVEDB_VERSION_MINOR 0")
+cpp_quote("#define TYPELIB_TRIASNATIVEDB_VERSION \"1.0\"")
+cpp_quote("#define TYPELIB_TRIASNATIVEDB_LCID 0")
+
+#define TYPELIB_TRIASNATIVEDB_VERSION_MAJOR 1
+#define TYPELIB_TRIASNATIVEDB_VERSION_MINOR 0
+#define TYPELIB_TRIASNATIVEDB_VERSION 1.0
+#define TYPELIB_TRIASNATIVEDB_LCID 0
+
+///////////////////////////////////////////////////////////////////////////////
+// declared interfaces (forward declarations)
+interface ITRiASNativeDataSource;
+interface ITRiASNativeIdent;
+interface ITRiASNativeObject;
+interface ITRiASNativeAttribute;
+interface ITRiASEnumNativeAttributes;
+interface ITRiASEnumNativeObjects;
+interface ITRiASEnumNativeIdents;
+
+///////////////////////////////////////////////////////////////////////////////
+// ITRiASNativeObject Interface
+[ 
+	object, 
+	uuid(6B853E73-3631-4841-B294-8C8FF5829FD2), 
+	dual, 
+	helpstring("ITRiASNativeObject Interface"),	
+	pointer_default(unique) 
+]
+interface ITRiASNativeObject : IDispatch
+{
+// Properties
+	[propget, id(1), helpstring("Liefert die eindeutige Objektkennung.")] HRESULT Guid([in] INT_PTR PrjHandle, [in] INT_PTR Obj, [out, retval] BSTR *Guid);
+	[propput, id(1), helpstring("Setzt die eindeutige Objektkennung.")] HRESULT Guid([in] INT_PTR PrjHandle, [in] INT_PTR Obj, [in] BSTR Guid);
+	[propget, id(2), helpstring("Liefert eine Objekteigenschaft.")] HRESULT Attribute([in] INT_PTR PrjHandle, [in] INT_PTR Obj, [in] INT_PTR Attrib, [out, retval] BSTR *AttrVal);
+	[propput, id(2), helpstring("Setzt eine Objekteigenschaft.")] HRESULT Attribute([in] INT_PTR PrjHandle, [in] INT_PTR Obj, [in] INT_PTR Attrib, [in] BSTR AttrVal);
+
+// Methods
+	[id(100), helpstring("Liefert eine Objektgeometrie.")] HRESULT GetGeometry([in] INT_PTR PrjHandle, [in] INT_PTR Obj, [in] BSTR GeomName, [out, retval] SAFEARRAY(BYTE) *Geom);
+	[id(101), helpstring("Setzt eine Objektgeometrie.")] HRESULT PutGeometry([in] INT_PTR PrjHandle, [in] INT_PTR Obj, [in] DWORD ObjType, [in] BSTR GeomName, [in] SAFEARRAY(BYTE) Geom);
+	[id(102), helpstring("Liefert eine Objektgeometrie als WKT.")] HRESULT GetGeometryWKT([in] INT_PTR PrjHandle, [in] INT_PTR Obj, [in] BSTR GeomName, [out, retval] BSTR *GeomWKT);
+	[id(103), helpstring("Setzt eine Objektgeometrie als WKT.")] HRESULT PutGeometryWKT([in] INT_PTR PrjHandle, [in] INT_PTR Obj, [in] DWORD ObjType, [in] BSTR GeomName, [in] BSTR GeomWKT);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// ITRiASNativeIdent Interface
+[ 
+	object, 
+	uuid(514E6C99-6831-49BC-A8F3-9173875D6D66), 
+	dual, 
+	helpstring("ITRiASNativeIdent Interface"),	
+	pointer_default(unique) 
+]
+interface ITRiASNativeIdent : IDispatch
+{
+// Properties
+	[propget, id(1), helpstring("Liefert den Namen der Objektklasse.")] HRESULT Name([in] INT_PTR PrjHandle, [in] INT_PTR Ident, [out, retval] BSTR *Name);
+	[propput, id(1), helpstring("Modifiziert den Namen der Objektklasse.")] HRESULT Name([in] INT_PTR PrjHandle, [in] INT_PTR Ident, [in] BSTR Name);
+	[propget, id(2), helpstring("Liefert den Objektklassenschlüssel der Objektklasse.")] HRESULT OKS([in] INT_PTR PrjHandle, [in] INT_PTR Ident, [out, retval] BSTR *OKS);
+	[propput, id(2), helpstring("Modifiziert den Objektklassenschlüssel der Objektklasse.")] HRESULT OKS([in] INT_PTR PrjHandle, [in] INT_PTR Ident, [in] BSTR OKS);
+	[propget, id(3), helpstring("Liefert die Beschreibung der Objektklasse.")] HRESULT Description([in] INT_PTR PrjHandle, [in] INT_PTR Ident, [out, retval] BSTR *Desc);
+	[propput, id(3), helpstring("Modifiziert die Beschreibung der Objektklasse.")] HRESULT Description([in] INT_PTR PrjHandle, [in] INT_PTR Ident, [in] BSTR Desc);
+	[propget, id(4), helpstring("Liefert alle einer Objektklasse zugeordneten Objekteigenschaften.")] HRESULT Attributes([in] INT_PTR PrjHandle, [in] INT_PTR Ident, [out, retval] ITRiASEnumNativeAttributes **ppVal);
+	[propget, id(6), helpstring("Liefert alle einer Objektklasse zugeordneten Objekte.")] HRESULT Objects([in] INT_PTR PrjHandle, [in] INT_PTR Ident, [in] DWORD ObjTypes, [in] ITRiASExpression *Expr, [out, retval] ITRiASEnumNativeObjects **ppVal);
+	[propget, id(7), helpstring("Liefert die existierenden Objekttypen der Objektklasse.")] HRESULT Types([in] INT_PTR PrjHandle, [in] INT_PTR Ident, [out, retval] DWORD *Types);
+	[propget, id(8), helpstring("Liefert die Anzahl der Objekte, die einer Objektklasse zugeordnet sind.")] HRESULT Counts([in] INT_PTR PrjHandle, [in] INT_PTR Ident, [out] DWORD *Points, [out] DWORD *Lines, [out] DWORD *Areas, [out] DWORD *Texts, [out, retval] DWORD *Counts);
+	[propget, id(9), helpstring("Liefert das Erzeugungsdatum dieser Objektklasse.")] HRESULT CreationDate([in] INT_PTR PrjHandle, [in] INT_PTR Ident, [out, retval] DATE *CreationDate);
+	[propget, id(10), helpstring("Liefert das Datum der letzten Modifikation dieser Objektklasse.")] HRESULT ModificationDate([in] INT_PTR PrjHandle, [in] INT_PTR Ident, [out, retval] DATE *ModificationDate);
+	[propget, id(11), helpstring("Liefert den dieser Objektklasse zugeordneten Guid.")] HRESULT Guid([in] INT_PTR PrjHandle, [in] INT_PTR Ident, [out, retval] GUID *Guid);
+
+// Methods
+	[id(100), helpstring("Liefert eine einer Objektklasse zugeordnete Objekteigenschaft.")] HRESULT GetAttribute([in] INT_PTR PrjHandle, [in] INT_PTR Ident, [in] BSTR AttribName, [in] VARIANT_BOOL CaseSensitive, [out, retval] INT_PTR *MCode);
+	[id(101), helpstring("Modifiziert eine einer Objektklasse zugeordnete Objekteigenschaft.")] HRESULT PutAttribute([in] INT_PTR PrjHandle, [in] INT_PTR Ident, [in] BSTR AttribName, [out, retval] INT_PTR *MCode);
+	[id(102), helpstring("Löscht eine einer Objektklasse zugeordnete Objekteigenschaft.")] HRESULT DestroyAttribute([in] INT_PTR PrjHandle, [in] INT_PTR Ident, [in] BSTR AttribName);
+	[id(103), helpstring("Liefert Beschreibungsdaten für eine Objektklasse.")] HRESULT GetMetaData([in] INT_PTR PrjHandle, [in] INT_PTR Ident, [out] BSTR *Name, [out] BSTR *Description, [out] BSTR *OKS);
+	[id(104), helpstring("Modifiziert Beschreibungsdaten für eine Objektklasse.")] HRESULT SetMetaData([in] INT_PTR PrjHandle, [in] INT_PTR Ident, [in] BSTR Name, [in] BSTR Description, [in] BSTR OKS);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// ITRiASNativeDataSource Interface
+[ 
+	object, 
+	uuid(649F9019-97FB-4493-9773-C6A07432CE6A), 
+	dual, 
+	helpstring("ITRiASNativeDataSource Interface"),	
+	pointer_default(unique) 
+]
+interface ITRiASNativeDataSource : IDispatch
+{
+	typedef [public, v1_enum, helpstring("")] 
+		enum NATIVEOPENMODE {
+			NATIVEOPENMODE_NothingSpecial = 0,
+			NATIVEOPENMODE_NoCaseIdents = 1,
+			NATIVEOPENMODE_NoCaseAttribs = 2,
+		} NATIVEOPENMODE;
+
+	typedef [public, v1_enum, helpstring("")] 
+		enum NATIVECREATEMODE {
+			NATIVECREATEMODE_FailIfThere = 0x1,		// erzeugen soll fehlschlagen, wenn Datei bereits existiert
+			NATIVECREATEMODE_Compressed = 0x2,		// komprimierte Datenquelle erzeugen
+
+			NATIVECREATEMODE_NotCompatible = 0x0,	// aktuelle Version erzeugen
+			NATIVECREATEMODE_CompatibleV2 = 0x100,	// kompatibel zu TRiAS V2 erzeugen
+			NATIVECREATEMODE_CompatibleV4 = 0x200,	// kompatibel zu TRiAS V3/4 erzeugen
+			NATIVECREATEMODE_CompatibleMsk = 0xf00,
+		} NATIVECREATEMODE;
+
+// Properties
+	[propget, id(1), helpstring("Liefert alle in einer Datenquelle definierten Objektklassen.")] HRESULT Classes([in] INT_PTR PrjHandle, [out, retval] ITRiASEnumNativeIdents **Val);
+	[propget, id(2), helpstring("Liefert eine in einer Datenquelle definierte Objektklasse.")] HRESULT Class([in] INT_PTR PrjHandle, [in] BSTR IdentName, [in] VARIANT_BOOL CaseSensitive, [out, retval] INT_PTR *Val);
+	[propget, id(3), helpstring("Liefert die Version einer bestimmten Datenquelle.")] HRESULT Version([in] INT_PTR PrjHandle, [out, retval] BSTR *Version);
+	[propget, id(4), helpstring("Liefert den Dateinamen einer bestimmten Datenquelle.")] HRESULT Name([in] INT_PTR PrjHandle, [out, retval] BSTR *Name);
+	[propget, id(5), helpstring("Liefert, ob eine Datenquelle schreibgeschützt geöffnet wurde.")] HRESULT OpenedRO([in] INT_PTR PrjHandle, [out, retval] VARIANT_BOOL *RO);
+	[propget, id(6), helpstring("Liefert das Koordinatensystem einer Datenquelle im OGC WKT Format.")] HRESULT CoordSystemWKT([in] INT_PTR PrjHandle, [out] UINT *EpsgId, [out, retval] BSTR *CoordSystemWKT);
+	[propget, id(7), helpstring("Liefert die Version des DBMS.")] HRESULT DbmsVersion([out, retval] BSTR *Version);
+	[propget, id(8), helpstring("Liefert, ob gültige Daten (Erzeugungsdatum und Modifkationsdatum) für Objektklassen verfügbar sind.")] HRESULT IdentsHaveDates([in] INT_PTR PrjHandle, [out, retval] VARIANT_BOOL *IdentsHaveDates);
+
+// Methods
+	[id(100), helpstring("Öffnen einer bestimmten Datenquelle.")] HRESULT Open([in] BSTR Name, [in] DWORD StgMode, [in] NATIVEOPENMODE OpenMode, [out, retval] INT_PTR *PrjHandle);
+	[id(101), helpstring("Schließen einer bestimmten Datenquelle.")] HRESULT Close([in] INT_PTR PrjHandle);
+	[id(102), helpstring("Erzeugen einer neuen Datenquelle.")] HRESULT Create([in] BSTR Name, [in] NATIVECREATEMODE Mode);
+	[id(103), helpstring("Löschen einer neuen Datenquelle.")] HRESULT Destroy([in] BSTR Name);
+	[id(104), helpstring("Speichern einer bestimmten Datenquelle.")] HRESULT Save([in] INT_PTR PrjHandle);
+
+	[id(105), helpstring("Erzeugen einer Objektklasse.")] HRESULT AddClass([in] INT_PTR PrjHandle, [in] BSTR IdentName, [out, retval] INT_PTR *Val);
+	[id(106), helpstring("Löschen einer Objektklasse.")] HRESULT DestroyClass([in] INT_PTR PrjHandle, [in] BSTR IdentName);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// ITRiASNativeAttribute Interface
+[ 
+	object, 
+	uuid(5C0F8A49-B2DF-4173-88ED-72343AF7A85B), 
+	dual, 
+	helpstring("ITRiASNativeAttribute Interface"),	
+	pointer_default(unique) 
+]
+interface ITRiASNativeAttribute : IDispatch
+{
+	import "OleDb.idl";
+
+// Properties
+	[propget, id(1), helpstring("Liefert den Namen der Objekteigenschaft.")] HRESULT Name([in] INT_PTR PrjHandle, [in] INT_PTR Attrib, [out, retval] BSTR *Name);
+	[propput, id(1), helpstring("Modifiziert den Namen der Objekteigenschaft.")] HRESULT Name([in] INT_PTR PrjHandle, [in] INT_PTR Attrib, [in] BSTR Name);
+	[propget, id(2), helpstring("Liefert die Beschreibung der Objekteigenschaft.")] HRESULT Description([in] INT_PTR PrjHandle, [in] INT_PTR Attrib, [out, retval] BSTR *Desc);
+	[propput, id(2), helpstring("Modifiziert die Beschreibung der Objekteigenschaft.")] HRESULT Description([in] INT_PTR PrjHandle, [in] INT_PTR Attrib, [in] BSTR Desc);
+	[propget, id(3), helpstring("Liefert alle Objekte in der Sortierreihenfolge eines Attributes.")] HRESULT Objects([in] INT_PTR PrjHandle, [in] INT_PTR Ident, [in] INT_PTR Attrib, [in] BSTR Start, [in] BSTR End, [in] enum DBRANGEENUM Range, [out, retval] ITRiASEnumNativeObjects **ppVal);
+
+// Methods
+	[id(100), helpstring("Liefert Beschreibungsdaten für eine Objekteigenschaft.")] HRESULT GetMetaData([in] INT_PTR PrjHandle, [in] INT_PTR Attrib, [out] BSTR *Name, [out] BSTR *Description);
+	[id(101), helpstring("Modifiziert Beschreibungsdaten für eine Objekteigenschaft.")] HRESULT SetMetaData([in] INT_PTR PrjHandle, [in] INT_PTR Attrib, [in] BSTR Name, [in] BSTR Description);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// ITRiASEnumNativeIdents: collection of classes
+[
+	object,
+	uuid(27F253F8-F7F3-4F24-83D1-F88C15652DA3),
+	dual, 
+	helpstring("ITRiASEnumNativeIdents Interface"),
+	pointer_default(unique)
+]
+interface ITRiASEnumNativeIdents : IDispatch
+{
+	[propget, id(DISPID_NEWENUM)] HRESULT _NewEnum([out, retval] IUnknown **ppUnk);
+	[propget, id(DISPID_VALUE)] HRESULT Item([in] long Index, [out, retval] INT_PTR *pvar);
+	[propget, id(1)] HRESULT Count([out, retval] long *plCount);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// ITRiASEnumNativeAttributes: collection of attributes
+[
+	object,
+	uuid(8AD5CA88-4629-4B2F-8191-5AB39C8F597B),
+	dual, 
+	helpstring("ITRiASNativeIdents Interface"),
+	pointer_default(unique)
+]
+interface ITRiASEnumNativeAttributes : IDispatch
+{
+	[propget, id(DISPID_NEWENUM)] HRESULT _NewEnum([out, retval] IUnknown **ppUnk);
+	[propget, id(DISPID_VALUE)] HRESULT Item([in] long Index, [out, retval] INT_PTR *pvar);
+	[propget, id(1)] HRESULT Count([out, retval] long *plCount);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// ITRiASEnumNativeObjects: collection of objects
+[
+	object,
+	uuid(C48C83D2-A3D3-4024-8433-E255482D0425),
+	dual,
+	helpstring("ITRiASEnumNativeObjects Interface"),
+	pointer_default(unique)
+]
+interface ITRiASEnumNativeObjects : IDispatch
+{
+	[propget, id(DISPID_NEWENUM)] HRESULT _NewEnum([out,retval] IUnknown **pUnk);
+	[propget, id(DISPID_VALUE)] HRESULT Item([in] long Index, [out,retval] INT_PTR *pvar);
+	[propget, id(1)] HRESULT Count([out,retval] long *plCount);
+};
+
+// ITRiASNativeObjectsOperations Interface
+[ 
+	object, 
+	uuid(E46774CC-7D08-40B5-8384-9F89633359FC), 
+	dual, 
+	helpstring("ITRiASNativeObjectsOperations Interface"),
+	pointer_default(unique) 
+]
+interface ITRiASNativeObjectsOperations : IDispatch
+{
+// Methods
+	[id(1), helpstring("Bildet die Vereinigungsmenge der Objekte beider übergebenen Objektmengen.")] HRESULT Union([in] ITRiASEnumNativeObjects *Objs1, [in] ITRiASEnumNativeObjects *Objs2, [out, retval] ITRiASEnumNativeObjects **ObjsOut);
+	[id(2), helpstring("Bildet die Schnittmenge der Objekte beider übergebenen Objektmengen.")] HRESULT Intersection([in] ITRiASEnumNativeObjects *Obj1, [in] ITRiASEnumNativeObjects *Objs2, [out, retval] ITRiASEnumNativeObjects **ObjsOut);
+	[id(3), helpstring("Bildet die Differenzmenge der Objekte beider übergebenen Objektmengen.")] HRESULT Difference([in] ITRiASEnumNativeObjects *Obj1, [in] ITRiASEnumNativeObjects *Objs2, [out, retval] ITRiASEnumNativeObjects **ObjsOut);
+	[id(4), helpstring("Bildet die symmetrische Differenzmenge der Objekte beider übergebenen Objektmengen.")] HRESULT SymmetricDifference([in] ITRiASEnumNativeObjects *Obj1, [in] ITRiASEnumNativeObjects *Objs2, [out, retval] ITRiASEnumNativeObjects **ObjsOut);
+	[id(5), helpstring("Stellt fest, ob die Folge der Objekte der zweiten Objektmenge vollständig in der ersten Objektmenge enthalten ist.")] HRESULT Includes([in] ITRiASEnumNativeObjects *Objs1, [in] ITRiASEnumNativeObjects *Objs2, [out, retval] VARIANT_BOOL *Includes);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// typelibrary
+[
+	uuid(57A33B20-5B28-4EEF-AD76-D5FEADABB03E),
+	version(TYPELIB_TRIASNATIVEDB_VERSION),
+	lcid(TYPELIB_TRIASNATIVEDB_LCID),
+	helpstring("TRiASNativeDB 1.0 Type Library")
+]
+library TRiASNativeDB
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	typedef [v1_enum, public] enum TRIASNATIVEDB_VERSIONS {
+		TYPELIB_TRiASNATIVEDB_VERSION_MAJOR = TYPELIB_TRIASNATIVEDB_VERSION_MAJOR,
+		TYPELIB_TRiASNATIVEDB_VERSION_MINOR = TYPELIB_TRIASNATIVEDB_VERSION_MINOR,
+	} TRIASNATIVEDB_VERSIONS;
+
+	typedef [v1_enum, public] enum _tagCOLLECTIONTYPE {
+		COLLECTIONTYPE_DontCare = 0,
+		COLLECTIONTYPE_Ascending = 0x01000000,
+		COLLECTIONTYPE_Descending = 0x02000000,
+		COLLECTIONTYPE_NotSorted = 0x10000000,
+		COLLECTIONTYPE_SortedONr = 0x20000000,
+		COLLECTIONTYPE_SortedGuid = 0x40000000,
+		COLLECTIONTYPE_Mask = 0x73000000,
+	} COLLECTIONTYPE;
+
+// TRiASNativeObject Class
+	[ 
+		uuid(890850C1-E793-4DCC-9B5D-ADD56A29CBC8), 
+		helpstring("TRiASNativeObject Object") 
+	]
+	coclass TRiASNativeObject
+	{
+		[default] interface ITRiASNativeObject;
+	};
+
+// TRiASNativeObjects Class
+	[
+		uuid(0BCB96A9-7BD2-4977-8C05-F1ACB4FBBE2B),
+		helpstring("TRiASNativeObjects Class"),
+		noncreatable
+	]
+	coclass TRiASNativeObjects
+	{
+		[default] interface ITRiASEnumNativeObjects;
+	};
+
+// TRiASNativeObjectsSorted Class
+	[
+		uuid(0BCB96AA-7BD2-4977-8C05-F1ACB4FBBE2B),
+		helpstring("TRiASNativeObjectsSorted Class"),
+		noncreatable
+	]
+	coclass TRiASNativeObjectsSorted
+	{
+		[default] interface ITRiASEnumNativeObjects;
+	};
+
+// TRiASNativeObjectsSortedDesc Class
+	[
+		uuid(7A568971-DC45-49C7-9F99-4CF61D49BE15),
+		helpstring("TRiASNativeObjectsSorteddesc Class"),
+		noncreatable
+	]
+	coclass TRiASNativeObjectsSortedDesc
+	{
+		[default] interface ITRiASEnumNativeObjects;
+	};
+
+// TRiASNativeObjectsOperations Interface
+	[ 
+		uuid(5E51F458-2167-4C35-A5EF-780704DEB3D8),
+		helpstring("TRiASNativeObjectsOperations Object")
+	]
+	coclass TRiASNativeObjectsOperations
+	{
+		[default] interface ITRiASNativeObjectsOperations;		
+	};
+
+// TRiASNativeIdent Class
+	[ 
+		uuid(926BD1B2-509C-46D1-9B76-6D7DA1151E3F), 
+		helpstring("TRiASNativeIdent Object") 
+	]
+	coclass TRiASNativeIdent
+	{
+		[default] interface ITRiASNativeIdent;
+	};
+
+// TRiASNativeIdents Class
+	[
+		uuid(C1BE34D1-6B03-443A-9C3F-DBAEBB7254C6),
+		helpstring("TRiASNativeIdents Class"),
+		noncreatable
+	]
+	coclass TRiASNativeIdents
+	{
+		[default] interface ITRiASEnumNativeIdents;
+	};
+
+// TRiASNativeAttribute Class
+	[ 
+		uuid(0A60FC64-23F1-427C-ADF8-14D8855DB7A5), 
+		helpstring("TRiASNativeAttribute Object") 
+	]
+	coclass TRiASNativeAttribute
+	{
+		[default] interface ITRiASNativeAttribute;
+	};
+
+// TRiASNativeAttribute Class
+	[
+		uuid(61C00AB0-E4D7-4987-9979-B1053A397CEF),
+		helpstring("TRiASNativeAttributes Class"),
+		noncreatable
+	]
+	coclass TRiASNativeAttributes
+	{
+		[default] interface ITRiASEnumNativeAttributes;
+	};
+
+// TRiASNativeDataSource Class
+	[ 
+		uuid(F0AC01A0-79EB-473E-9083-65454AA1298B), 
+		helpstring("TRiASNativeDataSource Object") 
+	]
+	coclass TRiASNativeDataSource
+	{
+		[default] interface ITRiASNativeDataSource;
+	};
+};

@@ -1,0 +1,32 @@
+HKCR
+{
+	TRiASEx.ObjFeatScriptInstallation.1 = s 'Installierung mehrerer Objekteigenschaften in Form von internen Macro-Scripts'
+	{
+		CLSID = s '{079638AF-3123-101C-BB62-00AA0018497C}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {079638AF-3123-101C-BB62-00AA0018497C} = s 'Installierung mehrerer Objekteigenschaften in Form von internen Macro-Scripts'
+		{
+			val AppID = s '{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}'
+			ProgID = s 'TRiASEx.ObjFeatScriptInstallation.1 '
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertySheetHandlers
+			{
+				NoRemove Options
+				{
+					ForceRemove TRiASEx.ObjFeatScriptInstallation.1 = s '{079638AF-3123-101C-BB62-00AA0018497C}'
+				}
+			}
+		}
+	}
+}

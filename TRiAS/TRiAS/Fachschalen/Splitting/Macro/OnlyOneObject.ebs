@@ -1,0 +1,380 @@
+' ***********************************************************************
+' *																		*
+' *	Filter Flurstuecke vergleichen										*
+' *	OnlyOneObject.ebf													*
+' ***********************************************************************
+
+Option Explicit
+
+' ======================================================================================
+'Programmkonstanten
+Const NL = Chr$(13) + Chr$(10)		'NewLine
+Const HT = Chr$(9)	   		' Tab		 
+
+' anwendungsspezifische Konstanten
+Const strBoxTitel = "Flurstücke vergleichen"
+Const strNummer = "Kennungszeichen"
+Const strKZ = "Kennungszeichen"
+
+Const strFlur = "ALK-Flurstück"
+Const strFlur1 = "Flurstück bereits bearbeitet"
+Const strStanze = "ALK-Stanze-Flurstücke"
+Const strKeyStanze = "[11111223]"
+
+Const strToolSearchLong As String = "Bilden 1123-Testgebiet"
+
+'=======================================================================================
+
+Const strCopyObjects As String = "TRiASEx.CopyObjects.1"
+Const strModifyIdent As String = "TRiASEx.ModifyIdent.1"
+Const strUnionObjects As String = "TRiASEx.UnionObjects.1"
+
+Const strNoShow As String = "NoShow=1"
+' --------------------------------------------------------------------------------------
+' Globale Variablen
+Public lGlobalCnt As Long
+
+Public strLogFileName As String
+
+Public clsStanze As GeoClass
+Public clsFlur As GeoClass
+
+Public objsStanze As GeoObjects
+Public docGD As GeoDocument
+
+' ---------------------------------------------------
+' FunktionsDeklarationen
+
+Declare Private Sub ErrFile (strErrText As String)
+Declare Private Sub GeometrieTausch ( O1 As GeoObject, O2 As GeoObject)
+Declare Private Sub ObjectTupel ( Objs As GeoObjects, O1 As GeoObject, O2 As GeoObject)
+Declare Private Function Topologie ( O1 As GeoObject, O2 As GeoObject) As Boolean
+Declare Private Function NeuesObjekt ( Obj As GeoObject) As Boolean
+Declare Private Sub Verdichten ( Objs As GeoObjects,MyObjs As GeoObjects)
+Declare Private Sub Stanze1123 ( ObjS As GeoObjects)
+
+Private bErrFile As Boolean			' Fehlerdatei angelegt (True)
+
+' ---------------------------------------------------
+
+
+' ---------------------------------------------------
+' "BeginAction" wird gerufen, bevor die erste Objektmenge verarbeitet werden soll
+Function BeginAction() As Boolean
+
+' Hier notwendige Initialisierungen durchführen
+	
+' BeginAction für Abbruch auf 'False' setzen 
+	BeginAction = True
+	bErrFile = False	' Fehlerdatei (noch) nicht angelegt
+	lGlobalCnt = 0
+	Set docGD = GetActiveDocument()
+	Set clsFlur = docGD.GetClass(strFlur)
+End Function
+
+' ---------------------------------------------------
+' "DoAction" wird für jede der zu verarbeitenden Objektmengen gerufen
+Function DoAction (Objs As GeoObjects) As GeoObjects
+
+	Dim o As GeoObject
+
+	Dim MyObjs As New GeoObjects
+ 
+	If Objs.Count = 1 Then 
+		ObjS(1).Hilight &HFF0000	'blau
+	' Test auf OKL 11111115 und Stanze1123
+		If (NeuesObjekt(Objs(1)) = True) Then
+			Set DoAction = ObjS
+		Else
+			Set DoAction = MyObjs
+		End If
+		Exit Function
+	End If
+
+	If Objs.Count = 2 Then
+		ObjectTupel  MyObjs,Objs(1),Objs(2)
+		Set DoAction = MyObjs
+		Exit Function
+	End If
+	
+
+	Dim Feat As GeoFeature
+	Dim MyFeat As String
+	Dim VFeat As GeoFeature
+	Dim MyVFeat As String
+	MyFeat = " "
+	MyVFeat = " "
+	Dim lNumber As Integer
+	lNumber = 0
+
+	For Each o in Objs
+		lNumber = lNumber + 1
+		Set Feat = o.GetFeature ( strNummer)
+		If Feat Is Not Nothing Then
+			MyFeat = Feat.Feature$
+			Dim Mtext As String
+			MText = Trim$(Feat.Feature$)
+			o.Hilight &HFFFFFF
+			ErrFile  STR$(lNumber) + ".Objekt " + STR$(o.Value)+ " mit " + MyFeat +NL
+		End If
+		lGlobalCnt = lGlobalCnt + 1
+	Next o
+
+' Verdichten
+
+	Do
+		Set Objs = MyObjs
+		Set MyObjs = New GeoObjects
+		Verdichten Objs,MyObjs
+	Loop 	While ( Objs.Count > MyObjs.Count) 
+
+	Set DoAction = MyObjs
+
+End Function
+'=================================================================
+Private Function NeuesObjekt ( Obj As GeoObject) As Boolean
+
+	Dim Name1 As String
+	Dim ObjsRect As New GeoObjects
+
+	Name1 = Obj.ObjClass.Name$
+
+	NeuesObjekt = True
+
+	Dim Flur1 As String
+	Flur1 = strFlur1
+
+	If ( (Name1 = Flur1) = False)  Then
+		Exit Function
+	End If
+
+	If clsFlur Is Nothing Then
+		Exit Function
+	End If
+
+	Dim XMin As Double
+	Dim XMax As Double
+	Dim YMin As Double
+	Dim YMax As Double
+
+	Obj.GetGeometryRect XMin, YMin, XMax, YMax
+
+	Set ObjsRect = clsFlur.GetObjectsInRect(XMin, YMin, XMax, YMax)
+
+	If ObjsRect Is Nothing Or ObjsRect.Count = 0 Then
+		Exit Function
+	End If
+
+	Stanze1123 ObjsRect
+
+	Set clsStanze = Nothing
+	Set objsStanze = Nothing
+
+	Set clsStanze = docGD.GetClass (strStanze)
+
+	If clsStanze Is Nothing Then
+		Exit Function
+	End If
+
+	Set objsStanze = clsStanze.GetObjects(OT_Area)
+
+	If objsStanze Is Nothing Then
+		Exit Function
+	End If
+
+	If objsStanze.Count = 0 Then
+		Exit Function
+	End If
+
+	Dim o As GeoObject
+
+	Dim intRel As Integer
+
+	Dim Flag As Boolean
+
+	Flag = True
+
+	For Each o in objsStanze
+
+		If Flag = True Then
+			intRel = o.Toprelation(Obj)
+
+			If intRel = 0 Then
+				NeuesObjekt = False
+				Flag = False
+				docGD.RemoveObject o	
+			End If
+		End If
+		docGD.RemoveObject o	
+	Next o
+
+	Set clsStanze = Nothing
+	Set objsStanze = Nothing
+	
+	NeuesObjekt = Flag
+
+End Function
+'=================================================================
+Private Sub Verdichten ( Objs As GeoObjects,MyObjs As GeoObjects)
+
+' Hier müßte ein 2 er Test auf Topologie durchgeführt werden	
+	Dim lCnt As Long
+	Dim i As Long
+	Dim j As Long
+
+	lCnt = Objs.Count
+	
+	i = 0
+	For j = i + 1 To j < lCnt
+		ObjectTupel MyObjs,Objs(i+1),Objs(j+1)
+	Next J
+
+End Sub
+'=================================================================
+Private Sub ObjectTupel ( MyObjs As GeoObjects, O1 As GeoObject, O2 As GeoObject)
+
+	O1.Hilight &HFF0000	'blau
+	O2.Hilight &HFFFFFF	'weiß
+
+	If ( Topologie ( O1,O2) = False) Then
+
+	' Test auf OKL 11111115 und Stanze1123
+		If (NeuesObjekt(O1) = True) Then
+			MyObjS.Add O1
+		End If
+		If (NeuesObjekt(O2) = True) Then
+			MyObjs.Add O2
+		End If
+		Exit Sub
+
+	End If
+
+	Dim Name1 As String
+	Dim Name2 As String
+
+	Name1 = O1.ObjClass.Name$
+	Name2 = O2.ObjClass.Name$
+
+	Dim Flur1 As String
+	Flur1 = strFlur1
+
+	Dim Flur As String
+	Flur = strFlur
+
+	If ((Name1 = Flur1) And (Name2 = Flur) ) = True Then
+		GeometrieTausch O1,O2
+		MyObjs.Add O1
+		O1.Hilight &HFF0000
+		O2.UnHilight
+		Exit Sub
+	Else 
+		If ( (Name1 = Flur) And (Name2 = Flur1)) = True  Then
+			GeometrieTausch O2,O1
+			MyObjs.Add O2
+			O2.Hilight &HFF0000
+			O1.UnHilight
+			Exit Sub
+		Else
+'			msgbox " Analyseprobleme mit Objekt " + str$(O1.Value) + " und Objekt " + str$(O2.Value)
+			ErrFile "Anylyseprobleme => Objekt " + str$(O1.Value) + "["+Name1+"] und Objekt " + str$(O2.Value)+"["+Name2+"]" +NL
+			O2.Hilight &HFFFFFF
+			O1.Hilight &HFFFFFF
+			lGlobalCnt = lGlobalCnt + 2
+			Exit Sub
+		End If
+	End If
+
+End Sub
+'=================================================================
+Private Sub GeometrieTausch ( O1 As GeoObject, O2 As GeoObject)
+
+	Dim x() As Double
+	Dim y() As Double
+	Dim Koord() As Long
+	Dim OType As Integer
+	Dim Count As Long
+	Dim Cnt As Integer
+
+	ReDim x(0)
+	ReDim y(0)
+	ReDim Koord(0)
+
+
+	OType = O2.GetGeometry (Count,x,y,Cnt,Koord)
+		
+  	If OType = OBJTYPE_Area Then
+
+		ReDim x(Count)
+		ReDim y(Count)
+		ReDim Koord(Cnt)
+
+		OType = O2.GetGeometry (Count,x,y,Cnt,Koord)
+
+		Dim iRef As Integer
+
+		iRef = O1.PutGeometry ( OType,x,y)
+	
+	End If
+
+	Msg.Close
+
+End Sub
+' --------------------------------------------------------------------------------------
+Private Function Topologie ( O1 As GeoObject, O2 As GeoObject) As Boolean
+
+	Topologie = False
+
+	Dim intRel As Integer
+
+	intRel = O1.Toprelation(O2)
+
+	If intRel = 0 Or intRel = 2 Then
+		Topologie = True
+	End If
+
+
+End Function
+
+' --------------------------------------------------------------------------------------
+' Fehlertext strErrText in Fehlerdatei (Name des aktuellen Projektes mit Attribut "err")
+' eintragen
+Sub ErrFile (strErrText As String)
+	Dim strErrDatei As String
+	strErrDatei = Left$(GetActiveDocument.FullName$,Len(GetActiveDocument.FullName$)-3) + "fls"
+	Open strErrDatei For Append Lock Write As #1	' Fehler-Datei öffnen
+	Print #1, strErrText
+	Close											' Fehler-Datei schließen
+	bErrFile = True
+End Sub ' ErrFile
+
+'=================================================================
+' ---------------------------------------------------
+' "EndAction" wird nach der Verarbeitung der
+' letzten Objektmenge gerufen
+Sub EndAction()
+' Hier notwendige Aufräumarbeiten durchführen
+
+	MsgBox " Objekte mit Analyseproblemen : " + STR$(lGlobalCnt), ebInformation, strBoxTitel
+
+End Sub
+'==========================================================================================
+' -----------------------------------------------------------------------------
+Private Sub Stanze1123 ( ObjS As GeoObjects)
+
+	Dim OKSStanze As String
+
+	OKSStanze = strKeyStanze
+
+	' Operation durchführen
+	Dim Seq1 As New PropertySequence
+	Seq1.Description = strToolSearchLong
+
+	Seq1.AddAction strCopyObjects, strNoShow
+	Seq1.AddAction strUnionObjects, strNoShow
+  	Seq1.AddAction strModifyIdent, "NoShow=1;ModifyTo=" & OKSStanze & ";AddToView=1"
+
+	Seq1.DoActions ObjS
+
+End Sub
+' --------------------------------------------------------------------------------------
+ 

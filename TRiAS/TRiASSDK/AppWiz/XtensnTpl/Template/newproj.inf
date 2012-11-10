@@ -1,0 +1,32 @@
+$$// newproj.inf = template for list of template files
+$$//  format is 'sourceResName' \t 'destFileName'
+$$//    The source res name may be preceded by any combination of '=', '-',  '!', '?', ':', '#', and/or '*'
+$$//       '=' => the resource is binary
+$$//       '-' => the file should not be added to the project (all files are added to the project by default)
+$$//       '!' => the file should be marked exclude from build
+$$//       '?' => the file should be treated as a help file
+$$//       ':' => the file should be treated as a resource
+$$//       '#' => the file should be treated as a template (implies '!')
+$$//       '*' => bypass the custom AppWizard's resources when loading
+$$//	if name starts with / => create new subdir
+
+
+RESOURCE.H	resource.h
+STDAFX.CPP	StdAfx.cpp
+STDAFX.H	StdAfx.h
+VERSION.TPL	Version.tpl
+!VERSION.MAK	Version.mak
+XTENSION.CPP	$$root$$Ext.cpp
+XTENSION.H	$$root$$Ext.h
+XTENSIONCONFIG.H	$$root$$Config.h
+XTENSIONUTIL.H	$$root$$Util.h
+ROOT.CPP	$$root$$.cpp
+ROOT.H	$$root$$.h
+ROOT.RC	$$root$$.rc
+ROOT.DEF	$$root$$.def
+XTENSIONTEMPLATE.IDL	$$root$$.idl
+XTENSIONTEMPLATE.TPL	$$root$$.tpl
+XTENSIONTEMPLATEV.TPL	$$root$$v.tpl
+
+=-ERSETZ.EXE	ersetz.exe
+

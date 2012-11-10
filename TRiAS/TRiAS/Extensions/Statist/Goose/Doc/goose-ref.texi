@@ -1,0 +1,783 @@
+\input texinfo @c -*-texinfo-*-
+
+@c %**start of header
+@setfilename goose-ref.info
+@settitle Goose Reference Manual
+@setchapternewpage odd
+@c %**end of header
+
+@set VERSIONNUMBER 0.0.6
+@set VERSIONDATE The Late 20th Century
+@set COPYRIGHTYEAR 1999
+
+
+
+@ifinfo
+This file documents Goose.
+
+Copyright (C) @value{COPYRIGHTYEAR} Jon Trowbridge
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+@ignore
+Permission is granted to process this file through TeX and print the
+results, provided the printed document carries copying permission
+notice identical to this one except for the removal of this paragraph
+(this paragraph not being relevant to the printed manual).
+
+@end ignore
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions,
+except that this permission notice may be stated in a translation approved
+by the author.
+@end ifinfo
+
+@titlepage
+@title Goose Reference Manual
+@subtitle The Goose Object-Oriented Statistics Environment
+@subtitle $Id: goose-ref.texi,v 1.9 1999/03/16 18:27:30 alstrup Exp $
+@subtitle For use with Goose version @value{VERSIONNUMBER}
+@c @subtitle @value{VERSIONDATE}
+@author Jon Trowbridge
+@author @email{trow@@emccta.com}
+
+@page
+@vskip 0pt plus 1filll
+Copyright @copyright{} @value{COPYRIGHTYEAR} Jon Trowbridge
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions,
+except that this permission notice may be stated in a translation approved
+by the author.
+@end titlepage
+
+
+
+@node Top, Preliminaries, (dir), (dir)
+@comment node-name, next, previous, up
+
+@ifinfo
+Goose is a library of C++ routines for statistical analysis.
+@end ifinfo
+
+@menu
+* Preliminaries:: The purpose and goals of Goose.
+* Utility Classes:: Random numbers, permutations, linear algebra.
+* The RealSet Class:: Goose's main repository for statistical data.
+* Linear Regression::
+* Bootstrapping Functions::
+* Special Functions:: Useful statistical functions provided by Goose.
+* Using Goose from Guile::
+* Using Goose from Perl::
+* Concept Index::
+* Function Index::
+@end menu
+
+@c ***************************************************************************
+
+@node Preliminaries, Utility Classes, Top, Top
+@chapter Preliminaries
+
+Someday, this will be some useful documentation for Goose.
+
+@c ***************************************************************************
+
+@node Utility Classes, The RealSet Class, Preliminaries, Top
+@chapter Utility Classes
+
+@section Random Numbers
+
+Certain types of statistical calculations require a large number of
+high-quality random numbers.  Since good random number generators are
+not universally available, Goose provides one in the form of the
+@code{Random} class.
+
+@deftypemethod Random void seed (unsigned @var{seed_value})
+When a @code{Random} object is constructed, it is initially seeded with
+values derived from the system.  On Unix-type systems, this includes the
+time of day, the process ID, and data read in from @code{/dev/random}
+(if available).  If you need a repeatable stream of "Random" numbers,
+however, the seed value can be set explicitly with this function.
+@end deftypemethod
+
+@deftypemethod Random unsigned random ()
+Returns a uniformly-distributed random unsigned integer.  (Note that
+parts of the implementation of @code{Random} assume that an
+@code{unsigned} is 32 bits wide.  If you are using a system where an
+@code{unsigned} is larger than 32 bits, only the lower 32 bits are
+randomized; any higher-order bits will always be zero.  If your system's
+@code{unsigned} has less than 32 bits, expect all of this to end badly.)
+@end deftypemethod
+
+@deftypemethod Random void random (unsigned* @var{buffer}, int @var{N})
+Generates @var{N} uniformly-distributed random unsigned integers and
+writes them into the array that begins at @var{buffer}.
+@end deftypemethod
+
+@deftypemethod Random int random_integer (int @var{a}, int @var{b})
+Returns a random @code{int} that is greater than or equal to @var{a} and
+less than or equal to @var{b}.
+@end deftypemethod
+
+@deftypemethod Random int random_integer(int @var{a}, int @var{b}, int* @var{buffer}, int @var{N})
+Generates @var{N} uniformly-distributed
+random integers between @var{a} and @var{b} and copies them into the
+array that begins at @var{buffer}.
+@end deftypemethod
+
+@deftypemethod Random double random_uniform (double @var{a}, double @var{b})
+@deftypemethodx Random double random_uniform ()
+Returns a uniformly-distributed random @code{double} that is greater
+than or equal to @var{a} and less than @var{b}.  The version with no
+arguments defaults to choosing values between 0 and 1.
+@end deftypemethod
+
+@deftypemethod Random void random_uniform (double @var{a}, double @var{b}, double* @var{buffer}, int @var{N}
+@deftypemethodx Random void random_uniform (double* @var{buffer}, int @var{N})
+Generates @var{N} uniformly-distributed random numbers between @var{a}
+and @var{b} and stores them in the array starting at @var{buffer}.
+The version with only two arguments chooses values between 0 and 1.
+@end deftypemethod
+
+@deftypemethod Random double random_normal (double @var{m}, double @var{sd})
+@deftypemethodx Random double random_normal ()
+@end deftypemethod
+
+@deftypemethod Random double random_normal (double @var{m}, double @var{sd}, double* @var{buffer}, int @var{N})
+@deftypemethodx Random double random_normal (double* @var{buffer}, int @var{N})
+@end deftypemethod
+
+@deftypemethod Random bool random_bool (double @var{prob_true})
+@deftypemethodx Random bool random_bool ()
+Returns a random boolean value, where @var{prob_true} is a value between
+0 and 1 that specifies the probability that the returned value will be
+true.  The version with no arguments returns true fifty percent of the time.
+@end deftypemethod
+
+@deftypemethod Random void scramble (X* @var{data}, size_t @var{N})
+@deftypemethodx Random  void scramble (vector<X>& @var{data})
+These are a pair of template functions that randomly scramble the order
+of a linear container, either an array of length @var{N} or an STL
+vector, containing objects of type @code{X}.
+@end deftypemethod
+
+Goose's @code{Random} implements the @dfn{Mersenne Twister}
+method, as described in Matusumoto and Nishimura's ``Mersenne Twister: A
+623-dimensional equidistributed uniform pseudorandom number generator''
+(@cite{ACM Transactions on Modelling and Computer Simulation}, 1998).
+This algorithm only uses integer operations, and is therefore
+particularly efficient.  It is important to be aware, however, that
+there is non-negligible amount of overhead required to initialize the
+data structures that are used by the Mersenne Twister algorithm.
+Because of this, the @code{Random} object is definitely best-suited for
+producing random numbers in bulk.  Code like
+@example
+  double sum = 0.0;
+  for (int i=0; i<1000; ++i) @{
+    Random rnd;
+    sum += rnd.random_normal(0.0, 1.0);
+  @}
+@end example
+will be wildly inefficient.  Consider using
+@example
+  double sum = 0.0;
+  Random rnd;
+  for (int i=0; i<1000; ++i)
+    sum += rnd.random_normal(0.0, 1.0);
+@end example
+instead.  This allows the cost of constructing the @code{Random} object
+to be borne only once, rather than once for each iteration in the loop.
+Another alternative is to use
+@example
+  double sum = 0.0;
+  double buffer[1000];
+  Random rnd;
+  rnd.random_normal(0.0, 1.0, buffer, 1000);
+  for (int i=0; i<1000; ++i)
+    sum += buffer[i];
+@end example
+and thereby avoid the function call overhead of repeated calls to
+@code{random_normal}.
+
+@section Permutations
+
+A permutation is nothing more than a precise mathematical specification
+for how a set of objects is to be re-ordered.  Since it will
+occasionally be useful for us to be able to re-order sets in a
+controlled way, Goose defines a Permutation class that encapsulates just
+such a specification.
+
+@deftypemethod Permutation size_t size ()
+@end deftypemethod
+
+@deftypemethod Permutation const size_t* map ()
+@end deftypemethod
+
+@deftypemethod Permutation size_t map (size_t @var{i})
+@end deftypemethod
+
+@deftypemethod Permutation void initialize (size_t @var{N}, size_t* @var{data});
+@end deftypemethod
+
+@deftypemethod Permutation size_t cycle_count ()
+Returns the number of distinct cycles of the Permutation.
+@end deftypemethod
+
+@deftypemethod Permutation size_t orbit_size (size_t @var{i})
+Return the size of the orbit of @var{i} under the action of the Permutation.
+@end deftypemethod
+
+@deftypemethod Permutation size_t order ()
+Return the order of the Permutation in the sense of group theory.  This
+is the smallest positive integer such that composing the Permutation
+with itself that may times results in the identity Permutation.
+@end deftypemethod
+
+@deftypemethod Permutation void set_identity (size_t @var{N})
+Convert this Permutation to the identity permutation on @var{N} elements.
+@end deftypemethod
+
+@deftypemethod Permutation void set_shift (size_t @var{N}, int @var{k})
+Convert this Permutation to one that shifts @var{N} elements, moving the
+@var{i}th element to the @var{(i+k)}th place and wrapping around as
+necessary.
+@end deftypemethod
+
+@deftypemethod Permutation void set_reverse (size_t @var{N})
+Convert this Permutation to one that reverses the order of a list of
+@var{N} elements.
+@end deftypemethod
+
+@deftypemethod Permutation void scramble ()
+Convert this Permutation to one that randomly scrambles a set of elements.
+@end deftypemethod
+
+@deftypemethod Permutation void precompose (const Permutation& @var{p})
+Convert this Permutation to one that corresponds to the transformation
+experienced by a set of object permuted first according to @var{p} and
+then according to this Permutation.
+@end deftypemethod
+
+@deftypemethod Permutation void postcompose (const Permutation& @var{p})
+Convert this Permutation to one that corresponds to the transformation
+experienced by a set of object permuted first according this
+Permutation and then according to @var{p}.
+@end deftypemethod
+
+@deftypemethod Permutation void invert ()
+Replace this Permutation by one that transforms a set to reverse the
+effects of this Permutation.
+@end deftypemethod
+
+@deftypemethod Permutation void permute (X* @var{data})
+This is a template method that applies this Permutation to re-order the
+array of X-objects in place.
+@end deftypemethod
+
+@section Linear Algebra: Vectors
+
+@section Linear Algebra: Matrices
+
+@c ***************************************************************************
+
+@node The RealSet Class, Linear Regression, Utility Classes, Top
+@chapter The RealSet Class
+
+@section Manipulating the Contents of a RealSet
+
+@section Performing Calculations on a RealSet
+
+The RealSet class defines a large number of methods for calculating
+quantities related to the stored data.  When it is possible and
+practical, associates statistics are calculated in constant
+time.
+
+@tex
+In some cases, we will give a mathematical expression that specifies exactly
+what is being calculated by the function.  The following notation will
+be used throughout:
+@table @asis
+@item $N$
+The number of elements in the RealSet.
+@item $x_i$
+The $i$th element of the RealSet, indexed $1$ to $N$.
+@item $x_{(i)}$
+The $i$th-ranked element of the RealSet, ranked from low to high.
+(So $x_{(1)}$ is the smallest element, and $x_{(N)}$ is the largest.)
+@end table
+@end tex
+
+@deftypemethod RealSet size_t size ()
+Returns the number of elements stored in the RealSet.
+@end deftypemethod
+
+@deftypemethod RealSet double min ()
+Returns the smallest value stored in the RealSet.
+@end deftypemethod
+
+@deftypemethod RealSet double max ()
+Returns the largest value stored in the RealSet.
+@end deftypemethod
+
+@deftypemethod RealSet double range ()
+Returns the difference between the largest and the smallest values stored
+in the RealSet.
+@end deftypemethod
+
+@deftypemethod RealSet double sum ()
+Returns the sum of all of the elements in the RealSet.
+@end deftypemethod
+
+@deftypemethod RealSet double mean ()
+Returns the mean (or average) of the RealSet.
+@end deftypemethod
+
+@deftypemethod RealSet double var ()
+Returns the variance of the RealSet.
+@end deftypemethod
+
+@deftypemethod RealSet double sdev ()
+Returns ths population standard deviation of the RealSet, which
+is equal to the square root of the variance.
+@end deftypemethod
+
+@deftypemethod RealSet double sdevs ()
+Returns the sample standard deviation of the RealSet. 
+
+This function is very similar to the population standard deviation, and
+the values of @code{sdev()} and @code{sdevs()} will be almost identical
+for moderately large data sets.  The difference is that we divide by an
+@var{N-1} term rather than @var{N}.  This removes a slight downward bias
+caused by the fact that, in a random sample, there is some unknown error
+in our estimate of the mean.  This is something that has confused
+students for generations.
+@end deftypemethod
+
+@deftypemethod RealSet double percentile (double @var{p})
+Returns a value @var{x} that has the property that @var{p} percent of
+the data set is less than or equal to @var{x}.  By this definition, @var{x} is
+not uniquely defined.  We construct our preferred value of @var{x} by
+interpolating between RealSet elements as necessary.
+@end deftypemethod
+
+@deftypemethod RealSet double median ()
+Returns the median of the RealSet.
+@end deftypemethod
+
+@deftypemethod RealSet double q1 ()
+Returns the first quartile of the RealSet.
+@end deftypemethod
+
+@deftypemethod RealSet double q3 ()
+Returns the third quartile of the RealSet.
+@end deftypemethod
+
+@deftypemethod RealSet double iqr ()
+Returns the inter-quartile range of the RealSet.  The inter-quartile
+range is defined to be the difference of the third and first
+quartiles.
+@end deftypemethod
+
+@deftypemethod RealSet double decile (int @var{i})
+Returns the @var{i}th decile of the RealSet.
+@end deftypemethod
+
+@deftypemethod RealSet double mean_trimmed (int @var{l}, int @var{r})
+Returns the mean of the elements of the RealSet, excluding the @var{l}
+smallest and @var{r} largest values.  (Here the letters @var{l} and
+@var{r} refer to the ``left'' and ``right'' sides of the data.  If we
+imagine the data to be sorted from high to low and lined up in a single
+row across a page, we would be removing @var{l} from the left side and
+@var{r} from the right.)
+@end deftypemethod
+
+@deftypemethod RealSet double mean_trimmed (int @var{t})
+Returns the mean of the elements of the RealSet, excluding
+the @var{t} smallest and @var{t} largest values.
+@end deftypemethod
+
+@deftypemethod RealSet double mean_winsorized (int @var{l}, int @var{r})
+Return the (@var{l},@var{r})-Winsorized mean of the RealSet.
+
+In statistics, to winsorize a data set means to replacing the
+@var{l} smallest and @var{r} largest values of the data set by the
+@var{(l+1)}st smallest and @var{(r+1)}st largest elements, respectively.
+This operation throws out the most extreme values in the data and
+replaces them by certain values that are presumed to be ``more
+representative''.
+@tex
+In mathematical notation, this function returns the quantity
+$$
+{l x_{(l+1)} + \sum_{i=l+1}^{N-r} x_{(i)} + r x_{(N-r)} \over N}.
+$$
+@end tex
+@end deftypemethod
+
+@deftypemethod RealSet double mean_winsorized (int @var{t})
+@end deftypemethod
+
+@deftypemethod RealSet double moment (int @var{k}, int @var{x})
+@end deftypemethod
+
+@deftypemethod RealSet double moment (int @var{k})
+@end deftypemethod
+
+@deftypemethod RealSet double gmean ()
+@end deftypemethod
+
+@deftypemethod RealSet double hmean ()
+@end deftypemethod
+
+@deftypemethod RealSet double rms ()
+@end deftypemethod
+
+@deftypemethod RealSet double meandev ()
+@end deftypemethod
+
+@deftypemethod RealSet double meddev ()
+@end deftypemethod
+
+@deftypemethod RealSet double kurtosis ()
+@end deftypemethod
+
+@deftypemethod RealSet double skewness ()
+@end deftypemethod
+
+@deftypemethod RealSet double excess_kurtosis ()
+@end deftypemethod
+
+@deftypemethod RealSet double momental_skewness ()
+@end deftypemethod
+
+@deftypemethod RealSet double durbin_watson ()
+Returns the Durbin-Watson statistic for the RealSet.  Unlike most of
+statistics discussed so far, this depends on the order of the elements.
+@tex
+The Durbin-Watson statistic is defined to be the expression
+$$ {\sum_{i=2}^N (x_i - x_{i-1})^2 \over \sum_{i=1}^N x_i^2}. $$
+@end tex
+@end deftypemethod
+
+@deftypemethod RealSet double AR1_independence_z ()
+@end deftypemethod
+
+@deftypemethod RealSet double autocorr (int @var{lag})
+@end deftypemethod
+
+@deftypemethod RealSet double autocorr_z (int @var{lag})
+@end deftypemethod
+
+@deftypemethod RealSet double covar (const RealSet& @var{rs})
+@end deftypemethod
+
+@deftypemethod RealSet double corr (const RealSet& @var{rs})
+@end deftypemethod
+
+@deftypemethod RealSet double pooled_mean (const RealSet& @var{rs})
+@end deftypemethod
+
+@deftypemethod RealSet double pooled_var (const RealSet& @var{rs})
+@end deftypemethod
+
+@deftypemethod RealSet double weighted_mean (const RealSet& @var{rs})
+@end deftypemethod
+
+@deftypemethod RealSet size_t greater_than (double @var{x})
+Returns the number of elements of the RealSet that are strictly greater than
+@var{x}.
+@end deftypemethod
+
+@deftypemethod RealSet size_t less_than (double @var{x})
+Returns the number of elements of the RealSet that are strictly less than
+@var{x}.
+@end deftypemethod
+
+@deftypemethod RealSet size_t between (double @var{a}, double @var{b})
+Returns the number of elements of the RealSet that are between @var{a} and
+@var{b}, inclusive.
+@end deftypemethod
+
+@deftypemethod RealSet size_t equal_to (double @var{x})
+Returns the number of elements of the RealSet that are equal to @var{x}.
+@end deftypemethod
+
+@section Global Transformations on a RealSet
+
+@deftypemethod RealSet void apply(FunctionObject @var{f})
+This is a template function that takes any function object @var{f} and
+applies it to each element of the RealSet, replacing the elements with
+the calculated values.
+@end deftypemethod
+
+@deftypemethod RealSet void linear_transform(double @var{a}, double @var{b})
+Iterates across the elements of the RealSet, replacing each element @var{x} by
+@var{a}@var{x}+@var{b}.
+@end deftypemethod
+
+@deftypemethod RealSet void log_transform ()
+Iterates across the elements of the RealSet, replacing each elements by
+its natural logarithm.  An exception is thrown if any element is less
+than or equal to zero.
+@end deftypemethod
+
+@deftypemethod RealSet void exp_transform ()
+Iterates across the elements of the RealSet, applying the exponential
+function to each element.
+@end deftypemethod
+
+@deftypemethod RealSet void logit_transform ()
+Iterates across the elements, applying the logit transform to each element.
+@tex
+The logit transform maps $x$ to $\log(x/(1-x))$.
+@end tex
+@end deftypemethod
+
+@deftypemethod RealSet void reverse ()
+Reverses the order of the elements in the RealSet.
+@end deftypemethod
+
+@deftypemethod RealSet void sort (int @var{dir} = 1)
+If @var{dir} is greater than zero, sorts the elements of the RealSet in
+ascending order.  If @var{dir} is less than zero, the sort is performed
+in descending order.
+@end deftypemethod
+
+@deftypemethod RealSet void scramble ()
+Randomly permutes the elements of the RealSet.
+@end deftypemethod
+
+@deftypemethod RealSet void rank ()
+Replaces each element of the RealSet by its rank within that RealSet.
+In the case of ties, ranks are averages, following the usual statistical
+convention.
+@end deftypemethod
+
+@c ***************************************************************************
+
+@node Linear Regression, Bootstrapping Functions, The RealSet Class, Top
+@chapter Linear Regression
+
+@section Simple Linear Regression
+
+@section Multiple Regression
+
+Multiple Regression currently not implemented in Goose.
+
+@c ***************************************************************************
+
+@node Bootstrapping Functions, Special Functions, Linear Regression, Top
+@chapter Bootstrapping Functions
+
+@section Optimized Resampling Functions
+
+@deftypefun RealSet bootstrap_mean (size_t @var{N}, const RealSet& @var{data}, int @var{threads}=1)
+@deftypefunx RealSet bootstrap_median (size_t @var{N}, const RealSet& @var{data}, int @var{threads}=1)
+@deftypefunx RealSet bootstrap_sdev (size_t @var{N}, const RealSet& @var{data}, int @var{threads}=1)
+@deftypefunx RealSet bootstrap_skewness (size_t @var{N}, const RealSet& @var{data}, int @var{threads}=1)
+@deftypefunx RealSet bootstrap_kurtosis (size_t @var{N}, const RealSet& @var{data}, int @var{threads}=1)
+Each of these functions returns a RealSet containing a set of @var{N} values,
+each of which represents the value of the appropriate statistic
+calculated against a resampling of the elements in @var{data}.
+
+Since these resampling calculations are highly parallelizable,
+significant performance enhancements are possible in multiprocessor
+environments.  If @var{threads} is set greater than one, that many
+different threads are created and the computation is split amongst them.
+(If your system does not support threads, the @var{threads} argument is
+ignored.)
+@end deftypefun
+
+@c ***************************************************************************
+
+@node Special Functions, Using Goose from Guile, Bootstrapping Functions, Top
+@chapter Special Functions
+
+One important part of Goose is a library called @code{libspecfns}, which
+provides mathematical functions that are frequently needed when
+performing statistical calculations.  These functions are used
+internally by Goose, but you may find them to be useful for your own
+programs.
+
+The majority of the code that makes up @code{libspecfns} is derived from
+parts of Stephen L. Moshier's Cephes library.  Moshier holds the
+copyright on Cephes, but it is distributed with no licensing
+restrictions of any kind.  Since @code{libspecfns} is derived from
+Cephes, Moshier is still the primary copyright holder.  However, this
+library, like Goose, is licensed under the LGPL.
+
+@section General Functions
+
+@deftypefun double factorial (int @var{n})
+Returns @var{n} factorial.  For sufficiently small values of @var{n}
+(say, @var{n} less than 24), it should be possible to obtain an exact
+answer by casting the results to an int.  An exception will be thrown if
+@var{n} is negative.
+@tex 
+Mathematically,
+$$\hbox{\tt factorial(n)} = n! = \prod_{i=1}^n i.$$
+@end tex
+@end deftypefun
+
+@deftypefun double log_factorial (int @var{n})
+Returns the natural logarithm of @code{factorial(n)}.  This function is
+equivalent to @code{log(factorial(n))}, but is much more numerically
+stable for large values of @var{n}.
+@end deftypefun
+
+@deftypefun double choose (int @var{n}, int @var{k})
+Returns the binomial coefficient of @var{n} and @var{k}, which also
+happens to be the number of different possible unordered sets of size
+@var{k} that can be chosen (without replacement) from a set of @var{n}
+distinct objects.  For sufficiently small values of @var{n} and @var{k}, it should be possible to obtain an exact answer by casting the results to an int.
+@tex
+Mathematically,
+$$\hbox{\tt choose(n,k)} = {n\choose k} = {n!\over k!(n-k)!}.$$
+@end tex
+@end deftypefun
+
+@deftypefun double log_choose (int @var{n}, int @var{k})
+Returns the natural logarithm of @code{choose(n,k)}.
+@end deftypefun
+
+@deftypefun double log_gamma (double @var{x})
+Returns the logarithms of the value of the gamma function at @var{x}.
+@tex
+In mathematical notation,
+$$ \hbox{\tt log\_gamma(x)} = \log\Gamma(x) =
+\log\int_0^\infty t^{x-1}e^{-t}\,dt.$$
+@end tex
+@end deftypefun
+
+@deftypefun double incomplete_gamma (double @var{a}, double @var{b})
+Returns the value of the incomplete gamma integral of @var{a},
+integrated from 0 to @var{b}.
+@tex
+In mathematical notation,
+$$ \hbox{\tt incomplete\_gamma(a,b)} = {1\over\Gamma(a)}\int_0^b t^{a-1}e^{-t}\,dt.$$
+@end tex
+@end deftypefun
+
+@section Statistical Distributions
+
+For the functions that are associated with various statistical
+distributions, we have adopted the following convention:  For the Foo
+distribution, the cumulative distribution function (or CDF) is always
+named @code{foo_cdf}.  The inverse cumulative distribution function is
+always named @code{inv_foo_cdf}.
+
+@deftypefun double normal_cdf (double @var{x})
+Returns the value at @var{x} of the CDF of a standard normal distribution.
+@tex
+In mathematical notation,
+$$ \hbox{\tt normal\_cdf(x)} = {1\over 2\pi}\int_{-\infty}^x e^{-t^2/2}\,dt.$$
+@end tex
+@end deftypefun
+
+@deftypefun double normal_cdf (double @var{m}, double @var{s}, double @var{x})
+Returns the value at @var{x} of the CDF of a normal distribution with
+mean @var{m} and standard deviation @var{s}.
+@end deftypefun
+
+@deftypefun double inv_normal_cdf (double @var{p})
+Returns the value at @var{p} of the inverse CDF of a standard normal
+distribution.
+@end deftypefun
+
+@deftypefun double poisson_cdf (int @var{k}, double @var{x})
+Returns the value at @var{x} of the CDF of a Poisson distribution with
+mean @var{k}.
+@end deftypefun
+
+@deftypefun double inv_poisson_cdf (int @var{k}, double @var{p})
+Returns the value at @var{p} of the inverse CDF of a Poisson distribution with
+mean @var{k}.
+@end deftypefun
+
+@deftypefun double chisq_cdf (int @var{df}, double @var{x})
+Returns the value at @var{x} of the CDF of a Chi-square distribution
+with @var{df} degrees of freedom.
+@end deftypefun
+
+@deftypefun double inv_chisq_cdf (int @var{df}, double @var{p})
+Returns the value at @var{p} of the inverse CDF of a Chi-square
+distribution with @var{df} degrees of freedom.
+@end deftypefun
+
+@deftypefun double t_cdf (int @var{df}, double @var{x})
+Returns the value at @var{x} of the CDF of a T-distribution
+with @var{df} degrees of freedom.
+@end deftypefun
+
+@deftypefun double inv_t_cdf (int @var{df}, double @var{p})
+Returns the value at @var{p} of the inverse CDF of a T-distribution with
+@var{df} degrees of freedom.
+@end deftypefun
+
+@deftypefun double F_cdf (int @var{df1}, int @var{df2}, double @var{x})
+Returns the value at @var{x} of the CDF of an F-distribution
+with @var{df1} and @var{df2} degrees of freedom.
+@end deftypefun
+
+@deftypefun double inv_F_cdf (int @var{df}, int @var{df2}, double @var{p})
+Returns the value at @var{p} of the inverse CDF of an F-distribution with
+@var{df1} and @var{df2} degrees of freedom.
+@end deftypefun
+
+@deftypefun double gamma_cdf (double @var{a}, double @var{b}, double @var{x})
+@end deftypefun
+
+@deftypefun double binomial_cdf (int @var{k}, int @var{k}, double @var{x})
+@end deftypefun
+
+@deftypefun double neg_binomial_cdf (int @var{n}, int @var{k}, double @var{x})
+@end deftypefun
+
+@c ***************************************************************************
+
+@node Using Goose from Guile, Using Goose from Perl, Special Functions, Top
+@chapter Using Goose from Guile
+
+An incomplete set of guile bindings exist.
+
+@c ***************************************************************************
+
+@node Using Goose from Perl, Concept Index, Using Goose from Guile, Top
+@chapter Using Goose from Perl
+
+Perl bindings don't exist yet.  They will someday.
+
+@c ***************************************************************************
+
+@node Concept Index, Function Index, Using Goose from Perl, Top
+@unnumbered Concept Index
+
+@printindex cp
+
+@node Function Index,  , Concept Index, Top
+@unnumbered Function Index
+
+@printindex fn
+
+@c @shortcontents
+@contents
+@bye
+
+
+
+

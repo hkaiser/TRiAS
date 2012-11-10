@@ -1,0 +1,25 @@
+HKCR
+{
+	TRiAS.SabisTabChildWindow.1 = s 'SabisTabChildWindow Class'
+	{
+		CLSID = s '{A9878E76-76ED-4D68-8A0D-BE097618AD8D}'
+	}
+	TRiAS.SabisTabChildWindow = s 'SabisTabChildWindow Class'
+	{
+		CLSID = s '{A9878E76-76ED-4D68-8A0D-BE097618AD8D}'
+		CurVer = s 'TRiAS.SabisTabChildWindow.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {A9878E76-76ED-4D68-8A0D-BE097618AD8D} = s 'SabisTabChildWindow Class'
+		{
+			ProgID = s 'TRiAS.SabisTabChildWindow.1'
+			VersionIndependentProgID = s 'TRiAS.SabisTabChildWindow'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{139DED23-68CD-11D2-8CBD-006097A8F384}'
+		}
+	}
+}

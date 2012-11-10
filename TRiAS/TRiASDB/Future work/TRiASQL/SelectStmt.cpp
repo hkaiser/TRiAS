@@ -1,0 +1,199 @@
+/*  Product: Small Parser
+
+    Copyright (C) 1999  Systementor AB, Stefan Holmberg
+    Email - stefan.holmberg@systementor.se
+    Web:   - http://www.systementor.se
+
+///////////////////////////////////////////////////////////////////////////////
+*/
+
+/* * $History: SelectStmt.cpp $ 
+ * 
+ * *****************  Version 2  *****************
+ * User: Stefan Holmberg Date: 7/11/99    Time: 12:23p
+ * Updated in $/Products/SmallParser
+*/
+
+// SelectStmt.cpp : Implementation of cSelectStmt
+#include "stdafx.h"
+#include "TRiASQL.h"
+#include "SelectStmt.h"
+#include "cAtlObjectConverter.h"
+
+#ifdef _DEBUG
+#include "shalloc.h"
+#define new DEBUG_NEW
+#endif
+
+
+/////////////////////////////////////////////////////////////////////////////
+// cSelectStmt
+
+
+cSelectStmt::cSelectStmt()
+{
+	CComObject<cTableIdentList>::CreateInstance( &m_pTableIdentList );
+	m_pTableIdentList->AddRef();
+
+	CComObject<cOrderByObjList>::CreateInstance( &m_pOrderByObjList );
+	m_pOrderByObjList->AddRef();
+
+	CComObject<cGenericStack>::CreateInstance( &m_pWhereExpressionStack );
+	m_pWhereExpressionStack->AddRef();
+
+	CComObject<cColumnIdentList>::CreateInstance( &m_pGroupByList );
+	m_pGroupByList->AddRef();
+
+	CComObject<cGenericStackList>::CreateInstance( &m_pSelectExpressionStackList );
+	m_pSelectExpressionStackList->AddRef();
+
+	CComObject<cGenericStack>::CreateInstance( &m_pHavingExpressionStack );
+	m_pHavingExpressionStack->AddRef();
+
+}
+
+cSelectStmt::~cSelectStmt()
+{
+	Clear();
+}
+
+void cSelectStmt::Clear()
+{
+	try
+		{
+		RELEASE( m_pSelectExpressionStackList );
+		RELEASE( m_pTableIdentList );
+		RELEASE( m_pOrderByObjList );
+		RELEASE( m_pWhereExpressionStack );
+		RELEASE( m_pGroupByList );
+		RELEASE( m_pHavingExpressionStack );
+		}
+	catch( _com_error &e )
+		{
+		MessageBox( NULL, e.ErrorMessage(), e.Source(), MB_OK );
+		}
+}	
+
+
+
+STDMETHODIMP cSelectStmt::InterfaceSupportsErrorInfo(REFIID riid)
+{
+	static const IID* arr[] = 
+	{
+		&IID_ISelectStmt
+	};
+	for (int i=0; i < sizeof(arr) / sizeof(arr[0]); i++)
+	{
+		if (InlineIsEqualGUID(*arr[i],riid))
+			return S_OK;
+	}
+	return S_FALSE;
+}
+
+
+void cSelectStmt::InitializeFromParseTree( CParseTree *pTree )
+{
+	CSQLNode *pSelectClause = pTree->GetObjectNameForName( "SelectClause" );
+	if ( cAtlObjectConverter::NodeToExpressionStackList( pSelectClause, m_pSelectExpressionStackList ) == false )
+		return;
+
+	CSQLNode *pDistinct = pTree->GetObjectNameForName( "Distinct" );
+	if ( pDistinct )
+		{
+		ASSERT( pDistinct->m_NodeType == NodeType_Distinct );
+		m_fDistinct = true;
+		}
+	else
+		m_fDistinct = false;
+
+	CSQLNode *pTableIdent = pTree->GetObjectNameForName( "FromClause" );
+	cAtlObjectConverter::NodeToTableIdentifierList( pTableIdent, m_pTableIdentList );
+
+	CSQLNode *pWhereClause = pTree->GetObjectNameForName( "WhereClause" );
+	cAtlObjectConverter::NodeToExpressionStack( pWhereClause, m_pWhereExpressionStack );
+
+	CSQLNode *pGroupByClause = pTree->GetObjectNameForName( "GroupByClause" );
+	cAtlObjectConverter::NodeToColumnIdentifierList( pGroupByClause, m_pGroupByList );
+
+	CSQLNode *pHavingClause = pTree->GetObjectNameForName( "HavingClause" );
+	cAtlObjectConverter::NodeToExpressionStack( pHavingClause, m_pHavingExpressionStack );
+
+
+	CSQLNode *pOrderClause = pTree->GetObjectNameForName( "OrderClause" );
+	cAtlObjectConverter::NodeToOrderByList( pOrderClause, m_pOrderByObjList );
+
+}
+
+
+STDMETHODIMP cSelectStmt::get_Distinct(BOOL *pVal)
+{
+	// TODO: Add your implementation code here
+	if ( m_fDistinct == true )
+		*pVal = VARIANT_TRUE;
+	else
+		*pVal = VARIANT_FALSE;
+	return S_OK;
+}
+
+STDMETHODIMP cSelectStmt::get_TableIdentList(ITableIdentList **pVal)
+{
+	// TODO: Add your implementation code here
+	*pVal = m_pTableIdentList;
+	(*pVal)->AddRef();
+	return S_OK;
+}
+
+
+//DEL STDMETHODIMP cSelectStmt::get_ColumnIdentList(IColumnIdentList **pVal)
+//DEL {
+//DEL 	// TODO: Add your implementation code here
+//DEL 	if ( m_pColumnIdentList != NULL )
+//DEL 		;
+//DEL 	else
+//DEL 		{
+//DEL 		CComObject<cColumnIdentList>::CreateInstance( &m_pColumnIdentList );
+//DEL 		m_pColumnIdentList->Initialize( m_pStatement->GetColumnIdentifierList() );
+//DEL 		m_pColumnIdentList->AddRef();
+//DEL 		}
+//DEL //	m_pTableIdentList->QueryInterface( pVal );
+//DEL 	*pVal = m_pColumnIdentList;
+//DEL 	(*pVal)->AddRef();
+//DEL 	return S_OK;
+//DEL }
+
+STDMETHODIMP cSelectStmt::get_OrderByObjList(IOrderByObjList **pVal)
+{
+	*pVal = m_pOrderByObjList;
+	(*pVal)->AddRef();
+	return S_OK;
+}
+
+STDMETHODIMP cSelectStmt::get_WhereExpressionStack(IGenericStack **pVal)
+{
+	*pVal = m_pWhereExpressionStack;
+	(*pVal)->AddRef();
+	return S_OK;
+}
+
+STDMETHODIMP cSelectStmt::get_SelectExpressionList(IGenericStackList **pVal)
+{
+	// TODO: Add your implementation code here
+	*pVal = m_pSelectExpressionStackList;
+	(*pVal)->AddRef();
+	return S_OK;
+}
+
+STDMETHODIMP cSelectStmt::get_HavingExpressionStack(IGenericStack **pVal)
+{
+	*pVal = m_pHavingExpressionStack;
+	(*pVal)->AddRef();
+	return S_OK;
+}
+
+STDMETHODIMP cSelectStmt::get_GroupByObjList(IColumnIdentList **pVal)
+{
+	// TODO: Add your implementation code here
+  	*pVal = m_pGroupByList;
+	(*pVal)->AddRef();
+	return S_OK;
+}

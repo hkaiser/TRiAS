@@ -1,0 +1,24 @@
+HKCR
+{
+	TRiAS.EnumObjektGeometrie.1 = s 'EnumObjektGeometrie Class'
+	{
+		CLSID = s '{E8579C71-D21F-11D2-9BBB-144020524153}'
+	}
+	TRiAS.EnumObjektGeometrie = s 'EnumObjektGeometrie Class'
+	{
+		CLSID = s '{E8579C71-D21F-11D2-9BBB-144020524153}'
+		CurVer = s 'TRiAS.EnumObjektGeometrie.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {E8579C71-D21F-11D2-9BBB-144020524153} = s 'EnumObjektGeometrie Class'
+		{
+			ProgID = s 'TRiAS.EnumObjektGeometrie.1'
+			VersionIndependentProgID = s 'TRiAS.EnumObjektGeometrie'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

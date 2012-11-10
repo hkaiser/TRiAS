@@ -1,0 +1,1142 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+
+<html>
+
+
+<head>
+	<title>Fermi Physics Class Libraries Module: SIunits</title>
+</head>
+
+
+<style type="text/css">
+<!--
+
+blockquote {
+  text-align: justify;
+}
+
+body {
+  background: lightyellow;
+  link: darkgreen;
+  vlink: purple;
+  }
+
+h3 {
+   margin-top: 8px;
+ }
+
+hr {
+  align: center;
+  width: 60%;
+}
+
+ol, ul {
+  margin-right: 25px;
+}
+
+samp {
+  color: darkblue;
+}
+
+-->
+</style>
+
+<body>
+
+<center>
+<h1>ZOOM <img src="http://www.fnal.gov/docs/working-groups/fpcltf/icons/
+particle_coll_bar_463_grey.gif" align="center"> ZOOM</h1>
+
+<font color=red>
+<h1>SIunits</h1>
+</font>
+</center>
+
+
+<p><hr><!- ------------------------------------------------------------>
+<ul>
+<em>
+
+<font color=darkblue>
+<p><li>
+  "Ye shall do no unrighteousness in judgment,
+  in measures of length,
+  of weight,
+  or of quantity."
+</font>
+<br><span style="margin-left: 50%">- Leviticus 19:35</span>
+
+<font color=darkblue>
+<p><li>
+  "There is no certainty in science
+  where one of the mathematical sciences cannot be applied,
+  or which are not in relation with these mathematics."
+</font>
+<br><span style="margin-left: 50%">- Leonardo da Vinci</span>
+
+<font color=darkblue>
+<p><li>
+  "In carrying out any calculation,
+  always remember to attach the proper units to the final result,
+  for the result is meaningless without this....
+  One way to spot an erroneous equation
+  is to check the dimensions of all its terms...."
+</font>
+<br><span style="margin-left: 50%">- Halliday and Resnick</span>
+
+</em>
+</ul>
+
+
+<p><hr><!- ------------------------------------------------------------>
+<h2>Contents</h2>
+
+
+<ul>
+<font color=darkblue>
+<li><a href="#ovr">Overview</a>
+
+<li>Basic Information
+
+<ul>
+  <li><a href="#obp">Obtaining the Package</a>
+  <li><a href="#utp">Using the Package</a>
+  <li><a href="#vbu">Variables, Base Dimensions, and Base Units</a>
+  <li><a href="#wdq">Working With Dimensioned Quantities</a>
+  <li><a href="#phc">Physical Constants</a>
+  <li><a href="#div">Displaying Dimensioned Quantities</a>
+</ul>
+<li>Advanced Features
+<ul>
+  <li><a href="#ptp">Power-of-Ten Prefixes</a>
+  <li><a href="#spr">Powers and Roots</a>
+  <li><a href="#sem">Selecting a Model</a>
+  <li><a href="#csd">Customized Dimensions</a>
+  <li><a href="#ani">Abbreviations and Namespace Issues</a>
+  <li><a href="#poe">Properties of Elements</a>
+  <li><a href="#idi">Interpreting Diagnostics</a>
+</ul>
+<li><a href="#glo">Glossary</a>
+
+</font>
+</ul>
+
+
+<p><hr><!- ------------------------------------------------------------>
+<a name="glo"></a>
+<h2>Overview</h2>
+
+
+The <var>SIunits</var> package
+provides a means of expressing dimensioned quantities,
+while checking that expressions combining such dimensioned quantities
+do so correctly.
+As is the case for C++ type-checking,
+this dimension-checking is done at compile-time,
+and incurs no runtime cost
+in execution speed or additional memory space per variable used.
+
+<p>
+The <var>SIunits</var> package provides the following features and benefits:
+
+<ul>
+<p><li>
+  A means of dimension-checking, done by the compiler,
+  in the form of automated type-checking.
+  This provides compile-time diagnostics
+  in case of a detected mismatch in dimensioned quantities.
+  For example, an attempt to sum
+  such incommensurate quantities
+  as Avogadro's number and the speed of light
+  will be diagnosed, causing compilation to fail.
+
+<p><li>
+  A uniform scheme for improving the self-documenting nature of code:
+  If a quantity <var><b>j</b></var>
+  represents, say, current per unit area,
+  it is typically clearer to declare
+
+      <font color=darkblue>
+      <pre>
+        CurrentDensity  j;</pre>
+      </font>
+
+    rather than
+
+      <pre>
+        double  j;</pre>
+
+<p><li>
+  A comprehensive collection of physical constants,
+  as well as definitions and names of units,
+  using nomenclature that adheres
+  to Syst&egrave;me Internationale standards for units and names.
+</ul>
+
+The importance of dimension-checking,
+and some basics about the <b>SIunits</b> package,
+are discussed in
+  <a href="http://fnalpubs.fnal.gov/archive/1998/conf/Conf-98-328.ps">
+    <i>Introduction to the SI Library of Unit-Based Computation</i></a>.
+
+<p>
+This level of dimension-checking
+<b>at no runtime cost</b>
+is made possible via application of the
+sophisticated template mechanism available in standard C++.
+A discussion of the techniques employed to achieve this is forthcoming.
+
+<blockquote>
+On compilers that are not quite up to standard in treatment of templates,
+including at present VC++ 5.0,
+the <var>SIunits</var> package provides code compatibility
+but not dimension-checking.
+That is, correct code written on an ANSI-compliant platform,
+making correct use of the dimensioned types and physical constants
+in the <var>SIunits</var> package,
+will still compile and run properly on these not-yet-standard platforms.
+However,
+<font color=red>compilation on a non-standard platform
+will not check for dimensionally incorrect operations</font>.
+It is recommended that code be compiled at some point on a compliant platform,
+to check for dimensionally incorrect expressions.
+</blockquote>
+
+<p>
+This web page presents many practical aspects of using <var>SIunits</var>.
+
+
+<p><hr><!- ------------------------------------------------------------>
+<h2>Basic Information</h2>
+
+<a name="obp"></a>
+<h3>Obtaining the Package</h3>
+
+<p>
+ZOOM's <var>SIunits</var> packages is in FermiTools,
+and the best way to obtain the
+sources is via the web page at
+<a href="http://www.fnal.gov/fermitools">www.fnal.gov/fermitools</a>.
+Walk the link to the <var>SIunits</var> abstract,
+and from there to obtain the software,
+preferably as a tar file.
+<p>
+The package can be built under any ANSI standard C++ compiler.
+Alternatively,
+a version of the package without strong dimension-checking
+can be built for non-compliant compilers
+that have difficulty handling the template features
+used by the normal package.
+<p>
+The package after building includes header files and libraries
+for each of five "<a href="#sem">models</a>"
+One of these models, for example,
+encompasses the Standard International values,
+while another provides a system in which
+<i>c&nbsp;=&nbsp;hBar&nbsp;=&nbsp;1</i>.
+Users select the model according to their needs and preferences.
+
+
+<a name="utp"></a>
+<h3>Using the Package</h3>
+
+<p>
+A user's code accesses identifiers in the basic <var>SIunits</var> package
+via the following statements:
+
+  <font color=darkblue>
+  <pre>
+  #include "SIunits/stdModel.h" // (or whichever model is desired)
+  using namespace si;</pre>
+  </font>
+
+<p>
+The package largely uses self-explanatory names
+for its units of measure
+(<i>e.g.</i>, <samp>meter</samp>),
+for its constants
+(<i>e.g.</i>, <samp>lightspeed</samp>s),
+and for its types
+(<i>e.g.</i>, <samp>Temperature</samp>).
+In addition, the user may optionally enable use
+of standard short abbreviations
+(such as <samp>m</samp> and <samp>c</samp>)
+for units and constants:
+
+  <font color=darkblue>
+  <pre>
+  using namespace si::abbreviations;</pre>
+  </font>
+
+<p>
+The complete list of units and constants,
+together with their abbreviations,
+may be viewed in the package's internal data file
+<a href="../SIunits/consts.dat"><u>consts.dat</u></a>.
+The full collection of available type names for dimensions
+is presented in
+<a href="../SIunits/dims.dat"><u>dims.dat</u></a>.
+In brief, however, the following naming conventions hold:
+
+<ul>
+<p><li>
+  Following Syst&egrave;me Internationale conventions,
+  all units' names are in the singular
+  (<i>e.g.</i>, <samp>joule</samp>
+  rather than <i>joules</i>).
+<p><li>
+  Unabbreviated names of both units and constants
+  are primarily in lower case.
+<p><li>
+  Abbreviated names may be lower case
+  (<i>e.g.</i>, <samp>s</samp> [for <samp>second</samp>]),
+  upper case
+  (<i>e.g.</i>, <samp>K</samp></font> [for <samp>kelvin</samp>]),
+  or mixed case
+  (<i>e.g.</i>, <samp>GeV</samp> [for <samp>gigaelectronvolt</samp>]),
+  also generally following established conventions.
+<p><li>
+  Greek letters are spelled out,
+  and names conventionally written using a subscript
+  contain an underscore as a separator
+  (<i>e.g.</i>, <samp>mu_0</samp> [permeability of free space]).
+<p><li>
+  Names of types (dimensions) begin with a capital letter.
+  Remaining letters are in lower case,
+  except that a name formed by concatenating two (or more) words
+  capitalizes each word within the name
+  (<i>e.g.</i>, <samp>AngularVelocity</samp>).
+  Type names are never abbreviated.
+</ul>
+
+<a name="vbu"></a>
+<h3>Variables, Base Dimensions, and Base Units</h3>
+
+<p>
+Variables are declared using the dimensioned types, as in
+
+  <font color=darkblue>
+  <pre>
+  Length  l;
+  Speed   v;</pre>
+  </font>
+
+The set of seven base dimensions defined by Syst&egrave;me Internationale
+is found in
+<a href="../SIunits/dims.dat"><u>dims.dat</u></a>
+under the heading <em>Base Dimensions</em>.
+
+<p>
+The value of any variable may be expressed in terms of any of the
+units of measure
+given in
+<a href="../SIunits/consts.dat"><u>consts.dat</u></a>.  For example:
+For example, the value of a variable whose dimension
+matches one of the base dimensions
+(mass, length, time, current, temperature, <i>etc.</i>)
+may be expressed in terms of the corresponding base unit, as in:
+
+  <font color=darkblue>
+  <pre>
+  Mass  mChamber( 112.5 * kilogram );
+  Time  tHalf   ( 3 * second );</pre>
+  </font>
+
+<p>
+Use of non-base units is supported,
+as is use of derived (non-base) dimensions:
+
+  <font color=darkblue>
+  <pre>
+  Length  l( 1.6 * micron ); // a non-basic unit of measure
+  Speed   v( 60.0 * mph );   // a derived dimension</pre>
+  </font>
+
+<p>
+You may also form quantities
+involving any of the provided <a href="#phc">physical constants</a>
+and/or combinations of these constants and various units of measure.
+For example:
+
+  <font color=darkblue>
+  <pre>
+  Mass    effectiveMass( 1.05 * m_e    ); // m_e is electronrestmass
+  Speed   fast( 10000 * meter / second ); // not so fast compared to c!
+  Scalar  lincoln( 4 * score + 7       ); // a dimensionless quantity
+  Time    t                             ; // implicitly initialized to 0</pre>
+  </font>
+
+If a user accidentally attempts to initialize a variable
+with a value of an incommensurate dimension,
+a compile-time diagnostic will result
+(<font color=red>except</font>, as pointed out above,
+<font color=red>on a non-standard platform</font>).
+
+
+<a name="wdq"></a>
+<h3>Working With Dimensioned Quantities</h3>
+
+<p>
+The following operations on dimensioned quantities are provided:
+<ul>
+<p><li>
+  Copying (<i>e.g.</i>, via assignment, parameter passage, <i>etc.</i>)
+  of a quantity of some dimensions
+  to another quantity
+  <em>of matching dimensions</em>.
+  For example,
+
+  <font color=darkblue>
+  <pre>
+  Velocity  v( lightspeed ); // copying
+  v = v / 2;                 // assignment</pre>
+  </font>
+
+<p><li>
+  Addition (via the <samp>+</samp> or <samp>+=</samp> operators)
+  and subtraction (via the <samp>-</samp> or <samp>-=</samp> operators)
+  <em>of quantities with matching dimensions</em>.
+
+  <ul>
+  <li>
+    Dimensions match
+    even if the quantities are or were originally expressed
+    in terms of different units of measure.
+
+  <li>
+    The result of addition or subtraction
+    has the same dimensions as the quantities being combined.
+
+  </ul>
+
+  For example:
+
+  <font color=darkblue>
+  <pre>
+  Length  len1( 1.2 * meter );
+  Length  len2( 4.1 * foot  );
+  Length  len3( len2 - len1 ); // fine
+  len1 += 3.5 * centimeter;</pre>
+  </font>
+
+<p><li>
+  Multiplication (via the <samp>*</samp> operator)
+  and division (via the <samp>/</samp> operator)
+  of quantities with arbitrary dimensions.
+  <ul>
+  <li>
+    The result of multiplication (division) has dimension
+    that is the product (quotient)
+    of the dimensions of the quantities being combined.
+
+  <li>
+    If you store this result,
+    it must be copied to a dimensioned quantity
+    that matches those resulting dimensions.
+
+  <li>
+    Either operand may be a scalar quantity.
+
+  <li>
+    Intermediate results may be formed
+    even if their dimensions do not match those of any named type.
+    (As long as the final result has the proper dimensions,
+    the code is physically meaningful.
+    See <a href="#dvc">Customized Dimensions</a>
+    for further details.)
+
+
+  </ul>
+
+    For example:
+
+  <font color=darkblue>
+  <pre>
+  Time       tim( .1 * second );
+  Frequency  frq( 1.5 / tim   );
+
+  Length  len( 1.2 * meter );
+  Speed   spd( len / tim   );
+
+  Acceleration  acc( len / tim ); // ERROR: Acceleration is not l/t.</pre>
+  </font>
+
+<p><li>
+  Multiplication (via the <samp>*=</samp> operator)
+  and division (via the <samp>/=</samp> operator)
+  of a dimensioned quantity by a scalar right operand.
+  The result of such an operation has dimensions
+  identical to the dimensions of the left operand.
+
+<p><li>
+  Square roots (via <samp>sqrt(</samp><i>dimensionedQuantity</i><samp>)</samp>),
+  squares (via <samp>sqr(</samp><i>dimensionedQuantity</i><samp>)</samp>),
+  and other <a href="#spr">powers and roots</a>
+  of quantities of arbitrary dimensions.
+  For example:
+
+  <font color=darkblue>
+  <pre>
+  Energy    e1( 4.5 * joule );
+  Mass      m1( 1.0 * gram  );
+  Velocity  v1( sqrt(e1/m1) );</pre>
+  </font>
+
+<p><li>
+  A method <samp>measuredIn(</samp><i>unitOfMeasure</i><samp>)</samp>
+  that returns an ordinary <samp>double</samp>
+  equivalent to the dimensioned quantity measured in the units specified.
+
+  <font color=darkblue>
+  <pre>
+  Time    t    ( 1500000 * second );
+  double  tDays( tim1.measuredIn(day) );
+  double  weird( lightspeed.measuredIn(furlong/fortnight) );</pre>
+  </font>
+
+<p><li>
+  A method <samp>pure()</samp>
+  that returns an ordinary <samp>double</samp>
+  containing the
+  value of the dimensioned quantity
+  in whatever units are basic to the model used.
+  For example, in the standard model,
+  this method would provide a length in <samp>meter</samp>s.
+  See <a href="#sem">Selecting a Model</a>.
+</ul>
+
+All the above operations are fully <samp>inline</samp>d,
+so that adding two <samp>Length</samp>s
+is precisely equivalent
+(in code generated for runtime execution)
+to adding two <samp>double</samp>s.
+
+<a name="phc"></a>
+<h3>Physical Constants</h3>
+
+<p>
+The mathematical and physical fundamental constants discussed by the 1986
+<a href="http://physics.nist.gov/cuu">CODATA group</a>
+are available via this <var>SIunits</var> package.
+These constants are listed in
+<a href="../SIunits/consts.dat"><u>consts.dat</u></a>
+under the heading <em>CODATA Task Group on Fundamental Constants</em>.
+For example:
+
+  <font color=darkblue>
+  <pre>
+  MagneticDipoleMoment myMu( 3 * protonmagneticmoment );
+  Temperature          icy( triplepoint );
+  Length               holeRadius( 10 * pi * plancklength );</pre>
+  </font>
+
+As discussed above,
+these constants generally have both full names and abbreviations.
+They include:
+<ul compact>
+
+<li>
+  <samp>pi</samp>,
+  <samp>twopi</samp>,
+  <samp>halfpi</samp>,
+  <samp>pi2</samp>,
+  <samp>e</samp>,
+  <samp>gamma</samp>
+<li>
+  <samp>c</samp>,
+  <samp>c2</samp>,
+  <samp>mu_o</samp>,
+  <samp>epsilon_0</samp>
+<li>
+  <samp>G_N</samp>,
+  <samp>G</samp>,
+  <samp>hBar</samp>,
+  <samp>h</samp>
+<li>
+  <samp>ePlus</samp>,
+  <samp>Phi_0</samp>
+    (charge and flux)
+<li>
+  <samp>m_e</samp>,
+  <samp>m_p</samp>,
+  <samp>m_n</samp>,
+  <samp>m_d</samp>,
+  <samp>m_mu</samp>
+    (masses)
+<li>
+  <samp>alpha</samp>,
+  <samp>R_inf</samp> (fine structure and Rydberg constant)
+<li>
+  <samp>N_A</samp>,
+  <samp>k</samp>
+<li>
+  <samp>eV</samp>,
+  <samp>amu</samp>
+<li>
+  <samp>mu_B</samp>,
+  <samp>mu_N</samp> (Bohr and nuclear magneton)
+<li>
+  <samp>m_P</samp>,
+  <samp>l_P</samp>,
+  <samp>t_P</samp>
+    (Planck mass, length, time)
+<li>
+  <samp>r_e</samp>,
+  <samp>a_0</samp>,
+  <samp>sigma_e</samp> (classical and Bohr radius, Thomson cross section)
+<li>
+  <samp>mu_mu</samp>,
+  <samp>mu_P</samp>,
+  <samp>mu_n</samp>,
+  <samp>mu_d</samp> (magnetic moments)
+</ul>
+
+<p>
+In the future,
+as measurements of fundamental constants change
+or new constants are added to the list,
+the maintenance needed to use the changed values
+is just a single change in one place
+in <a href="../SIunits/consts.dat"><u>consts.dat</u></a>.
+The intent is to keep this list comprehensive,
+in particular including those constants
+for which various high energy physics packages have need.
+
+
+<a name="div"></a>
+<h3>Displaying Dimensioned Quantities</h3>
+
+<p>
+Stream output of a dimensioned quantity is available
+via the <samp>&lt;&lt;</samp> operator.
+All such output includes unit information.
+In the standard model, for example,
+a <samp>Length</samp> quantity
+is by default displayed as a number of <samp>meter</samp>s.
+For example,
+
+  <font color=darkblue>
+  <pre>
+  std::cout << (123 * centimeter) << std::endl;</pre>
+  </font>
+
+produces output:
+
+  <pre>
+  1.23 m</pre>
+
+<p>
+The set of default display units is model-dependent;
+for the standard model, this information may be found in
+<a href="../src/std/Model.cc">std/Model.cc</a></font>
+under the heading <em>Install the default display notation ...</em>.
+A user may, however, change these defaults at run time.
+Additionally, a user may install (and later update, if desired)
+similar defaults for dimensions which have no initial defaults.
+The static
+<samp>showAs(</samp><i>unitOfMeasure,&nbsp;itsSymbol</i><samp>)</samp>
+method
+serves both purposes:
+
+  <font color=darkblue>
+  <pre>
+  Length::showAs( inch, "in" );
+  std::cout << (123 * centimeter) << std::endl;</pre>
+  </font>
+
+produces output:
+
+  <pre>
+  48.425197 in</pre>
+
+<p>
+Any dimensioned quantity having a derived dimension
+for which no default unit has been installed
+will be displayed in terms of the default units of the base dimensions.
+A change in the default unit of any base dimension
+will be reflected in the display of any derived dimension
+that does not have its own default unit.
+
+
+<p><hr><!- ------------------------------------------------------------>
+<h2> Advanced Features</h2>
+
+<a name="ptp"></a>
+<h3>Power-of-Ten Prefixes</h3>
+
+<p>
+All prefixes for multiples and submultiples of ten
+specified by Syst&egrave;me Internationale
+are provided in the <var>SIunits</var> package.
+To use a prefix, multiply it by the unit you wish it to modify:
+
+  <font color=darkblue>
+  <pre>
+  std::cout << (123 * deka_ * gram) << std::endl;</pre>
+  </font>
+
+<p>
+The complete list of prefixes is found in
+<a href="../SIunits/consts.dat"><u>consts.dat</u></a>,
+under the headings <em>Standard SI prefixes ...</em>.
+Note, as illustrated above,
+that the name of each prefix
+(and of each abbreviated prefix)
+concludes with an underscore suffix;
+this convention is to suggest
+these symbols' intended usage as prefixes.
+
+<p>
+For users' convenience,
+selected units in common use
+(such as <em>centimeter</em>)
+have predefined names that incorporate the prefix.
+Thus, <samp>centimeter</samp> and <samp>centi_&nbsp*&nbsp;meter</samp>
+are equivalent forms from which users may choose.
+
+
+<a name="spr"></a>
+<h3>Powers and Roots</h3>
+
+<p>
+The <var>SIunits</var> package provides the following operations
+involving powers and roots of dimensioned quantities:
+
+<ul>
+  <li>A function
+    <samp>sqr(</samp><i>dimensionedQuantity</i><samp>)</samp>
+    that returns the square of its argument.
+    Note that the result of this function
+    has dimensions
+    that are themselves the squares of the dimensions of the argument.
+    In this way,
+    the square of a <samp>Length</samp> quantity
+    is an <samp>Area</samp>;
+    the square of a <samp>Scalar</samp> quantity
+    is also a <samp>Scalar</samp>,
+    <i>etc</i>.
+    For example:
+
+  <font color=darkblue>
+  <pre>
+  Area  a( sqr(4 * centimeter) );</pre>
+  </font>
+
+  <li>A function
+    <samp>sqrt(</samp><i>dimensionedQuantity</i><samp>)</samp>
+    that returns the square root of its argument.
+    Note that the result of this function
+    has dimensions
+    that are themselves the square roots of the dimensions of the argument.
+    In this way,
+    the square root of an <samp>Area</samp> quantity
+    is a <samp>Length</samp>;
+    the square root of a <samp>Scalar</samp> quantity
+    is also a <samp>Scalar</samp>,
+    <i>etc</i>.
+    For example:
+
+  <font color=darkblue>
+  <pre>
+  Length  len( sqrt(16 * hectare) );</pre>
+  </font>
+
+    Since the current version of the <var>SIunits</var> package
+    requires that all dimensions have integral powers,
+    the square root of, say, a <samp>Volume</samp>
+    quantity may not be taken.
+
+  <li>A family of functions,
+    <samp>Nth&lt;</samp><i>integralLiteral</i><samp>&gt;::pow(</samp><i>dimensionedQuantity</i><font color=darkblue><samp>)</samp></font>
+    yielding integral powers of the argument.
+    (When the <i>integralLiteral</i> is 2,
+    we have the equivalent of the <samp>sqr()</samp> function described above.)
+    Thus, as shown here,
+    cubing a <samp>Length</samp>
+    yields a <samp>Volume</samp> quantity:
+
+  <font color=darkblue>
+  <pre>
+  Volume  v( Nth<3>::pow(4 * centimeter) );</pre>
+  </font>
+
+
+  <li>A family of functions,
+    <samp>Nth&lt;</samp><i>integralLiteral</i>s<samp>&gt;::root(</samp><i>dimensionedQuantity</i><samp>)</samp>
+    yielding integral roots of the argument.
+    (When the <i>integralLiteral</i> is 2,
+    we have the equivalent of the
+    <samp>sqrt()</samp> function described above.)
+    Thus, as shown here,
+    taking the cube root of a <samp>Volume</samp>
+    yields a <samp>Length</samp> quantity:
+
+  <font color=darkblue>
+  <pre>
+  Length  len( Nth<3>::root(0.027 * cubicMeter) );</pre>
+  </font>
+
+</ul>
+
+
+
+<a name="sem"></a>
+<h3>Selecting a Model</h3>
+
+<p>
+Five models are distributed with the <var>SIunits</var> package.
+Their names and characteristics are presented in the following table:
+
+<p>
+<table border="1" cellspacing="1">
+  <tr align="center" valign="bottom"><!------------------>
+    <th>	Model</th>
+    <th>	Header</th>
+    <th>	Defining Characteristics</th>
+    <th>	Default Units</th>
+
+  <tr align="left" valign="middle">
+    <td align="left">	standard</td>
+    <td align="left">	<samp>"stdModel"</samp></td>
+    <td align="left">	per Syst&egrave;me Internationale
+    </td>
+    <td align="left">	<samp>Length</samp>:&nbsp;<i>m</i>;&nbsp;
+			<samp>Mass</samp>:&nbsp;<i>kg</i>;&nbsp;
+			<samp>Time</samp>:&nbsp;<i>s</i>;&nbsp;
+			<samp>Current</samp>:&nbsp;<i>A</i>;&nbsp;
+			<samp>Temperature</samp>:&nbsp;<i>K</i>;&nbsp;
+			<samp>AmountOfSubstance</samp>:&nbsp;<i>mol</i>;&nbsp;
+			<samp>LuminousIntensity</samp>:&nbsp;<i>cd</i>
+    </td>
+
+  <tr align="left" valign="middle">
+    <td align="left">	relativistic</td>
+    <td align="left">	<samp>"relModel"</samp></td>
+    <td align="left">	1 <i>= c</i>
+    </td>
+    <td align="left">	<samp>Length</samp>,
+    			<samp>Time</samp>:&nbsp;<i>s</i>;&nbsp;			
+			<samp>Mass</samp>:&nbsp;<i>eV</i>;&nbsp;
+			<samp>Current</samp>:&nbsp;<i>A</i>;&nbsp;
+			<samp>Temperature</samp>:&nbsp;<i>K</i>;&nbsp;
+			<samp>AmountOfSubstance</samp>:&nbsp;<i>mol</i>;&nbsp;
+			<samp>LuminousIntensity</samp>:&nbsp;<i>cd</i>
+    </td>
+
+  <tr align="left" valign="middle">
+    <td align="left">	high-energy</td>
+    <td align="left">	<samp>"hepModel"</samp></td>
+    <td align="left">	1<i> = c<br>
+			&nbsp;&nbsp; = Boltzmann const<br>
+			&nbsp;&nbsp; = ePlus</i>
+    </td>
+    <td align="left">	<samp>Length</samp>,
+    			<samp>Time</samp>:&nbsp;<i>ns</i>;&nbsp;			
+			<samp>Mass</samp>,
+    			<samp>Temperature</samp>:&nbsp;<i>GeV</i>;&nbsp;
+			<samp>Charge</samp>:&nbsp;<i>ePlus</i>;&nbsp;
+			<samp>AmountOfSubstance</samp>:&nbsp;<i>mol</i>;&nbsp;
+			<samp>LuminousIntensity</samp>:&nbsp;<i>cd</i>
+    </td>
+
+  <tr align="left" valign="middle">
+    <td align="left">	quantum</td>
+    <td align="left">	<samp>"qtmModel"</samp></td>
+    <td align="left">	1<i> = c<br>
+			&nbsp;&nbsp; = Boltzmann const<br>
+			&nbsp;&nbsp; = hBar</i>
+    </td>
+    <td align="left">	<samp>Length</samp>,
+    			<samp>Time</samp>:&nbsp;<i>inverse GeV</i>;&nbsp;			
+			<samp>Mass</samp>,
+    			<samp>Temperature</samp>,
+			<samp>Current</samp>:&nbsp;<i>GeV</i>;&nbsp;
+			<samp>AmountOfSubstance</samp>:&nbsp;<i>mol</i>;&nbsp;
+			<samp>LuminousIntensity</samp>:&nbsp;<i>cd</i>
+    </td>
+
+  <tr align="left" valign="middle">
+    <td align="left">	natural</td>
+    <td align="left">	<samp>"natModel"</samp></td>
+    <td align="left">	1<i> = c<br>
+			&nbsp;&nbsp; = Boltzmann const<br>
+			&nbsp;&nbsp; = hBar<br>
+			&nbsp;&nbsp; = grav const</i>
+    </td>
+    <td align="left">	<samp>Length</samp>,
+			<samp>Mass</samp>,
+			<samp>Time</samp>,
+			<samp>Current</samp>,
+			<samp>Temperature</samp>:&nbsp;1;&nbsp;
+			<samp>AmountOfSubstance</samp>:&nbsp;<i>mol</i>;&nbsp;
+			<samp>LuminousIntensity</samp>:&nbsp;<i>cd</i>
+    </td>
+</table>
+
+<p>
+A user's choice of model affects program development in two ways:
+
+<ol>
+<li> Internally, as previously illustrated,
+  the program must <samp>#include</samp> the header
+  corresponding to the desired model.
+<li> Externally,
+  the compiled program must be linked
+  with the library corresponding to the same model.
+</ol>
+
+<p>
+The primary advantage of selecting one model over another
+lies in the assumptions each makes
+and, in consequence, the operations each permits.
+For example,
+compilation under the standard model does not permit
+addition of
+<samp>Length</tt></samp>
+and <samp>Time</tt></samp> quantities.
+To be valid,
+such a summation requires the assumption
+that the speed of light is unity;
+this assumption is built into each of the other models
+(as described in the table above),
+and so compilation with any of these other models
+will permit this sum without complaint.
+
+<p>
+It is important to note
+that these models are designed
+to permit a certain equivalence of programs.
+That is,
+any program compiled and linked as described above for a given model
+will also compile and link
+with any model subsequently listed in the above table,
+and will produce comparable results.
+This is because each model's defining characteristics
+are compatible with the characteristics of each subsequent model.
+
+<p>
+Only to the extent that a program performs
+model-specific calculations
+(including use of <samp>pure()</samp>)
+will numerical results be affected by the choice of model.
+Any other differences are largely cosmetic:
+default display units differ from model to model,
+but judicious use of the
+<samp>displayAs()</samp> function
+can compensate for these, if desired.
+
+
+<a name="csd"></a>
+<h3>Customized Dimensions</h3>
+
+<p>
+A user who wishes to use a derived dimension
+not already explictly named in
+<a href="../SIunits/dims.dat"><u>dims.dat</u></a>
+may define and employ a name for the desired dimension:
+
+  <font color=darkblue>
+  <pre>
+  CustomDimension( HyperVolume, 4, 0, 0, 0, 0, 0, 0 );</pre>
+  </font>
+
+The numbers in the above
+<samp>CustomDimension()</samp> definition
+give the respective powers of the seven base dimensions
+that are used to identify a derived dimension.
+Here,
+<samp>HyperVolume</samp> dimension was defined
+as the fourth power of a <samp>Length</samp> dimension.
+
+<p>
+Once defined,
+the new dimension may be used
+wherever a type name may appear,
+typically to define a variable of that type:
+
+  <font color=darkblue>
+  <pre>
+  HyperVolume  unitTesseract( meter * meter * meter * meter );</pre>
+  </font>
+
+
+<a name="ani"></a>
+<h3>Abbreviations and Namespace Issues</h3>
+
+<p>
+As mentioned earlier,
+a user of <var>SIunits</var> may elect to use abbreviations
+provided by the package
+(such as <samp>m</samp> for <samp>meter</samp>
+and <samp>c</samp> for <samp>lightspeed</samp>):
+
+  <font color=darkblue>
+  <pre>
+  #include "SIunits/stdModel.h" // (or whichever model is desired)
+  using namespace si;
+  using namespace si::abbreviations;</pre>
+  </font>
+
+However, the user code may wish
+to have a local integer variable <samp>m</samp>.
+This is not as much of an inconvenience as it might first appear.
+
+<p>
+The C++ scoping mechanism specifies
+that if you define <samp>m</samp> locally
+it will hide the globally available <samp>m</samp>.
+Also,
+the C++ namespace mechanism allows you
+to selectively specify the namespace for a given variable name:
+
+  <font color=darkblue>
+  <pre>
+  using namespace si::abbreviations;
+  using ::m; // use m from the global namespace
+             // rather than si::abbreviations::m</pre>
+  </font>
+
+
+<a name="poe"></a>
+<h3>Properties of Elements</h3>
+
+<p>
+<var>SIunits</var> provides convenient access
+to the atomic number and atomic weight
+of each of the known chemical elements.
+This access is via a separate namespace:
+
+  <font color=darkblue>
+  <pre>
+  using namespace si::elements;</pre>
+  </font>
+
+Thereafter, a user program may refer to an element by its name,
+by its abbreviation, or by its position in the periodic table;
+each of the following are equivalent ways
+of referring to lithium's atomic weight and so produce identical output:
+
+  <font color=darkblue>
+  <pre>
+  cout << lithium.atomicweight << endl;
+  cout << Li.atomicweight << endl;
+  cout << periodictable[3].atomicweight << endl;</pre>
+  </font>
+
+<p>
+The complete list of available element names
+abbreviations, and properties
+is found in <a href="../SIunits/elements.dat"><u>elements.dat</u></a>.
+
+
+<p><hr>
+<a name="idi"></a>
+<h2>Interpreting Diagnostics</h2>
+
+<p>
+A program that contains an error in dimension
+will give rise to a compilation error
+when compiled with an <var>SIunits</var> library.
+Such diagnostics are typically lengthy,
+and frequently employ template syntax, in part,
+to identify the type or types provoking the error.
+
+<p>
+In such cases,
+we recommend to pay particular attention
+to the numbers found within the angle brackets
+denoting a template's arguments.
+These numbers will occur in groups of seven,
+and represent the contribution of each of the seven base dimensions
+to the type involved.
+For example, <samp><</samp>...<samp>,2,1,-2,0,0,0,0></samp>
+denotes the <samp>Energy</samp> type,
+since <samp>Energy</samp> is defined as a
+<samp>Length</samp>&sup2;&nbsp;<samp>Mass</samp>&nbsp;per&nbsp;<samp>Time</samp>&sup2;.
+
+<p>
+Please refer to
+<a href="../SIunits/dims.dat"><u>dims.dat</u></a>
+for additional details.
+
+
+<p><hr>
+<a name="glo"></a>
+<h2>Glossary <font size=-1>(in alphabetical order)</font></h2>
+
+<dl>
+
+<p><dt>
+  <b>Base dimension</b>:
+<dd>
+  Any of the following seven dimensions
+  specified by Syst&egrave;me Internationale:
+  length,
+  mass,
+  time,
+  temperature,
+  current,
+  amount of substance,
+  luminous intensity.
+
+<p><dt>
+   <b>Derived dimension</b>:
+<dd>
+  A dimension that results
+  from a product or quotient of two or more base dimensions.
+  "Derived" is the nomenclature specified by Syst&egrave;me Internationale.
+
+<p><dt>
+  <b>Dimension</b>:
+<dd>
+  A measurable or calculable physical property, <i>e.g.</i>, energy.
+  (Syst&egrave;me Internationale uses the term "quantity" for this concept.)
+
+<p><dt>
+  <b>Dimensioned quantity</b>:
+<dd>
+  A numeric value together with its (implicit or explicit) units.
+
+<p><dt>
+  <b>Model</b>:
+<dd>
+  Any of the following five sets of header/library pairs
+  provided by this package:
+    standard,
+    relativistic,
+    high-energy,
+    quantum,
+    natural.
+  Each model makes different, but internally self-consistent,
+  assumptions about the universe
+  and so permit different levels of support
+  for mixed-dimension computation.
+  Details of each model are provided in the <a href="#sem">table</a> above.
+
+</dl>
+
+
+
+<p><center>
+<img src="http://www.fnal.gov/docs/working-groups/fpcltf/icons/bar.gif">
+</center>
+
+<p><center>
+<a href="http://www.fnal.gov/docs/working-groups/fpcltf/fpcltf.html">
+ZOOM Home Page</a>
+-
+<a href="http://www.fnal.gov/faw/">
+Fermilab at Work</a>
+-
+<a href="http://www.fnal.gov/">
+Fermilab Home</a>
+</center>
+
+<p><hr>
+<address><a href="mailto:wb@fnal.gov">Walter Brown</a></address>
+Last modified: Feb. 8, 1999
+
+</body>
+
+
+</html>

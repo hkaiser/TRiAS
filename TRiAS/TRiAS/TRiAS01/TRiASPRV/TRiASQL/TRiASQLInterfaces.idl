@@ -1,0 +1,530 @@
+// $Header: $
+// Copyright© 1999-2001 TRiAS GmbH Potsdam, All rights reserved
+// Created: 10.05.2001 08:16:09 
+//
+// @doc
+// @module TRiASQLInterfaces.idl | Definition of the TRiASQL interfaces
+
+#if !defined(_TRIASQLINTERFACES_IDL__42722AAF_FCA7_49E1_A705_25C707A6A908__INCLUDED_)
+#define _TRIASQLINTERFACES_IDL__42722AAF_FCA7_49E1_A705_25C707A6A908__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+
+// Header include diagnostics
+#if defined(_TRIAS_DBG_HEADER_DIAGNOSTICS)
+#pragma message(__TIME__": include " __FILE__ )
+#endif
+
+typedef [public, v1_enum] enum _tagSTATEMENT_TYPE {
+	STATEMENT_TYPE_UNKNOWN,
+	STATEMENT_TYPE_UPDATE,
+	STATEMENT_TYPE_SELECT,
+	STATEMENT_TYPE_INSERT,
+	STATEMENT_TYPE_DELETE,
+	STATEMENT_TYPE_CREATETABLE,
+	STATEMENT_TYPE_DROPTABLE
+} STATEMENT_TYPE;
+
+typedef [public, v1_enum] enum _tagEXPRESSIONITEM_TYPE {
+	EXPRESSIONITEM_TYPE_UNKNOWN,
+	EXPRESSIONITEM_TYPE_AGGREGATEFUNCTION,
+	EXPRESSIONITEM_TYPE_SELECTSTAR,
+	EXPRESSIONITEM_TYPE_COLUMNIDENT,
+	EXPRESSIONITEM_TYPE_ARITOPERATOR,
+	EXPRESSIONITEM_TYPE_BOOLOPERATOR,
+	EXPRESSIONITEM_TYPE_COMPAREOPERATOR,
+	EXPRESSIONITEM_TYPE_DATEFUNCTION,
+	EXPRESSIONITEM_TYPE_LITERALVALUE,
+	EXPRESSIONITEM_TYPE_MATHFUNCTION,
+	EXPRESSIONITEM_TYPE_NULLEXPRESSION,
+	EXPRESSIONITEM_TYPE_GEOMETRYFUNCTION
+} EXPRESSIONITEM_TYPE;
+
+typedef [public, v1_enum] enum _tagPARSER_DATATYPE {
+	PARSER_DATATYPE_UNKNOWN,
+	PARSER_DATATYPE_INTEGER,
+	PARSER_DATATYPE_STRING,
+	PARSER_DATATYPE_FLOAT
+} PARSER_DATATYPE;
+
+typedef [public, v1_enum] enum _tagAGGREGATE_FUNCTION {
+	AGGREGATE_FUNCTION_UNKNOWN,
+	AGGREGATE_FUNCTION_SUM,
+	AGGREGATE_FUNCTION_COUNT,
+	AGGREGATE_FUNCTION_MIN,
+	AGGREGATE_FUNCTION_MAX,
+	AGGREGATE_FUNCTION_AVG
+} AGGREGATE_FUNCTION;
+
+typedef [public, v1_enum] enum _tagARIT_OPERATOR {
+	ARIT_OPERATOR_UNKNOWN,
+	ARIT_OPERATOR_PLUS,
+	ARIT_OPERATOR_MINUS,
+	ARIT_OPERATOR_DIVIDE,
+	ARIT_OPERATOR_MULTIPLY
+} ARIT_OPERATOR;
+
+typedef [public, v1_enum] enum _tagMATH_FUNCTION {
+	MATH_FUNCTION_UNKNOWN,
+	MATH_FUNCTION_ABS
+} MATH_FUNCTION;
+
+typedef [public, v1_enum] enum _tagBOOL_OPERATOR {
+	BOOL_OPERATOR_UNKNOWN,
+	BOOL_OPERATOR_AND,
+	BOOL_OPERATOR_OR
+} BOOL_OPERATOR;
+
+typedef [public, v1_enum] enum _tagDATE_FUNCTION {
+	DATE_FUNCTION_UNKNOWN,
+	DATE_FUNCTION_GETDATE
+} DATE_FUNCTION;
+
+typedef [public, v1_enum] enum _tagGEOMETRY_FUNCTION {
+	GEOMETRY_FUNCTION_UNKNOWN,
+	GEOMETRY_FUNCTION_ASTEXT,
+	GEOMETRY_FUNCTION_ASBINARY,
+	GEOMETRY_FUNCTION_DIMENSION,
+	GEOMETRY_FUNCTION_GEOMETRYTYPE,
+	GEOMETRY_FUNCTION_SRID,
+	GEOMETRY_FUNCTION_ISEMPTY,
+} GEOMETRY_FUNCTION;
+
+typedef [public, v1_enum] enum _tagCOMPARE_OPERATOR {
+	COMPARE_OPERATOR_UNKNOWN,
+	COMPARE_OPERATOR_EQUALS,
+	COMPARE_OPERATOR_NOT_EQUALS,
+	COMPARE_OPERATOR_MORE,
+	COMPARE_OPERATOR_LESS,
+	COMPARE_OPERATOR_MOREEQUALS,
+	COMPARE_OPERATOR_LESSEQUALS,
+	COMPARE_OPERATOR_IS,
+	COMPARE_OPERATOR_ISNOT,
+	COMPARE_OPERATOR_NOT,
+	COMPARE_OPERATOR_LIKE
+} COMPARE_OPERATOR;
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(62ECE771-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("IExpressionItem Interface"),
+	pointer_default(unique)
+]
+interface IExpressionItem : IDispatch
+{
+	[propget, id(1), helpstring("property AsString")] HRESULT AsString([out, retval] BSTR *pVal);
+	[propget, id(2), helpstring("property ItemType")] HRESULT ItemType([out, retval] EXPRESSIONITEM_TYPE *pVal);
+};
+
+[
+	object,
+	uuid(62ECE772-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("IGenericColl Interface"),
+	pointer_default(unique)
+]
+interface IGenericColl : IDispatch
+{
+	[propget, id(1), helpstring("property Count")] HRESULT Count([out, retval] long *pVal);
+	[propget, id(DISPID_NEWENUM), helpstring("property _NewEnum")] HRESULT _NewEnum([out, retval] LPUNKNOWN *pVal);
+	[propget, id(DISPID_VALUE), helpstring("property Item")] HRESULT Item([in] long varIndex, [out, retval] VARIANT* ppBook);
+};
+
+[
+	object,
+	uuid(62ECE773-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("IGenericStack Interface"),
+	pointer_default(unique)
+]
+interface IGenericStack : IDispatch
+{
+	[propget, id(1), helpstring("property Count")] HRESULT Count([out, retval] long *pVal);
+	[id(2), helpstring("method Push")] HRESULT Push(VARIANT vObject);
+	[id(3), helpstring("method Pop")] HRESULT Pop([out,retval] VARIANT *pvObj);
+	[id(4), helpstring("method Peek")] HRESULT Peek([out,retval] VARIANT *pvObj);
+	[propget, id(5), helpstring("property AsName")] HRESULT AsName([out, retval] BSTR *pVal);
+	[propget, id(DISPID_NEWENUM), helpstring("property _NewEnum")] HRESULT _NewEnum([out, retval] LPUNKNOWN *pVal);
+	[propget, id(DISPID_VALUE), helpstring("property Item")] HRESULT Item([in] long varIndex, [out, retval] VARIANT* ppBook);
+};
+
+[
+	object,
+	uuid(62ECE774-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("IGenericStackList Interface"),
+	pointer_default(unique)
+]
+interface IGenericStackList : IDispatch
+{
+	[propget, id(1), helpstring("property Count")] HRESULT Count([out, retval] long *pVal);
+	[propget, id(DISPID_NEWENUM), helpstring("property _NewEnum")] HRESULT _NewEnum([out, retval] LPUNKNOWN *pVal);
+	[propget, id(DISPID_VALUE), helpstring("property Item")] HRESULT Item([in] long varIndex, [out, retval] VARIANT* ppBook);
+};
+
+[
+	object,
+	uuid(62ECE775-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("ITableIdent Interface"),
+	pointer_default(unique)
+]
+interface ITableIdent : IDispatch
+{
+	[propget, id(1), helpstring("property Name")] HRESULT Name([out, retval] BSTR *pVal);
+	[propget, id(2), helpstring("property Alias")] HRESULT Alias([out, retval] BSTR *pVal);
+};
+
+[
+	object,
+	uuid(62ECE776-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("ITableIdentList Interface"),
+	pointer_default(unique)
+]
+interface ITableIdentList : IDispatch
+{
+	[propget, id(1), helpstring("property Count")] HRESULT Count([out, retval] long *pVal);
+	[propget, id(DISPID_NEWENUM), helpstring("property _NewEnum")] HRESULT _NewEnum([out, retval] LPUNKNOWN *pVal);
+	[propget, id(DISPID_VALUE), helpstring("property Item")] HRESULT Item([in] long varIndex, [out, retval] VARIANT* ppBook);
+};
+
+[
+	object,
+	uuid(62ECE777-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("IColumnIdent Interface"),
+	pointer_default(unique)
+]
+interface IColumnIdent : IExpressionItem
+{
+	[propget, id(3), helpstring("property TableName")] HRESULT TableName([out, retval] BSTR *pVal);
+	[propget, id(4), helpstring("property ColumnName")] HRESULT ColumnName([out, retval] BSTR *pVal);
+};
+
+[
+	object,
+	uuid(62ECE778-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("IColumnIdentList Interface"),
+	pointer_default(unique)
+]
+interface IColumnIdentList : IDispatch
+{
+	[propget, id(1), helpstring("property Count")] HRESULT Count([out, retval] long *pVal);
+	[propget, id(DISPID_NEWENUM), helpstring("property _NewEnum")] HRESULT _NewEnum([out, retval] LPUNKNOWN *pVal);
+	[propget, id(DISPID_VALUE), helpstring("property Item")] HRESULT Item([in] long varIndex, [out, retval] VARIANT* ppBook);
+};
+
+[
+	object,
+	uuid(62ECE779-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("IOrderByObj Interface"),
+	pointer_default(unique)
+]
+interface IOrderByObj : IDispatch
+{
+	[propget, id(1), helpstring("property Asc")] HRESULT Asc([out, retval] VARIANT_BOOL *pVal);
+	[propget, id(2), helpstring("property ColumnIdent")] HRESULT ColumnIdent([out, retval] IColumnIdent **pVal);
+};
+
+[
+	object,
+	uuid(62ECE77A-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("IOrderByObjList Interface"),
+	pointer_default(unique)
+]
+interface IOrderByObjList : IDispatch
+{
+	[propget, id(1), helpstring("property Count")] HRESULT Count([out, retval] long *pVal);
+	[propget, id(DISPID_NEWENUM), helpstring("property _NewEnum")] HRESULT _NewEnum([out, retval] LPUNKNOWN *pVal);
+	[propget, id(DISPID_VALUE), helpstring("property Item")] HRESULT Item([in] long varIndex, [out, retval] VARIANT* ppBook);
+};
+
+[
+	object,
+	uuid(62ECE77B-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("ICreateTableItem Interface"),
+	pointer_default(unique)
+]
+interface ICreateTableItem : IDispatch
+{
+	[propget, id(1), helpstring("property DataLength")] HRESULT DataLength([out, retval] short *pVal);
+	[propget, id(2), helpstring("property ColName")] HRESULT ColName([out, retval] BSTR *pVal);
+	[propget, id(3), helpstring("property DataType")] HRESULT DataType([out, retval] PARSER_DATATYPE *pVal);
+};
+
+[
+	object,
+	uuid(62ECE77C-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("ICreateTableItemList Interface"),
+	pointer_default(unique)
+]
+interface ICreateTableItemList : IDispatch
+{
+	[propget, id(1), helpstring("property Count")] HRESULT Count([out, retval] long *pVal);
+	[propget, id(DISPID_NEWENUM), helpstring("property _NewEnum")] HRESULT _NewEnum([out, retval] LPUNKNOWN *pVal);
+	[propget, id(DISPID_VALUE), helpstring("property Item")] HRESULT Item([in] long varIndex, [out, retval] VARIANT* ppBook);
+};
+
+[
+	object,
+	uuid(62ECE77D-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("ISelectStmt Interface"),
+	pointer_default(unique)
+]
+interface ISelectStmt : IDispatch
+{
+	[propget, id(1), helpstring("property Distinct")] HRESULT Distinct([out, retval] VARIANT_BOOL *pVal);
+	[propget, id(2), helpstring("property TableIdentList")] HRESULT TableIdentList([out, retval] ITableIdentList **pVal);
+	[propget, id(3), helpstring("property OrderByObjList")] HRESULT OrderByObjList([out, retval] IOrderByObjList* *pVal);
+	[propget, id(4), helpstring("property WhereExpressionStack")] HRESULT WhereExpressionStack([out, retval] IGenericStack* *pVal);
+	[propget, id(5), helpstring("property SelectExpressionList")] HRESULT SelectExpressionList([out, retval] IGenericStackList* *pVal);
+	[propget, id(6), helpstring("property HavingExpressionStack")] HRESULT HavingExpressionStack([out, retval] IGenericStack* *pVal);
+	[propget, id(7), helpstring("property GroupByObjList")] HRESULT GroupByObjList([out, retval] IColumnIdentList* *pVal);
+	[propget, id(8), helpstring("property TopRowsPercent")] HRESULT TopRowsPercent([out, retval] VARIANT_BOOL *pVal);
+	[propget, id(9), helpstring("property TopRows")] HRESULT TopRows([out, retval] ULONG *pVal);
+};
+
+[
+	object,
+	uuid(62ECE77E-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("IUpdateItem Interface"),
+	pointer_default(unique)
+]
+interface IUpdateItem : IDispatch
+{
+	[propget, id(1), helpstring("property ColumnIdent")] HRESULT ColumnIdent([out, retval] IColumnIdent* *pVal);
+	[propget, id(2), helpstring("property ExpressionStack")] HRESULT ExpressionStack([out, retval] IGenericStack* *pVal);
+};
+
+[
+	object,
+	uuid(62ECE77F-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("IUpdateItemList Interface"),
+	pointer_default(unique)
+]
+interface IUpdateItemList : IDispatch
+{
+	[propget, id(1), helpstring("property Count")] HRESULT Count([out, retval] long *pVal);
+	[propget, id(DISPID_NEWENUM), helpstring("property _NewEnum")] HRESULT _NewEnum([out, retval] LPUNKNOWN *pVal);
+	[propget, id(DISPID_VALUE), helpstring("property Item")] HRESULT Item([in] long varIndex, [out, retval] VARIANT* ppBook);
+};
+
+[
+	object,
+	uuid(62ECE780-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("IUpdateStmt Interface"),
+	pointer_default(unique)
+]
+interface IUpdateStmt : IDispatch
+{
+	[propget, id(1), helpstring("property TableIdent")] HRESULT TableIdent([out, retval] ITableIdent* *pVal);
+	[propget, id(2), helpstring("property UpdateItemList")] HRESULT UpdateItemList([out, retval] IUpdateItemList* *pVal);
+	[propget, id(3), helpstring("property WhereExpressionStack")] HRESULT WhereExpressionStack([out, retval] IGenericStack* *pVal);
+};
+
+[
+	object,
+	uuid(62ECE781-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("ILiteralValue Interface"),
+	pointer_default(unique)
+]
+interface ILiteralValue : IExpressionItem
+{
+	[propget, id(3), helpstring("property DataType")] HRESULT DataType([out, retval] PARSER_DATATYPE *pVal);
+};
+
+[
+	object,
+	uuid(62ECE782-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("IAggregateFunction Interface"),
+	pointer_default(unique)
+]
+interface IAggregateFunction : IExpressionItem
+{
+	[propget, id(3), helpstring("property AggregateFunction")] HRESULT AggregateFunction([out, retval] AGGREGATE_FUNCTION *pVal);
+};
+
+[
+	object,
+	uuid(62ECE783-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("INullExpression Interface"),
+	pointer_default(unique)
+]
+interface INullExpression : IExpressionItem
+{
+};
+
+[
+	object,
+	uuid(62ECE784-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("ISelectStarExpression Interface"),
+	pointer_default(unique)
+]
+interface ISelectStarExpression : IExpressionItem
+{
+};
+
+[
+	object,
+	uuid(62ECE785-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("IAritOperator Interface"),
+	pointer_default(unique)
+]
+interface IAritOperator : IExpressionItem
+{
+	[propget, id(3), helpstring("property AritOperator")] HRESULT AritOperator([out, retval] ARIT_OPERATOR *pVal);
+};
+
+[
+	object,
+	uuid(62ECE786-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("ICompareOperator Interface"),
+	pointer_default(unique)
+]
+interface ICompareOperator : IExpressionItem
+{
+	[propget, id(3), helpstring("property CompareOperator")] HRESULT CompareOperator([out, retval] COMPARE_OPERATOR *pVal);
+};
+
+[
+	object,
+	uuid(62ECE787-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("IBoolOperator Interface"),
+	pointer_default(unique)
+]
+interface IBoolOperator : IExpressionItem
+{
+	[propget, id(3), helpstring("property BoolOperator")] HRESULT BoolOperator([out, retval] BOOL_OPERATOR *pVal);
+};
+
+[
+	object,
+	uuid(62ECE788-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("IMathFunction Interface"),
+	pointer_default(unique)
+]
+interface IMathFunction : IExpressionItem
+{
+	[propget, id(3), helpstring("property MathFunction")] HRESULT MathFunction([out, retval] MATH_FUNCTION *pVal);
+};
+
+[
+	object,
+	uuid(62ECE789-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("IDateFunction Interface"),
+	pointer_default(unique)
+]
+interface IDateFunction : IExpressionItem
+{
+	[propget, id(3), helpstring("property DateFunction")] HRESULT DateFunction([out, retval] DATE_FUNCTION *pVal);
+};
+
+[
+	object,
+	uuid(E746B729-76E8-448E-8F9A-6DF90460D20E),
+	dual,
+	helpstring("GeometryFunction Interface"),
+	pointer_default(unique)
+]
+interface IGeometryFunction : IExpressionItem
+{
+	[propget, id(3), helpstring("property GeometryFunction")] HRESULT GeometryFunction([out, retval] GEOMETRY_FUNCTION *pVal);
+};
+
+[
+	object,
+	uuid(62ECE78A-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("IInsertStmt Interface"),
+	pointer_default(unique)
+]
+interface IInsertStmt : IDispatch
+{
+	[propget, id(1), helpstring("property TableIdent")] HRESULT TableIdent([out, retval] ITableIdent* *pVal);
+	[propget, id(2), helpstring("property ColumnIdentList")] HRESULT ColumnIdentList([out, retval] IColumnIdentList* *pVal);
+	[propget, id(3), helpstring("property InsertExpressionList")] HRESULT InsertExpressionList([out, retval] IGenericStackList* *pVal);
+};
+
+[
+	object,
+	uuid(62ECE78B-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("IDeleteStmt Interface"),
+	pointer_default(unique)
+]
+interface IDeleteStmt : IDispatch
+{
+	[propget, id(1), helpstring("property TableIdent")] HRESULT TableIdent([out, retval] ITableIdent* *pVal);
+	[propget, id(2), helpstring("property WhereExpressionStack")] HRESULT WhereExpressionStack([out, retval] IGenericStack* *pVal);
+};
+
+[
+	object,
+	uuid(62ECE78C-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("ICreateTableStmt Interface"),
+	pointer_default(unique)
+]
+interface ICreateTableStmt : IDispatch
+{
+	[propget, id(1), helpstring("property TableIdent")] HRESULT TableIdent([out, retval] ITableIdent * *pVal);
+	[propget, id(2), helpstring("property CreateTableItemList")] HRESULT CreateTableItemList([out, retval] ICreateTableItemList* *pVal);
+};
+
+[
+	object,
+	uuid(62ECE78D-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("IDropStmt Interface"),
+	pointer_default(unique)
+]
+interface IDropStmt : IDispatch
+{
+	[propget, id(1), helpstring("property TableIdent")] HRESULT TableIdent([out, retval] ITableIdent* *pVal);
+};
+
+[
+	object,
+	uuid(62ECE78E-EC1D-4680-9A37-B5CD0BF0C1BC),
+	dual,
+	helpstring("IParser Interface"),
+	pointer_default(unique)
+]
+interface IParser : IDispatch
+{
+	[id(1), helpstring("method ParseSQL")] HRESULT ParseSQL([in] BSTR bstrSQL);
+	[propget, id(2), helpstring("property SelectStmt")] HRESULT SelectStmt([out, retval] ISelectStmt **pVal);
+	[propget, id(3), helpstring("property UpdateStmt")] HRESULT UpdateStmt([out, retval] IUpdateStmt **pVal);
+	[propget, id(4), helpstring("property StatementType")] HRESULT StatementType([out, retval] STATEMENT_TYPE *pVal);
+	[propget, id(5), helpstring("property InsertStmt")] HRESULT InsertStmt([out, retval] IInsertStmt **pVal);
+	[propget, id(6), helpstring("property DeleteStmt")] HRESULT DeleteStmt([out, retval] IDeleteStmt **pVal);
+	[propget, id(7), helpstring("property CreateTableStmt")] HRESULT CreateTableStmt([out, retval] ICreateTableStmt **pVal);
+	[propget, id(8), helpstring("property DropTableStmt")] HRESULT DropTableStmt([out, retval] IDropStmt **pVal);
+};
+
+#endif // !defined(_TRIASQLINTERFACES_IDL__42722AAF_FCA7_49E1_A705_25C707A6A908__INCLUDED_)

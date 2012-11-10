@@ -1,0 +1,132 @@
+
+
+
+IMCLTQRED(3IM)         SDSC IMAGE LIBRARY          IMCLTQRED(3IM)
+
+
+
+NAME
+     ImCltQRed - query the red component of a color  in  a  color
+     lookup table
+     ImCltQGreen - query the green component  of  a  color  in  a
+     color lookup table
+     ImCltQBlue - query the blue component of a color in a  color
+     lookup table
+     ImCltSRed - set the red component of  a  color  in  a  color
+     lookup table
+     ImCltSGreen - set the green component of a color in a  color
+     lookup table
+     ImCltSBlue - set the blue component of a color  in  a  color
+     lookup table
+
+SYNOPSIS
+     #include "im.h"
+
+     int ImCltQRed( p )
+          ImCltPtr p ;
+
+     int ImCltQGreen( p )
+          ImCltPtr p ;
+
+     int ImCltQBlue( p )
+          ImCltPtr p ;
+
+     void ImCltSRed( p, r )
+          ImCltPtr p ;
+          int r ;
+
+     void ImCltSGreen( p, g )
+          ImCltPtr p ;
+          int g ;
+
+     void ImCltSBlue( p, b )
+          ImCltPtr p ;
+          int b ;
+
+
+DESCRIPTION
+     These macros set and query color  entry  information  for  a
+     color lookup table.
+
+     ImCltQRed, ImVfbQGreen, and ImVfbQBlue query the red, green,
+     and blue components of a color lookup table entry pointed to
+     by _p.  The specific 8-bit color component is returned as the
+     function's value.
+
+     ImCltSRed, ImVfbSGreen, and ImVfbSBlue set the  red,  green,
+     and blue components of a color lookup table entry pointed to
+     by _p.  _r, _g, and _b arguments are the 8-bit values to use  to
+     set the color component.
+
+
+
+SDSC              Last change: August 19, 1992                  1
+
+
+
+
+
+
+IMCLTQRED(3IM)         SDSC IMAGE LIBRARY          IMCLTQRED(3IM)
+
+
+
+NOTES
+     Color lookup table entry pointers may be obtained using
+
+                Macro                             Meaning
+8          __________________________________________________________________
+          ImCltQPtr( c, i )    Returns a pointer to a particular ImClt entry
+
+          ImCltQFirst( c )     Returns a pointer to the first ImClt entry
+          ImCltQLast( c )      Returns a pointer to the last ImClt entry
+
+          ImCltQNext( c, p )   Returns a pointer to the next ImClt entry
+          ImCltQPrev( c, p )   Returns a pointer to the previous ImClt entry
+
+          ImCltSInc( c, p )    Same as p = ImCltQNext( c, p )
+          ImCltSDec( c, p )    Same as p = ImCltQPrev( c, p )
+
+     where _c is the specific color lookup table, _i  is  an  entry
+     number  (first  entry is entry number 0), and _p is a pointer
+     to a ImClt entry.
+
+     Each of these are C macros.
+
+RETURNS
+     ImCltQRed,  ImVfbQGreen,  and  ImVfbQBlue  each  return   an
+     integer  containing,  in  its  lowest 8 bits, the color com-
+     ponent queried.
+
+     ImCltSRed, ImVfbSGreen, and ImVfbSBlue return nothing.
+
+SEE ALSO
+     ImIntro (3IM), ImErrNo (3IM), ImVfbQBlue  (3IM),  ImVfbQGray
+     (3IM), ImVfbQGreen (3IM), ImVfbQGrey (3IM), ImVfbQRed (3IM),
+     ImVfbSBlue  (3IM),  ImVfbSGray  (3IM),  ImVfbSGreen   (3IM),
+     ImVfbSGrey (3IM), ImVfbSRed (3IM)
+
+AUTHOR
+     Mike Bailey
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+9
+
+
+2                 Last change: August 19, 1992               SDSC
+
+
+

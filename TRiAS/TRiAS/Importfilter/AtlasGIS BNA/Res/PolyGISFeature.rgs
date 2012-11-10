@@ -1,0 +1,61 @@
+HKEY_CURRENT_USER
+{ 
+	NoRemove Software 
+	{ 
+		NoRemove TRiAS 
+		{ 
+			NoRemove TRiAS 
+			{ 
+				NoRemove PolyGISWandler = s 'Konfigurationsdaten'
+				{ 
+					Standard = s 'Standarddefinitionen'
+					{
+						val 'BNAName1' = s 'Strassencode'
+						val 'BNAName2' = s 'Strassenname'
+						val 'BNAID' = s 'GCO-Code Original'
+						val 'Memo' = s 'Bemerkung_Digitalisierung'
+						val 'MemoSuffix' = s '_Kontrolle'
+						val 'BNASuffix' = s '_nr'
+						val 'Ordnung' = s 'Strassenwidmung'
+					}
+					Import = s 'Konfigurationsdaten'
+					{
+						Standarddefinitionen
+						{
+							val 'BNAName1' = s 'Strassencode'
+							val 'BNAName2' = s 'Strassenname'
+							val 'BNAID' = s 'GCO-Code Original'
+							val 'BNASuffix' = s '_nr'
+							val 'Ordnung' = s 'Strassenwidmung'
+							val 'BNAHeader' = s 'Name1/Name2/Id/Layer'
+						}
+						Standardklassen
+						{
+							val 'BNASuffix' = s '_nr'
+						}
+						Memoklassen
+						{
+							val 'Memo' = s 'Bemerkung_Digitalisierung'
+							val 'M1' = s 'Strasse_ohne_Haus_nr'
+							val 'M2' = s 'Uebergang_Strassenschluessel'
+							val 'MemoSuffix' = s '_Kontrolle'
+                            val 'MemoSuffixReplace' = s '_nr'
+							val 'BNASuffix' = s '_nr'
+						}
+						NoRemove StandardDATStruktur = s 'PolyGIS - DAT-Import'
+						{
+							val 'Key01' = s 'GCO-Code Original'
+							val 'Key02' = s 'Strassenname'
+							val 'Key03' = s 'Strassencode'
+						}
+						NoRemove PunktDATStruktur = s 'PolyGIS - DAT-Punkt-Import'
+						{
+							val 'Key01' = s 'GCO-Code Original'
+							val 'Key02' = s 'Hausnummer'
+						}
+					}
+				}
+			} 
+		} 
+	} 
+}

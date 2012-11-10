@@ -1,0 +1,10 @@
+#define EXPORTVISINFODLG            205
+#define IDL_EXPORTVIEWS             206
+#define IDE_EXPORTFILENAME          207
+#define IDB_EXPORTFILESELECT        208
+#define IDR_EXPORTRGB               209
+#define IDR_EXPORTHSB               210
+#define IDCB_DEFAULTVIEW            211
+#define IDCB_OBJVISINFO             212
+#define IDCB_VIEWFEATURES           213
+#define IDB_SELECTALLVIEWS          214

@@ -1,0 +1,18 @@
+HKCR
+{
+	TRiASEx.RegistryHelper.1 = s 'TRiAS Registry Helper 1.0'
+	{
+		CLSID = s '{0796388D-3123-101C-BB62-00AA0018497C}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {0796388D-3123-101C-BB62-00AA0018497C} = s 'TRiAS Registry Helper 1.0'
+		{
+			ProgID = s 'TRiASEx.RegistryHelper.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'both'
+			}
+		}
+	}
+}

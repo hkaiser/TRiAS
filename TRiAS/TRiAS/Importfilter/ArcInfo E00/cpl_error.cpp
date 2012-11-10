@@ -1,0 +1,200 @@
+/**********************************************************************
+ * $Id: cpl_error.cpp,v 1.3 1998/12/15 19:02:27 warmerda Exp $
+ *
+ * Name:     cpl_error.cpp
+ * Project:  CPL - Common Portability Library
+ * Purpose:  Error handling functions.
+ * Author:   Daniel Morissette, danmo@videotron.ca
+ *
+ **********************************************************************
+ * Copyright (c) 1998, Daniel Morissette
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+ * DEALINGS IN THE SOFTWARE.
+ **********************************************************************
+ *
+ * $Log: cpl_error.cpp,v $
+ * Revision 1.3  1998/12/15 19:02:27  warmerda
+ * Avoid use of errno as a variable
+ *
+ * Revision 1.2  1998/12/06 02:52:52  warmerda
+ * Implement assert support
+ *
+ * Revision 1.1  1998/12/03 18:26:02  warmerda
+ * New
+ *
+ **********************************************************************/
+#include "pheader.h"          	// vorübersetzter Header
+
+#include "cpl_error.h"
+
+/* static buffer to store the last error message.  We'll assume that error
+ * messages cannot be longer than 2000 chars... which is quite reasonable
+ * (that's 25 lines of 80 chars!!!)
+ */
+static char gszCPLLastErrMsg[2000] = "";
+static int  gnCPLLastErrNo = 0;
+
+static void (*gpfnCPLErrorHandler)(CPLErr, int, const char *) = NULL;
+
+/**********************************************************************
+ *                          CPLError()
+ *
+ * This function records an error code and displays the error message
+ * to stderr.
+ *
+ * The error code can be accessed later using CPLGetLastErrNo()
+ **********************************************************************/
+void    CPLError(CPLErr eErrClass, int err_no, const char *fmt, ...)
+{
+    va_list args;
+
+    /* Expand the error message 
+     */
+    va_start(args, fmt);
+    vsprintf(gszCPLLastErrMsg, fmt, args);
+    va_end(args);
+
+    /* If the user provided his own error handling function, then call
+     * it, otherwise print the error to stderr and return.
+     */
+    gnCPLLastErrNo = err_no;
+
+// KK000329
+	switch ( eErrClass ) {
+
+		case CE_Fatal :
+		default:
+		{
+			switch ( err_no) {
+			case CPLE_OutOfMemory :
+			default:
+				DEX_Error (RC_ArcTriasTransfer, EC_NOMEMORY);
+				break;
+			}
+		}
+		break;
+
+		case CE_Failure :
+		{
+
+			switch ( err_no) {
+
+			case CPLE_OpenFailed :
+				DEX_Error (RC_ArcTriasTransfer, EC_NOFILE);
+				break;
+
+			case CPLE_IllegalArg :
+				DEX_Error (RC_ArcTriasTransfer, EC_INVADDR);
+				break;
+
+			case CPLE_FileIO :
+				DEX_Error (RC_ArcTriasTransfer, EC_NOMEMORY);
+				break;
+
+			case CPLE_AssertionFailed :
+				DEX_Error (RC_ArcTriasTransfer, EC_INVADDR);
+				break;
+
+			case CPLE_NotSupported :
+			default:
+				DEX_Error (RC_ArcTriasTransfer, EC_NOREAD);
+				break;
+
+			}
+		}
+		break;
+	}
+	
+// KK000329
+
+//    if (gpfnCPLErrorHandler != NULL)
+//    {
+//        gpfnCPLErrorHandler(eErrClass, err_no, gszCPLLastErrMsg);
+  //  }
+  //  else
+  //  {
+  //      fprintf(stderr, "ERROR %d: %s\n", gnCPLLastErrNo, gszCPLLastErrMsg);
+  //  }
+
+ //   if( eErrClass == CE_Fatal )
+ //       abort();
+}
+
+/**********************************************************************
+ *                          CPLErrorReset()
+ *
+ * Erase any traces of previous errors.
+ **********************************************************************/
+void    CPLErrorReset()
+{
+    gnCPLLastErrNo = 0;
+    gszCPLLastErrMsg[0] = '\0';
+}
+
+
+/**********************************************************************
+ *                          CPLGetLastErrorNo()
+ *
+ **********************************************************************/
+int     CPLGetLastErrorNo()
+{
+    return gnCPLLastErrNo;
+}
+
+/**********************************************************************
+ *                          CPLGetLastErrorMsg()
+ *
+ **********************************************************************/
+const char* CPLGetLastErrorMsg()
+{
+    return gszCPLLastErrMsg;
+}
+
+/**********************************************************************
+ *                          CPLSetErrorHandler()
+ *
+ * Allow the library's user to specify his own error handler function.
+ *
+ * A valid error handler is a C function with the following prototype:
+ *
+ *     void MyErrorHandler(int errno, const char *msg)
+ *
+ * Pass NULL to come back to the default behavior.
+ **********************************************************************/
+
+void     CPLSetErrorHandler(void (*pfnErrorHandler)(CPLErr, int, const char *))
+{
+    gpfnCPLErrorHandler = pfnErrorHandler;
+}
+
+/************************************************************************/
+/*                             _CPLAssert()                             */
+/*                                                                      */
+/*      This function is called only when an assertion fails.           */
+/************************************************************************/
+
+void _CPLAssert( const char * pszExpression, const char * pszFile,
+                 int iLine )
+
+{
+    CPLError( CE_Fatal, CPLE_AssertionFailed,
+              "Assertion `%s' failed\n"
+              "in file `%s', line %d\n",
+              pszExpression, pszFile, iLine );
+}

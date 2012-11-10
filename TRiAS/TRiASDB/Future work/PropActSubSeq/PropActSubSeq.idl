@@ -1,0 +1,47 @@
+// @doc
+// @module PropActSubSeq.idl | IDL source for PropActSubSeq.ext
+
+// This file will be processed by the MIDL tool to
+// produce the type library (PropActSubSeq.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "ProgInd2.idl";
+
+[
+	uuid(83728720-01F3-11D3-94CB-0080C786297B),
+	version(1.0),
+	helpstring("PropActSubSeq 1.0 Type Library")
+]
+library PropActSubSeq
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+// der eigentliche TRiAS-Zusatzmodul
+	[
+		uuid(83728721-01F3-11D3-94CB-0080C786297B),
+		helpstring("PropActSubSeq Class")
+	]
+	coclass PropActSubSeq
+	{
+		[default] interface IUnknown;
+	};
+
+	[
+		uuid(B6C6B770-01F5-11D3-94CB-0080C786297B),
+		helpstring("MergeTwoSources Class")
+	]
+	coclass MergeTwoSources
+	{
+		[default] interface IUnknown;
+	};
+	[
+		uuid(8CA870EB-841E-4B58-A7D7-9E91323D61B1),
+		helpstring("DeleteAttributes Class")
+	]
+	coclass DeleteAttributes
+	{
+		[default] interface IUnknown;
+	};
+};

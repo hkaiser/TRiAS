@@ -1,0 +1,44 @@
+HKCR
+{
+	TRiASGM.GDatabase = s 'TRiAS GDO-Database Object'
+	{
+		CLSID = s '{7417A5E7-AED0-11D1-859A-00600875138A}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {7417A5E7-AED0-11D1-859A-00600875138A} = s 'TRiAS GDO-Database Object'
+		{
+			ProgID = s 'TRiASGM.GDatabase'
+			VersionIndependentProgID = s 'TRiASGM.GDatabase'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}
+HKLM 
+{
+	NoRemove Software
+	{
+		NoRemove GDO
+		{
+			ForceRemove TRiASGM
+			{
+				1.0
+				{
+					DefaultExtension = s 'ris'
+					DatabaseClass = s 'TRiASGM.GDatabase'
+					LongName = s 'TRiAS® GDO-Dataserver Version 1.0'
+					NameDescription = s 'TRiAS 2.0 GIS-Datenbank'
+					NameIsDirectory = s '0'
+					NameIsFile = s '1'
+					ReadWrite = s '0'
+					ShortName = s 'TRiAS-GDO'
+					SoureStringDescription
+					SourceStringUsed = s '0'
+				}
+			}
+		}
+	}
+}

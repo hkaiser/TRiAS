@@ -1,0 +1,393 @@
+///////////////////////////////////////////////////////////////////////////////
+// Messages for TRiASDB
+// SourceFile: DBMSG.MC
+
+#if !defined(_DBMSG_H)
+#define _DBMSG_H
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+
+
+//
+//  Values are 32 bit values layed out as follows:
+//
+//   3 3 2 2 2 2 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1
+//   1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
+//  +---+-+-+-----------------------+-------------------------------+
+//  |Sev|C|R|     Facility          |               Code            |
+//  +---+-+-+-----------------------+-------------------------------+
+//
+//  where
+//
+//      Sev - is the severity code
+//
+//          00 - Success
+//          01 - Informational
+//          10 - Warning
+//          11 - Error
+//
+//      C - is the Customer code flag
+//
+//      R - is a reserved bit
+//
+//      Facility - is the facility code
+//
+//      Code - is the facility's status code
+//
+//
+// Define the facility codes
+//
+#define FACILITY_VIEW                    0xF06
+#define FACILITY_PROPERTY                0xF05
+#define FACILITY_PROJECT                 0xF02
+#define FACILITY_OBJECTS                 0xF08
+#define FACILITY_OBJECT                  0xF07
+#define FACILITY_NATIVEDB                0xF00
+#define FACILITY_DBENGINE                0xF01
+#define FACILITY_DATABASE                0xF03
+#define FACILITY_CONNECTION              0xF04
+
+
+//
+// Define the severity codes
+//
+#define STATUS_SEVERITY_WARNING          0x2
+#define STATUS_SEVERITY_SUCCESS          0x0
+#define STATUS_SEVERITY_INFORMATIONAL    0x1
+#define STATUS_SEVERITY_ERROR            0x3
+
+
+//
+// MessageId: TRIASDB_E_DATABASE_NOT_OPENED
+//
+// MessageText:
+//
+//  Datenbank ist nicht geöffnet.
+//
+#define TRIASDB_E_DATABASE_NOT_OPENED    ((HRESULT)0xCF031001L)
+
+
+//
+// MessageId: TRIASDB_E_PROJECT_NOT_OPENED
+//
+// MessageText:
+//
+//  Das Projekt ist nicht geöffnet.
+//
+#define TRIASDB_E_PROJECT_NOT_OPENED     ((HRESULT)0xCF021001L)
+
+
+//
+// MessageId: TRIASDB_E_INVALID_PARAMETER
+//
+// MessageText:
+//
+//  Ungültiger Parameter in Routine '%2'.
+//
+#define TRIASDB_E_INVALID_PARAMETER      ((HRESULT)0xCF011002L)
+
+
+//
+// MessageId: TRIASDB_E_ERROR_NATIVEDB
+//
+// MessageText:
+//
+//  Fehler im unterliegenden Datenbanksystem.
+//
+#define TRIASDB_E_ERROR_NATIVEDB         ((HRESULT)0xCF001003L)
+
+
+//
+// MessageId: TRIASDB_E_COULD_NOT_OPEN
+//
+// MessageText:
+//
+//  Datenbank konnte nicht geöffnet werden.
+//
+#define TRIASDB_E_COULD_NOT_OPEN         ((HRESULT)0xCF001004L)
+
+
+//
+// MessageId: TRIASDB_W_ALREADY_OPENED
+//
+// MessageText:
+//
+//  Die Datenbank ist bereits geöffnet.
+//
+#define TRIASDB_W_ALREADY_OPENED         ((HRESULT)0x4F031005L)
+
+
+//
+// MessageId: TRIASDB_E_NOT_STARTED
+//
+// MessageText:
+//
+//  Das Datenbanksystem wurde nicht initialisiert.
+//
+#define TRIASDB_E_NOT_STARTED            ((HRESULT)0xCF011006L)
+
+
+//
+// MessageId: TRIASDB_E_FILENOTEXISTS
+//
+// MessageText:
+//
+//  Die angegebene Datei existiert nicht.
+//
+#define TRIASDB_E_FILENOTEXISTS          ((HRESULT)0xCF011007L)
+
+
+//
+// MessageId: TRIASDB_S_MUSTOPENASCOPY
+//
+// MessageText:
+//
+//  Die angegebene Datei ist schreibgeschützt und muß als Kopie geöffnet werden.
+//
+#define TRIASDB_S_MUSTOPENASCOPY         ((HRESULT)0x4F011008L)
+
+
+//
+// MessageId: TRIASDB_E_MISSINGPARAMETER
+//
+// MessageText:
+//
+//  Die gewünschte Verbindung zu einer Datenquelle konnte auf Grund fehlender Parameter nicht hergestellt werden.
+//
+#define TRIASDB_E_MISSINGPARAMETER       ((HRESULT)0xCF041009L)
+
+
+//
+// MessageId: TRIASDB_E_NOTAPROJECT
+//
+// MessageText:
+//
+//  Die angegebene Datei ist kein TRiAS Projekt.
+//
+#define TRIASDB_E_NOTAPROJECT            ((HRESULT)0xCF01100AL)
+
+
+//
+// MessageId: TRIASDB_W_NEWERPROJECT
+//
+// MessageText:
+//
+//  Das angegebene TRiAS Projekt hat ein zu neues Format. Das Projekt kann daher nicht geöffnet werden.
+//
+#define TRIASDB_W_NEWERPROJECT           ((HRESULT)0x8F01100BL)
+
+
+//
+// MessageId: TRIASDB_E_ALREADYCONNECTED
+//
+// MessageText:
+//
+//  Die gewünschte Operation ist nicht ausführbar, da bereits eine Datenbank angebunden ist.
+//
+#define TRIASDB_E_ALREADYCONNECTED       ((HRESULT)0xCF04100CL)
+
+
+//
+// MessageId: TRIASDB_E_NOTCONNECTED
+//
+// MessageText:
+//
+//  Die gewünschte Operation ist nicht ausführbar, da keine Datenbank angebunden ist.
+//
+#define TRIASDB_E_NOTCONNECTED           ((HRESULT)0xCF04100DL)
+
+
+//
+// MessageId: TRIASDB_E_PROPERTY_NOT_INITIALIZED
+//
+// MessageText:
+//
+//  Dieses Propertyobjekt ist nicht initialisiert.
+//
+#define TRIASDB_E_PROPERTY_NOT_INITIALIZED ((HRESULT)0xCF05100EL)
+
+
+//
+// MessageId: TRIASDB_E_UNKNOWN_PROPERTY
+//
+// MessageText:
+//
+//  Diese Property (Eigenschaft) ist nicht verfügbar.
+//
+#define TRIASDB_E_UNKNOWN_PROPERTY       ((HRESULT)0xCF05100FL)
+
+
+//
+// MessageId: TRIASDB_E_CANNOTSAVE_AT_THIS_POINT
+//
+// MessageText:
+//
+//  Das Projekt kann zu diesem Zeitpunkt nicht gespeichert werden.
+//
+#define TRIASDB_E_CANNOTSAVE_AT_THIS_POINT ((HRESULT)0xCF01100FL)
+
+
+//
+// MessageId: TRIASDB_E_CSS_NOT_INSTALLED
+//
+// MessageText:
+//
+//  Es wurde kein installiertes Koordinatensystem gefunden. Überprüfen 
+//  und wiederholen Sie gegebenenfalls die Installation von %1.
+//
+#define TRIASDB_E_CSS_NOT_INSTALLED      ((HRESULT)0xCF011010L)
+
+
+//
+// MessageId: TRIASDB_S_MUSTOPENASCOPY_SHAREVIOLATION
+//
+// MessageText:
+//
+//  Auf die angegebene Datei kann auf Grund eines Zugriffskonfliktes nicht zugegriffen werden.
+//  Sie muß als Kopie geöffnet werden.
+//
+#define TRIASDB_S_MUSTOPENASCOPY_SHAREVIOLATION ((HRESULT)0x4F011011L)
+
+
+//
+// MessageId: TRIASDB_E_UNKNOWN_DATASERVER
+//
+// MessageText:
+//
+//  Dieser TRiASDB-Datenserver ist nicht verfügbar.
+//
+#define TRIASDB_E_UNKNOWN_DATASERVER     ((HRESULT)0xCF011012L)
+
+
+//
+// MessageId: TRIASDB_E_OBJECT_NOT_INITIALIZED
+//
+// MessageText:
+//
+//  Dieses COM-Objekt ist nicht initialisiert.
+//
+#define TRIASDB_E_OBJECT_NOT_INITIALIZED ((HRESULT)0xCF011013L)
+
+
+//
+// MessageId: TRIASDB_E_NO_ACTIVE_PROJECT
+//
+// MessageText:
+//
+//  Es existiert kein aktiviertes Projekt in dieser Projekt-Collection.
+//
+#define TRIASDB_E_NO_ACTIVE_PROJECT      ((HRESULT)0xCF021014L)    
+
+
+//
+// MessageId: TRIASDB_E_UNKNOWN_CONNECTION
+//
+// MessageText:
+//
+//  Eine TRiASDB-Datenquelle ist nicht verfügbar.
+//
+#define TRIASDB_E_UNKNOWN_CONNECTION     ((HRESULT)0xCF041015L)
+
+
+//
+// MessageId: TRIASDB_E_UNKNOWN_PROJECT
+//
+// MessageText:
+//
+//  Ein TRiASDB-Projekt ist nicht verfügbar.
+//
+#define TRIASDB_E_UNKNOWN_PROJECT        ((HRESULT)0xCF021016L)
+
+
+//
+// MessageId: TRIASDB_E_UNKNOWN_VIEWITEM
+//
+// MessageText:
+//
+//  Ein TRiASDB-Ansichtseintrag ist nicht verfügbar.
+//
+#define TRIASDB_E_UNKNOWN_VIEWITEM       ((HRESULT)0xCF061017L)
+
+
+//
+// MessageId: TRIASDB_E_UNKNOWN_VIEW
+//
+// MessageText:
+//
+//  Eine TRiASDB-Ansicht ist nicht verfügbar.
+//
+#define TRIASDB_E_UNKNOWN_VIEW           ((HRESULT)0xCF061018L)
+
+
+//
+// MessageId: TRIASDB_W_NEWEROBJECTSCOLLECTION
+//
+// MessageText:
+//
+//  Die einzulesende Objects-Collection hat ein zu neues Format. Die Collection kann daher nicht eingelesen werden.
+//
+#define TRIASDB_W_NEWEROBJECTSCOLLECTION ((HRESULT)0x8F071019L)
+
+
+//
+// MessageId: TRIASDB_W_NEWERCONNECTION
+//
+// MessageText:
+//
+//  Das einzulesende Datenquellen-Objekt hat ein zu neues Format. Die Connection kann daher nicht eingelesen werden.
+//
+#define TRIASDB_W_NEWERCONNECTION        ((HRESULT)0x8F04101AL)
+
+
+//
+// MessageId: TRIASDB_W_NEWERVIEW
+//
+// MessageText:
+//
+//  Das einzulesende Ansichts-Objekt hat ein zu neues Format. Die Ansicht kann daher nicht eingelesen werden.
+//
+#define TRIASDB_W_NEWERVIEW              ((HRESULT)0x8F06101BL)
+
+
+//
+// MessageId: TRIASDB_W_NEWERVIEWITEM
+//
+// MessageText:
+//
+//  Das einzulesende Legendeneintrags-Objekt hat ein zu neues Format. Der Legendeneintrag kann daher nicht eingelesen werden.
+//
+#define TRIASDB_W_NEWERVIEWITEM          ((HRESULT)0x8F06101CL)
+
+
+//
+// MessageId: TRIASDB_E_UNKNOWN_OBJECTS
+//
+// MessageText:
+//
+//  Eine Objects-Objektsammlung ist nicht verfügbar.
+//
+#define TRIASDB_E_UNKNOWN_OBJECTS        ((HRESULT)0xCF08101DL)
+
+
+//
+// MessageId: TRIASDB_W_NOVISINFO
+//
+// MessageText:
+//
+//  Für den Objekttyp ist in dem Legendeneintrag keine Visualisierungsinformation gegeben.
+//
+#define TRIASDB_W_NOVISINFO              ((HRESULT)0x8F06101EL)
+
+
+//
+// MessageId: TRIASDB_W_NOOBJECTS
+//
+// MessageText:
+//
+//  In diesem Legendeneintrag ist der gewünschte Objekttyp nicht vertreten.
+//
+#define TRIASDB_W_NOOBJECTS              ((HRESULT)0x8F06101FL)
+
+#endif // _DBMSG_H

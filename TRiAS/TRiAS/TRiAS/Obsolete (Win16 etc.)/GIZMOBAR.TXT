@@ -1,0 +1,16 @@
+Die erzeugten Events der GizmoBar:
+    - ein normales Button (mit Text) erzeugt den ButtonClick-Event
+    - für jedes andere Button (mit einer Bitmap) kann der erzeugte
+      Event wie folgt erhalten werden
+
+// Gizmobar-Events
+void Window :: Default (Event e) {
+    NakedEvent ne ((NakedEvent &) e);
+    if (ne.Msg () == WM_COMMAND)
+	MenuCommand ((MenuCommandEvt &) e);
+    else
+	EventContext :: Default (e);
+}
+
+    - die Klasse NakedEvent realisiert hierbei nur den Zugriff auf die
+      protected wMsg-Variable der Klasse Event

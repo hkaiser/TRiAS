@@ -1,0 +1,92 @@
+'\"t
+.if t .TH IMPERROR 3IM "August 25, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMPERROR 3IM "August 25, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImPError - print an error message from a virtual frame buffer routine
+.br
+ImQError - query the error message for the current error number
+.br
+ImErrNo - give the error number that came from a virtual frame buffer routine
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+extern int ImErrNo ;
+extern int ImNErr ;
+extern char *ImErrList[ ] ;
+
+void ImPError( str )
+	char *str ;
+
+char *ImQError( )
+.fi
+\fR
+.SH DESCRIPTION
+\fBImPError\fR produces a short message on \fBstderr\fR
+describing the last error encountered during a call to an IM
+package procedure.
+The argument string \fIstr\fR is
+printed first, then a colon and a blank, then the message
+and a new line.
+To be of most use, the argument string
+should include the name of the program or routine that incurred
+the error.
+The error number is taken from the external variable
+\fBImErrNo\fR, which is set when IM errors occur, but not
+cleared when non-erroneous calls are made.
+.LP
+To simplify variant formatting of messages, the vector of
+message strings \fBImErrList\fR is provided;
+\fBImErrNo\fR can be used
+as an index into this table to get the message string without
+the newline.
+\fBImNErr\fR is the number of messages provided
+for in the table; it should be checked because new error
+codes might be added to the system before they are added to
+the table.
+.LP
+\fBImQError\fR may be used to query the error message list and return
+a pointer to the error text associated with the error value of \fBImErrNo\fR.
+.SH EXAMPLE
+\fBImPError\fR should be called when an error condition is detected
+upon return from an IM routine.
+For example:
+.Cb
+ReadFb()
+{
+	ImVfb *srcVfb ;
+ ...
+	srcVfb = ImVfbAlloc( 1280, 1024, IMVFBRGB ) ;
+	if( srcVfb == IMVFBNULL )
+	{
+		ImPError( "ReadFb" ) ;
+		exit( 1 ) ;
+	}
+ ...
+}
+.Ce
+.SH RETURNS
+\fBImPError\fR returns nothing.
+.LP
+\fBImQError\fR returns the character string message for the current value
+of \fBImErrNo\fR, or "Unknown error" if there is no message for the error
+number.
+.SH NOTES
+If \fBImErrNo\fR is \fBIMESYS\fR, indicating a system call error
+occurred, \fBImPError\fR calls \fBperror\fR(3) to print the
+system call's error message instead of \fBIMESYS\fR, and
+\fBImQError\fR returns the error text associated with \fBerrno\fR.
+.SH SEE ALSO
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBerrno\fR (2),
+\fBperror\fR (3)
+.SH AUTHOR
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

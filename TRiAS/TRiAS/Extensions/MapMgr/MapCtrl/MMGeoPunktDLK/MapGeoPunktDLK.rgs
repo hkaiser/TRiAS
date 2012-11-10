@@ -1,0 +1,47 @@
+HKCR
+{
+	TRiAS.MapMgr.Import.GeoPunktDLK.1 = s 'TRiAS - Import von GeoPunkt DLK Hintergrundrasterbildern'
+	{
+		CLSID = s '{DB6D3310-F001-44F0-924A-72BCC2C3CE72}'
+	}
+	TRiAS.MapMgr.Import.GeoPunktDLK = s 'TRiAS - Import von GeoPunkt DLK Hintergrundrasterbildern'
+	{
+		CLSID = s '{DB6D3310-F001-44F0-924A-72BCC2C3CE72}'
+		CurVer = s 'TRiAS.MapMgr.Import.GeoPunktDLK.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {DB6D3310-F001-44F0-924A-72BCC2C3CE72} = s 'TRiAS - Import von GeoPunkt DLK Hintergrundrasterbildern'
+		{
+			ProgID = s 'TRiAS.MapMgr.Import.GeoPunktDLK.1'
+			VersionIndependentProgID = s 'TRiAS.MapMgr.Import.GeoPunktDLK'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}
+HKCU
+{
+	NoRemove Software 
+	{
+		NoRemove TRiAS 
+		{
+			NoRemove TRiAS 
+			{
+				NoRemove Extensions 
+				{
+					NoRemove TRiAS.MapMgr.Import.1
+					{
+						NoRemove ImportEngines
+						{
+							'{DB6D3310-F001-44F0-924A-72BCC2C3CE72}' = s ''
+						}
+					}
+				}
+			}
+		}
+	}
+}

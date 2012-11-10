@@ -1,0 +1,199 @@
+// $Header: $
+// Copyright© 1999-2002 Geopunkt GmbH & Co. KG, NL Potsdam, All rights reserved
+// Created: 02.11.2002 19:06:07 
+//
+// @doc
+// @module PropertySequenceService.idl | IDL source for <i PropertySequenceService>
+// @group In diesem Modul definierte Interfaces
+// @index | INTERFACE
+// @end
+
+#include <oleauto.hh>
+
+///////////////////////////////////////////////////////////////////////////////
+// Service-Objekt für die Instantiierung von PropertySequences
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE | TRIASTLB
+// @interface IPropertySequenceService | Das Interface <i IPropertySequenceService> 
+// dient als Service-Objekt für die Instantiierung von PropertySequences.
+// @base public | DTRiASBaseClass
+// @supby <o PropertySequenceService>
+// @xref <o PropertySequenceService>
+// @group Eigenschaften von <i IPropertySequenceService>
+// @index | IPROPERTYSEQUENCESERVICE & PROPERTY
+// @group Methoden von <i IPropertySequenceService>
+// @index | IPROPERTYSEQUENCESERVICE & METHOD
+// @doc IPROPERTYSEQUENCESERVICE
+[
+	object,
+	uuid(554FC4F9-3C1E-4954-9E67-DD5E424CC76C),
+	dual,
+	helpstring("IPropertySequenceService Interface"),
+	pointer_default(unique)
+]
+interface IPropertySequenceService : IDispatch
+{
+	// @doc IPROPERTYSEQUENCESERVICE | METHOD
+	// @method <o TRiASDataObject> * | IPropertySequenceService | RunActionSequence | Die Methode <om .RunActionSequence>
+	// führt eine Sequenz von Geokomponenten aus einer Resource aus.
+	// @parm Long | hWnd | Der Parameter <p hWnd> gibt das Fensterhandle vor, welches als
+	// Parent für den Assistentendialog verwendet werden soll. Wenn der Parameter <p hWnd> 
+	// nicht gegeben ist, dann wird das zum Zeitpunkt des Aufrufes aktive Fenster als
+	// Parent eingesetzt.
+	// @parm String | bstrRsc | Der Parameter <p bstrRsc> enthält den Namen der Resource, 
+	// aus der der XML- Skript geladen werden soll, der die Beschreibung der auszuführenden
+	// Sequenz enthält. Wenn die resource unter dem vorgegebenen Namen nicht gefunden wird, 
+	// dann wird versucht eine gleichnamige Datei aus dem Verzeichnis zu laden, welches unter 
+	// folgendem Registryeintag eingetragen ist: 'HKCU\Software\TRiAS\TRiAS\Directories\XmlConfigDir'.
+	// @parm String | bstrDesc | Der Parameter <p bstrDesc> enthält die Zeichenkette, die
+	// als Caption des Assistentendialoges verwendet werden soll. Wenn dieser Parameter 
+	// nicht gegeben ist, dann wird das Caption aus dem XML- Skript ausgelesen.
+	// @parm String | bstrSaveAs | Der Parameter <p bstrSaveAs> enthält den Bezeichner, unter dem
+	// die auszuführende Sequenz den Dialogstatus (Nutzereingaben etc.) im aktuellen
+	// <tr> -Projekt ablegt. Beim wiederholten Aufrufen der Sequenz mit diesem Bezeichner wird
+	// versucht werden, die letzten Einstellungen wieder zu laden. 
+	// @parm <o ProgressIndicator> * | pIStatus | Der Parameter <p pIStatus> kann ein Objekt vom
+	// Typ <o ProgressIndicator> enthalten, der dann als Geduldsanzeige für die gesamte
+	// Sequenz verwendet wird. Wenn der Parameter <p pIStatus> nicht gegeben ist (Nothing), 
+	// dann wird keine geduldsanzeige verwendet.
+	// @parm <o TRiASDataObject> * | pIInData | Der Parameter <p pIInData> kann eine Datenmenge
+	// enthalten, die als Eingabedatenmenge für die erste Geokomponente der Sequenz verwendet
+	// wird.
+	// @parm Boolean | fInitNew | Der Parameter <p fInitNew> gibt vor, ob die Sequenz 
+	// evtl. mit den Daten, die unter dem Bezeichner <p bstrSaveAs> im aktuellen <tr> -Projekt
+	// abgelegt sind, zu initialisieren (<cv False>), oder ob die Sequenz ohne Berücksichtigung
+	// evtl. gespeicherter Daten neu erzeugt werden soll (<cv True>).
+	// @rvalue <o TRiASDataObject> * | Die Methode liefert als Rückgabewert eine Datenmenge zurück,
+	// die ggf. die <tr> -Objektmenge enthält, welche von der ausgeführten Sequenz geliefert
+	// wurde. Liefert die Sequenz keine Objektmenge, dann enthält die Datenmenge keine 
+	// Objektmenge, ist dagegen die Objektmenge, die durch die Sequenz geliefert wird leer
+	// (z.B. kein rechercheergebnis), dann enthält zwar die datenmenge ein Objekt vom Type <o GeoObjects>
+	// dieses enthält jedoch keine Objekte.
+	// @comm Im Gegensatz zur Methode <om .RunActionSequenceFromFile> wird der XML- Skript aus 
+	// einer Resource und nicht aus einer Datei geladen.
+	// @comm Der erwartete Resourcetyp ist 'HTML', der Modul, aus dem die resource geladen werden 
+	// soll, muß durch die Eigenschaft <op .ResourceModule> vor Aufruf dieser Methode gesetzt werden.
+	// @comm Die erwartete Struktur des XML- Skriptes wird 
+	// unter <l Die Struktur der XML Konfigurationsskripte> beschrieben.
+	// @comm Wenn der Nutzer die Ausführung der Sequenz abbricht, dann wird ein Fehler
+	// vom Type E_ABORT (Err.Number = &H80004004) erzeugt.
+	// @xref <i IPropertySequenceService>, <om .RunActionSequenceFromFile>, <op .ResourceModule>
+	// <o TRiASDataObject>
+	[id(100), helpstring("Ausführen einer Sequenz von Geokomponenten aus einer Resource."), helpcontext(IPropertySequenceService_RunActionSequence_meth)] HRESULT RunActionSequence ([in] INT_PTR hWnd, [in] BSTR bstrRsc, [in] BSTR bstrDesc, [in] BSTR bstrSaveAs, [in] IProgressIndicator2 *pIStatus, [in] IDataObject *pIInData, [in] VARIANT_BOOL fInitNew, [out, retval] IDataObject **ppIOutData);
+
+	// @doc IPROPERTYSEQUENCESERVICE | PROPERTY
+	// @property HRESULT | IPropertySequenceService | ResourceModule | Die Eigenschaft <op .ResourceModule>
+	// setzt bzw. liest den Resourcemodule, aus dem eine Sequenz von Geokomponenten ausgeführt werden soll.
+	// @parm String | Module | Der Parameter <p Value> gibt den Dateinamen vor, welche die
+	// XML- Datei als Resource enthält, die die auszuführende Sequenz von Geokomponenten beschreibt.
+	// Der Name der Resource wird beim Aufruf der Methode <om .RunActionSequence> als Parameter
+	// <p bstrRsc> übergeben.
+	// @xref <i IPropertySequenceService>, <om .RunActionSequence>
+	[id(1), propget, helpstring("Setzt bzw. liest den Resourcemodule, aus dem eine Sequenz von Geokomponenten ausgeführt werden soll."), helpcontext(IPropertySequenceService_ResourceModule_prop)] HRESULT ResourceModule ([out, retval] BSTR *Module);
+	[id(1), propput, helpstring("Setzt bzw. liest den Resourcemodule, aus dem eine Sequenz von Geokomponenten ausgeführt werden soll."), helpcontext(IPropertySequenceService_ResourceModule_prop)] HRESULT ResourceModule ([in] BSTR Module);
+
+	// @doc IPROPERTYSEQUENCESERVICE | METHOD
+	// @method <o TRiASDataObject> | IPropertySequenceService | RunActionSequenceFromFile | Die 
+	// Methode <om .RunActionSequenceFromFile> führt eine Sequenz von Geokomponenten aus 
+	// einer Datei aus.
+	// @parm Long | hWnd | Der Parameter <p hWnd> gibt das Fensterhandle vor, welches als
+	// Parent für den Assistentendialog verwendet werden soll. Wenn der Parameter <p hWnd> 
+	// nicht gegeben ist, dann wird das zum Zeitpunkt des Aufrufes aktive Fenster als
+	// Parent eingesetzt.
+	// @parm String | bstrFile | Der Parameter <p bstrFile> ...
+	// @parm String | bstrDesc | Der Parameter <p bstrDesc> enthält die Zeichenkette, die
+	// als Caption des Assistentendialoges verwendet werden soll. Wenn dieser Parameter 
+	// nicht gegeben ist, dann wird das Caption aus dem XML- Skript ausgelesen.
+	// @parm String | bstrSaveAs | Der Parameter <p bstrSaveAs> enthält den Bezeichner, unter dem
+	// die auszuführende Sequenz den Dialogstatus (Nutzereingaben etc.) im aktuellen
+	// <tr> -Projekt ablegt. Beim wiederholten Aufrufen der Sequenz mit diesem Bezeichner wird
+	// versucht werden, die letzten Einstellungen wieder zu laden. 
+	// @parm <o ProgressIndicator> * | pIStatus | Der Parameter <p pIStatus> kann ein Objekt vom
+	// Typ <o ProgressIndicator> enthalten, der dann als Geduldsanzeige für die gesamte
+	// Sequenz verwendet wird. Wenn der Parameter <p pIStatus> nicht gegeben ist (Nothing), 
+	// dann wird keine geduldsanzeige verwendet.
+	// @parm <o TRiASDataObject> * | pIInData | Der Parameter <p pIInData> kann eine Datenmenge
+	// enthalten, die als Eingabedatenmenge für die erste Geokomponente der Sequenz verwendet
+	// wird.
+	// @parm Boolean | fInitNew | Der Parameter <p fInitNew> gibt vor, ob die Sequenz 
+	// evtl. mit den Daten, die unter dem Bezeichner <p bstrSaveAs> im aktuellen <tr> -Projekt
+	// abgelegt sind, zu initialisieren (<cv False>), oder ob die Sequenz ohne Berücksichtigung
+	// evtl. gespeicherter Daten neu erzeugt werden soll (<cv True>).
+	// @rvalue <o TRiASDataObject> * | Die Methode liefert als Rückgabewert eine Datenmenge zurück,
+	// die ggf. die <tr> -Objektmenge enthält, welche von der ausgeführten Sequenz geliefert
+	// wurde. Liefert die Sequenz keine Objektmenge, dann enthält die Datenmenge keine 
+	// Objektmenge, ist dagegen die Objektmenge, die durch die Sequenz geliefert wird leer
+	// (z.B. kein rechercheergebnis), dann enthält zwar die datenmenge ein Objekt vom Type <o GeoObjects>
+	// dieses enthält jedoch keine Objekte.
+	// @comm Im Gegensatz zur Methode <om .RunActionSequence> wird der XML- Skript aus einer Datei und 
+	// nicht aus einer Resource geladen.
+	// @comm Die erwartete Struktur des XML- Skriptes wird 
+	// unter <l Die Struktur der XML Konfigurationsskripte> beschrieben.
+	// @comm Wenn der Nutzer die Ausführung der Sequenz abbricht, dann wird ein Fehler
+	// vom Type E_ABORT (Err.Number = &H80004004) erzeugt.
+	// @xref <i IPropertySequenceService>, <om .RunActionSequence>
+	[id(101), helpstring("Ausführen einer Sequenz von Geokomponenten aus einer Datei."), helpcontext(IPropertySequenceService_RunActionSequenceFromFile_meth)] HRESULT RunActionSequenceFromFile ([in] INT_PTR hWnd, [in] BSTR bstrFile, [in] BSTR bstrDesc, [in] BSTR bstrSaveAs, [in] IProgressIndicator2 *pIStatus, [in] IDataObject *pIInData, [in] VARIANT_BOOL fInitNew, [out, retval] IDataObject **ppIOutData);
+
+	// @doc IPROPERTYSEQUENCESERVICE | PROPERTY
+	// @property HRESULT | IPropertySequenceService | ContextData | Die Eigenschaft <op .ContextData>
+	// setzt bzw. liest die Kontextdatenmenge, die bei der Arbeitung der Sequenz voreingestellt ist.
+	// @parm <i ITRiASDataObject> * | DataCtx | Der Parameter <p Value> ...
+	// @xref <i IPropertySequenceService>
+	[id(2), propputref, helpstring("Setzt bzw. liest die Kontextdatenmenge, die bei der Arbeitung der Sequenz voreingestellt ist."), helpcontext(IPropertySequenceService_ContextData_prop)] HRESULT ContextData ([in] ITRiASDataObject *CtxData);
+	[id(2), propget, helpstring("Setzt bzw. liest die Kontextdatenmenge, die bei der Arbeitung der Sequenz voreingestellt ist."), helpcontext(IPropertySequenceService_ContextData_prop)] HRESULT ContextData ([out, retval] ITRiASDataObject **CtxData);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASTLB
+// @object PropertySequenceService | Ein Datenobjekt vom Typ <o PropertySequenceService> kann dazu
+// verwendet werden, Sequenzen von Geokomponenten zu erzeugen und auszuführen.
+// @supint <i IPropertySequenceService> | Über das Interface <i IPropertySequenceService> sind 
+// sämtliche Methoden und Eigenschaften, die ein <o PropertySequenceService> Objekt betreffen.
+// @xref <i IPropertySequenceService>
+
+///////////////////////////////////////////////////////////////////////////////
+// @topic Die Struktur der XML Konfigurationsskripte | 
+// Die erwartete Struktur der XML- Konfigurationsskripte soll an Hand eines Beispieles 
+// erläutert werden:
+// @ex Beispiel eines XML- Konfigurationsskriptes |
+//
+//		<?xml version="1.0" encoding="ISO-8859-1"?>
+//		<!DOCTYPE GeoComponentSequence SYSTEM "GeoComponentSequence.dtd">
+//		<GeoComponentSequence Version="1.0">
+//			<Name>Auswählen von Objekten</Name>
+//			<GeoComponent ProgID="TRiASEx.SelectIdentObjTyp.1">
+//				<InitInfo CheckMode="0" Checked="0" ShowConnections="1"/>
+//			</GeoComponent>
+//			<GeoComponent ProgID="TRiASEx.ShowInObjectWindow.1"/>
+//		</GeoComponentSequence>
+//
+// @normal
+// Da der Konfigurationsskript eine gültige XML- Datei ist, beginnt er grundsätzlich
+// mit 
+// @iex
+//		<?xml version="1.0" encoding="ISO-8859-1"?>
+//		<!DOCTYPE GeoComponentSequence SYSTEM "GeoComponentSequence.dtd">
+//
+// @normal
+// Die zweite Zeile gibt dabei die Datei vor, gegen die die Gültigkeit des Skriptes 
+// geprüft werden soll. Der Starttag ist 'GeoComponentSequence' die Version gibt die
+// Nummer der Dateiversion vor, in unserem Fall immer "1.0". <nl>Innerhalb dieses Tags
+// sind nach der Definition des Namens (Captions) der gesamten Sequenz, die einzelnen
+// Geokomponenten aufgelistet (Tag: GeoComponent), die in der Reihenfolge ihres
+// Auftretens die Sequenz bilden sollen. <nl>Im einfachsten Fall ist es ausreichend,
+// den ProgId der an dieser Stelle einzufügenden Geokomponente vorzugeben, wie z.B. in
+// @iex
+//		<GeoComponent ProgID="TRiASEx.ShowInObjectWindow.1"/>
+//
+// @normal
+// Weiterhin ist es möglich, einzelnen Geokomponenten zusätzliche Initialisierungsdaten
+// mitzugeben, wie z.B. in
+// @iex
+//		<GeoComponent ProgID="TRiASEx.SelectIdentObjTyp.1">
+//			<InitInfo CheckMode="0" Checked="0" ShowConnections="1"/>
+//		</GeoComponent>
+//
+// @normal
+// wobei die einzelnen Key=Value Paare dem Objekt als PropertyBag übergeben werden.
+

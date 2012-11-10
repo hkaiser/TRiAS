@@ -1,0 +1,3511 @@
+///////////////////////////////////////////////////////////////////////////////
+// Messages for TRiASDB
+// SourceFile: TRiAS01.MC
+
+#if !defined(_TRiAS01_HMC)
+#define _TRiAS01_HMC
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+
+#define MAX_MSG_LENGTH				1024
+#define SEVERITY_MASK				0xC0000000
+#define APPLICATION_MASK			0x20000000
+#define SEVERITY_SUCCESS_MASK		0x00000000
+#define SEVERITY_INFORMATIONAL_MASK 0x40000000
+#define SEVERITY_WARNING_MASK		0xB0000000
+#define SEVERITY_ERROR_MASK			0xC0000000
+#define FACILITY_MASK				0x0FFF0000
+#define FACILITY_TRIAS01_MASK		0x0F110000
+#define MSG_ID_MASK					0x0000FFFF
+
+//
+//  Values are 32 bit values layed out as follows:
+//
+//   3 3 2 2 2 2 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1
+//   1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
+//  +---+-+-+-----------------------+-------------------------------+
+//  |Sev|C|R|     Facility          |               Code            |
+//  +---+-+-+-----------------------+-------------------------------+
+//
+//  where
+//
+//      Sev - is the severity code
+//
+//          00 - Success
+//          01 - Informational
+//          10 - Warning
+//          11 - Error
+//
+//      C - is the Customer code flag
+//
+//      R - is a reserved bit
+//
+//      Facility - is the facility code
+//
+//      Code - is the facility's status code
+//
+//
+// Define the facility codes
+//
+#define FACILITY_TRIAS01                 0xF11
+
+
+//
+// Define the severity codes
+//
+#define STATUS_SEVERITY_WARNING          0x2
+#define STATUS_SEVERITY_SUCCESS          0x0
+#define STATUS_SEVERITY_INFORMATIONAL    0x1
+#define STATUS_SEVERITY_ERROR            0x3
+
+
+//
+// MessageId: TRIAS01_E_ENODBF
+//
+// MessageText:
+//
+//  dBASE-Dateien nicht angegeben
+//
+#define TRIAS01_E_ENODBF                 ((HRESULT)0xCF11070DL)
+
+//
+// MessageId: TRIAS01_E_ENODBC
+//
+// MessageText:
+//
+//  Keine Anbindung von dBASE-S‰tzen definiert
+//
+#define TRIAS01_E_ENODBC                 ((HRESULT)0xCF11070CL)
+
+//
+// MessageId: TRIAS01_E_EBADFO
+//
+// MessageText:
+//
+//  Falsche Objektauswahl
+//
+#define TRIAS01_E_EBADFO                 ((HRESULT)0xCF11070AL)
+
+//
+// MessageId: TRIAS01_E_EBADIN
+//
+// MessageText:
+//
+//  Falsche Anichts-Spezifikation
+//
+#define TRIAS01_E_EBADIN                 ((HRESULT)0xCF110709L)
+
+//
+// MessageId: TRIAS01_E_EBADWI
+//
+// MessageText:
+//
+//  Falsche Gebiets-Spezifikation
+//
+#define TRIAS01_E_EBADWI                 ((HRESULT)0xCF110708L)
+
+//
+// MessageId: TRIAS01_E_EEXTIN
+//
+// MessageText:
+//
+//  Kann Erweiterung nicht laden
+//
+#define TRIAS01_E_EEXTIN                 ((HRESULT)0xCF1106B8L)
+
+//
+// MessageId: TRIAS01_E_EREGDX
+//
+// MessageText:
+//
+//  Kann Windowsmessages f¸r Erweiterung nicht registrieren
+//
+#define TRIAS01_E_EREGDX                 ((HRESULT)0xCF1106B7L)
+
+//
+// MessageId: TRIAS01_E_ENODLL
+//
+// MessageText:
+//
+//  DLL-Funktion nicht gefunden
+//
+#define TRIAS01_E_ENODLL                 ((HRESULT)0xCF1106B4L)
+
+//
+// MessageId: TRIAS01_E_EEXPRS
+//
+// MessageText:
+//
+//  Der dBASE-Ausdruckspuffer ist zu klein
+//
+#define TRIAS01_E_EEXPRS                 ((HRESULT)0xCF1106B3L)
+
+//
+// MessageId: TRIAS01_E_ENMKML
+//
+// MessageText:
+//
+//  Referenz auf nichtexistierendes Objektmerkmal
+//
+#define TRIAS01_E_ENMKML                 ((HRESULT)0xCF1106B2L)
+
+//
+// MessageId: TRIAS01_E_EBPARM
+//
+// MessageText:
+//
+//  Ung¸ltiger Parameter in dBASE-Ausdruck
+//
+#define TRIAS01_E_EBPARM                 ((HRESULT)0xCF1106B1L)
+
+//
+// MessageId: TRIAS01_E_ENOSCR
+//
+// MessageText:
+//
+//  Keine Scriptdatei f¸r Recherche gegeben
+//
+#define TRIAS01_E_ENOSCR                 ((HRESULT)0xCF1106B0L)
+
+//
+// MessageId: TRIAS01_E_EDLLAC
+//
+// MessageText:
+//
+//  Import Semaphore ist gesetzt, bitte noch einmal versuchen
+//
+#define TRIAS01_E_EDLLAC                 ((HRESULT)0xCF1106AFL)
+
+//
+// MessageId: TRIAS01_E_ENHELP
+//
+// MessageText:
+//
+//  Hilfetext  Datei nicht auffindbar
+//
+#define TRIAS01_E_ENHELP                 ((HRESULT)0xCF1106AEL)
+
+//
+// MessageId: TRIAS01_E_EBPERS
+//
+// MessageText:
+//
+//  Personalisierungs-Information wurde ver‰ndert
+//
+#define TRIAS01_E_EBPERS                 ((HRESULT)0xCF1106ADL)
+
+//
+// MessageId: TRIAS01_E_EBMFLT
+//
+// MessageText:
+//
+//  Device Dependent Bitmap kann nicht generiert werden
+//
+#define TRIAS01_E_EBMFLT                 ((HRESULT)0xCF1106ACL)
+
+//
+// MessageId: TRIAS01_E_EPALET
+//
+// MessageText:
+//
+//  Palette kann nicht generiert werden
+//
+#define TRIAS01_E_EPALET                 ((HRESULT)0xCF1106ABL)
+
+//
+// MessageId: TRIAS01_E_ENODIB
+//
+// MessageText:
+//
+//  Bild ist keine DIB (falsches Format)
+//
+#define TRIAS01_E_ENODIB                 ((HRESULT)0xCF1106AAL)
+
+//
+// MessageId: TRIAS01_E_ENOTIM
+//
+// MessageText:
+//
+//  Kein weiterer System-Timer mehr verf¸gbar
+//
+#define TRIAS01_E_ENOTIM                 ((HRESULT)0xCF1106A9L)
+
+//
+// MessageId: TRIAS01_E_EBDCPU
+//
+// MessageText:
+//
+//  Anwendung benˆtigt mindestens einen Prozessor vom Typ 80286
+//
+#define TRIAS01_E_EBDCPU                 ((HRESULT)0xCF1106A8L)
+
+//
+// MessageId: TRIAS01_E_EBDMDE
+//
+// MessageText:
+//
+//  Anwendung kann nicht im Windows-Realmode gestartet werden
+//
+#define TRIAS01_E_EBDMDE                 ((HRESULT)0xCF1106A7L)
+
+//
+// MessageId: TRIAS01_E_EPBDNO
+//
+// MessageText:
+//
+//  Im DatenbasisHeader ist kein PBDName gegeben
+//
+#define TRIAS01_E_EPBDNO                 ((HRESULT)0xCF1106A6L)
+
+//
+// MessageId: TRIAS01_E_EILPAR
+//
+// MessageText:
+//
+//  Illegaler Parameter
+//
+#define TRIAS01_E_EILPAR                 ((HRESULT)0xCF1106A5L)
+
+//
+// MessageId: TRIAS01_E_ENODBN
+//
+// MessageText:
+//
+//  DBName ist nicht definiert
+//
+#define TRIAS01_E_ENODBN                 ((HRESULT)0xCF1106A4L)
+
+//
+// MessageId: TRIAS01_E_BDIRIS
+//
+// MessageText:
+//
+//  Sie benutzen eine zu alte TRiAS-Version
+//
+#define TRIAS01_E_BDIRIS                 ((HRESULT)0xCF110654L)
+
+//
+// MessageId: TRIAS01_E_BADPRI
+//
+// MessageText:
+//
+//  Ung¸ltiges Prim‰rObjekt
+//
+#define TRIAS01_E_BADPRI                 ((HRESULT)0xCF110647L)
+
+//
+// MessageId: TRIAS01_E_BADTYP
+//
+// MessageText:
+//
+//  Falscher SatzTyp
+//
+#define TRIAS01_E_BADTYP                 ((HRESULT)0xCF110646L)
+
+//
+// MessageId: TRIAS01_E_BRECPB
+//
+// MessageText:
+//
+//  PBDSatz ist nicht vorhanden
+//
+#define TRIAS01_E_BRECPB                 ((HRESULT)0xCF110645L)
+
+//
+// MessageId: TRIAS01_E_BRECMW
+//
+// MessageText:
+//
+//  MerkmalsWert ist nicht vorhanden
+//
+#define TRIAS01_E_BRECMW                 ((HRESULT)0xCF110644L)
+
+//
+// MessageId: TRIAS01_E_BRECRL
+//
+// MessageText:
+//
+//  RelationsSatz ist nicht vorhanden
+//
+#define TRIAS01_E_BRECRL                 ((HRESULT)0xCF110643L)
+
+//
+// MessageId: TRIAS01_E_BRECMK
+//
+// MessageText:
+//
+//  MerkmalsSatz ist nicht vorhanden
+//
+#define TRIAS01_E_BRECMK                 ((HRESULT)0xCF110642L)
+
+//
+// MessageId: TRIAS01_E_BRECID
+//
+// MessageText:
+//
+//  IdentifikatorSatz ist nicht vorhanden
+//
+#define TRIAS01_E_BRECID                 ((HRESULT)0xCF110641L)
+
+//
+// MessageId: TRIAS01_E_BADPOL
+//
+// MessageText:
+//
+//  Ung¸ltiger Verweis aus POL in VGO
+//
+#define TRIAS01_E_BADPOL                 ((HRESULT)0xCF1105DDL)
+
+//
+// MessageId: TRIAS01_E_FATAL
+//
+// MessageText:
+//
+//  Fataler Fehler beim Arbeiten mit dBASE
+//
+#define TRIAS01_E_FATAL                  ((HRESULT)0xCF1105A6L)
+
+//
+// MessageId: TRIAS01_E_RESULT
+//
+// MessageText:
+//
+//  Unerwartetes Ergebnis einer Funktion beim Arbeiten mit dBASE
+//
+#define TRIAS01_E_RESULT                 ((HRESULT)0xCF1105A5L)
+
+//
+// MessageId: TRIAS01_E_PARM
+//
+// MessageText:
+//
+//  Unerwarteter R¸ckkehrwert einer dBASEFunktion
+//
+#define TRIAS01_E_PARM                   ((HRESULT)0xCF1105A4L)
+
+//
+// MessageId: TRIAS01_E_NEW
+//
+// MessageText:
+//
+//  Fehler bei HauptspeicherAnforderung in dBASE
+//
+#define TRIAS01_E_NEW                    ((HRESULT)0xCF1105A3L)
+
+//
+// MessageId: TRIAS01_E_MEMORY
+//
+// MessageText:
+//
+//  Hauptspeicher ist nicht ausreichend f¸r dBASE
+//
+#define TRIAS01_E_MEMORY                 ((HRESULT)0xCF1105A2L)
+
+//
+// MessageId: TRIAS01_E_INFO
+//
+// MessageText:
+//
+//  Interner Fehler in dBASEBibliothek
+//
+#define TRIAS01_E_INFO                   ((HRESULT)0xCF1105A1L)
+
+//
+// MessageId: TRIAS01_E_UNTSTR
+//
+// MessageText:
+//
+//  Nichtbeendete Zeichenkette in einem dBASEAusdruck
+//
+#define TRIAS01_E_UNTSTR                 ((HRESULT)0xCF1105A0L)
+
+//
+// MessageId: TRIAS01_E_UNRVAL
+//
+// MessageText:
+//
+//  Unbekannter Wert in einem dBASEAusdruck
+//
+#define TRIAS01_E_UNRVAL                 ((HRESULT)0xCF11059FL)
+
+//
+// MessageId: TRIAS01_E_UNROPR
+//
+// MessageText:
+//
+//  Unbekannter Operator in einem dBASEAusdruck
+//
+#define TRIAS01_E_UNROPR                 ((HRESULT)0xCF11059EL)
+
+//
+// MessageId: TRIAS01_E_UNRFCT
+//
+// MessageText:
+//
+//  Unbekannte Funktion in einem dBASEAusdruck
+//
+#define TRIAS01_E_UNRFCT                 ((HRESULT)0xCF11059DL)
+
+//
+// MessageId: TRIAS01_E_TYPE
+//
+// MessageText:
+//
+//  Unbekannter Operand in einem dBASEAusdruck
+//
+#define TRIAS01_E_TYPE                   ((HRESULT)0xCF11059CL)
+
+//
+// MessageId: TRIAS01_E_RIGHTM
+//
+// MessageText:
+//
+//  In einem dBASEAusdruck fehlt die rechte Klammer
+//
+#define TRIAS01_E_RIGHTM                 ((HRESULT)0xCF11059BL)
+
+//
+// MessageId: TRIAS01_E_OVERFL
+//
+// MessageText:
+//
+//  dBASEAusdruck ist zu lang oder zu kompliziert
+//
+#define TRIAS01_E_OVERFL                 ((HRESULT)0xCF11059AL)
+
+//
+// MessageId: TRIAS01_E_NUMPAR
+//
+// MessageText:
+//
+//  Falsche Anzahl Parameter in einem dBASEAusdruck
+//
+#define TRIAS01_E_NUMPAR                 ((HRESULT)0xCF110599L)
+
+//
+// MessageId: TRIAS01_E_DATANM
+//
+// MessageText:
+//
+//  In einem dBASEEpression benˆtigte dBASEDatei konnte nicht geˆffnet werden
+//
+#define TRIAS01_E_DATANM                 ((HRESULT)0xCF110598L)
+
+//
+// MessageId: TRIAS01_E_COMPLT
+//
+// MessageText:
+//
+//  dBASEAusdruck ist unvollst‰ndig
+//
+#define TRIAS01_E_COMPLT                 ((HRESULT)0xCF110597L)
+
+//
+// MessageId: TRIAS01_E_COMMAE
+//
+// MessageText:
+//
+//  In einem dBASEExpresion fehlen Komma oder rechte Klammer
+//
+#define TRIAS01_E_COMMAE                 ((HRESULT)0xCF110596L)
+
+//
+// MessageId: TRIAS01_E_UNIQUE
+//
+// MessageText:
+//
+//  Schl¸ssel nicht einzigartig
+//
+#define TRIAS01_E_UNIQUE                 ((HRESULT)0xCF110595L)
+
+//
+// MessageId: TRIAS01_E_TAGNAM
+//
+// MessageText:
+//
+//  TagName wurde nicht gefunden
+//
+#define TRIAS01_E_TAGNAM                 ((HRESULT)0xCF110594L)
+
+//
+// MessageId: TRIAS01_E_INDEX
+//
+// MessageText:
+//
+//  Fehler beim ÷ffnen einer IndexDatei
+//
+#define TRIAS01_E_INDEX                  ((HRESULT)0xCF110593L)
+
+//
+// MessageId: TRIAS01_E_ENTRY
+//
+// MessageText:
+//
+//  TagEintrag wurde nicht gefunden
+//
+#define TRIAS01_E_ENTRY                  ((HRESULT)0xCF110592L)
+
+//
+// MessageId: TRIAS01_E_RECDLN
+//
+// MessageText:
+//
+//  Satzl‰nge ist zu groﬂ (max. 65535)
+//
+#define TRIAS01_E_RECDLN                 ((HRESULT)0xCF110591L)
+
+//
+// MessageId: TRIAS01_E_FIELDT
+//
+// MessageText:
+//
+//  Unbekannter Feldtyp
+//
+#define TRIAS01_E_FIELDT                 ((HRESULT)0xCF110590L)
+
+//
+// MessageId: TRIAS01_E_FIELDN
+//
+// MessageText:
+//
+//  Unbekannter Feldname
+//
+#define TRIAS01_E_FIELDN                 ((HRESULT)0xCF11058FL)
+
+//
+// MessageId: TRIAS01_E_DATA
+//
+// MessageText:
+//
+//  Fehler beim ÷ffnen einer dBASEDatendatei
+//
+#define TRIAS01_E_DATA                   ((HRESULT)0xCF11058EL)
+
+//
+// MessageId: TRIAS01_E_WRITE
+//
+// MessageText:
+//
+//  Fehler beim Schreiben einer dBASEDatei
+//
+#define TRIAS01_E_WRITE                  ((HRESULT)0xCF11058DL)
+
+//
+// MessageId: TRIAS01_E_UNLOCK
+//
+// MessageText:
+//
+//  Fehler beim Entriegeln einer dBASEDatei
+//
+#define TRIAS01_E_UNLOCK                 ((HRESULT)0xCF11058CL)
+
+//
+// MessageId: TRIAS01_E_SEEK
+//
+// MessageText:
+//
+//  Fehler beim Positionieren einer dBASEDatei
+//
+#define TRIAS01_E_SEEK                   ((HRESULT)0xCF11058BL)
+
+//
+// MessageId: TRIAS01_E_RENAME
+//
+// MessageText:
+//
+//  Fehler beim Umbenennen einer dBASEDatei
+//
+#define TRIAS01_E_RENAME                 ((HRESULT)0xCF11058AL)
+
+//
+// MessageId: TRIAS01_E_REMOVE
+//
+// MessageText:
+//
+//  Fehler beim Lˆschen einer dBASEDatei
+//
+#define TRIAS01_E_REMOVE                 ((HRESULT)0xCF110589L)
+
+//
+// MessageId: TRIAS01_E_READ
+//
+// MessageText:
+//
+//  Fehler beim Lesen einer dBASEDatei
+//
+#define TRIAS01_E_READ                   ((HRESULT)0xCF110588L)
+
+//
+// MessageId: TRIAS01_E_OPEN
+//
+// MessageText:
+//
+//  Fehler beim ÷ffnen einer dBASEDatei
+//
+#define TRIAS01_E_OPEN                   ((HRESULT)0xCF110587L)
+
+//
+// MessageId: TRIAS01_E_LOCK
+//
+// MessageText:
+//
+//  Fehler beim Verriegeln einer dBASEDatei
+//
+#define TRIAS01_E_LOCK                   ((HRESULT)0xCF110586L)
+
+//
+// MessageId: TRIAS01_E_LENSET
+//
+// MessageText:
+//
+//  Fehler beim Setzen der L‰nge einer dBASEDatei
+//
+#define TRIAS01_E_LENSET                 ((HRESULT)0xCF110585L)
+
+//
+// MessageId: TRIAS01_E_LENGTH
+//
+// MessageText:
+//
+//  Fehler beim Bestimmen der L‰nge einer dBASEDatei
+//
+#define TRIAS01_E_LENGTH                 ((HRESULT)0xCF110584L)
+
+//
+// MessageId: TRIAS01_E_CREATE
+//
+// MessageText:
+//
+//  Fehler beim Erzeugen einer dBASEDatei
+//
+#define TRIAS01_E_CREATE                 ((HRESULT)0xCF110583L)
+
+//
+// MessageId: TRIAS01_E_CLOSE
+//
+// MessageText:
+//
+//  Fehler beim Schlieﬂen einer dBASEDatei
+//
+#define TRIAS01_E_CLOSE                  ((HRESULT)0xCF110582L)
+
+//
+// MessageId: TRIAS01_E_BADGEO
+//
+// MessageText:
+//
+//  Fehlerhafte Geometrie
+//
+#define TRIAS01_E_BADGEO                 ((HRESULT)0xCF110514L)
+
+//
+// MessageId: TRIAS01_E_NOWRIT
+//
+// MessageText:
+//
+//  Fehler beim Schreiben in Datei
+//
+#define TRIAS01_E_NOWRIT                 ((HRESULT)0xCF1104E4L)
+
+//
+// MessageId: TRIAS01_E_NOSCAL
+//
+// MessageText:
+//
+//  Skalierung ist nicht berechenbar
+//
+#define TRIAS01_E_NOSCAL                 ((HRESULT)0xCF1104E3L)
+
+//
+// MessageId: TRIAS01_E_NOTMPF
+//
+// MessageText:
+//
+//  Kann tempor‰re Datei nicht ˆffnen
+//
+#define TRIAS01_E_NOTMPF                 ((HRESULT)0xCF1104E2L)
+
+//
+// MessageId: TRIAS01_E_NORELA
+//
+// MessageText:
+//
+//  Keine Relation
+//
+#define TRIAS01_E_NORELA                 ((HRESULT)0xCF1104C7L)
+
+//
+// MessageId: TRIAS01_E_NODBFF
+//
+// MessageText:
+//
+//  Keine dBaseDatei
+//
+#define TRIAS01_E_NODBFF                 ((HRESULT)0xCF1104C6L)
+
+//
+// MessageId: TRIAS01_E_NUMEFO
+//
+// MessageText:
+//
+//  Daten nicht im numerischen Format
+//
+#define TRIAS01_E_NUMEFO                 ((HRESULT)0xCF1104C5L)
+
+//
+// MessageId: TRIAS01_E_GROUPS
+//
+// MessageText:
+//
+//  Unvollst‰ndige Gruppenspezifikation
+//
+#define TRIAS01_E_GROUPS                 ((HRESULT)0xCF1104C4L)
+
+//
+// MessageId: TRIAS01_E_UNCOMP
+//
+// MessageText:
+//
+//  Unvollst‰ndige Anfrage
+//
+#define TRIAS01_E_UNCOMP                 ((HRESULT)0xCF1104C3L)
+
+//
+// MessageId: TRIAS01_E_UOUTST
+//
+// MessageText:
+//
+//  Ung¸ltige Ausgabeanweisung    
+//
+#define TRIAS01_E_UOUTST                 ((HRESULT)0xCF1104C2L)
+
+//
+// MessageId: TRIAS01_E_OUTFOR
+//
+// MessageText:
+//
+//  Unbekanntes Ausgabeform
+//
+#define TRIAS01_E_OUTFOR                 ((HRESULT)0xCF1104C1L)
+
+//
+// MessageId: TRIAS01_E_OUTDEV
+//
+// MessageText:
+//
+//  Unbekanntes Ausgabeger‰t
+//
+#define TRIAS01_E_OUTDEV                 ((HRESULT)0xCF1104C0L)
+
+//
+// MessageId: TRIAS01_E_KEYSPE
+//
+// MessageText:
+//
+//  Ung¸ltige Schl¸sselAnbindung
+//
+#define TRIAS01_E_KEYSPE                 ((HRESULT)0xCF1104BFL)
+
+//
+// MessageId: TRIAS01_E_DBASEE
+//
+// MessageText:
+//
+//  Ung¸ltiger dBASEAusdruck
+//
+#define TRIAS01_E_DBASEE                 ((HRESULT)0xCF1104BEL)
+
+//
+// MessageId: TRIAS01_E_FILESP
+//
+// MessageText:
+//
+//  Ung¸ltige dBASEDatei
+//
+#define TRIAS01_E_FILESP                 ((HRESULT)0xCF1104BDL)
+
+//
+// MessageId: TRIAS01_E_IDENTS
+//
+// MessageText:
+//
+//  Ung¸ltiger Identifikator
+//
+#define TRIAS01_E_IDENTS                 ((HRESULT)0xCF1104BCL)
+
+//
+// MessageId: TRIAS01_E_NODATA
+//
+// MessageText:
+//
+//  Ung¸ltige Daten    
+//
+#define TRIAS01_E_NODATA                 ((HRESULT)0xCF1104BBL)
+
+//
+// MessageId: TRIAS01_E_NOTEXT
+//
+// MessageText:
+//
+//  Daten nicht im Textformat    
+//
+#define TRIAS01_E_NOTEXT                 ((HRESULT)0xCF1104BAL)
+
+//
+// MessageId: TRIAS01_E_RAKTIV
+//
+// MessageText:
+//
+//  Recherche ist bereits aktiv    
+//
+#define TRIAS01_E_RAKTIV                 ((HRESULT)0xCF1104B9L)
+
+//
+// MessageId: TRIAS01_E_SYNTAX
+//
+// MessageText:
+//
+//  SyntaxFehler    
+//
+#define TRIAS01_E_SYNTAX                 ((HRESULT)0xCF1104B8L)
+
+//
+// MessageId: TRIAS01_E_NIIDDE
+//
+// MessageText:
+//
+//  Es gibt keine g¸ltigen IdentifikatorBeschreibungen
+//
+#define TRIAS01_E_NIIDDE                 ((HRESULT)0xCF1104B7L)
+
+//
+// MessageId: TRIAS01_E_UOBJTY
+//
+// MessageText:
+//
+//  Ung¸ltiger Objekttyp oder keine Visualisierungsinformation
+//
+#define TRIAS01_E_UOBJTY                 ((HRESULT)0xCF1104B6L)
+
+//
+// MessageId: TRIAS01_E_USBREK
+//
+// MessageText:
+//
+//  Abbruch durch den Nutzer
+//
+#define TRIAS01_E_USBREK                 ((HRESULT)0xCF1104B5L)
+
+//
+// MessageId: TRIAS01_E_NORESO
+//
+// MessageText:
+//
+//  Resource nicht gefunden
+//
+#define TRIAS01_E_NORESO                 ((HRESULT)0xCF1104B4L)
+
+//
+// MessageId: TRIAS01_E_NOSYMB
+//
+// MessageText:
+//
+//  Symbol nicht gefunden
+//
+#define TRIAS01_E_NOSYMB                 ((HRESULT)0xCF1104B3L)
+
+//
+// MessageId: TRIAS01_E_EVISIN
+//
+// MessageText:
+//
+//  Kann VisualisierungsTemplate nicht erzeugen
+//
+#define TRIAS01_E_EVISIN                 ((HRESULT)0xCF1104B2L)
+
+//
+// MessageId: TRIAS01_E_ELINET
+//
+// MessageText:
+//
+//  Kann Linientabelle nicht erzeugen
+//
+#define TRIAS01_E_ELINET                 ((HRESULT)0xCF1104B1L)
+
+//
+// MessageId: TRIAS01_E_ELAYER
+//
+// MessageText:
+//
+//  EbenenNamen nicht gefunden
+//
+#define TRIAS01_E_ELAYER                 ((HRESULT)0xCF1104B0L)
+
+//
+// MessageId: TRIAS01_E_NODSNA
+//
+// MessageText:
+//
+//  DataSourceName nicht gefunden
+//
+#define TRIAS01_E_NODSNA                 ((HRESULT)0xCF110482L)
+
+//
+// MessageId: TRIAS01_E_NTABLN
+//
+// MessageText:
+//
+//  Name der Tabelle nicht gefunden
+//
+#define TRIAS01_E_NTABLN                 ((HRESULT)0xCF110481L)
+
+//
+// MessageId: TRIAS01_E_NOQUER
+//
+// MessageText:
+//
+//  F¸r diesen Feldtyp ist keine Anfrage mˆglich
+//
+#define TRIAS01_E_NOQUER                 ((HRESULT)0xCF110480L)
+
+//
+// MessageId: TRIAS01_E_UNKNFN
+//
+// MessageText:
+//
+//  Unbekannter Feldname
+//
+#define TRIAS01_E_UNKNFN                 ((HRESULT)0xCF11047FL)
+
+//
+// MessageId: TRIAS01_E_UNKNFT
+//
+// MessageText:
+//
+//  Unbekannter Feldtyp 
+//
+#define TRIAS01_E_UNKNFT                 ((HRESULT)0xCF11047EL)
+
+//
+// MessageId: TRIAS01_E_NODSCN
+//
+// MessageText:
+//
+//  Verbindung zum ODBCTreiber nicht mˆglich
+//
+#define TRIAS01_E_NODSCN                 ((HRESULT)0xCF11046AL)
+
+//
+// MessageId: TRIAS01_E_ONLFOR
+//
+// MessageText:
+//
+//  Nur Vorw‰rtsScrollen mˆglich
+//
+#define TRIAS01_E_ONLFOR                 ((HRESULT)0xCF110469L)
+
+//
+// MessageId: TRIAS01_E_EMPTCO
+//
+// MessageText:
+//
+//  Leere FeldnamensListe
+//
+#define TRIAS01_E_EMPTCO                 ((HRESULT)0xCF110468L)
+
+//
+// MessageId: TRIAS01_E_FIELDM
+//
+// MessageText:
+//
+//  F¸r einen Feldtyp ist keine Anbindung definiert
+//
+#define TRIAS01_E_FIELDM                 ((HRESULT)0xCF110467L)
+
+//
+// MessageId: TRIAS01_E_ILLNOD
+//
+// MessageText:
+//
+//  ODBCTreiber im illegalen Modus geˆffnet
+//
+#define TRIAS01_E_ILLNOD                 ((HRESULT)0xCF110466L)
+
+//
+// MessageId: TRIAS01_E_MULROW
+//
+// MessageText:
+//
+//  Kann nicht mehrere S‰tze ‰ndern/lˆschen        
+//
+#define TRIAS01_E_MULROW                 ((HRESULT)0xCF110465L)
+
+//
+// MessageId: TRIAS01_E_NOCURR
+//
+// MessageText:
+//
+//  Es existiert kein aktueller Satz
+//
+#define TRIAS01_E_NOCURR                 ((HRESULT)0xCF110464L)
+
+//
+// MessageId: TRIAS01_E_ACTRNF
+//
+// MessageText:
+//
+//  Aktuellen Satz nicht mehr gefunden
+//
+#define TRIAS01_E_ACTRNF                 ((HRESULT)0xCF110463L)
+
+//
+// MessageId: TRIAS01_E_READON
+//
+// MessageText:
+//
+//  Nur LeseOperationen mˆglich   
+//
+#define TRIAS01_E_READON                 ((HRESULT)0xCF110462L)
+
+//
+// MessageId: TRIAS01_E_NOTOTA
+//
+// MessageText:
+//
+//  Maximale Grˆﬂe eines CLongBinaryFeldes nicht bestimmbar
+//
+#define TRIAS01_E_NOTOTA                 ((HRESULT)0xCF110461L)
+
+//
+// MessageId: TRIAS01_E_NODBCL
+//
+// MessageText:
+//
+//  ODBC kann nicht geladen werden          
+//
+#define TRIAS01_E_NODBCL                 ((HRESULT)0xCF110460L)
+
+//
+// MessageId: TRIAS01_E_NODYNA
+//
+// MessageText:
+//
+//  Dynamisches Nachf¸hren wird durch ODBCTreiber nicht unterst¸tzt
+//
+#define TRIAS01_E_NODYNA                 ((HRESULT)0xCF11045FL)
+
+//
+// MessageId: TRIAS01_E_NOSNAP
+//
+// MessageText:
+//
+//  ODBC ist nicht vollst‰ndig installiert
+//
+#define TRIAS01_E_NOSNAP                 ((HRESULT)0xCF11045EL)
+
+//
+// MessageId: TRIAS01_E_NOAPIC
+//
+// MessageText:
+//
+//  Der ODBCTreiber unterstÅtzt nicht ODBCAPILevel 1
+//
+#define TRIAS01_E_NOAPIC                 ((HRESULT)0xCF11045DL)
+
+//
+// MessageId: TRIAS01_E_NOSQLC
+//
+// MessageText:
+//
+//  Der ODBCTreiber unterst¸tzt nicht ODBCSQLLevel "MINIMUM"
+//
+#define TRIAS01_E_NOSQLC                 ((HRESULT)0xCF11045CL)
+
+//
+// MessageId: TRIAS01_E_NODATF
+//
+// MessageText:
+//
+//  Keine Daten gefunden
+//
+#define TRIAS01_E_NODATF                 ((HRESULT)0xCF11045BL)
+
+//
+// MessageId: TRIAS01_E_NOROWU
+//
+// MessageText:
+//
+//  Zeilenénderung wird nicht unterst¸tzt
+//
+#define TRIAS01_E_NOROWU                 ((HRESULT)0xCF11045AL)
+
+//
+// MessageId: TRIAS01_E_ODBCV2
+//
+// MessageText:
+//
+//  ODBCVersion 2.0 nicht installiert
+//
+#define TRIAS01_E_ODBCV2                 ((HRESULT)0xCF110459L)
+
+//
+// MessageId: TRIAS01_E_NOPOSU
+//
+// MessageText:
+//
+//  énderung der Daten nicht mˆglich    
+//
+#define TRIAS01_E_NOPOSU                 ((HRESULT)0xCF110458L)
+
+//
+// MessageId: TRIAS01_E_NOLOKM
+//
+// MessageText:
+//
+//  VerriegelungsModus wird nicht unterst¸tzt  
+//
+#define TRIAS01_E_NOLOKM                 ((HRESULT)0xCF110457L)
+
+//
+// MessageId: TRIAS01_E_DATTRU
+//
+// MessageText:
+//
+//  Daten zu groﬂ (wurden entsprechend gek¸rzt)
+//
+#define TRIAS01_E_DATTRU                 ((HRESULT)0xCF110456L)
+
+//
+// MessageId: TRIAS01_E_LOERRO
+//
+// MessageText:
+//
+//  Fehler beim Verriegeln eines Objektes    
+//
+#define TRIAS01_E_LOERRO                 ((HRESULT)0xCF110450L)
+
+//
+// MessageId: TRIAS01_E_ENOSCHWERPUNKT
+//
+// MessageText:
+//
+//  Fl‰chenschwerpunkt nicht bestimmbar
+//
+#define TRIAS01_E_ENOSCHWERPUNKT         ((HRESULT)0xCF11044DL)
+
+//
+// MessageId: TRIAS01_E_ENOSCHNITTPUNKT
+//
+// MessageText:
+//
+//  Geraden haben keinen Schnittpunkt
+//
+#define TRIAS01_E_ENOSCHNITTPUNKT        ((HRESULT)0xCF11044CL)
+
+//
+// MessageId: TRIAS01_E_EFTYP
+//
+// MessageText:
+//
+//  Falsche Typangabe ( zul‰ssig sind nur M,F,L,P )
+//
+#define TRIAS01_E_EFTYP                  ((HRESULT)0xCF1103FCL)
+
+//
+// MessageId: TRIAS01_E_ETYPF
+//
+// MessageText:
+//
+//  Informationstyp nicht vorhanden
+//
+#define TRIAS01_E_ETYPF                  ((HRESULT)0xCF1103FBL)
+
+//
+// MessageId: TRIAS01_E_ETYPM
+//
+// MessageText:
+//
+//  Informationstyp nur f¸r E/A Merkmalswerttext
+//
+#define TRIAS01_E_ETYPM                  ((HRESULT)0xCF1103FAL)
+
+//
+// MessageId: TRIAS01_E_EMKLNO
+//
+// MessageText:
+//
+//  Merkmal in der PBD nicht vorhanden
+//
+#define TRIAS01_E_EMKLNO                 ((HRESULT)0xCF1103F6L)
+
+//
+// MessageId: TRIAS01_E_ERELNO
+//
+// MessageText:
+//
+//  Relation in der PBD nicht vorhanden
+//
+#define TRIAS01_E_ERELNO                 ((HRESULT)0xCF1103F5L)
+
+//
+// MessageId: TRIAS01_E_EIDLNO
+//
+// MessageText:
+//
+//  Identifikator in PBD nicht vorhanden
+//
+#define TRIAS01_E_EIDLNO                 ((HRESULT)0xCF1103F4L)
+
+//
+// MessageId: TRIAS01_E_ENWFAK
+//
+// MessageText:
+//
+//  Wiederholungsfaktor bei MI ist inkompatibel
+//
+#define TRIAS01_E_ENWFAK                 ((HRESULT)0xCF1103ACL)
+
+//
+// MessageId: TRIAS01_E_ENIDMK
+//
+// MessageText:
+//
+//  Zuordnung IdentifikatorMerkmalskode falsch
+//
+#define TRIAS01_E_ENIDMK                 ((HRESULT)0xCF1103ABL)
+
+//
+// MessageId: TRIAS01_E_EDEFWT
+//
+// MessageText:
+//
+//  Quantitativer Merkmalswert undefiniert
+//
+#define TRIAS01_E_EDEFWT                 ((HRESULT)0xCF1103AAL)
+
+//
+// MessageId: TRIAS01_E_EINKON
+//
+// MessageText:
+//
+//  Inkonsistenz bei letztem Objekt
+//
+#define TRIAS01_E_EINKON                 ((HRESULT)0xCF1103A9L)
+
+//
+// MessageId: TRIAS01_E_EHEAD
+//
+// MessageText:
+//
+//  Fehler bei Zugriff auf Header
+//
+#define TRIAS01_E_EHEAD                  ((HRESULT)0xCF1103A8L)
+
+//
+// MessageId: TRIAS01_E_EAHEAD
+//
+// MessageText:
+//
+//  Fehler bei Anlegen des Headers
+//
+#define TRIAS01_E_EAHEAD                 ((HRESULT)0xCF1103A7L)
+
+//
+// MessageId: TRIAS01_E_ECOND
+//
+// MessageText:
+//
+//  Parameterfehler bei 'cond'
+//
+#define TRIAS01_E_ECOND                  ((HRESULT)0xCF1103A6L)
+
+//
+// MessageId: TRIAS01_E_ERIK
+//
+// MessageText:
+//
+//  Fehler im RIKFeld
+//
+#define TRIAS01_E_ERIK                   ((HRESULT)0xCF1103A5L)
+
+//
+// MessageId: TRIAS01_E_EPUTKO
+//
+// MessageText:
+//
+//  Fehler bei Einrichten des KO
+//
+#define TRIAS01_E_EPUTKO                 ((HRESULT)0xCF1103A4L)
+
+//
+// MessageId: TRIAS01_E_ETYPKO
+//
+// MessageText:
+//
+//  Keine Typ¸bereinstimmung bei KO
+//
+#define TRIAS01_E_ETYPKO                 ((HRESULT)0xCF1103A3L)
+
+//
+// MessageId: TRIAS01_E_EANSCH
+//
+// MessageText:
+//
+//  Kein Anschluﬂ bei linienhaften Objekten
+//
+#define TRIAS01_E_EANSCH                 ((HRESULT)0xCF1103A2L)
+
+//
+// MessageId: TRIAS01_E_ERA
+//
+// MessageText:
+//
+//  Falsche Relationsart
+//
+#define TRIAS01_E_ERA                    ((HRESULT)0xCF1103A1L)
+
+//
+// MessageId: TRIAS01_E_EDEL
+//
+// MessageText:
+//
+//  Fehler bei Lˆschen eines Objektes
+//
+#define TRIAS01_E_EDEL                   ((HRESULT)0xCF1103A0L)
+
+//
+// MessageId: TRIAS01_E_EONF
+//
+// MessageText:
+//
+//  Formaler Fehler im onfFeld
+//
+#define TRIAS01_E_EONF                   ((HRESULT)0xCF11039FL)
+
+//
+// MessageId: TRIAS01_E_EZDB
+//
+// MessageText:
+//
+//  Fehler aus DatenbasisVerwaltung
+//
+#define TRIAS01_E_EZDB                   ((HRESULT)0xCF11039EL)
+
+//
+// MessageId: TRIAS01_E_ENTQWT
+//
+// MessageText:
+//
+//  Qualitativer Merkmalswert undefiniert
+//
+#define TRIAS01_E_ENTQWT                 ((HRESULT)0xCF11039DL)
+
+//
+// MessageId: TRIAS01_E_ETOUCH
+//
+// MessageText:
+//
+//  Neuer Zustand der DB nicht sicherbar
+//
+#define TRIAS01_E_ETOUCH                 ((HRESULT)0xCF11039CL)
+
+//
+// MessageId: TRIAS01_E_EREST
+//
+// MessageText:
+//
+//  Restore der DB nicht mˆglich
+//
+#define TRIAS01_E_EREST                  ((HRESULT)0xCF11039BL)
+
+//
+// MessageId: TRIAS01_E_EGETO
+//
+// MessageText:
+//
+//  Objekt nicht wiederauffindbar
+//
+#define TRIAS01_E_EGETO                  ((HRESULT)0xCF11039AL)
+
+//
+// MessageId: TRIAS01_E_EADFGI
+//
+// MessageText:
+//
+//  GIAusgabedatenformat falsch
+//
+#define TRIAS01_E_EADFGI                 ((HRESULT)0xCF110399L)
+
+//
+// MessageId: TRIAS01_E_ENLMI
+//
+// MessageText:
+//
+//  L‰ngenfehler im MIFeld
+//
+#define TRIAS01_E_ENLMI                  ((HRESULT)0xCF110398L)
+
+//
+// MessageId: TRIAS01_E_ENP
+//
+// MessageText:
+//
+//  Parameter 'np' ist falsch
+//
+#define TRIAS01_E_ENP                    ((HRESULT)0xCF110397L)
+
+//
+// MessageId: TRIAS01_E_EOBNR
+//
+// MessageText:
+//
+//  Objektnummer ist kleiner 1
+//
+#define TRIAS01_E_EOBNR                  ((HRESULT)0xCF110396L)
+
+//
+// MessageId: TRIAS01_E_EOFF
+//
+// MessageText:
+//
+//  Geometriefehler bei fl‰chenhaften EO
+//
+#define TRIAS01_E_EOFF                   ((HRESULT)0xCF110395L)
+
+//
+// MessageId: TRIAS01_E_EINZ
+//
+// MessageText:
+//
+//  Selbstinzidenz einer Linie
+//
+#define TRIAS01_E_EINZ                   ((HRESULT)0xCF110394L)
+
+//
+// MessageId: TRIAS01_E_EEPS
+//
+// MessageText:
+//
+//  Epsilon ist negativ
+//
+#define TRIAS01_E_EEPS                   ((HRESULT)0xCF110393L)
+
+//
+// MessageId: TRIAS01_E_EEDFGI
+//
+// MessageText:
+//
+//  GIEingabedatenformat falsch
+//
+#define TRIAS01_E_EEDFGI                 ((HRESULT)0xCF110392L)
+
+//
+// MessageId: TRIAS01_E_ENLGI
+//
+// MessageText:
+//
+//  L‰ngenfehler bei Geometriefeld
+//
+#define TRIAS01_E_ENLGI                  ((HRESULT)0xCF110391L)
+
+//
+// MessageId: TRIAS01_E_ENTSK
+//
+// MessageText:
+//
+//  falscher Strukturkode
+//
+#define TRIAS01_E_ENTSK                  ((HRESULT)0xCF110390L)
+
+//
+// MessageId: TRIAS01_E_ENTMK
+//
+// MessageText:
+//
+//  Merkmalskode nicht in PBD
+//
+#define TRIAS01_E_ENTMK                  ((HRESULT)0xCF11038FL)
+
+//
+// MessageId: TRIAS01_E_EMI
+//
+// MessageText:
+//
+//  Fehler in MIStruktur
+//
+#define TRIAS01_E_EMI                    ((HRESULT)0xCF11038EL)
+
+//
+// MessageId: TRIAS01_E_ENTTYP
+//
+// MessageText:
+//
+//  Geometrietyp des EO falsch
+//
+#define TRIAS01_E_ENTTYP                 ((HRESULT)0xCF11038DL)
+
+//
+// MessageId: TRIAS01_E_ENTID
+//
+// MessageText:
+//
+//  Identifikator nicht in PBD
+//
+#define TRIAS01_E_ENTID                  ((HRESULT)0xCF11038CL)
+
+//
+// MessageId: TRIAS01_E_ENTACT
+//
+// MessageText:
+//
+//  DB/PBD nicht aktivierbar
+//
+#define TRIAS01_E_ENTACT                 ((HRESULT)0xCF11038BL)
+
+//
+// MessageId: TRIAS01_E_EPUTEO
+//
+// MessageText:
+//
+//  EO nicht in DB eintragbar
+//
+#define TRIAS01_E_EPUTEO                 ((HRESULT)0xCF11038AL)
+
+//
+// MessageId: TRIAS01_E_EDELET
+//
+// MessageText:
+//
+//  DB/PBD nicht lˆschbar
+//
+#define TRIAS01_E_EDELET                 ((HRESULT)0xCF110389L)
+
+//
+// MessageId: TRIAS01_E_ECLSE
+//
+// MessageText:
+//
+//  DB/PBD nicht schlieﬂbar
+//
+#define TRIAS01_E_ECLSE                  ((HRESULT)0xCF110388L)
+
+//
+// MessageId: TRIAS01_E_EOPEN
+//
+// MessageText:
+//
+//  DB/PBD nicht erˆffenbar
+//
+#define TRIAS01_E_EOPEN                  ((HRESULT)0xCF110387L)
+
+//
+// MessageId: TRIAS01_E_EMXDB
+//
+// MessageText:
+//
+//  Maximale Anzahl erˆffenbarer DB/PBD erreicht
+//
+#define TRIAS01_E_EMXDB                  ((HRESULT)0xCF110386L)
+
+//
+// MessageId: TRIAS01_E_EDBNOT
+//
+// MessageText:
+//
+//  DB/PBD ist nicht initialisierbar
+//
+#define TRIAS01_E_EDBNOT                 ((HRESULT)0xCF110385L)
+
+//
+// MessageId: TRIAS01_E_EDBACT
+//
+// MessageText:
+//
+//  DB ist schon erˆffnet
+//
+#define TRIAS01_E_EDBACT                 ((HRESULT)0xCF110384L)
+
+//
+// MessageId: TRIAS01_E_ENOFLX
+//
+// MessageText:
+//
+//  Kein dynamisches Feld mehr verf¸gbar
+//
+#define TRIAS01_E_ENOFLX                 ((HRESULT)0xCF110319L)
+
+//
+// MessageId: TRIAS01_E_EFLINI
+//
+// MessageText:
+//
+//  Dynamisches Feld enth‰lt keine Daten (ist initialisiert)
+//
+#define TRIAS01_E_EFLINI                 ((HRESULT)0xCF110318L)
+
+//
+// MessageId: TRIAS01_E_EINDEX
+//
+// MessageText:
+//
+//  Fragw¸rdiger Index bei Flexaddressierung
+//
+#define TRIAS01_E_EINDEX                 ((HRESULT)0xCF110317L)
+
+//
+// MessageId: TRIAS01_E_EFLEX
+//
+// MessageText:
+//
+//  Fragw¸rdige Flexnummer
+//
+#define TRIAS01_E_EFLEX                  ((HRESULT)0xCF110316L)
+
+//
+// MessageId: TRIAS01_E_RECDEL
+//
+// MessageText:
+//
+//  Satz ist nur in R¸ckverkettung enthalten
+//
+#define TRIAS01_E_RECDEL                 ((HRESULT)0xCF1102F1L)
+
+//
+// MessageId: TRIAS01_E_DELREC
+//
+// MessageText:
+//
+//  Satz ist nicht in R¸ckverkettung enthalten
+//
+#define TRIAS01_E_DELREC                 ((HRESULT)0xCF1102F0L)
+
+//
+// MessageId: TRIAS01_E_INVCHA
+//
+// MessageText:
+//
+//  Ung¸ltiger R¸ckverkettungszeiger
+//
+#define TRIAS01_E_INVCHA                 ((HRESULT)0xCF1102EFL)
+
+//
+// MessageId: TRIAS01_E_BADFNO
+//
+// MessageText:
+//
+//  Ung¸ltige Dateinummer
+//
+#define TRIAS01_E_BADFNO                 ((HRESULT)0xCF1102EEL)
+
+//
+// MessageId: TRIAS01_E_ENPBDN
+//
+// MessageText:
+//
+//  Ung¸ltiger Name der BeschreibungsDatenbasis
+//
+#define TRIAS01_E_ENPBDN                 ((HRESULT)0xCF1102DAL)
+
+//
+// MessageId: TRIAS01_E_EISDEL
+//
+// MessageText:
+//
+//  Zu lˆschender Satz ist bereits gelˆscht
+//
+#define TRIAS01_E_EISDEL                 ((HRESULT)0xCF1102D8L)
+
+//
+// MessageId: TRIAS01_E_EBADHD
+//
+// MessageText:
+//
+//  DBHeader  Textfeld zu klein
+//
+#define TRIAS01_E_EBADHD                 ((HRESULT)0xCF1102D7L)
+
+//
+// MessageId: TRIAS01_E_ENEVEC
+//
+// MessageText:
+//
+//  Kann Fehlervektor nicht anlegen
+//
+#define TRIAS01_E_ENEVEC                 ((HRESULT)0xCF1102D6L)
+
+//
+// MessageId: TRIAS01_E_EOVERF
+//
+// MessageText:
+//
+//  öberlauf des Fehlervektors
+//
+#define TRIAS01_E_EOVERF                 ((HRESULT)0xCF1102D5L)
+
+//
+// MessageId: TRIAS01_E_EMAXDB
+//
+// MessageText:
+//
+//  Bereits MAXDB Datenbasen erˆffnet
+//
+#define TRIAS01_E_EMAXDB                 ((HRESULT)0xCF1102D4L)
+
+//
+// MessageId: TRIAS01_E_EOVRFL
+//
+// MessageText:
+//
+//  öberlauf der Hashtabelle
+//
+#define TRIAS01_E_EOVRFL                 ((HRESULT)0xCF1102D3L)
+
+//
+// MessageId: TRIAS01_E_EBCKUP
+//
+// MessageText:
+//
+//  Fehler im Prozeﬂ des Backup
+//
+#define TRIAS01_E_EBCKUP                 ((HRESULT)0xCF1102D2L)
+
+//
+// MessageId: TRIAS01_E_ESPAWN
+//
+// MessageText:
+//
+//  Kann Subprozeﬂ nicht starten
+//
+#define TRIAS01_E_ESPAWN                 ((HRESULT)0xCF1102D1L)
+
+//
+// MessageId: TRIAS01_E_EACCES
+//
+// MessageText:
+//
+//  öberschreitung der Zugriffsrechte
+//
+#define TRIAS01_E_EACCES                 ((HRESULT)0xCF1102D0L)
+
+//
+// MessageId: TRIAS01_E_EREAD
+//
+// MessageText:
+//
+//  Lesefehler
+//
+#define TRIAS01_E_EREAD                  ((HRESULT)0xCF1102CFL)
+
+//
+// MessageId: TRIAS01_E_EUNLNK
+//
+// MessageText:
+//
+//  Kann Page nicht von File lˆsen
+//
+#define TRIAS01_E_EUNLNK                 ((HRESULT)0xCF1102CEL)
+
+//
+// MessageId: TRIAS01_E_ELINK
+//
+// MessageText:
+//
+//  Kann Page nicht an File binden
+//
+#define TRIAS01_E_ELINK                  ((HRESULT)0xCF1102CDL)
+
+//
+// MessageId: TRIAS01_E_ENFILE
+//
+// MessageText:
+//
+//  Datei nicht gefunden
+//
+#define TRIAS01_E_ENFILE                 ((HRESULT)0xCF1102CCL)
+
+//
+// MessageId: TRIAS01_E_ENOMEM
+//
+// MessageText:
+//
+//  Hauptspeicher nicht ausreichend
+//
+#define TRIAS01_E_ENOMEM                 ((HRESULT)0xCF1102CBL)
+
+//
+// MessageId: TRIAS01_E_ENWORK
+//
+// MessageText:
+//
+//  Kein 'working_file' gegeben
+//
+#define TRIAS01_E_ENWORK                 ((HRESULT)0xCF1102CAL)
+
+//
+// MessageId: TRIAS01_E_EFAULT
+//
+// MessageText:
+//
+//  Pagefehler
+//
+#define TRIAS01_E_EFAULT                 ((HRESULT)0xCF1102C9L)
+
+//
+// MessageId: TRIAS01_E_ESYSTM
+//
+// MessageText:
+//
+//  Systemfehler
+//
+#define TRIAS01_E_ESYSTM                 ((HRESULT)0xCF1102C8L)
+
+//
+// MessageId: TRIAS01_E_EDFULL
+//
+// MessageText:
+//
+//  Datei kann nicht vergrˆﬂert werden
+//
+#define TRIAS01_E_EDFULL                 ((HRESULT)0xCF1102C7L)
+
+//
+// MessageId: TRIAS01_E_ECLOSE
+//
+// MessageText:
+//
+//  Kann DB nicht abschlieﬂen
+//
+#define TRIAS01_E_ECLOSE                 ((HRESULT)0xCF1102C6L)
+
+//
+// MessageId: TRIAS01_E_EACTIV
+//
+// MessageText:
+//
+//  Fehler beim Aktivieren einer DB
+//
+#define TRIAS01_E_EACTIV                 ((HRESULT)0xCF1102C5L)
+
+//
+// MessageId: TRIAS01_E_EKEYNO
+//
+// MessageText:
+//
+//  Fragw¸rdige Schl¸sselnummer
+//
+#define TRIAS01_E_EKEYNO                 ((HRESULT)0xCF1102C4L)
+
+//
+// MessageId: TRIAS01_E_ECTREE
+//
+// MessageText:
+//
+//  CubicTree zu tief verschachtelt
+//
+#define TRIAS01_E_ECTREE                 ((HRESULT)0xCF1102C3L)
+
+//
+// MessageId: TRIAS01_E_EQTREE
+//
+// MessageText:
+//
+//  Quadtree zu tief verschachtelt
+//
+#define TRIAS01_E_EQTREE                 ((HRESULT)0xCF1102C2L)
+
+//
+// MessageId: TRIAS01_E_EHTREE
+//
+// MessageText:
+//
+//  Hextree zu tief verschachtelt
+//
+#define TRIAS01_E_EHTREE                 ((HRESULT)0xCF1102C1L)
+
+//
+// MessageId: TRIAS01_E_ENOKEY
+//
+// MessageText:
+//
+//  Kein g¸ltiger Schl¸ssel
+//
+#define TRIAS01_E_ENOKEY                 ((HRESULT)0xCF1102C0L)
+
+//
+// MessageId: TRIAS01_E_EVERSN
+//
+// MessageText:
+//
+//  Falsche Versionsnummer
+//
+#define TRIAS01_E_EVERSN                 ((HRESULT)0xCF1102BFL)
+
+//
+// MessageId: TRIAS01_E_ENDBA
+//
+// MessageText:
+//
+//  Ung¸ltige Datenbankadresse
+//
+#define TRIAS01_E_ENDBA                  ((HRESULT)0xCF1102BEL)
+
+//
+// MessageId: TRIAS01_E_ENOPEN
+//
+// MessageText:
+//
+//  Datenbasis nicht erˆffnet
+//
+#define TRIAS01_E_ENOPEN                 ((HRESULT)0xCF1102BDL)
+
+//
+// MessageId: TRIAS01_E_ENAME
+//
+// MessageText:
+//
+//  Ung¸ltige(r) Datenbasis(name)
+//
+#define TRIAS01_E_ENAME                  ((HRESULT)0xCF1102BCL)
+
+//
+// MessageId: TRIAS01_E_EUELKE
+//
+// MessageText:
+//
+//  Zu viele Konturen, öberlauf Feld KE
+//
+#define TRIAS01_E_EUELKE                 ((HRESULT)0xCF11026AL)
+
+//
+// MessageId: TRIAS01_E_EMIX
+//
+// MessageText:
+//
+//  Geschlossene und nicht geschlossene Polygonz¸ge
+//
+#define TRIAS01_E_EMIX                   ((HRESULT)0xCF110269L)
+
+//
+// MessageId: TRIAS01_E_EIKINC
+//
+// MessageText:
+//
+//  Innenkonturen liegen ineinander
+//
+#define TRIAS01_E_EIKINC                 ((HRESULT)0xCF110268L)
+
+//
+// MessageId: TRIAS01_E_EIKEX
+//
+// MessageText:
+//
+//  Innenkontur liegt nicht in Auﬂenkontur
+//
+#define TRIAS01_E_EIKEX                  ((HRESULT)0xCF110267L)
+
+//
+// MessageId: TRIAS01_E_EKSCHN
+//
+// MessageText:
+//
+//  Konturen schneiden einander (nicht in St¸tzpunkt)
+//
+#define TRIAS01_E_EKSCHN                 ((HRESULT)0xCF110266L)
+
+//
+// MessageId: TRIAS01_E_EKBER
+//
+// MessageText:
+//
+//  Ber¸hrung oder Schnitt von Konturen (in St¸tzpkt)
+//
+#define TRIAS01_E_EKBER                  ((HRESULT)0xCF110265L)
+
+//
+// MessageId: TRIAS01_E_EPSCHN
+//
+// MessageText:
+//
+//  Selbst¸berschneidung Polygonzug (nicht in St¸tzpkt)
+//
+#define TRIAS01_E_EPSCHN                 ((HRESULT)0xCF110264L)
+
+//
+// MessageId: TRIAS01_E_EPBER
+//
+// MessageText:
+//
+//  Doppel/Ber¸hrungspkt/Selbst¸berschneidung Polygonzug
+//
+#define TRIAS01_E_EPBER                  ((HRESULT)0xCF110263L)
+
+//
+// MessageId: TRIAS01_E_EGIVLT
+//
+// MessageText:
+//
+//  Tempor‰res GIFeld f¸r Aufbereitung der GI fuer FEO zu klein
+//
+#define TRIAS01_E_EGIVLT                 ((HRESULT)0xCF110247L)
+
+//
+// MessageId: TRIAS01_E_EFUNCL
+//
+// MessageText:
+//
+//  Fl‰chenumrandung nicht geschlossen
+//
+#define TRIAS01_E_EFUNCL                 ((HRESULT)0xCF110246L)
+
+//
+// MessageId: TRIAS01_E_EFLOF
+//
+// MessageText:
+//
+//  Fehlerhafte Linienobjektfolge
+//
+#define TRIAS01_E_EFLOF                  ((HRESULT)0xCF110245L)
+
+//
+// MessageId: TRIAS01_E_EABEND
+//
+// MessageText:
+//
+//  Abbruch der Verarbeitung
+//
+#define TRIAS01_E_EABEND                 ((HRESULT)0xCF11023FL)
+
+//
+// MessageId: TRIAS01_E_ENOPBD
+//
+// MessageText:
+//
+//  Widerspruch PBDName zwischen DBHeader und IKE
+//
+#define TRIAS01_E_ENOPBD                 ((HRESULT)0xCF11023AL)
+
+//
+// MessageId: TRIAS01_E_EOBKTR
+//
+// MessageText:
+//
+//  Objekt besitzt keine thematischen Relationen
+//
+#define TRIAS01_E_EOBKTR                 ((HRESULT)0xCF110235L)
+
+//
+// MessageId: TRIAS01_E_EVOREL
+//
+// MessageText:
+//
+//  Verweis Objekt zu Relation falsch
+//
+#define TRIAS01_E_EVOREL                 ((HRESULT)0xCF110234L)
+
+//
+// MessageId: TRIAS01_E_EFOREL
+//
+// MessageText:
+//
+//  Falsche Objektnummer in Relation
+//
+#define TRIAS01_E_EFOREL                 ((HRESULT)0xCF110233L)
+
+//
+// MessageId: TRIAS01_E_EFVRAO
+//
+// MessageText:
+//
+//  Verweis RelationsartObjektfolge ist falsch
+//
+#define TRIAS01_E_EFVRAO                 ((HRESULT)0xCF110232L)
+
+//
+// MessageId: TRIAS01_E_ENOVRE
+//
+// MessageText:
+//
+//  Verweis RelationsartRelation ist fehlerhaft
+//
+#define TRIAS01_E_ENOVRE                 ((HRESULT)0xCF110231L)
+
+//
+// MessageId: TRIAS01_E_ERANRA
+//
+// MessageText:
+//
+//  Relationsart aus DB nicht in KeyTabelle
+//
+#define TRIAS01_E_ERANRA                 ((HRESULT)0xCF110230L)
+
+//
+// MessageId: TRIAS01_E_ENODB
+//
+// MessageText:
+//
+//  Kein Objekt in der Datenbasis
+//
+#define TRIAS01_E_ENODB                  ((HRESULT)0xCF11022BL)
+
+//
+// MessageId: TRIAS01_E_EMKDUP
+//
+// MessageText:
+//
+//  Objekt besitzt in MIKette doppelten Merkmalscode
+//
+#define TRIAS01_E_EMKDUP                 ((HRESULT)0xCF110225L)
+
+//
+// MessageId: TRIAS01_E_ENOVMO
+//
+// MessageText:
+//
+//  Objekt nicht in Verbindung MerkmalObjektfolge
+//
+#define TRIAS01_E_ENOVMO                 ((HRESULT)0xCF110224L)
+
+//
+// MessageId: TRIAS01_E_EFVMOB
+//
+// MessageText:
+//
+//  Verweis MerkmalskodeObjektfolge fehlerhaft
+//
+#define TRIAS01_E_EFVMOB                 ((HRESULT)0xCF110223L)
+
+//
+// MessageId: TRIAS01_E_EMKNMK
+//
+// MessageText:
+//
+//  Merkmalskode aus DB nicht in KeyTabelle
+//
+#define TRIAS01_E_EMKNMK                 ((HRESULT)0xCF110222L)
+
+//
+// MessageId: TRIAS01_E_ENOVIO
+//
+// MessageText:
+//
+//  Objekt nicht in Verbindung IdentifikatorObjektfolge
+//
+#define TRIAS01_E_ENOVIO                 ((HRESULT)0xCF110221L)
+
+//
+// MessageId: TRIAS01_E_EFVIOB
+//
+// MessageText:
+//
+//  Verweis IdentifikatorObjektfolge fehlerhaft
+//
+#define TRIAS01_E_EFVIOB                 ((HRESULT)0xCF110220L)
+
+//
+// MessageId: TRIAS01_E_EIKNID
+//
+// MessageText:
+//
+//  Identifikator aus DB nicht in KeyTabelle
+//
+#define TRIAS01_E_EIKNID                 ((HRESULT)0xCF11021FL)
+
+//
+// MessageId: TRIAS01_E_EFRDEF
+//
+// MessageText:
+//
+//  Verweis ObjektRelationsart fehlerhaft
+//
+#define TRIAS01_E_EFRDEF                 ((HRESULT)0xCF11021EL)
+
+//
+// MessageId: TRIAS01_E_EFMDEF
+//
+// MessageText:
+//
+//  Verweis ObjektMerkmalscode fehlerhaft
+//
+#define TRIAS01_E_EFMDEF                 ((HRESULT)0xCF11021DL)
+
+//
+// MessageId: TRIAS01_E_EFIDEF
+//
+// MessageText:
+//
+//  Verweis ObjektIdentifikator fehlerhaft
+//
+#define TRIAS01_E_EFIDEF                 ((HRESULT)0xCF11021CL)
+
+//
+// MessageId: TRIAS01_E_ENOGIB
+//
+// MessageText:
+//
+//  GI nicht im GeometrieBaum
+//
+#define TRIAS01_E_ENOGIB                 ((HRESULT)0xCF110218L)
+
+//
+// MessageId: TRIAS01_E_ENOREC
+//
+// MessageText:
+//
+//  Satz in der Datei ist gelˆscht
+//
+#define TRIAS01_E_ENOREC                 ((HRESULT)0xCF110217L)
+
+//
+// MessageId: TRIAS01_E_EWIKAN
+//
+// MessageText:
+//
+//  Winkel in Kante falsch
+//
+#define TRIAS01_E_EWIKAN                 ((HRESULT)0xCF110212L)
+
+//
+// MessageId: TRIAS01_E_ENOKKF
+//
+// MessageText:
+//
+//  Kante in Kantenfolge nicht gefunden
+//
+#define TRIAS01_E_ENOKKF                 ((HRESULT)0xCF110211L)
+
+//
+// MessageId: TRIAS01_E_EKPKFK
+//
+// MessageText:
+//
+//  Verweis vom Knoten zur Kantenfolge falsch
+//
+#define TRIAS01_E_EKPKFK                 ((HRESULT)0xCF110210L)
+
+//
+// MessageId: TRIAS01_E_EASPK
+//
+// MessageText:
+//
+//  Anzahl der St¸tzpunkte einer Kante falsch
+//
+#define TRIAS01_E_EASPK                  ((HRESULT)0xCF11020FL)
+
+//
+// MessageId: TRIAS01_E_ENOKAF
+//
+// MessageText:
+//
+//  Kantenfolge fehlerhaft
+//
+#define TRIAS01_E_ENOKAF                 ((HRESULT)0xCF11020EL)
+
+//
+// MessageId: TRIAS01_E_EVEKSP
+//
+// MessageText:
+//
+//  Verweis kante zur St¸tzpunktfolge falsch
+//
+#define TRIAS01_E_EVEKSP                 ((HRESULT)0xCF11020DL)
+
+//
+// MessageId: TRIAS01_E_ENOVEK
+//
+// MessageText:
+//
+//  Verweis aus St¸tzpunktfolge in Kante falsch
+//
+#define TRIAS01_E_ENOVEK                 ((HRESULT)0xCF11020CL)
+
+//
+// MessageId: TRIAS01_E_EFKVOL
+//
+// MessageText:
+//
+//  Verweis von Objekt zur Kante falsch
+//
+#define TRIAS01_E_EFKVOL                 ((HRESULT)0xCF11020BL)
+
+//
+// MessageId: TRIAS01_E_ENOVGO
+//
+// MessageText:
+//
+//  Verweis von der Geometrie zum Objekt falsch
+//
+#define TRIAS01_E_ENOVGO                 ((HRESULT)0xCF11020AL)
+
+//
+// MessageId: TRIAS01_E_EFKFK
+//
+// MessageText:
+//
+//  Kantenfolgeliste fehlerhaft
+//
+#define TRIAS01_E_EFKFK                  ((HRESULT)0xCF110209L)
+
+//
+// MessageId: TRIAS01_E_ENODEF
+//
+// MessageText:
+//
+//  Keine Objektdefinition
+//
+#define TRIAS01_E_ENODEF                 ((HRESULT)0xCF110208L)
+
+//
+// MessageId: TRIAS01_E_ESONFD
+//
+// MessageText:
+//
+//  Sekund‰robjekt nicht vorhanden
+//
+#define TRIAS01_E_ESONFD                 ((HRESULT)0xCF110200L)
+
+//
+// MessageId: TRIAS01_E_EPONFD
+//
+// MessageText:
+//
+//  Prim‰robjekt nicht vorhanden
+//
+#define TRIAS01_E_EPONFD                 ((HRESULT)0xCF1101FFL)
+
+//
+// MessageId: TRIAS01_E_EONDUP
+//
+// MessageText:
+//
+//  Objektnummer in Parameterfeld doppelt
+//
+#define TRIAS01_E_EONDUP                 ((HRESULT)0xCF1101F5L)
+
+//
+// MessageId: TRIAS01_E_ENOPAD
+//
+// MessageText:
+//
+//  Falsche Verzweigung angegeben
+//
+#define TRIAS01_E_ENOPAD                 ((HRESULT)0xCF1100D9L)
+
+//
+// MessageId: TRIAS01_E_ENOKOM
+//
+// MessageText:
+//
+//  Kein Komplexobjekt
+//
+#define TRIAS01_E_ENOKOM                 ((HRESULT)0xCF1100D8L)
+
+//
+// MessageId: TRIAS01_E_EANZON
+//
+// MessageText:
+//
+//  Anzahl der Maschenobjekte um Knotenpunkt falsch
+//
+#define TRIAS01_E_EANZON                 ((HRESULT)0xCF1100D5L)
+
+//
+// MessageId: TRIAS01_E_EKANT
+//
+// MessageText:
+//
+//  Drei Kanten mit gleicher Objektnummer schneiden sich
+//
+#define TRIAS01_E_EKANT                  ((HRESULT)0xCF1100D2L)
+
+//
+// MessageId: TRIAS01_E_EKAMA
+//
+// MessageText:
+//
+//  Falsche Liste, NKAL bzw. NMAL nicht gefunden
+//
+#define TRIAS01_E_EKAMA                  ((HRESULT)0xCF1100D1L)
+
+//
+// MessageId: TRIAS01_E_EZSPL
+//
+// MessageText:
+//
+//  Fehler in Zeiger SPL
+//
+#define TRIAS01_E_EZSPL                  ((HRESULT)0xCF1100CFL)
+
+//
+// MessageId: TRIAS01_E_EZAEL
+//
+// MessageText:
+//
+//  Fehler im Vergleich Z‰hler  LAEMAX(GIFelder)
+//
+#define TRIAS01_E_EZAEL                  ((HRESULT)0xCF1100CEL)
+
+//
+// MessageId: TRIAS01_E_EZKAL
+//
+// MessageText:
+//
+//  Zeiger KL darf nicht 0 sein
+//
+#define TRIAS01_E_EZKAL                  ((HRESULT)0xCF1100CDL)
+
+//
+// MessageId: TRIAS01_E_EFFLA
+//
+// MessageText:
+//
+//  Fehler beim FF  Laden
+//
+#define TRIAS01_E_EFFLA                  ((HRESULT)0xCF1100CCL)
+
+//
+// MessageId: TRIAS01_E_ENOGD
+//
+// MessageText:
+//
+//  Fehler beim Erˆffnen der Grafik
+//
+#define TRIAS01_E_ENOGD                  ((HRESULT)0xCF1100CAL)
+
+//
+// MessageId: TRIAS01_E_EMAXL
+//
+// MessageText:
+//
+//  X,Y  Felder grˆﬂer als MAXL angegeben
+//
+#define TRIAS01_E_EMAXL                  ((HRESULT)0xCF1100C9L)
+
+//
+// MessageId: TRIAS01_E_ESTAND
+//
+// MessageText:
+//
+//  Fehlermeldung Standard
+//
+#define TRIAS01_E_ESTAND                 ((HRESULT)0xCF1100C7L)
+
+//
+// MessageId: TRIAS01_E_ESPEZ
+//
+// MessageText:
+//
+//  Fehlermeldung unterdr¸cken
+//
+#define TRIAS01_E_ESPEZ                  ((HRESULT)0xCF1100C6L)
+
+//
+// MessageId: TRIAS01_E_ENRVZO
+//
+// MessageText:
+//
+//  E/A Fehler Verbindung Masche  inneres Objekt
+//
+#define TRIAS01_E_ENRVZO                 ((HRESULT)0xCF11007EL)
+
+//
+// MessageId: TRIAS01_E_ENRPOL
+//
+// MessageText:
+//
+//  E/A Fehler Punktliste
+//
+#define TRIAS01_E_ENRPOL                 ((HRESULT)0xCF11007DL)
+
+//
+// MessageId: TRIAS01_E_EMTEXT
+//
+// MessageText:
+//
+//  Modifikation von Text mit Funktionskennz. (D,M,B) nicht erlaubt
+//
+#define TRIAS01_E_EMTEXT                 ((HRESULT)0xCF11007CL)
+
+//
+// MessageId: TRIAS01_E_ENPMI
+//
+// MessageText:
+//
+//  Kein Zeiger auf Merkmale
+//
+#define TRIAS01_E_ENPMI                  ((HRESULT)0xCF11007BL)
+
+//
+// MessageId: TRIAS01_E_ENPID
+//
+// MessageText:
+//
+//  Kein Zeiger auf Identifikator
+//
+#define TRIAS01_E_ENPID                  ((HRESULT)0xCF11007AL)
+
+//
+// MessageId: TRIAS01_E_EYPREL
+//
+// MessageText:
+//
+//  Relationen eingetragen
+//
+#define TRIAS01_E_EYPREL                 ((HRESULT)0xCF110079L)
+
+//
+// MessageId: TRIAS01_E_ENPGI
+//
+// MessageText:
+//
+//  Kein Zeiger auf Geometrie
+//
+#define TRIAS01_E_ENPGI                  ((HRESULT)0xCF110078L)
+
+//
+// MessageId: TRIAS01_E_ENRVBD
+//
+// MessageText:
+//
+//  E/A Fehler Verbindungslisten allgemein
+//
+#define TRIAS01_E_ENRVBD                 ((HRESULT)0xCF110076L)
+
+//
+// MessageId: TRIAS01_E_ENRKFM
+//
+// MessageText:
+//
+//  E/A Fehler Kantenfolge Maschen
+//
+#define TRIAS01_E_ENRKFM                 ((HRESULT)0xCF110075L)
+
+//
+// MessageId: TRIAS01_E_ENRDBT
+//
+// MessageText:
+//
+//  E/A Fehler Textdatei
+//
+#define TRIAS01_E_ENRDBT                 ((HRESULT)0xCF110074L)
+
+//
+// MessageId: TRIAS01_E_ENRVIO
+//
+// MessageText:
+//
+//  E/A Fehler Verbindungsdatei IdentifikatorObjekt
+//
+#define TRIAS01_E_ENRVIO                 ((HRESULT)0xCF110073L)
+
+//
+// MessageId: TRIAS01_E_ENRIDL
+//
+// MessageText:
+//
+//  E/A Fehler Identifikatorliste
+//
+#define TRIAS01_E_ENRIDL                 ((HRESULT)0xCF110072L)
+
+//
+// MessageId: TRIAS01_E_ENRMI
+//
+// MessageText:
+//
+//  E/A Fehler Merkmalsinformation
+//
+#define TRIAS01_E_ENRMI                  ((HRESULT)0xCF11006FL)
+
+//
+// MessageId: TRIAS01_E_ENRMKL
+//
+// MessageText:
+//
+//  E/A Fehler Merkmalscodeliste
+//
+#define TRIAS01_E_ENRMKL                 ((HRESULT)0xCF11006EL)
+
+//
+// MessageId: TRIAS01_E_ENRVOM
+//
+// MessageText:
+//
+//  E/A Fehler Verbindungsdatei ObjektMerkmal
+//
+#define TRIAS01_E_ENRVOM                 ((HRESULT)0xCF11006DL)
+
+//
+// MessageId: TRIAS01_E_ENRVOL
+//
+// MessageText:
+//
+//  E/A Fehler Verbindungsliste ObjektLinie
+//
+#define TRIAS01_E_ENRVOL                 ((HRESULT)0xCF11006CL)
+
+//
+// MessageId: TRIAS01_E_ENRVGO
+//
+// MessageText:
+//
+//  E/A Fehler Verbindungsliste GeometrieObjekt
+//
+#define TRIAS01_E_ENRVGO                 ((HRESULT)0xCF11006AL)
+
+//
+// MessageId: TRIAS01_E_ENRKFL
+//
+// MessageText:
+//
+//  E/A Fehler Kantenfolge Knoten
+//
+#define TRIAS01_E_ENRKFL                 ((HRESULT)0xCF110069L)
+
+//
+// MessageId: TRIAS01_E_ENRMAL
+//
+// MessageText:
+//
+//  E/A Fehler Maschenliste
+//
+#define TRIAS01_E_ENRMAL                 ((HRESULT)0xCF110068L)
+
+//
+// MessageId: TRIAS01_E_ENRKPL
+//
+// MessageText:
+//
+//  E/A Fehler Knotenpunktliste
+//
+#define TRIAS01_E_ENRKPL                 ((HRESULT)0xCF110067L)
+
+//
+// MessageId: TRIAS01_E_ENRSPL
+//
+// MessageText:
+//
+//  E/A Fehler St¸tzpunktliste
+//
+#define TRIAS01_E_ENRSPL                 ((HRESULT)0xCF110066L)
+
+//
+// MessageId: TRIAS01_E_ENRKAL
+//
+// MessageText:
+//
+//  E/A Fehler Kantenliste
+//
+#define TRIAS01_E_ENRKAL                 ((HRESULT)0xCF110065L)
+
+//
+// MessageId: TRIAS01_E_ETYP
+//
+// MessageText:
+//
+//  Formattyp Merkmal in MI stimmt nicht mit Typ in DB ¸berein
+//
+#define TRIAS01_E_ETYP                   ((HRESULT)0xCF110053L)
+
+//
+// MessageId: TRIAS01_E_EVDAT
+//
+// MessageText:
+//
+//  Generierungfehler in Verbindungsdatei
+//
+#define TRIAS01_E_EVDAT                  ((HRESULT)0xCF110052L)
+
+//
+// MessageId: TRIAS01_E_ESPO
+//
+// MessageText:
+//
+//  Zu teilendes Objekt ist keine Linie oder Fl‰che
+//
+#define TRIAS01_E_ESPO                   ((HRESULT)0xCF110050L)
+
+//
+// MessageId: TRIAS01_E_ETP
+//
+// MessageText:
+//
+//  Teilungpunkt liegt nicht auf dem zu teilenden Objekt
+//
+#define TRIAS01_E_ETP                    ((HRESULT)0xCF11004FL)
+
+//
+// MessageId: TRIAS01_E_EOSTA
+//
+// MessageText:
+//
+//  F¸r das neue Objekt wurde ein falscher Status vereinbart
+//
+#define TRIAS01_E_EOSTA                  ((HRESULT)0xCF11004EL)
+
+//
+// MessageId: TRIAS01_E_EFON
+//
+// MessageText:
+//
+//  Zu ¸berlagerndes Objekt hat falschen Status
+//
+#define TRIAS01_E_EFON                   ((HRESULT)0xCF11004DL)
+
+//
+// MessageId: TRIAS01_E_EOBJF
+//
+// MessageText:
+//
+//  Angegebene Objektfolge falsch bzw. Objekt nicht in DB
+//
+#define TRIAS01_E_EOBJF                  ((HRESULT)0xCF11004CL)
+
+//
+// MessageId: TRIAS01_E_EAPEP
+//
+// MessageText:
+//
+//  Anfangsbzw. Endpunkt nicht auf erstem bzw. letztem Objekt
+//
+#define TRIAS01_E_EAPEP                  ((HRESULT)0xCF11004BL)
+
+//
+// MessageId: TRIAS01_E_EWIN
+//
+// MessageText:
+//
+//  Bei der Errechnung des Winkels einer Kante ist Divisor 0
+//
+#define TRIAS01_E_EWIN                   ((HRESULT)0xCF11004AL)
+
+//
+// MessageId: TRIAS01_E_EKLSPL
+//
+// MessageText:
+//
+//  Zugriffsfehler in SPL
+//
+#define TRIAS01_E_EKLSPL                 ((HRESULT)0xCF110049L)
+
+//
+// MessageId: TRIAS01_E_EGEOV
+//
+// MessageText:
+//
+//  Feld f¸r Geometrieinf¸gung (X, YVektor, Zeigervektor) nicht ausreichend
+//
+#define TRIAS01_E_EGEOV                  ((HRESULT)0xCF110048L)
+
+//
+// MessageId: TRIAS01_E_EKTAB
+//
+// MessageText:
+//
+//  Feld (ktab) f¸r die Schnittinformationen nicht ausreichend
+//
+#define TRIAS01_E_EKTAB                  ((HRESULT)0xCF110047L)
+
+//
+// MessageId: TRIAS01_E_EFFO
+//
+// MessageText:
+//
+//  Ein als Fl‰che angegebenes Objekt ist kein geschlossener Polygonzug
+//
+#define TRIAS01_E_EFFO                   ((HRESULT)0xCF110046L)
+
+//
+// MessageId: TRIAS01_E_ENOON
+//
+// MessageText:
+//
+//  Kein Objekt mit dieser Nummer gefunden
+//
+#define TRIAS01_E_ENOON                  ((HRESULT)0xCF11000AL)
+
+//
+// MessageId: TRIAS01_E_ESTAT
+//
+// MessageText:
+//
+//  Statusfehler des Objekts
+//
+#define TRIAS01_E_ESTAT                  ((HRESULT)0xCF110009L)
+
+//
+// MessageId: TRIAS01_E_ENL
+//
+// MessageText:
+//
+//  Nachladeparameter falsch
+//
+#define TRIAS01_E_ENL                    ((HRESULT)0xCF110008L)
+
+//
+// MessageId: TRIAS01_E_ENOID
+//
+// MessageText:
+//
+//  Identifikator in DB nicht vorhanden
+//
+#define TRIAS01_E_ENOID                  ((HRESULT)0xCF110007L)
+
+//
+// MessageId: TRIAS01_E_ENOMK
+//
+// MessageText:
+//
+//  Merkmalskode in DB nicht vorhanden
+//
+#define TRIAS01_E_ENOMK                  ((HRESULT)0xCF110006L)
+
+//
+// MessageId: TRIAS01_E_ENOREL
+//
+// MessageText:
+//
+//  Relation in der DB nicht vorhanden
+//
+#define TRIAS01_E_ENOREL                 ((HRESULT)0xCF110005L)
+
+//
+// MessageId: TRIAS01_E_ENODIM
+//
+// MessageText:
+//
+//  Dimension im Feld falsch ¸bergeben
+//
+#define TRIAS01_E_ENODIM                 ((HRESULT)0xCF110003L)
+
+//
+// MessageId: TRIAS01_E_EPAFEH
+//
+// MessageText:
+//
+//  Parameter beim Funktionsaufruf falsch
+//
+#define TRIAS01_E_EPAFEH                 ((HRESULT)0xCF110002L)
+
+//
+// MessageId: TRIAS01_S_WDHLG
+//
+// MessageText:
+//
+//  Wiederholung des Aufrufs
+//
+#define TRIAS01_S_WDHLG                  ((HRESULT)0x4F110001L)
+
+//
+// MessageId: TRIAS01_S_WNORELDB
+//
+// MessageText:
+//
+//  Relation in der DB nicht vorhanden
+//
+#define TRIAS01_S_WNORELDB               ((HRESULT)0x4F110005L)
+
+//
+// MessageId: TRIAS01_S_WNOMK
+//
+// MessageText:
+//
+//  Merkmalskode in DB nicht vorhanden
+//
+#define TRIAS01_S_WNOMK                  ((HRESULT)0x4F110006L)
+
+//
+// MessageId: TRIAS01_S_WNOID
+//
+// MessageText:
+//
+//  Identifikator in DB nicht vorhanden
+//
+#define TRIAS01_S_WNOID                  ((HRESULT)0x4F110007L)
+
+//
+// MessageId: TRIAS01_S_WJTDBT
+//
+// MessageText:
+//
+//  Text bereits vorhanden
+//
+#define TRIAS01_S_WJTDBT                 ((HRESULT)0x4F110074L)
+
+//
+// MessageId: TRIAS01_S_WNPGI
+//
+// MessageText:
+//
+//  Kein Zeiger auf Geometrie
+//
+#define TRIAS01_S_WNPGI                  ((HRESULT)0x4F110078L)
+
+//
+// MessageId: TRIAS01_S_WNPMI
+//
+// MessageText:
+//
+//  Kein Zeiger auf Merkmale
+//
+#define TRIAS01_S_WNPMI                  ((HRESULT)0x4F11007BL)
+
+//
+// MessageId: TRIAS01_S_WNOEOK
+//
+// MessageText:
+//
+//  Objekt ist kein Elementarobjekt
+//
+#define TRIAS01_S_WNOEOK                 ((HRESULT)0x4F1100CBL)
+
+//
+// MessageId: TRIAS01_S_WNOON
+//
+// MessageText:
+//
+//  Keine Objekte gefunden
+//
+#define TRIAS01_S_WNOON                  ((HRESULT)0x4F1100D0L)
+
+//
+// MessageId: TRIAS01_S_WFORT
+//
+// MessageText:
+//
+//  Fortsetzung notwendig
+//
+#define TRIAS01_S_WFORT                  ((HRESULT)0x4F1100D3L)
+
+//
+// MessageId: TRIAS01_S_WNORIG
+//
+// MessageText:
+//
+//  Keine topologischen Relationen vorhanden
+//
+#define TRIAS01_S_WNORIG                 ((HRESULT)0x4F1100D4L)
+
+//
+// MessageId: TRIAS01_S_WFORTR
+//
+// MessageText:
+//
+//  Es folgt letzter Knotenpunkt, weiterer Fl‰chenrand folgt
+//
+#define TRIAS01_S_WFORTR                 ((HRESULT)0x4F1100D6L)
+
+//
+// MessageId: TRIAS01_S_WFORTI
+//
+// MessageText:
+//
+//  Folgende Objekte vˆllig in Fl‰che, bzw. voll ¸berdeckend
+//
+#define TRIAS01_S_WFORTI                 ((HRESULT)0x4F1100D7L)
+
+//
+// MessageId: TRIAS01_S_WRELEX
+//
+// MessageText:
+//
+//  Zu speichernde Relation schon vorhanden
+//
+#define TRIAS01_S_WRELEX                 ((HRESULT)0x4F1101F4L)
+
+//
+// MessageId: TRIAS01_S_WPONFD
+//
+// MessageText:
+//
+//  Prim‰robjekt nicht vorhanden
+//
+#define TRIAS01_S_WPONFD                 ((HRESULT)0x4F1101FFL)
+
+//
+// MessageId: TRIAS01_S_WSONFD
+//
+// MessageText:
+//
+//  Sekund‰robjekt nicht vorhanden
+//
+#define TRIAS01_S_WSONFD                 ((HRESULT)0x4F110200L)
+
+//
+// MessageId: TRIAS01_S_WPONOD
+//
+// MessageText:
+//
+//  Prim‰robjekt ist nicht definiert
+//
+#define TRIAS01_S_WPONOD                 ((HRESULT)0x4F110201L)
+
+//
+// MessageId: TRIAS01_S_WSONOD
+//
+// MessageText:
+//
+//  Sekund‰robjekt ist nicht definiert
+//
+#define TRIAS01_S_WSONOD                 ((HRESULT)0x4F110202L)
+
+//
+// MessageId: TRIAS01_S_WOBKTR
+//
+// MessageText:
+//
+//  Objekt besitzt keine thematischen Relationen
+//
+#define TRIAS01_S_WOBKTR                 ((HRESULT)0x4F110235L)
+
+//
+// MessageId: TRIAS01_S_WLINE
+//
+// MessageText:
+//
+//  Polygonzug nicht geschlossen (Linie)
+//
+#define TRIAS01_S_WLINE                  ((HRESULT)0x4F110258L)
+
+//
+// MessageId: TRIAS01_S_WAREA
+//
+// MessageText:
+//
+//  Fl‰che, aber nicht umorientiert
+//
+#define TRIAS01_S_WAREA                  ((HRESULT)0x4F110259L)
+
+//
+// MessageId: TRIAS01_S_WUMOR
+//
+// MessageText:
+//
+//  Fl‰che, mindestens eine Konturorientierung wurde korrigiert
+//
+#define TRIAS01_S_WUMOR                  ((HRESULT)0x4F110263L)
+
+//
+// MessageId: TRIAS01_S_WDUMMY
+//
+// MessageText:
+//
+//  Kein Fehler, aber Ret-Value !=  S_OKAY
+//
+#define TRIAS01_S_WDUMMY                 ((HRESULT)0x4F1102BCL)
+
+//
+// MessageId: TRIAS01_S_WNTFND
+//
+// MessageText:
+//
+//  Keine Datens‰tze vorhanden
+//
+#define TRIAS01_S_WNTFND                 ((HRESULT)0x4F1102BDL)
+
+//
+// MessageId: TRIAS01_S_WDUPL
+//
+// MessageText:
+//
+//  Bereits vorhandener Schl¸ssel soll in einzigartiges Feld gespeichert werden
+//
+#define TRIAS01_S_WDUPL                  ((HRESULT)0x4F1102BEL)
+
+//
+// MessageId: TRIAS01_S_WNOFIL
+//
+// MessageText:
+//
+//  Datenbasis enth‰lt keine Dateien
+//
+#define TRIAS01_S_WNOFIL                 ((HRESULT)0x4F1102BFL)
+
+//
+// MessageId: TRIAS01_S_VERSIO
+//
+// MessageText:
+//
+//  Falsche Versionsnummer
+//
+#define TRIAS01_S_VERSIO                 ((HRESULT)0x4F1102C0L)
+
+//
+// MessageId: TRIAS01_S_WBADMK
+//
+// MessageText:
+//
+//  Falscher Merkmalstyp
+//
+#define TRIAS01_S_WBADMK                 ((HRESULT)0x4F1102DAL)
+
+//
+// MessageId: TRIAS01_S_TEXTTO
+//
+// MessageText:
+//
+//  Merkmalstext zu lang
+//
+#define TRIAS01_S_TEXTTO                 ((HRESULT)0x4F1102DBL)
+
+//
+// MessageId: TRIAS01_S_MKODEE
+//
+// MessageText:
+//
+//  Merkmals-Kode existiert bereits f¸r dieses Objekt
+//
+#define TRIAS01_S_MKODEE                 ((HRESULT)0x4F1102DCL)
+
+//
+// MessageId: TRIAS01_S_BADREL
+//
+// MessageText:
+//
+//  Falscher Relations-Typ
+//
+#define TRIAS01_S_BADREL                 ((HRESULT)0x4F1102DDL)
+
+//
+// MessageId: TRIAS01_S_DUPLBR
+//
+// MessageText:
+//
+//  Doppeltes Begleitobjekt
+//
+#define TRIAS01_S_DUPLBR                 ((HRESULT)0x4F1102DEL)
+
+//
+// MessageId: TRIAS01_S_DUPLRE
+//
+// MessageText:
+//
+//  Doppelte Relation
+//
+#define TRIAS01_S_DUPLRE                 ((HRESULT)0x4F1102DFL)
+
+//
+// MessageId: TRIAS01_S_BADCOO
+//
+// MessageText:
+//
+//  Koordinaten auﬂerhalb des g¸ltigen Bereiches
+//
+#define TRIAS01_S_BADCOO                 ((HRESULT)0x4F1102EEL)
+
+//
+// MessageId: TRIAS01_S_WSBNO
+//
+// MessageText:
+//
+//  Symbol in der PBD nicht vorhanden
+//
+#define TRIAS01_S_WSBNO                  ((HRESULT)0x4F1103EDL)
+
+//
+// MessageId: TRIAS01_S_WNRECI
+//
+// MessageText:
+//
+//  Satznummer f¸r die Identifikatordatei (PBD) nicht vorhanden
+//
+#define TRIAS01_S_WNRECI                 ((HRESULT)0x4F1103F2L)
+
+//
+// MessageId: TRIAS01_S_WNRECR
+//
+// MessageText:
+//
+//  Satznummer f¸r die Relationsartendatei (PBD) nicht vorhanden
+//
+#define TRIAS01_S_WNRECR                 ((HRESULT)0x4F1103F3L)
+
+//
+// MessageId: TRIAS01_S_WIDLNO
+//
+// MessageText:
+//
+//  Identifikator in PBD nicht vorhanden
+//
+#define TRIAS01_S_WIDLNO                 ((HRESULT)0x4F1103F4L)
+
+//
+// MessageId: TRIAS01_S_WRELNO
+//
+// MessageText:
+//
+//  Relation in der PBD nicht vorhanden
+//
+#define TRIAS01_S_WRELNO                 ((HRESULT)0x4F1103F5L)
+
+//
+// MessageId: TRIAS01_S_WMKLNO
+//
+// MessageText:
+//
+//  Merkmal in der PBD nicht vorhanden
+//
+#define TRIAS01_S_WMKLNO                 ((HRESULT)0x4F1103F6L)
+
+//
+// MessageId: TRIAS01_S_WNRECM
+//
+// MessageText:
+//
+//  Satznummer f¸r die Merkmalsdatei der PBD nicht vorhanden
+//
+#define TRIAS01_S_WNRECM                 ((HRESULT)0x4F1103F7L)
+
+//
+// MessageId: TRIAS01_S_WNRECS
+//
+// MessageText:
+//
+//  Recordnummer f¸r Symboldatei (PBD) nicht vorhanden
+//
+#define TRIAS01_S_WNRECS                 ((HRESULT)0x4F1103F8L)
+
+//
+// MessageId: TRIAS01_S_WTYPR
+//
+// MessageText:
+//
+//  Einspeicherung des Merkmalswertes nicht mˆglich, MW-Typ ist REAL
+//
+#define TRIAS01_S_WTYPR                  ((HRESULT)0x4F1103F9L)
+
+//
+// MessageId: TRIAS01_S_WNRECW
+//
+// MessageText:
+//
+//  Satznummer f¸r die Merkmalswertedatei in der PBD nicht vorhanden
+//
+#define TRIAS01_S_WNRECW                 ((HRESULT)0x4F1103FAL)
+
+//
+// MessageId: TRIAS01_S_WNOTAP
+//
+// MessageText:
+//
+//  Dateianh‰ngen wird bei Export nicht unterst¸tzt
+//
+#define TRIAS01_S_WNOTAP                 ((HRESULT)0x4F1104B0L)
+
+//
+// MessageId: TRIAS01_S_WNORELOBJ
+//
+// MessageText:
+//
+//  Relation ist am Objekt nicht vorhanden
+//
+#define TRIAS01_S_WNORELOBJ              ((HRESULT)0x4F110640L)
+
+//
+// MessageId: TRIAS01_S_WNOVAL
+//
+// MessageText:
+//
+//  Wert existiert nicht
+//
+#define TRIAS01_S_WNOVAL                 ((HRESULT)0x4F1106A3L)
+
+//
+// MessageId: TRIAS01_S_WNOTXT
+//
+// MessageText:
+//
+//  Kein Objekt mit Merkmal entsprechend Suchtext gefunden
+//
+#define TRIAS01_S_WNOTXT                 ((HRESULT)0x4F1106A4L)
+
+//
+// MessageId: TRIAS01_S_WCNLIB
+//
+// MessageText:
+//
+//  Druckertreiber nicht auffindbar
+//
+#define TRIAS01_S_WCNLIB                 ((HRESULT)0x4F1106A5L)
+
+//
+// MessageId: TRIAS01_S_WEXIST
+//
+// MessageText:
+//
+//  Datei existiert bereits
+//
+#define TRIAS01_S_WEXIST                 ((HRESULT)0x4F1106A6L)
+
+//
+// MessageId: TRIAS01_S_WMMATC
+//
+// MessageText:
+//
+//  Nichtentsprechung bei dBASE-relevaten Merkmalskodes
+//
+#define TRIAS01_S_WMMATC                 ((HRESULT)0x4F1106A7L)
+
+//
+// MessageId: TRIAS01_S_WRNOTF
+//
+// MessageText:
+//
+//  Kein Objekt entsprechend Recherchekriterien gefunden
+//
+#define TRIAS01_S_WRNOTF                 ((HRESULT)0x4F1106A8L)
+
+//
+// MessageId: TRIAS01_S_WBADCM
+//
+// MessageText:
+//
+//  Unbekannte Kommandozeilenoption
+//
+#define TRIAS01_S_WBADCM                 ((HRESULT)0x4F1106A9L)
+
+//
+// MessageId: TRIAS01_S_WNOTEX
+//
+// MessageText:
+//
+//  Objekt ist kein Text-Objekt
+//
+#define TRIAS01_S_WNOTEX                 ((HRESULT)0x4F1106AAL)
+
+//
+// MessageId: TRIAS01_S_WTEXTO
+//
+// MessageText:
+//
+//  Objekt ist ein Text-Objekt
+//
+#define TRIAS01_S_WTEXTO                 ((HRESULT)0x4F1106ABL)
+
+//
+// MessageId: TRIAS01_S_WMULTR
+//
+// MessageText:
+//
+//  Komplexobjekt besitzt mehrere Komplexrelationen
+//
+#define TRIAS01_S_WMULTR                 ((HRESULT)0x4F1106ACL)
+
+//
+// MessageId: TRIAS01_S_WNOKOR
+//
+// MessageText:
+//
+//  Komplexobjekt besitzt keine Komplexrelation
+//
+#define TRIAS01_S_WNOKOR                 ((HRESULT)0x4F1106ADL)
+
+//
+// MessageId: TRIAS01_S_WNOTMK
+//
+// MessageText:
+//
+//  Bezugsobjekt hat keinen Text f¸r Textobjekt
+//
+#define TRIAS01_S_WNOTMK                 ((HRESULT)0x4F1106AEL)
+
+//
+// MessageId: TRIAS01_S_WBADRC
+//
+// MessageText:
+//
+//  Komplexobjekt soll unterschiedliche Relationscodes enthalten
+//
+#define TRIAS01_S_WBADRC                 ((HRESULT)0x4F1106AFL)
+
+//
+// MessageId: TRIAS01_S_WNOKO
+//
+// MessageText:
+//
+//  Komplexobjekt kann nicht gebildet werden
+//
+#define TRIAS01_S_WNOKO                  ((HRESULT)0x4F1106B0L)
+
+//
+// MessageId: TRIAS01_S_WNOASS
+//
+// MessageText:
+//
+//  Abh‰ngiger Textobjekt hat kein Bezugsobjekt
+//
+#define TRIAS01_S_WNOASS                 ((HRESULT)0x4F1106B1L)
+
+//
+// MessageId: TRIAS01_S_WNOVIT
+//
+// MessageText:
+//
+//  Textobjekt hat keine Visualisierungsinformation
+//
+#define TRIAS01_S_WNOVIT                 ((HRESULT)0x4F1106B5L)
+
+//
+// MessageId: TRIAS01_S_WNOVIF
+//
+// MessageText:
+//
+//  Fl‰chenobjekt hat keine Visualisierungsinformation
+//
+#define TRIAS01_S_WNOVIF                 ((HRESULT)0x4F1106B6L)
+
+//
+// MessageId: TRIAS01_S_WNOVIL
+//
+// MessageText:
+//
+//  Linieobjekt hat keine Visualisierungsinformation
+//
+#define TRIAS01_S_WNOVIL                 ((HRESULT)0x4F1106B7L)
+
+//
+// MessageId: TRIAS01_S_WNOVIP
+//
+// MessageText:
+//
+//  Punktobjekt hat keine Visualisierungsinformation
+//
+#define TRIAS01_S_WNOVIP                 ((HRESULT)0x4F1106B8L)
+
+//
+// MessageId: WC_DATASOURCE_ISRO
+//
+// MessageText:
+//
+//  Datenquelle ist schreibgesch¸tzt.
+//
+#define WC_DATASOURCE_ISRO               ((HRESULT)0x8F1107D0L)
+
+//
+// MessageId: WC_METADATA_ISRO
+//
+// MessageText:
+//
+//  Beschreibungsdaten sind schreibgesch¸tzt (Datenbankschema kann nicht modifiziert werden).
+//
+#define WC_METADATA_ISRO                 ((HRESULT)0x8F1107D1L)
+
+//
+// MessageId: WC_CLASS_ISRO
+//
+// MessageText:
+//
+//  Die Objektklasse (Tabelle) ist schreibgesch¸tzt.
+//
+#define WC_CLASS_ISRO                    ((HRESULT)0x8F1107D2L)
+
+//
+// MessageId: WC_FEATURE_ISRO
+//
+// MessageText:
+//
+//  Objekteigenschaft ist schreibgesch¸tzt.
+//
+#define WC_FEATURE_ISRO                  ((HRESULT)0x8F1107D3L)
+
+#endif // _TRiAS01_HMC

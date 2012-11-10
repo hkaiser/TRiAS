@@ -1,0 +1,24 @@
+HKCR 
+{
+	TRiASMDS.StringColl.1 = s 'TRiAS® - Metadatenservice, Suchergebnis' 
+	{
+		CLSID = s '{E9F87455-5845-11D2-8FCA-0060085FC1CE}'
+	}
+	TRiASMDS.StringColl = s 'TRiAS® - Metadatenservice, Suchergebnis' 
+	{
+		CurVer = s 'TRiASMDS.StringColl.1'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {E9F87455-5845-11D2-8FCA-0060085FC1CE} = s 'TRiAS® - Metadatenservice, Suchergebnis' 
+		{
+			ProgID = s 'TRiASMDS.StringColl.1'
+			VersionIndependentProgID = s 'TRiASMDS.StringColl'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%' 
+			{
+				val ThreadingModel = s 'Both'
+			}
+		}
+	}
+}

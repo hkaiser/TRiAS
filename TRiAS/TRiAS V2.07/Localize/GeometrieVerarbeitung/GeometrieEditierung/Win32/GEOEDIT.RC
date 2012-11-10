@@ -1,0 +1,328 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "geoedita.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "dlgs.h"
+#include "resstrg.h"
+#include "geoedit.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_NEUERFASSUNG DIALOG DISCARDABLE  2, 15, 191, 106
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Neuerfassung"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Objektklasse:",-1,2,3,51,8
+    COMBOBOX        IDL_IDENTIFIKATOR,2,12,139,59,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Objekt&name:",-1,2,27,44,8
+    EDITTEXT        IDE_OBJNAME,2,36,139,12,ES_AUTOHSCROLL
+    LTEXT           "Koordinaten:",-1,2,51,44,8
+    LTEXT           "&X:",-1,2,62,10,8,NOT WS_GROUP
+    EDITTEXT        IDE_XKOORD,13,60,55,12,ES_AUTOHSCROLL
+    LTEXT           "&Y:",-1,2,77,8,8,NOT WS_GROUP
+    EDITTEXT        IDE_YKOORD,13,75,55,12,ES_AUTOHSCROLL
+    GROUPBOX        " Speicherform",IDG_SPEICHERFORM,80,52,61,35,WS_GROUP
+    CONTROL         " &Temporär",IDR_TEMPORAER,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,84,62,47,10
+    CONTROL         " &Permanent",IDR_PERMANENT,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,84,74,50,10
+    DEFPUSHBUTTON   "&Speichern",IDOK,146,12,43,14,WS_GROUP
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,146,34,43,14
+    PUSHBUTTON      "&Fortsetzen",IDB_FORTSETZEN,146,56,43,14
+    PUSHBUTTON      "&Zuziehen",IDB_ZUZIEHEN,2,90,43,14
+    PUSHBUTTON      "&Löschen",IDB_LOESCHEN,50,90,43,14
+    PUSHBUTTON      "&Inselbeginn",IDB_INSEL,98,90,43,14
+    PUSHBUTTON      "&Kreis(bogen)",IDB_KREIS,146,90,43,14
+END
+
+IDD_VERTEXMODIFY DIALOG DISCARDABLE  2, 15, 126, 57
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Stützpunkt modifizieren"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Koordinaten:",-1,4,4,44,8
+    LTEXT           "&X:",-1,4,20,10,8,NOT WS_GROUP
+    EDITTEXT        IDE_XMODIFY,17,18,45,13,ES_AUTOHSCROLL
+    LTEXT           "&Y:",-1,4,40,8,8,NOT WS_GROUP
+    EDITTEXT        IDE_YMODIFY,17,38,45,13,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "&OK",IDOK,71,5,50,14,WS_GROUP
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,71,21,50,14
+    PUSHBUTTON      "&Löschen",IDB_DELETE,71,37,50,14
+END
+
+IDD_STKOORDMOD DIALOG DISCARDABLE  0, 0, 150, 47
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Stützpunktkoordinaten verändern"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&OK",IDOK,93,5,50,14,WS_DISABLED
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,93,26,50,14
+    LTEXT           "&X:",-1,6,8,12,8
+    EDITTEXT        IDE_XKOORDMOD,17,6,60,12,ES_AUTOHSCROLL
+    LTEXT           "&Y:",-1,6,29,8,8
+    EDITTEXT        IDE_YKOORDMOD,17,27,60,12,ES_AUTOHSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+NEUEDITP                BITMAP  MOVEABLE PURE   "stiftp.bmp"
+NEUEDITL                BITMAP  MOVEABLE PURE   "stiftl.bmp"
+NEUEDITF                BITMAP  MOVEABLE PURE   "stiftf.bmp"
+MODEDIT                 BITMAP  MOVEABLE PURE   "stiftv.bmp"
+IDB_TOOLBAREDIT         BITMAP  DISCARDABLE     "tbaredit.bmp"
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "geoedita.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""dlgs.h""\r\n"
+    "#include ""resstrg.h""\r\n"
+    "#include ""geoedit.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""geoedit.rcv""\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MODMENUE1 MENU DISCARDABLE 
+BEGIN
+    POPUP "Punktobjekt"
+    BEGIN
+        MENUITEM "&Koordinaten verändern ...",  IDM_KOORDMOD, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "Punktobjekt &löschen",        IDM_OBJDELETE
+        MENUITEM SEPARATOR
+        MENUITEM "&Abbrechen",                  IDM_ABBRUCH
+    END
+END
+
+IDR_MODMENUE2 MENU DISCARDABLE 
+BEGIN
+    POPUP "Linienobjekt"
+    BEGIN
+        MENUITEM "&Koordinaten verändern ...",  IDM_KOORDMOD, GRAYED
+        MENUITEM "Stütz&punkt löschen",         IDM_VERTDELETE
+        MENUITEM SEPARATOR
+        MENUITEM "Linienobjekt ver&längern",    IDM_LINIEVERL
+        MENUITEM "Linienobjekt &drehen",        IDM_OBJDREHEN, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "Linienobjekt &löschen",       IDM_OBJDELETE
+        MENUITEM SEPARATOR
+        MENUITEM "&Abbrechen",                  IDM_ABBRUCH
+    END
+END
+
+IDR_MODMENUE3 MENU DISCARDABLE 
+BEGIN
+    POPUP "Flächenobjekt"
+    BEGIN
+        MENUITEM "&Koordinaten verändern ...",  IDM_KOORDMOD, GRAYED
+        MENUITEM "Stütz&punkt löschen",         IDM_VERTDELETE
+        MENUITEM SEPARATOR
+        MENUITEM "Flächenobjekt &drehen",       IDM_OBJDREHEN, GRAYED
+        MENUITEM "&Rechtwinkligkeit",           IDM_RECHTWINKL, GRAYED
+        MENUITEM "&Schnittlinie bilden",        IDM_OBJPART
+        MENUITEM SEPARATOR
+        MENUITEM "&Insel hinzufügen",           IDM_ADDINSEL, GRAYED
+        MENUITEM "Insel &löschen",              IDM_SUBINSEL
+        MENUITEM "Flächenobjekt &löschen",      IDM_OBJDELETE
+        MENUITEM SEPARATOR
+        MENUITEM "&Abbrechen",                  IDM_ABBRUCH
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_CURKREUZ            CURSOR  DISCARDABLE     "delete.cur"
+IDC_CURSTERN            CURSOR  DISCARDABLE     "move.cur"
+IDC_CURTRENN            CURSOR  DISCARDABLE     "split.cur"
+IDC_CURPALETTE          CURSOR  DISCARDABLE     "Palette.cur"
+IDC_CURFANGEN           CURSOR  DISCARDABLE     "Fangen.cur"
+IDC_CURINNERHALB        CURSOR  DISCARDABLE     "innerh.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDB_TOOLBAREDIT TOOLBAR DISCARDABLE  80, 15
+BEGIN
+    BUTTON      ID_BUTTON40018
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Geometrie-Editierung"
+    IDS_REGEXTPFAD          "Software\\uve\\TRiAS\\Extensions\\TRiAS.Editierung.1\\Config"
+    IDS_REGPFAD             "Software\\uve\\TRiAS\\Config"
+    IDS_UMARKGROESSE        "MinMarkGroesse"
+    IDS_OMARKGROESSE        "MaxMarkGroesse"
+    IDS_GEOREIN             "TRiAS.Bereinigung.1"
+    IDS_NOGEOREIN           "Das Zusatzmodul ""georein.ext"" wurde nicht gefunden.\r\nDeshalb kann nicht getestet werden, ob das editierte Objekt fehlerfrei ist."
+    IDS_NOOBJOPER           "Das Zusatzmodul ""objoper.ext"" wurde nicht gefunden.\r\nDeshalb kann das Flächenobjekt nicht geteilt werden."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_GEOFEHLERTEST       "GeoFehlerTest"
+    IDS_NEUEDITPKT          "Editierung neuer &Punkte"
+    IDS_NEUEDITLIN          "Editierung neuer &Linien"
+    IDS_NEUEDITFLA          "Editierung neuer &Flächen"
+    IDS_MODGEOMETRIE        "&Geometrieveränderung"
+    IDS_PUNKTOBJ            "Punktobjekt"
+    IDS_LINIENOBJ           "Linienobjekt"
+    IDS_FLAECHENOBJ         "Flächenobjekt"
+    IDS_AUSSENKON           " (Außenkontur)"
+    IDS_KONTURCNT           " (%d. Innenkontur)"
+    IDS_GEOFEHLERNEU        "Das neu erfaßte Objekt enthält einen Geometriefehler\r\nund wird deshalb nicht abgespeichert."
+    IDS_GEOFEHLERMOD        "Durch diese Aktion würde ein Geometriefehler entstehen.\r\nDeshalb wird das modifizierte Objekt nicht abgespeichert."
+    IDS_FLTEILEN            "Flächenobjekt teilen"
+    IDS_NOTEILUNG           "Das Flächenobjekt konnte nicht geteilt werden."
+    IDS_VERTEX              "&Stützpunkt hinzufügen"
+    IDS_NEUEOBJEKTE         "Erzeugte Teilflächen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_BUTTONTEXT1         "&Teilen"
+    IDS_BUTTONTEXT2         "&Fortsetzen"
+    IDS_DELOBJECT           "Objekte löschen"
+    IDS_GESAMTLAENGE        "Gesamtlänge: "
+    IDS_AKTSTRECKE          "Länge der letzten Strecke: "
+    IDS_FLAECHENINHALT      "Flächeninhalt: "
+    IDS_LINIEVERL           "Linienobjekt verlängern"
+    IDS_UNDODRAGDROPOBJECTS "Objekte verschieben/kopieren"
+    IDS_MOVEDOBJECTS        "Verschobene Objekte"
+    IDS_AKTOBJEKT           "Der ausgewählte Stützpunkt gehört zu mehreren Objekten.\nDas zugehörige Menü kann in diesem Fall nur dann geöffnet werden,\n wenn genau eins der betreffenden Objekte aktiviert (blinkend) ist."
+    IDS_MARKGROESSE         "MarkGroesse"
+    IDS_VERTEXMOVE          "Cursor für Stützpunkt verschieben bzw. Klick mit der rechten Maustaste"
+    IDS_VERTEXADD           "Cursor für Stützpunkt hinzufügen bzw. Klick mit der rechten Maustaste"
+    IDS_VERTEXDELETE        "Cursor für Stützpunkt löschen"
+    IDS_OBJECTCOPY          "Cursor für Objekt kopieren / verschieben"
+    IDS_INMARKER            "Cursor liegt innerhalb einer Stützpunktmarkierung"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_TOOLBARWERKZEUG     "Werkzeuge"
+    ID_TOOL_PUNKTEDIT       "Wählt das Hilfsmittel zum Neuerfassen von Punktobjekten aus.\nPunktobjekte  neu erfassen"
+    ID_TOOL_LINIENEDIT      "Wählt das Hilfsmittel zum Neuerfassen von Linienobjekten aus.\nLinienobjekte  neu erfassen"
+    ID_TOOL_FLAECHENEDIT    "Wählt das Hilfsmittel zum Neuerfassen von Flächenobjekten aus.\nFlächenobjekte neu erfassen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEBUGSECTION        "TriasFramework"
+    IDS_DEBUGENTRY          "debugmessageoutput"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UNIQUEIDENT         "Unique Ident"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UIFORMAT            "GEOEDIT_EXT_%ld"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXEXTENSIONPROC    "DEXEXTENSIONPROC"
+    IDS_DEXXEXTENSIONPROC   "DEXXEXTENSIONPROC"
+    IDS_DEXNOTIFICATIONPROC "DEXNOTIFICATIONPROCEX"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_TOOL_MODIFYOBJ       "Wählt das Hilfsmittel zum Verändern vorhandener Objekte aus (Stützpunkte verändern).\nObjektgeometrie verändern"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "geoedit.rcv"
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

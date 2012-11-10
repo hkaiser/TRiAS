@@ -1,0 +1,31 @@
+///////////////////////////////////////////////////////////////////////////
+// @doc 
+// @module CTFEventInterfaces.idl | Description goes here
+
+#if !defined(_CTFEVENTINTERFACES_IDL__764CA443_DFF6_11D1_8608_00600875138A__INCLUDED_)
+#define _CTFEVENTINTERFACES_IDL__764CA443_DFF6_11D1_8608_00600875138A__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+
+///////////////////////////////////////////////////////////////////////////////
+// interfaces
+interface ICoordTransformEvents;
+
+///////////////////////////////////////////////////////////////////////////////
+// interfaces
+	[
+		object,
+		uuid(764CA444-DFF6-11D1-8608-00600875138A),
+		helpstring("ICoordTransformEvents Interface"),
+		pointer_default(unique)
+	]
+	interface ICoordTransformEvents : IUnknown
+	{
+		[id(1), helpstring("Die Koordinatensystemparameter sollen verändert werden.")] HRESULT CoordParamsToChange ([in] IDispatch *pICoordSys, [out, retval] VARIANT_BOOL *pVal);
+		[id(2), helpstring("Die Koordinatensystemparameter werden verändert.")] HRESULT ChangingCoordParams ([in] IDispatch *pICoordSys);
+		[id(3), helpstring("Die Koordinatensystemparameter wurden verändert.")] HRESULT ChangedCoordParams ([in] IDispatch *pICoordSys);
+	};
+
+#endif // !defined(_CTFEVENTINTERFACES_IDL__764CA443_DFF6_11D1_8608_00600875138A__INCLUDED_)

@@ -1,0 +1,41 @@
+# 	Makefile for amdb (java side), Windows platform
+# 	$$
+
+all : amdb-dep
+
+amdb-dep : gui-dep treeview-dep amdbgist-dep analysis-dep
+
+gui-dep :
+	cd gui 
+	nmake /f Makefile.java.NT
+	cd ..
+
+treeview-dep :
+	cd treeview
+	nmake /f Makefile.java.NT
+	cd ..
+
+amdbgist-dep :
+	cd amdbgist 
+	nmake /f Makefile.java.NT
+	cd ..
+
+analysis-dep :
+	cd analysis
+	nmake /f Makefile.java.NT
+	cd ..
+
+clean :
+	cd amdbgist
+	nmake /f Makefile.java.NT clean
+	cd ..
+	cd analysis
+	nmake /f Makefile.java.NT clean
+	cd ..
+	cd gui
+	nmake /f Makefile.java.NT clean
+	cd ..
+	cd treeview
+	nmake /f Makefile.java.NT clean
+	cd ..
+	del *~

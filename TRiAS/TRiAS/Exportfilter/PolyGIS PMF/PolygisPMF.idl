@@ -1,0 +1,26 @@
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#include "PolygisPMF.ver"
+
+#define STDINTERFACE(help)	object, dual, pointer_default(unique), helpstring(help)
+
+[ uuid(A9EDCA8D-AC4A-4757-88E7-83724929F46E)
+	, version(TYPELIB_PolygisPMF_VERSION)
+	, helpstring(TYPELIB_PolygisPMF_HELPSTRING)
+] library PolygisPMFExport {
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[ uuid(599F5AFC-6931-46a8-8D57-5C02DC5E1353)
+		, STDINTERFACE("IPolygisPMFExport Interface")
+	] interface IPolygisPMFExport : IDispatch {
+	};
+
+	[ uuid(D92F5E3D-7B28-4d3d-ADB7-9907860A6D91),
+		helpstring("PolygisPMFExport Class")
+	] coclass PolygisPMFExport {
+		[default] interface IPolygisPMFExport;
+	};
+};

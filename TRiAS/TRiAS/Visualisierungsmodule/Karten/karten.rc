@@ -1,0 +1,262 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""lmfcx/Lmfcx42Res.rc""\r\n"
+    "#include ""Karten.rcv""\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_KARTEN              BITMAP  DISCARDABLE     "RES\\TKARTEN.BMP"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PAGE_VISPARAM DIALOG DISCARDABLE  0, 0, 250, 110
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Darstellung"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " Alle Karten der Sicht sind ...",IDC_STATIC,4,0,191,24
+    CONTROL         "sichtbar",IDC_CHKVISIBLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,10,11,161,8
+    GROUPBOX        " Darstellung von Maßstab / bis Maßstab ",IDC_STATIC,4,
+                    24,191,71
+    LTEXT           "1:",IDC_STATIC,8,42,8,12
+    COMBOBOX        IDC_FROM_SCALE,20,39,65,94,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "1:",IDC_STATIC,99,42,8,12
+    COMBOBOX        IDC_TO_SCALE,110,39,65,94,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+END
+
+IDD_PAGE_DIRECTORIES DIALOG DISCARDABLE  0, 0, 250, 110
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Verzeichnisse"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LISTBOX         IDC_LIST_MAPDIRS,5,5,241,103,WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_PAGE_COLORPARAM DIALOG DISCARDABLE  0, 0, 250, 110
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Farbbilder"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LISTBOX         IDC_LISTOFPALETTES,5,5,190,41,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_GROUP | 
+                    WS_TABSTOP
+    CONTROL         "Gilt nur für ausgewählte Karte(n)",IDC_CHKSINGLEMAP,
+                    "Button",BS_AUTORADIOBUTTON | NOT WS_VISIBLE | WS_GROUP | 
+                    WS_TABSTOP,10,55,180,10
+    CONTROL         "Gilt für alle Karten in der Sicht",IDC_CHKALLMAPS,
+                    "Button",BS_AUTORADIOBUTTON | NOT WS_VISIBLE,10,66,180,
+                    10
+    CONTROL         "Bildhintergrund transparent darstellen",
+                    IDC_TRANSPARndENT,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,5,90,195,10
+END
+
+IDD_PAGE_BWPARAM DIALOG DISCARDABLE  0, 0, 250, 110
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Monochrombilder"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Monochrombilder &transparent darstellen",
+                    IDC_CHECK_TRANSPARENT,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,7,236,13
+    CONTROL         "&Weiße Flächen transparent darstellen",IDC_RADIO_BLACK,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,24,28,169,10
+    CONTROL         "&Schwarze Flächen transparent darstellen",
+                    IDC_RADIO_WHITE,"Button",BS_AUTORADIOBUTTON,24,42,169,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_PAGE_VISPARAM DLGINIT
+BEGIN
+    IDC_FROM_SCALE, 0x403, 11, 0
+0x623c, 0x6c65, 0x6569, 0x6962, 0x3e67, "\000" 
+    IDC_FROM_SCALE, 0x403, 5, 0
+0x3031, 0x3030, "\000" 
+    IDC_FROM_SCALE, 0x403, 5, 0
+0x3035, 0x3030, "\000" 
+    IDC_FROM_SCALE, 0x403, 6, 0
+0x3031, 0x3030, 0x0030, 
+    IDC_FROM_SCALE, 0x403, 6, 0
+0x3532, 0x3030, 0x0030, 
+    IDC_FROM_SCALE, 0x403, 6, 0
+0x3035, 0x3030, 0x0030, 
+    IDC_FROM_SCALE, 0x403, 7, 0
+0x3031, 0x3030, 0x3030, "\000" 
+    IDC_FROM_SCALE, 0x403, 7, 0
+0x3032, 0x3030, 0x3030, "\000" 
+    IDC_FROM_SCALE, 0x403, 7, 0
+0x3035, 0x3030, 0x3030, "\000" 
+    IDC_FROM_SCALE, 0x403, 8, 0
+0x3031, 0x3030, 0x3030, 0x0030, 
+    IDC_TO_SCALE, 0x403, 11, 0
+0x623c, 0x6c65, 0x6569, 0x6962, 0x3e67, "\000" 
+    IDC_TO_SCALE, 0x403, 5, 0
+0x3031, 0x3030, "\000" 
+    IDC_TO_SCALE, 0x403, 5, 0
+0x3035, 0x3030, "\000" 
+    IDC_TO_SCALE, 0x403, 6, 0
+0x3031, 0x3030, 0x0030, 
+    IDC_TO_SCALE, 0x403, 6, 0
+0x3532, 0x3030, 0x0030, 
+    IDC_TO_SCALE, 0x403, 6, 0
+0x3035, 0x3030, 0x0030, 
+    IDC_TO_SCALE, 0x403, 7, 0
+0x3031, 0x3030, 0x3030, "\000" 
+    IDC_TO_SCALE, 0x403, 7, 0
+0x3032, 0x3030, 0x3030, "\000" 
+    IDC_TO_SCALE, 0x403, 7, 0
+0x3035, 0x3030, 0x3030, "\000" 
+    IDC_TO_SCALE, 0x403, 8, 0
+0x3031, 0x3030, 0x3030, 0x0030, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_VMDICON             ICON    DISCARDABLE     "RES\\VMDICO.ICO"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_PAGE_VISPARAM, DIALOG
+    BEGIN
+        RIGHTMARGIN, 200
+        BOTTOMMARGIN, 100
+    END
+
+    IDD_PAGE_DIRECTORIES, DIALOG
+    BEGIN
+        RIGHTMARGIN, 200
+        BOTTOMMARGIN, 100
+    END
+
+    IDD_PAGE_COLORPARAM, DIALOG
+    BEGIN
+        RIGHTMARGIN, 200
+        BOTTOMMARGIN, 100
+    END
+
+    IDD_PAGE_BWPARAM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 103
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PALETTES            "Standardfarben,Grau (normal),Grau (hell)"
+    IDS_DEFMAPDIR           "karten\\"
+    IDS_MYINISECTION        "karten"
+    IDS_DEFAULTPALETTE      "Standardfarben"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DIALOG_TITLE        "Darstellungsparameter für Hintergrundrasterbilder"
+    IDS_MAPDIRENTRY         "Verzeichnis"
+    IDS_VIEWMCODESHORT      "TK-View"
+    IDS_VIEWMCODELONG       "Rasterbildfarbschema für die Sicht; wenn der Wert dieses Merkmals einem der definierten Farbschemata entspricht, werden alle Hintergrundrasterbilder der Sicht mit diesem Schema dargestellt."
+    IDS_REGENTRY            "Hintergrundrasterbilder\nkarten"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_KARTEN              "Karten VMD"
+    IDS_KARTEN_PPG          "Darstellungsparameter"
+    IDS_KARTEN_PPG_CAPTION  "top. Karten"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "lmfcx/Lmfcx42Res.rc"
+#include "Karten.rcv"
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

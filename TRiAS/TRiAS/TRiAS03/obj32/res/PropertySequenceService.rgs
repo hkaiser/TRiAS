@@ -1,0 +1,27 @@
+HKCR
+{
+	TRiAS.PropertySequenceService.1 = s 'PropertySequenceService Class'
+	{
+		CLSID = s '{92BB6B5E-3F46-4236-A0B6-DDDBD632CE1D}'
+	}
+	TRiAS.PropertySequenceService = s 'PropertySequenceService Class'
+	{
+		CLSID = s '{92BB6B5E-3F46-4236-A0B6-DDDBD632CE1D}'
+		CurVer = s 'TRiAS.PropertySequenceService.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {92BB6B5E-3F46-4236-A0B6-DDDBD632CE1D} = s 'PropertySequenceService Class'
+		{
+			ProgID = s 'TRiAS.PropertySequenceService.1'
+			VersionIndependentProgID = s 'TRiAS.PropertySequenceService'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{0796388E-3123-101C-BB62-00AA0018497C}'
+			'Version' = s '1.0'
+		}
+	}
+}

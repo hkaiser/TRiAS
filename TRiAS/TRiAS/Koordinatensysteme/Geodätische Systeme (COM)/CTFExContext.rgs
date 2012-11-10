@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiASCTF.CTFExGeodContext.1 = s 'Kontext für Koordinatentransformation (geodätisch)'
+	{
+		CLSID = s '{5FA91F06-A839-11D1-A060-0060975566B4}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {5FA91F06-A839-11D1-A060-0060975566B4} = s 'Kontext für Koordinatentransformation (geodätisch)'
+		{
+			ProgID = s 'TRiASCTF.CTFExGeodContext.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

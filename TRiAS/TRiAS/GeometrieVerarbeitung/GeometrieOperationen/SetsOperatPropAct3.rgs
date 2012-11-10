@@ -1,0 +1,32 @@
+HKCR
+{
+	TRiASEx.ObjSetsOperations.1 = s 'Mengenoperationen mit GeoObjekten'
+	{
+		CLSID = s '{04BC9001-8DC0-11d2-87F5-00104BAF1F6B}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {04BC9001-8DC0-11d2-87F5-00104BAF1F6B} = s 'Mengenoperationen mit GeoObjekten'
+		{
+			ProgID = s 'TRiASEx.ObjSetsOperations.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove TRiASEx.ObjSetsOperations.1 = s '{04BC9001-8DC0-11d2-87F5-00104BAF1F6B}'
+			}
+		}
+	}
+}

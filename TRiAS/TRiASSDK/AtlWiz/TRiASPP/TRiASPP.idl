@@ -1,0 +1,38 @@
+// TRiASPP.idl : IDL source for TRiASPP.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (TRiASPP.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(32922FE7-F66D-11D2-9BF4-568920524153),
+	version(1.0),
+	helpstring("TRiASPP 1.0 Type Library")
+]
+library TRiASPP
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(32922FFC-F66D-11D2-9BF4-568920524153),
+		helpstring("PropertyActionPP Class")
+	]
+	coclass PropertyActionPP
+	{
+		interface IUnknown;
+	};
+	
+
+	[
+		uuid(39096000-5D7E-11D3-9504-0080C786297B),
+		helpstring("ObjectPropertyPP Class")
+	]
+	coclass ObjectPropertyPP
+	{
+		interface IUnknown;
+	};
+};

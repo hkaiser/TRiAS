@@ -1,0 +1,145 @@
+// Dialogfenster zur Einstellung des Drucklayouts -----------------------------
+// File: PRNTLAYT.HXX
+
+#if !defined(_PRNTLAYT_HXX)
+#define _PRNTLAYT_HXX
+
+#define HEADLINELENGTH	100
+#define CNT_MASSTAB	16
+
+// DatenTypen, die PrintLayout beschreiben ------------------------------------
+#if !defined(LAYOUTSTYLES)
+#define LAYOUTSTYLES
+
+enum FrameStyle {
+	FSNoFrame,		// kein Rahmen
+	FSSimpleFrame,		// einfache dÅnne Linie
+	FSThickFrame,		// einfache dicke Linie
+	FSDoubleFrame,		// innen dÅnn au·en dick
+	FSTripleFrame,		// dÅnn, dick dÅnn
+};
+
+enum LegendStyle {
+	LSNoLegend,		// keine Legende
+	LSSimpleLegend,		// normale Legende
+};
+
+enum MasstabStyle {
+	MSNoMasstab,		// keine Ma·stabsausgabe
+	MSSimpleMasstab,	// einfaches ZahlenFormat
+};
+#endif
+
+class PrintLayout {
+public:
+// SeitenRÑnder in [mm]
+	Rectangle *plFullRect;		// Blattgrenzen
+// Beschreibung der verschiedenen Bereiche (alle Ma·e in [mm])
+	FrameStyle plfsRahmen;		// Rahmen zeichnen
+	LegendStyle pllsLegende;	// Legende zeichnen
+	Rectangle *plRcLegende;		// fÅr Legende vorgesehener Bereich
+	Bool pliHeadLine;		// öberschrift generieren
+	char *pllpHeadLine;		// zu generierende öberschrift
+	Rectangle *plRcHeadLine;	// fÅr öberschrift vorgesehener Bereich 
+	MasstabStyle plmsMasstab;	// Ma·stab ausgeben
+	Rectangle *plRcMasstab;		// fÅr Ma·stab vorgesehener Bereich
+// Kartenausschnitt
+	Rectangle *plRcSpiegel;
+	ObjContainer *plOCSpiegel;
+
+// Konstruktor legt Speicher lediglich an
+		PrintLayout (void) {}
+		~PrintLayout (void);	// gesamten Speicher freigeben
+};
+
+
+class PrintLayoutDlg : public OwnerDrawDialogWindow {
+private:
+	Bool _isValid;
+
+// DruckSeitenLayout
+	DoubleNumEdit _ObenHoch, _ObenRechts;		// Bildausschnitt
+	DoubleNumEdit _UntenHoch, _UntenRechts;
+	ComboBox _Masstab;
+	RadioButton _RKoord, _RMasstab;
+
+	SpinControl _SizeX, _SizeY;			// SeitenLayout
+
+	SpinControl _RandOben, _RandLinks;		// RÑnder
+	SpinControl _RandRechts, _RandUnten;
+
+// DruckOptionen
+	CheckBox _CBLegende, _CBMasstab;
+	CheckBox _CBRahmen, _CBHeadLine;
+	OwnerDrawComboBox _RahmenTyp;
+	SingleLineEdit _HeadLine;
+	ComboBox _MasstabTyp;
+
+// Buttons
+	PushButton _OKButton, _CancelButton;
+	PushButton _HelpButton;
+
+	long _actMasstab;
+
+	Dimension _PageSize;		// Grî·e der gesamten Seite
+	DoublePair _DotsPerMM;
+
+// Koordinatentransformation
+	CoordTrans *_pCT;
+
+protected:
+	void ButtonClick (ControlEvt);
+	void ListBoxSel (ControlEvt);
+	void EditFocusChg (EditFocusChgEvt);
+	void VertScroll (ScrollEvt) ;
+
+// OwnerDraw EventHandler
+	Bool DeleteItem (DeleteItemEvt);	// ODItem wird gelîscht
+	Bool DrawEntireItem (DrawItemEvt);	// ZeichenFunktionen
+//	Bool DrawItemFocus (DrawItemEvt);
+//	Bool DrawItemSelect (DrawItemEvt);
+
+	int CompareItem (OwnerDrawEvt, void *, void *);	// Vergleichsfunktion
+	Bool MeasureItem (MeasureItemEvt);
+
+	long GetMasstab (short iIndex);
+
+private:
+	void EvalSizeX (void);
+	void EvalSizeY (void);
+	void EvalRechtsUnten (void);
+	void EvalMasstab (void);
+
+// KartenSpiegel
+	Rectangle *GetPaperCanvas (void);	// GesamtBlattSpiegelGrî·e
+	ObjContainer *GetExtend (void);		// BereichsGrenze
+// öberschrift
+	char* GetHeadLine (void);
+	Rectangle *GetHeadLineRect (void);
+	Bool GetHeadLineFlag (void) { return _CBHeadLine.isChecked(); }
+// Ma·stabsangabe
+	MasstabStyle GetMasstabType (void)
+		{ return MSNoMasstab; }
+	Rectangle *GetMasstabRect (void);
+// Legende
+	LegendStyle GetLegendType (void) 
+		{ return _CBLegende.isChecked() ? LSSimpleLegend : LSNoLegend; }
+	Rectangle *GetLegendeRect (void);
+// Gesamtbereich
+	Rectangle *GetFullRect (void);
+	FrameStyle GetFrameType (void) 
+		{ return _CBRahmen.isChecked() ? FSSimpleFrame : FSNoFrame; }
+
+	Bool GetValue (DoubleNumEdit &, double &);
+
+public:
+		PrintLayoutDlg (pWindow, ObjContainer &, CoordTrans *);
+		~PrintLayoutDlg (void);
+
+	CoordTrans *& pCT (void) { return _pCT; }
+
+	PrintLayout *GetLayout (void);
+};
+
+#endif // _PRNTLAYT_HXX
+

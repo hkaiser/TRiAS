@@ -1,0 +1,39 @@
+// MMArcInf.idl : IDL source for MMArcInf.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (MMArcInf.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(9549AA45-1BD6-11D2-8F7F-0060085FC1CE),
+	version(1.0),
+	helpstring("MMArcInf 1.0 Type Library")
+]
+library MMARCINFLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		object
+		, uuid(B6AFCF01-1A64-11d2-8F7D-0060085FC1CE)
+		, dual
+		, helpstring("IMapArcInfo Interface")
+		, pointer_default(unique)
+	]
+	interface IMapArcInfo : IDispatch
+	{
+	};
+
+	[
+		uuid(B6AFCF02-1A64-11d2-8F7D-0060085FC1CE),
+		helpstring("MapArcInfo Class")
+	]
+	coclass MapArcInfo
+	{
+		[default] interface IMapArcInfo;
+	};
+};

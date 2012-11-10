@@ -1,0 +1,46 @@
+// BScript-Erweiterung --------------------------------------------------------
+// File: GeoEditOutside.rc
+// H. Kaiser
+
+
+#include <eb.h>
+                                                         
+
+// Registration Data Block - this contains information used by Basic to
+// manage this extension.
+EXTENSIONINFO RCDATA LOADONCALL DISCARDABLE
+BEGIN
+	1			// TRUE if this DLL needs to stay resident
+	"TRiAS GmbH -- Geometrie-Editierung\0"
+END
+
+
+// Prototype table - this table describes all the extensions defined by
+// this extension module.
+BUILTINS RCDATA LOADONCALL DISCARDABLE
+BEGIN
+	OBJECT_BEGIN
+
+		".EditExtension\0", 1, "\0"
+
+		// native properties
+		OBJECT_FUNCTION, "AddObject\0", 2, TYP_BOOLEAN, 1, 1, TYP_VARIANT
+		OBJECT_FUNCTION, "GetObject\0", 3, TYP_VARIANT, 1, 1, TYP_VARIANT
+		OBJECT_FUNCTION, "RemoveObject\0", 4, TYP_BOOLEAN, 1, 1, TYP_VARIANT
+		OBJECT_FUNCTION, "AddObjects\0", 5, TYP_BOOLEAN, 1, 1, TYP_VARIANT
+		OBJECT_COMMAND, "AddObjects\0", 5, 1, 1, TYP_VARIANT
+		OBJECT_FUNCTION, "GetObjects\0", 6, TYP_VARIANT, 0, 1, TYP_VARIANT
+		OBJECT_FUNCTION, "RemoveObjects\0", 7, TYP_BOOLEAN, 0, 0
+		OBJECT_COMMAND, "RemoveObjects\0", 7, 0, 0
+		OBJECT_ENDDEF
+
+	OBJECT_END
+
+// last entry used: 7
+
+	CONST_BEGIN
+		TYP_APPOBJECT, "Edit\0", ".EditExtension\0", 100L
+	CONST_END
+
+	TABLE_END
+END

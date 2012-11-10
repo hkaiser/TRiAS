@@ -1,0 +1,34 @@
+HKLM 
+{
+	NoRemove SYSTEM
+	{
+		NoRemove CurrentControlSet
+		{
+			NoRemove Services
+			{
+				ForceRemove '%APPNAME%'
+				{
+					Performance
+					{
+						val Library = s '%MODULE%'
+						val Open = s 'OpenPerformanceData'
+						val Collect = s 'CollectPerformanceData'
+						val Close = s 'ClosePerformanceData'
+					}
+					Linkage
+				}
+				NoRemove EventLog 
+				{
+					NoRemove Application
+					{
+						ForceRemove '%APPNAME%'
+						{
+							val EventMessageFile = s '%MODULE%'
+							val TypesSupported = d 7
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,132 @@
+
+
+
+IMVFBFLIP(3IM)         SDSC IMAGE LIBRARY          IMVFBFLIP(3IM)
+
+
+
+NAME
+     ImVfbFlip - Flip a virtual frame buffer vertically, horizon-
+     tally, or both
+
+SYNOPSIS
+     #include "im.h"
+
+     ImVfb *ImVfbFlip( srcVfb, flipDirection, dstVfb )
+          ImVfb *srcVfb ;
+          int flipDirection ;
+          ImVfb *dstVfb ;
+
+
+DESCRIPTION
+     ImVfbFlip flips a virtual frame buffer about the  horizontal
+     and/or  vertical  axis  and returns a pointer to the flipped
+     Vfb.
+
+     _s_r_c_V_f_b is the Vfb to be flipped.
+
+     _f_l_i_p_D_i_r_e_c_t_i_o_n is the direction(s) about which to flip.  Pos-
+     sible values for _f_l_i_p_D_i_r_e_c_t_i_o_n are:
+
+             Value          Meaning
+8          _____________________________
+          IMVFBXFLIP    Flip in X
+          IMVFBYFLIP    Flip in Y
+          IMVFBXYFLIP   Flip in X and Y
+
+     Note that specifying IMVFBXYFLIP  causes  a  complete  pixel
+     transpose.
+
+     _d_s_t_V_f_b is the Vfb to contain the flipped image.   If  _d_s_t_V_f_b
+     is  the  constant  IMVFBNEW, a new Vfb is allocated with the
+     same size and the same fields as _s_r_c_V_f_b.  A pointer  to  the
+     new Vfb is returned.
+
+RETURNS
+     Upon success, ImVfbDup returns a pointer to the  destination
+     Vfb.  Upon failure, IMVFBNULL is returned and ImErrNo set to
+     one of the following:
+
+          IMEMALLOC    Cannot allocate enough memory for the new Vfb
+          IMEBADFLIP   _f_l_i_p_D_i_r_e_c_t_i_o_n is not one of the legal values
+
+SEE ALSO
+     ImIntro (3IM), ImErrNo (3IM), imflip (3IM), imrotate  (3IM),
+     imroll  (3IM),  imshear  (3IM),  imscale  (3IM), ImVfbResize
+     (3IM),  ImVfbRoll  (3IM),  ImVfbRotate  (3IM),   ImVfbXShear
+     (3IM), ImVfbYShear (3IM)
+
+
+9
+
+
+SDSC              Last change: August 25, 1992                  1
+
+
+
+
+
+
+IMVFBFLIP(3IM)         SDSC IMAGE LIBRARY          IMVFBFLIP(3IM)
+
+
+
+AUTHOR
+     Dave Nadeau
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2                 Last change: August 25, 1992               SDSC
+
+
+

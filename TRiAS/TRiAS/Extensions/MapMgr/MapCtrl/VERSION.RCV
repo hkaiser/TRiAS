@@ -1,0 +1,60 @@
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+#ifndef APSTUDIO_INVOKED
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,2
+ PRODUCTVERSION 1,0,0,2
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+
+#if defined(_DEBUG)
+	#define VER_SPECIALBUILD_STR	"TRiAS® Rasterkartenimport, Version für den internen Gebrauch (Debug), © GEOPunkt GmbH & Co. KG, NL Potsdam, #HK020316\0"
+#elif defined(NDEBUG)
+	#define VER_SPECIALBUILD_STR	"TRiAS® Rasterkartenimport, © GEOPunkt GmbH & Co. KG, NL Potsdam, #HK020316\0"
+#else
+	#error "You must define one of _DEBUG, NDEBUG"
+#endif
+
+
+
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040704B0"
+        BEGIN
+            VALUE "CompanyName", "GEOPunkt GmbH & Co. KG, NL Potsdam\0"
+            VALUE "FileDescription", "Management von Hintergrundrasterbildern\0"
+            VALUE "FileVersion", "1,0,0,2\0"
+            VALUE "InternalName", "MAPMGR\0"
+            VALUE "LegalCopyright", "Copyright © 1998-2002 GEOPunkt GmbH & Co. KG, NL Potsdam\0"
+            VALUE "OriginalFilename", "MAPMGR.EXT\0"
+            VALUE "ProductName", "TRiAS © - Territoriales raumbezogenes Informations - und Abfragesystem\0"
+            VALUE "ProductVersion", "5,00\0"
+	    VALUE "TRiASSelfRegister", "\0"
+	    VALUE "OleSelfRegister", "\0"
+	// Hier sollten zusätzliche Informationen für lokale Versionen 
+	// enthalten sein.
+	   VALUE "SpecialBuild",     VER_SPECIALBUILD_STR
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x407, 1200
+    END
+END
+
+#endif // !APSTUDIO_INVOKED
+
+#endif    // !_MAC

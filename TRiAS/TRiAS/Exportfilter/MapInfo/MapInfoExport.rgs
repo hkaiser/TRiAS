@@ -1,0 +1,50 @@
+HKCR 
+{
+	TRiAS.MapInfoExport.1 = s 'TRiAS Export in das MapInfo Binärformat' 
+	{
+		CLSID = s '{6FCD5A97-B0A7-4B6C-844D-39B1CD36DB01}'
+	}
+	TRiAS.MapInfoExport = s 'TRiAS Export in das MapInfo Binärformat' 
+	{
+		CLSID = s '{6FCD5A97-B0A7-4B6C-844D-39B1CD36DB01}'
+		CurVer = s 'TRiAS.MapInfoExport.1'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {6FCD5A97-B0A7-4B6C-844D-39B1CD36DB01} = s 'TRiAS Export in das MapInfo Binärformat' 
+		{
+			ProgID = s 'TRiAS.MapInfoExport.1'
+			VersionIndependentProgID = s 'TRiAS.MapInfoExport'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%' 
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{3B4979FA-EA19-42DD-B182-C5C97340B0AB}'
+		}
+	}
+}
+
+HKCU 
+{ 
+	NoRemove Software 
+	{ 
+		TRiAS 
+		{ 
+			TRiAS 
+			{ 
+				Extensions 
+				{ 
+					TRiAS.Export.1 
+					{ 
+						Engines 
+						{
+							ForceRemove {6FCD5A97-B0A7-4B6C-844D-39B1CD36DB01} = s 'MapInfo Binärformat Export'
+						} 
+					} 
+				} 
+			} 
+		} 
+	} 
+}
+

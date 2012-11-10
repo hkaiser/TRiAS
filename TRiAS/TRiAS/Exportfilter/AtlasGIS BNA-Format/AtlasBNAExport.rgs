@@ -1,0 +1,49 @@
+HKCR 
+{
+	TRiAS.AtlasBNAExport.1 = s 'TRiAS Export in das Atlas-BNA Format' 
+	{
+		CLSID = s '{B8006847-06EF-11D3-995A-0060085FC1CE}'
+	}
+	TRiAS.AtlasBNAExport = s 'TRiAS Export in das Atlas-BNA Format' 
+	{
+		CLSID = s '{B8006847-06EF-11D3-995A-0060085FC1CE}'
+		CurVer = s 'TRiAS.AtlasBNAExport.1'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {B8006847-06EF-11D3-995A-0060085FC1CE} = s 'TRiAS Export in das Atlas-BNA Format' 
+		{
+			ProgID = s 'TRiAS.AtlasBNAExport.1'
+			VersionIndependentProgID = s 'TRiAS.AtlasBNAExport'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%' 
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{EC9D9D10-06E9-11d3-995A-0060085FC1CE}'
+		}
+	}
+}
+
+HKCU 
+{ 
+	NoRemove Software 
+	{ 
+		TRiAS 
+		{ 
+			TRiAS 
+			{ 
+				Extensions 
+				{ 
+					TRiAS.Export.1 
+					{ 
+						Engines 
+						{
+							ForceRemove {B8006847-06EF-11D3-995A-0060085FC1CE} = s 'Atlas-BNA Export'
+						} 
+					} 
+				} 
+			} 
+		} 
+	} 
+}

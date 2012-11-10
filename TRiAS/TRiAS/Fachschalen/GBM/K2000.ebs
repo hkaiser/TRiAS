@@ -1,0 +1,559 @@
+Option Explicit
+
+Declare Function BringWindowToTop Lib "user32" Alias "BringWindowToTop" (ByVal hwnd As Long) As Long
+
+Private tbK As Toolbar
+Private tbbHaltungsdaten As ToolbarButton
+Private tbbSchachtdaten As ToolbarButton
+'Private tbbListe As ToolbarButton
+'Private tbbEnde As ToolbarButton
+
+Private docGD As GeoDocument		'Projekt
+Private idHaltung, idSchacht, idDeckel, idRundschacht
+Private idPolySchacht
+
+Private objAccess As Object
+
+Const NL = Chr$(13) + Chr$(10)
+
+'Const strAccessDatabaseName = "S:\Projekte\uvekanal\daten\K2000.MDB"
+'Const strAccessDatabaseName = "D:\K2000\Daten\K2000.MDB"
+Const strAccessDatabaseName = "C:\K2000\K2000.MDB"
+
+Const strHaltung = "Anzeigen der Haltungsdaten"
+Const strSchacht = "Anzeigen der Schachtdaten"
+Const strListe = "Alle Haltungen mit Priorität 4"
+Const strStop = "Makro beenden"
+Const strTest = "Prioritätenübersicht"
+
+Const strMessageStart = "Die Kanaldatenbank wird gestartet! Bitte warten!"
+Const strMessageAbfrage = "Die Prioritätsübersicht wird erstellt! Bitte warten!"
+
+Const strClsHaltung = "Haltung (K2000)"
+Const strClsSchacht = "Schacht (K2000)"
+Const strClsDeckel = "Schachtdeckel (K2000)"
+Const strClsRundschacht = "Rundschacht (K2000)"
+Const strClsPolySchacht = "Polygonschacht (K2000)"
+
+Declare Function PrioDlg (ControlName$, Action%, SuppValue%) As Integer
+Declare Function AddTool (Tools As ToolBar, iNum As Integer, strName As String, _
+			PictID As Integer, strDesc As String, iState As Integer, iStyle As Integer) _
+			As ToolBarButton
+
+' "BeginScript()" wird vor Script-Abarbeitung gerufen
+Sub BeginScript()
+End Sub
+
+'__________________________________
+Sub prepareAccess()
+On Error Resume Next
+	If objAccess Is Nothing Then
+		Set objAccess = GetObject( ,"Access.Application.7" )
+		If Err.number = 833 Then		'OLE-object does not exist
+			Err.Clear
+			Set objAccess = CreateObject( "Access.Application.7" )
+		End If
+	End If
+	objAccess.OpenCurrentDatabase strAccessDatabaseName
+	If (Err.number = -2146820421) Or _		'Sie haben bereits eine Datenbank geöffnet
+		(Err.number = 7867) Then		'Sie haben bereits eine Datenbank geöffnet
+		If objAccess.CurrenrDb.Name <> strAccessDatabaseName Then
+			objAccess.Currentdb.close
+			objAccess.OpenCurrentDatabase strAccessDatabaseName
+	 	End If
+	ElseIf Err.Number <> 0 Then
+		msgbox str(Err.number) & Err.description
+	End If
+End Sub
+
+Sub Main()
+' Hier notwendige Initialisierungen durchführen
+	Dim objAccess As Object
+	Dim Style
+	Dim tbKLoc As ToolBar
+	Dim tbbLoc1 As ToolBarButton
+	Dim tbbLoc2 As ToolBarButton
+	Dim tbbLoc4 As ToolBarButton
+	Dim tbbLoc5 As ToolBarButton
+
+
+	Style = TOOLBARSTYLE_BorderAny Or TOOLBARSTYLE_Border3d Or _
+			TOOLBARSTYLE_AlignTop Or TOOLBARSTYLE_Tooltips Or _
+			TOOLBARSTYLE_FlyBy  Or TOOLBARSTYLE_SizeFixed
+	Set tbKLoc = TRiAS.AddToolBar ("Kanal 2000", Style)
+
+	Set tbbLoc1 = AddTool (tbKLoc, 0, "ZeigeHaltung", Tool13, strHaltung, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+
+	Set tbbLoc2 = AddTool (tbKLoc, 1, "ZeigeSchacht", Tool34, _
+		strSchacht, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+
+	Set tbbLoc5 = AddTool (tbKLoc, 2, "Test", Tool31, _
+		strTest, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+
+	tbKLoc.DockState = DOCKSTATE_DockedTop
+	tbKLoc.Visible = 1
+
+	Set tbK = tbKLoc
+	Set tbbHaltungsdaten = tbbLoc1
+	Set tbbSchachtdaten = tbbLoc2
+	Set objAccess = Nothing
+
+' Hier notwendige Verarbeitungen durchführen
+Msg.open NL & strMessageStart & NL,,False, false
+	prepareAccess
+' 	Set objAccess = CreateObject( "Access.Application.7" )
+'	objAccess.OpenCurrentDatabase strAccessDatabaseName
+	objAccess.DoCmd.OpenForm "Haltungsdaten",,,,,1
+
+	Set docGD = GetActiveDocument
+
+Msg.Close
+
+Dim clsTmp As GeoClass
+	Set clsTmp = docGD.GetClass( strClsHaltung )
+	If clsTmp Is Not Nothing Then
+		idHaltung = clsTmp.Value
+	Else
+		Exit Sub
+	End If
+	Set clsTmp = docGD.GetClass( strClsSchacht )
+	If clsTmp Is Not Nothing Then
+		idSchacht = clsTmp.Value
+	Else
+		Exit Sub
+	End If
+	Set clsTmp = docGD.GetClass( strClsDeckel )
+	If clsTmp Is Not Nothing Then
+		idDeckel = clsTmp.Value
+	Else
+		Exit Sub
+	End If
+	Set clsTmp = docGD.GetClass( strClsRundschacht )
+	If clsTmp Is Not Nothing Then
+		idRundschacht = clsTmp.Value
+	Else
+		Exit Sub
+	End If
+	Set clsTmp = docGD.GetClass( strClsPolySchacht )
+	If clsTmp Is Not Nothing Then
+		idPolySchacht = clsTmp.Value
+	Else
+		Exit Sub
+	End If
+
+	SetBreakScript (False)
+End Sub 
+
+'__________________________________
+
+' "EndScript()" wird nach Beendigung der Script-Abarbeitung gerufen
+Sub EndScript()
+	SetBreakScript (True)
+' Hier notwendige Aufräumarbeiten durchführen
+	tbbHaltungsdaten.State = 0
+	tbbSchachtdaten.State = 0
+'	tbbEnde.State = 0
+'	tbbListe.State = 0
+	If tbK Is Not Nothing Then
+		tbK.Visible=0
+		tbK.Remove
+		Set tbK = Nothing
+	End If
+	If Not objAccess Is Nothing Then
+		objAccess.Quit
+		Set objAccess = Nothing
+	End If
+End Sub
+
+'__________________________________
+
+' "OnDocumentToClose()" wird nach dem Schließen des Projektes gerufen
+Sub OnDocumentToClose (Doc As GeoDocument)
+' Hier sollte der laufende Script angehalten werden
+	SetBreakScript(true)
+End Sub
+
+Sub Ende_Click()
+	SetBreakScript (True)
+End Sub
+
+Sub ZeigeHaltung_Click
+
+Dim objsRWin As GeoObjectWins   'alle Recherchefenster
+Dim objRWin As GeoObjectWin             'ein Recherchefenster
+Dim objsRO As GeoObjects                'alle Geoobjekte eines Recherchefensters
+Dim objRO As GeoObject                  'ein Geoobjekt
+Dim otype%, schacht_nr#
+Dim tmp
+
+	schacht_nr# = -1
+	Set objsRWin = docGD.GetGeoObjectWins()
+	For Each objRWin In objsRWin
+		Set objRO = objRWin.GetActObject()
+		If objRO Is Not Nothing Then
+			tmp = objRO.ObjClass.Value
+			If tmp = idHaltung Then
+				schacht_nr# = objRO.Name$
+			End If
+		End If
+	Next objRWin
+
+'	objAccess.Run "ZeigeSchachtdaten", schacht_nr#
+'	tmp = BringWindowToTop(objAccess.Screen.Activeform.hWnd)
+
+	If ( schacht_nr# > 0 ) then
+		objAccess.Run "ZeigeHaltungsdaten", schacht_nr#
+		tmp = BringWindowToTop(objAccess.Screen.Activeform.hWnd)
+	Else
+		MsgBox "Es ist keine Haltung ausgewählt!"
+	End If
+
+End Sub
+
+Sub ZeigeSchacht_Click
+
+Dim objsRWin As GeoObjectWins   'alle Recherchefenster
+Dim objRWin As GeoObjectWin             'ein Recherchefenster
+Dim objsRO As GeoObjects                'alle Geoobjekte eines Recherchefensters
+Dim objRO As GeoObject                  'ein Geoobjekt
+Dim otype%, schacht_nr#
+Dim tmp
+
+	schacht_nr# = -1
+	Set objsRWin = docGD.GetGeoObjectWins()
+	For Each objRWin In objsRWin
+		Set objRO = objRWin.GetActObject()
+		If objRO Is Not Nothing Then
+			tmp = objRO.ObjClass.Value
+			If (( tmp = idSchacht ) Or ( tmp = idDeckel ) Or _
+				( tmp = idRundschacht ) Or ( tmp = idPolySchacht )) Then
+				schacht_nr# = objRO.Name$
+			End If
+		End If
+	Next objRWin
+
+	If ( schacht_nr# > 0 ) then
+		objAccess.Run "ZeigeSchachtdaten", schacht_nr#
+		tmp = BringWindowToTop(objAccess.Screen.Activeform.hWnd)
+	Else
+		MsgBox "Es ist kein Schacht ausgewählt!"
+	End If
+
+End Sub
+
+Sub Liste_Click
+Dim id As Long
+Dim clsHaltung As GeoClass
+Dim objsSelected As GeoObjects, objsHaltung As GeoObjects
+Dim objTest As GeoObject, objDummy As GeoObject
+Dim liste As String, test$, strMsg
+
+strMsg= "Es werden alle Haltungen der Priorität 4 ermittelt und angezeigt!"
+Msg.open NL & strMsg & NL,,False, false
+
+	Set clsHaltung = docGD.GetClass(strClsHaltung)
+	Set objsHaltung = clsHaltung.GetObjects(OT_Line)
+	Set objsSelected = docGD.CreateGeoObjectsCollection()
+
+	objAccess.run "GetHaltungIDfrom", "PrioritaetHaltung"
+	id = objAccess.run( "NextHaltungID" )
+	If id <> 0 Then liste = "#"
+	Do While id <> 0
+'		msgbox str(id)
+		liste = liste & id & "#"
+		id = objAccess.run( "NextHaltungID" )
+	Loop
+	For each objTest in objsHaltung
+		test = "#" & objTest.Name$ & "#"
+		If InStr(liste, test$) Then
+			Set objDummy = objsSelected.Add( objTest )
+		End If
+	Next objTest
+
+Msg.Close
+
+	If objsSelected.Count > 0 Then
+		Dim orwnd As GeoObjectWin
+
+		Set orwnd = objsSelected.CreateGeoObjectWin()
+
+		orwnd.Name = "Priorität 4"
+		orwnd.Visible = 1
+	End If
+
+End Sub
+
+
+Sub ZeigePrioritaet( prio As Integer, anzahl As Integer )
+
+Dim qd As Object
+Dim rs As Object
+Dim clsHaltung As GeoClass
+Dim objsSelected As GeoObjects, objsHaltung As GeoObjects
+Dim objTest As GeoObject, objDummy As GeoObject
+Dim liste As String, test$, strMsg As String
+Dim iGesamt As Integer, i As Integer
+
+	strMsg = "Es werden alle Haltungen "
+	If prio < 0 Then
+		strMsg = strMsg & "ohne Priorität"
+	Else
+		strMsg = strMsg & "mit Priorität " & prio
+	End If
+	strMsg = strMsg & " ermittelt! Bitte warten!"
+
+Msg.open NL & strMsg & NL,,False, true
+
+	Set clsHaltung = docGD.GetClass(strClsHaltung)
+	Set objsHaltung = clsHaltung.GetObjects(OT_Line)
+	Set objsSelected = docGD.CreateGeoObjectsCollection()
+
+	iGesamt = anzahl + objsHaltung.Count
+	i = 0
+
+	If prio >= 0 Then
+		Set qd =  objAccess.CurrentDb.querydefs("Haltungen mit Prioritaet")
+		Set qd.Parameters("GesuchtePrioritaet") = prio
+		Set rs = qd.Openrecordset()
+	Else
+		Set qd =  objAccess.CurrentDb.querydefs("Haltungen ohne Prioritaet")
+		Set rs = qd.Openrecordset()
+	End If
+
+	liste = "#"
+	Do While rs.eof = false
+		liste = liste & rs.fields("IDHALTUNG") & "#"
+		rs.MoveNext
+		i = i + 1
+		Msg.Thermometer = i / iGesamt * 100
+	Loop
+
+	For each objTest in objsHaltung
+		test = "#" & objTest.Name$ & "#"
+		If InStr(liste, test$) Then
+			Set objDummy = objsSelected.Add( objTest )
+		End If
+		i = i + 1
+		Msg.Thermometer = i / iGesamt * 100
+	Next objTest
+
+Msg.Close
+
+	If objsSelected.Count > 0 Then
+		Dim orwnd As GeoObjectWin
+
+		Set orwnd = objsSelected.CreateGeoObjectWin()
+
+		If prio < 0 Then
+			orwnd.Name = "Keine Priorität"
+		Else
+			orwnd.Name = "Priorität " & prio
+		End If
+		orwnd.Visible = 1
+	End If
+
+End Sub
+
+
+Sub Test_Click
+Dim qd As Object
+Dim rs As Object
+Dim r%
+
+Begin Dialog PrioDialog ,,254,155,"Übersicht Priorität",.PrioDlg
+	OKButton 192,4,60,14
+	Text 8,32,50,18,"Priorität",.Text1
+	Text 58,32,50,18,"Gesamtlänge [m]",.Text2
+	Text 108,32,50,18,"Anzahl Haltungen",.Text3
+	TextBox 8,56,50,12,.Prio0
+	TextBox 58,56,50,12,.Laenge0
+	TextBox 108,56,50,12,.Anzahl0
+	PushButton 160,56,50,12,"Zeigen",.Zeig0
+	TextBox 8,68,50,12,.Prio1
+	TextBox 58,68,50,12,.Laenge1
+	TextBox 108,68,50,12,.Anzahl1
+	PushButton 160,68,50,12,"Zeigen",.Zeig1
+	TextBox 8,80,50,12,.Prio2
+	TextBox 58,80,50,12,.Laenge2
+	TextBox 108,80,50,12,.Anzahl2
+	PushButton 160,80,50,12,"Zeigen",.Zeig2
+	TextBox 8,92,50,12,.Prio3
+	TextBox 58,92,50,12,.Laenge3
+	TextBox 108,92,50,12,.Anzahl3
+	PushButton 160,92,50,12,"Zeigen",.Zeig3
+	TextBox 8,104,50,12,.Prio4
+	TextBox 58,104,50,12,.Laenge4
+	TextBox 108,104,50,12,.Anzahl4
+	PushButton 160,104,50,12,"Zeigen",.Zeig4
+	TextBox 8,116,50,12,.Prio5
+	TextBox 58,116,50,12,.Laenge5
+	TextBox 108,116,50,12,.Anzahl5
+	PushButton 160,116,50,12,"Zeigen",.Zeig5
+	TextBox 8,128,50,12,.Prio6
+	TextBox 58,128,50,12,.Laenge6
+	TextBox 108,128,50,12,.Anzahl6
+	PushButton 160,128,50,12,"Zeigen",.Zeig6
+End Dialog
+
+Msg.open NL & strMessageAbfrage & NL,,False, false
+
+	Dim prDlg As PrioDialog
+	Dim no%, n0%, n1%, n2%, n3%, n4%, n5%
+
+	Set qd =  objAccess.CurrentDb.querydefs("Prioritaet")
+	Set rs = qd.Openrecordset()
+'	msgbox rs.Fields("PRIORITAET")
+'	msgbox rs.Fields("Summe von LAENGEHALTUNG")
+'	msgbox rs.Fields("Anzahl von IDHALTUNG")
+	prDlg.Prio0 = "ohne"
+	prDlg.Laenge0 = rs.Fields("Summe von LAENGEHALTUNG")
+	no% = rs.Fields("Anzahl von IDHALTUNG")
+	prDlg.Anzahl0 = no%
+	rs.MoveNext
+'	msgbox rs.Fields("PRIORITAET")
+'	msgbox rs.Fields("Summe von LAENGEHALTUNG")
+'	msgbox rs.Fields("Anzahl von IDHALTUNG")
+	prDlg.Prio1 = rs.Fields("PRIORITAET")
+	prDlg.Laenge1 = rs.Fields("Summe von LAENGEHALTUNG")
+	n0% = rs.Fields("Anzahl von IDHALTUNG")
+	prDlg.Anzahl1 = n0%
+	rs.MoveNext
+	prDlg.Prio2 = rs.Fields("PRIORITAET")
+	prDlg.Laenge2 = rs.Fields("Summe von LAENGEHALTUNG")
+	n1% = rs.Fields("Anzahl von IDHALTUNG")
+	prDlg.Anzahl2 = n1%
+	rs.MoveNext
+	prDlg.Prio3 = rs.Fields("PRIORITAET")
+	prDlg.Laenge3 = rs.Fields("Summe von LAENGEHALTUNG")
+	n2% = rs.Fields("Anzahl von IDHALTUNG")
+	prDlg.Anzahl3 = n2%
+	rs.MoveNext
+	prDlg.Prio4 = rs.Fields("PRIORITAET")
+	prDlg.Laenge4 = rs.Fields("Summe von LAENGEHALTUNG")
+	n3% = rs.Fields("Anzahl von IDHALTUNG")
+	prDlg.Anzahl4 = n3%
+	rs.MoveNext
+	prDlg.Prio5 = rs.Fields("PRIORITAET")
+	prDlg.Laenge5 = rs.Fields("Summe von LAENGEHALTUNG")
+	n4% = rs.Fields("Anzahl von IDHALTUNG")
+	prDlg.Anzahl5 = n4%
+	rs.MoveNext
+	prDlg.Prio6 = rs.Fields("PRIORITAET")
+	prDlg.Laenge6 = rs.Fields("Summe von LAENGEHALTUNG")
+	n5% = rs.Fields("Anzahl von IDHALTUNG")
+	prDlg.Anzahl6 = n5%
+'	rs.MoveNext
+'	prDlg.Prio7 = rs.Fields("PRIORITAET")
+'	prDlg.Laenge7 = rs.Fields("Summe von LAENGEHALTUNG")
+'	prDlg.Anzahl7 = rs.Fields("Anzahl von IDHALTUNG")
+'	rs.MoveNext
+'	prDlg.Prio8 = rs.Fields("PRIORITAET")
+'	prDlg.Laenge8 = rs.Fields("Summe von LAENGEHALTUNG")
+'	prDlg.Anzahl8 = rs.Fields("Anzahl von IDHALTUNG")
+'	rs.MoveNext
+'	prDlg.Prio9 = rs.Fields("PRIORITAET")
+'	prDlg.Laenge9 = rs.Fields("Summe von LAENGEHALTUNG")
+'	prDlg.Anzahl9 = rs.Fields("Anzahl von IDHALTUNG")
+'	rs.MoveNext
+'	prDlg.Prio10 = rs.Fields("PRIORITAET")
+'	prDlg.Laenge10 = rs.Fields("Summe von LAENGEHALTUNG")
+'	prDlg.Anzahl10 = rs.Fields("Anzahl von IDHALTUNG")
+
+	rs.close
+
+Msg.Close
+
+	r% = Dialog(prDlg)
+
+	Select Case	r%
+	Case 1
+		ZeigePrioritaet -1, no%
+	Case 2
+		ZeigePrioritaet 0, n0%
+	Case 3
+		ZeigePrioritaet 1, n1%
+	Case 4
+		ZeigePrioritaet 2, n2%
+	Case 5
+		ZeigePrioritaet 3, n3%
+	Case 6
+		ZeigePrioritaet 4, n4%
+	Case 7
+		ZeigePrioritaet 5, n5%
+	End Select
+
+End Sub
+
+Function PrioDlg (ControlName$, Action%, SuppValue%) As Integer
+
+Exit Function
+
+	If Action = 1 Then				'Aktionen bevor Dialog sichtbar wird
+		DlgEnable "Prio0", False	'TextBox soll vom Benutzer nicht beschreibbar sein
+		DlgEnable "Laenge0", False
+		DlgEnable "Anzahl0", False
+		DlgEnable "Prio1", False
+		DlgEnable "Laenge1", False
+		DlgEnable "Anzahl1", False
+		DlgEnable "Prio2", False
+		DlgEnable "Laenge2", False
+		DlgEnable "Anzahl2", False
+		DlgEnable "Prio3", False
+		DlgEnable "Laenge3", False
+		DlgEnable "Anzahl3", False
+		DlgEnable "Prio4", False
+		DlgEnable "Laenge4", False
+		DlgEnable "Anzahl4", False
+		DlgEnable "Prio5", False
+		DlgEnable "Laenge5", False
+		DlgEnable "Anzahl5", False
+		DlgEnable "Prio6", False
+		DlgEnable "Laenge6", False
+		DlgEnable "Anzahl6", False
+		DlgEnable "Prio7", False
+		DlgEnable "Laenge7", False
+		DlgEnable "Anzahl7", False
+		DlgEnable "Prio8", False
+		DlgEnable "Laenge8", False
+		DlgEnable "Anzahl8", False
+		DlgEnable "Prio9", False
+		DlgEnable "Laenge9", False
+		DlgEnable "Anzahl9", False
+		DlgEnable "Prio10", False
+		DlgEnable "Laenge10", False
+		DlgEnable "Anzahl10", False
+	End If
+End Function
+
+Function Zeig0_Click
+
+msgbox "Zeig0_Click"
+End Function
+
+
+' -----------------------------------------------------------------------------
+' Hinzufügen eines Knopfes zur Toolbar
+Function AddTool (Tools As ToolBar, iNum As Integer, strName As String, _
+	PictID As Integer, strDesc As String, iState As Integer, iStyle As Integer) _
+	As ToolBarButton
+
+Dim P As Image
+Dim TB As New ToolBarButton
+
+	Set P = LoadResPicture (PictID, vbResBitmap)
+	If (P Is Not Nothing) Then
+		TB.Name$ = StrName
+		TB.HelpText$ = strDesc
+		TB.State = iState
+		TB.Style = iStyle
+		TB.AttachImage P
+		TB.CmdID = PictID	' CommandID ist PictID (eindeutig ?!)
+
+		Tools.InsertButton iNum, TB
+		Set AddTool = TB
+	Else
+		Set AddTool = Nothing
+	End If
+End Function
+
+ 

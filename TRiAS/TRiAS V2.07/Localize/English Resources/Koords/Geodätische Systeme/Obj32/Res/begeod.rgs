@@ -1,0 +1,94 @@
+HKCR 
+{ 
+	TRiASEx.CTFBesselGeodExt.1 = s 'Koordinatentransformation (Bessel geodätisch) Property Page'
+	{
+		CLSID = s '{07963827-3123-101C-BB62-00AA0018497C}'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {07963827-3123-101C-BB62-00AA0018497C} = s 'Koordinatentransformation (Bessel geodätisch) Property Page'
+		{
+			val AppID = s '{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}'
+			ProgID = s 'TRiASEx.CTFBesselGeodExt.1'
+			InprocServer32 = s %MODULE%
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+	NoRemove TRiAS.Application.2 { NoRemove TRiASEx { NoRemove PropertySheetHandlers 
+	{
+		NoRemove Coordinates
+		{
+			ForceRemove TRiASEx.CTFBesselGeodExt.1 = s '{07963827-3123-101C-BB62-00AA0018497C}'
+		}
+	} }	}
+	NoRemove TRiAS.Document.2 { NoRemove TRiASEx { NoRemove PropertySheetHandlers 
+	{
+		NoRemove Coordinates
+	} }	}
+}
+
+HKCU { NoRemove Software { NoRemove uve { NoRemove TRiAS 
+{ 
+	NoRemove TRiAS.Document.2 { NoRemove TRiASEx { NoRemove PropertySheetHandlers 
+	{
+		NoRemove Coordinates
+	} } }
+	NoRemove CoordSystems 
+	{
+		Geodetic  = s 'Geodätische Koordinatensysteme'
+		{
+			TRiAS.CoordGeodBessel.1 = s 'Bessel-Ellipsoid [System 40/83]'
+			{
+				Val Toolbar32 = d 1
+				'Anzeige Gauß-Krüger 3°' = s 'Geodätisch (Bessel-Ellipsoid [System 40/83]), Koordinatenanzeige in Gauß-Krüger, Streifenbreite 3°'
+				{
+					Val CoordTransform = s 'BEGEOD'
+					Val CoordMeridian = s 'Autoselect'
+					Val CoordStrBreite = d 3
+					Val CoordPrecision = d 0
+					Val CoordScaling = s '1.0'
+					Val ShowGKCoords = d 2
+					Val OffsetX = s '0.0'
+					Val OffsetY = s '180000.0'
+					Val Koeff11 = s '0.001'
+					Val Koeff12 = s '0.0'
+					Val Koeff21 = s '0.0'
+					Val Koeff22 = s '0.001'
+				}
+				'Anzeige Gauß-Krüger 6°' = s 'Geodätisch (Bessel-Ellipsoid [System 40/83]), Koordinatenanzeige in Gauß-Krüger, Streifenbreite 6°'
+				{
+					Val CoordTransform = s 'BEGEOD'
+					Val CoordMeridian = s 'Autoselect'
+					Val CoordStrBreite = d 6
+					Val CoordPrecision = d 0
+					Val CoordScaling = s '1.0'
+					Val ShowGKCoords = d 2
+					Val OffsetX = s '0.0'
+					Val OffsetY = s '180000.0'
+					Val Koeff11 = s '0.001'
+					Val Koeff12 = s '0.0'
+					Val Koeff21 = s '0.0'
+					Val Koeff22 = s '0.001'
+				}
+				'Anzeige geodätischer Koordinaten' = s 'Geodätisch (Bessel-Ellipsoid [System 40/83]), Koordinatenanzeige geodätisch (Grad, Minute, Sekunde)'
+				{
+					Val CoordTransform = s 'BEGEOD'
+					Val CoordMeridian = s 'Autoselect'
+					Val CoordStrBreite = d 3
+					Val CoordPrecision = d 0
+					Val CoordScaling = s '1.0'
+					Val ShowGKCoords = d 0
+					Val OffsetX = s '0.0'
+					Val OffsetY = s '180000.0'
+					Val Koeff11 = s '0.001'
+					Val Koeff12 = s '0.0'
+					Val Koeff21 = s '0.0'
+					Val Koeff22 = s '0.001'
+				}
+			}
+		}
+	}
+} } } }
+

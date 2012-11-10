@@ -1,0 +1,23 @@
+HKCR
+{
+	TRiAS.LineElongation.1 = s 'Linienobjekt verlängern'
+	{
+		CLSID = s '{71924707-40C2-11d1-9B1F-444553540000}'
+	}
+	TRiAS.LineElongation = s 'Linienobjekt verlängern'
+	{
+		CurVer = s 'TRiAS.LineElongation.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {71924707-40C2-11d1-9B1F-444553540000} = s 'Linienobjekt verlängern'
+		{
+			ProgID = s 'TRiAS.LineElongation.1'
+			VersionIndependentProgID = s 'TRiAS.LineElongation'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

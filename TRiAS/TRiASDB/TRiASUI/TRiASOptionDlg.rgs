@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiASUI.TRiASOptionDlg.1 = s 'TRiASOptionDlg Class'
+	{
+		CLSID = s '{A3307F44-5BC3-11D2-9ED5-006008447800}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {A3307F44-5BC3-11D2-9ED5-006008447800} = s 'TRiASOptionDlg Class'
+		{
+			ProgID = s 'TRiASUI.TRiASOptionDlg.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

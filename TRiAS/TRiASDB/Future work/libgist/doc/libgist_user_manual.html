@@ -1,0 +1,690 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.02 [en] (WinNT; I) [Netscape]">
+   <TITLE>libgist v.2.0 User Manual</TITLE>
+</HEAD>
+<BODY>
+<!-- $Id: libgist_user_manual.html,v 1.1 1999/06/27 00:19:58 marcel Exp $ -->
+<CENTER><H1>libgist User Manual</H1></CENTER>
+
+<CENTER>
+<HR WIDTH="100%"></CENTER>
+
+<CENTER>
+<H2>Table of Contents</H2></CENTER>
+
+<UL>
+<LI>
+<A HREF="#Overview">Overview</A></LI>
+
+<LI>
+<A HREF="#usinglibgist">Libgist for Application Programmers</A></LI>
+
+<LI>
+<A HREF="#usingbtext">Using the B-Tree Extension</A></LI>
+
+<LI>
+<A HREF="#usingrtext">Using the R-Tree Extension</A></LI>
+
+<LI>
+<A HREF="#Summary of Classes and Header Files">Summary of Classes and Header
+Files</A></LI>
+
+<LI>
+<A HREF="#Appendix A:">Appendix A: <TT>gist.h</TT></A></LI>
+
+<LI>
+<A HREF="#Appendix B: gist_btree.h">Appendix B: <TT>gist_btree.h</TT></A></LI>
+
+<LI>
+<A HREF="#Appendix C: gist_rtree.h">Appendix C: <TT>gist_rtree.h</TT></A></LI>
+</UL>
+
+<CENTER>
+<HR WIDTH="100%"></CENTER>
+
+<H2>
+<A NAME="Overview"></A>Overview</H2>
+This document explains how to use the libgist interfaces to create, manage
+and search indices using existing libgist extensions (B-tree and R-tree
+extensions are included in the distribution). Extensions implement the
+customizable parts of the GiST index structure and are used to "teach"
+a GiST how to behave like a particular access method. If you need to write
+your own extension, please refer to the <A HREF="ext_guide.html">Guide
+to writing libgist extensions</A> for the details. <A HREF="#usinglibgist">Libgist
+for Application Programmers</A> in this User Manual explains, in general
+terms, how to use the methods of the core libgist application-oriented
+classes.&nbsp; <A HREF="#usingbtext">Using the B-Tree Extension</A> explains
+the specific details of the B-tree extension and gives an example of how
+to use it, <A HREF="#usingrtext">Using the R-Tree Extension</A> does the
+same for the R-tree extension and <A HREF="#Summary of Classes and Header Files">Summary
+of Classes and Header Files</A> contains a list of the classes and their
+header files.
+<H2>
+<A NAME="usinglibgist"></A>Libgist for Application Programmers</H2>
+The central class for libgist application programmers is <TT>gist_m</TT>,
+which is used to create and interact with GiST index objects. Libgist stores
+each GiST index in its own operating system file. Objects of class <TT>gist_m</TT>,
+when connected to an index file, allow the application to manipulate and
+query the corresponding indices through their class methods. The method
+<TT><A HREF="#create">gist_m::create(filename, extension)</A></TT> creates
+an empty index file with the given name and connects the <TT>gist_m</TT>
+object to that file. All subsequent operations on the index object use
+the given extension. The index can be destroyed by simply removing the
+corresponding file. An index object is connected to a previously created
+index file with <TT><A HREF="#open">gist_m::open(filename, extension)</A></TT>.
+The extension provided as a parameter must be the same as the one that
+was previously used to create and update the index. Analogously to <TT><A HREF="#create">gist_m::create()</A></TT>,
+the given extension is used for all subsequent operations on the index.
+While an index object is connected to an index file, the most frequently
+accessed nodes of the index are buffered in main memory to improve performance.
+To make sure that changes are written back to the index file, two procedures
+are provided: <TT><A HREF="#flush">gist_m::flush()</A></TT> saves the changes
+to disk, and <TT><A HREF="#close">gist_m::close()</A></TT> additionally
+removes the connection between the <TT>gist_m</TT> object and the index
+file.
+
+<P>A GiST index supports the standard index update mechanisms, insertion
+and deletion of keys. A new <I>(key, data pointer)</I> pair is inserted
+into the index with <TT><A HREF="#insert">gist_m::insert(key, keylen, data,
+datalen)</A></TT>. The <TT>key</TT> and <TT>data</TT> parameters point
+to memory locations that hold the key and data pointer, the format of which
+is defined by the extension used with the index object at hand. The libgist
+core classes themselves do not interpret either datum, but they need to
+know their sizes in bytes for purposes of storage management, which explains
+the <TT>keylen</TT> and <TT>datalen</TT> parameters. Index entries are
+deleted with <TT><A HREF="#remove">gist_m::remove(query)</A></TT>, which
+requires a query (more on these in the next paragraph) that describes the
+keys of the target entries. Libgist does not support single-entry deletion
+other than through a user-constructed query that will retrieve a single
+entry, because the equality selection predicate required to locate the
+entry is not part of the standard GiST interface.
+
+<P>Libgist supports searches on index trees through the well-known iterator
+interface (or cursor interface, to put it in SQL-compliant terms). Before
+running a query, the application must initialize a <TT>gist_cursor_t</TT>
+object with the query it wants to run (<TT><A HREF="#fetch_init">gist_m::fetch_init(cursor,
+query)</A></TT>). As with the keys in the index entries, the format of
+a query and its interpretation is defined by the particular extension used.
+The <I>(key, data pointer)</I> pairs from the index entries which match
+the query are returned to the application through <TT><A HREF="#fetch">gist_m::fetch(key,
+keylen, data, datalen, eof)</A></TT>. The <TT>key</TT> and <TT>data</TT>
+parameters must point to application-allocated storage space that is large
+enough to hold whatever is in the index entry. The actual size of the key
+and data pointer in bytes is returned through <TT>keylen</TT> and <TT>datalen</TT>.
+The maximum sizes are usually dictated by the particular extension that
+is used for the index tree (but cannot exceed <TT>gist_p::max_tup_sz</TT>,
+the maximum tuple size dictated by the libgist implementation). The output
+parameter <TT>eof</TT> is set to <TT>true</TT> after the last matching
+entry has been fetched (the <TT><A HREF="#fetch">gist_m::fetch()</A></TT>
+call that retrieves the last matching item will still have <TT>eof</TT>
+set to <TT>false</TT>).
+
+<P>There are a couple of ancillary interface procedures that make debugging
+new extensions a little easier. Firstly, it is possible to check that the
+bounding predicate on each page contains every key on the page; <TT><A HREF="#check">gist_m::check()</A></TT>
+performs this check and reports any violations to <TT>stderr</TT>. Secondly,
+you can inspect the content of an index tree with <TT><A HREF="#dump">gist_m::dump(pageno)</A></TT>
+by dumping the entire tree (<TT>pageno</TT> = 0) or selected pages (<TT>pageno</TT>
+= desired page). The report on <TT>stdout</TT> includes page statistics
+(how many slots used, how many bytes free etc.), the bounding predicate
+and the keys and child/data pointers of all the entries.
+<H2>
+<A NAME="usingbtext"></A>Using the B-Tree Extension</H2>
+The B-tree extension available as part of the libgist distribution implements
+standard B+-trees, which maintain entries in sorted order on each index
+page and compress the key interval BPs (used as the keys in entries on
+internal nodes) to their left boundary. Node entries are sorted on their
+keys and entries with duplicate keys are further sorted on their data pointers.
+
+<P>The extension has two classes: <TT><A HREF="#bt_query_t">bt_query_t</A></TT>,
+which defines the query operators implemented for B-trees (the usual =,
+&lt;, &lt;=, >, >= and a range operator like <TT>SQL BETWEEN</TT>), and
+<TT><A HREF="#bt_ext_t">bt_ext_t</A></TT>, which is the class for B-tree
+extension objects (there's a third class, <TT>gist_ubt_ext_t</TT>, which
+implements "unordered" B-trees in the purist GiST tradition; it is only
+provided as an example of how to write extensions, not as an alternative
+to ordered B-trees, since unordered B-trees are strictly inferior to regular
+B+-trees in terms of performance).
+
+<P>Currently, the B-tree extension contains two (statically defined) <TT>bt_ext_t
+</TT>instances: one for integers (<TT><A HREF="#bt_int_ext">bt_int_ext</A></TT>)
+and one for strings (<TT><A HREF="#bt_str_ext">bt_str_ext</A></TT>). The
+data pointers expected by either extension object are 4-byte integers.
+Here's a short example that creates an index stored in file "btree-file",
+inserts two integers with integer data pointers and then fetches all entries
+in the interval [4, 6].
+<PRE>gist_m bt_index;
+(void) bt_index.create("btree-file", &amp;bt_int_ext);
+int key1 = 5;
+int data1 = 1;
+int key2 = 3;
+int data2 = 2;
+(void) bt_index.insert((void *) &amp;key1, sizeof(int), (void *) &amp;data1, sizeof(int));
+(void) bt_index.insert((void *) &amp;key2, sizeof(int), (void *) &amp;data2, sizeof(int));
+bt_query_t q(bt_query_t::bt_betw, new int(4), new int(6));
+gist_cursor_t cursor;
+bt_index.fetch_init(cursor, &amp;q);
+bool eof = false;
+int key, keysz, data, datasz;
+while (!eof) {
+&nbsp;&nbsp;&nbsp; (void) bt_index.fetch(cursor, key, keysz, data, datasz, eof);
+&nbsp;&nbsp;&nbsp; if (!eof) // process key and data...
+}</PRE>
+Creating a new B-tree extension in the form of a <TT>bt_ext_t</TT> object
+for a particular datatype requires a few datatype-specific procedures (click
+<A HREF="#bt_ext_t constructor">here</A> to see the <TT>bt_ext_t</TT> constructor):
+<UL>
+<LI>
+a comparison function, both for keys and data pointers (a comparison function
+for the latter is necessary because key duplicates are ordered according
+to their data pointers);</LI>
+
+<LI>
+a representation for negative infinity for the BPs of the leftmost nodes
+in the tree;</LI>
+
+<LI>
+a function to determine the size of a key, given a pointer to its on-page
+representation;</LI>
+
+<LI>
+functions to print a predicate and data pointer for debugging purposes.</LI>
+</UL>
+
+<H2>
+<A NAME="usingrtext"></A>Using the R-Tree Extension</H2>
+The R-tree extension available with libgist implements standard R-trees
+as described in the original paper by A. Guttman; no attempt at R*-tree-style
+reinsertion is made. Its splitting algorithm is quadratic (first, it finds
+the most distant items, then it clusters the remaining entries on the page
+around the two distant seeds).
+
+<P>At the heart of the R-tree extension is the extension class, <TT><A HREF="#rt_ext_t">rt_ext_t</A></TT>,
+of which there are two extension objects:<TT> <A HREF="#rt_point_ext">rt_point_ext</A></TT>
+for point data and <TT><A HREF="#rt_rect_ext">rt_rect_ext</A></TT> for
+rectangle data. Both of these extensions can handle data of arbitrary dimensionality.
+Points are stored on the page as arrays of <TT>double</TT>s, where the
+length of the array corresponds to the dimensionality of the point. Rectangles
+are stored as arrays of intervals, which are each composed of two <TT>double</TT>
+boundaries. The data pointers are 4-byte integers for either of these extension
+objects. The class <TT><A HREF="#rt_query_t">rt_query_t</A></TT> defines
+the operators supoorted by the R-tree extension, which are: <TT>contained()</TT>,
+<TT>contains()</TT>, <TT>equal()</TT>, <TT>overlaps()</TT>. There are two
+ancillary classes, <TT><A HREF="#rt_point">rt_point</A></TT> and <TT><A HREF="#rt_rect">rt_rect</A></TT>,
+which are used internally as the in-memory representation of points and
+rectangles and which also function as parameters to queries (see the example
+further down the page). Creating an R-tree extension object for datatypes
+other than points and rectangles is not possible in the current implementation.
+
+<P>Here's an example that inserts two 2-dimensional points into an R-tree,
+runs a query on them and afterwards deletes the retrieved items.
+<PRE>gist_m rt_index;
+rt_index.create("rtree-file", &amp;rt_point_ext);
+double key1[] = {50.0, 60.0};
+int data1 = 1;
+double key2[] = {10.0, 20.0};
+int data2 = 2;
+rt_index.insert((void *) key1, sizeof(key1), (void *) &amp;data1, sizeof(data1));
+rt_index.insert((void *) key2, sizeof(key2), (void *) &amp;data2, sizeof(data2));
+double rect1[] = {5.0, 15.0, 15.0, 25.0};
+rt_rect r1(2, rect1);
+rt_query q(rt_query_t::rt_overlap, rt_query_t::rt_rectarg, (void *) &amp;r1);
+gist_cursor_t cursor;
+rt_index.fetch_init(cursor, &amp;q);
+bool eof = false;
+rt_point key(2);
+int keysz, datasz, data;
+while (!eof) {
+&nbsp;&nbsp;&nbsp; (void) rt_index.fetch((void *) key.coord, keysz, (void *) &amp;data, datasz);
+&nbsp;&nbsp;&nbsp; if (!eof) // process key and data...
+}</PRE>
+&nbsp;
+<H2>
+<A NAME="Summary of Classes and Header Files"></A>Summary of Classes and
+Header Files</H2>
+&nbsp;
+<TABLE BORDER WIDTH="100%" >
+<TR>
+<TD>Class</TD>
+
+<TD>Header File</TD>
+
+<TD>Description&nbsp;</TD>
+</TR>
+
+<TR>
+<TD><TT>gist_m</TT></TD>
+
+<TD>gist.h</TD>
+
+<TD>GiST index class</TD>
+</TR>
+
+<TR>
+<TD><TT>gist_cursor_t</TT></TD>
+
+<TD>gist.h</TD>
+
+<TD>GiST query cursor class</TD>
+</TR>
+
+<TR>
+<TD><TT>bt_ext_t</TT></TD>
+
+<TD>gist_btree.h</TD>
+
+<TD>B-tree extension class</TD>
+</TR>
+
+<TR>
+<TD><TT>rt_ext_t</TT></TD>
+
+<TD>gist_rtree.h</TD>
+
+<TD>R-tree extension class</TD>
+</TR>
+</TABLE>
+&nbsp;
+<BR>
+<HR WIDTH="100%">
+<H2>
+<A NAME="Appendix A:"></A>Appendix A: <TT>gist.h</TT></H2>
+
+<PRE>class gist_cursor_t;
+class gist_lstk;
+class gist_ustk;
+class gist_p;
+class gist_ext_t;
+
+
+class gist_m {
+
+public:
+
+&nbsp;&nbsp;&nbsp; gist_m();
+&nbsp;&nbsp;&nbsp; ~gist_m();
+<A NAME="create"></A>
+&nbsp;&nbsp;&nbsp; // create an empty Gist
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; create(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const char*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; filename,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_ext_t*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ext);
+<A NAME="open"></A>
+&nbsp;&nbsp;&nbsp; // open an existing Gist
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; open(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const char*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; filename,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_ext_t*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ext);
+<A NAME="close"></A>
+<A NAME="flush"></A>&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; close();
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; flush();&nbsp;
+<A NAME="insert"></A>
+&nbsp;&nbsp;&nbsp; // insert a single key
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; insert(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; key,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; keyLen,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dataPtr,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dataPtrLen);
+<A NAME="remove"></A>
+&nbsp;&nbsp;&nbsp; // remove all keys matching the query
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; remove(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; query);
+<A NAME="fetch_init"></A>
+&nbsp;&nbsp;&nbsp; // initialize the cursor
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fetch_init(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_cursor_t&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cursor,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; query);
+<A NAME="fetch"></A>
+&nbsp;&nbsp;&nbsp; // fetch the next data item
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fetch(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_cursor_t&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cursor,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; key,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; smsize_t&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; keyLen,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dataPtr,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; smsize_t&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dataPtrLen,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eof);
+<A NAME="is_empty"></A>
+&nbsp;&nbsp;&nbsp; // returns true if tree contains no data
+&nbsp;&nbsp;&nbsp; bool&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; is_empty();
+<A NAME="check"></A>
+&nbsp;&nbsp;&nbsp; // checks structural and data integrity of the tree;
+&nbsp;&nbsp;&nbsp; // outputs violations to stderr
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check();
+<A NAME="dump"></A>
+&nbsp;&nbsp;&nbsp; // dumps the content of a page to stdout;
+&nbsp;&nbsp;&nbsp; // if 0 is specified as the pgno, dumps out the tree
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dump(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; shpid_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pgno = 0);
+
+};</PRE>
+
+<H2>
+<A NAME="Appendix B: gist_btree.h"></A>Appendix B: <TT>gist_btree.h</TT></H2>
+
+<PRE><A NAME="bt_query_t"></A>
+class bt_query_t {
+public:
+
+&nbsp;&nbsp;&nbsp; enum bt_oper {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bt_nooper,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bt_eq,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bt_lt,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bt_le,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bt_gt,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bt_ge,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bt_betw, // SQL BETWEEN operator
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bt_numoper
+&nbsp;&nbsp;&nbsp; };
+
+&nbsp;&nbsp;&nbsp; bt_query_t(bt_oper oper, void *val1, void *val2) : oper(oper), val1(val1), val2(val2) {}
+&nbsp;&nbsp;&nbsp; ~bt_query_t()
+&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (val1 != NULL) delete val1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (val2 != NULL) delete val2;
+&nbsp;&nbsp;&nbsp; }
+
+&nbsp;&nbsp;&nbsp; bt_oper oper;
+&nbsp;&nbsp;&nbsp; void *val1;
+&nbsp;&nbsp;&nbsp; void *val2; // only used as upper interval bound for bt_betw
+};
+
+<A NAME="bt_ext_t"></A>
+class bt_ext_t : public gist_ext_t {
+public:
+
+&nbsp;&nbsp;&nbsp; // generic comparison function
+&nbsp;&nbsp;&nbsp; typedef int (*CmpFct)(const void *a, const void *b);
+&nbsp;&nbsp;&nbsp; CmpFct keyCmp; // for keys
+&nbsp;&nbsp;&nbsp; CmpFct dataCmp; // for data pointers
+
+&nbsp;&nbsp;&nbsp; // returns the size in bytes of a key stored on a disk page;
+&nbsp;&nbsp;&nbsp; // the goal is to get to the data pointer portion of an internal entry,
+&nbsp;&nbsp;&nbsp; // given the pointer to the key portion
+&nbsp;&nbsp;&nbsp; typedef int (*SizeFct)(const void *e);
+&nbsp;&nbsp;&nbsp; SizeFct size;
+
+&nbsp;&nbsp;&nbsp; // for printPred()
+&nbsp;&nbsp;&nbsp; typedef void (*PrintFct)(const void *pred);
+&nbsp;&nbsp;&nbsp; PrintFct prPred, prData;
+
+&nbsp;&nbsp;&nbsp; // for pickSplit() (creating new BPs)
+&nbsp;&nbsp;&nbsp; typedef void (*NegInftyFct)(void *x);
+&nbsp;&nbsp;&nbsp; NegInftyFct negInftyKey, negInftyData;
+<A NAME="bt_ext_t constructor"></A>
+&nbsp;&nbsp;&nbsp; bt_ext_t(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CmpFct keyCmp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CmpFct dataCmp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SizeFct size,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PrintFct prPred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PrintFct prData,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NegInftyFct negInftyKey,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NegInftyFct negInftyData);
+
+&nbsp;&nbsp;&nbsp; rc_t insert(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; key,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; data,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; shpid_t child);
+
+&nbsp;&nbsp;&nbsp; rc_t remove(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int slots[],
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int numSlots);
+
+&nbsp;&nbsp;&nbsp; rc_t updateKey(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&amp; slot,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; newKey);
+
+&nbsp;&nbsp;&nbsp; void findMinPen(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; key,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; data,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&amp; slot);
+
+&nbsp;&nbsp;&nbsp; void search(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void* query,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int matches[],
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&amp; numMatches);
+
+&nbsp;&nbsp;&nbsp; void getKey(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int slot,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vec_t&amp; key);
+
+&nbsp;&nbsp;&nbsp; rc_t pickSplit(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int rightEntries[],
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&amp; numRight,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; oldBp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vec_t&amp; leftBp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vec_t&amp; rightBp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; entry1,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool&amp; oneGoesRight,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; entry2,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool&amp; twoGoesRight);
+
+&nbsp;&nbsp;&nbsp; void unionPage(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vec_t&amp; bp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool&amp; bpChanged);&nbsp;
+
+&nbsp;&nbsp;&nbsp; void unionKey(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vec_t&amp; bp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; pred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool &amp;bpChanged);
+
+&nbsp;&nbsp;&nbsp; bool check(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; bp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; pred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level);
+
+&nbsp;&nbsp;&nbsp; void printPred(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; pred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level);
+
+&nbsp;&nbsp;&nbsp; void printData(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; data);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+};
+<A NAME="bt_int_ext"></A>
+<A NAME="bt_str_ext"></A>extern bt_ext_t bt_int_ext;
+extern bt_ext_t bt_str_ext;</PRE>
+
+<H2>
+<A NAME="Appendix C: gist_rtree.h"></A>Appendix C: <TT>gist_rtree.h</TT></H2>
+
+<PRE>class rt_point;
+<A NAME="rt_rect"></A>
+class rt_rect {
+public:
+
+&nbsp;&nbsp;&nbsp; rt_rect(int d); // preset with 0 coords
+&nbsp;&nbsp;&nbsp; rt_rect(int d, const double *coord); // coords left as-is
+&nbsp;&nbsp;&nbsp; rt_rect(int d, double *coord); // coords left as-is, can be changed
+&nbsp;&nbsp;&nbsp; rt_rect(rt_rect &amp;r);
+&nbsp;&nbsp;&nbsp; ~rt_rect();
+
+&nbsp;&nbsp;&nbsp; void dealloc();
+&nbsp;&nbsp;&nbsp; bool isEqual(rt_rect &amp; k);
+&nbsp;&nbsp;&nbsp; int dim() { return dimension; }
+&nbsp;&nbsp;&nbsp; double span();
+&nbsp;&nbsp;&nbsp; double margin();
+&nbsp;&nbsp;&nbsp; double dist(rt_rect *s);
+&nbsp;&nbsp;&nbsp; double &amp; lo(int i);
+&nbsp;&nbsp;&nbsp; double &amp; hi(int i);
+
+&nbsp;&nbsp;&nbsp; // expanding this rect to include another point or rect
+&nbsp;&nbsp;&nbsp; // return TRUE if successful, FALSE otherwise
+&nbsp;&nbsp;&nbsp; bool expand(rt_point &amp; pt);
+&nbsp;&nbsp;&nbsp; bool expand(rt_rect &amp; rect);
+
+&nbsp;&nbsp;&nbsp; // restricting this rect to its overlap with another rect
+&nbsp;&nbsp;&nbsp; // return TRUE if successful, FALSE otherwise
+&nbsp;&nbsp;&nbsp; bool intersect(rt_rect &amp; rect);
+
+&nbsp;&nbsp;&nbsp; // test relationship with another rect or point:
+&nbsp;&nbsp;&nbsp; bool overlaps(rt_rect &amp; rect);
+&nbsp;&nbsp;&nbsp; bool contains(rt_rect &amp; rect);
+&nbsp;&nbsp;&nbsp; bool contains(rt_point &amp; pt);
+
+&nbsp;&nbsp;&nbsp; int dimension;&nbsp;
+&nbsp;&nbsp;&nbsp; double *coord;
+};
+<A NAME="rt_point"></A>
+class rt_point {
+public:
+
+&nbsp;&nbsp;&nbsp; rt_point(int d);
+&nbsp;&nbsp;&nbsp; rt_point(int d, double *coord) : dimension(d), coord(coord) {}
+&nbsp;&nbsp;&nbsp; rt_point(int d, const double *coord) : dimension(d), coord((double *) coord) {}
+&nbsp;&nbsp;&nbsp; ~rt_point();
+
+&nbsp;&nbsp;&nbsp; // accessors:
+&nbsp;&nbsp;&nbsp; double &amp; operator [] (int i);
+
+&nbsp;&nbsp;&nbsp; void dealloc();
+&nbsp;&nbsp;&nbsp; bool isEqual(rt_point &amp; k);
+&nbsp;&nbsp;&nbsp; int dim();
+&nbsp;&nbsp;&nbsp; double span();
+&nbsp;&nbsp;&nbsp; double margin();
+&nbsp;&nbsp;&nbsp; double dist(rt_point *s);
+&nbsp;&nbsp;&nbsp; double &amp; crd(int i);
+
+&nbsp;&nbsp;&nbsp; // test relationship with another point or rect
+&nbsp;&nbsp;&nbsp; bool contains(rt_rect &amp; rect);
+&nbsp;&nbsp;&nbsp; bool contains(rt_point &amp; pt);
+
+&nbsp;&nbsp;&nbsp; int dimension;
+&nbsp;&nbsp;&nbsp; double *coord;&nbsp; // keep coordinates in all dimensions
+};
+<A NAME="rt_query_t"></A>
+class rt_query_t {
+public:
+&nbsp;&nbsp;&nbsp; enum rt_oper {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rt_nooper,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rt_equal,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rt_overlap,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rt_contains,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rt_contained,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rt_numoper
+&nbsp;&nbsp;&nbsp; };
+
+&nbsp;&nbsp;&nbsp; enum rt_arg {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rt_pointarg,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rt_rectarg,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rt_numarg
+&nbsp;&nbsp;&nbsp; };
+
+&nbsp;&nbsp;&nbsp; // assumes that points and rects were created with new(dim), not new(dim, coord)!
+&nbsp;&nbsp;&nbsp; rt_query_t(rt_oper oper, rt_arg arg, void *val) : oper(oper), argType(arg), value(val) {}
+&nbsp;&nbsp;&nbsp; ~rt_query_t() ;
+
+&nbsp;&nbsp;&nbsp; rt_oper oper;
+&nbsp;&nbsp;&nbsp; rt_arg argType;
+&nbsp;&nbsp;&nbsp; void *value;
+};
+<A NAME="rt_ext_t"></A>
+class rt_ext_t : public gist_unordered_ext_t {
+public:
+
+&nbsp;&nbsp;&nbsp; const int numLvl = 2; // only 2 levels to distinguish: leaf/non-leaf
+
+&nbsp;&nbsp;&nbsp; typedef bool (*CmpFct)(const void *, int, const void *);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // any point/rect comparison function
+
+&nbsp;&nbsp;&nbsp; // function table: one for each operator, possible argument type
+&nbsp;&nbsp;&nbsp; // and leaf/internal level
+&nbsp;&nbsp;&nbsp; typedef CmpFct CmpFctTbl[numLvl][rt_query_t::rt_numarg][rt_query_t::rt_numoper];
+
+&nbsp;&nbsp;&nbsp; CmpFctTbl cmpFcts; // for consistent()
+
+&nbsp;&nbsp;&nbsp; // for penalty()/pickSplit()/union_key():
+&nbsp;&nbsp;&nbsp; // expand rect with rect/pt
+&nbsp;&nbsp;&nbsp; typedef void (*ExpandFct)(rt_rect &amp;r, const void *item, int len);&nbsp;
+&nbsp;&nbsp;&nbsp; ExpandFct expand;
+
+&nbsp;&nbsp;&nbsp; // for pickSplit()
+&nbsp;&nbsp;&nbsp; typedef double (*DistanceFct)(const void *item1, const void *item2, int len);
+&nbsp;&nbsp;&nbsp; DistanceFct dist; // compute the distance between two rects/pts
+&nbsp;&nbsp;&nbsp; typedef int (*DimFct)(int dataSz); // returns dimension of points/rects
+&nbsp;&nbsp;&nbsp; DimFct dim;
+&nbsp;&nbsp;&nbsp; typedef void (*RectFct)(rt_rect &amp;r, const void *item, int len);
+&nbsp;&nbsp;&nbsp; RectFct copyRect; // creates rect from pt/rect
+
+&nbsp;&nbsp;&nbsp; rt_ext_t(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CmpFctTbl tbl,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ExpandFct exp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DistanceFct distance,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DimFct dim,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RectFct rf);
+
+&nbsp;&nbsp;&nbsp; bool consistent(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void&nbsp; *query,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void *pred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int predLen,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level);
+
+&nbsp;&nbsp;&nbsp; void penalty(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void *subtreePred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int predLen,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void *newKey,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int keyLen,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_penalty_t &amp;p);
+
+&nbsp;&nbsp;&nbsp; void union_key(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void *bp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int &amp;len,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void *newPred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int newLen,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool &amp;changed);
+
+&nbsp;&nbsp;&nbsp; void union_page(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void *bp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int &amp;len,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_predcursor_t &amp;pcursor,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool &amp;changed);
+
+&nbsp;&nbsp;&nbsp; void pickSplit(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_predcursor_t &amp;pcursor,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int rightEntries[] /*out*/,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int &amp;numRightEntries /*out*/,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void *oldBp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int oldLen,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void *leftBp /*out*/,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int &amp;leftLen /*in/out*/,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void *rightBp /*out*/,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int &amp;rightLen /*int/out*/);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; bool check(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void *bp,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int bplen,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void *pred,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int predlen,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level);&nbsp;
+
+&nbsp;&nbsp;&nbsp; void printPred(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void *pred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int plen,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level);&nbsp;
+
+&nbsp;&nbsp;&nbsp; void printData(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void *data,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int dlen);
+
+};
+<A NAME="rt_point_ext"></A>
+<A NAME="rt_rect_ext"></A>extern gist_unorderedn_ext_t rt_point_ext;
+extern gist_unorderedn_ext_t rt_rect_ext;</PRE>
+
+<HR WIDTH="100%">Comments, questions and suggestions may be directed to
+<I><A HREF="mailto:gist@postgres.berkeley.edu">gist@postgres.berkeley.edu</A></I>
+<P><FONT SIZE=-2>Last modified: $Date: 1999/06/27 00:19:58 $ by $Author: marcel $.</FONT>
+</BODY>
+</HTML>

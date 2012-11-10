@@ -1,0 +1,21 @@
+HKCR
+{
+	TRiASEx.NoMultiObjekt.1 = s 'Grundstücke analysieren'
+	{
+	
+		CLSID = s '{25269C51-A0B6-11d3-A8C8-00104BAF20DA}'
+
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {25269C51-A0B6-11d3-A8C8-00104BAF20DA} = s 'Grundstücke analysieren'
+		{
+			val AppID = s '{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}'
+			ProgID = s 'TRiASEx.NoMultiObjekt.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+}

@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiASGM.ViewRecordsetGenerator.1 = s 'View RecordsetGenerator Class'
+	{
+		CLSID = s '{7417A5E5-AED0-11D1-859A-00600875138A}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {7417A5E5-AED0-11D1-859A-00600875138A} = s 'View RecordsetGenerator Class'
+		{
+			ProgID = s 'TRiASGM.ViewRecordsetGenerator.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

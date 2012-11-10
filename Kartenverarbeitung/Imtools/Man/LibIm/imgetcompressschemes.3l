@@ -1,0 +1,66 @@
+
+
+
+IMFILEQFORMAT(3IM)     SDSC IMAGE LIBRARY      IMFILEQFORMAT(3IM)
+
+
+
+NAME
+     ImGetCompressSchemes - Get the table of compression schemes
+
+SYNOPSIS
+     #include "im.h"
+
+     typedef struct ImCompressScheme
+     {
+          char **compress_suffixes;
+          char *compress_name;
+          ImFileMagic* compress_magic_numbers;
+          int  (*compress_decode)();
+          int  (*compress_encode)();
+     } ImCompressScheme;
+
+     ImCompressScheme** ImGetCompressSchemes( void );
+
+
+
+DESCRIPTION
+     ImGetCompressSchemes gets the  master  list  of  compression
+     schemes.   This is a list of the various compression schemes
+     supported.
+
+     The list is stored as a null terminated array of pointers to
+     structures  of type ImCompressScheme.  For information about
+     the fields of this structure  (and  the  substructures  with
+     it), please consult the file im.h.
+
+SEE ALSO
+     ImGetFileFormats (3IM),
+
+AUTHOR
+     Brian Duggan
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SDSC               Last change: June 16, 1995                   1
+
+
+

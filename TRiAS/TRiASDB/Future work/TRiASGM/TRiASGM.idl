@@ -1,0 +1,231 @@
+// TRiASGM.idl : IDL source for TRiASGM.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (TRiASGM.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+///////////////////////////////////////////////////////////////////////////////
+// Sonstige hier benötigte Konstanten und Datentypen
+#if !defined(_DEFINED_HPROJECT)
+#define _DEFINED_HPROJECT
+	cpp_quote("#if !defined(_DEFINED_HPROJECT)")
+	cpp_quote("#define _DEFINED_HPROJECT")
+		typedef [hidden] struct HPROJECT__ { int unused; } *HPROJECT;
+	cpp_quote("#endif // _DEFINED_HPROJECT")
+#endif // _DEFINED_HPROJECT
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declarations
+interface IRecordsetGenerator;
+interface IRecordsetSource;
+interface IGDOFramework;
+interface ITRiASSourceInfo;
+
+	[
+		object,
+		uuid(2C9394B2-B038-11D1-859D-00600875138A),
+		helpstring("ITRiASSourceInfo Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASSourceInfo : IUnknown
+	{
+		[propget, helpstring("property Handle")] HRESULT Handle([out, retval] HPROJECT *pVal);
+		[propput, helpstring("property Handle")] HRESULT Handle([in] HPROJECT newVal);
+		[propget, helpstring("property TableName")] HRESULT TableName([out, retval] BSTR *pVal);
+		[propput, helpstring("property TableName")] HRESULT TableName([in] BSTR newVal);
+		[propget, helpstring("property CoordSystemType")] HRESULT CoordSystemType([out, retval] VARIANT *pVal);
+		[propput, helpstring("property CoordSystemType")] HRESULT CoordSystemType([in] VARIANT newVal);
+		[propget, helpstring("property Ident")] HRESULT Ident([out, retval] LONG *pVal);
+		[propput, helpstring("property Ident")] HRESULT Ident([in] LONG newVal);
+		[propget, helpstring("property Types")] HRESULT Types([out, retval] DWORD *pVal);
+		[propput, helpstring("property Types")] HRESULT Types([in] DWORD newVal);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// eigentliche typelib
+[
+	uuid(39AD80D3-ADE3-11D1-BA28-00600875138A),
+	version(1.0),
+	helpstring("TRiASGM 1.0 Type Library")
+]
+library TRIASGMLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+	importlib("GDO.tlb");
+
+///////////////////////////////////////////////////////////////////////////////
+// 
+	[
+		object,
+		uuid(724C7533-2A1B-11D1-920D-006097383187),
+		helpstring("IRecordsetGenerator Interface"),
+		pointer_default(unique)
+	]
+	interface IRecordsetGenerator : IUnknown
+	{
+		  HRESULT GetOutputRecordset ([out, retval] GRecordset** ppOutputRecordset);
+		  HRESULT SetFeatureName ([in] BSTR bsFeatureName);
+		  HRESULT SetSourceInfo ([in] VARIANT vSourceInfo);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// 
+	[
+		object,
+		uuid(700DC600-0E7D-11d1-9207-006097383187),
+		helpstring("IGDOFramework Interface"),
+		pointer_default(unique)
+	]
+	interface IGDOFramework : IUnknown
+	{
+		  HRESULT CreateGDatabase ([in] IRecordsetSource *pRecordsetSource, [out, retval] GDatabase **ppIGDatabase);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// 
+	[
+		object,
+		uuid(9C3B10B0-0E7D-11d1-9207-006097383187),
+		helpstring("IRecordsetSource Interface"),
+		pointer_default(unique)
+	]
+	interface IRecordsetSource : IUnknown
+	{
+	// This method is called when OpenDatabase is called on the GDO Framework 
+	// GDatabase object
+		HRESULT OpenSource ([in] BSTR Name, [in, optional] VARIANT Exclusive, [in, optional] VARIANT Readonly, [in, optional] VARIANT ModTrack, [in, optional] VARIANT Source);
+
+	// This method is called when the GDO Framework needs to build a list of 
+	// GTableDef objects
+		HRESULT GetTableNames ([out, retval] SAFEARRAY ** TableNames);
+  
+	// This method is called when the GDO Framework needs to create a 
+	// Framework GRecordset for the client and it doesn't have the source 
+	// GRecordset for a certain feature.
+		HRESULT GetGRecordset ([in] BSTR TableName, [out, retval] GRecordset **pSourceGRecordset);
+
+	// This method is called when the GDO Framework needs to collect information about this server. 
+	// e.g. CaseSensitive? ReadOnly? DataUpdatable? Server Version? CollatingOrder? The GDO Framework
+	// assumes the defaults whenever the returned VARIANT value is VT_EMPTY.
+		HRESULT GetProperty ([in] BSTR PropName, [out, retval] VARIANT *PropValue);
+
+	// This method is called whenever the OpenRecordset method is called on the GDatabase object
+	// of the GDO Framework. It's meant to be as a hook for the Recordset Source in case it needs
+	// to build the GRecordset itself. If the Recordset source doesn't want to implement the 
+	// OpenRecordset, it can simply return E_NOTIMPL which is the indication for the GDO 
+	// Framework to proceed and create a Framework GRecordset for the query.
+		HRESULT OpenRecordset ([in] BSTR Name, [in] VARIANT Type, [in, optional] VARIANT Options, [in] VARIANT SpatialOp, [in] VARIANT SpatialGeometryFilter, [in] VARIANT GeometryFieldName, [out, retval] GRecordset **ppGRecordset);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// TRiASGM.OKSRecordsetGenerator
+	[
+		uuid(7417A5E4-AED0-11D1-859A-00600875138A),
+		helpstring("OKSRecordsetGenerator Class")
+	]
+	coclass OKSRecordsetGenerator
+	{
+		[default] interface IRecordsetGenerator;
+//		interface IFieldProviderCallback;
+//		interface IBaseTableCallback;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// TRiASGM.ViewRecordsetGenerator
+	[
+		uuid(7417A5E5-AED0-11D1-859A-00600875138A),
+		helpstring("ViewRecordsetGenerator Class")
+	]
+	coclass ViewRecordsetGenerator
+	{
+		[default] interface IRecordsetGenerator;
+//		interface IFieldProviderCallback;
+//		interface IBaseTableCallback;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// TRiASGM.GDatabase
+	[
+		uuid(7417A5E7-AED0-11D1-859A-00600875138A),
+		helpstring("RecordsetSource Class")
+	]
+	coclass RecordsetSource
+	{
+		[default] interface IRecordsetSource;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// TRiASGM.GDatabase
+	[
+		uuid(2C9394B4-B038-11D1-859D-00600875138A),
+		helpstring("TRiASSourceInfo Class")
+	]
+	coclass TRiASSourceInfo
+	{
+		[default] interface ITRiASSourceInfo;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// VisInfo-Interfaces
+	import "TRiASBaseInterfaces.idl";
+	import "VisInfoInterfaces.idl";
+
+// TRiASGM.DefaultVisInfo
+	[
+		uuid(429906A0-B83F-11D1-85B5-00600875138A),
+		helpstring("TRiASDefaultVisInfo Class")
+	]
+	coclass TRiASDefaultVisInfo
+	{
+		interface IPersistStreamInit;
+		[default] interface DVisInfo;
+	};
+
+// TRiASGM.PointVisInfo
+	[
+		uuid(429906A1-B83F-11D1-85B5-00600875138A),
+		helpstring("TRiASPointVisInfo Class")
+	]
+	coclass TRiASPointVisInfo
+	{
+		interface IPersistStreamInit;
+		[default] interface DPointVisInfo;
+	};
+
+// TRiASGM.LineVisInfo
+	[
+		uuid(429906A2-B83F-11D1-85B5-00600875138A),
+		helpstring("TRiASLineVisInfo Class")
+	]
+	coclass TRiASLineVisInfo
+	{
+		interface IPersistStreamInit;
+		[default] interface DLineVisInfo;
+	};
+
+// TRiASGM.AreaVisInfo
+	[
+		uuid(429906A3-B83F-11D1-85B5-00600875138A),
+		helpstring("TRiASAreaVisInfo Class")
+	]
+	coclass TRiASAreaVisInfo
+	{
+		interface IPersistStreamInit;
+		[default] interface DAreaVisInfo;
+	};
+
+// TRiASGM.TextVisInfo
+	[
+		uuid(429906A4-B83F-11D1-85B5-00600875138A),
+		helpstring("TRiASTextVisInfo Class")
+	]
+	coclass TRiASTextVisInfo
+	{
+		interface IPersistStreamInit;
+		[default] interface DTextVisInfo;
+	};
+};

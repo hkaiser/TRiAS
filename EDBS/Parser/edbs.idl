@@ -1,0 +1,348 @@
+// edbs.idl : IDL-Quellcode für edbs.dll
+//
+
+// Diese Datei wird mit dem MIDL-Tool bearbeitet,
+// um den Quellcode für die Typbibliothek (edbs.tlb)und die Abruffunktionen zu erzeugen.
+
+import "oaidl.idl";
+import "ocidl.idl";
+	[
+		object,
+		uuid(0F117341-4B39-11D3-8E0C-00105AF354F9),
+		dual,
+		helpstring("Iparser-Schnittstelle"),
+		pointer_default(unique)
+	]
+	interface Iparser : IDispatch
+	{
+		[propget, id(1), helpstring("Eigenschaft SourceFileName")] HRESULT SourceFileName([out, retval] BSTR *pVal);
+		[propput, id(1), helpstring("Eigenschaft SourceFileName")] HRESULT SourceFileName([in] BSTR newVal);
+		[id(2), helpstring("Methode LoadObjects")] HRESULT LoadObjects([out,retval]long* lResult);
+		[propget, id(3), helpstring("Eigenschaft Objekte")] HRESULT Objekte([out, retval] IDispatch* *pVal);
+		[propget, id(4), helpstring("Eigenschaft Modus")] HRESULT Modus([out, retval] short *pVal);
+		[propput, id(4), helpstring("Eigenschaft Modus")] HRESULT Modus([in] short newVal);
+		[propput, id(5), helpstring("Eigenschaft hWnd")] HRESULT hWnd([in] long newVal);
+	};
+	[
+		object,
+		uuid(BA588FB7-4E26-11D3-8E0F-00105AF354F9),
+		dual,
+		helpstring("IOBJ_EDBS-Schnittstelle"),
+		pointer_default(unique)
+	]
+	interface IEDBS_Objekt : IDispatch
+	{
+		[propget, id(1), helpstring("Eigenschaft Folie")] HRESULT Folie([out, retval] short *pVal);
+		[propput, id(1), helpstring("Eigenschaft Folie")] HRESULT Folie([in] short newVal);
+		[propget, id(2), helpstring("Eigenschaft Objektnummer")] HRESULT Objektnummer([out, retval] BSTR *pVal);
+		[propput, id(2), helpstring("Eigenschaft Objektnummer")] HRESULT Objektnummer([in] BSTR newVal);
+		[propget, id(3), helpstring("Eigenschaft Objektart")] HRESULT Objektart([out, retval] short *pVal);
+		[propput, id(3), helpstring("Eigenschaft Objektart")] HRESULT Objektart([in] short newVal);
+		[propget, id(4), helpstring("Eigenschaft Objekttyp")] HRESULT Objekttyp([out, retval] BSTR *pVal);
+		[propput, id(4), helpstring("Eigenschaft Objekttyp")] HRESULT Objekttyp([in] BSTR newVal);
+		[propget, id(5), helpstring("Eigenschaft Aktualitaet")] HRESULT Aktualitaet([out, retval] BSTR *pVal);
+		[propput, id(5), helpstring("Eigenschaft Aktualitaet")] HRESULT Aktualitaet([in] BSTR newVal);
+		[propget, id(6), helpstring("Eigenschaft Modelltyp")] HRESULT Modelltyp([out, retval] BSTR *pVal);
+		[propput, id(6), helpstring("Eigenschaft Modelltyp")] HRESULT Modelltyp([in] BSTR newVal);
+		[propget, id(7), helpstring("Eigenschaft Veraenderungskennung")] HRESULT Veraenderungskennung([out, retval] BSTR *pVal);
+		[propput, id(7), helpstring("Eigenschaft Veraenderungskennung")] HRESULT Veraenderungskennung([in] BSTR newVal);
+		[propget, id(8), helpstring("Eigenschaft Entstehungsdatum")] HRESULT Entstehungsdatum([out, retval] BSTR *pVal);
+		[propput, id(8), helpstring("Eigenschaft Entstehungsdatum")] HRESULT Entstehungsdatum([in] BSTR newVal);
+		[propget, id(9), helpstring("Eigenschaft Linien")] HRESULT Linien([out, retval] IDispatch* *pVal);
+		[propget, id(10), helpstring("Eigenschaft BesondereInformationen")] HRESULT BesondereInformationen([out, retval] IDispatch* *pVal);
+		[propget, id(11), helpstring("Eigenschaft GrundpunktH")] HRESULT GrundpunktH([out, retval] double *pVal);
+		[propput, id(11), helpstring("Eigenschaft GrundpunktH")] HRESULT GrundpunktH([in] double newVal);
+		[propget, id(12), helpstring("Eigenschaft GrundpunktR")] HRESULT GrundpunktR([out, retval] double *pVal);
+		[propput, id(12), helpstring("Eigenschaft GrundpunktR")] HRESULT GrundpunktR([in] double newVal);
+		[propget, id(13), helpstring("Eigenschaft FLOE")] HRESULT FLOE([out, retval] BOOL *pVal);
+		[propput, id(13), helpstring("Eigenschaft FLOE")] HRESULT FLOE([in] BOOL newVal);
+	};
+	[
+		object,
+		uuid(BA588FB9-4E26-11D3-8E0F-00105AF354F9),
+		dual,
+		helpstring("IOBJS_EDBS-Schnittstelle"),
+		pointer_default(unique)
+	]
+	interface IEDBS_Objekte : IDispatch
+	{
+		[propget, hidden, id(DISPID_NEWENUM), helpstring("Eigenschaft NewEnum")] HRESULT _NewEnum([out, retval] IUnknown* *pVal);
+//		[propget, id(DISPID_VALUE), helpstring("Eigenschaft Item")] HRESULT Item([in, out] VARIANT* vntIndexKey, [out, retval] IDispatch* *pVal);
+		[propget, id(DISPID_VALUE), helpstring("Eigenschaft Item")] HRESULT Item([in, out] VARIANT* vntIndexKey, [out, retval] VARIANT *pVal);
+		[propget, id(1), helpstring("Eigenschaft Count")] HRESULT Count([out, retval] long *pVal);
+		[propget, id(2), helpstring("Eigenschaft Object")] HRESULT Object([in]BSTR Objektnummer, [out, retval] IDispatch* *pVal);
+	};
+	[
+		object,
+		uuid(4CBA5F26-4FB3-11D3-8E11-00105AF354F9),
+		dual,
+		helpstring("IEDBS_Linie-Schnittstelle"),
+		pointer_default(unique)
+	]
+	interface IEDBS_Linie : IDispatch
+	{
+		[propget, id(1), helpstring("Eigenschaft Folie")] HRESULT Folie([out, retval] short *pVal);
+//		[propput, id(1), helpstring("Eigenschaft Folie")] HRESULT Folie([in] short newVal);
+		[propget, id(2), helpstring("Eigenschaft Objektart")] HRESULT Objektart([out, retval] short *pVal);
+//		[propput, id(2), helpstring("Eigenschaft Objektart")] HRESULT Objektart([in] short newVal);
+		[propget, id(3), helpstring("Eigenschaft Geometrieart")] HRESULT Geometrieart([out, retval] short *pVal);
+//		[propput, id(3), helpstring("Eigenschaft Geometrieart")] HRESULT Geometrieart([in] short newVal);
+		[propget, id(4), helpstring("Eigenschaft Linienteilung")] HRESULT Linienteilung([out, retval] short *pVal);
+//		[propput, id(4), helpstring("Eigenschaft Linienteilung")] HRESULT Linienteilung([in] short newVal);
+		[propget, id(5), helpstring("Eigenschaft Fachparameter")] HRESULT Fachparameter([out, retval] IDispatch* *pVal);
+		[propget, id(6), helpstring("Eigenschaft Objektteilnummer")] HRESULT Objektteilnummer([out, retval] short *pVal);
+		[propget, id(7), helpstring("Eigenschaft Geometrie")] HRESULT Geometrie([out, retval] IDispatch* *pVal);
+	};
+	[
+		object,
+		uuid(4CBA5F28-4FB3-11D3-8E11-00105AF354F9),
+		dual,
+		helpstring("IEDBS_Linien-Schnittstelle"),
+		pointer_default(unique)
+	]
+	interface IEDBS_Linien : IDispatch
+	{
+		[propget, hidden, id(DISPID_NEWENUM), helpstring("Eigenschaft NewEnum")] HRESULT _NewEnum([out, retval] IUnknown* *pVal);
+		[propget, id(DISPID_VALUE), helpstring("Eigenschaft Item")] HRESULT Item([in, out] VARIANT* vntIndexKey, [out, retval] VARIANT *pVal);
+		[propget, id(1), helpstring("Eigenschaft Count")] HRESULT Count([out, retval] long *pVal);
+	};
+	[
+		object,
+		uuid(4CBA5F2A-4FB3-11D3-8E11-00105AF354F9),
+		dual,
+		helpstring("IEDBS_Fachparameter-Schnittstelle"),
+		pointer_default(unique)
+	]
+	interface IEDBS_Fachparameter : IDispatch
+	{
+		[propget, id(1), helpstring("Eigenschaft Art")] HRESULT Art([out, retval] BSTR *pVal);
+//		[propput, id(1), helpstring("Eigenschaft Art")] HRESULT Art([in] BSTR newVal);
+		[propget, id(2), helpstring("Eigenschaft Kennung")] HRESULT Kennung([out, retval] BSTR *pVal);
+//		[propput, id(2), helpstring("Eigenschaft Kennung")] HRESULT Kennung([in] BSTR newVal);
+		[propget, id(3), helpstring("Eigenschaft Wert")] HRESULT Wert([out, retval] BSTR *pVal);
+//		[propput, id(3), helpstring("Eigenschaft Wert")] HRESULT Wert([in] BSTR newVal);
+	};
+	[
+		object,
+		uuid(4CBA5F2C-4FB3-11D3-8E11-00105AF354F9),
+		dual,
+		helpstring("IEDBS_FachparameterDerLinie-Schnittstelle"),
+		pointer_default(unique)
+	]
+	interface IEDBS_FachparameterDerLinie : IDispatch
+	{
+		[propget, hidden, id(DISPID_NEWENUM), helpstring("Eigenschaft NewEnum")] HRESULT _NewEnum([out, retval] IUnknown* *pVal);
+		[propget, id(DISPID_VALUE), helpstring("Eigenschaft Item")] HRESULT Item([in, out] VARIANT* vntIndexKey, [out, retval] VARIANT *pVal);
+		[propget, id(1), helpstring("Eigenschaft Count")] HRESULT Count([out, retval] long *pVal);
+	};
+	[
+		object,
+		uuid(4CBA5F2E-4FB3-11D3-8E11-00105AF354F9),
+		dual,
+		helpstring("IEDBS_BesondereInformationen-Schnittstelle"),
+		pointer_default(unique)
+	]
+	interface IEDBS_BesondereInformationen : IDispatch
+	{
+		[propget, hidden, id(DISPID_NEWENUM), helpstring("Eigenschaft NewEnum")] HRESULT _NewEnum([out, retval] IUnknown* *pVal);
+		[propget, id(DISPID_VALUE), helpstring("Eigenschaft Item")] HRESULT Item([in, out] VARIANT* vntIndexKey, [out, retval] VARIANT *pVal);
+		[propget, id(1), helpstring("Eigenschaft Count")] HRESULT Count([out, retval] long *pVal);
+	};
+	[
+		object,
+		uuid(4CBA5F30-4FB3-11D3-8E11-00105AF354F9),
+		dual,
+		helpstring("IEDBS_BesondereInformation-Schnittstelle"),
+		pointer_default(unique)
+	]
+	interface IEDBS_BesondereInformation : IDispatch
+	{
+		[propget, id(1), helpstring("Eigenschaft Objektart")] HRESULT Objektart([out, retval] short *pVal);
+//		[propput, id(1), helpstring("Eigenschaft Objektart")] HRESULT Objektart([in] short newVal);
+		[propget, id(2), helpstring("Eigenschaft Geometrieart")] HRESULT Geometrieart([out, retval] short *pVal);
+		[propget, id(3), helpstring("Eigenschaft Textdaten")] HRESULT Textdaten([out, retval] BSTR *pVal);
+		[propget, id(4), helpstring("Eigenschaft Objektteilnummer")] HRESULT Objektteilnummer([out, retval] short *pVal);
+		[propget, id(5), helpstring("Eigenschaft Informationsart")] HRESULT Informationsart([out, retval] short *pVal);
+		[propget, id(6), helpstring("Eigenschaft Geometrie")] HRESULT Geometrie([out, retval] IDispatch* *pVal);
+	};
+	[
+		object,
+		uuid(72FB969A-4FE0-11D3-8E11-00105AF354F9),
+		dual,
+		helpstring("IEDBS_ObjekteENUM-Schnittstelle"),
+		pointer_default(unique)
+	]
+	interface IEDBS_ObjekteENUM : IDispatch
+	{
+	};
+	[
+		object,
+		uuid(1057C226-516A-11D3-8E14-00105AF354F9),
+		dual,
+		helpstring("IEDBS_LinienENUM-Schnittstelle"),
+		pointer_default(unique)
+	]
+	interface IEDBS_LinienENUM : IDispatch
+	{
+	};
+	[
+		object,
+		uuid(1057C228-516A-11D3-8E14-00105AF354F9),
+		dual,
+		helpstring("IEDBS_Geometrie-Schnittstelle"),
+		pointer_default(unique)
+	]
+	interface IEDBS_Geometrie : IDispatch
+	{
+		[propget, id(1), helpstring("Eigenschaft Geometrieart")] HRESULT Geometrieart([out, retval] short *pVal);
+		[propget, id(2), helpstring("Eigenschaft HA")] HRESULT HA([out, retval] double *pVal);
+		[propget, id(3), helpstring("Eigenschaft HE")] HRESULT HE([out, retval] double *pVal);
+		[propget, id(4), helpstring("Eigenschaft RA")] HRESULT RA([out, retval] double *pVal);
+		[propget, id(5), helpstring("Eigenschaft RE")] HRESULT RE([out, retval] double *pVal);
+		[propget, id(6), helpstring("Eigenschaft AnzahlKoordinaten")] HRESULT AnzahlKoordinaten([out, retval] int *pVal);
+	};
+	[
+		object,
+		uuid(A5896A63-53D7-11D3-8E15-00105AF354F9),
+		dual,
+		helpstring("IEDBS_BesondereInformationenENUM-Schnittstelle"),
+		pointer_default(unique)
+	]
+	interface IEDBS_BesondereInformationenENUM : IDispatch
+	{
+	};
+	[
+		object,
+		uuid(F57F5296-5458-11D3-8E16-00105AF354F9),
+		dual,
+		helpstring("IEDBS_FachparameterENUM-Schnittstelle"),
+		pointer_default(unique)
+	]
+	interface IEDBS_FachparameterENUM : IDispatch
+	{
+	};
+
+[
+	uuid(0F117331-4B39-11D3-8E0C-00105AF354F9),
+	version(1.0),
+	helpstring("TRiAS® EDBS 1.0")
+]
+library TRiAS_EDBS
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(0F117342-4B39-11D3-8E0C-00105AF354F9),
+		helpstring("parser Class")
+	]
+	coclass parser
+	{
+		[default] interface Iparser;
+	};
+	[
+		uuid(BA588FB8-4E26-11D3-8E0F-00105AF354F9),
+		helpstring("OBJ_EDBS Class")
+	]
+	coclass EDBS_Objekt
+	{
+		[default] interface IEDBS_Objekt;
+	};
+	[
+		uuid(BA588FBA-4E26-11D3-8E0F-00105AF354F9),
+		helpstring("OBJS_EDBS Class")
+	]
+	coclass EDBS_Objekte
+	{
+		[default] interface IEDBS_Objekte;
+	};
+	[
+		uuid(4CBA5F27-4FB3-11D3-8E11-00105AF354F9),
+		helpstring("EDBS_Linie Class")
+	]
+	coclass EDBS_Linie
+	{
+		[default] interface IEDBS_Linie;
+	};
+	[
+		uuid(4CBA5F29-4FB3-11D3-8E11-00105AF354F9),
+		helpstring("EDBS_Linien Class")
+	]
+	coclass EDBS_Linien
+	{
+		[default] interface IEDBS_Linien;
+	};
+	[
+		uuid(4CBA5F2B-4FB3-11D3-8E11-00105AF354F9),
+		helpstring("EDBS_Fachparameter Class")
+	]
+	coclass EDBS_Fachparameter
+	{
+		[default] interface IEDBS_Fachparameter;
+	};
+	[
+		uuid(4CBA5F2D-4FB3-11D3-8E11-00105AF354F9),
+		helpstring("EDBS_FachparameterDerLinie Class")
+	]
+	coclass EDBS_FachparameterDerLinie
+	{
+		[default] interface IEDBS_FachparameterDerLinie;
+	};
+	[
+		uuid(4CBA5F2F-4FB3-11D3-8E11-00105AF354F9),
+		helpstring("EDBS_BesondereInformationen Class")
+	]
+	coclass EDBS_BesondereInformationen
+	{
+		[default] interface IEDBS_BesondereInformationen;
+	};
+	[
+		uuid(4CBA5F31-4FB3-11D3-8E11-00105AF354F9),
+		helpstring("EDBS_BesondereInformation Class")
+	]
+	coclass EDBS_BesondereInformation
+	{
+		[default] interface IEDBS_BesondereInformation;
+	};
+	[
+		uuid(72FB969B-4FE0-11D3-8E11-00105AF354F9),
+		hidden,
+		helpstring("EDBS_ObjekteENUM Class")
+	]
+	coclass EDBS_ObjekteENUM
+	{
+		[default] interface IEDBS_ObjekteENUM;
+	};
+	[
+		uuid(1057C227-516A-11D3-8E14-00105AF354F9),
+		helpstring("EDBS_LinienENUM Class")
+	]
+	coclass EDBS_LinienENUM
+	{
+		[default] interface IEDBS_LinienENUM;
+	};
+	[
+		uuid(1057C229-516A-11D3-8E14-00105AF354F9),
+		helpstring("EDBS_Geometrie Class")
+	]
+	coclass EDBS_Geometrie
+	{
+		[default] interface IEDBS_Geometrie;
+	};
+	[
+		uuid(A5896A64-53D7-11D3-8E15-00105AF354F9),
+		helpstring("EDBS_BesondereInformationenENUM Class")
+	]
+	coclass EDBS_BesondereInformationenENUM
+	{
+		[default] interface IEDBS_BesondereInformationenENUM;
+	};
+	[
+		uuid(F57F5297-5458-11D3-8E16-00105AF354F9),
+		helpstring("EDBS_FachparameterENUM Class")
+	]
+	coclass EDBS_FachparameterENUM
+	{
+		[default] interface IEDBS_FachparameterENUM;
+	};
+};

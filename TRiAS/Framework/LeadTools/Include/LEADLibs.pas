@@ -1,0 +1,12 @@
+{ Note: the '.DLL' extension is needed for Windows NT }
+   FIL_DLL = 'LTFIL13N.DLL';
+   IMG_DLL = 'LTIMG13N.DLL';
+   KRN_DLL = 'LTKRN13N.DLL';
+   TWN_DLL = 'LTTWN13N.DLL';
+   WND_DLL = 'LTWND13N.DLL';
+   ANN_DLL = 'LTANN13N.DLL';
+   EFX_DLL = 'LTEFX13N.DLL';
+   DIS_DLL = 'LTDIS13N.DLL';
+   DLG_DLL = 'LTDLG13N.DLL';
+   SCR_DLL = 'LTSCR13N.DLL';
+   ISI_DLL = 'LTISI13N.DLL';

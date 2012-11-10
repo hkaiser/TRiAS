@@ -1,0 +1,36 @@
+// $Header: $
+// Copyright© 1999-2002 GEOPunkt GmbH, NL Potsdam, All rights reserved
+// Created: 07.06.2001 20:13:12 
+//
+// @doc
+// @module Expression.idl | Declaration of the Expression interfaces
+
+#if !defined(_EXPRESSION_IDL__3508DBC7_A4FD_443D_A568_01ABEFBD65FB__INCLUDED_)
+#define _EXPRESSION_IDL__3508DBC7_A4FD_443D_A568_01ABEFBD65FB__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+
+// Header include diagnostics
+#if defined(_TRIAS_DBG_HEADER_DIAGNOSTICS)
+#pragma message(__TIME__": include " __FILE__ )
+#endif
+
+// ITRiASExpression Interface
+[ 
+	uuid(1BDC7DDB-DE4B-4BC6-8FAE-A3EE2640C812), 
+	local,
+	pointer_default(unique),
+	helpstring("ITRiASExpression interface")
+]
+interface ITRiASExpression : IUnknown
+{
+	import "oaidl.idl";
+	import "OleDB.idl";
+
+	HRESULT Calculate ([in] INT_PTR PrjHandle, [in] INT_PTR Object, [out, retval] VARIANT *Value);
+	HRESULT GetTypeInfo ([out] ULONG *ColSize, [out] DBTYPE *Type, [out] BYTE *Precision);
+};
+
+#endif // !defined(_EXPRESSION_IDL__3508DBC7_A4FD_443D_A568_01ABEFBD65FB__INCLUDED_)

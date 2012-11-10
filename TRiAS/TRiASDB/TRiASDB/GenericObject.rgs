@@ -1,0 +1,19 @@
+HKCR
+{
+	%PROGID% = s '%DESC%'
+	{
+		CLSID = s '%CLSID%'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove %CLSID% = s '%DESC%'
+		{
+			ProgID = s '%PROGID%'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

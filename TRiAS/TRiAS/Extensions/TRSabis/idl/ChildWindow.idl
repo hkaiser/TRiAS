@@ -1,0 +1,72 @@
+
+	interface CommonChildWindow2;
+
+    [
+      odl,
+      uuid(0F4C92C0-6801-11d2-9E0E-006097F89315),
+      version(1.0),
+	  helpstring("Interface für ChildWindow im TRiAS®"),
+ 	  helpcontext(0x0000000),
+	  dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface CommonChildWindow2 : IDispatch {
+        [id(0x68030000), propput]
+        HRESULT _stdcall BackColor([in] long BkColor);
+        [id(0x68030000), propget]
+        HRESULT _stdcall BackColor([out, retval] long* BkColor);
+        [id(0x68030001), propput]
+        HRESULT _stdcall Caption([in] BSTR CapStr);
+        [id(0x68030001), propget]
+        HRESULT _stdcall Caption([out, retval] BSTR* CapStr);
+        [id(0x68030002), propput]
+        HRESULT _stdcall Enabled([in] VARIANT_BOOL IsEnabled);
+        [id(0x68030002), propget]
+        HRESULT _stdcall Enabled([out, retval] VARIANT_BOOL* IsEnabled);
+        [id(0x68030003), propget]
+        HRESULT _stdcall Height([out, retval] long* WndHeight);
+        [id(0x68030003), propput]
+        HRESULT _stdcall Height([in] long WndHeight);
+        [id(0x68030004), propget]
+        HRESULT _stdcall hWnd([out, retval] long* Handle);
+        [id(0x68030005), propput]
+        HRESULT _stdcall Icon([in] VARIANT Pict);
+        [id(0x68030006), propget]
+        HRESULT _stdcall Left([out, retval] long* WndLeft);
+        [id(0x68030006), propput]
+        HRESULT _stdcall Left([in] long WndLeft);
+        [id(0x60030007)]
+        HRESULT _stdcall Move(
+                        [in] long X, 
+                        [in] long Y);
+        [id(0x60030008),
+		helpstring("Short-Cuts müssen an Hauptfenster gesendet werden (??)")]
+        HRESULT _stdcall OnKeyDown(
+                        [in, out] short* KeyCode, 
+                        [in, out] short* Shift);
+        [id(0x68030009), propput]
+        HRESULT _stdcall Tag([in] BSTR WndTag);
+        [id(0x68030009), propget]
+        HRESULT _stdcall Tag([out, retval] BSTR* WndTag);
+        [id(0x6803000a), propget]
+        HRESULT _stdcall Top([out, retval] long* WndTop);
+        [id(0x6803000a), propput]
+        HRESULT _stdcall Top([in] long WndTop);
+        [id(0x6803000b), propput,
+		helpstring("Fenster muß gleichzeitig nach vorne kommen (Topposition)")]
+        HRESULT _stdcall Visible([in] VARIANT_BOOL IsVisible);
+        [id(0x6803000b), propget]
+        HRESULT _stdcall Visible([out, retval] VARIANT_BOOL* IsVisible);
+        [id(0x6803000c), propget]
+        HRESULT _stdcall Width([out, retval] long* WndWidth);
+        [id(0x6803000c), propput]
+        HRESULT _stdcall Width([in] long WndWidth);
+        [id(0x6803000d), propget]
+        HRESULT _stdcall WindowState([out, retval] long* WndState);
+        [id(0x6803000d), propput,
+		helpstring("O:Normal, 1:Minimiert, 2:Maximiert")]
+        HRESULT _stdcall WindowState([in] long WndState);
+    };
+
+// Ende CommonChildWindow2

@@ -1,0 +1,751 @@
+Conflict in state 61 between rule 24 and token AND resolved as reduce.
+Conflict in state 61 between rule 24 and token OR resolved as reduce.
+Conflict in state 67 between rule 23 and token AND resolved as reduce.
+Conflict in state 67 between rule 23 and token OR resolved as reduce.
+Conflict in state 68 between rule 22 and token AND resolved as shift.
+Conflict in state 68 between rule 22 and token OR resolved as reduce.
+
+
+Terminals which are not used:
+
+   ERROR
+
+
+Grammar
+
+  Number, Line, Rule
+    1  43 commands -> /* empty */
+    2  44 commands -> commands command
+    3  49 command -> CREATE ID ID NL
+    4  53 command -> OPEN ID ID NL
+    5  57 command -> DROP ID NL
+    6  60 command -> CLOSE ID NL
+    7  63 command -> SELECT FROM ID where_clause NL
+    8  67 command -> INSERT ID '(' key ',' INTCONST ')' NL
+    9  71 command -> DELETE FROM ID where_clause NL
+   10  75 command -> QUIT NL
+   11  77 command -> DEBUG NL
+   12  79 command -> HELP NL
+   13  81 command -> DUMP ID dump_page NL
+   14  84 command -> error NL
+   15  86 command -> NL
+   16  90 dump_page -> /* empty */
+   17  92 dump_page -> INTCONST
+   18  97 where_clause -> /* empty */
+   19  99 where_clause -> WHERE predicate
+   20 104 key -> STRCONST
+   21 108 predicate -> ID operator key
+   22 110 predicate -> predicate OR predicate
+   23 112 predicate -> predicate AND predicate
+   24 114 predicate -> NOT predicate
+   25 116 predicate -> '(' predicate ')'
+   26 121 operator -> '<'
+   27 122 operator -> '>'
+   28 123 operator -> opLE
+   29 124 operator -> opGE
+   30 125 operator -> '='
+   31 126 operator -> opNE
+
+
+Terminals, with rules where they appear
+
+$ (-1)
+'(' (40) 8 25
+')' (41) 8 25
+',' (44) 8
+'<' (60) 26
+'=' (61) 30
+'>' (62) 27
+error (256) 14
+ID (257) 3 4 5 6 7 8 9 13 21
+STRCONST (258) 20
+INTCONST (259) 8 17
+CREATE (260) 3
+INSERT (261) 8
+DROP (262) 5
+OPEN (263) 4
+CLOSE (264) 6
+QUIT (265) 10
+SELECT (266) 7
+DELETE (267) 9
+WHERE (268) 19
+FROM (269) 7 9
+NL (270) 3 4 5 6 7 8 9 10 11 12 13 14 15
+ERROR (271)
+AND (272) 23
+OR (273) 22
+DEBUG (274) 11
+HELP (275) 12
+DUMP (276) 13
+opLE (277) 28
+opGE (278) 29
+opNE (279) 31
+NOT (280) 24
+
+
+Nonterminals, with rules where they appear
+
+commands (33)
+    on left: 1 2, on right: 2
+command (34)
+    on left: 3 4 5 6 7 8 9 10 11 12 13 14 15, on right: 2
+dump_page (35)
+    on left: 16 17, on right: 13
+where_clause (36)
+    on left: 18 19, on right: 7 9
+key (37)
+    on left: 20, on right: 8 21
+predicate (38)
+    on left: 21 22 23 24 25, on right: 19 22 23 24 25
+operator (39)
+    on left: 26 27 28 29 30 31, on right: 21
+
+
+state 0
+
+    $default	reduce using rule 1 (commands)
+
+    commands	go to state 1
+
+
+
+state 1
+
+    commands  ->  commands . command   (rule 2)
+
+    $   	go to state 70
+    error	shift, and go to state 2
+    CREATE	shift, and go to state 3
+    INSERT	shift, and go to state 4
+    DROP	shift, and go to state 5
+    OPEN	shift, and go to state 6
+    CLOSE	shift, and go to state 7
+    QUIT	shift, and go to state 8
+    SELECT	shift, and go to state 9
+    DELETE	shift, and go to state 10
+    NL  	shift, and go to state 11
+    DEBUG	shift, and go to state 12
+    HELP	shift, and go to state 13
+    DUMP	shift, and go to state 14
+
+    command	go to state 15
+
+
+
+state 2
+
+    command  ->  error . NL   (rule 14)
+
+    NL  	shift, and go to state 16
+
+
+
+state 3
+
+    command  ->  CREATE . ID ID NL   (rule 3)
+
+    ID  	shift, and go to state 17
+
+
+
+state 4
+
+    command  ->  INSERT . ID '(' key ',' INTCONST ')' NL   (rule 8)
+
+    ID  	shift, and go to state 18
+
+
+
+state 5
+
+    command  ->  DROP . ID NL   (rule 5)
+
+    ID  	shift, and go to state 19
+
+
+
+state 6
+
+    command  ->  OPEN . ID ID NL   (rule 4)
+
+    ID  	shift, and go to state 20
+
+
+
+state 7
+
+    command  ->  CLOSE . ID NL   (rule 6)
+
+    ID  	shift, and go to state 21
+
+
+
+state 8
+
+    command  ->  QUIT . NL   (rule 10)
+
+    NL  	shift, and go to state 22
+
+
+
+state 9
+
+    command  ->  SELECT . FROM ID where_clause NL   (rule 7)
+
+    FROM	shift, and go to state 23
+
+
+
+state 10
+
+    command  ->  DELETE . FROM ID where_clause NL   (rule 9)
+
+    FROM	shift, and go to state 24
+
+
+
+state 11
+
+    command  ->  NL .   (rule 15)
+
+    $default	reduce using rule 15 (command)
+
+
+
+state 12
+
+    command  ->  DEBUG . NL   (rule 11)
+
+    NL  	shift, and go to state 25
+
+
+
+state 13
+
+    command  ->  HELP . NL   (rule 12)
+
+    NL  	shift, and go to state 26
+
+
+
+state 14
+
+    command  ->  DUMP . ID dump_page NL   (rule 13)
+
+    ID  	shift, and go to state 27
+
+
+
+state 15
+
+    commands  ->  commands command .   (rule 2)
+
+    $default	reduce using rule 2 (commands)
+
+
+
+state 16
+
+    command  ->  error NL .   (rule 14)
+
+    $default	reduce using rule 14 (command)
+
+
+
+state 17
+
+    command  ->  CREATE ID . ID NL   (rule 3)
+
+    ID  	shift, and go to state 28
+
+
+
+state 18
+
+    command  ->  INSERT ID . '(' key ',' INTCONST ')' NL   (rule 8)
+
+    '(' 	shift, and go to state 29
+
+
+
+state 19
+
+    command  ->  DROP ID . NL   (rule 5)
+
+    NL  	shift, and go to state 30
+
+
+
+state 20
+
+    command  ->  OPEN ID . ID NL   (rule 4)
+
+    ID  	shift, and go to state 31
+
+
+
+state 21
+
+    command  ->  CLOSE ID . NL   (rule 6)
+
+    NL  	shift, and go to state 32
+
+
+
+state 22
+
+    command  ->  QUIT NL .   (rule 10)
+
+    $default	reduce using rule 10 (command)
+
+
+
+state 23
+
+    command  ->  SELECT FROM . ID where_clause NL   (rule 7)
+
+    ID  	shift, and go to state 33
+
+
+
+state 24
+
+    command  ->  DELETE FROM . ID where_clause NL   (rule 9)
+
+    ID  	shift, and go to state 34
+
+
+
+state 25
+
+    command  ->  DEBUG NL .   (rule 11)
+
+    $default	reduce using rule 11 (command)
+
+
+
+state 26
+
+    command  ->  HELP NL .   (rule 12)
+
+    $default	reduce using rule 12 (command)
+
+
+
+state 27
+
+    command  ->  DUMP ID . dump_page NL   (rule 13)
+
+    INTCONST	shift, and go to state 35
+
+    $default	reduce using rule 16 (dump_page)
+
+    dump_page	go to state 36
+
+
+
+state 28
+
+    command  ->  CREATE ID ID . NL   (rule 3)
+
+    NL  	shift, and go to state 37
+
+
+
+state 29
+
+    command  ->  INSERT ID '(' . key ',' INTCONST ')' NL   (rule 8)
+
+    STRCONST	shift, and go to state 38
+
+    key 	go to state 39
+
+
+
+state 30
+
+    command  ->  DROP ID NL .   (rule 5)
+
+    $default	reduce using rule 5 (command)
+
+
+
+state 31
+
+    command  ->  OPEN ID ID . NL   (rule 4)
+
+    NL  	shift, and go to state 40
+
+
+
+state 32
+
+    command  ->  CLOSE ID NL .   (rule 6)
+
+    $default	reduce using rule 6 (command)
+
+
+
+state 33
+
+    command  ->  SELECT FROM ID . where_clause NL   (rule 7)
+
+    WHERE	shift, and go to state 41
+
+    $default	reduce using rule 18 (where_clause)
+
+    where_clause	go to state 42
+
+
+
+state 34
+
+    command  ->  DELETE FROM ID . where_clause NL   (rule 9)
+
+    WHERE	shift, and go to state 41
+
+    $default	reduce using rule 18 (where_clause)
+
+    where_clause	go to state 43
+
+
+
+state 35
+
+    dump_page  ->  INTCONST .   (rule 17)
+
+    $default	reduce using rule 17 (dump_page)
+
+
+
+state 36
+
+    command  ->  DUMP ID dump_page . NL   (rule 13)
+
+    NL  	shift, and go to state 44
+
+
+
+state 37
+
+    command  ->  CREATE ID ID NL .   (rule 3)
+
+    $default	reduce using rule 3 (command)
+
+
+
+state 38
+
+    key  ->  STRCONST .   (rule 20)
+
+    $default	reduce using rule 20 (key)
+
+
+
+state 39
+
+    command  ->  INSERT ID '(' key . ',' INTCONST ')' NL   (rule 8)
+
+    ',' 	shift, and go to state 45
+
+
+
+state 40
+
+    command  ->  OPEN ID ID NL .   (rule 4)
+
+    $default	reduce using rule 4 (command)
+
+
+
+state 41
+
+    where_clause  ->  WHERE . predicate   (rule 19)
+
+    ID  	shift, and go to state 46
+    '(' 	shift, and go to state 47
+    NOT 	shift, and go to state 48
+
+    predicate	go to state 49
+
+
+
+state 42
+
+    command  ->  SELECT FROM ID where_clause . NL   (rule 7)
+
+    NL  	shift, and go to state 50
+
+
+
+state 43
+
+    command  ->  DELETE FROM ID where_clause . NL   (rule 9)
+
+    NL  	shift, and go to state 51
+
+
+
+state 44
+
+    command  ->  DUMP ID dump_page NL .   (rule 13)
+
+    $default	reduce using rule 13 (command)
+
+
+
+state 45
+
+    command  ->  INSERT ID '(' key ',' . INTCONST ')' NL   (rule 8)
+
+    INTCONST	shift, and go to state 52
+
+
+
+state 46
+
+    predicate  ->  ID . operator key   (rule 21)
+
+    '>' 	shift, and go to state 53
+    '=' 	shift, and go to state 54
+    '<' 	shift, and go to state 55
+    opLE	shift, and go to state 56
+    opGE	shift, and go to state 57
+    opNE	shift, and go to state 58
+
+    operator	go to state 59
+
+
+
+state 47
+
+    predicate  ->  '(' . predicate ')'   (rule 25)
+
+    ID  	shift, and go to state 46
+    '(' 	shift, and go to state 47
+    NOT 	shift, and go to state 48
+
+    predicate	go to state 60
+
+
+
+state 48
+
+    predicate  ->  NOT . predicate   (rule 24)
+
+    ID  	shift, and go to state 46
+    '(' 	shift, and go to state 47
+    NOT 	shift, and go to state 48
+
+    predicate	go to state 61
+
+
+
+state 49
+
+    where_clause  ->  WHERE predicate .   (rule 19)
+    predicate  ->  predicate . OR predicate   (rule 22)
+    predicate  ->  predicate . AND predicate   (rule 23)
+
+    AND 	shift, and go to state 62
+    OR  	shift, and go to state 63
+
+    $default	reduce using rule 19 (where_clause)
+
+
+
+state 50
+
+    command  ->  SELECT FROM ID where_clause NL .   (rule 7)
+
+    $default	reduce using rule 7 (command)
+
+
+
+state 51
+
+    command  ->  DELETE FROM ID where_clause NL .   (rule 9)
+
+    $default	reduce using rule 9 (command)
+
+
+
+state 52
+
+    command  ->  INSERT ID '(' key ',' INTCONST . ')' NL   (rule 8)
+
+    ')' 	shift, and go to state 64
+
+
+
+state 53
+
+    operator  ->  '>' .   (rule 27)
+
+    $default	reduce using rule 27 (operator)
+
+
+
+state 54
+
+    operator  ->  '=' .   (rule 30)
+
+    $default	reduce using rule 30 (operator)
+
+
+
+state 55
+
+    operator  ->  '<' .   (rule 26)
+
+    $default	reduce using rule 26 (operator)
+
+
+
+state 56
+
+    operator  ->  opLE .   (rule 28)
+
+    $default	reduce using rule 28 (operator)
+
+
+
+state 57
+
+    operator  ->  opGE .   (rule 29)
+
+    $default	reduce using rule 29 (operator)
+
+
+
+state 58
+
+    operator  ->  opNE .   (rule 31)
+
+    $default	reduce using rule 31 (operator)
+
+
+
+state 59
+
+    predicate  ->  ID operator . key   (rule 21)
+
+    STRCONST	shift, and go to state 38
+
+    key 	go to state 65
+
+
+
+state 60
+
+    predicate  ->  predicate . OR predicate   (rule 22)
+    predicate  ->  predicate . AND predicate   (rule 23)
+    predicate  ->  '(' predicate . ')'   (rule 25)
+
+    AND 	shift, and go to state 62
+    OR  	shift, and go to state 63
+    ')' 	shift, and go to state 66
+
+
+
+state 61
+
+    predicate  ->  predicate . OR predicate   (rule 22)
+    predicate  ->  predicate . AND predicate   (rule 23)
+    predicate  ->  NOT predicate .   (rule 24)
+
+
+    $default	reduce using rule 24 (predicate)
+
+
+
+state 62
+
+    predicate  ->  predicate AND . predicate   (rule 23)
+
+    ID  	shift, and go to state 46
+    '(' 	shift, and go to state 47
+    NOT 	shift, and go to state 48
+
+    predicate	go to state 67
+
+
+
+state 63
+
+    predicate  ->  predicate OR . predicate   (rule 22)
+
+    ID  	shift, and go to state 46
+    '(' 	shift, and go to state 47
+    NOT 	shift, and go to state 48
+
+    predicate	go to state 68
+
+
+
+state 64
+
+    command  ->  INSERT ID '(' key ',' INTCONST ')' . NL   (rule 8)
+
+    NL  	shift, and go to state 69
+
+
+
+state 65
+
+    predicate  ->  ID operator key .   (rule 21)
+
+    $default	reduce using rule 21 (predicate)
+
+
+
+state 66
+
+    predicate  ->  '(' predicate ')' .   (rule 25)
+
+    $default	reduce using rule 25 (predicate)
+
+
+
+state 67
+
+    predicate  ->  predicate . OR predicate   (rule 22)
+    predicate  ->  predicate . AND predicate   (rule 23)
+    predicate  ->  predicate AND predicate .   (rule 23)
+
+
+    $default	reduce using rule 23 (predicate)
+
+
+
+state 68
+
+    predicate  ->  predicate . OR predicate   (rule 22)
+    predicate  ->  predicate OR predicate .   (rule 22)
+    predicate  ->  predicate . AND predicate   (rule 23)
+
+    AND 	shift, and go to state 62
+
+    $default	reduce using rule 22 (predicate)
+
+
+
+state 69
+
+    command  ->  INSERT ID '(' key ',' INTCONST ')' NL .   (rule 8)
+
+    $default	reduce using rule 8 (command)
+
+
+
+state 70
+
+    $   	go to state 71
+
+
+
+state 71
+
+    $default	accept
+
+

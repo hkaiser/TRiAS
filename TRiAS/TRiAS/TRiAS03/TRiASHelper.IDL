@@ -1,0 +1,656 @@
+// TRiASHelper.idl : IDL source for objects in TRiAS03.dll
+//
+
+#if !defined(_FORCE_LEGACY_CODE) && _MSC_VER >= 1100
+#include <TRiASDBDispIds.h>
+#endif // !defined(_FORCE_LEGACY_CODE) && _MSC_VER >= 1100
+
+// forward declarations
+interface DMatchString;
+interface DSearchObjects;
+
+interface ITRiASRegistryHelper;
+interface IInitScriptPropAct;
+#if !defined(_FORCE_LEGACY_CODE) && _MSC_VER >= 1100
+interface ITRiASLockFeature;
+#endif // !defined(_FORCE_LEGACY_CODE) && _MSC_VER >= 1100
+
+import "oaidl.idl";
+import "objidl.idl";
+import "dispex.idl";
+
+#if !defined(_BASETSD_H_) && (501 >= __midl)
+#include <basetsd.h>
+#endif // !defined(_BASETSD_H_)
+
+#include "ConfigObjectProperty.idl"
+#include "SearchObjects.idl"
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface für RegistryHelper
+cpp_quote("#ifndef _TRIASREGISTRYHELPER_DEFINED")
+cpp_quote("#define _TRIASREGISTRYHELPER_DEFINED")
+[
+	object,
+	uuid(0796388C-3123-101C-BB62-00AA0018497C),
+	dual,
+	helpstring("ITRiASRegistryHelper Interface"),
+	pointer_default(unique)
+]
+interface ITRiASRegistryHelper : IDispatch
+{
+//////////////////////////////////////////////////////////
+// Script based methods
+//////////////////////////////////////////////////////////
+	[id(100)] HRESULT AddReplacement([in] BSTR key, [in] BSTR item);
+	[id(101)] HRESULT ClearReplacements();
+	[id(102)] HRESULT ResourceRegister([in] BSTR resFileName, [in] VARIANT ID, [in] VARIANT type);
+	[id(103)] HRESULT ResourceUnregister([in] BSTR resFileName, [in] VARIANT ID, [in] VARIANT type);
+	[id(104)] HRESULT FileRegister([in] BSTR fileName);
+	[id(105)] HRESULT FileUnregister([in] BSTR fileName);
+	[id(106)] HRESULT StringRegister([in] BSTR data);
+	[id(107)] HRESULT StringUnregister([in] BSTR data);
+
+//////////////////////////////////////////////////////////
+// Key based methods
+//////////////////////////////////////////////////////////
+	[id(108)] HRESULT AddKey([in] BSTR keyName);
+	[id(109)] HRESULT DeleteKey([in] BSTR keyName);
+	[id(110)] HRESULT AddKeyValue([in] BSTR keyName, [in] BSTR valueName, [in] VARIANT value);
+	[id(111)] HRESULT GetKeyValue([in] BSTR keyName, [in] BSTR valueName, [out, retval] VARIANT* value);
+	[id(112)] HRESULT SetKeyValue([in] BSTR keyName, [in] BSTR valueName, [in] VARIANT value);
+};
+cpp_quote("#endif // _TRIASREGISTRYHELPER_DEFINED")
+
+///////////////////////////////////////////////////////////////////////////////
+// Registrybehandlung für eine TRiASExtension
+cpp_quote("#ifndef _REGISTERTRIASEXTENSION_DEFINED")
+cpp_quote("#define _REGISTERTRIASEXTENSION_DEFINED")
+[
+	uuid(079638E8-3123-101C-BB62-00AA0018497C),
+	helpstring("Registrierung eines Objektes als TRiAS® Zusatzmodul."),
+	pointer_default(unique)
+]
+interface IRegisterTRiASExtension : IUnknown
+{
+	import "oaidl.idl";
+
+	typedef [public] enum _tagEXTENSIONFLAGS {
+		EXTENSIONFLAGS_NoFlags = 0x00,
+		EXTENSIONFLAGS_Global = 0x01,
+		EXTENSIONFLAGS_UnLoadable = 0x02,
+		EXTENSIONFLAGS_Visible = 0x04,
+		EXTENSIONFLAGS_CanImport = 0x08,
+		EXTENSIONFLAGS_Aggregate = 0x10,
+	} EXTENSIONFLAGS;
+	
+	[helpstring("Registrieren eines Objektes als TRiAS Zusatzmodul.")] 
+		HRESULT RegisterTRiASExtension([in] BSTR bstrTarget, [in, out] BSTR *pbstrName, [in, out] BSTR *pbstrID, [in, out] EXTENSIONFLAGS *prgFlags);
+	[helpstring("Registrieren eines Objektes als projektbezogenes TRiAS Zusatzmodul.")] 
+		HRESULT RegisterProjectExtension([in] long hPr, [in] BSTR bstrName, [in] BSTR bstrID, [in] BSTR bstrTarget);
+	[helpstring("Entfernen der Registrierung für ein Objekt als TRiAS Zusatzmodul.")] 
+		HRESULT UnRegisterTRiASExtension([in] BSTR bstrName, [in] BSTR bstrID, [in] long hPr);
+};
+cpp_quote("#endif // _REGISTERTRIASEXTENSION_DEFINED")
+
+#include <idl/EnumONr.idl>
+#include <idl/ProgInd2.idl>
+//#include <idl/PropertySequenceService.idl>
+
+[
+	object,
+	uuid(50AECBE6-46E8-11D2-9EBF-006008447800),
+	helpstring("IInitScriptPropAct Interface"),
+	pointer_default(unique)
+]
+interface IInitScriptPropAct : IUnknown
+{
+	[helpstring("Legt den zu verwendenden BasicScript fest.")] HRESULT InitScript ([in] BSTR Script, [in] INT_PTR hInst, [in] UINT uiResID);
+	[helpstring("Liefert Basicengine.")] HRESULT GetScriptEngine ([in] REFIID riid, [out, iid_is(riid)] IUnknown **ppIUnk);
+};
+
+// Initialisierungsinterface für ein Objekt, welches als äußeres Aggregationsobjekt
+// verwendet werden soll
+[
+	object,
+	uuid(58DAD7D6-6F34-11D2-9EEC-006008447800),
+	helpstring("IInitInnerObject Interface"),
+	pointer_default(unique)
+]
+interface IInitInnerObject : IUnknown
+{
+	[helpstring("Vorgeben des inneren Objektes.")] HRESULT SetInnerObject ([in] IUnknown *pIInner, [in] REFIID riid, [out, retval] IUnknown **ppIUnkOuter);
+};
+
+#if !defined(_FORCE_LEGACY_CODE) && _MSC_VER >= 1100
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIAS03
+// @interface ITRiASLockFeature | Das Interface <i ITRiASLockFeature> legt eine Objekteigenschaft 
+// bis auf weiteres auf ein bestimmtes Bezugsobjekt fest.
+// @comm Das <i ITRiASLockFeature> Interface wird benötigt, um für einen gewissen Zeitraum eine 
+// Objekteigenschaft fest auf ein bestimmtes Objekt zu beziehen, d.h. alle Zugriffe auf die 
+// <op .Feature> Eigenschaft beziehen sich auf den Wert dieser Objekteigenschaft für das Bezugsobjekt.
+// @supby <o TRiASFeature>
+// @group Methoden und Eigenschaften von <i ITRiASLockFeature> 
+// @index | ILOCKFEATURE
+// @doc ILOCKFEATURE
+	[
+		object,
+		uuid(AF0CE5D5-57D8-11D2-9ED0-006008447800),
+		dual,
+		helpstring("ITRiASLockFeature Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASLockFeature : IDispatch
+	{
+	// @property VARIANT | ITRiASLockFeature | Feature | Die <op .Feature>- Eigenschaft
+	// setzt bzw. liefert den Wert der Objekteigenschaft für das festgelegte Bezugsobjekt.
+	// @comm Die <op .Feature> Eigenschaft kann nur dann erfolgreich gesetzt bzw. ausgewertet 
+	// werden, wenn _vorher_ mit der <om. LockFeature> -Methode ein Bezugsobjekt festgelegt wurde.
+	// @rvalue <cv TRIASDB_E_FEATURENOTLOCKED> | Es wurde kein Bezugsobjekt festgelegt, auf welches 
+	// sich die <op .Feature> -Eigenschaft beziehen könnte.
+	// @supby <o TRiASFeature>
+	// @xref <i ITRiASLockFeature>
+		[propget, id(DISPID_LOCKEDFEATURE), helpstring("Liefert den Wert der Objekteigenschaft für das festgelegte Bezugsobjekt.")] HRESULT Feature([out, retval] VARIANT *pVal);
+		[propput, id(DISPID_LOCKEDFEATURE), helpstring("Setzt den Wert der Objekteigenschaft für das festgelegte Bezugsobjekt.")] HRESULT Feature([in] VARIANT newVal);
+
+	// @property BSTR | ITRiASLockFeature | Name | Die <op .Name>- Eigenschaft
+	// setzt bzw. liefert den Namen der Objekteigenschaft für das festgelegte Bezugsobjekt.
+	// @comm Die <op .Name> Eigenschaft kann nur gelesen werden.
+	// @comm Die <op .Name> Eigenschaft kann nur dann erfolgreich gesetzt bzw. ausgewertet 
+	// werden, wenn _vorher_ mit der <om. LockFeature> -Methode ein Bezugsobjekt festgelegt wurde.
+	// @rvalue <cv TRIASDB_E_FEATURENOTLOCKED> | Es wurde kein Bezugsobjekt festgelegt, auf welches 
+	// sich die <op .Name> -Eigenschaft beziehen könnte.
+	// @supby <o TRiASFeature>
+	// @xref <i ITRiASLockFeature>
+		[propget, id(DISPID_LOCKEDNAME), helpstring("Liefert den Namen der Objekteigenschaft für das festgelegte Bezugsobjekt.")] HRESULT Name([out, retval] BSTR *pVal);
+
+	// @property BSTR | ITRiASLockFeature | Description | Die <op .Description>- Eigenschaft
+	// setzt bzw. liefert eine etwas ausführlichere Beschreibung der Objekteigenschaft für 
+	// das festgelegte Bezugsobjekt.
+	// @comm Die <op .Description> Eigenschaft kann nur gelesen werden.
+	// @comm Die <op .Description> Eigenschaft kann nur dann erfolgreich gesetzt bzw. ausgewertet 
+	// werden, wenn _vorher_ mit der <om. LockFeature> -Methode ein Bezugsobjekt festgelegt wurde.
+	// @rvalue <cv TRIASDB_E_FEATURENOTLOCKED> | Es wurde kein Bezugsobjekt festgelegt, auf welches 
+	// sich die <op .Description> -Eigenschaft beziehen könnte.
+	// @supby <o TRiASFeature>
+	// @xref <i ITRiASLockFeature>
+		[propget, id(DISPID_LOCKEDDESCRIPTION), helpstring("Liefert eine etwas ausführlichere Beschreibung der Objekteigenschaft für das festgelegte Bezugsobjekt.")] HRESULT Description([out, retval] BSTR *pVal);
+
+	// @property VARIANT_BOOL | ITRiASLockFeature | IsRO | Die <op .IsRO>- Eigenschaft
+	// setzt bzw. liefert, ob die Objekteigenschaft für das festgelegte Bezugsobjekt schreibgeschützt ist
+	// @comm Die <op .IsRO> Eigenschaft kann nur gelesen werden.
+	// @comm Die <op .IsRO> Eigenschaft kann nur dann erfolgreich gesetzt bzw. ausgewertet 
+	// werden, wenn _vorher_ mit der <om. LockFeature> -Methode ein Bezugsobjekt festgelegt wurde.
+	// @rvalue <cv TRIASDB_E_FEATURENOTLOCKED> | Es wurde kein Bezugsobjekt festgelegt, auf welches 
+	// sich die <op .IsRO> -Eigenschaft beziehen könnte.
+	// @supby <o TRiASFeature>
+	// @xref <i ITRiASLockFeature>
+		[propget, id(DISPID_LOCKEDISRO), helpstring("Liefert, ob die Objekteigenschaft für das festgelegte Bezugsobjekt schreibgeschützt ist.")] HRESULT IsRO([out, retval] VARIANT_BOOL *pVal);
+
+	// @property VARIANT_BOOL | ITRiASLockFeature | IsLocked | Die <op .IsLocked>- Eigenschaft
+	// liefert, ob die für Objekteigenschaft ein Bezugsobjekt festgelegt wurde.
+	// @comm Die Eigenschaft <op .IsLocked> kann nicht gesetzt werden.
+	// @supby <o TRiASFeature>
+	// @xref <i ITRiASLockFeature>
+		[propget, id(2), helpstring("Liefert, ob die für Objekteigenschaft ein Bezugsobjekt festgelegt wurde.")] HRESULT IsLocked([out, retval] VARIANT_BOOL *pVal);
+
+	// @method HRESULT | ITRiASLockFeature | LockFeature | Die <om .LockFeature>- Methode
+	// legt das Bezugsobjekt für diese Objekteigenschaft fest.
+	// @parm <i IDispatch> | Obj | Der Parameter <p Obj> enthält das festzulegende Bezugsobjekt. 
+	// @comm Im allgemeinen wird dieses Interface dann genutzt, wenn für einen längeren Zeitraum alle
+	// weiteren Operationen mit dieser Objekteigenschaft sich auf ein bestimmtes Objekt beziehen sollen
+	// (.z.B. während einer Interaktion/Dialog etc.).
+	// @supby <o TRiASFeature>
+	// @xref <i ITRiASLockFeature>
+		[id(100), helpstring("Festlegen des Bezugsobjektes für diese Objekteigenschaft.")] HRESULT LockFeature([in] IDispatch *Obj);
+
+	// @method HRESULT | ITRiASLockFeature | UnlockFeature | Die <om .UnlockFeature>- Methode
+	// hebt die Bindung der Objekteigenschaft an ein Bezugsobjekt auf.
+	// @parm VARIANT_BOOL | Commit | Der Parameter <p Commit> legt fest, ob evtl. Veränderungen 
+	// zurückgeschrieben werden sollen.
+	// @comm Im allgemeinen wird dieses Interface dann genutzt, wenn für einen längeren Zeitraum alle
+	// weiteren Operationen mit dieser Objekteigenschaft sich auf ein bestimmtes Objekt beziehen sollen
+	// (.z.B. während einer Interaktion/Dialog etc.).
+	// @rvalue <cv S_OK> | Die Bindung an ein Bezugsobjekt wurde erfolgreich aufgehoben.
+	// @rvalue <cv S_FALSE> | Deie Objekteigenschaft war nicht an ein Bezugsobjekt gebunden.
+	// @supby <o TRiASFeature>
+	// @xref <i ITRiASLockFeature>
+		[id(101), helpstring("Aufhebung der Bindung der Objekteigenschaft an ein Bezugsobjekt.")] HRESULT UnlockFeature([in] VARIANT_BOOL Commit);
+
+	// @method HRESULT | ITRiASLockFeature | LockFeatureWithHandle | Die <om .LockFeatureWithHandle>- Methode
+	// legt das Bezugsobjekt für diese Objekteigenschaft fest.
+	// @parm INT_PTR | hObj | Der Parameter <p hObj> enthält die Zugriffsnummer des festzulegenden 
+	// Bezugsobjektes. 
+	// @comm Im allgemeinen wird dieses Interface dann genutzt, wenn für einen längeren Zeitraum alle
+	// weiteren Operationen mit dieser Objekteigenschaft sich auf ein bestimmtes Objekt beziehen sollen
+	// (.z.B. während einer Interaktion/Dialog etc.).
+	// @supby <o TRiASFeature>
+	// @xref <i ITRiASLockFeature>
+		[id(102), helpstring("Festlegen des Bezugsobjektes für diese Objekteigenschaft.")] HRESULT LockFeatureWithHandle([in] INT_PTR Obj);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIAS03
+// @interface ITRiASLockFeatureEx | Das Interface <i ITRiASLockFeatureEx> legt eine Objekteigenschaft 
+// bis auf weiteres auf ein bestimmtes Bezugsobjekt fest.
+// @comm Das <i ITRiASLockFeatureEx> Interface wird benötigt, um für einen gewissen Zeitraum eine 
+// Objekteigenschaft fest auf ein bestimmtes Objekt zu beziehen, d.h. alle Zugriffe auf die 
+// <op .Feature> Eigenschaft beziehen sich auf den Wert dieser Objekteigenschaft für das Bezugsobjekt.
+// @supby <o TRiASFeature>
+// @group Methoden und Eigenschaften von <i ITRiASLockFeatureEx> 
+// @index | ILOCKFEATURE
+// @doc ILOCKFEATURE
+	[
+		object,
+		uuid(9F6A6EC3-83A6-47FC-9A27-F19A87BD8B2B),
+		dual,
+		helpstring("ITRiASLockFeatureEx Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASLockFeatureEx : IDispatchEx
+	{
+	// @property VARIANT | ITRiASLockFeatureEx | Feature | Die <op .Feature>- Eigenschaft
+	// setzt bzw. liefert den Wert der Objekteigenschaft für das übergebene Bezugsobjekt.
+	// @comm Die <op .Feature> Eigenschaft kann nur dann erfolgreich gesetzt bzw. ausgewertet 
+	// werden, wenn _vorher_ mit der <om. LockFeature> -Methode ein Bezugsobjekt festgelegt wurde.
+	// @rvalue <cv TRIASDB_E_FEATURENOTLOCKED> | Es wurde kein Bezugsobjekt festgelegt, auf welches 
+	// sich die <op .Feature> -Eigenschaft beziehen könnte.
+	// @supby <o TRiASFeature>
+	// @xref <i ITRiASLockFeatureEx>
+		[propget, id(DISPID_LOCKEDFEATURE), helpstring("Liefert den Wert der Objekteigenschaft für das übergebene Bezugsobjekt.")] HRESULT Feature([in] INT_PTR lONr, [out, retval] VARIANT *pVal);
+		[propput, id(DISPID_LOCKEDFEATURE), helpstring("Setzt den Wert der Objekteigenschaft für das übergebene Bezugsobjekt.")] HRESULT Feature([in] INT_PTR lONr, [in] VARIANT newVal);
+
+	// @property BSTR | ITRiASLockFeatureEx | Name | Die <op .Name>- Eigenschaft
+	// setzt bzw. liefert den Namen der Objekteigenschaft für das übergebene Bezugsobjekt.
+	// @comm Die <op .Name> Eigenschaft kann nur gelesen werden.
+	// @comm Die <op .Name> Eigenschaft kann nur dann erfolgreich gesetzt bzw. ausgewertet 
+	// werden, wenn _vorher_ mit der <om. LockFeature> -Methode ein Bezugsobjekt festgelegt wurde.
+	// @rvalue <cv TRIASDB_E_FEATURENOTLOCKED> | Es wurde kein Bezugsobjekt festgelegt, auf welches 
+	// sich die <op .Name> -Eigenschaft beziehen könnte.
+	// @supby <o TRiASFeature>
+	// @xref <i ITRiASLockFeatureEx>
+		[propget, id(DISPID_LOCKEDNAME), helpstring("Liefert den Namen der Objekteigenschaft für das übergebene Bezugsobjekt.")] HRESULT Name([out, retval] BSTR *pVal);
+
+	// @property BSTR | ITRiASLockFeatureEx | Description | Die <op .Description>- Eigenschaft
+	// setzt bzw. liefert eine etwas ausführlichere Beschreibung der Objekteigenschaft für 
+	// das übergebene Bezugsobjekt.
+	// @comm Die <op .Description> Eigenschaft kann nur gelesen werden.
+	// @comm Die <op .Description> Eigenschaft kann nur dann erfolgreich gesetzt bzw. ausgewertet 
+	// werden, wenn _vorher_ mit der <om. LockFeature> -Methode ein Bezugsobjekt festgelegt wurde.
+	// @rvalue <cv TRIASDB_E_FEATURENOTLOCKED> | Es wurde kein Bezugsobjekt festgelegt, auf welches 
+	// sich die <op .Description> -Eigenschaft beziehen könnte.
+	// @supby <o TRiASFeature>
+	// @xref <i ITRiASLockFeatureEx>
+		[propget, id(DISPID_LOCKEDDESCRIPTION), helpstring("Liefert eine etwas ausführlichere Beschreibung der Objekteigenschaft für das übergebene Bezugsobjekt.")] HRESULT Description([out, retval] BSTR *pVal);
+
+	// @property VARIANT_BOOL | ITRiASLockFeatureEx | IsRO | Die <op .IsRO>- Eigenschaft
+	// setzt bzw. liefert, ob die Objekteigenschaft für das übergebene Bezugsobjekt schreibgeschützt ist
+	// @comm Die <op .IsRO> Eigenschaft kann nur gelesen werden.
+	// @comm Die <op .IsRO> Eigenschaft kann nur dann erfolgreich gesetzt bzw. ausgewertet 
+	// werden, wenn _vorher_ mit der <om. LockFeature> -Methode ein Bezugsobjekt festgelegt wurde.
+	// @rvalue <cv TRIASDB_E_FEATURENOTLOCKED> | Es wurde kein Bezugsobjekt festgelegt, auf welches 
+	// sich die <op .IsRO> -Eigenschaft beziehen könnte.
+	// @supby <o TRiASFeature>
+	// @xref <i ITRiASLockFeatureEx>
+		[propget, id(DISPID_LOCKEDISRO), helpstring("Liefert, ob die Objekteigenschaft für das festgelegte Bezugsobjekt schreibgeschützt ist.")] HRESULT IsRO([in] INT_PTR lONr, [out, retval] VARIANT_BOOL *pVal);
+
+	// @property VARIANT_BOOL | ITRiASLockFeatureEx | IsLocked | Die <op .IsLocked>- Eigenschaft
+	// liefert, ob die für Objekteigenschaft ein Bezugsobjekt festgelegt wurde.
+	// @comm Die Eigenschaft <op .IsLocked> kann nicht gesetzt werden.
+	// @supby <o TRiASFeature>
+	// @xref <i ITRiASLockFeatureEx>
+		[propget, id(2), helpstring("Liefert, ob die für Objekteigenschaft das übergebene Bezugsobjekt festgelegt wurde.")] HRESULT IsLocked([in] INT_PTR lONr, [out, retval] VARIANT_BOOL *pVal);
+
+	// @method HRESULT | ITRiASLockFeatureEx | LockFeature | Die <om .LockFeature>- Methode
+	// legt das Bezugsobjekt für diese Objekteigenschaft fest.
+	// @parm <i IDispatch> | Obj | Der Parameter <p Obj> enthält das festzulegende Bezugsobjekt. 
+	// @comm Im allgemeinen wird dieses Interface dann genutzt, wenn für einen längeren Zeitraum alle
+	// weiteren Operationen mit dieser Objekteigenschaft sich auf ein bestimmtes Objekt beziehen sollen
+	// (.z.B. während einer Interaktion/Dialog etc.).
+	// @supby <o TRiASFeature>
+	// @xref <i ITRiASLockFeatureEx>
+//		[id(100), helpstring("Festlegen des Bezugsobjektes für diese Objekteigenschaft.")] HRESULT LockFeature([in] IDispatch *Obj);
+
+	// @method HRESULT | ITRiASLockFeatureEx | UnlockFeature | Die <om .UnlockFeature>- Methode
+	// hebt die Bindung der Objekteigenschaft an ein Bezugsobjekt auf.
+	// @parm VARIANT_BOOL | Commit | Der Parameter <p Commit> legt fest, ob evtl. Veränderungen 
+	// zurückgeschrieben werden sollen.
+	// @comm Im allgemeinen wird dieses Interface dann genutzt, wenn für einen längeren Zeitraum alle
+	// weiteren Operationen mit dieser Objekteigenschaft sich auf ein bestimmtes Objekt beziehen sollen
+	// (.z.B. während einer Interaktion/Dialog etc.).
+	// @rvalue <cv S_OK> | Die Bindung an ein Bezugsobjekt wurde erfolgreich aufgehoben.
+	// @rvalue <cv S_FALSE> | Deie Objekteigenschaft war nicht an ein Bezugsobjekt gebunden.
+	// @supby <o TRiASFeature>
+	// @xref <i ITRiASLockFeatureEx>
+		[id(101), helpstring("Aufhebung der Bindung der Objekteigenschaft an ein Bezugsobjekt.")] HRESULT UnlockFeature([in] INT_PTR lONr, [in] VARIANT_BOOL Commit);
+
+	// @method HRESULT | ITRiASLockFeatureEx | LockFeatureWithHandle | Die <om .LockFeatureWithHandle>- Methode
+	// legt das Bezugsobjekt für diese Objekteigenschaft fest.
+	// @parm INT_PTR | hObj | Der Parameter <p hObj> enthält die Zugriffsnummer des festzulegenden 
+	// Bezugsobjektes. 
+	// @comm Im allgemeinen wird dieses Interface dann genutzt, wenn für einen längeren Zeitraum alle
+	// weiteren Operationen mit dieser Objekteigenschaft sich auf ein bestimmtes Objekt beziehen sollen
+	// (.z.B. während einer Interaktion/Dialog etc.).
+	// @supby <o TRiASFeature>
+	// @xref <i ITRiASLockFeatureEx>
+		[id(102), helpstring("Festlegen des Bezugsobjektes für diese Objekteigenschaft.")] HRESULT LockFeature([in] INT_PTR Obj);
+	};
+
+	[
+		object,
+		uuid(02CA21BE-1514-4F30-8288-5BB59C2EB6F3),
+		hidden, local, restricted,
+		helpstring("ITRiASLockFeatureUnk Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASLockFeatureUnk : IUnknown
+	{
+		[propget] HRESULT Feature([in] INT_PTR lONr, [out, retval] VARIANT *pVal);
+		[propput] HRESULT Feature([in] INT_PTR lONr, [in] VARIANT newVal);
+		[propget] HRESULT Name([out, retval] BSTR *pVal);
+		[propget] HRESULT Description([out, retval] BSTR *pVal);
+		[propget] HRESULT IsRO([in] INT_PTR lONr, [out, retval] VARIANT_BOOL *pVal);
+		HRESULT UnlockFeature([in] INT_PTR lONr, [in] VARIANT_BOOL Commit);
+		HRESULT LockFeature([in] INT_PTR Obj);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIAS03
+// ICatSimpleCache Interface
+#define IEnumCLSID IEnumGUID
+
+	[ 
+		object, 
+		uuid(D0503189-635E-4E6A-B594-189F09611EA6), 
+		helpstring("ICatSimpleCache Interface"),
+		pointer_default(unique) 
+	]
+	interface ICatSimpleCache : IUnknown
+	{
+		import "comcat.idl";
+		[id(100)] HRESULT IsCacheInitialized (CATID catidImpl);
+		[id(101)] HRESULT InitializeCache(CATID catidImpl, VARIANT_BOOL fForce);
+		[id(102)] HRESULT ClearCache (CATID catidImpl);
+		[id(103)] HRESULT ClearCacheAll ();
+		[id(104)] HRESULT EnumClassesOfCategoryFromCache (CATID catidImpl, IEnumCLSID **ppenumClsid);
+	};
+#endif // !defined(_FORCE_LEGACY_CODE) && _MSC_VER >= 1100
+
+///////////////////////////////////////////////////////////////////////////////
+// Typelibrary für ITRiASRegistryHelper et. al.
+
+cpp_quote("#define TYPELIB_HELPER_VERSION_MAJOR 1")
+cpp_quote("#define TYPELIB_HELPER_VERSION_MINOR 0")
+cpp_quote("#define TYPELIB_HELPER_VERSION \"1.0\"")
+cpp_quote("#define TYPELIB_HELPER_LCID 0")
+
+#define TYPELIB_HELPER_VERSION 1.0
+#define TYPELIB_HELPER_LCID 0
+
+[
+	uuid(0796388E-3123-101C-BB62-00AA0018497C),
+	version(TYPELIB_HELPER_VERSION), 
+	lcid(TYPELIB_HELPER_LCID),
+	helpstring("TRiAS Helper 1.0 Type Library")
+]
+library TRiASHelperLib
+{
+	importlib("stdole32.tlb");
+
+	interface DMatchString;
+	interface DSearchObjects;
+	
+	interface ITRiASRegistryHelper;
+	interface IRegisterTRiASExtension;
+
+///////////////////////////////////////////////////////////////////////////////
+// CoClass für RegistryHelper
+	[
+		uuid(0796388D-3123-101C-BB62-00AA0018497C),
+		helpstring("TRiAS Registry Helper Class")
+	]
+	coclass TRiASRegistryHelper
+	{
+		[default] interface ITRiASRegistryHelper;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// CoClass für EnumObjectsByNumer
+	[
+		uuid(0796381C-3123-101C-BB62-00AA0018497C),		// GUID identisch mit CLSID_EnumObjectsByNumber
+		helpstring("Enumerator für Objektnummern")
+	]
+	coclass EnumObjectNumbers
+	{
+		[default] interface IEnumObjectsByNumber;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// CoClass für ProgressIndicator
+	[
+		uuid(07963819-3123-101C-BB62-00AA0018497C),
+		helpstring("General purpose ProgressIndcator")
+	]
+	coclass ProgressIndicator
+	{
+		[default] interface IProgressIndicator2;
+	}
+
+///////////////////////////////////////////////////////////////////////////////
+// CoClass für MultiProgressIndicator
+	[
+		uuid(079638D2-3123-101C-BB62-00AA0018497C),
+		helpstring("Multi-ProgressIndicator")
+	]
+	coclass MultiProgressIndicator
+	{
+		[default] interface IMultiProgressIndicator;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// CoClass für RegisterExt
+	[
+		uuid(C939B5BF-EA2D-11D0-9611-00A024D6F582),
+		helpstring("Registrieren von TRiAS Zusatzmodulen")
+	]
+	coclass RegisterExt
+	{
+		[default] interface IRegisterTRiASExtension;
+	};
+
+#if !defined(_FORCE_LEGACY_CODE) && _MSC_VER >= 1100
+///////////////////////////////////////////////////////////////////////////////
+// CoClass für RegisterExt
+	[
+		uuid(26A3BD85-6D09-11D2-9EE7-006008447800),
+		helpstring("Implementation für TRiASLockFeature")
+	]
+	coclass FakeTRiASLockFeature
+	{
+		[default] interface IInitInnerObject;
+		interface ITRiASLockFeatureEx;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIAS03
+// CoClass und Initialisierungsinterface für Delegator
+	[
+		uuid(58DAD7D7-6F34-11D2-9EEC-006008447800),
+		object
+	]
+	interface IDelegatorFactory : IUnknown
+	{
+		HRESULT CreateDelegator([in] IUnknown *pUnkOuter, [in] IUnknown *pUnkInner, [in] REFIID iid, [out] void **ppv);
+	}
+
+	[
+		uuid(58DAD7D5-6F34-11D2-9EEC-006008447800)
+	]
+	coclass CoDelegator
+	{
+		interface IDelegatorFactory;
+	}
+
+// @doc OBJECT TRIAS03
+// CatSimpleCache Class
+	[ 
+		uuid(EA68A685-5166-4E55-9062-0B1306813393), 
+		helpstring("CatSimpleCache Object") 
+	]
+	coclass CatSimpleCache
+	{
+		[default] interface ICatSimpleCache;
+	};
+#endif // !defined(_FORCE_LEGACY_CODE) && _MSC_VER >= 1100
+
+///////////////////////////////////////////////////////////////////////////////
+// Service-Objekt für die Instantiierung von PropertySequences
+	[
+		uuid(92BB6B5E-3F46-4236-A0B6-DDDBD632CE1D),
+		helpstring("PropertySequenceService Class")
+	]
+	coclass PropertySequenceService
+	{
+		[default] interface IUnknown;
+	};
+
+// PROPACT
+	[
+		uuid(E5927445-894C-4563-8C05-E9450530A693),
+		helpstring("DeleteObjectProperty Class")
+	]
+	coclass DeleteObjectProperty
+	{
+		[default] interface IUnknown;
+	};
+	[
+		uuid(28585AF2-53A2-42D8-A92F-358AEC11D99E),
+		helpstring("PropertyOperation Class")
+	]
+	coclass PropertyOperation
+	{
+		interface IUnknown;
+	}
+
+// PROPACT
+	[
+		uuid(D041DB48-4A2F-4567-80E9-7C428512B5D1),
+		helpstring("PropertyActionJoin Class")
+	]
+	coclass PropertyActionJoin
+	{
+		interface IUnknown;
+	}
+
+// PROPACT
+	[
+		uuid(52E25FEE-D9C8-4B3C-AD5A-047EB92D7D60),
+		helpstring("PropertyActionSplit Class")
+	]
+	coclass PropertyActionSplit
+	{
+		interface IUnknown;
+	}
+
+// PROPACT
+	[
+		uuid(F629A52E-9974-427B-8076-1171243B33D9),
+		helpstring("GenerateObjectProperties Class")
+	]
+	coclass GenerateObjectProperties
+	{
+		interface IUnknown;
+	}
+
+// PROPACT
+	[
+		uuid(07BC2DFA-98C4-404D-AAFF-0729E301A32B),
+		helpstring("LimitSearches Class")
+	]
+	coclass LimitSearches
+	{
+		interface IUnknown;
+	}
+
+// PROPACT
+	[
+		uuid(44BBA22C-5A88-43F1-9EE3-623996452B09),
+		helpstring("LimitPackets Class")
+	]
+	coclass LimitPackets
+	{
+		interface IUnknown;
+	}
+
+// PROPACT
+	[
+		uuid(4A8BF07A-95E9-4FDB-BEBF-4E7B57F25574),
+		helpstring("VBGeoComponent Class"),
+		noncreatable
+	]
+	coclass VBGeoComponent
+	{
+		[default] interface IUnknown;
+	};
+
+// PROPACT
+	[
+		uuid(76E385A4-F3D0-452F-9259-D3394062FD33),
+		helpstring("MkVBGeoComponent Class")
+	]
+	coclass MkVBGeoComponent
+	{
+		[default] interface IMoniker;
+	};
+
+// PROPACT
+	[
+		uuid(56BEA165-EE80-4F91-A84C-B003F59910DF),
+		helpstring("SaveObjectCollection Class")
+	]
+	coclass SaveObjectCollection
+	{
+		[default] interface IUnknown;
+	};
+
+// PROPACT
+	[
+		uuid(F6A02599-29A7-4BBD-A226-21E0CA325F02),
+		helpstring("LoadObjectCollection Class")
+	]
+	coclass LoadObjectCollection
+	{
+		[default] interface IUnknown;
+	};
+
+// PROPACT
+	[
+		uuid(DBEB428A-5FD2-48B0-A1BA-428EE1097E85),
+		helpstring("AreasToLines Class")
+	]
+	coclass AreasToLines
+	{
+		[default] interface IUnknown;
+	};
+
+// PROPACT
+	[
+		uuid(1442BAF6-39A1-43D8-9DA6-F827F17A883D),
+		helpstring("LinesToAreas Class")
+	]
+	coclass LinesToAreas
+	{
+		[default] interface IUnknown;
+	};
+
+// OPTIONPROPPAGE
+	[
+		uuid(E0E89DE4-8550-4CE5-A11A-430425136057),
+		helpstring("ManageObjectProperties Class")
+	]
+	coclass ManageObjectProperties
+	{
+		[default] interface IUnknown;
+	};
+};

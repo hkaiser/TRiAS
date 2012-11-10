@@ -1,0 +1,694 @@
+Document Type: WSE
+item: Global
+  Version=8.14
+  Flags=00000100
+  Split=1420
+  Languages=64 0 0 0 65 0 0 0 0 0 0 0 0 0 0 0
+  Default Language=4
+  Japanese Font Name=MS Gothic
+  Japanese Font Size=9
+  Start Gradient=0 0 255
+  End Gradient=0 0 0
+  Windows Flags=00000100000000010010110000001000
+  Message Font=MS Sans Serif
+  Font Size=8
+  Pages Modified=00000001000000000000000000000000
+  Extra Pages=00000000000000000000000000010000
+  Disk Label=WiseInst
+  Disk Filename=SETUP
+  Patch Flags=0000000000000001
+  Patch Threshold=85
+  Patch Memory=4000
+  FTP Cluster Size=20
+  Per-User Version ID=1
+  Dialogs Version=7
+  Crystal Format=10111100101100000010001001001001
+  Step View=&Properties
+  Variable Name1=_COMMON_
+  Variable Default1=d:\program files\common files
+end
+item: Remark
+  Text=MDAC 2.6 Requires IE 4.01 SP2 or higher - VMW - 10/04/00
+end
+item: Get Registry Key Value
+  Variable=IEVER
+  Key=SOFTWARE\Microsoft\Internet Explorer
+  Value Name=Version
+  Flags=00000100
+end
+item: If/While Statement
+  Variable=IEVER
+  Value=4.72.3612.1713
+  Flags=00001000
+end
+item: Insert Line into Text File
+  Pathname=%TEMP%\mdacfailed.txt
+  New Text=MDAC 2.6 wurde nicht erfolgreich installiert. Sie müssen mindestens IE4.01 SP2 für MDAC 2.6 installiert haben.
+  Line Number=0
+end
+item: Display Message
+  Title=Wise Installation System
+  Title German=Wise Installations System
+  Text=The installation of MDAC 2.6 requires IE4.01 SP2 to be installed  on your system.  You do not have this version or higher installed on your system.  The installation will now terminate.
+  Text German=Die Installation von MDAC 2.6 erfordert, das der IE4.01 SP2 auf Ihrem System installiert ist. Jedoch ist auf Ihrem System weder diese noch eine höhere Version installiert. 
+  Text German=
+  Text German=Diese Installation wird jetzt abgebrochen.
+  Flags=00001000
+end
+item: Exit Installation
+end
+item: End Block
+end
+item: Check Configuration
+  Flags=10100000
+end
+item: Get System Information
+  Variable=OS_VER
+  Flags=00000001
+end
+item: Get System Information
+  Variable=SERVICE_PACK
+  Flags=00010010
+end
+item: If/While Statement
+  Variable=OS_VER
+  Value=4.0
+  Flags=00000111
+end
+item: If/While Statement
+  Variable=SERVICE_PACK
+  Value=5
+  Flags=00001000
+end
+item: Check Configuration
+  Flags=11010010
+end
+item: Display Message
+  Title=Wise Installation System
+  Title German=Wise Installations System
+  Text=The installation of MDAC 2.6 requires NT4 Service Pack 5 or higher.  You do not have this version or higher installed on your system.  Please install the latest Service Pack to your system and try the installation again.  
+  Text=
+  Text=The installation will now terminate.
+  Text German=Die Installation von MDAC 2.6 erfordert NT4 mit Service Pack 5 oder neuer.  Jedoch ist weder diese Version noch eine neuere auf Ihrem System installaiert. Bitte installieren Sie zuerst das neueste Service Pack und starten Sie diese Installation danach erneut.
+  Text German=
+  Text German=Diese Installation wird jetzt abgebrochen.
+  Flags=00001000
+end
+item: Exit Installation
+end
+item: End Block
+end
+item: End Block
+end
+item: End Block
+end
+item: End Block
+end
+item: Remark
+end
+item: Remark
+  Text=Prepare shortcuts that will be used after system reboots - VMW - 10/04/00
+end
+item: Get System Information
+  Variable=V_INSTALL_PATH
+  Flags=00001101
+end
+item: Parse String
+  Source=%V_Install_Path%
+  Pattern=\
+  Variable2=V_INSTALL_NAME
+  Flags=00000100
+end
+item: Parse String
+  Source=%V_Install_Name%
+  Pattern=.
+  Variable1=V_NAME_ONLY
+  Flags=00000100
+end
+item: Get Registry Key Value
+  Variable=V_STARTUPDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%WIN%\Start Menu\Programs\StartUp
+  Value Name=StartUp
+  Flags=00000010
+end
+item: Delete File
+  Pathname=%V_STARTUPDIR%\%V_Name_Only%.lnk
+end
+item: Remark
+end
+item: Remark
+  Text=Get version of MDAC on target machine
+end
+item: Get System Information
+  Variable=MDACVER
+  Pathname=%COMMON%\System\ADO\msado15.dll
+  Flags=00000101
+end
+item: Remark
+end
+item: Remark
+  Text=This script only supports version 2.60.6526.0
+end
+item: If/While Statement
+  Variable=MDACVER
+  Value=2.60.6526.0
+  Flags=00001000
+end
+item: Wizard Block
+  Direction Variable=DIRECTION
+  Display Variable=DISPLAY
+  Bitmap Pathname=%_WISE_%\DIALOGS\TEMPLATE\WIZARD.BMP
+  X Position=9
+  Y Position=10
+  Filler Color=8421376
+  Dialog=Select Program Manager Group
+  Dialog=Select Backup Directory
+  Dialog=Display Registration Information
+  Dialog=Get Registration Information
+  Variable=GROUP
+  Variable=DOBACKUP
+  Variable=DOBRAND
+  Variable=DOBRAND
+  Value=
+  Value=A
+  Value=1
+  Value=1
+  Compare=0
+  Compare=1
+  Compare=0
+  Compare=1
+  Flags=00000011
+end
+item: End Block
+end
+item: Check Disk Space
+end
+item: Remark
+  Text=MDAC 2.6 installation requires administrator rights
+end
+item: Check Configuration
+  Message=This installation requires administrator rights, please log into an account with administrator rights and rerun this installation.
+  Title=NT Rights Warning
+  Title French=Avertissement de droits NT
+  Title German=Warnung NT-Rechte
+  Title Spanish=Advertencia de derechos NT
+  Title Italian=Avviso diritti NT
+  Flags=01011111
+end
+item: Check if File/Dir Exists
+  Pathname=%TEMP%\MDACTMP\Preset.INI
+  Flags=00000101
+end
+item: Display Message
+  Title=Wise Installation System
+  Title German=Wise Installations System
+  Text=This installation requires MDAC (Microsoft Data Access Components) to be installed (or re-installed) on your system. The installation of MDAC requires a reboot before the application installation can begin.
+  Text German=Diese Installation erfordert, daß MDAC (Microsoft Data Access Components) auf Ihrem System installiert (oder neu installiert) wird. Die Installation von MDAC erfordert einen Neustart Ihres Systems bevor diese Installation fortgesetzt werden kann.
+  Flags=00000100
+end
+item: End Block
+end
+item: Check if File/Dir Exists
+  Pathname=%TEMP%\dcomtmp\Restart.exe
+  Flags=00000101
+end
+item: Install File
+  Source=%_WISE_%\runtime\Wise\Restart.exe
+  Destination=%TEMP%\dcomtmp\Restart.exe
+  Flags=0000000010100010
+end
+item: End Block
+end
+item: Remark
+end
+item: Remark
+  Text=Install DCOM95 on WIN95
+end
+item: Check Configuration
+  Flags=10111001
+end
+item: Check Configuration
+  Flags=11000010
+end
+item: Check if File/Dir Exists
+  Pathname=%TEMP%\DCOMTMP\dcominst.ini
+  Flags=00000101
+end
+item: Get Registry Key Value
+  Variable=DCOMINST
+  Key=CLSID\{bdc67890-4fc0-11d0-a805-00aa006d2ea4}\InstalledVersion
+end
+item: If/While Statement
+  Variable=DCOMINST
+  Value=4,71,0,3328
+  Flags=00001000
+end
+item: Display Message
+  Title=Wise Installation System
+  Title German=Wise Installations System
+  Text=DCOM95 (ver. 1.3) must be installed before MDAC 2.6 can be installed.  This will take only a few moments to install, and the system will then reboot. After the reboot, the MDAC 2.6 installation will resume automatically.
+  Text German=DCOM95 (ver. 1.3) muß auf Ihrem System installiert sein befor die Installation von MDAC 2.6 beginnen kann. Dieser Vorgang nimmt nur wenige Momente in Anspruch. Ihr System wird neu gestartet und die Installation von MDAC wird anschließend automatisch fortgesetzt.
+  Flags=00000100
+end
+item: Install File
+  Source=%_WISE_%\runtime\dcom\dcom95\dcom95.exe
+  Destination=%TEMP%\DCOMTMP\dcom95.exe
+  Flags=0000000010100010
+end
+item: Install File
+  Source=%_WISE_%\runtime\dcom\dcombat.bat
+  Destination=%TEMP%\dcomtmp\dcombat.bat
+  Flags=0000000010100010
+end
+item: Set Variable
+  Variable=DCOMBAT
+  Value=%TEMP%\DCOMTMP\Dcombat.bat
+end
+item: Set Variable
+  Variable=WIN95
+end
+item: Get Environment Variable
+  Variable=COMSPEC
+  Environment=COMSPEC
+end
+item: If/While Statement
+  Variable=CMDLINE
+  Value=/T
+  Flags=00000011
+end
+item: Execute Program
+  Pathname=%COMSPEC% 
+  Command Line=/c %Dcombat% 
+  Default Directory=%TEMP%\DCOMTMP
+  Flags=00000110
+end
+item: End Block
+end
+item: Set Variable
+  Variable=WIN95
+  Value=IS95
+end
+item: Set Variable
+  Variable=DCOMLOADED
+  Value=not finished
+end
+item: If/While Statement
+  Variable=DCOMLOADED
+  Value=not finished
+  Flags=00010000
+end
+item: Check if File/Dir Exists
+  Pathname=DCOM95.exe
+  Flags=10000101
+end
+remarked item: Display Message
+  Title=DCOM Installation Detected
+  Title French=Installation DCOM détectée
+  Title German=DCOM-Installation gefunden
+  Title Spanish=Se ha detectado instalación DCOM
+  Title Italian=Rilevata installazione DCOM
+  Text=DCOM Installer has been loaded in memory.  Please click OK to continue.
+  Text French=L'installateur DCOM a été chargé en mémoire. Veuillez cliquer sur OK pour continuer.
+  Text German=DCOM Installer wurde in Speicher geladen. Klicken Sie auf 'OK', um fortzufahren.
+  Text Spanish=Se ha cargado el instalador DCOM en memoria. Haga clic en Aceptar para continuar.
+  Text Italian=Il programma di installazione DCOM è stato caricato in memoria.  Per continuare, scegliere OK.
+  Flags=00100000
+end
+item: Else Statement
+end
+item: Set Variable
+  Variable=RESTART
+end
+item: Display Message
+  Title=Wise Installation System
+  Title French=Système d'installation Wise
+  Title German=Wise Installation System
+  Title Spanish=Wise Installation System
+  Title Italian=Wise Installation System
+  Text=DCOM 95 has been installed.  The System must reboot now in order to continue with the installation. The installation will re-run automatically after the system reboots. If this does not occur, please rerun this installation manually.
+  Text French=DCOM 95 a été installé. Le système doit être réamorcé maintenant pour finir l'installation.
+  Text German=DCOM 95 wurde installiert. Starten Sie das System jetzt neu, um die Installation abzuschließen.
+  Text Spanish=Se ha instalado DCOM 95. Es necesario reiniciar el sistema ahora para completar la instalación.
+  Text Italian=DCOM 95 è stato installato.  Riavviare il sistema per completare l'installazione.
+end
+item: Remark
+  Text=Create shortcut in the Start Up group so install runs again after reboot - this code has been modified to work with a silent installation - VMW - 10/04/00
+end
+item: Create Shortcut
+  Source=%V_Install_Path%
+  Destination=%V_STARTUPDIR%\%V_Name_Only%.lnk
+  Command Options=%CMDLINE%
+  Key Type=1536
+  Flags=00000001
+end
+item: If/While Statement
+  Variable=CMDLINE
+  Value=/T
+  Flags=00000011
+end
+item: Execute Program
+  Pathname=%TEMP%\DCOMTMP\restart.exe
+  Command Line=/s
+end
+item: End Block
+end
+item: Edit INI File
+  Pathname=%TEMP%\DCOMTMP\dcomInst.INI
+  Settings=[DCOM]
+  Settings=Installed=True
+  Settings=
+end
+item: If/While Statement
+  Variable=CMDLINE
+  Value=/T
+  Flags=00000011
+end
+item: Exit Installation
+end
+item: End Block
+end
+item: End Block
+end
+item: End Block
+end
+item: End Block
+end
+item: End Block
+end
+item: End Block
+end
+item: End Block
+end
+item: Remark
+end
+item: Remark
+  Text=Install MDAC 2.6, follow with a reboot - VMW - 10/04/00
+end
+item: Check if File/Dir Exists
+  Pathname=%TEMP%\MDACTMP\Preset.INI
+  Flags=00000101
+end
+item: Remark
+  Text=Display Progress Messages during normal installation
+end
+item: Remark
+  Text=Do not display them during a silent installation (/s)
+end
+item: If/While Statement
+  Variable=CMDLINE
+  Value=/s
+  Flags=00000011
+end
+item: Set Variable
+  Variable=HEIGHT
+  Value=90
+end
+item: Set Variable
+  Variable=WIDTH
+  Value=306
+end
+item: Call DLL Function
+  Pathname=%SYS32%\user32.dll
+  Function Name=GetSystemMetrics
+  Argument List=011
+  Return Variable=0Y_SCREEN
+  Flags=00100000
+end
+item: Set Variable
+  Variable=Y_POS
+  Value=(Y_SCREEN-HEIGHT)/2
+  Flags=00100000
+end
+item: Call DLL Function
+  Pathname=%SYS32%\user32.dll
+  Function Name=GetSystemMetrics
+  Argument List=010
+  Return Variable=0X_SCREEN
+  Flags=00100000
+end
+item: Set Variable
+  Variable=X_POS
+  Value=(X_SCREEN-WIDTH)/2
+  Flags=00100000
+end
+item: Call DLL Function
+  Pathname=%SYS32%\user32.dll
+  Function Name=CreateDialogParamA
+  Argument List=30BANNER_INSTAN_
+  Argument List=30BANNER_DLGRES_
+  Argument List=33
+  Argument List=30BANNER_DLGPRC_
+  Argument List=02
+  Return Variable=3BANNER_HWND
+  Flags=00100000
+end
+item: Call DLL Function
+  Pathname=%SYS32%\user32.dll
+  Function Name=SetWindowTextA
+  Argument List=30BANNER_HWND
+  Argument List=41Wise Installation System
+  Return Variable=3
+  Flags=00100000
+end
+item: Call DLL Function
+  Pathname=%SYS32%\user32.dll
+  Function Name=GetDlgItem
+  Argument List=30BANNER_HWND
+  Argument List=311005
+  Return Variable=3BANNER_TWND
+  Flags=00100000
+end
+item: Call DLL Function
+  Pathname=%SYS32%\user32.dll
+  Function Name=SetWindowTextA
+  Argument List=30BANNER_TWND
+  Argument List=41Your system is now being prepared for the%CRLF%MDAC 2.6 installation.  This will only take a%CRLF%few moments.  
+  Return Variable=3
+  Flags=00100000
+end
+item: Call DLL Function
+  Pathname=%SYS32%\user32.dll
+  Function Name=SetWindowPos
+  Argument List=30BANNER_HWND
+  Argument List=210
+  Argument List=21%X_POS%
+  Argument List=21%Y_POS%
+  Argument List=21%WIDTH%
+  Argument List=21%HEIGHT%
+  Argument List=21&H1
+  Return Variable=3
+  Flags=00100000
+end
+item: End Block
+end
+item: Install File
+  Source=%_WISE_%\runtime\mdac26\mdac_typ.exe
+  Destination=%TEMP%\MDACTMP\mdac_typ.exe
+  Flags=0000000010100010
+end
+item: Remark
+  Text=Extract MDAC files to the temp directory
+end
+item: If/While Statement
+  Variable=CMDLINE
+  Value=/T
+  Flags=00000011
+end
+item: Execute Program
+  Pathname=%TEMP%\MDACTMP\MDAC_TYP.EXE
+  Command Line=/Q:A /C /T:"%TEMP%\MDACTMP"
+  Default Directory=%TEMP%\MDACTMP
+  Flags=00000010
+end
+item: End Block
+end
+item: Edit INI File
+  Pathname=%TEMP%\MDACTMP\Preset.INI
+  Settings=[MDAC]
+  Settings=Extracted=True
+  Settings=
+end
+item: Remark
+  Text=Clear screen of progress message
+end
+item: If/While Statement
+  Variable=CMDLINE
+  Value=/s
+  Flags=00000011
+end
+item: Call DLL Function
+  Pathname=%SYS32%\user32.dll
+  Function Name=DestroyWindow
+  Argument List=30BANNER_HWND
+  Return Variable=3
+  Flags=00100000
+end
+item: End Block
+end
+item: Remark
+  Text=Display Progress Messages during normal installation
+end
+item: Remark
+  Text=Do not display them during a silent installation (/s)
+end
+item: If/While Statement
+  Variable=CMDLINE
+  Value=/s
+  Flags=00000011
+end
+item: Call DLL Function
+  Pathname=%SYS32%\user32.dll
+  Function Name=CreateDialogParamA
+  Argument List=30BANNER_INSTAN_
+  Argument List=30BANNER_DLGRES_
+  Argument List=33
+  Argument List=30BANNER_DLGPRC_
+  Argument List=02
+  Return Variable=3BANNER_HWND
+  Flags=00100000
+end
+item: Call DLL Function
+  Pathname=%SYS32%\user32.dll
+  Function Name=SetWindowTextA
+  Argument List=30BANNER_HWND
+  Argument List=41Wise Installation System
+  Return Variable=3
+  Flags=00100000
+end
+item: Call DLL Function
+  Pathname=%SYS32%\user32.dll
+  Function Name=GetDlgItem
+  Argument List=30BANNER_HWND
+  Argument List=311005
+  Return Variable=3BANNER_TWND
+  Flags=00100000
+end
+item: Call DLL Function
+  Pathname=%SYS32%\user32.dll
+  Function Name=SetWindowTextA
+  Argument List=30BANNER_TWND
+  Argument List=41MDAC 2.6 is now being installed.%CRLF%You will be prompted for a reboot%CRLF%when it completes.
+  Return Variable=3
+  Flags=00100000
+end
+item: Call DLL Function
+  Pathname=%SYS32%\user32.dll
+  Function Name=SetWindowPos
+  Argument List=30BANNER_HWND
+  Argument List=210
+  Argument List=21%X_POS%
+  Argument List=21%Y_POS%
+  Argument List=21%WIDTH%
+  Argument List=21%HEIGHT%
+  Argument List=21&H1
+  Return Variable=3
+  Flags=00100000
+end
+item: End Block
+end
+item: Remark
+  Text=Execute MDAC with dasetup executable as defined in MS KB article
+end
+item: If/While Statement
+  Variable=CMDLINE
+  Value=/T
+  Flags=00000011
+end
+item: Execute Program
+  Pathname=%TEMP%\MDACTMP\MDAC_TYP.EXE
+  Command Line=/q:a  /c:"%TEMP%\MDACTMP\dasetup.exe /q /n"
+  Default Directory=%TEMP%\MDACTMP
+  Flags=00000110
+end
+item: End Block
+end
+item: Remark
+  Text=Clear screen of all progress messages
+end
+item: If/While Statement
+  Variable=CMDLINE
+  Value=/s
+  Flags=00000011
+end
+item: Call DLL Function
+  Pathname=%SYS32%\user32.dll
+  Function Name=DestroyWindow
+  Argument List=30BANNER_HWND
+  Return Variable=3
+  Flags=00100000
+end
+item: End Block
+end
+item: Set Variable
+  Variable=RESTART
+end
+item: Create Shortcut
+  Source=%V_Install_Path%
+  Destination=%V_STARTUPDIR%\%V_Name_Only%.lnk
+  Command Options=%CMDLINE%
+  Key Type=1536
+  Flags=00000001
+end
+item: Display Message
+  Title=Wise Installation System
+  Title French=Système d'installation Wise
+  Title German=Wise Installation System
+  Title Spanish=Wise Installation System
+  Title Italian=Wise Installation System
+  Text=MDAC 2.6 has been installed.  
+  Text=
+  Text=The System must reboot now in order to finish the installation. The application installation will start automatically after the reboot.
+  Text French=MDAC a été installé. Le système doit être réamorcé maintenant pour finir l'installation.
+  Text German=MDAC wurde installiert. Starten Sie das System jetzt neu, um die Installation abzuschließen.
+  Text Spanish=Se ha instalado MDAC. Es necesario reiniciar el sistema ahora para completar la instalación.
+  Text Italian=MDAC è stato installato.  Riavviare il sistema per completare l'installazione.
+  Flags=00101000
+end
+item: If/While Statement
+  Variable=CMDLINE
+  Value=/T
+  Flags=00000011
+end
+item: Execute Program
+  Pathname=%TEMP%\DCOMTMP\restart.exe
+  Command Line=/s
+  Flags=00000100
+end
+item: Exit Installation
+end
+item: End Block
+end
+item: Else Statement
+end
+item: Delete File
+  Pathname=%TEMP%\MDACTMP\*.*
+  Flags=00000100
+end
+item: Delete File
+  Pathname=%TEMP%\DCOMTMP\*.*
+  Flags=00000100
+end
+item: End Block
+end
+item: Else Statement
+end
+item: Remark
+  Text=Clean up extracted files - VMW - 10/04/00
+end
+item: Check if File/Dir Exists
+  Pathname=%TEMP%\MDACTMP\Preset.INI
+  Flags=01000100
+end
+item: Delete File
+  Pathname=%TEMP%\MDACTMP\*.*
+  Flags=00000100
+end
+item: Delete File
+  Pathname=%TEMP%\DCOMTMP\*.*
+  Flags=00000100
+end
+item: End Block
+end
+item: End Block
+end

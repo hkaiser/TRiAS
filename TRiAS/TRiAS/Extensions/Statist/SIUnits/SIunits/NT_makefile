@@ -1,0 +1,400 @@
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- \\
+# NOTICE:                                                             \\
+#   This file is part of "The SI Library of Unit-Based Computation."  \\
+#   See "doc/README" for copyright, license, and other information.   \\
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- \\
+
+# This is a **start** toward a makefile that builts the SIunits package
+# on NT under the Cygwin bash shell.  However, since the product is in 
+# Fermitools, and since to quote a user "it would be ridiculous to use
+# if if you could not within the Devloper's Studio IDE,"  we have instead
+# prepared the SIunitsWorkspace for the IDE.  Builds should be done using 
+# that.  If Cygwin builds are needed, this makefile must be modified to
+# yield the proper switches for compilation and linking.
+
+# ======================================================================
+#
+# Makefile for SIunits ("The SI Library of Units-Based Computation") on NT
+#
+# Target list:
+#	all		build/install hdrs, libs, tests, and docs targets
+#	clean		remove unnecessary intermediate files
+# 	docs  NOT ON NT build/install documentation files
+#	hdrs		build/install header filess
+#	libs		build/install library files
+#	print 		obtain hardcopy of all pertinent sources
+#	realclean	make clean + remove tests and docs targets
+#	shar		prepare distribution self-extracting shar file
+#	tar		prepare distribution tar file
+#	tests		build/install selected validation test executables
+#	uninstall	make realclean + remove all other installed targets
+#
+# Library file targets (see documentation for names' significance):
+#	stdModel.a
+#	relModel.a
+#	hepModel.a
+#	qtmModel.a
+#	natModel.a
+#
+# ======================================================================
+
+
+# ----------------------------------------------------------------------
+# Define the product name:
+# ----------------------------------------------------------------------
+
+PRODUCT	= SIunits
+
+
+# ----------------------------------------------------------------------
+# Define the destination directories:
+# ----------------------------------------------------------------------
+
+tgtdir	= $(HOME)/$(PRODUCT)/# base directory for installed product
+docdir	= $(tgtdir)doc/#	# directory for installed postscript
+incldir = $(tgtdir)include/#	# directory for installed headers
+libdir	= $(tgtdir)lib/#	# directory for installed libraries
+testdir	= $(tgtdir)bin/#	# directory for installed test binaries
+tmpdir	= $(tgtdir)tmp/#	# directory for intermediate results
+
+
+# ----------------------------------------------------------------------
+# Define the build software and options to be used during building:
+# ----------------------------------------------------------------------
+
+# we don't care about any of this make's build-in rules:
+MAKEFLAGS = -r
+
+# preprocessor and its flags:
+CPP	=#
+ABI	=#-32
+CPPFLAGS=\
+	 /I "$(incldir)"\
+	 /D "WIN32"\
+	 /D "_DEBUG"\
+	 
+CPPEXEFLAGS=\
+	 /D "_CONSOLE"\
+	 /D "_MBCS"\
+
+CPPLIBFLAGS=\
+	 /D "_WINDOWS"\
+
+# C++ compiler and its flags:
+CXX	= VCC
+howOPT	= /Od
+
+CXXFLAGS=\
+	 $(CPPFLAGS)\
+	 /nologo\
+	 /MLd\
+	 /W3\
+	 /FD\
+	 /TP\
+	 /c\
+
+CXXEXEFLAGS=\
+	 $(CPPEXEFLAGS)\
+	 /Gm\
+	 /Zi\
+	 /Fo "Debug/"\
+
+CXXLIBFLAGS=\
+	 $(CPPLIBFLAGS)\
+	 /GX\
+	 /Z7\
+
+# linker and its flags:
+LD	= VCC
+LDFLAGS	=\
+	 $(ABI)\
+	 -L$(libdir)\
+
+
+# ----------------------------------------------------------------------
+# Define other utilities:
+# ----------------------------------------------------------------------
+
+CHMOD	= @chmod
+CP	= cp
+LPR	= echo I don't know how to print files!
+MKDIR	= @mkdir -m755 -p
+RM	= rm -f
+RMALL	= $(RM) -r
+SED	= sed
+SHAR	= shar
+TAR	= tar
+
+
+# ----------------------------------------------------------------------
+# Itemize the package (distribution) contents:
+# ----------------------------------------------------------------------
+
+DISTDIRS=			\
+	doc			\
+	src			\
+	SIunits			\
+	test			\
+
+BUILDERS=			\
+	makefile		\
+	sort.dims		\
+	src/calibrate.cc	\
+
+DOCSRCS	=			\
+	doc/intro.tex		\
+
+TXTSRCS	=			\
+	README			\
+	doc/README		\
+	doc/algebra.txt		\
+	doc/abstract.txt	\
+	doc/bib.txt		\
+
+HDRSRCS	=			\
+	SIunits/calibration	\
+	SIunits/consts.dat	\
+	SIunits/dims.dat	\
+	SIunits/elements.dat	\
+	SIunits/anyModel.h	\
+	SIunits/NT_allModel_cc	\
+	SIunits/NT_allModel_h	\
+	SIunits/NT_hepModel.h	\
+	SIunits/NT_natModel.h	\
+	SIunits/NT_qtmModel.h	\
+	SIunits/NT_relModel.h	\
+	SIunits/NT_si.h		\
+	SIunits/NT_stdModel.h	\
+	SIunits/NT_wv.h		\
+
+LIBSRCS	=			\
+	src/hep/NT_Model.cc	\
+	src/nat/NT_Model.cc	\
+	src/qtm/NT_Model.cc	\
+	src/rel/NT_Model.cc	\
+	src/std/NT_Model.cc	\
+
+TESTSRCS=			\
+	test/testconsts.cc	\
+	test/fullTest.cc	\
+	test/example1.cc	\
+	test/example2.cc	\
+	test/example3.cc	\
+	test/ex_RadLen.cc	\
+
+CONTENTS=		\
+	$(BUILDERS) 	\
+	$(DOCSRCS) 	\
+	$(TXTSRCS) 	\
+	$(HDRSRCS) 	\
+	$(LIBSRCS) 	\
+	$(TESTSRCS)	\
+
+
+# ----------------------------------------------------------------------
+# Itemize the detailed package targets:
+# ----------------------------------------------------------------------
+
+DIRTGTS =			\
+	$(docdir)		\
+	$(incldir)		\
+	$(libdir)		\
+	$(testdir)		\
+
+HDRTGTS	=			\
+	$(incldir)allModel_cc	\
+	$(incldir)allModel_h	\
+	$(incldir)anyModel.h	\
+	$(incldir)calibration	\
+	$(incldir)consts.dat	\
+	$(incldir)dims.dat	\
+	$(incldir)elements.dat	\
+	$(incldir)hepModel.h	\
+	$(incldir)natModel.h	\
+	$(incldir)qtmModel.h	\
+	$(incldir)relModel.h	\
+	$(incldir)si.h		\
+	$(incldir)stdModel.h	\
+	$(incldir)wv.h		\
+
+LIBTGTS =			\
+	$(libdir)libstdModel.a	\
+	$(libdir)librelModel.a	\
+	$(libdir)libhepModel.a	\
+	$(libdir)libqtmModel.a	\
+	$(libdir)libnatModel.a	\
+
+TEST1TGTS=			\
+	$(testdir)teststdconsts	\
+	$(testdir)testrelconsts	\
+	$(testdir)testhepconsts	\
+	$(testdir)testqtmconsts	\
+	$(testdir)testnatconsts	\
+
+TEST2TGTS=			\
+	$(testdir)fullTeststd	\
+	$(testdir)fullTestrel	\
+	$(testdir)fullTesthep	\
+	$(testdir)fullTestqtm	\
+	$(testdir)fullTestnat	\
+
+EXAMPLES=			\
+	$(testdir)ex_RadLen	\
+	$(testdir)example1	\
+	$(testdir)example2	\
+	$(testdir)example3	\
+
+# ----------------------------------------------------------------------
+# Build and install all libs, tests, and docs targets:
+# ----------------------------------------------------------------------
+
+.PHONY : all
+all    : hdrs libs tests
+
+
+# ----------------------------------------------------------------------
+# Create needed target directories:
+# ----------------------------------------------------------------------
+
+$(DIRTGTS) :
+	-$(MKDIR) $(tgtdir) $@
+
+
+# ----------------------------------------------------------------------
+# Build and install new calibration file:
+# ---------------------------------------------------------------------- 
+.PHONY      : calibrate calibration
+
+calibrate   : $(testdir) $(testdir)calibrate SIunits/consts.dat
+
+$(testdir)calibrate : src/calibrate.cc $(libdir)libstdModel.a
+	$(CXX) $(CXXFLAGS) $(CXXEXEFLAGS) $< $(LDFLAGS) libstdModel.lib /o $@
+	$(CHMOD) 755 $@
+
+calibration : $(incldir) calibrate
+	$(testdir)calibrate > $(incldir)calibration
+	$(CHMOD) 644 $(incldir)calibration
+
+
+# ----------------------------------------------------------------------
+# Remove detritus (unnecessary intermediate files):
+# ----------------------------------------------------------------------
+
+.PHONY : clean
+clean  :
+	-$(RM) intro.aux intro.dvi intro.log intro.ps intro.toc
+	-$(RMALL) $(foreach d,std rel hep qtm nat,src/$d/ti_files/)
+	-$(RMALL) test/dir_*/
+
+
+# ----------------------------------------------------------------------
+# Build and install postscript documentation files:
+#
+# Not practical on NT; use documentation built elsewhere
+# ----------------------------------------------------------------------
+
+
+# ----------------------------------------------------------------------
+# Build and install header files:
+# ----------------------------------------------------------------------
+
+.PHONY : hdrs
+hdrs   : $(incldir) $(HDRTGTS)
+
+$(filter $(incldir)%,$(HDRTGTS)) : $(incldir)% : SIunits/%
+	$(CP) $< $@
+	$(CHMOD) 644 $@
+
+
+# ----------------------------------------------------------------------
+# Build and install library files:
+# ----------------------------------------------------------------------
+
+.PHONY : libs
+libs   : hdrs $(libdir) $(LIBTGTS)
+
+MOSTHDRTGTS = $(filter-out %calibration,$(HDRTGTS))
+
+$(filter $(libdir)lib%Model.a,$(LIBTGTS)) : $(libdir)lib%Model.a : src/%/Model.cc $(MOSTHDRTGTS)
+	cd src/$*; $(CXX) $(CXXFLAGS) Model.cc -o $@
+	$(CHMOD) 644 $@
+
+$(filter-out $(libdir)libstdModel.a,$(LIBTGTS)) : $(filter %calibration,$(HDRTGTS))
+
+# ----------------------------------------------------------------------
+# Print the complete library source code:
+# ----------------------------------------------------------------------
+
+.PHONY : print
+print  : $(BUILDERS) $(HDRSRCS) $(LIBSRCS)
+	$(A2PS) $(BUILDERS) $(HDRSRCS) $(LIBSRCS) | $(LPR)
+
+
+# ----------------------------------------------------------------------
+# make clean, then also remove tests and docs targets, leaving directories:
+# ----------------------------------------------------------------------
+
+.PHONY    : realclean
+realclean : clean
+	-$(RM) ../$(PRODUCT).tar ../$(PRODUCT).shar
+	-$(RM) $(docdir)intro.ps
+	-$(RM) $(testdir)calibrate
+	-$(RMALL) $(foreach d,std rel hep qtm nat,$(testdir)test$(d)consts)
+	-$(RMALL) $(foreach d,std rel hep qtm nat,$(testdir)fullTest$(d))
+
+
+# ----------------------------------------------------------------------
+# Undo and remove all installed & intermediate files, and directories:
+# ----------------------------------------------------------------------
+
+.PHONY    : uninstall
+uninstall : realclean
+	-$(RMALL) $(tgtdir)
+
+
+# ----------------------------------------------------------------------
+# Prepare a distribution tar file:
+# ----------------------------------------------------------------------
+
+.PHONY : tar
+tar    : ../$(PRODUCT).tar
+../$(PRODUCT).tar : $(CONTENTS)
+	cd ..; $(TAR) -cf $(PRODUCT).tar `echo ' '$(CONTENTS) | sed "s: : $(PRODUCT)/:g"`
+
+
+# ----------------------------------------------------------------------
+# Prepare a self-extracting (shell archive) distribution file:
+# ----------------------------------------------------------------------
+
+.PHONY : shar
+shar   : ../$(PRODUCT).shar
+../$(PRODUCT).shar : $(CONTENTS)
+	cd ..; $(SHAR) `echo ' '$(CONTENTS) | sed "s: : $(PRODUCT)/:g"` > $(PRODUCT).shar 2> /dev/null
+
+
+# ----------------------------------------------------------------------
+# Prepare validation test executables:
+# ----------------------------------------------------------------------
+
+.PHONY : tests
+tests  : $(testdir) $(TEST1TGTS) $(TEST2TGTS) $(EXAMPLES)
+
+$(filter $(testdir)test%consts,$(TEST1TGTS)) : $(testdir)test%consts : $(libdir)lib%Model.a test/testconsts.cc $(HDRTGTS)
+	-$(MKDIR) test/dir_$(@F)
+	cd test/dir_$(@F); $(CXX) $(CXXFLAGS)\
+		-DUSE$*Model ../testconsts.cc $(LDFLAGS) -l$*Model -lm -o $@
+	$(CHMOD) 755 $@
+
+$(filter $(testdir)fullTest%,$(TEST2TGTS)) : $(testdir)fullTest% : $(libdir)lib%Model.a test/fullTest.cc $(HDRTGTS)
+	-$(MKDIR) test/dir_$(@F)
+	cd test/dir_$(@F); $(CXX) $(CXXFLAGS)\
+		-DUSE$*Model ../fullTest.cc $(LDFLAGS) -l$*Model -lm -o $@
+	$(CHMOD) 755 $@
+
+$(filter $(testdir)%,$(EXAMPLES)) : $(testdir)% : test/%.cc $(HDRTGTS)
+	-$(MKDIR) test/dir_$(@F)
+	cd test/dir_$(@F); $(CXX) $(CXXFLAGS)\
+		-DUSEstdModel ../$(@F).cc $(LDFLAGS) -lstdModel -lm -o $@
+	$(CHMOD) 755 $@
+
+#=======================================================================

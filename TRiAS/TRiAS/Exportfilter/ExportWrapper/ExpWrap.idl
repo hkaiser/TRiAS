@@ -1,0 +1,130 @@
+// ExpWrap.idl : IDL source for ExpWrap.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (ExpWrap.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#if !defined(_DEFINED_HOBJECT)
+#define _DEFINED_HOBJECT
+	cpp_quote("#if !defined(_DEFINED_HOBJECT)")
+	cpp_quote("#define _DEFINED_HOBJECT")
+		typedef [hidden] long HOBJECT;
+	cpp_quote("#endif // _DEFINED_HOBJECT")
+#endif // _DEFINED_HPROJECT
+
+#if !defined(_DEFINED_HRELATION)
+#define _DEFINED_HRELATION
+	cpp_quote("#if !defined(_DEFINED_HRELATION)")
+	cpp_quote("#define _DEFINED_HRELATION")
+		typedef [hidden] long *HRELATION;
+	cpp_quote("#endif // _DEFINED_HRELATION")
+#endif // _DEFINED_HRELATION
+
+	[
+		object,
+		uuid(DED33401-CDE6-11D1-85E2-00600875138A),
+		dual,
+		helpstring("IAscExportWrapper Interface"),
+		pointer_default(unique)
+	]
+	interface IAscExportWrapper : IDispatch
+	{
+	cpp_quote("#if !defined(_OUTMODE_DEFINED)")
+	cpp_quote("#define _OUTMODE_DEFINED")
+	// @doc ENUM OUTMODE
+	// @enum OUTMODE | Mögliche Ausgabemodi, die Beschreiben, wie mit einer evtl. bereits 
+	// existierenden Ausgabedatei zu verfahren ist
+		typedef [public, helpstring("Exportmode")]
+		enum _tagOUTMODE {
+			OUTMODE_Overwrite = 0,		// @emem Ausgabedatei überschreiben
+			OUTMODE_Concatenate = 1,	// @emem Exportdaten an Ausgabedatei anhängen
+		} OUTMODE;
+	cpp_quote("#endif // _OUTMODE_DEFINED")
+
+	cpp_quote("#if !defined(_DESCSTYLE_DEFINED)")
+	cpp_quote("#define _DESCSTYLE_DEFINED")
+	// @doc ENUM DESCSTYLE
+	// @enum DESCSTYLE | 
+		typedef [public, helpstring("Typen der Beschreibungsinformationen")]
+		enum _tagDESCSTYLE {
+			DESCSTYLE_Normal = 0,
+			DESCSTYLE_System = 1,
+			DESCSTYLE_ReadOnly = 2,
+			DESCSTYLE_SystemRO = 3,		// DESCSTYLE_System|DESCSTYLE_ReadOnly
+			DESCSTYLE_Dynamic = 4,
+		} DESCSTYLE;
+	cpp_quote("#endif // _DESCSTYLE_DEFINED")
+
+	cpp_quote("#if !defined(_RELTYPE_DEFINED)")
+	cpp_quote("#define _RELTYPE_DEFINED")
+	// @doc ENUM RELTYPE
+	// @enum RETLTYPE | Mögliche Relationstypen, die zwischen Objekten existieren können
+		typedef [public, helpstring("Relationstypen")]
+		enum _tagRELTYPE {
+			RELTYPE_Text = 0,			// @emem Begleitrelation
+			RELTYPE_Equal = 1,			// @emem Gleichrangige Relation
+			RELTYPE_Hierarchy = 2,		// @emem Komplexrelation
+		} RELTYPE;
+	cpp_quote("#endif // _RELTYPE_DEFINED")
+
+	cpp_quote("#if !defined(_OBJECTTYPE_DEFINED)")
+	cpp_quote("#define _OBJECTTYPE_DEFINED")
+	// @doc ENUM OBJECTTYPE
+	// @enum OBJECTTYPE | Mögliche Objekttypen (Geometrietypen), die ein einzelnes Objekt haben kann.
+		typedef [public, helpstring("Mögliche Objekttypen")] 
+		enum _tagOBJECTTYPE {
+			[helpstring("Punktobjekt.")] 
+				OBJECTTYPE_Point = 1,		// @emem Punktobjekt
+			[helpstring("Linienobjekt.")] 
+				OBJECTTYPE_Line = 2,		// @emem Linienobjekt
+			[helpstring("Flächenobjekt.")] 
+				OBJECTTYPE_Area = 4,		// @emem Flächenobjekt
+			[helpstring("Kreisfläche.")] 
+				OBJECTTYPE_Circle = 4,		// @emem Flächenobjekt (Kreis/Ellipse)
+			[helpstring("Textobjekt.")] 
+				OBJECTTYPE_Text = 8,		// @emem Textobjekt
+			[helpstring("Komplexobjekt.")] 
+				OBJECTTYPE_Complex = 16,	// @emem Komplexobjekt (hierarchische Verknüpfung 
+						// mehrerer Objekte, evtl. ohne eigene Geometrie
+			[helpstring("Unbekannter Objekttyp.")] 
+				OBJECTTYPE_Unknown = 0,		// @emem Unbekannter Objekttyp
+			[helpstring("Alle bekannten Objekttypen.")] 
+				OBJECTTYPE_All = 0x1f,		// @emem Alle bekannten Objekttypen
+		} OBJECTTYPE;
+	cpp_quote("#endif // _OBJECTTYPE_DEFINED")
+
+		[id(100), helpstring("Beginn eines DatenExports.")] HRESULT ExportBegin([in] BSTR Name, [in] OUTMODE Mode);
+		[id(101), helpstring("Ausgabe einer Kommentarinformation im jeweiligen Format.")] HRESULT ExportComment([in] BSTR Comment);
+		[id(102), helpstring("Ausgabe von Informationen, die am Anfang der Datei stehen müssen.")] HRESULT ExportHeader([in] BSTR Header);
+		[id(103), helpstring("Ausgabe von Informationen, die den Inhalt dieses Exports betreffen.")] HRESULT ExportDescription([in] BSTR KeyInfo, [in] BSTR Description, [in, optional, defaultvalue(0)] DESCSTYLE Style);
+		[id(104), helpstring("Abschließende Informationen ausgeben.")] HRESULT ExportTrailer([in] BSTR TrailerInfo);
+		[id(105), helpstring("Neues Objekt beginnen.")] HRESULT BeginObject([in] HOBJECT ObjHandle);
+		[id(106), helpstring("Geometrie ausgeben.")] HRESULT ExportGeometry([in] OBJECTTYPE Type, [in] IUnknown *pIGeom);
+		[id(107), helpstring("Eine Objekteigenschaft ausgeben.")] HRESULT ExportFeature([in] VARIANT Feature);
+		[id(108), helpstring("Eine Objektrelation ausgeben.")] HRESULT ExportRelation([in] HRELATION RelHandle, [in] RELTYPE Type, [in] HOBJECT ObjHandle);
+		[id(109), helpstring("Objekt abschließen.")] HRESULT EndObject([in] HOBJECT ObjHandle);
+		[id(110), helpstring("Exportmodul initialisieren und an konkreten Exportfilter anbinden.")] HRESULT Initialize([in] BSTR RegKey);
+	};
+
+[
+	uuid(DED333F2-CDE6-11D1-85E2-00600875138A),
+	version(1.0),
+	helpstring("ExpWrap 1.0 Type Library")
+]
+library EXPWRAPLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(DED33402-CDE6-11D1-85E2-00600875138A),
+		helpstring("AscExportWrapper Class")
+	]
+	coclass AscExportWrapper
+	{
+		[default] interface IAscExportWrapper;
+	};
+};

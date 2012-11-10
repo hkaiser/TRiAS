@@ -1,0 +1,26 @@
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#include "TRiASARC.ver"
+
+#define STDINTERFACE(help)	object, dual, pointer_default(unique), helpstring(help)
+
+[ uuid(286232A0-178B-11d3-9970-0060085FC1CE)
+	, version(TYPELIB_TRiASARC_VERSION)
+	, helpstring(TYPELIB_TRiASARC_HELPSTRING)
+] library TRiASArcExport {
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[ uuid(286232A1-178B-11d3-9970-0060085FC1CE)
+		, STDINTERFACE("ITRiASArcExport Interface")
+	] interface ITRiASArcExport : IDispatch {
+	};
+
+	[ uuid(286232A2-178B-11d3-9970-0060085FC1CE)
+		, helpstring("TRiASArcExport Class")
+	] coclass TRiASArcExport {
+		[default] interface ITRiASArcExport;
+	};
+};

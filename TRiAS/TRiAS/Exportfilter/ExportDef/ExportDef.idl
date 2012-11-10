@@ -1,0 +1,226 @@
+///////////////////////////////////////////////////////////////////////////////
+// @doc
+// @module ExportDef.idl | Definitionen und Konstanten für TRiAS - Exportmodule
+//
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#include "ExportDef.ver"
+
+#define STDINTERFACE(help)	object, pointer_default(unique), helpstring(help)
+
+[ uuid(41473225-06C2-11D3-995A-0060085FC1CE)
+	, version(TYPELIB_ExportDef_VERSION)
+	, helpstring(TYPELIB_ExportDef_HELPSTRING)
+] library EXPORTDEFLib {
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	///////////////////////////////////////////////////////////////////////////////
+	// @doc ENUM OUTMODE
+	// @enum OUTMODE | Mögliche Ausgabemodi, die Beschreiben, wie mit einer evtl. bereits 
+	// existierenden Ausgabedatei zu verfahren ist
+	typedef [public, helpstring("Exportmode")]
+	enum _tagOUTMODE {
+		OUTMODE_Overwrite = 0,		// @emem Ausgabedatei überschreiben
+		OUTMODE_Concatenate = 1,	// @emem Exportdaten an Ausgabedatei anhängen
+	} OUTMODE;
+	///////////////////////////////////////////////////////////////////////////////
+	// @doc ENUM DESCSTYLE
+	// @enum DESCSTYLE | 
+	typedef [public, helpstring("Typen der Beschreibungsinformationen")]
+	enum _tagDESCSTYLE {
+		DESCSTYLE_Normal	= 0x0001,	// @emem Normale Beschreibungsinformation
+		DESCSTYLE_System	= 0x0002,	// @emem Systeminterne Beschreibungsinformation
+		DESCSTYLE_ReadOnly	= 0x0004,	// @emem Beschreibungsinformation ist read-only
+//		DESCSTYLE_SystemRO	= 0x0008,	// DESCSTYLE_System|DESCSTYLE_ReadOnly
+		DESCSTYLE_Dynamic	= 0x0008,	// @emem Beschreibungsinformation ist dynamisch (??)
+	} DESCSTYLE;
+	///////////////////////////////////////////////////////////////////////////////
+	// @doc ENUM RELTYPE
+	// @enum RETLTYPE | Mögliche Relationstypen, die zwischen Objekten existieren können
+	typedef [public, helpstring("Relationstypen")]
+	enum _tagRELTYPE {
+		RELTYPE_Text = 0,			// @emem Begleitrelation
+		RELTYPE_Equal = 1,			// @emem Gleichrangige Relation
+		RELTYPE_Hierarchy = 2,		// @emem Komplexrelation
+	} RELTYPE;
+	///////////////////////////////////////////////////////////////////////////////
+	// @doc ENUM OBJECTTYPE
+	// @enum OBJECTTYPE | Mögliche Objekttypen (Geometrietypen), die ein einzelnes Objekt haben kann.
+	typedef [public, helpstring("Mögliche Objekttypen")] 
+	enum _tagOBJECTTYPE {
+		[helpstring("Punktobjekt.")]	OBJECTTYPE_Point	= 0,		// @emem Punktobjekt (OGPunkt)
+		[helpstring("Linienobjekt.")]	OBJECTTYPE_Line		= 1,		// @emem Linienobjekt (OGLinie)
+		[helpstring("Flächenobjekt.")]	OBJECTTYPE_Area		= 2,		// @emem Flächenobjekt (OGFlaeche)
+		[helpstring("Kreisfläche.")]	OBJECTTYPE_Circle	= 3,		// @emem Kreis (OGKreis)
+		[helpstring("Komplexobjekt")]	OBJECTTYPE_KO		= 4,		// @emem Komplexobjekt
+		[helpstring("Textobjekt.")]		OBJECTTYPE_Text		= 5,		// @emem Textobjekt
+		[helpstring("Unknown")]			OBJECTTYPE_Unknown	= 6,
+		[helpstring("Komplexobjekt.")]  OBJECTTYPE_Complex	= 16,		// @emem Komplexobjekt (hierarchische Verknüpfung 
+																		// mehrerer Objekte, evtl. ohne eigene Geometrie
+		[helpstring("Alle bekannten Objekttypen.")]  OBJECTTYPE_All = 0x1f,		// @emem Alle bekannten Objekttypen
+	} OBJECTTYPE;
+	///////////////////////////////////////////////////////////////////////////////
+	typedef unsigned long HOBJECT;
+	typedef unsigned long HRELATION;
+	///////////////////////////////////////////////////////////////////////////////
+	// @doc INTERFACE TRIASCS
+	// @interface ITRiASExportEngine | TRiAS-ExportEngine
+	[ uuid(CEB09DD0-0E30-11d3-9967-0060085FC1CE)
+		, STDINTERFACE("TRiAS Export/Import")
+	] interface ITRiASExtDataEngine : IDispatch {
+		[propget, helpstring("liefert den Anzeigenamen für dieses Format")]
+		HRESULT Name(
+				[out,retval] BSTR* pbstrName
+			);
+		[propget, helpstring("liefert die Standarddateinamenserweiterung für dieses Format")]
+		HRESULT Extension( 
+				[out,retval] BSTR* pbstrDefExt
+			);
+		[propget, helpstring("property Filename")] HRESULT Filename([out, retval] BSTR *pVal);
+		[propput, helpstring("property Filename")] HRESULT Filename([in] BSTR newVal);
+		[propget, helpstring("property CoordSystem")] HRESULT CoordSystem([out, retval] IDispatch* *pVal);
+		[propput, helpstring("property CoordSystem")] HRESULT CoordSystem([in] IDispatch* newVal);
+		[propget, helpstring("property SeparateOutput")] HRESULT SeparateOutput([out, retval] BOOL *pVal);
+		[propput, helpstring("property SeparateOutput")] HRESULT SeparateOutput([in] BOOL newVal);
+	// KK000816
+		[propget, helpstring("property SelectOutput")] HRESULT SelectOutput([out, retval] BOOL *pVal);
+		[propput, helpstring("property SelectOutput")] HRESULT SelectOutput([in] BOOL newVal);
+	//
+		[propget, helpstring("property SeparateDirs")] HRESULT SeparateDirs([out, retval] BOOL *pVal);
+		[propput, helpstring("property SeparateDirs")] HRESULT SeparateDirs([in] BOOL newVal);
+		[propget, helpstring("property AppendOutput")] HRESULT AppendOutput([out, retval] BOOL *pVal);
+		[propput, helpstring("property AppendOutput")] HRESULT AppendOutput([in] BOOL newVal);
+		[propget, helpstring("property Capability")] HRESULT Capability([in] BSTR strCapability, [out,retval] BOOL* pYesNo );
+
+		[propget, helpstring("property ExportObjProps")] HRESULT ExportObjProps([out, retval] BOOL *pVal);
+		[propput, helpstring("property ExportObjProps")] HRESULT ExportObjProps([in] BOOL newVal);
+
+		[helpstring("Exportiert TRiAS-XML Daten in das konkrete Format")]
+		HRESULT ExportData( IDispatch *pXMLDocument );
+		HRESULT ImportData( IDispatch** ppXMLDocument );
+	};
+
+
+	// @doc ENUM OBJECTTYPE
+	// @enum ENDMODE | Mögliche Modi der Beendigung des Exportes
+	typedef [public, helpstring("Mögliche Modi der Beendigung des Exportes")] 
+	enum _tagENDMODE {
+		[helpstring("Nicht beachten.")]		ENDMODE_DoNotBother	= 0,	// @emem Mode nicht beachten
+		[helpstring("Export abbrechen.")]	ENDMODE_Break = 1,			// @emem Export abbrechen
+		[helpstring("Export beendet.")]		ENDMODE_End	= 2,			// @emem Export beendet
+		[helpstring("Export einer Datenquelle beendet.")] ENDMODE_EndDataSource	= 3,	// @emem Export einer Datenquelle beendet
+	} ENDMODE;
+
+	[ uuid("DB102701-1468-11d3-996C-0060085FC1CE")
+		, pointer_default(unique)
+		, local
+	] interface ITRiASOEProxy : IUnknown {
+//		HRESULT	ExportData( [in] IDispatch* pXMLDocument, [in] HWND hWnd );
+		HRESULT	ExportData( [in] IDispatch* pXMLDocument, [in] HWND hWnd , [in] long nCounter);
+// KK000216
+		HRESULT	ExportDataEnd([in] ENDMODE rgMode);
+
+		HRESULT	ExportMerkmalDescription( [in] long lMCode, [in] short iTyp, [in] short iLen, [in] char *pbuf);
+
+// KK001023
+//		HRESULT ExportIDDescription ( [in] char *_DEXBUF, [in] char * _buf, [in] char * _lbuf,[in] long lVisType, [in] DWORD *pVis);
+		HRESULT ExportIDDescription ( [in] char *_DEXBUF, [in] char * _buf, [in] char * _lbuf,[in] long lVisType, [in] DWORD *pVis,[in] long lIdent);
+	};
+
+/*
+typedef struct tagMFELD {
+	long MCode;		// MerkmalsCode
+	char *MText;		// Merkmalswert als Text
+	short MTyp;		// Merkmalstyp
+	SAFEARRAY(VARIANT)	MWert;		// MerkmalsWert != NULL bei Double oder Int
+} MFELD;
+
+typedef struct tagGSTRUCT {
+	long Id;		// Identifikator
+	long ON;		// ObjektNummer
+	short Typ;		// OT_PUNKT, OT_KANTE, OT_FLAECHE, OT_TEXT
+	long GSize;		// Anzahl der Stützpunkte
+	SAFEARRAY(double)	x;		// X-Feld
+	SAFEARRAY(double)	y;		// Y-Feld
+	long *cnt;		// Anzahl der Stützpunkte in Konturen
+} GSTRUCT;
+
+typedef struct tagRSTRUCT {
+	long RCode;		// RelationsCode;
+	short RTyp;		// RelationsTyp RT_BEGLEIT, RT_GLEICHR, RT_KOMPLEX
+	long RON;		// beteiligtes Objekte
+} RSTRUCT;
+
+typedef struct tagMDSTRUCT {
+	long	_MCode;		// MerkmalsCode
+	BSTR	_Text;		// KurzText
+	short	_MTyp;		// 'I', 'A', 'F'
+	short	_MLen;		// Länge des Merkmalstextes
+	short	_MDecLen;		// Anzahl der Nachkommastellen für Typ 'F'
+} MDSTRUCT;
+
+typedef struct tagIDSTRUCT {
+	long	_Ident;
+	BSTR	_Text;
+	SAFEARRAY(VARIANT)	_VI;
+} IDSTRUCT;
+
+typedef enum  {
+	EC_Merkmale,		// liefert Anzahl der exportierbaren Merkmalswerte
+	EC_IdentDescription,	// IdentBeschreibung soll geliefert werden
+	EC_MerkmalDescription,	// MerkmalsBeschreibung soll geliefert werden
+	EC_Relationen,			// liefert, ob Relationen unterstützt werden
+	EC_NoConvertCoords,		// wenn gesetzt, dann Koordinaten nicht voll konvertieren
+} ExportCapability;
+	///////////////////////////////////////////////////////////////////////////////
+	// @doc INTERFACE TRIASCS
+	// @interface ITRIASCSSet | Eine Sammlung von Koordinatensystemen
+	// @group Methoden und Eigenschaften von <i ITRIASCSSet>
+	// @index | ITRIASCSSet
+	// @normal ITRiASCSSet stellt eine einfache Möglichkeit dar Sammlungen von 
+	//		Koordinatensystemen anzulegen, Elemente hinzuzufügen, Elemente daraus 
+	//		zu löschen, Elemente zu suchen sowie den gesamten Satz zu speichern und
+	//		zu lesen. 
+	// @comm Siehe auch <l Speichern / Lesen von Koordinatensystemen>
+	[ uuid(83392970-06CC-11d3-995A-0060085FC1CE)
+		, local
+	] interface ITRiASOEProxy : IUnknown {
+//XX    ErrCode EXPORTFLT PASCAL ArcInfoExportBegin (char *lpFileName, OFSTRUCT &of, OutMode, HWND);
+		[helpstring("Beginn eines DatenExports.")] 
+		HRESULT ExportBegin( [in] BSTR Filename, [in] OUTMODE Mode, [in] HWND hWndM );
+//XX    ErrCode EXPORTFLT PASCAL ArcInfoExportComment (OFSTRUCT &of, const char *lpCommentString);
+		[helpstring("Ausgabe einer Kommentarinformation im jeweiligen Format.")] 
+		HRESULT ExportComment( [in] BSTR Comment );
+//XX    ErrCode EXPORTFLT PASCAL ArcInfoExportHeader (OFSTRUCT &of, const char *lpHeaderString);
+		[helpstring("Ausgabe von Informationen, die am Anfang der Datei stehen müssen.")]
+			HRESULT ExportHeader( [in] BSTR Header );
+//XX    ErrCode EXPORTFLT PASCAL ArcInfoExportDescription (OFSTRUCT &of, const char *lpKeyInfo, const char *lpDescInfo);
+		[helpstring("Ausgabe von Informationen, die den Inhalt dieses Exports betreffen.")] 
+			HRESULT ExportDescription( [in] BSTR KeyInfo, [in] BSTR Description, [in, optional, defaultvalue(0)] long Style );
+//XX    ErrCode EXPORTFLT PASCAL ArcInfoExportData (OFSTRUCT &of, GSTRUCT &GS, MFELD *MF, RSTRUCT *, char *);
+		[helpstring("Konkrete Daten ausgeben")]
+			HRESULT ExportData( [in] GSTRUCT* pGS, [in] MFELD *pMF, [in] RSTRUCT *pRS, [in] BSTR pDescr );
+//XX    ErrCode EXPORTFLT PASCAL ArcInfoExportMerkmalDescription (MerkmalDescription &);
+		[helpstring("Merkmalsbeschreibung ausgeben")]
+			HRESULT MerkmalDescription( [in] MDSTRUCT* pMDS );
+//XX    ErrCode EXPORTFLT PASCAL ArcInfoExportIdentDescription (IdentDescription &);
+		[helpstring("Identifikatorbeschreibung ausgeben")]
+			HRESULT IdentDescription( [in] IDSTRUCT* pMDS );
+//XX    ErrCode EXPORTFLT PASCAL ArcInfoExportTrailer (OFSTRUCT &of, const char *lpTrailerString);
+		[helpstring("Abschließende Informationen ausgeben.")] 
+			HRESULT ExportTrailer( [in] BSTR TrailerInfo );
+//XX    ErrCode EXPORTFLT PASCAL ArcInfoExportEnd (OFSTRUCT &of);
+		[helpstring("Export beendet")] 
+			HRESULT ExportEnd( );
+//XX    short EXPORTFLT PASCAL ArcInfoExportCaps (ExportCapability);
+		[helpstring("Eigenschaften des Exportfilters")] 
+			HRESULT ExportCaps([in] ExportCapability cap, [out,retval] short* pExportCapability );
+//XX    ErrCode EXPORTFLT PASCAL ArcInfoExportBreak (OFSTRUCT &);
+		[helpstring("Unterbrechung")] 
+			HRESULT ExportBreak( );
+	};
+*/
+};

@@ -1,0 +1,198 @@
+
+
+
+IMROLL(1IM)                IMAGE TOOLS                IMROLL(1IM)
+
+
+
+NAME
+     imroll  -  Rolls images vertically and/or horizontally
+
+SYNOPSIS
+     imroll [_o_p_t_i_o_n_s] _i_n_f_i_l_e_n_a_m_e _o_u_t_f_i_l_e_n_a_m_e
+
+DESCRIPTION
+     imroll reads each image in the input file, rolls  it  verti-
+     cally,  horizontally,  or both, then writes it to the output
+     file.  The input and output image file formats may  be  dif-
+     ferent.
+
+OPTIONS
+     imroll has a  variety  of  options  in  the  following  five
+     categories:
+
+          File Selection     What input and output files to use
+          Format Selection   What image file format to use
+          Format Control     What variant of a file format to generate
+          Standard           Standard generic options on all SDSC tools
+          Rolling            How the image can be rolled
+
+     _F_i_l_e _S_e_l_e_c_t_i_o_n, _F_o_r_m_a_t _S_e_l_e_c_t_i_o_n, _F_o_r_m_a_t _C_o_n_t_r_o_l, and  _S_t_a_n_-
+     _d_a_r_d options are common to all SDSC image tools and are dis-
+     cussed in depth in the man page for imconv(1IM).
+
+     All options can be abbreviated to the first few unique char-
+     acters.
+
+  Rolling Options
+     Rolling an image copies pixel (0,0) to  pixel  (x,y),  pixel
+     (1,0) to (x+1,y), pixel (2,0) to (x+2,y), and so on.  Pixels
+     that fall off the image edges wrap around  to  the  opposite
+     edge.   The  effect is to slide an image horizontally and/or
+     vertically, wrapping around in a cyclical fashion.
+
+     -xroll _v_a_l_u_e
+
+          Rolls the image horizontally by _v_a_l_u_e pixels.  Positive
+          values  of  _v_a_l_u_e  roll  left-to-right, negative values
+          roll right-to-left.
+
+     -yroll _v_a_l_u_e
+
+          Rolls the image vertically by _v_a_l_u_e  pixels.   Positive
+          values  of  _v_a_l_u_e  roll  top-to-bottom, negative values
+          roll bottom-to-top.
+
+     -xroll and -yroll may be given in combination  in  order  to
+     roll in both the X and Y directions simultaneously.
+
+
+
+
+
+SDSC               Last change: June 27, 1995                   1
+
+
+
+
+
+
+IMROLL(1IM)                IMAGE TOOLS                IMROLL(1IM)
+
+
+
+NOTES
+     Image rolling may be  used  for  a  variety  of  simple  pan
+     effects,  such  as  cyclical  backgrounds for cartoon chase-
+     sequence animations.
+
+     Image rolling may also be used in the processing of  scanned
+     or  generated  texture images prior to repeated side-by-side
+     texture mapping, such as for grassy planes, carpeted  areas,
+     or brick or stone walls.  In each of these cases, the origi-
+     nal texture image will be repeated over a  large  area  with
+     the  left edge of one copy butting up against the right edge
+     of the next copy, and the top edge of one  copy  butting  up
+     against  the bottom edge of the next.  To avoid obvious grid
+     lines in texturing, it is important that the left and  right
+     edges,  and  top and bottom edges, of the texture match each
+     other.  This may be done by bringing the image into a  paint
+     system and adjusting the pixels to make them match.
+
+     However, it is hard to visually match the left  edge  of  an
+     image  with  its  right edge when those edges aren't next to
+     each other.  imroll may be used to bring them next  to  each
+     other.   Roll  the  image half the image's width and height.
+     This places the left-right and top-bottom edges next to each
+     other in the middle of the image.  Now, bring the image into
+     a paint system and smear the joining line.  The  image  will
+     then be ready for seamless, side-by-side texture mapping.
+
+     For notes regarding  file  format  conversion  and  standard
+     image tool options, see the man page on imconv(1IM).
+
+     Error messages are reported to stderr.
+
+     With no roll arguments, the actions of imroll default to the
+     same  as  the SDSC image format conversion tool imconv(1IM),
+     but they take a little longer.
+
+EXAMPLES
+     Roll a Wavefront RLB file 30 pixels to the right  and  store
+     the result into an SGI RGB file:
+
+          imroll original.rlb -xroll 30 rolled.rgb
+
+     Roll a Sun raster file 100 pixels to the left and 50  pixels
+     down:
+
+          imroll incoming.ras -xroll -100 -yroll 50 outgoing.ras
+
+SEE ALSO
+     imcltroll  (1IM),  imcopy  (1IM),  imrotate  (1IM),  imshear
+     (1IM), imscale (1IM), ImVfbRoll (3IM)
+
+     For information on SDSC's image library, see imintro(3IM).
+
+
+
+2                  Last change: June 27, 1995                SDSC
+
+
+
+
+
+
+IMROLL(1IM)                IMAGE TOOLS                IMROLL(1IM)
+
+
+
+AUTHOR
+     Chris Groening
+     San Diego Supercomputer Center
+
+     See the individual file format man pages for the authors  of
+     the  underlying  format  read  and write code.  The names of
+     these man pages begin with the letters "im," followed by the
+     format  name.  For example, the name of the TIFF man page is
+     imtiff.  To display it, enter man imtiff.
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SDSC               Last change: June 27, 1995                   3
+
+
+

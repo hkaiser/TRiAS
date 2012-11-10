@@ -1,0 +1,13 @@
+[version]
+signature="$CHICAGO$"
+SetupClass=BASE
+
+[MMArcInfInstall]
+AddReg		= ThisDll.AddReg
+
+[ThisDll.AddReg]
+HKLM,Software\Microsoft\Windows\CurrentVersion\RunOnce\Setup,%DISK_NAME%,,"RUNDLL32.EXE %ThisDll%,DllRegisterServer"
+
+[Strings]
+DISK_NAME	= "TRiAS Import von Hintergrundrasterbildern (PolyGIS)"
+ThisDll		= "PolyGIS.dll"

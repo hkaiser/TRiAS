@@ -1,0 +1,1755 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\GbmTRiAS.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.deu\\afxres.rc""          // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_OPENPROJEKT DIALOG DISCARDABLE  0, 0, 298, 119
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Projekt auswählen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",1,241,7,50,14
+    PUSHBUTTON      "Abbrechen",2,241,24,50,14
+    RTEXT           "Identifikationsnummer:",1015,17,18,84,9
+    EDITTEXT        1000,105,15,94,12,ES_AUTOHSCROLL
+    RTEXT           "Gemeinde:",1016,17,48,84,9
+    RTEXT           "Straße:",1017,17,67,84,9
+    COMBOBOX        1001,105,45,125,91,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        1003,105,64,125,91,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Projekt:",1018,17,95,84,9
+    COMBOBOX        1004,105,92,125,91,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "",-1,"Static",SS_ETCHEDFRAME,7,7,229,28
+    CONTROL         "",-1,"Static",SS_ETCHEDFRAME,7,37,229,45
+    CONTROL         "",-1,"Static",SS_ETCHEDFRAME,7,85,229,28
+END
+
+IDD_GBMDATA DIALOG DISCARDABLE  0, 0, 212, 290
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "GBM - Datenfenster"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Identifikationsnummern:",1023,7,11,88,10
+    LISTBOX         1004,7,21,198,102,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    LBS_EXTENDEDSEL | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Grundstücksfläche:",1153,60,127,71,10
+    LTEXT           "Beitragsfläche:",1154,60,139,71,10
+    LTEXT           "Beiträge:",1155,60,151,71,10
+    RTEXT           "999.999,99 m²",1005,135,128,66,10,SS_SUNKEN
+    RTEXT           "999.999,99 m²",1006,135,140,66,10,SS_SUNKEN
+    RTEXT           "999.999,99 DM",1007,135,152,66,10,SS_SUNKEN
+    LTEXT           "Identifikationsnummer:",1024,7,169,77,10
+    LTEXT           "Ort:",1025,7,181,77,10
+    LTEXT           "Straße:",1026,7,193,77,10
+    LTEXT           "Flur:",1027,7,205,77,10
+    LTEXT           "Flurstück(e):",1028,7,217,77,10
+    LTEXT           "Eigentümer:",1029,7,229,77,10
+    LTEXT           "123456",1008,93,170,112,10,SS_SUNKEN
+    LTEXT           "Musterhausen",1009,93,182,112,10,SS_SUNKEN
+    LTEXT           "Beispielstr. 13a",1010,93,194,112,10,SS_SUNKEN
+    LTEXT           "08/15",1011,93,206,112,10,SS_SUNKEN
+    LTEXT           "1, 2, 3, 12",1012,93,218,112,10,SS_SUNKEN
+    LTEXT           "Herr Mustermann",1013,93,230,112,10,SS_SUNKEN
+    CONTROL         "Suchen",1305,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
+                    WS_TABSTOP,7,270,38,13
+    CONTROL         "Bearbeiten",1306,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
+                    WS_TABSTOP,163,270,42,13
+    CONTROL         "Löschen",1322,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
+                    WS_TABSTOP,117,270,42,13
+    CONTROL         "Gedruckt",IDC_BGEDR,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,94,242,45,10
+    LTEXT           "Beitragsbescheid:",1030,7,241,77,10
+    CTEXT           "Fenster zu klein! Bitte Größe ändern.",IDC_MINSIZETEXT,
+                    66,42,79,36,SS_SUNKEN | NOT WS_VISIBLE
+    CONTROL         "Gedruckt",IDC_BGEDR2,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,94,253,45,10
+    LTEXT           "Gebührenbescheid:",1031,7,252,77,10
+END
+
+IDD_STARTPAGE1 DIALOG DISCARDABLE  0, 0, 270, 119
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Projekt öffnen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         137,-1,"Static",SS_BITMAP | SS_RIGHTJUST | 
+                    SS_REALSIZEIMAGE,7,7,71,26
+    CONTROL         "GBM-Projekt auswählen",IDC_OPEN,"Button",
+                    BS_AUTORADIOBUTTON,106,36,134,10
+    CONTROL         "zuletzt bearbeitete Projekte",IDC_RADIO2,"Button",
+                    BS_AUTORADIOBUTTON,106,51,134,10
+    COMBOBOX        1001,114,64,149,70,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "GeoMedia-Projekt öffnen",IDC_RADIO3,"Button",
+                    BS_AUTORADIOBUTTON,106,83,148,10
+    LTEXT           "Sie können folgende Aktionen ausführen:",-1,93,7,143,10
+END
+
+IDD_STARTPAGE2 DIALOG DISCARDABLE  0, 0, 270, 119
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "GBM-Projekt auswählen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "Identifikationsnummer:",1015,29,18,84,9
+    EDITTEXT        1000,117,15,94,12,ES_AUTOHSCROLL
+    RTEXT           "Gemeinde:",1016,29,48,84,9
+    RTEXT           "Straße:",1017,29,67,84,9
+    COMBOBOX        1001,117,45,125,91,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        1003,117,64,125,91,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Projekt:",1018,29,95,84,9
+    COMBOBOX        1004,117,92,125,91,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "",-1,"Static",SS_ETCHEDFRAME,19,7,229,28
+    CONTROL         "",-1,"Static",SS_ETCHEDFRAME,19,37,229,45
+    CONTROL         "",-1,"Static",SS_ETCHEDFRAME,19,85,229,28
+END
+
+IDD_STATUS1 DIALOG DISCARDABLE  0, 0, 252, 63
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Initialisierung Liste"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Abbrechen",2,195,42,50,14
+    LTEXT           "Zeile 1",1023,7,7,238,10
+    LTEXT           "Zeile 2",1015,7,18,238,10
+    LTEXT           "Zeile 3",1016,7,29,238,10
+END
+
+IDD_EDITPAGE1 DIALOG DISCARDABLE  0, 0, 435, 218
+STYLE WS_CHILD | WS_VISIBLE | WS_DISABLED | WS_CAPTION
+CAPTION "Stammdaten"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        1000,120,25,150,12,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1001,120,38,150,12,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1002,120,51,47,12,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1003,171,51,99,12,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1004,120,74,300,12,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1005,120,87,83,12,ES_AUTOHSCROLL
+    EDITTEXT        1006,208,87,212,12,ES_AUTOHSCROLL
+    COMBOBOX        1036,98,111,108,85,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        1007,143,129,63,12,ES_AUTOHSCROLL
+    EDITTEXT        1009,143,145,63,12,ES_AUTOHSCROLL
+    EDITTEXT        1010,302,123,23,12,ES_AUTOHSCROLL
+    EDITTEXT        1011,302,136,23,12,ES_AUTOHSCROLL
+    EDITTEXT        1012,399,123,23,12,ES_AUTOHSCROLL
+    EDITTEXT        1013,399,136,23,12,ES_AUTOHSCROLL
+    LTEXT           "Identifikationsnummer:",-1,7,7,98,10
+    LTEXT           "01234-5678",1008,121,7,148,11,SS_SUNKEN
+    CONTROL         "",-1,"Static",SS_GRAYFRAME | SS_SUNKEN,7,21,421,47
+    LTEXT           "Eigentümer (Anschrift):",-1,11,23,75,10
+    RTEXT           "Name:",-1,87,27,30,10
+    RTEXT           "Straße/Hausnummer:",-1,26,41,91,10
+    RTEXT           "PLZ / Ort:",-1,26,54,91,10
+    CONTROL         "",-1,"Static",SS_GRAYFRAME | SS_SUNKEN,7,70,421,34
+    RTEXT           "Gemeinde und Ortslage:",-1,26,76,91,10
+    RTEXT           "Flur / Flurstück:",-1,26,89,91,10
+    CONTROL         "",-1,"Static",SS_GRAYFRAME | SS_SUNKEN,7,107,208,104
+    CONTROL         "",-1,"Static",SS_GRAYFRAME | SS_SUNKEN,220,107,208,50
+    RTEXT           "Beitragsart:",-1,26,112,65,10
+    RTEXT           "Anschlußdatum:",-1,13,131,126,10
+    RTEXT           "Grundstücksgröße lt. Grundbuchamt:",-1,13,147,126,10
+    LTEXT           "Unbebautes Grundstück:",-1,225,110,91,10
+    RTEXT           "Geschoßflächenzahl:",-1,226,125,70,10
+    RTEXT           "Baumassenzahl:",-1,226,138,70,10
+    RTEXT           "Vollgeschoßzahl:",-1,331,125,62,10
+    RTEXT           "Grundflächenzahl:",-1,331,138,62,10
+    EDITTEXT        IDC_EDIT14,161,176,45,12,ES_AUTOHSCROLL
+    RTEXT           "überwiegend vorhandene Vollgeschoßzahl:",-1,11,178,144,
+                    10
+    CONTROL         "B-Plan:",1037,"Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | 
+                    WS_TABSTOP,100,162,39,10
+    EDITTEXT        1015,143,161,63,12,ES_AUTOHSCROLL
+    CONTROL         "",-1,"Static",SS_GRAYFRAME | SS_SUNKEN,220,160,208,51
+    EDITTEXT        1016,368,165,53,12,ES_RIGHT | ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1017,368,178,53,12,ES_RIGHT | ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1018,368,191,53,12,ES_RIGHT | ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_READONLY
+    RTEXT           "digitalisierte Gesamtfläche:",-1,227,165,137,10
+    RTEXT           "errechnete anrechenbare Fläche:",-1,227,178,137,10
+    RTEXT           "nutzungsbezogene anrechenbare Fläche:",-1,227,192,137,
+                    10
+    EDITTEXT        1019,144,192,63,12,ES_RIGHT | ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_READONLY
+    RTEXT           "Tiefenbegrenzung bei (m):",-1,14,194,126,10
+    LTEXT           "Einzeleigentümer",IDC_TEXTEIGENTUM,275,28,141,32
+END
+
+IDD_EDITPAGE2 DIALOG DISCARDABLE  0, 0, 435, 218
+STYLE WS_CHILD | WS_VISIBLE | WS_DISABLED | WS_CAPTION
+CAPTION "Dachflächen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        1010,46,38,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1011,96,38,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1037,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,194,38,16,
+                    12
+    EDITTEXT        1012,46,51,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1013,96,51,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1038,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,194,51,16,
+                    12
+    EDITTEXT        1014,46,64,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1015,96,64,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1039,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,194,64,16,
+                    12
+    EDITTEXT        1016,46,77,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1017,96,77,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1040,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,194,77,16,
+                    12
+    EDITTEXT        1018,46,90,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1019,96,90,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1041,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,194,90,16,
+                    12
+    EDITTEXT        1020,46,117,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1021,96,117,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1042,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,194,117,16,
+                    12
+    EDITTEXT        1022,46,130,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1023,96,130,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1043,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,194,130,16,
+                    12
+    EDITTEXT        1024,46,143,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1025,96,143,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1044,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,194,143,16,
+                    12
+    EDITTEXT        1026,46,156,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1027,96,156,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1045,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,194,156,16,
+                    12
+    EDITTEXT        1028,46,169,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1029,96,169,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1046,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,194,169,16,
+                    12
+    EDITTEXT        1030,264,38,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1031,314,38,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1047,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,412,38,16,
+                    12
+    EDITTEXT        1032,264,51,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1033,314,51,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1048,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,412,51,16,
+                    12
+    EDITTEXT        1034,264,64,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1035,314,64,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1049,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,412,64,16,
+                    12
+    EDITTEXT        1036,264,77,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1050,314,77,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1051,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,412,77,16,
+                    12
+    EDITTEXT        1052,264,90,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1053,314,90,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1054,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,412,90,16,
+                    12
+    EDITTEXT        1055,264,117,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1056,314,117,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1057,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,412,117,16,
+                    12
+    EDITTEXT        1058,264,130,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1059,314,130,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1060,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,412,130,16,
+                    12
+    EDITTEXT        1061,264,143,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1062,314,143,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1063,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,412,143,16,
+                    12
+    EDITTEXT        1064,264,156,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1065,314,156,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1066,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,412,156,16,
+                    12
+    EDITTEXT        1067,264,169,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1068,314,169,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1069,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,412,169,16,
+                    12
+    PUSHBUTTON      "&Neu",1070,197,197,50,14
+    PUSHBUTTON      "&Löschen",1071,256,197,50,14
+    PUSHBUTTON      "&Weiter",1072,315,197,50,14
+    PUSHBUTTON      "&Zurück",1073,374,197,50,14
+    LTEXT           "Dachflächen",-1,7,7,98,10
+    RTEXT           "D1:",1082,7,40,33,10
+    LTEXT           "Fläche [m²]",-1,49,25,37,9
+    LTEXT           "Abflußbeiwert",-1,99,25,44,9
+    LTEXT           "Anschluß",-1,184,25,30,9
+    LTEXT           "Fläche [m²]",-1,266,25,37,9
+    LTEXT           "Abflußbeiwert",-1,316,25,44,9
+    LTEXT           "Anschluß",-1,398,25,30,9
+    RTEXT           "D2:",1083,7,53,33,10
+    RTEXT           "D3:",1084,7,66,33,10
+    RTEXT           "D4:",1085,7,79,33,10
+    RTEXT           "D5:",1086,7,92,33,10
+    RTEXT           "D6:",1087,7,119,33,10
+    RTEXT           "D7:",1088,7,132,33,10
+    RTEXT           "D8:",1089,7,145,33,10
+    RTEXT           "D9:",1090,7,158,33,10
+    RTEXT           "D10:",1091,7,171,33,10
+    RTEXT           "D11:",1092,225,40,33,10
+    RTEXT           "D12:",1093,225,53,33,10
+    RTEXT           "D13:",1094,225,66,33,10
+    RTEXT           "D14:",1095,225,79,33,10
+    RTEXT           "D15:",1096,225,92,33,10
+    RTEXT           "D16:",1097,225,119,33,10
+    RTEXT           "D17:",1098,225,132,33,10
+    RTEXT           "D18:",1099,225,145,33,10
+    RTEXT           "D19:",1100,225,158,33,10
+    RTEXT           "D20:",1101,225,171,33,10
+END
+
+IDD_EDITPAGE4 DIALOG DISCARDABLE  0, 0, 435, 218
+STYLE WS_CHILD | WS_VISIBLE | WS_DISABLED | WS_CAPTION
+CAPTION "Ent- und Versorgung"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "Anzahl der Wohneinheiten auf dem Grundstück:",-1,180,9,
+                    163,10
+    EDITTEXT        1000,350,7,78,12,ES_AUTOHSCROLL
+    EDITTEXT        1001,159,139,261,53,ES_MULTILINE | WS_VSCROLL
+    EDITTEXT        1014,350,19,78,12,ES_AUTOHSCROLL
+    RTEXT           "Anzahl der Einwohner:",-1,180,21,163,10
+    EDITTEXT        1015,350,32,78,12,ES_AUTOHSCROLL
+    RTEXT           "Anzahl der Einwohnergleichwerte aus Gewerbe:",-1,180,34,
+                    163,10
+    CONTROL         "Zentrale Entsorgung",IDC_CHECK1,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,30,88,10
+    CONTROL         "Dezentrale Entsorgung",IDC_CHECK2,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,53,88,10
+    CONTROL         "Sammelgrube",IDC_CHECK3,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,26,65,59,10
+    EDITTEXT        1005,155,63,75,12,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHECK4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,263,
+                    63,16,12
+    CONTROL         "Kleinkläranlage",IDC_CHECK5,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,26,77,64,10
+    EDITTEXT        1006,155,75,75,12,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHECK8,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,263,
+                    75,16,12
+    CONTROL         "Überlauf in Vorflut/Versickerung",IDC_CHECK6,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,26,89,117,10
+    CONTROL         "Überlauf in Kanalnetz",IDC_CHECK7,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,26,103,83,10
+    CONTROL         "Zentral",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON,26,140,
+                    38,10
+    CONTROL         "Eigenversorgung",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON,
+                    26,154,69,10
+    CONTROL         "Zentral und Eigenversorgung",IDC_RADIO5,"Button",
+                    BS_AUTORADIOBUTTON,26,168,107,10
+    LTEXT           "Sonstige Angaben:",-1,161,127,91,10
+    CONTROL         "",-1,"Static",SS_GRAYFRAME | SS_SUNKEN,7,48,421,68
+    CONTROL         "",-1,"Static",SS_GRAYFRAME | SS_SUNKEN,7,123,142,88
+    LTEXT           "Frischwasserversorgung:",-1,13,127,91,10
+    CONTROL         "",-1,"Static",SS_GRAYFRAME | SS_SUNKEN,7,26,127,18
+    LTEXT           "Fassungsvermögen [m³]",-1,155,55,76,8
+    LTEXT           "Nach den allg. anerkannten Regeln der Technik",-1,251,
+                    55,154,8
+    CONTROL         "",-1,"Static",SS_GRAYFRAME | SS_SUNKEN,154,123,274,88
+    CONTROL         "Anschluß Niederschlagsentwässerung möglich",1045,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,159,198,165,9
+END
+
+IDD_EDITPAGE3 DIALOG DISCARDABLE  0, 0, 435, 218
+STYLE WS_CHILD | WS_VISIBLE | WS_DISABLED | WS_CAPTION
+CAPTION "Versiegelte Flächen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        1010,46,38,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1011,96,38,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1037,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,194,38,16,
+                    12
+    EDITTEXT        1012,46,51,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1013,96,51,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1038,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,194,51,16,
+                    12
+    EDITTEXT        1014,46,64,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1015,96,64,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1039,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,194,64,16,
+                    12
+    EDITTEXT        1016,46,77,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1017,96,77,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1040,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,194,77,16,
+                    12
+    EDITTEXT        1018,46,90,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1019,96,90,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1041,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,194,90,16,
+                    12
+    EDITTEXT        1020,46,117,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1021,96,117,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1042,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,194,117,16,
+                    12
+    EDITTEXT        1022,46,130,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1023,96,130,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1043,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,194,130,16,
+                    12
+    EDITTEXT        1024,46,143,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1025,96,143,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1044,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,194,143,16,
+                    12
+    EDITTEXT        1026,46,156,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1027,96,156,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1045,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,194,156,16,
+                    12
+    EDITTEXT        1028,46,169,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1029,96,169,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1046,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,194,169,16,
+                    12
+    EDITTEXT        1030,264,38,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1031,314,38,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1047,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,412,38,16,
+                    12
+    EDITTEXT        1032,264,51,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1033,314,51,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1048,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,412,51,16,
+                    12
+    EDITTEXT        1034,264,64,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1035,314,64,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1049,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,412,64,16,
+                    12
+    EDITTEXT        1036,264,77,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1050,314,77,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1051,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,412,77,16,
+                    12
+    EDITTEXT        1052,264,90,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1053,314,90,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1054,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,412,90,16,
+                    12
+    EDITTEXT        1055,264,117,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1056,314,117,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1057,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,412,117,16,
+                    12
+    EDITTEXT        1058,264,130,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1059,314,130,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1060,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,412,130,16,
+                    12
+    EDITTEXT        1061,264,143,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1062,314,143,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1063,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,412,143,16,
+                    12
+    EDITTEXT        1064,264,156,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1065,314,156,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1066,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,412,156,16,
+                    12
+    EDITTEXT        1067,264,169,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1068,314,169,79,12,ES_AUTOHSCROLL
+    CONTROL         "",1069,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,412,169,16,
+                    12
+    PUSHBUTTON      "&Neu",1070,197,197,50,14
+    PUSHBUTTON      "&Löschen",1071,256,197,50,14
+    PUSHBUTTON      "&Weiter",1072,315,197,50,14
+    PUSHBUTTON      "&Zurück",1073,374,197,50,14
+    LTEXT           "Versiegelte Flächen",-1,7,7,98,10
+    RTEXT           "H1:",1082,7,40,33,10
+    LTEXT           "Fläche [m²]",-1,49,25,37,9
+    LTEXT           "Abflußbeiwert",-1,99,25,44,9
+    LTEXT           "Anschluß",-1,184,25,30,9
+    LTEXT           "Fläche [m²]",-1,266,25,37,9
+    LTEXT           "Abflußbeiwert",-1,316,25,44,9
+    LTEXT           "Anschluß",-1,398,25,30,9
+    RTEXT           "H2:",1083,7,53,33,10
+    RTEXT           "H3:",1084,7,66,33,10
+    RTEXT           "H4:",1085,7,79,33,10
+    RTEXT           "H5:",1086,7,92,33,10
+    RTEXT           "H6:",1087,7,119,33,10
+    RTEXT           "H7:",1088,7,132,33,10
+    RTEXT           "H8:",1089,7,145,33,10
+    RTEXT           "H9:",1090,7,158,33,10
+    RTEXT           "H10:",1091,7,171,33,10
+    RTEXT           "H11:",1092,225,40,33,10
+    RTEXT           "H12:",1093,225,53,33,10
+    RTEXT           "H13:",1094,225,66,33,10
+    RTEXT           "H14:",1095,225,79,33,10
+    RTEXT           "H15:",1096,225,92,33,10
+    RTEXT           "H16:",1097,225,119,33,10
+    RTEXT           "H17:",1098,225,132,33,10
+    RTEXT           "H18:",1099,225,145,33,10
+    RTEXT           "H19:",1100,225,158,33,10
+    RTEXT           "H20:",1101,225,171,20,8
+END
+
+IDD_EDITPAGE5 DIALOG DISCARDABLE  0, 0, 435, 218
+STYLE WS_CHILD | WS_VISIBLE | WS_DISABLED | WS_CAPTION
+CAPTION "Gebäude"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Gebäude",-1,7,7,98,10
+    LTEXT           "Grundfläche [m²]",-1,72,25,59,9
+    LTEXT           "Vollgeschoßzahl / Wohnbebauung",-1,158,25,113,9
+    LTEXT           "Gebäudehöhe / Gewerbe",-1,279,25,89,9
+    LTEXT           "Veranlagbar",-1,377,25,44,9
+    RTEXT           "Gebäude 1:",1103,7,40,50,12
+    EDITTEXT        1113,70,38,76,12,ES_AUTOHSCROLL
+    EDITTEXT        1123,156,38,111,12,ES_AUTOHSCROLL
+    EDITTEXT        1133,277,38,82,12,ES_AUTOHSCROLL
+    CONTROL         "",1140,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,391,38,37,
+                    12
+    RTEXT           "Gebäude 2:",1104,7,52,50,12
+    EDITTEXT        1114,70,50,76,12,ES_AUTOHSCROLL
+    EDITTEXT        1124,156,50,111,12,ES_AUTOHSCROLL
+    EDITTEXT        1134,277,50,82,12,ES_AUTOHSCROLL
+    CONTROL         "",1141,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,391,50,37,
+                    12
+    RTEXT           "Gebäude 3:",1105,7,64,50,12
+    EDITTEXT        1115,70,62,76,12,ES_AUTOHSCROLL
+    EDITTEXT        1125,156,62,111,12,ES_AUTOHSCROLL
+    EDITTEXT        1135,277,62,82,12,ES_AUTOHSCROLL
+    CONTROL         "",1142,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,391,62,37,
+                    12
+    RTEXT           "Gebäude 4:",1106,7,76,50,12
+    EDITTEXT        1116,70,74,76,12,ES_AUTOHSCROLL
+    EDITTEXT        1126,156,74,111,12,ES_AUTOHSCROLL
+    EDITTEXT        1136,277,74,82,12,ES_AUTOHSCROLL
+    CONTROL         "",1050,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,391,74,37,
+                    12
+    RTEXT           "Gebäude 5:",1107,7,88,50,12
+    EDITTEXT        1117,70,86,76,12,ES_AUTOHSCROLL
+    EDITTEXT        1127,156,86,111,12,ES_AUTOHSCROLL
+    EDITTEXT        1137,277,86,82,12,ES_AUTOHSCROLL
+    CONTROL         "",1143,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,391,86,37,
+                    12
+    RTEXT           "Gebäude 6:",1108,7,113,50,12
+    EDITTEXT        1118,70,111,76,12,ES_AUTOHSCROLL
+    EDITTEXT        1128,156,111,111,12,ES_AUTOHSCROLL
+    EDITTEXT        1138,277,111,82,12,ES_AUTOHSCROLL
+    CONTROL         "",1052,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,391,111,37,
+                    12
+    RTEXT           "Gebäude 7:",1109,7,125,50,12
+    EDITTEXT        1119,70,123,76,12,ES_AUTOHSCROLL
+    EDITTEXT        1129,156,123,111,12,ES_AUTOHSCROLL
+    EDITTEXT        1139,277,123,82,12,ES_AUTOHSCROLL
+    CONTROL         "",1053,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,391,123,37,
+                    12
+    RTEXT           "Gebäude 8:",1110,7,137,50,12
+    EDITTEXT        1120,70,135,76,12,ES_AUTOHSCROLL
+    EDITTEXT        1130,156,135,111,12,ES_AUTOHSCROLL
+    EDITTEXT        1037,277,135,82,12,ES_AUTOHSCROLL
+    CONTROL         "",1144,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,391,135,37,
+                    12
+    RTEXT           "Gebäude 9:",1111,7,149,50,12
+    EDITTEXT        1121,70,147,76,12,ES_AUTOHSCROLL
+    EDITTEXT        1131,156,147,111,12,ES_AUTOHSCROLL
+    EDITTEXT        1038,277,147,82,12,ES_AUTOHSCROLL
+    CONTROL         "",1055,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,391,147,37,
+                    12
+    RTEXT           "Gebäude 10:",1112,7,161,50,12
+    EDITTEXT        1122,70,159,76,12,ES_AUTOHSCROLL
+    EDITTEXT        1132,156,159,111,12,ES_AUTOHSCROLL
+    EDITTEXT        1039,277,159,82,12,ES_AUTOHSCROLL
+    CONTROL         "",1056,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,391,159,37,
+                    12
+    PUSHBUTTON      "&Neu",1070,197,197,50,14
+    PUSHBUTTON      "&Löschen",1071,256,197,50,14
+    PUSHBUTTON      "&Weiter",1072,315,197,50,14
+    PUSHBUTTON      "&Zurück",1073,374,197,50,14
+END
+
+IDD_EDITPAGE6 DIALOG DISCARDABLE  0, 0, 435, 218
+STYLE WS_CHILD | WS_VISIBLE | WS_DISABLED | WS_CAPTION
+CAPTION "Bemerkungen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        1001,7,7,421,204,ES_MULTILINE | WS_VSCROLL
+END
+
+IDD_ABOUT DIALOGEX 0, 0, 295, 138
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "GBM"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,238,7,50,14
+    CONTROL         137,IDC_STATIC,"Static",SS_BITMAP,7,7,71,26
+    LTEXT           "GeoMedia® Erweiterung",IDC_TEXT0,99,7,110,9
+    LTEXT           "(c) 1997, 1998 uve FEZ Potsdam GmbH",IDC_STATIC,99,19,
+                    110,9
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,99,49,158,1
+    RTEXT           "Grundstücke:",IDC_STATIC,99,60,86,10
+    RTEXT           "Dachteilflächen:",IDC_STATIC,99,86,86,10
+    RTEXT           "Versiegelte Flächen:",IDC_STATIC,99,99,86,10
+    RTEXT           "Gebäude:",IDC_STATIC,99,73,86,10
+    RTEXT           "Straßen:",IDC_STATIC,131,120,54,10,NOT WS_VISIBLE
+    RTEXT           "",IDC_ZAHLGS,200,60,42,10,0,WS_EX_STATICEDGE
+    RTEXT           "",IDC_ZAHLDT,200,86,42,10,0,WS_EX_STATICEDGE
+    RTEXT           "",IDC_ZAHLVF,200,99,42,10,0,WS_EX_STATICEDGE
+    RTEXT           "",IDC_ZAHLGEM,200,73,42,10,0,WS_EX_STATICEDGE
+    RTEXT           "",IDC_ZAHLSTR,200,120,42,10,NOT WS_VISIBLE,
+                    WS_EX_STATICEDGE
+    LTEXT           "Version 2.00.46 (#AD980617)",IDC_STATIC,99,31,110,9
+    CONTROL         "Projektmanager verwenden",IDC_MANAGER,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,121,103,10
+END
+
+IDD_SUCH1 DIALOG DISCARDABLE  0, 0, 186, 95
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Suche Identifikationsnummer"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Identifikationsnummer:",-1,7,22,80,10
+    EDITTEXT        1000,7,36,172,14,ES_AUTOHSCROLL
+END
+
+IDD_SUCH2 DIALOG DISCARDABLE  0, 0, 186, 95
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Suche Straße"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Straße:",-1,7,22,80,10
+    COMBOBOX        1001,7,37,172,68,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_SUCH3 DIALOG DISCARDABLE  0, 0, 186, 95
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Suche Flur/Flurstücke"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Flur / Flurstück:",-1,7,22,80,10
+    EDITTEXT        1000,7,36,49,14,ES_AUTOHSCROLL
+    EDITTEXT        1001,61,36,118,14,ES_AUTOHSCROLL
+END
+
+IDD_SUCH4 DIALOG DISCARDABLE  0, 0, 186, 95
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Suche Eigentümer"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Eigentümer:",-1,7,22,80,10
+    EDITTEXT        1000,7,36,172,14,ES_AUTOHSCROLL
+END
+
+IDD_SUCH0 DIALOG DISCARDABLE  0, 0, 186, 95
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Suchmodus"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Identifikationsnummer",1201,"Button",BS_AUTORADIOBUTTON,
+                    23,23,84,10
+    CONTROL         "Straße",1204,"Button",BS_AUTORADIOBUTTON,23,36,84,10
+    CONTROL         "Flur / Flurstück",1205,"Button",BS_AUTORADIOBUTTON,23,
+                    49,84,10
+    CONTROL         "Eigentümer",1206,"Button",BS_AUTORADIOBUTTON,23,62,84,
+                    10
+    LTEXT           "Suchen nach:",-1,7,7,98,11
+END
+
+IDD_SUCHRESULT DIALOG DISCARDABLE  0, 0, 198, 114
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Ergebnis der Suche"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Zeigen",1,141,7,50,14
+    RTEXT           "Einträge in der Datenbank",-1,7,47,147,8
+    RTEXT           "Digitalisierte Grundstücke in diesem Plan",-1,7,59,147,
+                    8
+    RTEXT           "12.345 ",1073,163,47,28,9,SS_SUNKEN
+    RTEXT           "12.345 ",1074,163,59,28,9,SS_SUNKEN
+    LTEXT           "Achtung! Nicht alle in der Datenbank gefundenen Grundstücke sind im aktuellen Plan enthalten!",
+                    1075,7,76,184,31,SS_SUNKEN
+    PUSHBUTTON      "Abbrechen",2,141,24,50,14
+END
+
+IDD_GS_TEILEN DIALOG DISCARDABLE  0, 0, 218, 95
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Grundstück teilen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Teilen",1,161,7,50,14
+    PUSHBUTTON      "Abbrechen",2,161,24,50,14
+    LTEXT           "Geteiltes Grundstück:",-1,7,7,99,9
+    RTEXT           "9",1076,18,18,25,10,SS_SUNKEN
+    LTEXT           "J001400008",1077,51,18,45,10,SS_SUNKEN
+    LTEXT           "813",1078,106,18,26,10,SS_SUNKEN
+    LTEXT           "Entstandenes Grundstück 1:",-1,7,38,99,9
+    RTEXT           "9",1079,18,49,25,10,SS_SUNKEN
+    LTEXT           "Entstandenes Grundstück 2:",-1,7,67,99,9
+    RTEXT           "9",1082,18,78,25,10,SS_SUNKEN
+    EDITTEXT        1080,51,48,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1085,51,77,45,12,ES_AUTOHSCROLL
+    EDITTEXT        1081,106,48,26,12,ES_AUTOHSCROLL
+    EDITTEXT        1086,106,77,26,12,ES_AUTOHSCROLL
+END
+
+IDD_DELETE_ITEM DIALOG DISCARDABLE  0, 0, 186, 159
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Löschen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Löschen",1,129,7,50,14
+    PUSHBUTTON      "Abbrechen",2,129,24,50,14
+    LTEXT           "Dachteilflächen löschen",1023,7,7,104,10
+    LISTBOX         1004,7,17,109,135,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    LBS_EXTENDEDSEL | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_PREVIEW DIALOG DISCARDABLE  0, 0, 422, 273
+STYLE WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Druckvorschau"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Schließen",1,370,2,50,14
+    CONTROL         "",1145,"Static",SS_BLACKFRAME | SS_SUNKEN,2,19,418,235
+    COMBOBOX        1001,2,2,149,96,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "Zwei Seiten",1150,173,2,50,12
+    LTEXT           "Seite",1151,2,259,227,11
+    PUSHBUTTON      "Optionen ...",1303,314,2,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      "Button1",1304,241,2,20,14,BS_BITMAP | NOT WS_VISIBLE
+    PUSHBUTTON      "Button2",1305,264,2,20,14,BS_BITMAP | NOT WS_VISIBLE
+END
+
+IDD_PRINT_ANLAGE DIALOG DISCARDABLE  0, 0, 261, 132
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Drucken von Anlagen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",1,204,7,50,14
+    PUSHBUTTON      "Abbrechen",2,204,24,50,14
+    COMBOBOX        1001,7,22,123,64,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "Seite 1",1201,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,
+                    13,68,71,9
+    CONTROL         "Seite 2",1202,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,
+                    13,81,71,9
+    CONTROL         "Seite 3",1203,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,
+                    13,94,71,9
+    CONTROL         "Seiten 1 bis 3",1204,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,13,107,71,9
+    CONTROL         "zum Beitragsbescheid",1205,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,93,68,161,9
+    CONTROL         "zum Niederschlagswassergebührenbescheid",1206,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,93,81,161,9
+    CONTROL         "- öffentliche Flächen -",1208,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,93,94,161,9
+    CONTROL         "geordnet nach Anlagen",1037,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,145,109,109,10
+    LTEXT           "Grundstück",1015,7,7,172,10,SS_SUNKEN
+    LTEXT           "Erfassungsblätter:",-1,7,55,65,10
+    LTEXT           "Anlagen:",-1,87,55,65,10
+    CONTROL         "Anlagen 1 und 2",1207,"Button",BS_AUTORADIOBUTTON | NOT 
+                    WS_VISIBLE,68,116,71,9
+END
+
+IDD_MANIPRECT DIALOG DISCARDABLE  0, 0, 264, 263
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Darstellung Karte"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",1,207,7,50,14
+    PUSHBUTTON      "Abbrechen",2,207,24,50,14
+    LTEXT           "Frame",-1,7,7,20,8
+    LTEXT           "ClipBox",-1,7,95,24,8
+    EDITTEXT        1000,44,20,40,14,ES_AUTOHSCROLL
+    EDITTEXT        1001,44,35,40,14,ES_AUTOHSCROLL
+    EDITTEXT        1002,44,50,40,14,ES_AUTOHSCROLL
+    EDITTEXT        1003,44,65,40,14,ES_AUTOHSCROLL
+    LTEXT           "Rectangle",-1,113,7,34,8
+    LTEXT           "left",-1,15,25,22,8
+    LTEXT           "top",-1,15,39,22,8
+    LTEXT           "right",-1,15,53,22,8
+    LTEXT           "bottom",-1,15,67,22,8
+    EDITTEXT        1004,146,20,40,14,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1005,146,35,40,14,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1006,146,50,40,14,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1007,146,65,40,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "left",-1,117,25,22,8
+    LTEXT           "top",-1,117,39,22,8
+    LTEXT           "right",-1,117,53,22,8
+    LTEXT           "bottom",-1,117,67,22,8
+    EDITTEXT        1008,44,107,40,14,ES_AUTOHSCROLL
+    EDITTEXT        1009,44,122,40,14,ES_AUTOHSCROLL
+    EDITTEXT        1010,44,137,40,14,ES_AUTOHSCROLL
+    EDITTEXT        1011,44,152,40,14,ES_AUTOHSCROLL
+    LTEXT           "left",-1,15,112,22,8
+    LTEXT           "top",-1,15,126,22,8
+    LTEXT           "right",-1,15,140,22,8
+    LTEXT           "bottom",-1,15,154,22,8
+    LTEXT           "Page",-1,113,95,18,8
+    EDITTEXT        1012,146,107,40,14,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1013,146,122,40,14,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1014,146,137,40,14,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1015,146,152,40,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "left",-1,117,112,22,8
+    LTEXT           "top",-1,117,126,22,8
+    LTEXT           "right",-1,117,140,22,8
+    LTEXT           "bottom",-1,117,154,22,8
+    LTEXT           "Übernehmen",-1,7,177,42,8
+    PUSHBUTTON      "Page",1070,7,190,50,14
+    PUSHBUTTON      "Rectangle",1071,7,207,50,14
+    PUSHBUTTON      "Frame",1072,7,225,50,14
+    PUSHBUTTON      "ClipBox",1073,7,242,50,14
+    LTEXT           "Tauschen",-1,89,177,33,8
+    PUSHBUTTON      "left <=> right",1301,89,190,57,14
+    PUSHBUTTON      "top <=> bottom",1302,89,207,57,14
+    CONTROL         "MetaFile nutzen",1037,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,191,246,66,10
+END
+
+IDD_VIEWPORTDATA DIALOG DISCARDABLE  0, 0, 173, 190
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Viewport Data"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",1,116,7,50,14
+    LTEXT           "Viewport (alt)",-1,7,7,42,8
+    LTEXT           "Viewport (neu)",-1,7,100,46,8
+    LTEXT           "Org.x",-1,20,122,18,8
+    LTEXT           "Org.y",-1,20,136,18,8
+    LTEXT           "Ext.cx",-1,20,154,20,8
+    LTEXT           "Ext.cy",-1,20,169,20,8
+    EDITTEXT        1004,58,118,40,14,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1005,58,132,40,14,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1006,58,150,40,14,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1007,58,165,40,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Org.x",-1,18,23,18,8
+    LTEXT           "Org.y",-1,18,37,18,8
+    LTEXT           "Ext.cx",-1,18,55,20,8
+    LTEXT           "Ext.cy",-1,18,70,20,8
+    EDITTEXT        1000,56,19,40,14,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1001,56,33,40,14,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1002,56,51,40,14,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1003,56,66,40,14,ES_AUTOHSCROLL | ES_READONLY
+END
+
+IDD_INTEGRIEREN DIALOG DISCARDABLE  0, 0, 279, 65
+STYLE WS_CHILD | WS_CAPTION | WS_SYSMENU
+CAPTION "Projekt integrieren"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Bezeichnung:",-1,7,9,46,10
+    DEFPUSHBUTTON   "OK",1,222,7,50,14
+    PUSHBUTTON      "Abbrechen",2,222,24,50,14
+    EDITTEXT        1000,57,7,109,14,ES_AUTOHSCROLL
+    LTEXT           "Pfad:",-1,7,36,20,10
+    LTEXT           "c:\\Programme\\TRiAS\\Projekte\\GBM\\Bodeniederung\\Etgersleben\\El_4.RIS",
+                    1320,7,47,265,11,SS_SUNKEN
+END
+
+IDD_ABGLEICH1 DIALOG DISCARDABLE  0, 0, 267, 102
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Ergebnis der Flächenberechnung"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Übernehmen",1,210,7,50,14
+    PUSHBUTTON      "Abbrechen",2,210,24,50,14
+    RTEXT           "Untersuchte Grundstücke:",-1,7,20,106,10
+    RTEXT           "Ermittelte Gebäude:",-1,7,42,106,10
+    RTEXT           "Ermittelte Dachteilflächen:",-1,7,57,106,10
+    RTEXT           "Ermittelte versiegelte Flächen:",-1,7,72,106,10
+    EDITTEXT        1000,127,18,40,14,ES_RIGHT | ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1001,127,40,40,14,ES_RIGHT | ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1002,127,55,40,14,ES_RIGHT | ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1003,127,70,40,14,ES_RIGHT | ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_READONLY
+END
+
+IDD_CALCULATOR DIALOG DISCARDABLE  0, 0, 338, 231
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Beitragsberechnung"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Schließen",1,281,7,50,14
+    PUSHBUTTON      "Berechnen",1070,281,24,50,14,NOT WS_VISIBLE
+    RTEXT           "NFP1_KAT",IDC_STATIC,13,10,41,9
+    RTEXT           "NFP1_GEFS",IDC_STATIC,13,20,41,9
+    RTEXT           "Flurstück",IDC_STATIC,13,31,41,9
+    RTEXT           "Summe GFL",IDC_STATIC,13,42,41,9
+    RTEXT           "NFP1_GEF",IDC_STATIC,13,59,41,9
+    RTEXT           "NFP1_AGGS",IDC_STATIC,13,70,41,9
+    RTEXT           "NFP3_AWE",IDC_STATIC,13,81,41,9
+    RTEXT           "NFP1_TIEF",IDC_STATIC,13,92,41,9
+    RTEXT           "Max VGZ",IDC_STATIC,13,108,41,9
+    RTEXT           "GFZ + ...",IDC_STATIC,13,119,41,9
+    RTEXT           "NFP1_VOLU",IDC_STATIC,13,130,41,9
+    RTEXT           "NFP1_BAR",IDC_STATIC,13,147,41,9
+    RTEXT           "NFP1_BFL",IDC_STATIC,13,160,41,9
+    RTEXT           "9.999,99",IDC_TEXT1,62,10,63,9,SS_SUNKEN
+    RTEXT           "9.999,99",IDC_TEXT2,62,20,63,9,SS_SUNKEN
+    RTEXT           "9.999,99",IDC_TEXT3,62,31,63,9,SS_SUNKEN
+    RTEXT           "9.999,99",IDC_TEXT4,62,42,63,9,SS_SUNKEN
+    RTEXT           "9.999,99",IDC_TEXT5,62,59,63,9,SS_SUNKEN
+    RTEXT           "9.999,99",IDC_TEXT6,62,70,63,9,SS_SUNKEN
+    RTEXT           "9.999,99",IDC_TEXT7,62,81,63,9,SS_SUNKEN
+    RTEXT           "9.999,99",IDC_TEXT8,62,92,63,9,SS_SUNKEN
+    RTEXT           "9.999,99",IDC_TEXT9,62,108,63,9,SS_SUNKEN
+    RTEXT           "9.999,99",IDC_TEXT10,62,119,63,9,SS_SUNKEN
+    RTEXT           "9.999,99",IDC_TEXT11,62,130,63,9,SS_SUNKEN
+    RTEXT           "9.999,99",IDC_TEXT12,62,147,63,9,SS_SUNKEN
+    RTEXT           "9.999,99",IDC_TEXT13,62,160,63,9,SS_SUNKEN
+    RTEXT           "BER_AGG",IDC_STATIC,142,59,47,9
+    RTEXT           "BER_GEF",IDC_STATIC,142,12,47,9
+    RTEXT           "BER_BDM",IDC_STATIC,142,147,47,9
+    RTEXT           "BER_BFL",IDC_STATIC,142,108,47,9
+    RTEXT           "BER_VOLP",IDC_STATIC,142,178,47,9
+    RTEXT           "BER_VOLT",IDC_STATIC,142,191,47,9
+    RTEXT           "BER_BSA",IDC_STATIC,142,204,47,9
+    RTEXT           "9.999,99",IDC_TEXT20,197,12,63,9,SS_SUNKEN
+    RTEXT           "9.999,99",IDC_TEXT21,197,59,63,9,SS_SUNKEN
+    RTEXT           "9.999,99",IDC_TEXT22,197,108,63,9,SS_SUNKEN
+    RTEXT           "9.999,99",IDC_TEXT23,197,147,63,9,SS_SUNKEN
+    RTEXT           "9.999,99",IDC_TEXT24,197,178,63,9,SS_SUNKEN
+    RTEXT           "9.999,99",IDC_TEXT25,197,191,63,9,SS_SUNKEN
+    RTEXT           "9.999,99",IDC_TEXT26,197,204,63,9,SS_SUNKEN
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,7,7,125,
+                    48
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,7,56,125,
+                    48
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,7,105,
+                    125,37
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,7,144,
+                    125,29
+END
+
+IDD_PRINT_ANLAGE1 DIALOG DISCARDABLE  0, 0, 261, 132
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Drucken von Anlagen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",1,204,7,50,14
+    PUSHBUTTON      "Abbrechen",2,204,24,50,14
+    COMBOBOX        1001,7,22,123,64,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Grundstück",1015,7,7,172,10,SS_SUNKEN
+    LTEXT           "Dokumente:",-1,7,44,65,10
+    LTEXT           "Seiten:",-1,121,44,65,10
+    LISTBOX         1004,7,55,104,70,LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         1005,119,55,104,70,LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_VORBEREIT_TB DIALOG DISCARDABLE  0, 0, 207, 86
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Vorbereitung Tiefenbegrenzung"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",1,150,7,50,14
+    PUSHBUTTON      "Abbrechen",2,150,24,50,14
+    CONTROL         "anrechenbare Fläche speichern",1037,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,39,116,10
+    CONTROL         "Gesamtfläche berechnen",1038,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,54,94,9
+    CONTROL         "Global ausführen",1039,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,68,102,10
+    LTEXT           "Tiefenbegrenzung:",-1,7,9,61,10
+    EDITTEXT        1000,71,7,40,14,ES_AUTOHSCROLL
+    LTEXT           "m",-1,116,9,8,8
+END
+
+IDD_INTERDLG DIALOG DISCARDABLE  0, 0, 279, 65
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Projekt integrieren"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",1,222,7,50,14
+    PUSHBUTTON      "Abbrechen",2,222,24,50,14
+    LTEXT           "Bezeichnung:",-1,7,9,46,10
+    EDITTEXT        1000,57,7,109,14,ES_AUTOHSCROLL
+    LTEXT           "Pfad:",-1,7,36,20,10
+    LTEXT           "c:\\Programme\\TRiAS\\Projekte\\GBM\\Bodeniederung\\Etgersleben\\El_4.RIS",
+                    1320,7,47,265,11,SS_SUNKEN
+END
+
+IDD_EDIT_IDE DIALOG DISCARDABLE  0, 0, 241, 130
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Identifikationsnummer bearbeiten"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",1,183,7,50,14
+    PUSHBUTTON      "Abbrechen",2,183,24,50,14
+    LTEXT           "Alte Identifikationsnummer:",-1,7,7,89,9
+    LTEXT           "Neue Identifikationsnummer:",-1,7,37,89,9
+    EDITTEXT        1000,16,16,136,14,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        1001,16,47,136,14,ES_AUTOHSCROLL
+    CONTROL         "am Grundstück und in der Sachdatenbank",1201,"Button",
+                    BS_AUTORADIOBUTTON,16,83,150,10
+    CONTROL         "nur am Grundstück",1202,"Button",BS_AUTORADIOBUTTON,16,
+                    95,76,10
+    CONTROL         "nur in der Sachdatenbank",1203,"Button",
+                    BS_AUTORADIOBUTTON,16,107,98,10
+    LTEXT           "Identifikationsnummer ändern",-1,7,71,100,9
+END
+
+IDD_EXTRAS DIALOG DISCARDABLE  0, 0, 281, 167
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Zusätzliche Funktionen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Ausführen",IDOK,224,7,50,14
+    PUSHBUTTON      "Abbrechen",IDCANCEL,224,24,50,14
+    LTEXT           "Wählen Sie aus der Liste der zusätzlich installierten Funktionen eine aus:",
+                    IDC_STATIC,7,10,136,19
+    LISTBOX         IDC_LIST1,7,34,201,126,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_VISU DIALOG DISCARDABLE  0, 0, 216, 79
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Visualisierung"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Ausführen",IDOK,159,7,50,14
+    PUSHBUTTON      "Abbrechen",IDCANCEL,159,24,50,14
+    PUSHBUTTON      "Darstellungsparameter ...",IDC_BUTTON1,7,7,98,14,
+                    WS_DISABLED
+    LTEXT           "Art der Visualisierung:",IDC_STATIC,7,35,71,10
+    COMBOBOX        IDC_COMBO1,7,47,202,69,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+END
+
+IDD_EDITPAGE7 DIALOG DISCARDABLE  0, 0, 435, 218
+STYLE WS_CHILD | WS_VISIBLE | WS_DISABLED | WS_CAPTION
+CAPTION "Eigentümer"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "&Neu",IDC_BUTTON1,197,197,50,14
+    PUSHBUTTON      "&Löschen",IDC_BUTTON2,256,197,50,14
+    PUSHBUTTON      "&Weiter",IDC_BUTTON3,315,197,50,14
+    PUSHBUTTON      "&Zurück",IDC_BUTTON4,374,197,50,14
+    LTEXT           "Name",-1,72,20,59,9
+    LTEXT           "Straße / Hausnummer",-1,158,20,113,9
+    LTEXT           "PLZ",-1,158,28,25,9
+    LTEXT           "Heranziehung",-1,377,20,44,9
+    RTEXT           "Eigentümer 1:",IDC_ETXT1,12,46,50,12
+    EDITTEXT        IDC_NTXT1,70,44,76,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_STXT1,156,44,111,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PTXT1,156,58,40,12,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,380,44,
+                    37,12
+    CONTROL         "Miteigentümer",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON,7,
+                    7,60,10
+    CONTROL         "Wohnungs- bzw. Teileigentümer",IDC_RADIO2,"Button",
+                    BS_AUTORADIOBUTTON,83,7,117,10
+    EDITTEXT        IDC_EDIT1,201,58,66,12,ES_AUTOHSCROLL
+    LTEXT           "Ort",-1,203,28,25,9
+    LTEXT           "Eigentumsanteil",-1,279,20,69,9
+    EDITTEXT        IDC_EDIT2,278,58,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT3,322,58,40,12,ES_AUTOHSCROLL
+    LTEXT           "Zähler / Nenner",-1,280,28,69,9
+    LTEXT           "",IDC_TEXT_ANZAHL,7,201,166,10
+    EDITTEXT        IDC_EDIT4,278,44,84,12,ES_AUTOHSCROLL | ES_READONLY
+    RTEXT           "Eigentümer 2:",IDC_ETXT2,13,84,50,12
+    EDITTEXT        IDC_NTXT2,70,82,76,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_STXT2,156,82,111,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PTXT2,156,96,40,12,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,380,82,
+                    37,12
+    EDITTEXT        IDC_EDIT5,202,96,66,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT6,278,96,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT7,322,96,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT8,278,82,84,12,ES_AUTOHSCROLL | ES_READONLY
+    RTEXT           "Eigentümer 3:",IDC_ETXT3,13,120,50,12
+    EDITTEXT        IDC_NTXT3,71,118,76,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_STXT3,157,118,111,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PTXT3,157,133,40,12,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHK3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,381,
+                    118,37,12
+    EDITTEXT        IDC_EDIT53,202,133,66,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT9,279,133,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT10,323,133,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT11,279,118,84,12,ES_AUTOHSCROLL | ES_READONLY
+    RTEXT           "Eigentümer 4:",IDC_ETXT4,13,158,50,12
+    EDITTEXT        IDC_NTXT4,71,156,76,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_STXT4,157,156,111,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PTXT4,157,170,40,12,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHK4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,381,
+                    156,37,12
+    EDITTEXT        IDC_EDIT12,202,170,66,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT13,279,170,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT14,323,170,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT15,279,156,84,12,ES_AUTOHSCROLL | ES_READONLY
+    CONTROL         "",IDC_FRAME4,"Static",SS_GRAYFRAME | SS_SUNKEN,7,152,
+                    415,35
+    CONTROL         "",IDC_FRAME3,"Static",SS_GRAYFRAME | SS_SUNKEN,7,115,
+                    415,35
+    CONTROL         "",IDC_FRAME2,"Static",SS_GRAYFRAME | SS_SUNKEN,7,78,415,
+                    35
+    CONTROL         "",IDC_FRAME1,"Static",SS_GRAYFRAME | SS_SUNKEN,7,41,415,
+                    35
+END
+
+IDD_GBMDATA1 DIALOG DISCARDABLE  0, 0, 212, 277
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "GBM"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Identifikationsnummern:",1023,7,35,88,10
+    LISTBOX         1004,7,45,198,78,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    LBS_EXTENDEDSEL | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Grundstücksfläche:",1153,60,127,71,10
+    LTEXT           "Beitragsfläche:",1154,60,139,71,10
+    LTEXT           "Beiträge:",1155,60,151,71,10
+    RTEXT           "999.999,99 m²",1005,135,128,66,10,SS_SUNKEN
+    RTEXT           "999.999,99 m²",1006,135,140,66,10,SS_SUNKEN
+    RTEXT           "999.999,99 DM",1007,135,152,66,10,SS_SUNKEN
+    LTEXT           "Identifikationsnummer:",1024,7,169,77,10
+    LTEXT           "Ort:",1025,7,181,77,10
+    LTEXT           "Straße:",1026,7,193,77,10
+    LTEXT           "Flur:",1027,7,205,77,10
+    LTEXT           "Flurstück(e):",1028,7,217,77,10
+    LTEXT           "Eigentümer:",1029,7,229,77,10
+    LTEXT           "123456",1008,93,170,112,10,SS_SUNKEN
+    LTEXT           "Musterhausen",1009,93,182,112,10,SS_SUNKEN
+    LTEXT           "Beispielstr. 13a",1010,93,194,112,10,SS_SUNKEN
+    LTEXT           "08/15",1011,93,206,112,10,SS_SUNKEN
+    LTEXT           "1, 2, 3, 12",1012,93,218,112,10,SS_SUNKEN
+    LTEXT           "Herr Mustermann",1013,93,230,112,10,SS_SUNKEN
+    CONTROL         137,1152,"Static",SS_BITMAP,7,7,146,31
+    CONTROL         "Suchen",1305,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
+                    WS_TABSTOP,7,257,38,13
+    CONTROL         "Bearbeiten",1306,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
+                    WS_TABSTOP,163,257,42,13
+    CONTROL         "Löschen",1322,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | 
+                    WS_TABSTOP,117,257,42,13
+    CONTROL         "Gedruckt",IDC_BGEDR,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,94,242,45,10
+    LTEXT           "Bescheid:",1030,7,241,77,10
+    CTEXT           "Fenster zu klein! Bitte Größe ändern.",IDC_MINSIZETEXT,
+                    66,42,79,36,SS_SUNKEN | NOT WS_VISIBLE
+END
+
+IDD_EDITVORLAGEN DIALOG DISCARDABLE  0, 0, 283, 142
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Bearbeiten der Druckvorlagen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Schließen",IDOK,226,7,50,14
+    LTEXT           "Vorlage:",IDC_STATIC,7,7,29,9
+    LISTBOX         IDC_LIST1,7,16,205,91,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Dateiname:",IDC_STATIC,7,112,39,9
+    EDITTEXT        IDC_EDIT1,7,122,206,12,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "Neu",IDC_NEU,226,42,50,14
+    PUSHBUTTON      "Bearbeiten",IDC_EDIT,226,59,50,14
+    PUSHBUTTON      "Auswählen",IDC_SELECT,226,76,50,14
+    PUSHBUTTON      "Vorschau",IDC_PREVIEW,226,93,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_OPENPROJEKT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 291
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 112
+    END
+
+    IDD_GBMDATA, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 205
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 283
+    END
+
+    IDD_STARTPAGE1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 263
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 112
+    END
+
+    IDD_STARTPAGE2, DIALOG
+    BEGIN
+        LEFTMARGIN, 19
+        RIGHTMARGIN, 248
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 112
+    END
+
+    IDD_STATUS1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 245
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 56
+    END
+
+    IDD_EDITPAGE1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 428
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 211
+    END
+
+    IDD_EDITPAGE2, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 428
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 211
+    END
+
+    IDD_EDITPAGE4, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 428
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 211
+    END
+
+    IDD_EDITPAGE3, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 428
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 211
+    END
+
+    IDD_EDITPAGE5, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 428
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 211
+    END
+
+    IDD_EDITPAGE6, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 428
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 211
+    END
+
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 288
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 131
+    END
+
+    IDD_SUCH1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_SUCH2, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_SUCH3, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_SUCH4, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_SUCH0, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_SUCHRESULT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 191
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 107
+    END
+
+    IDD_GS_TEILEN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 211
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_DELETE_ITEM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 152
+    END
+
+    IDD_PREVIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 2
+        RIGHTMARGIN, 420
+        TOPMARGIN, 2
+        BOTTOMMARGIN, 270
+    END
+
+    IDD_PRINT_ANLAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 254
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 125
+    END
+
+    IDD_MANIPRECT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 257
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 256
+    END
+
+    IDD_VIEWPORTDATA, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 166
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 183
+    END
+
+    IDD_INTEGRIEREN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 272
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 58
+    END
+
+    IDD_ABGLEICH1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 260
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 95
+    END
+
+    IDD_CALCULATOR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 331
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 224
+    END
+
+    IDD_PRINT_ANLAGE1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 254
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 125
+    END
+
+    IDD_VORBEREIT_TB, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 200
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 79
+    END
+
+    IDD_INTERDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 272
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 58
+    END
+
+    IDD_EDIT_IDE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 233
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 123
+    END
+
+    IDD_EXTRAS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 274
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 160
+    END
+
+    IDD_VISU, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 209
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 72
+    END
+
+    IDD_EDITPAGE7, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 428
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 211
+    END
+
+    IDD_GBMDATA1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 205
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 270
+    END
+
+    IDD_EDITVORLAGEN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 276
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 135
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+EXTENSIONMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&GBM"
+    BEGIN
+        MENUITEM "Projekt &integrieren ...",    IDM_INCLUDEPROJECT
+        MENUITEM "&Datenfenster",               IDM_DATEN
+        MENUITEM "&Flächen berechnen ...",      IDM_FLAECHEN
+        MENUITEM "&Tiefenbegrenzung ...",       IDM_TIEFENBEGR
+        MENUITEM "Beitragsberechnung ...",      IDM_BEITRAG
+        MENUITEM SEPARATOR
+        MENUITEM "&Suchen...",                  IDM_SUCHEN
+        MENUITEM "&Bearbeiten...",              IDM_BEARBEITEN
+        MENUITEM "Identifikations&nummer ...",  IDM_EDITIDE
+        MENUITEM "&Zusätzliche Funktionen ...", IDM_EXTRAS
+        MENUITEM "Visualisierung ...",          IDM_VISU, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "&Drucken ...",                IDM_PRINT
+        MENUITEM "Druck&vorschau ...",          IDM_PRINT_PREVIEW
+        MENUITEM SEPARATOR
+        MENUITEM "&Info ...",                   IDM_ABOUT
+    END
+END
+
+EXTENSIONOBJRECHMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&GBM"
+    BEGIN
+        MENUITEM "Identifikations&nummer ...",  22
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+135                     BITMAP  DISCARDABLE     "bitmap1.bmp"
+136                     BITMAP  DISCARDABLE     "bitmap3.bmp"
+137                     BITMAP  DISCARDABLE     "bitmap4.bmp"
+TWO_PAGE                BITMAP  DISCARDABLE     "two_page.bmp"
+IDB_GBMTOOL             BITMAP  DISCARDABLE     "gbmtool.bmp"
+IDB_GBMTOOLBMP          BITMAP  DISCARDABLE     "gbmtoolb.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// SCRIPT
+//
+
+IDR_MACRO1              SCRIPT  DISCARDABLE     "macro1.ebc"
+IDR_MACRO2              SCRIPT  DISCARDABLE     "macro2.ebc"
+IDR_MACRO3              SCRIPT  DISCARDABLE     "Color.ebc"
+IDR_MACRO4              SCRIPT  DISCARDABLE     "Visu1.ebc"
+IDR_ZF_MAKRO01          SCRIPT  DISCARDABLE     "ZF_001.ebc"
+IDR_TOPOANA             SCRIPT  DISCARDABLE     "TopoAna.ebc"
+IDR_K2000               SCRIPT  DISCARDABLE     "K2000.ebc"
+IDR_GS_ANA              SCRIPT  DISCARDABLE     "GS_Ana.ebc"
+IDR_VISU                SCRIPT  DISCARDABLE     "Visu.ebc"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDB_GBMTOOL TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_BUTTON40002
+    BUTTON      ID_BUTTON40004
+    BUTTON      ID_BUTTON40005
+    BUTTON      ID_BUTTON40008
+    BUTTON      ID_BUTTON40009
+    BUTTON      ID_BUTTON40010
+    BUTTON      ID_BUTTON40011
+    BUTTON      ID_BUTTON40012
+    BUTTON      ID_BUTTON40013
+    BUTTON      ID_BUTTON40014
+    BUTTON      ID_BUTTON40015
+    BUTTON      ID_BUTTON40017
+    BUTTON      ID_BUTTON40018
+    BUTTON      ID_BUTTON40019
+    BUTTON      ID_BUTTON40020
+    BUTTON      ID_BUTTON40021
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// VORLAGE
+//
+
+IDR_ERFASS              VORLAGE DISCARDABLE     "res\\Erfass.gbm"
+IDR_ANLAGE              VORLAGE DISCARDABLE     "res\\Anlage.gbm"
+IDR_BESCHEID            VORLAGE DISCARDABLE     "res\\Beitrag.gbm"
+IDR_INFOBRIEF           VORLAGE DISCARDABLE     "res\\InfoBr.gbm"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    1                       "Kopplung GBM-TRiAS"
+    IDM_OPENPROJEKT         "Öffnen eines GBM-Projektes über Ort/Straße bzw. Grundstück\nProjekt öffnen"
+    IDM_DATEN               "Blendet das GBM-TRiAS Datenfenster ein/aus\nDatenfenster ein/aus"
+    IDM_PRINT               "Druckt Anlagen zu Gebühren- und Beitragsbescheiden\nDrucken"
+    IDM_INCLUDEPROJECT      "Bezieht das aktuell geöffnete Projekt in die GBM-Projektverwaltung ein\nProjekt integrieren"
+    IDM_PRINT_PREVIEW       "Zeigt die zu druckenden Dokumente vorab in einem Fenster\nDruckvorschau"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDM_ABOUT               "Zeigt Programminformationen zu GBM-TRiAS\nVersion und Copyright"
+    101                     "Dachteilflächen löschen"
+    102                     "Versiegelte Flächen löschen"
+    IDS_DELE_GB             "Gebäude löschen"
+    104                     "GBM - Anlagen"
+    IDS_DELE_EIG            "Eigentümer löschen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDM_TIEFENBEGR          "Startet die Ermittlung der Tiefenbegrenzung für das Gesamtprojekt bzw. für die ausgewählten Grundstücke\nTiefenbegrenzung"
+    IDM_FLAECHEN            "Startet Flächenberechnungen für das Gesamtprojekt bzw. die ausgewählten Grundstücke\nFlächenberechnung"
+    IDM_SUCHEN              "Suchen in der GBM-Datenbank\nSuchen"
+    IDM_BEARBEITEN          "Öffnet die Maske zur Bearbeitung der GBM-Daten dieses Objektes\nBearbeiten"
+    IDM_EDITIDE             "Ändern der Identifikationsnummer eines Grundstückes\nIdentifikationsnummer ändern"
+    IDM_EDIT                "Aufruf des Editors für die Bescheide und Info-Briefe\nVorlagen editieren"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_BEREIT              "Bereit"
+    5001                    "Keine Anlagen zum Druck gefunden! Druck abgebrochen!"
+    5002                    "Seite %u\nSeiten %u und %u\n"
+    IDS_DACH_CLASSNAME      "Dachteilfläche"
+    IDS_HOF_CLASSNAME       "versiegelte Fläche"
+    IDS_GEB_CLASSNAME       "Gebäude"
+    IDS_GS_CLASSNAME        "Grundstück"
+    IDS_OPINFO01            "Liefert 1, wenn eine GBM-Fläche (Grundstück, Dach, Gebäude usw.) angeschlossen ist. Sonst (auch für andere Objekte) stets  0."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NOMEMORY            "Es ist nicht ausreichend Speicher verfügbar!"
+    IDS_FILEERROR           "Fehler beim Zugriff auf eine Datei!"
+    202                     "Einträge löschen"
+    IDS_FRAGELOESCHEN       "Sollen die Flächen- und Beitragswerte für das Grundstück '%1' tatsächlich gelöscht werden?"
+    204                     "Unbekannte oder fehlerhafte 'IF'-Klausel in Textdefinitionsdatei '%1' gefunden!! Formulardruck fehlerhaft."
+    205                     "Verschachtelte 'IF'-Klausel in Textdefinitionsdatei '%1' gefunden! Formulardruck fehlerhaft."
+    206                     "'ELSE'-Klausel ohne zugehörige 'IF'-Klausel in Textdefinitionsdatei '%1' gefunden!! Formulardruck fehlerhaft."
+    207                     "'ENDIF'-Klausel ohne zugehörige 'IF'-Klausel in Textdefinitionsdatei '%1' gefunden!! Formulardruck fehlerhaft."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_FRAGEMARKDRUCK1     "Soll Grundstück'%1' tatsächlich mit 'Beitragsbescheide gedruckt' markiert werden?"
+    IDS_FRAGEMARKDRUCK2     "Soll die Markierung 'Beitragsbescheide gedruckt' für Grundstück '%1' tatsächlich entfernt werden?"
+    IDS_CAPTMARKDRUCK       "Grundstück markieren"
+    IDS_DBERROR             "Datenbankfehler %1: %2"
+    IDS_TROPENFILE          " - Projekt öffnen"
+    IDS_GBMTOOLCAPTION      "GBM - InterTRiAS"
+    IDS_FRAGEMARKDRUCK3     "Soll Grundstück'%1' tatsächlich mit 'Gebührenbescheide gedruckt' markiert werden?"
+    IDS_FRAGEMARKDRUCK4     "Soll die Markierung 'Gebührenbescheide gedruckt' für Grundstück '%1' tatsächlich entfernt werden?"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_OPNAME01            "Fläche angeschlossen"
+    IDS_OPINFO02            "Liefert 1, wenn für das Grundstück die Markierung 'Beitragsbescheid gedruckt' gesetzt ist."
+    IDS_OPNAME02            "Beitragsbescheid gedruckt"
+    IDS_OPINFO03            "Liefert für ein Grundstück die GBM-Beitragsart, sonst stets eine leere Zeichenkette."
+    IDS_OPNAME03            "Beitragsart"
+    IDS_OPINFO04            "Liefert für ein Grundstück Angaben zu den Eigentumsverhältnissen, sonst stets eine leere Zeichenkette."
+    IDS_OPNAME04            "Eigentumsverhältnisse"
+    IDS_OPINFO05            "Liefert/Setzt für eine Fläche (Grundstück, Dach, Gebäude usw.) deren Flächeninhalt in m² (GBM)"
+    IDS_OPNAME05            "Flächeninhalt (GBM)"
+    IDS_OPINFO06            "Liefert/Setzt den Wert der tiefenbegrenzten Fläche für Grundstücke (GBM)"
+    IDS_OPNAME06            "AGGS"
+    IDS_OPINFO07            "Liefert/Setzt den Wert der digitalisierten Fläche für Grundstücke (GBM)"
+    IDS_OPNAME07            "GEFS"
+    IDS_OPINFO08            "Liefert/Setzt den Wert der dynamischen Tiefenbegrenzung für Grundstücke (GBM)"
+    IDS_OPNAME08            "TIEB"
+    IDS_OPINFO09            "Liefert/Setzt den Wert der Fläche laut Kataster für Grundstücke (GBM)"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_BEITRAGSART01       "Herstellungsbeitrag"
+    IDS_BEITRAGSART02       "Erneuerungsbeitrag"
+    IDS_BEITRAGSART03       "Verbesserungsbeitrag (1)"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_BEITRAGSART04       "Verbesserungsbeitrag (2)"
+    IDS_BEITRAGSART05       "Erweiterungsbeitrag"
+    IDS_BEITRAGSART06       "unbekannte Beitragsart"
+    IDS_PREVIEWCAPTION      "Vorbereitung Druckvorschau für GBM-Anlagen"
+    IDS_PRINTCAPTION        "Vorbereitung Drucken von GBM-Anlagen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_EIGENTUM01          "privates Eigentum"
+    IDS_EIGENTUM02          "komunales Eigentum"
+    IDS_ERROR_STARTPAGE     "Fehler beim Drucken: 'StartPage' fehlgeschlagen!"
+    IDS_ERROR_ENDPAGE       "Fehler beim Drucken: 'EndPage' fehlgeschlagen!"
+    IDS_ERROR_PRINTLIST     "Fehler beim Drucken: Aktuelle Seite außerhalb der Druckiste!"
+    IDS_ERROR_LISTEINTRAG   "Fehler beim Drucken: Fehlender Eintrag in der Druckliste!"
+    IDS_ERROR_DRUCKSEITE    "Fehler beim Drucken: Keine Vorlage für die Druckseite!"
+    IDS_EXTNAME             " - Erweiterung"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_OPNAME09            "KAT"
+    IDS_OPINFO10            "Liefert/Setzt die laufende Nummer einer Fläche (Gebäude, Dachteil- und versiegelte Fläche) (GBM)"
+    IDS_OPNAME10            "FLN"
+    IDS_OPINFO11            "Liefert 1, wenn für das Grundstück eine Tiefenbegrenzung berücksichtigt werden soll (GBM)"
+    IDS_OPNAME11            "TIEF"
+    IDS_OPINFO12            "Liefert 1, wenn für das Grundstück die Markierung 'Gebührenbescheid gedruckt' gesetzt ist."
+    IDS_OPNAME12            "Gebührenbescheid gedruckt"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDM_BEITRAG             "Startet die Beitragsberechnung für die selektierten Grundstücke\nBeitragsberechnung"
+    IDM_EXTRAS              "Aktivierung der installierten zusätzlichen Funktionen\nzusätzliche Funktionen"
+    IDM_VISU                "Ruft die vordefinierten Visualisierungsroutinen auf\nVisualisierungen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_OPENMENUITEM        "Öffnen\tCtrl+O"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\GbmTRiAS.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.deu\afxres.rc"          // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

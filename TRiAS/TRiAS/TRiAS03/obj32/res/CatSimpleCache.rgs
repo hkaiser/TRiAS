@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiAS.Categories.SimpleCache.1 = s 'CatSimpleCache Object'
+	{
+		CLSID = s '{EA68A685-5166-4E55-9062-0B1306813393}'
+	}
+	TRiAS.Categories.SimpleCache = s 'CatSimpleCache Object'
+	{
+		CLSID = s '{EA68A685-5166-4E55-9062-0B1306813393}'
+		CurVer = s 'TRiAS.Categories.SimpleCache.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {EA68A685-5166-4E55-9062-0B1306813393} = s 'CatSimpleCache Object'
+		{
+			ProgID = s 'TRiAS.Categories.SimpleCache.1'
+			VersionIndependentProgID = s 'TRiAS.Categories.SimpleCache'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{0796388E-3123-101C-BB62-00AA0018497C}'
+			'Version' = s '1.0'
+		}
+	}
+}

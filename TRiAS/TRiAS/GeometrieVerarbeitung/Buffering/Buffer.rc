@@ -1,0 +1,175 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "BufferR.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resstrg.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Deutsch (Deutschland) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_BUFFER DIALOGEX 0, 0, 224, 123
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Bilden von Pufferzonen"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        " Parameter der Pufferzonen ",IDC_STATIC,4,5,105,53,
+                    WS_GROUP
+    LTEXT           "&Breite (in Meter):",IDC_STATIC,10,22,56,8,NOT WS_GROUP
+    EDITTEXT        IDE_BUFBREITE,69,20,34,12,ES_AUTOHSCROLL,WS_EX_RIGHT
+    LTEXT           "An&zahl:",IDC_STATIC,10,39,49,8,NOT WS_GROUP
+    EDITTEXT        IDE_BUFANZAHL,69,37,34,12,ES_AUTOHSCROLL | ES_NUMBER,
+                    WS_EX_RIGHT
+    GROUPBOX        " Form der Pufferzonen ",IDC_STATIC,114,5,105,53,
+                    WS_GROUP
+    CONTROL         "  &Echte Pufferzonen",IDR_PUFFER,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,120,17,88,10
+    CONTROL         "  &Kreisförmige Pufferzonen",IDR_KREIS,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,120,27,94,10
+    CONTROL         "  &Ringförmige Pufferzonen",IDC_RING,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,120,41,94,10
+    GROUPBOX        " Ausformung der konvexen Ecken ",IDC_STATIC,4,63,147,55
+    CONTROL         "  als &Spitze",IDR_SPITZE,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,10,73,131,10
+    CONTROL         "  abge&flacht",IDR_FLACH,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,10,83,131,10
+    CONTROL         "  als &Quasi-Kreisbogen",IDR_KREISBOGEN,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,10,93,89,10
+    LTEXT           "        mit Kantenlänge (in Meter):",IDT_PROMPT,10,102,
+                    102,8
+    EDITTEXT        IDE_KANTENLAENGE,111,100,34,12,ES_AUTOHSCROLL,
+                    WS_EX_RIGHT
+    DEFPUSHBUTTON   "&OK",IDOK,164,80,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,164,103,55,14,WS_GROUP
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "BufferR.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""resstrg.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""buffer.rcv""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDM_BUFFERMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&Pufferzonen"
+    BEGIN
+        MENUITEM "Pufferzonen &erzeugen ...",   IDM_BUFFER
+        MENUITEM "Pufferzonen &löschen",        IDM_BUFLOESCHEN
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Pufferzonenbildung"
+    IDS_GEOREIN             "TRiAS.Bereinigung.1"
+    IDS_PUFFER              "%d.Puffer:"
+    IDS_KREIS               "%d.Kreis:"
+    IDS_BUFFERCNT           "Von der %d. Pufferzone wurden schon aufgebaut:"
+    IDS_NOMARK              "Pufferzonen können nicht gebildet werden, da kein Objekt markiert ist."
+    IDS_GEOFEHL             "Das Objekt %ld enthält einen Geometriefehler.\r\nDeshalb können keine Pufferzonen gebildet werden."
+    IDS_PUFFER_CAPTION      "Pufferzonenbildung für geometrische Objekte"
+    IDS_STATUS_STAND        "Es wurden bereits %ld %% bearbeitet"
+    IDS_BEARB_OBJEKT        "Objekt: %ld"
+    IDS_DELOBJECTS          "Objekte löschen"
+    IDS_DELETE_STATUS       "Es wurden bereits %ld %% der Objekte gelöscht"
+    IDS_NOGEOREIN           "Das Zusatzmodul """"GeoRein.ext"""" wurde nicht gefunden.\r\nDeshalb kann nicht getestet werden, ob das betreffende Objekt fehlerfrei ist."
+    IDS_NEGATIVEWIDTH       "Eine negative Pufferbreite ist nur bei Flächenobjekten möglich."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UNIQUEIDENT         "Unique Ident    "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXEXTENSIONPROC    "DEXEXTENSIONPROC"
+    IDS_DEXXEXTENSIONPROC   "DEXXEXTENSIONPROC"
+    IDS_DEXNOTIFICATIONPROC "DEXNOTIFICATIONPROCEX"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UIFORMAT            "BUFF_%ld/%ld"
+END
+
+#endif    // Deutsch (Deutschland) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "buffer.rcv"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

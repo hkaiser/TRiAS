@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASDB.FastDBCursorProperty.1 = s 'FastDBCursorProperty Class'
+	{
+		CLSID = s '{7F3D5CC5-4F40-40F9-8068-DAE556BC4BF7}'
+	}
+	TRiASDB.FastDBCursorProperty = s 'FastDBCursorProperty Class'
+	{
+		CLSID = s '{7F3D5CC5-4F40-40F9-8068-DAE556BC4BF7}'
+		Curver = s 'TRiASDB.FastDBCursorProperty.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {7F3D5CC5-4F40-40F9-8068-DAE556BC4BF7} = s 'FastDBCursorProperty Class'
+		{
+			ProgID = s 'TRiASDB.FastDBCursorProperty.1'
+			VersionIndependentProgID = s 'TRiASDB.FastDBCursorProperty'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{AEF1A967-35C7-4E6E-8589-3869A8FA8598}'
+		}
+	}
+}

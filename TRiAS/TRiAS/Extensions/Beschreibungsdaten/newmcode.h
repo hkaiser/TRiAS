@@ -1,0 +1,11 @@
+#define DEFMERKMALDLG               110
+#define DELMERKMALDLG               111
+#define IDB_NEWMKHELP               1100
+#define IDL_NEWMKMCODES             1101
+#define IDL_DELMKMCODES             1104
+#define IDB_DELMKHELP               1105
+#define IDB_DELMKDELETE             1107
+#define IDE_NEWMKMCODE              1108
+#define IDB_DELMKCLOSE              1110
+#define IDB_DELMKRESTORE            1106
+#define IDB_DELMKUNUSEDMKS          1102

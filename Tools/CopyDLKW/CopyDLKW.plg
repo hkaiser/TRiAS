@@ -1,0 +1,101 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: CopyDLKW - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "D:\Temp\RSP651.bat" with contents
+[
+@echo off
+nmake -f version.mak -nologo res\Copystr.rc
+]
+Creating command line "D:\Temp\RSP651.bat"
+Creating temporary file "D:\Temp\RSP652.bat" with contents
+[
+@echo off
+nmake -f version.mak -nologo res\CopyDLK.rcv
+]
+Creating command line "D:\Temp\RSP652.bat"
+Creating command line "midl.exe /nologo /D "NDEBUG" /tlb "Release/CopyDLKW.tlb" /mktyplib203 /win32 "D:\TRiASDev\CopyDLKW\CopyDLKW.odl""
+Performing Custom Build Step on .\res\copystrt.tpl
+res\copystr.rc
+Performing Custom Build Step on .\res\CopyDLKv.tpl
+res\CopyDLK.rcv
+Creating command line "rc.exe /l 0x407 /fo"Release/CopyDLKW.res" /i "Release" /d "NDEBUG" /d "_AFXDLL" "D:\TRiASDev\CopyDLKW\CopyDLKW.rc"" 
+Creating temporary file "D:\Temp\RSP653.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "." /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /Fp"Release/CopyDLKW.pch" /Yu"StdAfx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"D:\TRiASDev\CopyDLKW\CopyDLKThread.cpp"
+"D:\TRiASDev\CopyDLKW\CopyDLKW.cpp"
+"D:\TRiASDev\CopyDLKW\CopyDLKWDlg.cpp"
+"D:\TRiASDev\CopyDLKW\DDXGetFolder.cpp"
+"D:\TRiASDev\CopyDLKW\Boost\directory.cpp"
+"D:\TRiASDev\CopyDLKW\Dlgdir.cpp"
+"D:\TRiASDev\CopyDLKW\DlgProxy.cpp"
+"D:\TRiASDev\CopyDLKW\Thread.cpp"
+]
+Creating command line "xicl6.exe @D:\Temp\RSP653.tmp" 
+Creating temporary file "D:\Temp\RSP654.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "." /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /Fp"Release/CopyDLKW.pch" /Yc"StdAfx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"D:\TRiASDev\CopyDLKW\StdAfx.cpp"
+]
+Creating command line "xicl6.exe @D:\Temp\RSP654.tmp" 
+Creating temporary file "D:\Temp\RSP655.tmp" with contents
+[
+/nologo /subsystem:windows /incremental:no /pdb:"Release/CopyDLKW.pdb" /machine:I386 /out:"Release/CopyDLKW.exe" 
+.\Release\CopyDLKThread.obj
+.\Release\CopyDLKW.obj
+.\Release\CopyDLKWDlg.obj
+.\Release\DDXGetFolder.obj
+.\Release\directory.obj
+.\Release\Dlgdir.obj
+.\Release\DlgProxy.obj
+.\Release\StdAfx.obj
+.\Release\Thread.obj
+.\Release\CopyDLKW.res
+]
+Creating command line "xilink6.exe @D:\Temp\RSP655.tmp"
+<h3>Output Window</h3>
+Creating Type Library...
+Processing D:\TRiASDev\CopyDLKW\CopyDLKW.odl
+CopyDLKW.odl
+Processing D:\PROGRAMme\MICROSOFT SDK\INCLUDE\oaidl.idl
+oaidl.idl
+Processing D:\PROGRAMme\MICROSOFT SDK\INCLUDE\objidl.idl
+objidl.idl
+Processing D:\PROGRAMme\MICROSOFT SDK\INCLUDE\unknwn.idl
+unknwn.idl
+Processing D:\PROGRAMme\MICROSOFT SDK\INCLUDE\wtypes.idl
+wtypes.idl
+Processing D:\PROGRAMme\MICROSOFT SDK\INCLUDE\basetsd.h
+basetsd.h
+Processing D:\PROGRAMme\MICROSOFT SDK\INCLUDE\guiddef.h
+guiddef.h
+Processing D:\PROGRAMme\MICROSOFT SDK\INCLUDE\oaidl.acf
+oaidl.acf
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+CopyDLKThread.cpp
+CopyDLKW.cpp
+CopyDLKWDlg.cpp
+DDXGetFolder.cpp
+directory.cpp
+Dlgdir.cpp
+DlgProxy.cpp
+Thread.cpp
+Generating Code...
+Linking...
+LINK : warning LNK4078: multiple ".data" sections found with different attributes (60000020)
+
+
+
+<h3>Results</h3>
+CopyDLKW.exe - 0 error(s), 1 warning(s)
+</pre>
+</body>
+</html>

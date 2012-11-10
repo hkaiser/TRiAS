@@ -1,0 +1,307 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_TRIASCOORDSYSTEM    REGISTRY DISCARDABLE    "TRiASCoordSystem.rgs"
+IDR_TRIASGEOGRAPHICCS   REGISTRY DISCARDABLE    "TRiASGeographicCS.rgs"
+IDR_TRIASPROJECTEDCS    REGISTRY DISCARDABLE    "TRiASProjectedCS.rgs"
+IDR_TRIASCOORDTRANSFORM REGISTRY DISCARDABLE    "TRiASCoordTransform.rgs"
+IDR_TRIASCSDATUMTRANSFORMATION REGISTRY DISCARDABLE    "TRiASCSDatumTransformation.rgs"
+IDR_TRIASCSPPG          REGISTRY DISCARDABLE    "TRiASCSPpg.rgs"
+IDR_TRIASCSUI           REGISTRY DISCARDABLE    "TRiASCSUI.rgs"
+IDR_TRIASGCSPPG         REGISTRY DISCARDABLE    "TRiASGCSPpg.rgs"
+IDR_TRIASPCSPPG         REGISTRY DISCARDABLE    "TRiASPCSPpg.rgs"
+IDR_DEFHKLM             REGISTRY DISCARDABLE    "defhklm.rgs"
+IDR_TRIASCSSET          REGISTRY DISCARDABLE    "TRIASCSSet.rgs"
+IDR_TRIASCSUISERVICE    REGISTRY DISCARDABLE    "TRiASCSUIService.rgs"
+IDR_TRIASCSWKTSERVICE   REGISTRY DISCARDABLE    "TRiASCSWktService.rgs"
+IDR_TRIASCSTRANSFORMSERVICE REGISTRY MOVEABLE PURE  "TRiASCSTransformService.rgs"
+IDR_DISTANCESERVICE     REGISTRY DISCARDABLE    "DistanceService.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_TRIASCSPPG DIALOG DISCARDABLE  0, 0, 271, 128
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "&geographisches Koordinatensystem",IDC_CHECKCS_GCS,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,5,23,
+                    260,12
+    CONTROL         "&projektives Koordinatensystem",IDC_CHECKCS_PCS,"Button",
+                    BS_AUTORADIOBUTTON,5,34,260,12
+    LTEXT           "Das zu definierende Koordinatensystem ist ein...",
+                    IDC_STATIC,5,10,260,12
+    EDITTEXT        IDC_EDIT1,5,50,260,77,ES_AUTOHSCROLL | ES_READONLY
+END
+
+IDD_TRIASGCSPPG DIALOG DISCARDABLE  0, 0, 271, 128
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "geodätisches &Datum",IDC_STATIC,5,13,125,9
+    COMBOBOX        IDC_GEODETIC_DATUM,135,10,130,78,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Referenz&ellipsoid",IDC_STATIC,5,26,125,9
+    COMBOBOX        IDC_ELLIPSOID,135,23,130,90,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Ä&quatorradius",IDC_STATIC,5,39,125,9
+    EDITTEXT        IDC_EDIT_SEMI_MAJOR,135,36,130,12,ES_AUTOHSCROLL
+    RTEXT           "&Polarradius",IDC_STATIC,5,52,125,9
+    EDITTEXT        IDC_EDIT_SEMI_MINOR,135,49,130,12,ES_AUTOHSCROLL
+    RTEXT           "E&xzentrizität",IDC_STATIC,5,65,125,9
+    EDITTEXT        IDC_EDIT_EXCENTRICITY,135,62,130,12,ES_AUTOHSCROLL
+    RTEXT           "Abp&lattung",IDC_STATIC,5,78,125,9
+    EDITTEXT        IDC_EDIT_FLATTENING,135,75,130,12,ES_AUTOHSCROLL
+    RTEXT           "in&v. Abplattung",IDC_STATIC,5,91,125,9
+    EDITTEXT        IDC_EDIT_FLATTENINGINV,135,88,130,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Datumstransf&ormation...",IDC_BTN_DATUMPAR,135,101,130,
+                    12,BS_LEFT
+END
+
+IDD_TRIASPCSPPG DIALOG DISCARDABLE  0, 0, 271, 128
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "Projektionsalgorithmus",IDC_STATIC,5,13,125,9
+    COMBOBOX        IDC_PROJECTIONALGORITHM,135,10,130,78,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    RTEXT           "",IDC_PARAM1_NAME,5,26,125,9
+    EDITTEXT        IDC_PARAM1,135,23,130,12,ES_AUTOHSCROLL
+    RTEXT           "",IDC_PARAM2_NAME,5,38,125,9
+    EDITTEXT        IDC_PARAM2,135,35,130,12,ES_AUTOHSCROLL
+    RTEXT           "",IDC_PARAM3_NAME,5,50,125,9
+    EDITTEXT        IDC_PARAM3,135,47,130,12,ES_AUTOHSCROLL
+    RTEXT           "",IDC_PARAM4_NAME,5,62,125,9
+    EDITTEXT        IDC_PARAM4,135,59,130,12,ES_AUTOHSCROLL
+    RTEXT           "",IDC_PARAM5_NAME,5,74,125,9
+    EDITTEXT        IDC_PARAM5,135,71,130,12,ES_AUTOHSCROLL
+    RTEXT           "",IDC_PARAM6_NAME,5,86,125,9
+    EDITTEXT        IDC_PARAM6,135,83,130,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PARAM7,135,95,130,12,ES_AUTOHSCROLL
+    RTEXT           "",IDC_PARAM7_NAME,5,98,125,9
+END
+
+IDD_TRIASPCSPPG1 DIALOG DISCARDABLE  0, 0, 271, 128
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "Projektionsalgorithmus",IDC_STATIC,5,13,125,9
+    COMBOBOX        IDC_PROJECTIONALGORITHM,135,10,130,78,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    RTEXT           "",IDC_PARAM1_NAME,5,26,125,9
+    EDITTEXT        IDC_PARAM1,135,23,130,12,ES_AUTOHSCROLL
+    RTEXT           "",IDC_PARAM2_NAME,5,39,125,9
+    EDITTEXT        IDC_PARAM2,135,36,130,12,ES_AUTOHSCROLL
+    RTEXT           "",IDC_PARAM3_NAME,5,52,125,9
+    EDITTEXT        IDC_PARAM3,135,49,130,12,ES_AUTOHSCROLL
+    RTEXT           "",IDC_PARAM4_NAME,5,65,125,9
+    EDITTEXT        IDC_PARAM4,135,62,130,12,ES_AUTOHSCROLL
+    RTEXT           "",IDC_PARAM5_NAME,5,78,125,9
+    EDITTEXT        IDC_PARAM5,135,75,130,12,ES_AUTOHSCROLL
+    RTEXT           "",IDC_PARAM6_NAME,5,91,125,9
+    EDITTEXT        IDC_PARAM6,135,88,130,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PARAM7,135,101,130,12,ES_AUTOHSCROLL
+    RTEXT           "",IDC_PARAM7_NAME,5,104,125,9
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_TRIASCSPPG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 265
+        VERTGUIDE, 5
+        TOPMARGIN, 10
+        BOTTOMMARGIN, 106
+    END
+
+    IDD_TRIASGCSPPG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 265
+        VERTGUIDE, 5
+        TOPMARGIN, 10
+    END
+
+    IDD_TRIASPCSPPG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 265
+        VERTGUIDE, 5
+        TOPMARGIN, 10
+    END
+
+    IDD_TRIASPCSPPG1, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 265
+        TOPMARGIN, 10
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP1             BITMAP  DISCARDABLE     "bitmap1.bmp"
+IDB_BITMAP2             BITMAP  DISCARDABLE     "bitmap2.bmp"
+IDB_BITMAP3             BITMAP  DISCARDABLE     "bitmap3.bmp"
+IDB_BITMAP_CS           BITMAP  DISCARDABLE     "bitmap4.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// COORDSYS
+//
+
+BEGEOD                  COORDSYS DISCARDABLE    "res\\BeGeod.tcf"
+BEGK3_3                 COORDSYS DISCARDABLE    "res\\BeGk3_3.tcf"
+BEGK6_3                 COORDSYS DISCARDABLE    "res\\BeGk6_3.tcf"
+BEGK9_3                 COORDSYS DISCARDABLE    "res\\BeGk9_3.tcf"
+BEGK12_3                COORDSYS DISCARDABLE    "res\\BeGk12_3.tcf"
+BEGK15_3                COORDSYS DISCARDABLE    "res\\BeGk15_3.tcf"
+BEGKAUTO3               COORDSYS DISCARDABLE    "res\\BeGkAuto3.tcf"
+BEGKRD83AUTO3           COORDSYS DISCARDABLE    "res\\BeGkRd83Auto3.tcf"
+BEGKRD839_3             COORDSYS DISCARDABLE    "res\\BeGkRd839_3.tcf"
+BEGKRD8312_3            COORDSYS DISCARDABLE    "res\\BeGkRd8312_3.tcf"
+BEGKRD8315_3            COORDSYS DISCARDABLE    "res\\BeGkRd8315_3.tcf"
+ETUTM3_6                COORDSYS DISCARDABLE    "res\\EtUtm3_6.tcf"
+ETUTM9_6                COORDSYS DISCARDABLE    "res\\EtUtm9_6.tcf"
+ETUTM15_6               COORDSYS DISCARDABLE    "res\\EtUtm15_6.tcf"
+ETUTMAUTO6              COORDSYS DISCARDABLE    "res\\EtUtmAuto6.tcf"
+KRGEOD                  COORDSYS DISCARDABLE    "res\\KrGeod.tcf"
+KRGK3_6                 COORDSYS DISCARDABLE    "res\\KrGk3_6.tcf"
+KRGK9_3                 COORDSYS DISCARDABLE    "res\\KrGk9_3.tcf"
+KRGK9_6                 COORDSYS DISCARDABLE    "res\\KrGk9_6.tcf"
+KRGK12_3                COORDSYS DISCARDABLE    "res\\KrGk12_3.tcf"
+KRGK15_3                COORDSYS DISCARDABLE    "res\\KrGk15_3.tcf"
+KRGK15_6                COORDSYS DISCARDABLE    "res\\KrGk15_6.tcf"
+KRGKAUTO3               COORDSYS DISCARDABLE    "res\\KrGkAuto3.tcf"
+KRGKAUTO6               COORDSYS DISCARDABLE    "res\\KrGkAuto6.tcf"
+SOLDNERBERLIN           COORDSYS DISCARDABLE    "res\\SoldnerBerlin.tcf"
+WGSGEOD                 COORDSYS DISCARDABLE    "res\\WgsGeod.tcf"
+KRGEODDEG               COORDSYS DISCARDABLE    "res\\KrGeodDeg.tcf"
+WGSGEODDEG              COORDSYS DISCARDABLE    "res\\WgsGeodDeg.tcf"
+BEGEODDEG               COORDSYS DISCARDABLE    "res\\BeGeodDeg.tcf"
+KRGK6_3                 COORDSYS DISCARDABLE    "res\\KrGk6_3.tcf"
+BESD                    COORDSYS DISCARDABLE    "res\\BesD.tcf"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PROJNAME            "TRiASCs"
+    IDS_TITLETRiASCSPpg     "Allgemein"
+    IDS_HELPFILETRiASCSPpg  "Help File Name"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DOCSTRINGTRiASCSPpg "Your Help String"
+    IDS_TITLETRiASGCSPpg    "geodätische Grundlage"
+    IDS_HELPFILETRiASGCSPpg "Help File Name"
+    IDS_DOCSTRINGTRiASGCSPpg "Your Help String"
+    IDS_TITLETRiASPCSPpg    "Projektionsalgorithmus"
+    IDS_HELPFILETRiASPCSPpg "TRiASCS.hlp"
+    IDS_DOCSTRINGTRiASPCSPpg 
+                            "definiert den Projektionsalgorithmus des Koordinatensystems"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEFAULT_CS_CATEGORY "UTM Koordinatensysteme"
+    IDS_DEFAULT_CS_DESCRIPTION "Geod. Datum WGS84, UTM 9°/6° Projektion"
+    IDS_GEODAET_N_BREITE    "nB"
+    IDS_GEODAET_W_LAENGE    "wL"
+    IDS_GEODAET_S_BREITE    "sB"
+    IDS_GEODAET_O_LAENGE    "öL"
+    IDS_SUMMINFO_SUBJECT    "TRiAS® Koordinatensystem"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""TRiASCS.rcv""\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "TRiASCS.rcv"
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

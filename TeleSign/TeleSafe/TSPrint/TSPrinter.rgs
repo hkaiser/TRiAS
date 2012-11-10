@@ -1,0 +1,26 @@
+HKCR
+{
+	TSPrint.TSPrinter.1 = s 'TSPrinter Class'
+	{
+		CLSID = s '{3432B622-F342-11D2-983C-08003616D303}'
+	}
+	TSPrint.TSPrinter = s 'TSPrinter Class'
+	{
+		CLSID = s '{3432B622-F342-11D2-983C-08003616D303}'
+		CurVer = s 'TSPrint.TSPrinter.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {3432B622-F342-11D2-983C-08003616D303} = s 'TSPrinter Class'
+		{
+			ProgID = s 'TSPrint.TSPrinter.1'
+			VersionIndependentProgID = s 'TSPrint.TSPrinter'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{EB19E401-F341-11D2-983C-08003616D303}'
+		}
+	}
+}

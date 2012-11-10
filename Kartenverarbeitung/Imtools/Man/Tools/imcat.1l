@@ -1,0 +1,330 @@
+
+
+
+IMCAT(1IM)                 IMAGE TOOLS                 IMCAT(1IM)
+
+
+
+NAME
+     imcat  -  Concatenates multiple image files  into  a  single
+     image file
+
+SYNOPSIS
+     imcat [_o_p_t_i_o_n_s] _i_n_f_i_l_e_n_a_m_e_s... -outfile _o_u_t_f_i_l_e_n_a_m_e
+
+DESCRIPTION
+     imcat reads in each input image  file,  collects  the  image
+     data  from  each,  and  writes the entire set to the single,
+     multi-image output file.  The  resulting  output  file  will
+     contain  a  concatenation  of  the data found in each of the
+     individual input files.
+
+     The input and output image file formats  may  be  different.
+     The  output file format must support the storage of multiple
+     images in a single file.
+
+OPTIONS
+     imcat has  a  variety  of  options  in  the  following  five
+     categories:
+
+          File Selection     What input and output files to use
+          Format Selection   What image file format to use
+          Format Control     What variant of a file format to generate
+          Standard           Standard generic options for all SDSC tools
+
+     _F_i_l_e _S_e_l_e_c_t_i_o_n, _F_o_r_m_a_t _S_e_l_e_c_t_i_o_n, _F_o_r_m_a_t _C_o_n_t_r_o_l, and  _S_t_a_n_-
+     _d_a_r_d options are common to all SDSC image tools and are dis-
+     cussed in depth in the man page for imconv(1IM).
+
+     All options can be abbreviated to the first few unique char-
+     acters.
+
+  Input File Names
+     Input file names may be given explicitly or implicitly.   In
+     an explicit list, the user gives each image file name on the
+     command-line for imcat.  The following are  typical  invoca-
+     tions of imcat using explicit file names:
+
+          imcat thing1.rgb thing2.hdf sam.ras i.pix. am.rla -out-
+          file outputgroup.hdf
+          imcat credits0.rgb credits1.rgb  credits2.rgb  -outfile
+          outcredits.tiff
+          imcat icons*.ico -outfile myicons.hdf
+
+     File names may be given implicitly by providing a file  name
+     template that contains the special character code "%d", like
+     the C language printf(3) print format directive.  This  tem-
+     plate  will be used to generate a series of image file names
+     by replacing the "%d" with integer frame numbers, one  after
+     another.   The  template myimage.%d.rgb, for instance, could
+
+
+
+SDSC               Last change: June 27, 1995                   1
+
+
+
+
+
+
+IMCAT(1IM)                 IMAGE TOOLS                 IMCAT(1IM)
+
+
+
+     generate  the  file  names   myimage.0.rgb,   myimage.1.rgb,
+     myimage.2.rgb, and so on.
+
+     The range of integer frame numbers used  to  generate  input
+     file  names from a template is given using the -frames _r_a_n_g_e
+     option, where the _r_a_n_g_e is  a  single  value,  or  range  of
+     values, taking one of the following forms:
+
+          _r_a_n_g_e   Generate file names with frame numbers of
+8          _________________________________________________
+          _n       _n only (single value).
+          _n-_m     _n through _m (range of values).
+
+     There is no space between _n, the dash, and _m.  Also, _n  need
+     not be a value less than _m.
+
+     The following are typical  invocations  of  imcat  using  an
+     implicit file name template and -frames:
+
+          imcat    credits%d.rgb     -frames     0-2     -outfile
+          outcredits.tiff
+          imcat    -frames    0-200    movie.%03d.ras    -outfile
+          collection.hdf
+          imcat    -frames    200-0    movie.%03d.ras    -outfile
+          reversed.hdf
+
+     Implicit and explicit file naming may  be  combined  on  the
+     same command-line, such as:
+
+          imcat   title.rgb    -frames    0-100    movie.%03d.rgb
+          credit1.rgb copyright.rgb -outfile output.hdf
+
+     -frames can only be given once.  If more than  one  implicit
+     file  name  template  is used on the same command-line, each
+     use will use the same frame number range.
+
+     Image files are read in and placed into the output  file  in
+     the order in which they appear on the command-line.
+
+NOTES
+     Multi-image files created by imcat may be split into  multi-
+     ple single-image files by imsplit(1IM).
+
+     Most image file formats cannot support the storage of multi-
+     ple  images  in  the same file.  This is a limitation of the
+     file format design, not imcat.  imcat will  issue  an  error
+     message  if  the  selected output file format cannot support
+     the storage of multiple images in a single file.
+
+     imformats(1IM) may be used to display a  list  of  supported
+     file  formats  and  their  attributes.   Use  -long -long on
+     imformats(1IM) to display extensive format information  that
+     indicates which file formats support multiple image storage.
+
+
+
+2                  Last change: June 27, 1995                SDSC
+
+
+9
+
+
+IMCAT(1IM)                 IMAGE TOOLS                 IMCAT(1IM)
+
+
+
+     Implicit file naming is most useful when concatenating  mul-
+     tiple  images from an animation into a single, large, multi-
+     image file.  In such  cases,  the  image  files  being  con-
+     catenated usually include a frame number in the file name.
+
+     imcat uses the C language sprintf(3) routine to replace  the
+     file  name  template's  "%d"  with  successive  image  frame
+     numbers.  The use of sprintf(3) means the full range of "%d"
+     format  directive  syntax  is  available in generating input
+     file names.  While the sprintf(3) man page has full  details
+     on  the  "%d" print directive, the following is a summary as
+     it applies to input file naming:
+
+          The "%d" directive has the following general syntax:
+
+                "%" [_f_l_a_g_s] [_d_i_g_i_t] ["." _p_r_e_c_i_s_i_o_n] "d"
+
+          The directive always starts with a  "%"  character  and
+          ends with a "d" character.  Field names between [ ]s in
+          the syntax above are optional.  With no optional  field
+          value, the simplest form of the directive is just "%d".
+
+          _f_l_a_g_s
+               Following the "%" is  an  optional  set  of  _f_l_a_g_s
+               characters:
+
+                    _f_l_a_g      Meaning
+8                    ___________________________________________________________
+                    -         Left justify the frame number.  Default is right.
+                    +         Include the sign (+ or -).  Default is just -.
+                    (blank)   Use a blank instead of a + for positive numbers.
+
+               Except for peculiar file naming,  users  of  imcat
+               can  omit  the  optional  _f_l_a_g_s portion of a print
+               directive.
+
+          _d_i_g_i_t
+               Following the _f_l_a_g_s field  is  an  optional  _d_i_g_i_t
+               field that gives the field width of the number, in
+               characters.  If the  number  requires  fewer  than
+               this  minimum,  it  will be padded on the right or
+               left with blanks (padding is controlled by  the  -
+               _f_l_a_g  above).   If  the  number requires more than
+               this minimum, it will be taken.
+               _ The _d_i_g_i_t field can be preceded by a 0 (zero) to
+               cause  padding  to  be  done  with  leading zeroes
+               instead of blanks.  This is useful when  referring
+               to  frame numbers of the form "001," "002," "003,"
+               and so on.
+
+          _p_r_e_c_i_s_i_o_n
+               The _d_i_g_i_t field may be optionally  followed  by  a
+               "." (period) and a _p_r_e_c_i_s_i_o_n number that gives the
+
+
+
+SDSC               Last change: June 27, 1995                   3
+
+
+9
+
+
+IMCAT(1IM)                 IMAGE TOOLS                 IMCAT(1IM)
+
+
+
+               minimum number of digits  for  the  frame  number.
+               This  isn't particularly useful for users of imcat
+               and can be skipped.
+
+          The following are a few typical "%d" directives for use
+          in imcat:
+
+               Directive   Use in imcat
+               %d          No leading zeros or blanks.  Generates numbers like "0," "1," "2," "3," etc.
+               %03d        Leading zeros to fill 3 characters, including the number.  Generates numbers like "000," "001," "002," "003," etc.
+               %.3d        Same effect as "%03d"
+
+     In order to concatenate the image data, imcat reads in every
+     input image file first, before writing any of it to the out-
+     put file.  This can take up quite a bit of memory.   If  the
+     host  does not have enough memory and swap space, imcat will
+     fail with a memory allocation error.
+
+     In general, tar(1) is a better  way  of  maintaining  multi-
+     image  files than using imcat.  Multi-image files created by
+     tar(1) can be extracted one image at a time, or in any  com-
+     bination,  and retain the original image file names.  Multi-
+     image files created by imcat can only be  extracted  all  at
+     once,  such  as by using imsplit(1IM), and cannot retain the
+     original file names due to limitations in the  output  image
+     file formats.
+
+     tar(1) and imcat multi-image files  occupy  about  the  same
+     amount  of disk space and take about the same amount of time
+     to be created or split apart.  However, the format of tar(1)
+     files  is a fairly universal standard, whereas the few image
+     file formats supporting storage of multiple  images  in  one
+     file (such as HDF) are less universal.
+
+     imcat is only provided for  the  relatively  few  situations
+     where users need to build multi-image files for use in other
+     existing applications.  For simple storage and data  manage-
+     ment purposes, tar(1) is a more appropriate tool.
+
+     For notes regarding  file  format  conversion  and  standard
+     image tool options, see the man page on imconv(1IM).
+
+     Error messages are reported to stderr.
+
+EXAMPLES
+     Concatenate 6 Silicon  Graphics  RGB  files  named  single03
+     through single08 into a single multi-image HDF file:
+
+          imcat single%02d.rgb -frames 3-8 -outfile many.hdf
+
+     Concatenate three differently named XWD images into a single
+     TIFF file:
+
+
+
+4                  Last change: June 27, 1995                SDSC
+
+
+
+
+
+
+IMCAT(1IM)                 IMAGE TOOLS                 IMCAT(1IM)
+
+
+
+          imcat one.xwd tiger.xwd beer.xwd -outfile many.tiff
+
+SEE ALSO
+     imsplit (1IM)
+
+     For information on SDSC's image library, see imintro(3IM).
+
+AUTHOR
+     Chris Groening
+     San Diego Supercomputer Center
+
+     See the individual file format man pages for the authors  of
+     the  underlying  format  read  and write code.  The names of
+     these man pages begin with the letters "im" followed by  the
+     format  name.  For example, the name of the TIFF man page is
+     imtiff.  To display it, enter man imtiff.
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SDSC               Last change: June 27, 1995                   5
+
+
+

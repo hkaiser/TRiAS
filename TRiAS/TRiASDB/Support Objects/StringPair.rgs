@@ -1,0 +1,24 @@
+HKCR
+{
+	TRiAS.ParseStringPair.1 = s 'ParseStringPair Class'
+	{
+		CLSID = s '{C21AAF96-2DE5-11D1-969A-00A024D6F582}'
+	}
+	TRiAS.ParseStringPair = s 'ParseStringPair Class'
+	{
+		CurVer = s 'TRiAS.ParseStringPair.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {C21AAF96-2DE5-11D1-969A-00A024D6F582} = s 'ParseStringPair Class'
+		{
+			ProgID = s 'TRiAS.ParseStringPair.1'
+			VersionIndependentProgID = s 'TRiAS.ParseStringPair'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

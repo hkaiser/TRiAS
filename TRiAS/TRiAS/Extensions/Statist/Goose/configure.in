@@ -1,0 +1,230 @@
+
+dnl Configure script for Goose
+
+dnl The argument is a file that must exist in the source directory
+AC_INIT(./src/containers/RealSet.h)
+AM_CONFIG_HEADER(config.h)
+
+AC_CANONICAL_SYSTEM	
+
+GOOSE_MAJOR_VERSION=0
+GOOSE_MINOR_VERSION=0
+GOOSE_MICRO_VERSION=11
+GOOSE_VERSION=$GOOSE_MAJOR_VERSION.$GOOSE_MINOR_VERSION.$GOOSE_MICRO_VERSION
+
+
+AC_DEFINE_UNQUOTED(GOOSE_MAJOR_VERSION, $GOOSE_MAJOR_VERSION)
+AC_DEFINE_UNQUOTED(GOOSE_MINOR_VERSION, $GOOSE_MINOR_VERSION)
+AC_DEFINE_UNQUOTED(GOOSE_MICRO_VERSION, $GOOSE_MICRO_VERSION)
+
+
+dnl libtool
+
+dnl increment if the interface has additions, changes, removals.
+GOOSE_CURRENT=11
+
+dnl increment any time the source changes; set to 
+dnl  0 if you increment CURRENT
+GOOSE_REVISION=0
+
+dnl increment if any interfaces have been added; set to 0
+dnl  if any interfaces have been removed. removal has 
+dnl  precedence over adding, so set to 0 if both happened.
+GOOSE_AGE=0
+
+AM_INIT_AUTOMAKE(goose, $GOOSE_VERSION)
+
+AC_SUBST(GOOSE_MAJOR_VERSION)
+AC_SUBST(GOOSE_MINOR_VERSION)
+AC_SUBST(GOOSE_MICRO_VERSION)
+AC_SUBST(GOOSE_VERSION)
+
+AC_SUBST(GOOSE_CURRENT)
+AC_SUBST(GOOSE_REVISION)
+AC_SUBST(GOOSE_AGE)
+
+AM_PATH_GLIB(1.1.13)
+
+dnl GuileGoose stuff
+
+GUILEGOOSE_CURRENT=0
+GUILEGOOSE_REVISION=0
+GUILEGOOSE_AGE=0
+
+AC_SUBST(GUILEGOOSE_CURRENT)
+AC_SUBST(GUILEGOOSE_REVISION)
+AC_SUBST(GUILEGOOSE_AGE)
+
+
+
+AM_MAINTAINER_MODE
+
+dnl compilers
+AC_PROG_CC
+AC_STDC_HEADERS
+AC_PROG_CPP
+AC_PROG_CXX
+AC_PROG_CXXCPP
+
+
+CXXFLAGS="$CXXFLAGS -D_INCLUDE_POSIX_SOURCE"
+
+if test "x$GXX" = "xyes"; then 
+   CXXFLAGS="$CXXFLAGS -ansi -pedantic -Wall"
+fi
+
+dnl Set lang to C++ after checking for C Gtk; checks after this will use CXX 
+dnl  instead of CC
+AC_LANG_CPLUSPLUS
+
+AC_CHECK_FUNCS(snprintf)
+AC_CHECK_FUNCS(erf)
+AC_CHECK_FUNCS(isnan)
+AC_CHECK_FUNCS(isinf)
+
+dnl Check for pthreads
+AC_CHECK_LIB(pthread, pthread_create)
+
+dnl library tools
+AM_PROG_LIBTOOL
+
+dnl ******** START OF GIANT GUILE-CHECK
+dnl ******** This is copied from gnome-guile-check.m4
+dnl ******** It will probably get "yes" from Guile 1.2 and then not work...
+dnl ******** It's also broken with post 1.3 guiles that don't link readline.
+
+saved_ldflags="$LDFLAGS"
+saved_cppflags="$CPPFLAGS"
+LDFLAGS="$LDFLAGS"
+
+AC_CHECK_LIB(qthreads,main,[
+	QTTHREADS_LIB="-lqthreads"
+],[
+	AC_CHECK_LIB(qt, qt_null, QTTHREADS_LIB="-lqt")
+],$LIBS)
+AC_SUBST(QTTHREADS_LIB)
+
+AC_CHECK_LIB(termcap,main,TERMCAP_LIB="-ltermcap")
+AC_CHECK_LIB(readline,main,READLINE_LIB="-lreadline",,$TERMCAP_LIB)
+
+if test "x$READLINE_LIB" = "x" ; then
+AC_CHECK_LIB(curses,main,CURSES_LIB="-lcurses")
+AC_CHECK_LIB(readline,main,READLINE_LIB="-lreadline",,$CURSES_LIB)
+if test "x$READLINE_LIB" = "x" ; then
+AC_CHECK_LIB(ncurses,main,CURSES_LIB="-lncurses")
+AC_CHECK_LIB(readline,main,READLINE_LIB="-lreadline",,$CURSES_LIB)
+fi
+fi
+
+AC_SUBST(TERMCAP_LIB)
+AC_SUBST(READLINE_LIB)
+AC_SUBST(CURSES_LIB)
+
+if test "x$cross_compiling" = "xyes" ; then
+  name_build_guile="$target_alias-guile-config"
+else
+  name_build_guile="guile-config"
+fi
+
+AC_CHECK_PROG(BUILD_GUILE, $name_build_guile, yes, no)
+
+if test "x$BUILD_GUILE" = "xyes"; then
+    AC_MSG_CHECKING(whether $name_build_guile works)
+    if test x`$name_build_guile --version >/dev/null 2>&1 || \
+	echo no` = xno; then
+	BUILD_GUILE=no
+    fi
+    AC_MSG_RESULT($BUILD_GUILE)
+else
+
+    if test "x$cross_compiling" = "xyes" ; then
+	name_build_guile="$target_alias-build-guile"
+    else	
+	name_build_guile="build-guile"
+    fi
+
+    AC_CHECK_PROG(BUILD_GUILE, $name_build_guile, yes, no)
+
+    if test "x$BUILD_GUILE" = "xyes"; then
+	AC_MSG_CHECKING(whether $name_build_guile works)
+	if test x`$name_build_guile --version >/dev/null 2>&1 || \
+ 	    echo no` = xno; then
+	    BUILD_GUILE=no
+	fi
+	AC_MSG_RESULT($BUILD_GUILE)
+    fi
+fi
+
+AC_CHECK_LIB(m, sin)
+
+if test "x$BUILD_GUILE" = "xyes"; then
+	AC_MSG_CHECKING(for guile libraries)
+	GUILE_LIBS="`$name_build_guile link`"
+	AC_MSG_RESULT($GUILE_LIBS)
+	AC_MSG_CHECKING(for guile headers)
+	GUILE_INCS="`$name_build_guile compile`"
+	AC_MSG_RESULT($GUILE_INCS)
+else
+	GUILE_LIBS="$GNOME_LIBDIR"
+	GUILE_INCS="$GNOME_INCLUDEDIR"
+	AC_CHECK_LIB(rx, main, GUILE_LIBS="-lrx $GUILE_LIBS")
+	AC_CHECK_LIB(qt, main, GUILE_LIBS="-lqt $GUILE_LIBS")
+	AC_CHECK_LIB(dl, dlopen, GUILE_LIBS="-ldl $GUILE_LIBS")
+	AC_CHECK_LIB(nsl, t_accept, GUILE_LIBS="$GUILE_LIBS -lnsl")
+	AC_CHECK_LIB(socket, socket, GUILE_LIBS="$GUILE_LIBS -lsocket")
+	GUILE_LIBS="-lguile $GUILE_LIBS $QTTHREADS_LIB $READLINE_LIB $TERMCAP_LIB $CURSES_LIB"
+fi
+
+AC_SUBST(GUILE_LIBS)
+AC_SUBST(GUILE_INCS)
+
+saved_LIBS="$LIBS"
+LIBS="$LIBS $GUILE_LIBS"
+CPPFLAGS="$saved_cppflags $GUILE_INCS"
+
+AC_MSG_CHECKING(whether guile works)
+AC_TRY_LINK([
+	#include <libguile.h>
+	#include <guile/gh.h>
+],[
+	gh_eval_str("(newline)");
+	scm_boot_guile(0,NULL,NULL,NULL);
+],[
+	ac_cv_guile_found=yes
+	AC_DEFINE(HAVE_GUILE)
+],[
+	ac_cv_guile_found=no
+])
+AC_MSG_RESULT($ac_cv_guile_found)
+
+if test x$ac_cv_guile_found = xno ; then
+        AC_MSG_WARN(Can not find Guile on this system)
+	ac_cv_guile_found=no
+	GUILE_LIBS= GUILE_INCS=
+fi
+
+LIBS="$saved_LIBS"
+LDFLAGS="$saved_ldflags"
+CPPFLAGS="$saved_cppflags"
+
+AC_SUBST(GUILE_LIBS)
+AM_CONDITIONAL(GUILE, test x$ac_cv_guile_found = xyes)
+
+dnl ******** END OF GIANT GUILE-CHECK
+
+AC_OUTPUT([
+Makefile
+goose-config
+src/Makefile
+src/specfns/Makefile
+src/util/Makefile
+src/linear/Makefile
+src/containers/Makefile
+src/stats/Makefile
+src/guile/Makefile
+examples/Makefile
+test/Makefile
+doc/Makefile
+],[case "$CONFIG_FILES" in
+*goose-config*)chmod +x goose-config;;
+esac])

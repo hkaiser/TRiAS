@@ -1,0 +1,40 @@
+# Genrieren der Versionsinfo's
+# Generierungsdatum (yymmdd) und Version
+DATE=971103
+VERSION = 1
+RELEASE = 00
+BUILD = 001
+
+COPYRIGHT = HK$(DATE)
+
+PNAME = "Version f\xfcr den internen Gebrauch"
+PADDRESS = "uve GmbH Fernerkundungszentrum Potsdam"
+
+REPLACE = ersetz
+NAME = CopyFile
+DEF = $(NAME).def
+
+ASM = masm
+ASMF = /D?PLM=0 /D?WIN=1
+LINK = c:\msvc\bin\link16.exe
+DUMPBIN=c:\msdev\bin\dumpbin.exe
+
+# Alles neubilden
+all:	formake 
+
+
+# -----------------------------------------------------------------------------
+# CopyrightEintraege Generieren 
+new:
+	@del copystr.rc
+
+#formake:	res\$(NAME).rcv res\copystr.rc
+formake:	copystr.rct
+
+# Personalisierungsinformation
+res\$(NAME).rcv:	res\$(NAME)v.rc
+	$(REPLACE) $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) res\$(NAME)v.rc res\$(NAME).rcv
+
+copystr.rct:	copystrt.rc
+	$(REPLACE) $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) copystrt.rc copystr.rct
+

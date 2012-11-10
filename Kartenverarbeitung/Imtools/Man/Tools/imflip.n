@@ -1,0 +1,89 @@
+'\"et
+.if t .TH IMFLIP 1IM "June 27, 1995" "San Diego Supercomputer Center" "IMAGE TOOLS" 
+.if n .TH IMFLIP 1IM "June 27, 1995" "SDSC" "IMAGE TOOLS"
+.SH NAME
+imflip  -  Flip images vertically or horizontally and store in a new file
+.SH SYNOPSIS
+\fBimflip\fR [\fIoptions\fR] \fIinfilename\fR \fIoutfilename\fR
+.SH DESCRIPTION
+\fBimflip\fR reads each image in the input file and flips it vertically,
+horizontally, or both, then writes it to the output file.
+The input and output image file formats may be different.
+.SH OPTIONS
+\fBimflip\fR has a variety of options in the following five categories:
+.LP
+.RS +0.5i
+.TS
+l l.
+File Selection	What input and output files to use
+Format Selection	What image file format to use
+Format Control	What variant of a file format to generate
+Standard	Standard generic options on all SDSC tools
+Manipulation	How the image can be manipulated
+.TE
+.RE
+.LP
+\fIFile Selection\fR, \fIFormat Selection\fR, \fIFormat Control\fR, and
+\fIStandard\fR options are common to all SDSC image tools and are
+discussed in depth in the \fBman\fP page for \fBimconv\fR(1IM).
+.LP
+All options can be abbreviated to the first few unique characters.
+.LP
+.SS "Manipulation Options"
+\fB-xflip\fR flips the image left-to-right.
+.LP
+\fB-yflip\fR flips the image top-to-bottom.
+.LP
+\fB-xflip\fR and \fB-yflip\fR together flip the image left-to-right
+and top-to-bottom. 
+.SH NOTES
+For notes regarding file format conversion and standard image tool
+options, see the \fBman\fP page on \fBimconv\fR(1IM).
+.LP
+Error messages are reported to \fBstderr\fR.
+.SH EXAMPLES
+To flip a Wavefront RLB file top-to-bottom and store the result into an
+SGI RGB file, use the following:
+.RS 0.5i
+.LP
+\fBimflip rightsideup.rlb -yflip upsidedown.rgb\fR
+.RE
+.LP
+To flip a TIFF image left-to-right and top-to-bottom, use the following:
+.RS 0.5i
+.LP
+\fBimflip unflipped.tiff -xflip -yflip flipped.tiff\fR
+.RE
+.LP
+To copy an entire input GIF image to a PCX file without any flipping,
+use the following:
+.RS 0.5i
+.LP
+\fBimflip incoming.gif outgoing.pcx\fR
+.RE
+.LP
+With no flip arguments, the actions of \fBimflip\fR default to the
+same as the SDSC image format conversion tool \fBimconv\fR(1IM), but
+they take a little longer.
+.SH "SEE ALSO"
+\fBimcopy\fR (1IM),
+\fBimroll\fR (1IM),
+\fBimrotate\fR (1IM),
+\fBimscale\fR (1IM),
+\fBimshear\fR (1IM),
+\fBImVfbFlip\fR (3IM)
+.sp 1
+For information on SDSC's image library, see \fBimintro\fR(3IM). 
+.SH AUTHOR
+Jim McLeod
+.br
+San Diego Supercomputer Center
+.LP
+See the individual file format \fBman\fR pages for the authors of the underlying
+format read and write code.  The names of these \fBman\fR pages begin
+with the letters "im" followed by the format name.
+For example, the name of the TIFF \fBman\fR page is \fBimtiff\fR.
+To display it, enter \fBman imtiff\fR.
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

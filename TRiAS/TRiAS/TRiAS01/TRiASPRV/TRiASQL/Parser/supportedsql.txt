@@ -1,0 +1,177 @@
+Command:  SQL_Statement
+	| DDL_Statement;
+
+SQL_Statement:	SELECT AllDistinct TopRows SelectElementList FROM IdentList 
+			WhereClause GroupByClause HavingClause OrderClause
+		| SELECT AllDistinct TopRows STAR FROM IdentList WhereClause GroupByClause HavingClause OrderClause
+		| SQL_DELETE FROM Identifier WhereClause
+		| UPDATE Identifier SET UpdateList WhereClause
+		| INSERT INTO Identifier InsertColSpec VALUES LEFTPAREN InsertValueList RIGHTPAREN
+
+DDL_Statement: CREATE TABLE Identifier LEFTPAREN ColDataTypeList RIGHTPAREN
+	| DROP TABLE Identifier 
+
+ 
+AllDistinct:	/* Empty */
+	| ALL
+	| DISTINCT
+
+TopRows:	/* Empty */
+	| TOP Number
+	| TOP Number PERCENT
+
+SelectElementList: SelectExpressionAsName
+		| SelectElementList COMMA SelectExpressionAsName
+
+SelectExpressionAsName: SelectExpression
+	| SelectExpression AS Identifier
+
+InsertColSpec:	LEFTPAREN ColList RIGHTPAREN
+	 | /* Empty */
+
+ColList: ColName /* Empty * /
+		| ColList COMMA ColName
+
+
+
+InsertValueList:  ConstantExpression
+                | InsertValueList COMMA ConstantExpression
+
+
+WhereClause: /* Empty */
+		| WHERE WhereConditions
+
+
+ConstantExpression: Value
+	| ConstantExpression PLUS ConstantExpression
+	| ConstantExpression MINUS ConstantExpression
+	| ConstantExpression DIVIDE ConstantExpression
+	| ConstantExpression STAR ConstantExpression
+	| LEFTPAREN ConstantExpression RIGHTPAREN
+
+
+
+UpdateList: UpdateValue
+		| UpdateList COMMA UpdateValue
+
+
+UpdateValue: ColName EQUALS ValueOrColNameExpression
+
+WhereConditions:		WherePredicate
+	| WhereConditions OR WhereConditions
+	| WhereConditions AND WhereConditions
+	|	NOT WhereConditions 
+	|	LEFTPAREN WhereConditions RIGHTPAREN
+
+WherePredicate: ValueOrColNameExpression EQUALS ValueOrColNameExpression
+	| ValueOrColNameExpression NOT_EQUALS ValueOrColNameExpression
+	| ValueOrColNameExpression LESS ValueOrColNameExpression
+	| ValueOrColNameExpression MORE ValueOrColNameExpression
+	| ValueOrColNameExpression LESS_EQUALS ValueOrColNameExpression
+	| ValueOrColNameExpression MORE_EQUALS ValueOrColNameExpression
+	|	ColName IS NOT SQL_NULL
+	|	ColName IS SQL_NULL
+	|	ColName LIKE String
+
+
+
+ColName:          Identifier DOT Identifier
+        | Identifier                               
+ 
+
+IdentList: Identifier
+	| IdentList COMMA Identifier
+
+Identifier:                IDENTIFIER
+
+
+SelectExpression: SelectExpressionItem
+	| SelectExpression PLUS SelectExpression
+	| SelectExpression MINUS SelectExpression
+	| SelectExpression DIVIDE SelectExpression
+	| SelectExpression STAR SelectExpression
+	| LEFTPAREN SelectExpression RIGHTPAREN
+
+
+
+SelectExpressionItem: ValueOrColName
+	| Aggregate
+	| Function
+
+ValueOrColName: Value
+	| ColName
+
+ValueOrColNameExpression: ValueOrColName
+	| Function
+	| ValueOrColNameExpression PLUS ValueOrColNameExpression
+
+	| ValueOrColNameExpression MINUS ValueOrColNameExpression
+
+	| ValueOrColNameExpression DIVIDE ValueOrColNameExpression
+	| ValueOrColNameExpression STAR ValueOrColNameExpression
+	| LEFTPAREN ValueOrColNameExpression RIGHTPAREN
+
+GroupByClause: /* Empty * /
+		| GROUP BY ColName
+
+
+HavingClause: /* Empty */
+	| HAVING WhereConditions
+
+	 
+
+OrderClause: /* Empty */
+		| ORDER BY OrderColList
+
+OrderColList: OrderCol
+	| OrderColList COMMA OrderCol
+
+
+OrderCol: ColName
+	| ColName ASC
+	| ColName DESC
+
+
+Value: LiteralValue
+
+
+Function: MathFunction
+	| DateFunction
+
+MathFunction: ABS LEFTPAREN ValueOrColNameExpression RIGHTPAREN
+	|	ROUND LEFTPAREN ValueOrColNameExpression RIGHTPAREN
+
+DateFunction: 	GETDATE LEFTPAREN RIGHTPAREN
+
+
+Aggregate:        SUM LEFTPAREN ValueOrColNameExpression RIGHTPAREN
+                | AVG   LEFTPAREN ValueOrColNameExpression RIGHTPAREN
+                | MAX   LEFTPAREN ValueOrColNameExpression  RIGHTPAREN
+                | MIN   LEFTPAREN ValueOrColNameExpression RIGHTPAREN
+                | COUNT   LEFTPAREN ValueOrColNameExpression RIGHTPAREN
+                | COUNT   LEFTPAREN STAR  RIGHTPAREN
+
+ColDataTypeList: Identifier DataType
+
+                |   ColDataTypeList COMMA Identifier DataType
+
+
+DataType: CHAR_DATATYPE LEFTPAREN Number RIGHTPAREN         
+
+                | INTEGER_DATATYPE
+                | FLOAT_DATATYPE               
+		| SMALLINT_DATATYPE
+
+
+LiteralValue:   Number   
+                | Float  
+                | String 
+                ;
+
+
+Number:		NUMBER_VALUE
+
+Float:		FLOAT_VALUE
+
+String:		STRING_VALUE
+

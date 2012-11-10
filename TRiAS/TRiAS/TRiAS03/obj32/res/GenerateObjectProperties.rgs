@@ -1,0 +1,34 @@
+HKCR
+{
+	TRiASEx.GenerateObjectProperties.1 = s 'Ausgeben von Objekteigenschaften'
+	{
+		CLSID = s '{F629A52E-9974-427B-8076-1171243B33D9}'
+	}
+	TRiASEx.GenerateObjectProperties = s 'Ausgeben von Objekteigenschaften'
+	{
+		CLSID = s '{F629A52E-9974-427B-8076-1171243B33D9}'
+		CurVer = s 'TRiASEx.GenerateObjectProperties.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {F629A52E-9974-427B-8076-1171243B33D9} = s 'Ausgeben von Objekteigenschaften'
+		{
+			ProgID = s 'TRiASEx.GenerateObjectProperties.1'
+			VersionIndependentProgID = s 'TRiASEx.GenerateObjectProperties'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiASEx.GenerateObjectProperties.1' = s '{F629A52E-9974-427B-8076-1171243B33D9}'
+			}
+		}
+	}
+}

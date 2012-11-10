@@ -1,0 +1,40 @@
+// MMLaBra.idl : IDL-Quellcode für MMLaBra.dll
+//
+
+// Diese Datei wird mit dem MIDL-Tool bearbeitet,
+// um den Quellcode für die Typbibliothek (MMLaBra.tlb)und die Abruffunktionen zu erzeugen.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(07E4F0CD-EC43-11D4-A9F9-00104BAF20DA),
+	version(1.0),
+	helpstring("MMLaBra 1.0 Typbibliothek")
+]
+library MMLABRALib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		object,
+		uuid(21655001-EC75-11d4-A9F9-00104BAF20DA),
+		dual,
+		helpstring("IMapLaBra Interface"),
+		pointer_default(unique)
+	]
+	interface IMapLaBra : IDispatch
+	{
+	};
+
+	[
+		uuid(21655002-EC75-11d4-A9F9-00104BAF20DA),
+		helpstring("MapLaBra Class")
+	]
+	coclass MapLaBra
+	{
+		[default] interface IMapLaBra;
+	};
+
+};

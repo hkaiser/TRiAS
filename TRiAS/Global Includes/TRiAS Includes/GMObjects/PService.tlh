@@ -1,0 +1,699 @@
+// Created by Microsoft (R) C/C++ Compiler Version 12.00.8964.0 (cf631856).
+//
+// d:\triasdev.mvc\gmobjects\_debug\PService.tlh
+//
+// C++ source equivalent of Win32 type library tlb/PService.dll
+// compiler-generated file created 10/10/02 at 22:51:29 - DO NOT EDIT!
+
+//
+// Cross-referenced type libraries:
+//
+//  #import "D:\PROGRA~1\GEOMED~1\Program\PClient.tlb"
+//  #import "D:\TRIASDEV.MVC\INCLUDE\GMOBJECTS\TLB\PCSS.tlb"
+//
+
+#pragma once
+#pragma pack(push, 8)
+
+#include <comdef.h>
+
+//
+// Forward references and typedefs
+//
+
+struct __declspec(uuid("74389315-a25f-11d1-b8aa-00609738317a"))
+/* dual interface */ _PreferenceSet;
+struct /* coclass */ PreferenceSet;
+struct __declspec(uuid("d738bd51-04b4-11d4-a611-080036cdd303"))
+/* dual interface */ _MetadataService;
+struct /* coclass */ MetadataService;
+typedef struct _MetadataService MetadataService___v0;
+struct __declspec(uuid("7438931a-a25f-11d1-b8aa-00609738317a"))
+/* dual interface */ _FieldProperty;
+struct /* coclass */ FieldProperty;
+struct __declspec(uuid("7438931c-a25f-11d1-b8aa-00609738317a"))
+/* dual interface */ _TableProperty;
+struct /* coclass */ TableProperty;
+struct __declspec(uuid("74389322-a25f-11d1-b8aa-00609738317a"))
+/* dual interface */ _PickQuickDialog;
+struct /* coclass */ PickQuickDialog;
+struct __declspec(uuid("74389324-a25f-11d1-b8aa-00609738317a"))
+/* dual interface */ _OutputTableService;
+struct /* coclass */ OutputTableService;
+struct __declspec(uuid("74389326-a25f-11d1-b8aa-00609738317a"))
+/* dual interface */ _AutoPanService;
+struct /* coclass */ AutoPanService;
+struct __declspec(uuid("74389329-a25f-11d1-b8aa-00609738317a"))
+/* dual interface */ _GraphicsTextPipe;
+struct /* coclass */ GraphicsTextPipe;
+struct __declspec(uuid("a6948f25-e6ba-11d2-a077-0800368eff02"))
+/* dual interface */ _GeometryInfoPipeCls;
+struct /* coclass */ GeometryInfoPipeCls;
+struct __declspec(uuid("a6948f28-e6ba-11d2-a077-0800368eff02"))
+/* dual interface */ _CoordGeocodePipe;
+struct /* coclass */ CoordGeocodePipe;
+struct __declspec(uuid("a6948f2a-e6ba-11d2-a077-0800368eff02"))
+/* dual interface */ _IChangePropertiesCallback;
+struct /* coclass */ IChangePropertiesCallback;
+struct __declspec(uuid("11fa022f-f351-11d2-800e-00104b62bc40"))
+/* dual interface */ _AttachTableService;
+struct /* coclass */ AttachTableService;
+struct __declspec(uuid("74389317-a25f-11d1-b8aa-00609738317a"))
+/* dispinterface */ __PreferenceSet;
+struct __declspec(uuid("74389328-a25f-11d1-b8aa-00609738317a"))
+/* dispinterface */ __AutoPanService;
+
+//
+// Smart pointer typedef declarations
+//
+
+_COM_SMARTPTR_TYPEDEF(_PreferenceSet, __uuidof(_PreferenceSet));
+_COM_SMARTPTR_TYPEDEF(_MetadataService, __uuidof(_MetadataService));
+_COM_SMARTPTR_TYPEDEF(_FieldProperty, __uuidof(_FieldProperty));
+_COM_SMARTPTR_TYPEDEF(_TableProperty, __uuidof(_TableProperty));
+_COM_SMARTPTR_TYPEDEF(_PickQuickDialog, __uuidof(_PickQuickDialog));
+_COM_SMARTPTR_TYPEDEF(_OutputTableService, __uuidof(_OutputTableService));
+_COM_SMARTPTR_TYPEDEF(_AutoPanService, __uuidof(_AutoPanService));
+_COM_SMARTPTR_TYPEDEF(_GraphicsTextPipe, __uuidof(_GraphicsTextPipe));
+_COM_SMARTPTR_TYPEDEF(_GeometryInfoPipeCls, __uuidof(_GeometryInfoPipeCls));
+_COM_SMARTPTR_TYPEDEF(_CoordGeocodePipe, __uuidof(_CoordGeocodePipe));
+_COM_SMARTPTR_TYPEDEF(_IChangePropertiesCallback, __uuidof(_IChangePropertiesCallback));
+_COM_SMARTPTR_TYPEDEF(_AttachTableService, __uuidof(_AttachTableService));
+_COM_SMARTPTR_TYPEDEF(__PreferenceSet, __uuidof(IDispatch));
+_COM_SMARTPTR_TYPEDEF(__AutoPanService, __uuidof(IDispatch));
+
+//
+// Type library items
+//
+
+struct __declspec(uuid("74389315-a25f-11d1-b8aa-00609738317a"))
+_PreferenceSet : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall get_RegistryPath (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_RegistryPath (
+        BSTR _arg1 ) = 0;
+    virtual HRESULT __stdcall Add (
+        BSTR Name,
+        VARIANT value,
+        short Storage,
+        VARIANT_BOOL * _arg4 ) = 0;
+    virtual HRESULT __stdcall Delete (
+        BSTR Name,
+        short Storage,
+        VARIANT_BOOL * _arg3 ) = 0;
+    virtual HRESULT __stdcall GetValue (
+        BSTR Name,
+        VARIANT * value,
+        short Storage,
+        VARIANT_BOOL * _arg4 ) = 0;
+    virtual HRESULT __stdcall SetValue (
+        BSTR Name,
+        VARIANT value,
+        short Storage,
+        VARIANT_BOOL * _arg4 ) = 0;
+};
+
+struct __declspec(uuid("74389316-a25f-11d1-b8aa-00609738317a"))
+PreferenceSet;
+    // [ default ] interface _PreferenceSet
+    // [ default, source ] dispinterface __PreferenceSet
+
+struct __declspec(uuid("d738bd51-04b4-11d4-a611-080036cdd303"))
+_MetadataService : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall AddTableMetadata (
+        IDispatch * * Properties,
+        long * _arg2 ) = 0;
+    virtual HRESULT __stdcall DeleteTableMetadata (
+        long * _arg1 ) = 0;
+    virtual HRESULT __stdcall GetTableMetadata (
+        IDispatch * * Properties,
+        long * _arg2 ) = 0;
+    virtual HRESULT __stdcall AddFieldMetadata (
+        IDispatch * * Properties,
+        long * _arg2 ) = 0;
+    virtual HRESULT __stdcall SetTableMetadata (
+        IDispatch * * Properties,
+        long * _arg2 ) = 0;
+    virtual HRESULT __stdcall DeleteFieldMetadata (
+        BSTR * Fieldname,
+        long * _arg2 ) = 0;
+    virtual HRESULT __stdcall GetFieldMetadata (
+        IDispatch * * Properties,
+        long * _arg2 ) = 0;
+    virtual HRESULT __stdcall SetFieldMetadata (
+        IDispatch * * Properties,
+        long * _arg2 ) = 0;
+    virtual HRESULT __stdcall get_MetadataTableName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall putref_Connection (
+        IDispatch * * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_Connection (
+        IDispatch * * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_GeometryPropertiesTableName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_FieldLookupTableName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_AttributePropertiesTableName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_TableName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_TableName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall VerifyMetadata (
+        long * _arg1 ) = 0;
+    virtual HRESULT __stdcall GetTables (
+        long * lTableMask,
+        VARIANT * vTables ) = 0;
+    virtual HRESULT __stdcall GetFields (
+        long * lFieldMask,
+        VARIANT * vFields ) = 0;
+    virtual HRESULT __stdcall GetBooleanFormats (
+        VARIANT * vBooleanFormats ) = 0;
+    virtual HRESULT __stdcall GetCoordSystemRecordset (
+        BSTR * strGUID,
+        IDispatch * * objCoordSystemRecordset ) = 0;
+    virtual HRESULT __stdcall GetCoordSystemObject (
+        BSTR * strGUID,
+        IDispatch * * objCoordSystemObject ) = 0;
+    virtual HRESULT __stdcall SetCoordSystemObject (
+        BSTR * strGUID,
+        IDispatch * * objCoordSystemObject ) = 0;
+    virtual HRESULT __stdcall GetSQLOperators (
+        VARIANT * vSQLOperators ) = 0;
+    virtual HRESULT __stdcall GetEssentiallyIdenticalCoordSystemObject (
+        IDispatch * * objInputCoordSystem,
+        IDispatch * * objOutputCoordSystem ) = 0;
+};
+
+struct __declspec(uuid("74389319-a25f-11d1-b8aa-00609738317a"))
+MetadataService;
+    // [ default ] interface _MetadataService
+
+struct __declspec(uuid("7438931a-a25f-11d1-b8aa-00609738317a"))
+_FieldProperty : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall get_Name (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_Name (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_GeometryType (
+        long * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_GeometryType (
+        long * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_CoordSystemGUID (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_CoordSystemGUID (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_PrimaryGeometryFlag (
+        VARIANT_BOOL * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_PrimaryGeometryFlag (
+        VARIANT_BOOL * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_Key (
+        VARIANT_BOOL * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_Key (
+        VARIANT_BOOL * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_Displayable (
+        VARIANT_BOOL * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_Displayable (
+        VARIANT_BOOL * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_Format (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_Format (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_Description (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_Description (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_FieldType (
+        short * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_FieldType (
+        short * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_Precision (
+        short * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_Precision (
+        short * _arg1 ) = 0;
+};
+
+struct __declspec(uuid("7438931b-a25f-11d1-b8aa-00609738317a"))
+FieldProperty;
+    // [ default ] interface _FieldProperty
+
+struct __declspec(uuid("7438931c-a25f-11d1-b8aa-00609738317a"))
+_TableProperty : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall get_Description (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_Description (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_Name (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_Name (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_GeometryType (
+        long * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_GeometryType (
+        long * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_PrimaryGeometryFieldName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_PrimaryGeometryFieldName (
+        BSTR * _arg1 ) = 0;
+};
+
+struct __declspec(uuid("7438931d-a25f-11d1-b8aa-00609738317a"))
+TableProperty;
+    // [ default ] interface _TableProperty
+
+struct __declspec(uuid("74389322-a25f-11d1-b8aa-00609738317a"))
+_PickQuickDialog : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall Show (
+        VARIANT_BOOL * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_ShowVertical (
+        VARIANT_BOOL * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_ShowVertical (
+        VARIANT_BOOL _arg1 ) = 0;
+    virtual HRESULT __stdcall get_MultipleSelect (
+        VARIANT_BOOL * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_MultipleSelect (
+        VARIANT_BOOL _arg1 ) = 0;
+    virtual HRESULT __stdcall get_Caption (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_Caption (
+        BSTR _arg1 ) = 0;
+    virtual HRESULT __stdcall get_DialogLeft (
+        long * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_DialogLeft (
+        long _arg1 ) = 0;
+    virtual HRESULT __stdcall get_DialogTop (
+        long * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_DialogTop (
+        long _arg1 ) = 0;
+    virtual HRESULT __stdcall get_DialogWidth (
+        long * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_DialogHeight (
+        long * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_MapView (
+        IDispatch * * _arg1 ) = 0;
+    virtual HRESULT __stdcall putref_MapView (
+        IDispatch * * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_LocatedObjects (
+        IDispatch * * _arg1 ) = 0;
+    virtual HRESULT __stdcall putref_LocatedObjects (
+        IDispatch * * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_SelectedList (
+        IDispatch * * _arg1 ) = 0;
+};
+
+struct __declspec(uuid("74389323-a25f-11d1-b8aa-00609738317a"))
+PickQuickDialog;
+    // [ default ] interface _PickQuickDialog
+
+struct __declspec(uuid("74389324-a25f-11d1-b8aa-00609738317a"))
+_OutputTableService : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall get_Application (
+        IDispatch * * _arg1 ) = 0;
+    virtual HRESULT __stdcall putref_Application (
+        IDispatch * * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_InputRecordset (
+        struct GRecordset * * _arg1 ) = 0;
+    virtual HRESULT __stdcall putref_InputRecordset (
+        struct GRecordset * * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_OutputConnection (
+        struct DGMConnection * * _arg1 ) = 0;
+    virtual HRESULT __stdcall putref_OutputConnection (
+        struct DGMConnection * * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_OutputTableName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_OutputTableName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall Execute ( ) = 0;
+    virtual HRESULT __stdcall get_OutputMode (
+        long * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_OutputMode (
+        long * _arg1 ) = 0;
+};
+
+struct __declspec(uuid("74389325-a25f-11d1-b8aa-00609738317a"))
+OutputTableService;
+    // [ default ] interface _OutputTableService
+
+struct __declspec(uuid("74389326-a25f-11d1-b8aa-00609738317a"))
+_AutoPanService : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall get_AutoPanZoneSize (
+        double * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_AutoPanZoneSize (
+        double _arg1 ) = 0;
+    virtual HRESULT __stdcall get_AutoPanStepSize (
+        double * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_AutoPanStepSize (
+        double _arg1 ) = 0;
+    virtual HRESULT __stdcall get_ResamplingInterval (
+        short * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_ResamplingInterval (
+        short _arg1 ) = 0;
+    virtual HRESULT __stdcall get_AutomaticStepSizeMode (
+        VARIANT_BOOL * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_AutomaticStepSizeMode (
+        VARIANT_BOOL _arg1 ) = 0;
+    virtual HRESULT __stdcall get_AutomaticStepResponseFactor (
+        double * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_AutomaticStepResponseFactor (
+        double _arg1 ) = 0;
+    virtual HRESULT __stdcall get_AutoPanZoneDisplayStyle (
+        IDispatch * * _arg1 ) = 0;
+    virtual HRESULT __stdcall putref_AutoPanZoneDisplayStyle (
+        IDispatch * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_MapView (
+        IDispatch * * _arg1 ) = 0;
+    virtual HRESULT __stdcall putref_MapView (
+        IDispatch * _arg1 ) = 0;
+    virtual HRESULT __stdcall AutoPan (
+        long WindowX,
+        long WindowY ) = 0;
+    virtual HRESULT __stdcall DisplayAutoPanZone (
+        VARIANT_BOOL DisplayToggle ) = 0;
+    virtual HRESULT __stdcall TimerExpired ( ) = 0;
+};
+
+struct __declspec(uuid("74389327-a25f-11d1-b8aa-00609738317a"))
+AutoPanService;
+    // [ default ] interface _AutoPanService
+    // [ default, source ] dispinterface __AutoPanService
+
+struct __declspec(uuid("74389329-a25f-11d1-b8aa-00609738317a"))
+_GraphicsTextPipe : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT _VtblGapPlaceholder1( ) { return E_NOTIMPL; }
+    virtual HRESULT _VtblGapPlaceholder2( ) { return E_NOTIMPL; }
+    virtual HRESULT _VtblGapPlaceholder3( ) { return E_NOTIMPL; }
+    virtual HRESULT __stdcall get_OutputRecordset (
+        struct GRecordset * * _arg1 ) = 0;
+    virtual HRESULT __stdcall putref_InputRecordset (
+        struct GRecordset * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_InputRecordset (
+        struct GRecordset * * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_OutputGeometryFieldName (
+        BSTR _arg1 ) = 0;
+    virtual HRESULT __stdcall get_OutputGeometryFieldName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_InputGeometryFieldName (
+        BSTR _arg1 ) = 0;
+    virtual HRESULT __stdcall get_InputGeometryFieldName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_StringContent (
+        BSTR _arg1 ) = 0;
+    virtual HRESULT __stdcall get_StringContent (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_Alignment (
+        long _arg1 ) = 0;
+    virtual HRESULT __stdcall get_Alignment (
+        long * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_PointPlacementMode (
+        long _arg1 ) = 0;
+    virtual HRESULT __stdcall get_PointPlacementMode (
+        long * _arg1 ) = 0;
+};
+
+struct __declspec(uuid("7438932a-a25f-11d1-b8aa-00609738317a"))
+GraphicsTextPipe;
+    // [ default ] interface _GraphicsTextPipe
+    // interface IFieldProviderCallback
+
+struct __declspec(uuid("a6948f25-e6ba-11d2-a077-0800368eff02"))
+_GeometryInfoPipeCls : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT _VtblGapPlaceholder1( ) { return E_NOTIMPL; }
+    virtual HRESULT _VtblGapPlaceholder2( ) { return E_NOTIMPL; }
+    virtual HRESULT _VtblGapPlaceholder3( ) { return E_NOTIMPL; }
+    virtual HRESULT __stdcall get_OutputRecordset (
+        VARIANT * _arg1 ) = 0;
+    virtual HRESULT __stdcall putref_InputRecordset (
+        IDispatch * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_InputRecordset (
+        VARIANT * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_OutputLengthFieldName (
+        BSTR _arg1 ) = 0;
+    virtual HRESULT __stdcall get_OutputLengthFieldName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_OutputLinearUnit (
+        BSTR _arg1 ) = 0;
+    virtual HRESULT __stdcall get_OutputLinearUnit (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_OutputAreaFieldName (
+        BSTR _arg1 ) = 0;
+    virtual HRESULT __stdcall get_OutputAreaFieldName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_OutputAreaUnit (
+        BSTR _arg1 ) = 0;
+    virtual HRESULT __stdcall get_OutputAreaUnit (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_OutputPerimeterFieldName (
+        BSTR _arg1 ) = 0;
+    virtual HRESULT __stdcall get_OutputPerimeterFieldName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_OutputAreaPerimSqrdRatioFieldName (
+        BSTR _arg1 ) = 0;
+    virtual HRESULT __stdcall get_OutputAreaPerimSqrdRatioFieldName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_InputGeometryFieldName (
+        BSTR _arg1 ) = 0;
+    virtual HRESULT __stdcall get_InputGeometryFieldName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_OutputColumnsMask (
+        long _arg1 ) = 0;
+    virtual HRESULT __stdcall get_OutputColumnsMask (
+        long * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_ReferenceSpace (
+        long _arg1 ) = 0;
+    virtual HRESULT __stdcall get_ReferenceSpace (
+        long * _arg1 ) = 0;
+};
+
+struct __declspec(uuid("a6948f26-e6ba-11d2-a077-0800368eff02"))
+GeometryInfoPipeCls;
+    // [ default ] interface _GeometryInfoPipeCls
+    // interface IFieldProviderCallback
+
+struct __declspec(uuid("a6948f28-e6ba-11d2-a077-0800368eff02"))
+_CoordGeocodePipe : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT _VtblGapPlaceholder1( ) { return E_NOTIMPL; }
+    virtual HRESULT _VtblGapPlaceholder2( ) { return E_NOTIMPL; }
+    virtual HRESULT _VtblGapPlaceholder3( ) { return E_NOTIMPL; }
+    virtual HRESULT __stdcall putref_CoordSystem (
+        struct DGMCoordSystem * * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_CoordSystem (
+        struct DGMCoordSystem * * _arg1 ) = 0;
+    virtual HRESULT __stdcall putref_InputRecordset (
+        struct GRecordset * * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_InputRecordset (
+        struct GRecordset * * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_InputFirstCoordFieldName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_InputFirstCoordFieldName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_InputSecondCoordFieldName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_InputSecondCoordFieldName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_InputHeightFieldName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_InputHeightFieldName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_OutputGeometryFieldName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_OutputGeometryFieldName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_OutputStatusFieldName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_OutputStatusFieldName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_OutputRecordset (
+        struct GRecordset * * _arg1 ) = 0;
+};
+
+struct __declspec(uuid("a6948f29-e6ba-11d2-a077-0800368eff02"))
+CoordGeocodePipe;
+    // [ default ] interface _CoordGeocodePipe
+    // interface IFieldProviderCallback
+
+struct __declspec(uuid("a6948f2a-e6ba-11d2-a077-0800368eff02"))
+_IChangePropertiesCallback : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall Change ( ) = 0;
+};
+
+struct __declspec(uuid("a6948f2b-e6ba-11d2-a077-0800368eff02"))
+IChangePropertiesCallback;
+    // [ default ] interface _IChangePropertiesCallback
+
+struct __declspec(uuid("11fa022f-f351-11d2-800e-00104b62bc40"))
+_AttachTableService : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall put_DataSourceType (
+        long _arg1 ) = 0;
+    virtual HRESULT __stdcall get_DataSourceType (
+        long * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_DataSource (
+        BSTR _arg1 ) = 0;
+    virtual HRESULT __stdcall get_DataSource (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_DataSourceDisplayString (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_DataSourceExpandedString (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_DataSourceTableNames (
+        VARIANT * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_DataSourceTableName (
+        BSTR _arg1 ) = 0;
+    virtual HRESULT __stdcall get_DataSourceTableName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall putref_TargetConnection (
+        IDispatch * _arg1 ) = 0;
+    virtual HRESULT __stdcall get_TargetConnection (
+        IDispatch * * _arg1 ) = 0;
+    virtual HRESULT __stdcall put_TargetTableName (
+        BSTR _arg1 ) = 0;
+    virtual HRESULT __stdcall get_TargetTableName (
+        BSTR * _arg1 ) = 0;
+    virtual HRESULT __stdcall Execute ( ) = 0;
+};
+
+struct __declspec(uuid("11fa0230-f351-11d2-800e-00104b62bc40"))
+AttachTableService;
+    // [ default ] interface _AttachTableService
+
+struct __declspec(uuid("74389317-a25f-11d1-b8aa-00609738317a"))
+__PreferenceSet : IDispatch
+{};
+
+struct __declspec(uuid("74389328-a25f-11d1-b8aa-00609738317a"))
+__AutoPanService : IDispatch
+{};
+
+enum PointPlacementModeConstants
+{
+    gmppmPointOrientToPoint = 1,
+    gmppmPointNotOriented = 2
+};
+
+enum GeomInfoPipeConstants
+{
+    GIPOutputGeometricLength = 1,
+    GIPOutputGeometricArea = 2,
+    GIPOutputGeometricPerimeter = 4,
+    GIPOutputAreaPerimSqrdRatio = 8
+};
+
+//
+// Named GUID constants initializations
+//
+
+extern "C" const GUID __declspec(selectany) LIBID_GMService =
+    {0x7438932c,0xa25f,0x11d1,{0xb8,0xaa,0x00,0x60,0x97,0x38,0x31,0x7a}};
+extern "C" const GUID __declspec(selectany) IID__PreferenceSet =
+    {0x74389315,0xa25f,0x11d1,{0xb8,0xaa,0x00,0x60,0x97,0x38,0x31,0x7a}};
+extern "C" const GUID __declspec(selectany) CLSID_PreferenceSet =
+    {0x74389316,0xa25f,0x11d1,{0xb8,0xaa,0x00,0x60,0x97,0x38,0x31,0x7a}};
+extern "C" const GUID __declspec(selectany) IID__MetadataService =
+    {0xd738bd51,0x04b4,0x11d4,{0xa6,0x11,0x08,0x00,0x36,0xcd,0xd3,0x03}};
+extern "C" const GUID __declspec(selectany) CLSID_MetadataService =
+    {0x74389319,0xa25f,0x11d1,{0xb8,0xaa,0x00,0x60,0x97,0x38,0x31,0x7a}};
+extern "C" const GUID __declspec(selectany) IID__FieldProperty =
+    {0x7438931a,0xa25f,0x11d1,{0xb8,0xaa,0x00,0x60,0x97,0x38,0x31,0x7a}};
+extern "C" const GUID __declspec(selectany) CLSID_FieldProperty =
+    {0x7438931b,0xa25f,0x11d1,{0xb8,0xaa,0x00,0x60,0x97,0x38,0x31,0x7a}};
+extern "C" const GUID __declspec(selectany) IID__TableProperty =
+    {0x7438931c,0xa25f,0x11d1,{0xb8,0xaa,0x00,0x60,0x97,0x38,0x31,0x7a}};
+extern "C" const GUID __declspec(selectany) CLSID_TableProperty =
+    {0x7438931d,0xa25f,0x11d1,{0xb8,0xaa,0x00,0x60,0x97,0x38,0x31,0x7a}};
+extern "C" const GUID __declspec(selectany) IID__PickQuickDialog =
+    {0x74389322,0xa25f,0x11d1,{0xb8,0xaa,0x00,0x60,0x97,0x38,0x31,0x7a}};
+extern "C" const GUID __declspec(selectany) CLSID_PickQuickDialog =
+    {0x74389323,0xa25f,0x11d1,{0xb8,0xaa,0x00,0x60,0x97,0x38,0x31,0x7a}};
+extern "C" const GUID __declspec(selectany) IID__OutputTableService =
+    {0x74389324,0xa25f,0x11d1,{0xb8,0xaa,0x00,0x60,0x97,0x38,0x31,0x7a}};
+extern "C" const GUID __declspec(selectany) CLSID_OutputTableService =
+    {0x74389325,0xa25f,0x11d1,{0xb8,0xaa,0x00,0x60,0x97,0x38,0x31,0x7a}};
+extern "C" const GUID __declspec(selectany) IID__AutoPanService =
+    {0x74389326,0xa25f,0x11d1,{0xb8,0xaa,0x00,0x60,0x97,0x38,0x31,0x7a}};
+extern "C" const GUID __declspec(selectany) CLSID_AutoPanService =
+    {0x74389327,0xa25f,0x11d1,{0xb8,0xaa,0x00,0x60,0x97,0x38,0x31,0x7a}};
+extern "C" const GUID __declspec(selectany) IID__GraphicsTextPipe =
+    {0x74389329,0xa25f,0x11d1,{0xb8,0xaa,0x00,0x60,0x97,0x38,0x31,0x7a}};
+extern "C" const GUID __declspec(selectany) CLSID_GraphicsTextPipe =
+    {0x7438932a,0xa25f,0x11d1,{0xb8,0xaa,0x00,0x60,0x97,0x38,0x31,0x7a}};
+extern "C" const GUID __declspec(selectany) IID__GeometryInfoPipeCls =
+    {0xa6948f25,0xe6ba,0x11d2,{0xa0,0x77,0x08,0x00,0x36,0x8e,0xff,0x02}};
+extern "C" const GUID __declspec(selectany) CLSID_GeometryInfoPipeCls =
+    {0xa6948f26,0xe6ba,0x11d2,{0xa0,0x77,0x08,0x00,0x36,0x8e,0xff,0x02}};
+extern "C" const GUID __declspec(selectany) IID__CoordGeocodePipe =
+    {0xa6948f28,0xe6ba,0x11d2,{0xa0,0x77,0x08,0x00,0x36,0x8e,0xff,0x02}};
+extern "C" const GUID __declspec(selectany) CLSID_CoordGeocodePipe =
+    {0xa6948f29,0xe6ba,0x11d2,{0xa0,0x77,0x08,0x00,0x36,0x8e,0xff,0x02}};
+extern "C" const GUID __declspec(selectany) IID__IChangePropertiesCallback =
+    {0xa6948f2a,0xe6ba,0x11d2,{0xa0,0x77,0x08,0x00,0x36,0x8e,0xff,0x02}};
+extern "C" const GUID __declspec(selectany) CLSID_IChangePropertiesCallback =
+    {0xa6948f2b,0xe6ba,0x11d2,{0xa0,0x77,0x08,0x00,0x36,0x8e,0xff,0x02}};
+extern "C" const GUID __declspec(selectany) IID__AttachTableService =
+    {0x11fa022f,0xf351,0x11d2,{0x80,0x0e,0x00,0x10,0x4b,0x62,0xbc,0x40}};
+extern "C" const GUID __declspec(selectany) CLSID_AttachTableService =
+    {0x11fa0230,0xf351,0x11d2,{0x80,0x0e,0x00,0x10,0x4b,0x62,0xbc,0x40}};
+extern "C" const GUID __declspec(selectany) DIID___PreferenceSet =
+    {0x74389317,0xa25f,0x11d1,{0xb8,0xaa,0x00,0x60,0x97,0x38,0x31,0x7a}};
+extern "C" const GUID __declspec(selectany) DIID___AutoPanService =
+    {0x74389328,0xa25f,0x11d1,{0xb8,0xaa,0x00,0x60,0x97,0x38,0x31,0x7a}};
+
+#pragma pack(pop)

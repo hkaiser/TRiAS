@@ -1,0 +1,41 @@
+# Genrieren der Versionsinfo's fÅr BSL.EXE
+
+# Generierungsdatum (yymmdd) und Version
+DATE=991029
+VERSION = 1
+RELEASE = 00
+BUILD = 014
+
+COPYRIGHT = HK$(DATE)
+
+PNAME = "Version f\xfcr den internen Gebrauch"
+PADDRESS = "TRiAS GmbH Potsdam"
+
+REPLACE = ersetz
+NAME = bsl
+DEF = $(NAME).def
+
+ASM = masm
+ASMF = /D?PLM=0 /D?WIN=1
+LINK = c:\msvc\bin\link16.exe
+DUMPBIN=c:\msdev\bin\dumpbin.exe
+
+# Alles neubilden
+all:	formake 
+
+
+# -----------------------------------------------------------------------------
+# CopyrightEintraege Generieren 
+new:
+	@del res\$(NAME).rcv
+	@del res\copystr.rc
+
+formake:	res\$(NAME).rcv res\copystr.rc
+
+# Personalisierungsinformation
+res\$(NAME).rcv:	res\$(NAME)v.rc
+	$(REPLACE) $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) res\$(NAME)v.rc res\$(NAME).rcv
+
+res\copystr.rc:	res\copystrt.rc
+	$(REPLACE) $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) res\copystrt.rc res\copystr.rc
+

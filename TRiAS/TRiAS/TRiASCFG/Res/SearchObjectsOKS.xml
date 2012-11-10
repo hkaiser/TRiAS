@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Copyright © 1991 - 2004, Hartmut Kaiser, #HK030116-->
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Hartmut Kaiser (Hartmut Kaiser) -->
+<!DOCTYPE GeoComponentSequence SYSTEM "GeoComponentSequence.dtd">
+<GeoComponentSequence Version="1.1" IsWizard97="1">
+	<Name>Recherche nach Objekteigenschaften</Name>
+	<GeoComponent ProgID="TRiASEx.SelectIdentObjTyp.1">
+		<HeaderTitle>Auswahl der zu untersuchenden Objektmenge</HeaderTitle>
+		<HeaderSubTitle>Wählen Sie die Objektklassen bzw. den Objekttyp der Objekte aus, für die die Recherche ausgeführt werden soll.</HeaderSubTitle>
+	</GeoComponent>
+	<GeoComponent ProgID="TRiASEx.PropertyChoice.1" Type="Sequence" Load="Registry">
+		<HeaderTitle>Auswahl der Recherchekriterien</HeaderTitle>
+		<HeaderSubTitle>Wählen Sie die zu untersuchende Objekteigenschaft sowie die Suchkriterien aus, nach denen diese Objekteigenschaft ausgewertet werden soll.</HeaderSubTitle>
+		<LoadInfo RegistryPath="TRiAS.Application.4\TRiASEx\SearchEngines">
+			<ErrorInfo>
+				<Caption>%s - Fehlerhafte Systemeinstellung</Caption>
+				<Prompt>Es wurden keine installierten Rechercheobjekte gefunden.
+Überprüfen und wiederholen Sie gegebenenfalls die Installation von %s.</Prompt>
+			</ErrorInfo>
+		</LoadInfo>
+	</GeoComponent>
+	<GeoComponent ProgID="TRiASEx.ShowInObjectWindow.1">
+		<HeaderTitle>Auswahl der Anzeige der Suchergebnisse</HeaderTitle>
+		<HeaderSubTitle>Wählen Sie aus, ob ein neues Recherchefenster erzeugt werden soll, oder ob die gefundenen Objekte in einem der existierenden Recherchefenster mit angezeigt werden sollen.</HeaderSubTitle>
+	</GeoComponent>
+</GeoComponentSequence>

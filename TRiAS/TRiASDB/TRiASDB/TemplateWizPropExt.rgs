@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiASDB.TemplateWizPropExt.1 = s 'TemplateWizPropExt Class'
+	{
+		CLSID = s '{BEC41DBC-F14F-43D8-BAC7-807A08CA487A}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {BEC41DBC-F14F-43D8-BAC7-807A08CA487A} = s 'TemplateWizPropExt Class'
+		{
+			ProgID = s 'TRiASDB.TemplateWizPropExt.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

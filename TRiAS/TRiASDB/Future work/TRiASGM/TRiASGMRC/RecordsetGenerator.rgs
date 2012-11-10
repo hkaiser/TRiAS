@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiASGM.OKSRecordsetGenerator.1 = s 'OKS RecordsetGenerator Class'
+	{
+		CLSID = s '{7417A5E4-AED0-11D1-859A-00600875138A}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {7417A5E4-AED0-11D1-859A-00600875138A} = s 'OKS RecordsetGenerator Class'
+		{
+			ProgID = s 'TRiASGM.OKSRecordsetGenerator.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

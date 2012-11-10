@@ -1,0 +1,38 @@
+HKCR
+{
+	TRiASEx.AreasToLines.1 = s 'AreasToLines Class'
+	{
+		CLSID = s '{DBEB428A-5FD2-48B0-A1BA-428EE1097E85}'
+	}
+	TRiASEx.AreasToLines = s 'AreasToLines Class'
+	{
+		CLSID = s '{DBEB428A-5FD2-48B0-A1BA-428EE1097E85}'
+		CurVer = s 'TRiASEx.AreasToLines.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {DBEB428A-5FD2-48B0-A1BA-428EE1097E85} = s 'AreasToLines Class'
+		{
+			ProgID = s 'TRiASEx.AreasToLines.1'
+			VersionIndependentProgID = s 'TRiASEx.AreasToLines'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiASEx.AreasToLines.1' = s '{DBEB428A-5FD2-48B0-A1BA-428EE1097E85}'
+			}
+		}
+	}
+}

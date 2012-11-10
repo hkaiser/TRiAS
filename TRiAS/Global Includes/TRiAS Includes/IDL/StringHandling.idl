@@ -1,0 +1,200 @@
+// @doc 
+// @module StringHandling.idl | Interfacedeklarationen für StringParsing und -handling
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declaration of defined interfaces
+interface IParseRegularExpression;
+interface IParseStringPairs;
+interface IParseStringPairs2;
+interface IComposeStringPairs;
+
+///////////////////////////////////////////////////////////////////////////////
+// Sonstige hier benötigte Konstanten
+#if !defined(VARIANT_TRUE)
+#define VARIANT_TRUE	((VARIANT_BOOL)0xffff)
+#define VARIANT_FALSE	((VARIANT_BOOL)0)
+#endif // !VARIANT_TRUE
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE HELPER
+// @interface IParseRegularExpression | Interface, welches die Analyse einer 
+// 'regular expression' zugänglich macht. Die Regeln der 'regular expression' 
+// entsprechen den in den GNU-Tools verwendeten Regeln (s. zusätzliche Bemerkungen).
+// @supby <o ParseRegularExpression>
+// @xref <o ParseRegularExpression>
+// @group Methoden und Eigenschaften von <i IParseRegularExpression> 
+// @index | IPARSEREGULAREXPRESSION
+// @doc IPARSEREGULAREXPRESSION
+	[
+		object,
+		uuid(C21AAF92-2DE5-11D1-969A-00A024D6F582),
+		dual,
+		helpstring("IParseRegularExpression Interface"),
+		pointer_default(unique)
+	]
+	interface IParseRegularExpression : IDispatch
+	{
+	// @property BSTR | IParseRegularExpression | Pattern | Liefert bzw. setzt das aktuell eingestellte Suchmuster
+	// @supby <o ParseRegularExpression>
+	// @xref <i IParseRegularExpression>
+		[propget, id(1), helpstring("Liefert das aktuelle Suchpattern (Suchmuster).")] HRESULT Pattern([out, retval] BSTR *pVal);
+		[propput, id(1), helpstring("Setzt das aktuelle Suchpattern (Suchmuster).")] HRESULT Pattern([in] BSTR newVal);
+
+	// @property long | IParseRegularExpression | Groups | Liefert die Anzahl der gefundenen Teilzeichenketten
+	// (readonly).
+	// @supby <o ParseRegularExpression>
+	// @xref <i IParseRegularExpression>
+		[propget, id(2), helpstring("Liefert die Anzahl der gefundenen Teilzeichenketten.")] HRESULT Groups([out, retval] long *pVal);
+
+	// @property BSTR | IParseRegularExpression | Group | Liefert die gefundene Teilzeichenkette 'Index'
+	// (readonly).
+	// @supby <o ParseRegularExpression>
+	// @xref <i IParseRegularExpression>
+		[propget, id(3), helpstring("Liefert die gefundene Teilzeichenkette 'Index'.")] HRESULT Group([in] long Index, [out, retval] BSTR *pVal);
+
+	// @method HRESULT | IParseRegularExpression | Match | Analysiert die übergebene Zeichenkette 
+	// 'ToMatch' an Hand des aktuellen Suchmusters und liefert in 'Matched' die Anzahl der zum 
+	// Suchmuster passenden Zeichen.
+	// @supby <o ParseRegularExpression>
+	// @xref <i IParseRegularExpression>
+		[id(100), helpstring("Analysiert die übergebene Zeichenkette 'ToMatch' an Hand des aktuellen Suchpatterns.")] HRESULT Match([in] BSTR ToMatch, [in, optional] VARIANT StartAt, [in, optional] VARIANT MatchLen, [out, retval] long *Matched);
+
+	// @method HRESULT | IParseRegularExpression | Search | Analysiert 'SearchLen' Zeichen der 
+	// Zeichenkette 'ToSearch' ab Position 'StartAt' an Hand des aktuellen Suchmusters.
+	// @supby <o ParseRegularExpression>
+	// @xref <i IParseRegularExpression>
+		[id(101), helpstring("Analysiert 'SearchLen' Zeichen der Zeichenkette 'ToSearch' ab Position 'StartAt' an Hand des aktuellen Suchpatterns.")] HRESULT Search([in] BSTR ToSearch, [in, out, optional] VARIANT *StartAt, [in, out, optional] VARIANT *SearchLen, [out, retval] BSTR *Found);
+
+	// @method HRESULT | IParseRegularExpression | Search | Ersetzt alle entsprechend dem aktuellen 
+	// Suchmuster gefundenen Teilzeichenketten in 'ToReplace' durch 'NewString'.
+	// @supby <o ParseRegularExpression>
+	// @xref <i IParseRegularExpression>
+		[id(102), helpstring("Ersetzt alle gefundenen Teilzeichenketten in 'ToReplace' durch 'NewString'.")] HRESULT Replace([in] BSTR ToReplace, [in] BSTR NewString, [in, optional] VARIANT ToStart, [in, optional] VARIANT ReplaceLen, [in, optional] VARIANT Global, [out, retval] BSTR *Result);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE HELPER
+// @interface IParseStringPairs | Interface, welches eine Zeichenkette entsprechend
+// einem vorgebbaren Suchmuster analysiert und Schlüssel/Wert - Paare extrahiert.
+// @supby <o ParseStringPairs>
+// @xref <o ParseStringPairs>
+// @group Methoden und Eigenschaften von <i IParseStringPairs> 
+// @index | IPARSESTRINGPAIRS 
+// @doc IPARSESTRINGPAIRS
+	[
+		object,
+		uuid(C21AAF95-2DE5-11D1-969A-00A024D6F582),
+		dual,
+		helpstring("IParseStringPairs Interface"),
+		pointer_default(unique)
+	]
+	interface IParseStringPairs : IDispatch
+	{
+	// @property BSTR | IParseStringPairs | Pattern | Liefert bzw. setzt das aktuell eingestellte Suchmuster 
+	// für die Analyse einer Zeichenkette nach Schlüssel/Wert-Paaren.
+	// @comm Das Suchmuster muß für _ein_ Schlüssel/Wert-Paar angegeben werden, wobei die erwartete Position des
+	// Schlüssels durch die spezielle Zeichenfolge '%1' und die erwartete Position des Wertes durch die
+	// Zeichenfolge '%2' (ohne Anführungszeichen) gekennzeichnet ist. Trennzeichen zwischen den Schlüssel/Wert-Paaren 
+	// müssen weggelassen werden.
+	// @ex Das folgende Beispiel zeigt das geforderte Suchmuster für eine Folge von Schlüssel/Wert-Paaren, die
+	// durch ein Gleichheitszeichen getrennt sind |
+	//
+	//	Das Suchmuster ",%1=%2" (ohne Anführungszeichen) kann beispielsweise folgende Zeichenkette 
+	//	erfolgreich analysieren:
+	//		,KEY1=VALUE1,KEY2=VALUE2
+	//	wobei dem Schlüssel 'KEY1' der Wert 'VALUE1' zugeordnet wird bzw. dem Schlüssel 'KEY2' der	Wert 'VALUE2'
+	// @supby <o ParseStringPairs>
+	// @xref <i IParseStringPairs>
+		[propget, id(0), helpstring("Liefert das aktuelle Suchpattern (Suchmuster).")] HRESULT Pattern([out, retval] BSTR *pVal);
+		[propput, id(0), helpstring("Setzt das aktuelle Suchpattern (Suchmuster).")] HRESULT Pattern([in] BSTR newVal);
+
+	// @property BSTR | IParseStringPairs | Value | Liefert die jeweils zweite Zeichenkette des Paares, 
+	// welches durch 'Key' identifiziert wird (readonly).
+	// @supby <o ParseStringPairs>
+	// @xref <i IParseStringPairs>
+		[propget, id(1), helpstring("Liefert die jeweils zweite Zeichenkette des Paares, welches durch 'Key' identifiziert wird.")] HRESULT Value([in] BSTR Key, [out, retval] BSTR *pVal);
+
+	// @method HRESULT | IParseStringPairs | Parse | Analysiert die Zeichenkette 'ToParse' und 
+	// speichert zusammengehörige Paare von Teilzeichenketten.
+	// @parm BSTR | ToParse | Die zu analysierende Zeichenkette
+	// @parm long * | Pairs | Enthält nach erfolgreichem Abschluß die Anzahl der analysierten Schlüssel/Wert-Paare.
+	// @supby <o ParseStringPairs>
+	// @xref <i IParseStringPairs>
+		[id(100), helpstring("Analysiert die Zeichenkette 'ToParse' und speichert zusammengehörige Paare von Teilzeichenketten.")] HRESULT Parse([in] BSTR ToParse, [out, retval] long *Pairs);
+
+	// @method HRESULT | IParseStringPairs | GetKeyStrings | Liefert einen Enumerator vom 
+	// Typ 'IEnumString', der alle ersten Teilzeichenketten (Schlüssel) der gespeicherten Paare enthält.
+	// @supby <o ParseStringPairs>
+	// @xref <i IParseStringPairs>
+		[id(101), helpstring("Liefert einen Enumerator, der alle ersten Teilzeichenketten der gespeichertten Paare enthält.")] HRESULT GetKeyStrings([out, retval] IUnknown **Keys);
+
+	// @method HRESULT | IParseStringPairs | InitObject | Initialisiert das übergebene Objekt 
+	// mit den gespeicherten Paaren über dessen 'IPersistPropertyBag' -Interface
+	// @supby <o ParseStringPairs>
+	// @xref <i IParseStringPairs>
+		[id(102), helpstring("Initialisiert das übergebene Objekt mit den gespeicherten Paaren über 'IPersistPropertyBag'.")] HRESULT InitObject ([in] IUnknown *pIUnk, [in, optional] VARIANT ErrorLog);
+	};
+
+// @doc INTERFACE HELPER
+// @interface IParseStringPairs2 | Interface, zusätzlich zu <i IParseStringPairs> ermöglicht,
+// einzele Key aus der Collection zu entfernen
+// @supby <o ParseStringPairs>
+// @xref <o ParseStringPairs>
+// @group Methoden und Eigenschaften von <i IParseStringPairs2> 
+// @index | IPARSESTRINGPAIRS2 
+// @doc IPARSESTRINGPAIRS2
+	[
+		object,
+		uuid(1A61EAD7-9298-4EEA-B626-47B043CF75E2),
+		dual,
+		helpstring("IParseStringPairs2 Interface"),
+		pointer_default(unique)
+	]
+	interface IParseStringPairs2 : IParseStringPairs
+	{
+	// @method HRESULT | IParseStringPairs2 | DeletePair | Löscht das Paar, welches
+	// durch den gegebenen 'Key' identifziert wird
+	// @parm BSTR | Key | Die Zeichenkette, die das zu löschende Paar identifiziert.
+	// @supby <o ParseStringPairs>
+	// @xref <i IParseStringPairs2>
+		[id(103), helpstring("Löscht das Paar, welches durch den gegebenen 'Key' identifziert wird.")] HRESULT DeletePair([in] BSTR Key);
+	};
+
+// @doc INTERFACE HELPER
+// @interface IComposeStringPairs | Interface, welches es erlaubt eine Zeichenkette 
+// entsprechend dem mit <op IParseStringPairs.Pattern> gesetzten Suchmuster 
+// zusammenzusetzen
+// @supby <o ParseStringPairs>
+// @xref <o ParseStringPairs>
+// @group Methoden und Eigenschaften von <i IComposeStringPairs> 
+// @index | ICOMPOSESTRINGPAIRS 
+// @doc ICOMPOSESTRINGPAIRS
+	[
+		object,
+		uuid(6B77F344-A121-11D1-BA21-080036D63803),
+		dual,
+		helpstring("IComposeStringPairs Interface"),
+		pointer_default(unique)
+	]
+	interface IComposeStringPairs : IDispatch
+	{
+	// @property BSTR | IComposeStringPairs | ComposedData | Liefert eine 
+	// Zeichenkette, die alle enthaltenen Key/Wertpaare enthält (readonly).
+	// @parm BSTR | Pattern | Die Zeichenkette, die das Format eines Key/Value-Paares beschreibt,
+	// wobei das Format dem Format der <op IParseStringPairs.Pattern> entspricht.
+	// @comm Die Eigenschaft <op .ComposedData> kann nicht gesetzt werden.
+	// @supby <o ParseStringPairs>
+	// @xref <i IComposeStringPairs>, <op IParseStringPairs.Pattern>
+		[propget, id(0), helpstring("Liefert eine Zeichenkette, die alle enthaltenen Key/Wertpaare enthält.")] HRESULT ComposedData ([in] BSTR Pattern, [out, retval] BSTR *pVal);
+
+	// @method HRESULT | IComposeStringPairs | SetValue | Setzt die jeweils 
+	// zweite Zeichenkette des Paares, welches durch 'Key' identifiziert wird.
+	// @parm BSTR | Key | Die Zeichenkette, die das Paar identifiziert.
+	// @parm BSTR | Val | Der Wert, der der Zeichenkette <p Key> zugeordnet wird.
+	// @parm VARIANT_BOOL | fCreate | Gibt vor, ob ein neues Key/Value-Paar erzeugt 
+	// werden soll, wenn der Eintrag 'Key' noch nicht existiert.
+	// @supby <o ParseStringPairs>
+	// @xref <i IComposeStringPairs>
+		[id(100), helpstring("Setzt die jeweils zweite Zeichenkette des Paares, welches durch 'Key' identifiziert wird.")] HRESULT SetValue([in] BSTR Key, [in] BSTR Val, [in, /*optional, */defaultvalue(VARIANT_FALSE)] VARIANT_BOOL fCreate);
+	};
+

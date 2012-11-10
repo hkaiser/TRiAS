@@ -1,0 +1,334 @@
+// TRiASGDO.idl : IDL source for TRiASGDO.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (TRiASGDO.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#include "TRiASGDO.ver"
+
+#define STDINTERFACE(help)	pointer_default(unique), helpstring(help)
+
+///////////////////////////////////////////////////////////////////////////////
+//
+[ 
+	uuid(99A653E0-ED39-11d2-993F-00AA002A873B),
+	local,
+	STDINTERFACE("")
+] 
+interface IGDOObjectGeometry : IUnknown 
+{
+	HRESULT PutGeometry (VARIANT pGeometry);
+	HRESULT GetGeometry (VARIANT *pGeometry);
+};
+
+[ 
+	uuid(36D78AE3-2F23-11D1-969F-00A024D6F582),
+	lcid(TYPELIB_TRiASGDO_LCID),
+	helpstring(TYPELIB_TRiASGDO_HELPSTRING),
+	version(TYPELIB_TRiASGDO_VERSION)
+] 
+library TRiASGDO 
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	enum TRIASGDO_VERSIONS {
+		TYPELIB_TRIASGDO_VERSION_MAJOR = TYPELIB_TRiASGDO_VERSION_MAJOR,
+		TYPELIB_TRIASGDO_VERSION_MINOR = TYPELIB_TRiASGDO_VERSION_MINOR
+	};
+
+	module STRINGCONSTANTS 
+	{
+		const LPSTR tdbObjectsMap = "ObjectsMap";
+	};
+
+	[
+		uuid(152AA470-B60F-11d2-98E3-0060085FC1CE),
+		object,
+		STDINTERFACE("ITRiASHandle Interface")
+	] 
+	interface ITRiASHandle : IDispatch 
+	{
+		[id(1000), helpstring("property Handle")] HRESULT GetHandle([out, retval] long *pVal);
+		[id(1001), helpstring("property Handle")] HRESULT PutHandle([in] long newVal);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// IGDODBEngine
+	[ 
+		uuid(B063A0A0-13FB-11d2-8F77-0060085FC1CE),
+		object,
+		STDINTERFACE("IGDOBDEngine Interface")
+	] 
+	interface IGDODBEngine : IDispatch 
+	{
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// IGDOFeature
+	[
+		uuid(246C6EC1-33B4-11d3-9993-0060085FC1CE),
+		object,
+		STDINTERFACE("IGDOFeature Interface (obsolete)")
+	] 
+	interface IGDOFeature : ITRiASHandle 
+	{
+		[id(1)] HRESULT InitTarget([in] SAFEARRAY(IUnknown*) pObjects, [in] VARIANT_BOOL bWritable, [in] DWORD dwTypeOfFeature, [in] BSTR strMCode, [in] BSTR strFieldname, [in] BSTR strFeaturename);
+		[id(2), propget, helpstring("DefaultValue")] HRESULT DefaultValue([out, retval] VARIANT *pVal);
+		[id(3), propget, helpstring("Feldname")] HRESULT Fieldname([out, retval] BSTR* pVal);
+		[id(3), propput, restricted, helpstring("Feldname")] HRESULT Fieldname([in] BSTR pVal );
+		[id(4), propget, helpstring("property MCode")] HRESULT MCode([out, retval] BSTR *pVal);
+		[id(4), propput, helpstring("property MCode")] HRESULT MCode([in] BSTR newVal);
+
+		[id(5), propget, helpstring("Feldwert")] HRESULT FieldValue([out, retval] VARIANT *pValue );
+		[id(5), propput, helpstring("Feldwert")] HRESULT FieldValue([in] VARIANT value );
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// IGDOFeatures
+	[
+		uuid(9AC54162-20BD-11d2-8F86-0060085FC1CE),
+		object,
+		STDINTERFACE("IGDOFeatures Interface")
+	] 
+	interface IGDOFeatures : IDispatch 
+	{
+		[id(1)] HRESULT InitTarget([in] SAFEARRAY(IUnknown*) pObjects, [in] VARIANT_BOOL bWritable);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// IGDOObject
+	[
+		uuid(C9500954-14CD-11D2-8F79-0060085FC1CE),
+		object,
+		STDINTERFACE("IGDOObject Interface")
+	] 
+	interface IGDOObject : ITRiASHandle 
+	{
+		[id(1)] HRESULT InitTarget([in] SAFEARRAY(IUnknown*) pObjects, [in] VARIANT_BOOL bWritable, [in] DWORD dwType, [in] BSTR strObjectname);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// IGDOObjects
+	[
+		uuid(EFD7FF51-45F4-11d3-99C1-0060085FC1CE),
+		object,
+		STDINTERFACE("IGDOObjects Interface")
+	] 
+	interface IGDOObjects : ITRiASHandle 
+	{
+		[id(1)] HRESULT InitTarget ([in] SAFEARRAY(IUnknown*) pObjects, [in] VARIANT_BOOL bWritable, [in] long objsTypes, [in] BSTR strOKS, [in] BSTR strTablename, [in] BSTR strClassname, [in] BSTR strDescription);
+		[id(2), helpstring("erzeugt eine neue Objekteigenschaft")] HRESULT CreateFeature ([in] IGDOFeatures* pGDOFeatures, [in] VARIANT vNameOrHandle, [in] BSTR bstrType, [in] long lType, [out, retval] IGDOFeature** ppIFeature);
+		[id(3), helpstring("löscht eine Eigenschaft")] HRESULT DeleteFeature ([in] IGDOFeatures* pGDOFeatures, [in] VARIANT vNameOrHandle);
+		[id(4), helpstring("ändert den Namen einer Eigenschaft")] HRESULT RenameFeature ([in] IGDOFeature* pFeature, [in] VARIANT vOldName);
+		[id(5), helpstring("ändert den MCode einer Eigenschaft")] HRESULT ReclassFeature ([in] IGDOFeature* pFeature, [in] VARIANT vOldMCode);
+		[id(6), helpstring("ändert den Namen einer Eigenschaft")] HRESULT RedescribeFeature ([in] IGDOFeature* pFeature);
+		[id(7), helpstring("ändert den Wert einer Eigenschaft")] HRESULT UpdateFeature ([in] IGDOFeature* pGDOFeature, [in] IGDOObject* pGDOObject, [in] VARIANT vNewValue);
+		[id(8), helpstring("liefert den Wert einer Eigenschaft")] HRESULT QueryFeature ([in] IGDOFeature* pGDOFeature, [in] IGDOObject* pGDOObject, [out, retval] VARIANT *pValue);
+		[id(9), helpstring("ändert den Namen (PrimaryKey) eines Objektes")] HRESULT RenameObject ([in] IGDOObject *pGDOObject, [in] BSTR strOldName);
+
+		[id(10), propget, helpstring("Tabellenname")] HRESULT Tablename([out, retval] BSTR* pVal);
+		[id(10), propput, restricted, helpstring("Tabellenname")] HRESULT Tablename([in] BSTR pVal);
+		[id(100)] HRESULT Save ([in, out] VARIANT_BOOL *pbHaveChanged);
+
+		[id(101), helpstring("")] HRESULT CreateFeatures ([in] IGDOObject* pGDOObject, [out,retval] IGDOFeatures** ppGDOFeatures);
+		[id(102), helpstring("")] HRESULT SetupFeatures ([in] IGDOFeatures* pGDOFeatures);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// IGDOObjectsCollection
+	[
+		uuid(EFD7FF50-45F4-11d3-99C1-0060085FC1CE),
+		object,
+		STDINTERFACE("IGDOObjectsCollection Interface")
+	] 
+	interface IGDOObjectsCollection : IDispatch 
+	{
+		[id(1)] HRESULT InitTarget([in] SAFEARRAY(IUnknown*) pObjects, [in] VARIANT_BOOL bWritable);
+		[id(2)] HRESULT ReclassObjects([in] IGDOObjects* pObjects, [in] BSTR strOldOKS);
+		[id(3)] HRESULT RenameObjects([in] IGDOObjects* pObjects, [in] BSTR strOldName);
+		[id(4)] HRESULT RedescribeObjects([in] IGDOObjects* pObjects);
+		[id(5)] HRESULT Save();
+		[id(100)] HRESULT SetupCollection();
+
+	// 2. Ausbaustufe
+		[id(DISPID_VALUE)] HRESULT Item( [in] VARIANT vIndex, [out,retval] VARIANT *vItem);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// IGDODatabase
+	[
+	 	uuid(270FC580-1BEA-11d2-8F7F-0060085FC1CE),
+		object,
+		STDINTERFACE("IGDODatabase Interface")
+	] 
+	interface IGDODatabase : IDispatch 
+	{
+		[id(100), helpstring("liefert eine gute Standardgeometrie für die Datenbank")] HRESULT GetDefaultGeometry([in] long geometryType, [out,retval] VARIANT* vDefaultGeometry);
+		[id(101), helpstring("liefert eine neue OriginatingPipe")] HRESULT GetPipes([out] IUnknown** ppIOriginatingPipe, [out] IUnknown** ppICSSTransformPipe, [out] IUnknown** ppISpatialFilterPipe);
+		[id(102), helpstring("transformiert eine Objektgeometrie")] HRESULT TransformGeometry( IUnknown* pObject);
+		[id(103), helpstring("transformiert eine Objektgeometrie")] HRESULT TransformGeometryInverse( IUnknown* pObject);
+		[id(104), helpstring("liefert einen neuen Recordset")] HRESULT GetRecordset([in] BSTR strTablename, [in] VARIANT vGeometryFilter, [in] BSTR strGeometryField, [in/*, optional, defaultvalue(NULL)*/] BSTR strFilter, [out] VARIANT *pcCSGuid, [out, retval] IUnknown** ppIRecordset);
+
+	//////////////////////////////////////////////////////////////////////
+	// Operationen für Objekte; diese werden durch das Datenbankobjekt
+	// ausgeführt, da hierbei die Geometrien eine Rolle spielen und die
+	// konkrete Transformation hier zur Verfügung steht.
+		[id(105), helpstring("Eine neues Objekt erzeugen")] HRESULT CreateObject([in] IGDOObjects* pObjects, [in, out] BSTR* pStrNameOfObject);
+		[id(106), helpstring("Eine konkrete Geometrie eines Objektes abfragen")]  HRESULT QueryGeometry([in] IGDOObjects* pObjects, [in] IGDOObject* pObject, [in] IGDOFeature *pFeature, [in, out] SAFEARRAY(VARIANT) *ppConstraints, [out, retval] VARIANT* ppResult);
+		[id(107), helpstring("Eine konkrete Geometrie eines Objektes rückschreiben")] HRESULT UpdateGeometry([in] IGDOObjects* pObjects, [in] IGDOObject* pObject, [in] IGDOFeature *pFeature, [in] VARIANT newGeometry);
+	};
+
+/////////////////////////////////////////////////////////////////////////////
+// GDO Feature(s)
+	[ 
+		uuid(B063A0A1-13FB-11d2-8F77-0060085FC1CE),
+		helpstring("GDODBEngine Class")
+	] 
+	coclass GDODBEngine 
+	{
+		[default] interface IGDODBEngine;
+	};
+
+	[
+		uuid(B063A0A3-13FB-11d2-8F77-0060085FC1CE),
+		helpstring("GDODatabase Class")
+	] 
+	coclass GDODatabase 
+	{
+		[default] interface IGDODatabase;
+	};
+	
+/////////////////////////////////////////////////////////////////////////////
+// GDO Feature(s)
+	[
+		uuid(9AC54161-20BD-11d2-8F86-0060085FC1CE),
+		helpstring("GDOFeature Class")
+	] 
+	coclass GDOFeature 
+	{
+		[default] interface IGDOFeature;
+	};
+	[
+		uuid(9AC54163-20BD-11d2-8F86-0060085FC1CE),
+		helpstring("GDOFeatures Class")
+	] 
+	coclass GDOFeatures 
+	{
+		[default] interface IGDOFeatures;
+	};
+
+/////////////////////////////////////////////////////////////////////////////
+// GDO Object(s)
+	[
+		uuid(C9500955-14CD-11D2-8F79-0060085FC1CE),
+		helpstring("GDOObject Class")
+	] 
+	coclass GDOObject 
+	{
+		[default] interface IGDOObject;
+	};
+	[
+		uuid(C9500957-14CD-11D2-8F79-0060085FC1CE),
+		helpstring("GDOObjects")
+	] 
+	coclass GDOObjects 
+	{
+		[default] interface IGDOObjects;
+	};
+	
+	[
+		uuid(1F057F15-C1E9-11D2-98F2-0060085FC1CE),
+		helpstring("GDOObjectsCollection Class")
+	] 
+	coclass GDOObjectsCollection 
+	{
+		[default] interface IGDOObjectsCollection;
+	};
+
+	[
+		uuid(E81DAD66-CC9D-11D2-9902-0060085FC1CE),
+		helpstring("_IPPGOracleEvents Interface")
+	] 
+	dispinterface _IPPGOracleEvents 
+	{
+		properties:
+		methods:
+	};
+	
+	[
+		uuid(E81DAD65-CC9D-11D2-9902-0060085FC1CE),
+		helpstring("PPGOracle Class")
+	] 
+	coclass PPGOracle 
+	{
+		interface IUnknown;
+		[default, source] dispinterface _IPPGOracleEvents;
+	};
+
+	[
+		uuid(2A0D6543-7B43-4F50-B65F-BDAD4E10A6DE),
+		helpstring("CreateOpenWizPropExt Class")
+	]
+	coclass CreateOpenWizPropExt
+	{
+		interface IUnknown;
+	};
+
+	[
+		uuid(B93F15FF-0BB7-4FD1-A928-29F45F01556F),
+		helpstring("ReconnectSQLServer Class")
+	]
+	coclass ReconnectSQLServer
+	{
+		[default] interface IUnknown;
+	};
+
+	[
+		uuid(0F9867D3-4477-4BA9-9518-735F4B18A4A3),
+		helpstring("CreateSQLServerDB Class")
+	]
+	coclass CreateSQLServerDB
+	{
+		[default] interface IUnknown;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+//	[	uuid(9AC54164-20BD-11d2-8F86-0060085FC1CE)
+//		, object
+//		, STDINTERFACE("IGDOGeoFeature Interface")
+//	] interface IGDOGeoFeature : IDispatch {
+//		[id(1)] HRESULT InitTarget(
+//			[in] SAFEARRAY(IUnknown*) pObjects
+//			, [in] VARIANT_BOOL bWritable
+//			, [in] DWORD dwTypeOfFeature
+//			, [in] BSTR strNameOfFeature
+//			, [in,optional] VARIANT defaultValue
+//		);
+//	};
+//
+//	[	uuid(9AC54166-20BD-11d2-8F86-0060085FC1CE)
+//		, object
+//		, STDINTERFACE("IGDOGeoFeatures Interface")
+//	] interface IGDOGeoFeatures : IDispatch {
+//		[id(1)] HRESULT InitTarget( 
+//			[in] SAFEARRAY(IUnknown*) pObjects
+//			, [in] VARIANT_BOOL bWritable
+//		);
+//	};
+//	/////////////////////////////////////////////////////////////////////////////
+//	// GDOGeoFeature(s)
+//	[ uuid(9AC54165-20BD-11d2-8F86-0060085FC1CE)
+//		, helpstring("GDOGeoFeature Class")
+//	] coclass GDOGeoFeature {
+//		[default] interface IGDOGeoFeature;
+//	};
+//	[ uuid(9AC54167-20BD-11d2-8F86-0060085FC1CE)
+//		, helpstring("GDOGeoFeatures Class")
+//	] coclass GDOGeoFeatures {
+//		[default] interface IGDOGeoFeatures;
+//	};
+};

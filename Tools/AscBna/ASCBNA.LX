@@ -1,0 +1,317 @@
+/* Scanner fuer ASCPUT (Analyse des ASCII-Formates)             */
+/* File: ASCPARS.LX                                             */
+
+%{
+
+#if defined(sccs)
+static char SccsId[] = "ASCPARS: %W%	%E%";
+#endif
+
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+#include "ascbna.h"
+#include "ascbnay.h"
+
+#define FALSE (0)
+#define TRUE (1)
+
+int yylineno = 0;
+
+struct keyentry {               /* Tabelleneintrag fuer reservierte Worte */
+	int  lx;
+	char *id;
+};
+
+// lokale Prototypen
+static void toUpper (char *);
+
+/* reservierte Worte, die vom Scanner identifiziert werden */
+struct keyentry keywords[] = {
+	{       T_OFFSET, "OFFSET"      },
+	{       T_SCALE, "SCALE"        },
+	{	T_ENTRYROSYS, "ENTRYROSYS"	},
+	{	T_ENTRYRO, "ENTRYRO"	},
+	{	T_ENTRYSYS, "ENTRYSYS"	},
+	{	T_ENTRY, "ENTRY"	},
+	{	T_PBDNAME, "PBDNAME"	},
+	{       0, NULL                 },
+};
+
+%}
+
+S               [-+]?
+D               [0-9]
+H		[0-9a-fA-F]
+HP		0[xX]
+
+E               [DEde]{S}?{D}+
+ID              [a-zA-Z_]([a-zA-Z0-9_])*
+
+%start merkmal textmerkmal Control Relation
+
+%%
+
+^P                      {       /* Identifikatorsatz Punkt */
+				BEGIN 0;
+				yylval.numtok.num_line = yylineno;
+				return (T_PSATZ);
+			}
+
+^F                      {       /* Identifikatorsatz Flaeche */
+				BEGIN 0;
+				yylval.numtok.num_line = yylineno;
+				return (T_FSATZ);
+			}
+
+^L                      {       /* Identifikatorsatz Linie */
+				BEGIN 0;
+				yylval.numtok.num_line = yylineno;
+				return (T_LSATZ);
+			}
+
+^W                      {       /* Wertesatz (Merkmalswerte, Relationen) */
+				yylval.numtok.num_line = yylineno;
+				return (T_WSATZ);
+			}
+
+^H                      {       /* Kopfsatz */
+				BEGIN 0;
+				read_string (yylval.strtok.string);
+				yylval.strtok.str_line = yylineno;
+				return (T_HSATZ);
+			}
+
+^D                      {       /* Beschreibungssatz */
+				BEGIN 0;
+				yylval.strtok.str_line = yylineno;
+				return (T_DSATZ);
+			}
+
+^G                      {       /* Geometriesatz */
+				BEGIN 0;
+				yylval.numtok.num_line = yylineno;
+				return (T_GSATZ);
+			}
+
+^B			{	/* BegleitObjektSatz */
+				BEGIN 0;
+				yylval.numtok.num_line = yylineno;
+				return T_BSATZ;
+			}
+
+^I			{	/* Text eines Begleitobjektes */
+				BEGIN 0;
+				yylval.numtok.num_line = yylineno;
+				return T_ISATZ;
+			}
+
+^M                      {       /* Merkmalssatz */
+				BEGIN merkmal;
+				yylval.numtok.num_line = yylineno;
+				return (T_MSATZ);
+			}
+
+^R                      {       /* Relationssatz */
+				BEGIN Relation;
+				yylval.numtok.num_line = yylineno;
+				return (T_RSATZ);
+			}
+
+<Relation>H		{	/* gleichrangige Relation */
+				BEGIN 0;
+				yylval.numtok.num_line = yylineno;
+				return T_HRELSATZ;
+			}
+
+<Relation>K		{	/* Komplexrelation */
+				BEGIN 0;
+				yylval.numtok.num_line = yylineno;
+				return T_KRELSATZ;
+			}
+
+<Relation>B		{	/* Begleitobjektrelation */
+				BEGIN 0;
+				yylval.numtok.num_line = yylineno;
+				return T_BRELSATZ;
+			}
+
+^T                      {       /* Trennsatz */
+				BEGIN 0;
+				yylval.numtok.num_line = yylineno;
+				return (T_TSATZ);
+			}
+
+^E                      {       /* EndeSatz */
+				BEGIN 0;
+				yylval.numtok.num_line = yylineno;
+				return (T_ESATZ);
+			}
+
+^K                      {       /* KomplexObjekt */
+				BEGIN 0;
+				yylval.numtok.num_line = yylineno;
+				return T_KOSATZ;
+			}
+
+^C			{	/* SteuerSatz */
+				BEGIN Control;
+				yylval.numtok.num_line = yylineno;
+				return T_CSATZ;
+			}
+
+<Control>V		{	/* VerschnittDirektive */
+			char NextIn;
+
+				BEGIN 0;
+				yylval.numtok.num_line = yylineno;
+				NextIn = input();
+				while (isspace(NextIn)) 
+					NextIn = input();
+				yylval.numtok.intnum = (NextIn == '-') ? TRUE : FALSE;
+				return T_VSATZ;
+			}
+
+^";"                    {       /* Kommentarsatz */
+				BEGIN 0;
+				read_string (yylval.strtok.string);
+				yylval.strtok.str_line = yylineno;
+				return (T_KSATZ);
+			}
+
+\n                      {       /* Zeilen zaehlen */
+				yylval.numtok.num_line = yylineno++;
+				return ('\n');
+			}
+
+\"                      |
+\'                      {
+			register int scope_char = yytext[0];
+			register int inchar;
+			register char *cptr = yylval.strtok.string;
+
+				BEGIN 0;
+				while ((inchar = input()) != scope_char)
+					*cptr++ = inchar;
+				*cptr = '\0';
+				yylval.strtok.str_line = yylineno;
+				return (T_STRING);
+			}
+
+{HP}{H}+		{       /* HexIntegerzahl */
+				yylval.numtok.intnum = strtoul (yytext, NULL, 16);
+				yylval.numtok.num_line = yylineno;
+				return (T_HEXINTEGER);
+			}
+
+{S}{D}+                 {       /* Integerzahl */
+				yylval.numtok.intnum = atol (yytext);
+				yylval.numtok.num_line = yylineno;
+				return (T_INTEGER);
+			}
+
+
+{S}{D}+"."{D}*({E})?    |
+{S}{D}*"."{D}+({E})?    |
+{S}{D}+{E}              {       /* Floatpointzahl */
+				yylval.flttok.fltnum = atof (yytext);
+				yylval.flttok.flt_line = yylineno;
+				return (T_FLOAT);
+			}
+
+
+<merkmal>I              |
+<merkmal>F              {
+				BEGIN 0;
+				yylval.strtok.str_line = yylineno;
+				return (*yytext);
+			}
+
+<merkmal>A              {
+				BEGIN textmerkmal;
+				yylval.strtok.str_line = yylineno;
+				return ('A');
+			}
+
+[ \t]*                  ;               /* ignorieren */
+
+{ID}                    {
+			/* Keyword */
+			register int i;
+
+			strncpy (yylval.strtok.string, yytext, NAMELEN);
+			toUpper (yylval.strtok.string);
+			/* ist ID ein reserviertes Wort ? */
+			for (i = 0; keywords[i].lx ; i++) {
+				if (!stricmp (keywords[i].id, yylval.strtok.string))
+					break;
+			}
+			if (keywords[i].lx) {   /* ID ist Schluesselwort */
+				yylval.strtok.str_line = yylineno;
+/*				if (keywords[i].lx == T_ENTRY) {
+				// alles bis zum ZeilenEnde als Token liefern
+				register char *cptr = yylval.strtok.string;
+				register int InChar;
+
+					do {	// Leerraum ueberspringen
+						InChar = input();
+						if (!isspace(InChar))
+							break;
+					} while (TRUE);
+					unput (InChar);
+					while ((InChar = input()) != '\n')
+						*cptr++ = InChar;
+					unput (InChar);
+				}
+*/				return (keywords[i].lx);
+			} 
+			else {          /* kein Keyword --> Fehler */
+				yylval.numtok.num_line = yylineno;
+				return (T_IDENT);
+			}
+			}
+
+.                       ;       /* alles andere schlicht ignorieren */
+
+%%
+
+char *read_string (register char *cptr)
+{
+register char *cptr_old = cptr;
+
+	while ((*cptr++ = input ()) != '\n')
+		;
+	*--cptr = '\0';
+	unput ('\n');
+
+return (cptr_old);
+}
+
+void skip_lines (char *pattern) {
+register int c;
+
+/* Satz suchen, der mit Kennzeichen aus pattern beginnt */
+	do {
+		c = next_line ();
+	} while (strchr (pattern, c) == NULL);
+	unput (c);
+}
+
+int next_line (void) {
+
+	while (input () != '\n')
+		;
+
+return (input ());
+}
+
+static void toUpper (char *String) {
+register char *cptr = String;
+
+	while (*cptr) {
+		if (islower(*cptr)) 
+			*cptr = toupper(*cptr);
+		cptr++;
+	}
+}

@@ -1,0 +1,17 @@
+; Moduldefinitionsdatei, die notwendige Rudimente für Erweiterungen enthält
+
+LIBRARY		OLTXTEXT
+
+DESCRIPTION	'TRIAS(R) - Beispielerweiterung V1.01.001, (C) #HK930709'
+
+EXETYPE		WINDOWS PROTMODE
+
+CODE		LOADONCALL DISCARDABLE MOVEABLE
+DATA		PRELOAD MOVEABLE SINGLE
+
+STUB		'rights.exe'
+
+; Die beiden Funktionen müssen exportiert sein -------------------------------
+EXPORTS
+	;WEP				@1	RESIDENTNAME
+	;TRIASEXTENSIONPROC		@2

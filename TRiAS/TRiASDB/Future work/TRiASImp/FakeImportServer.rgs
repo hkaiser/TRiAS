@@ -1,0 +1,45 @@
+HKCR
+{
+	NoRemove %PROGID%
+	{
+		ForceRemove TRiASDB
+		{
+			CLSID = s '{56FD6492-93D5-11D1-A024-0060975566B4}'
+			{
+				OpenWizPages = s '{1DBC4EA6-A3AB-11D1-A053-0060975566B4}'
+			}
+			Description
+			{
+				val DefaultExtension = s '.%DEFAULTTEXT%'
+				val LongName = s '%LONGNAME%'
+				val ShortName = s '%SHORTNAME%'
+				val NameDescription = s '%NAMEDESC%'
+				val NameIsDirectory = s '%NAMEISDIR%'
+				val NameIsFile = s '%NAMEISFILE%'
+				val ReadWrite = s '%READWRITE%'
+				val FilterString = s '%FILTERSTRING%'
+				val Version = s '%VERSION%'
+				val ToolBoxBitmap32 = d %BITMAP%
+				val MultipleFiles = s '%MULTIFILE%'
+				val CanImportGeometry = s '%CANIMPGEOM%'
+				val OptImportGeometry = s '%OPTIMPGEOM%'
+				val CanImportFeatures = s '%CANIMPFEAT%'
+				val OptImportFeatures = s '%OPTIMPFEAT%'
+				val CanImportRelations = s '%CANIMPRELA%'
+				val OptImportRelations = s '%OPTIMPRELA%'
+				val CanImportVisualisation = s '%CANIMPVISU%'
+				val OptImportVisualisation = s '%OPTIMPVISU%'
+				val CanAnsiOEM = s '%CANANSIOEM%'
+				val OptAnsiOEM = s '%OPTANSIOEM%'
+				val ShouldConfig = s '%SHOULDCONFIG%'
+			}
+		}
+	}
+	NoRemove 'TRiASImport.DBEngine.1'
+	{
+		TRiASDB
+		{
+			%PROGID% = s '%NAMEDESC%'
+		}
+	}
+}

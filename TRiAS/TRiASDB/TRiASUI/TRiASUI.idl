@@ -1,0 +1,184 @@
+// $Header: $
+// Copyright© 1998 Fernerkundungszentrum Potsdam GmbH, All rights reserved
+// Created: 10/04/1998 09:53:13 PM
+//
+// @doc
+// @module TRiASUI.idl | IDL source for TRiASUI.dll
+
+// This file will be processed by the MIDL tool to
+// produce the type library (TRiASUI.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#if !defined(_BASETSD_H_) && (501 >= __midl)
+#include <basetsd.h>
+#endif // !defined(_BASETSD_H_)
+
+cpp_quote("#define TYPELIB_TRIASUI_VERSION_MAJOR 1")
+cpp_quote("#define TYPELIB_TRIASUI_VERSION_MINOR 0")
+cpp_quote("#define TYPELIB_TRIASUI_VERSION \"1.0\"")
+cpp_quote("#define TYPELIB_TRIASUI_LCID 0")
+
+#define TYPELIB_TRIASUI_VERSION 1.0
+#define TYPELIB_TRIASUI_LCID 0
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIASUI
+	[
+		object,
+		uuid(A3307F43-5BC3-11D2-9ED5-006008447800),
+		dual,
+		helpstring("ITRiASOptionDlg Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASOptionDlg : IDispatch
+	{
+		typedef [public] enum tagSHOWCOMMAND {
+			SHOWCOMMAND_Hide = 0,			// SW_HIDE
+			SHOWCOMMAND_Show = 1,			// SW_NORMAL
+			SHOWCOMMAND_ShowModeless = 2,	// SW_NORMAL jedoch modeless erzeugen
+		} SHOWCOMMAND;
+
+		typedef [public] enum tagNEXTITEMMODE {
+			NEXTITEMMODE_ROOT = 0,				// TVGN_ROOT
+			NEXTITEMMODE_NEXT = 1,				// TVGN_NEXT
+			NEXTITEMMODE_PREVIOUS = 2,			// TVGN_PREVIOUS
+			NEXTITEMMODE_PARENT = 3,			// TVGN_PARENT
+			NEXTITEMMODE_CHILD = 4,				// TVGN_CHILD
+			NEXTITEMMODE_FIRSTVISIBLE = 5,		// TVGN_FIRSTVISIBLE
+			NEXTITEMMODE_NEXTVISIBLE = 6,		// TVGN_NEXTVISIBLE
+			NEXTITEMMODE_PREVIOUSVISIBLE = 7,	// TVGN_PREVIOUSVISIBLE
+			NEXTITEMMODE_DROPHILITE = 8,		// TVGN_DROPHILITE
+			NEXTITEMMODE_CARET = 9,				// TVGN_CARET
+		} NEXTITEMMODE;
+
+		[propget, id(1), helpstring("property Caption")] HRESULT Caption([out, retval] BSTR *pVal);
+		[propput, id(1), helpstring("property Caption")] HRESULT Caption([in] BSTR newVal);
+		[propget, id(2), helpstring("property WordWrap")] HRESULT WordWrap([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(2), helpstring("property WordWrap")] HRESULT WordWrap([in] VARIANT_BOOL newVal);
+		[propget, id(3), helpstring("property HasLines")] HRESULT HasLines([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(3), helpstring("property HasLines")] HRESULT HasLines([in] VARIANT_BOOL newVal);
+		[propget, id(4), helpstring("property HasButtons")] HRESULT HasButtons([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(4), helpstring("property HasButtons")] HRESULT HasButtons([in] VARIANT_BOOL newVal);
+		[propget, id(5), helpstring("property MultiSelect")] HRESULT MultiSelect([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(5), helpstring("property MultiSelect")] HRESULT MultiSelect([in] VARIANT_BOOL newVal);
+		[propget, id(6), helpstring("property HasApply")] HRESULT HasApply([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(6), helpstring("property HasApply")] HRESULT HasApply([in] VARIANT_BOOL newVal);
+
+		[id(100), helpstring("method InsertItemName")] HRESULT InsertItemName([in] BSTR Type, [in] BSTR Name, [in /*, optional, defaultvalue(0)*/] ULONG Parent, [out, retval] ULONG *ID);
+		[id(101), helpstring("method InsertItemObject")] HRESULT InsertItemObject([in] IUnknown *Obj, [in] BSTR Name, [in] ULONG Parent, [in] IDispatch *Pict, [out, retval] ULONG *ID);
+		[id(102), helpstring("method InsertFolderItem")] HRESULT InsertFolderItem([in] BSTR Name, [in] ULONG Parent, [out, retval] ULONG *Item);
+
+		[id(103), helpstring("method Show")] HRESULT Show([in] INT_PTR hWndParent, [in] SHOWCOMMAND rgCmd, [out, retval] VARIANT_BOOL *pvResult);
+
+		[id(104), helpstring("method SelectItem")] HRESULT SelectItem([in] ULONG ID, [in] VARIANT_BOOL Select);
+		[id(105), helpstring("method GetChildItem")] HRESULT GetChildItem([in] ULONG Parent, [out, retval] ULONG *Child);
+		[id(106), helpstring("method GetNextItem")] HRESULT GetNextItem([in] ULONG Item, [in] NEXTITEMMODE Mode, [out, retval] ULONG *NextItem);
+		[id(107), helpstring("method GetItemName")] HRESULT GetItemName([in] ULONG Item, [out, retval] BSTR *Name);
+		[id(108), helpstring("method GetItemObject")] HRESULT GetItemObject([in] ULONG Item, [out, retval] IUnknown **Obj);
+
+		[id(109), helpstring("method Advise")] HRESULT Advise([in] IUnknown *pConn, [out, retval] DWORD *Cookie);
+		[id(110), helpstring("method Unadvise")] HRESULT Unadvise([in] DWORD Cookie);
+
+		[id(111), helpstring("method RefreshItem")] HRESULT RefreshItem([in] ULONG Item);
+		[id(112), helpstring("method RefreshAllItems")] HRESULT RefreshAllItems();
+
+	// #HK011121
+		[propget, id(7), helpstring("property ActItem")] HRESULT ActItem([out, retval] ULONG *pVal);
+		[id(113), helpstring("method SetFirstVisible")] HRESULT SetFirstVisible([in] ULONG Id);
+		[id(114), helpstring("method GetParentItem")] HRESULT GetParentItem([in] ULONG Child, [out, retval] ULONG *Parent);
+
+	// #HK020315
+		[propget, id(8), helpstring("property ContextHandle")] HRESULT ContextHandle([out, retval] INT_PTR *pVal);
+		[propput, id(8), helpstring("property ContextHandle")] HRESULT ContextHandle([in] INT_PTR newVal);
+	};
+
+	[
+		object,
+		uuid(3460D3E6-62C9-11D2-9EDE-006008447800),
+		dual,
+		helpstring("ITRiASOptionDlgCallback Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASOptionDlgCallback : IDispatch
+	{
+		[id(1), helpstring("event OnInitDialog")] HRESULT OnInitDialog([in] ITRiASOptionDlg *Dlg);
+		[id(2), helpstring("event OnGetDispInfoChildren")] HRESULT OnGetDispInfoChildren([in] ITRiASOptionDlg *Dlg, [in] ULONG Item, [out, retval] int *Children);
+		[id(3), helpstring("event OnGetDispInfoImage")] HRESULT OnGetDispInfoImage([in] ITRiASOptionDlg *Dlg, [in] ULONG Item, [out, retval] IDispatch **Image);
+		[id(4), helpstring("event OnGetDispInfoSelectedImage")] HRESULT OnGetDispInfoExpandedImage([in] ITRiASOptionDlg *Dlg, [in] ULONG Item, [out, retval] IDispatch **SelImage);
+		[id(5), helpstring("event OnGetDispInfoText")] HRESULT OnGetDispInfoText([in] ITRiASOptionDlg *Dlg, [in] ULONG Item, [out, retval] BSTR *Text);
+
+		[id(6), helpstring("event OnQueryContextMenu")] HRESULT OnQueryContextMenu([in] ITRiASOptionDlg *Dlg, [in] ULONG Item, [in] INT_PTR hMenu, [in] UINT idCmdFirst, [in] UINT idCmdLast, [out, retval] UINT *puiLastID);
+		[id(7), helpstring("event OnGetCommandString")] HRESULT OnGetCommandString ([in] ITRiASOptionDlg *Dlg, [in] ULONG Item, [in] UINT uiCmd, [in] DWORD dwFlags, [out, retval] BSTR *Desc);
+		[id(8), helpstring("event OnInvokeCommand")] HRESULT OnInvokeCommand ([in] ITRiASOptionDlg *Dlg, [in] ULONG Item, [in] INT_PTR hWnd, [in] UINT uiCmd);
+
+		[id(9), helpstring("event OnOk")] HRESULT OnOk ([in] ITRiASOptionDlg *Dlg);
+		[id(10), helpstring("event OnCancel")] HRESULT OnCancel ([in] ITRiASOptionDlg *Dlg);
+	};
+
+// IUIContextHandle Interface
+	[ 
+		object,
+		uuid(89A07737-62A0-474A-B8C9-E489FAA6AC73), 
+		pointer_default(unique) 
+	]
+	interface IUIContextHandle : IUnknown
+	{
+		HRESULT get_ContextHandle([out, retval] INT_PTR *pContextHandle);	
+		HRESULT put_ContextHandle([in] INT_PTR ContextHandle);	
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc TYPELIB
+// Die eigentliche TypeLibrary
+[
+	uuid(008861E3-5BBB-11D2-9ED4-006008447800),
+	version(TYPELIB_TRIASUI_VERSION),
+	lcid(TYPELIB_TRIASUI_LCID),
+	helpstring("TRiASUI 1.0 Type Library")
+]
+library TRIASUI
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	enum VERSION {
+		TRIASUI_TYPELIB_VERSION_MAJOR = 1,
+		TRIASUI_TYPELIB_VERSION_MINOR = 0,
+	};
+
+// @doc OBJECT TRIASUI
+	[
+		uuid(A3307F44-5BC3-11D2-9ED5-006008447800),
+		helpstring("TRiASOptionDlg Class")
+	]
+	coclass TRiASOptionDlg
+	{
+		[default] interface ITRiASOptionDlg;
+		[default, source] interface ITRiASOptionDlgCallback;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// PropertyPages
+// @doc OBJECT TRIASUI
+	[
+		uuid(B31D1E65-56D1-11D2-9ECF-006008447800),
+		helpstring("EditFeatureDlg Class")
+	]
+	coclass EditFeatureDlg
+	{
+		[default] interface IUnknown;
+		interface IUIContextHandle;
+	};
+	
+// @doc OBJECT TRIASUI
+	[
+		uuid(B31D1E66-56D1-11D2-9ECF-006008447800),
+		helpstring("EditFeatureParamDlg Class")
+	]
+	coclass EditFeatureParamDlg
+	{
+		[default] interface IUnknown;
+	};
+};

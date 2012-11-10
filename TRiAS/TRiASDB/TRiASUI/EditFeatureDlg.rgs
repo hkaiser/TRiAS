@@ -1,0 +1,18 @@
+HKCR
+{
+	TRiASDB.EditFeatureDlg.1 = s 'Editierung des Wertes einer Objekteigenschaft'
+	{
+		CLSID = s '{B31D1E65-56D1-11D2-9ECF-006008447800}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {B31D1E65-56D1-11D2-9ECF-006008447800} = s 'Editierung des Wertes einer Objekteigenschaft'
+		{
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

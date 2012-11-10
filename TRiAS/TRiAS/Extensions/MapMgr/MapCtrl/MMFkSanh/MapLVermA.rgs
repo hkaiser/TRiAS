@@ -1,0 +1,46 @@
+HKCR
+{
+	TRiAS.MapMgr.Import.MapLVermA.1 = s 'TRiAS - Import von Flurkarten des Landesvermessungsamtes Sachsen Anhalt'
+	{
+		CLSID = s '{B6AFCF04-1A64-11d2-8F7D-0060085FC1CE}'
+	}
+	TRiAS.MapMgr.Import.MapLVermA = s 'TRiAS - Import von Flurkarten des Landesvermessungsamtes Sachsen Anhalt'
+	{
+		CurVer = s 'TRiAS.MapMgr.Import.MapLVermA.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {B6AFCF04-1A64-11d2-8F7D-0060085FC1CE} = s 'TRiAS - Import von Flurkarten des Landesvermessungsamtes Sachsen Anhalt'
+		{
+			ProgID = s 'TRiAS.MapMgr.Import.MapLVermA.1'
+			VersionIndependentProgID = s 'TRiAS.MapMgr.Import.MapLVermA'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}
+HKCU
+{
+	NoRemove Software 
+	{
+		NoRemove TRiAS 
+		{
+			NoRemove TRiAS 
+			{
+				NoRemove Extensions 
+				{
+					NoRemove TRiAS.MapMgr.Import.1
+					{
+						NoRemove ImportEngines
+						{
+							'{B6AFCF04-1A64-11d2-8F7D-0060085FC1CE}' = s ''
+						}
+					}
+				}
+			}
+		}
+	}
+}

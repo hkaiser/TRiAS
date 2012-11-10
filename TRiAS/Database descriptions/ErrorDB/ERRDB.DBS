@@ -1,0 +1,27 @@
+/* Metadatenbasis fuer Fehlerverarbeitung etc.                  */
+/* File: ERRDB.DBS               %W%  %E%        */
+
+database errdb {
+
+	version 1.00.00.003;
+
+/* Fehlercode Datei */
+        data file "*.err" contains error;
+/* Datei enthaelt Namene der Routinen */
+        data file "*.src" contains routine;
+
+/* Schluesseldateien zur besseren Verwaltung */
+        btree key file "*.erk" contains errcode;
+        btree key file "*.srk" contains srccode;
+
+
+        record error {
+                unique key long errcode;
+                char eshort[7];
+                char errtext[80];
+        }
+        record routine {
+                unique key long srccode;
+                char srcname[40];
+        }
+}

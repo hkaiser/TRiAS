@@ -1,0 +1,38 @@
+HKCR
+{
+	TRiAS.StatisticsContainer.ClassValues.1 = s 'Objektklassenstatistik'
+	{
+		CLSID = s '{F2B6B295-E366-4C3F-AA82-5C5668A2C057}'
+	}
+	TRiAS.StatisticsContainer.ClassValues = s 'Objektklassenstatistik'
+	{
+		CLSID = s '{F2B6B295-E366-4C3F-AA82-5C5668A2C057}'
+		CurVer = s 'TRiAS.StatisticsContainer.ClassValues.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {F2B6B295-E366-4C3F-AA82-5C5668A2C057} = s 'Objektklassenstatistik'
+		{
+			ProgID = s 'TRiAS.StatisticsContainer.ClassValues.1'
+			VersionIndependentProgID = s 'TRiAS.StatisticsContainer.ClassValues'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			ForceRemove 'Control'
+			ForceRemove 'Insertable'
+			ForceRemove 'ToolboxBitmap32' = s '%MODULE%, 139'
+			'MiscStatus' = s '0'
+			{
+			    '1' = s '131473'
+			}
+			'TypeLib' = s '{CF461D81-EE47-11D2-9BE4-BAF620524153}'
+			'Version' = s '1.0'
+			'Implemented Categories'
+			{
+				{5784231F-3487-4EA9-ACE8-C5EADDB58794}
+			}
+		}
+	}
+}

@@ -1,0 +1,73 @@
+
+     ***********************************************************
+
+       GOOSE: The Goose Object-Oriented Statistics Environment
+
+     ***********************************************************
+
+Goose is a GPLed library of statistical functions implemented in C++.
+It is designed to make it reasonably simple to perform statistical
+calculations in a reasonably efficient manner.
+
+The Free Software Foundation has been kind enough to host a web site
+for Goose.  You'll find it at http://www.gnu.org/software/goose.
+
+Goose 0.0.2 was GPLed.  Goose is currently now, and will continue in
+the future to be LGPLed.  The GPL on 0.0.2 was a bit of an aberration
+while some license issues were explored.  That is all sorted out for
+now... I think.
+
+Goose is being developed in parallel with Guppi (GNU/Gnome Useful Plot
+Production Interface), a data visualization tool that will also
+provide basic statistical functions.  Since Guppi is still at a *very*
+early stage of its design, the level of statistical sophistication it
+will support is still unclear.  However, it will ultimately offer, at
+the very least, some light-weight statistical functionality.  (How
+many times have *you* been annoyed by the inability of Gnuplot to do
+even the simplest linear regressions?)
+
+You can find the latest news about Guppi at http://www.gnome.org/guppi.
+
+Goose doesn't have a mailing list of its own (yet), but it is a
+frequent subject on the Guppi mailing list.  To subscribe, send mail
+to guppi-list-request@gnome.org with "subscribe" in the subject line.
+
+We've used the fact that Guppi depends on Goose as a rather flimsy
+pretense for getting Goose into the Gnome CVS server.  See the gnome
+pages (http://www.gnome.org) for info on how to get access.
+
+Please send any questions, comments, suggestions, or patches to me via
+e-mail.  If you use Goose to do something interesting or useful, I'd
+like to hear about it.
+
+Good luck!
+
+- Jon Trowbridge <trow@emccta.com>
+
+---------------------------------------------------------------------------
+
+INSTALL NOTES:
+
+If you are using goose out of CVS, type "./auto-gen.sh" to generate
+the Makefiles, and then "make" to compile.  If you are using a tarball
+release, all it takes is "configure" and "make".
+
+On the Linux/PPC version that I have access to, -ansi and pthread.h
+don't mix.  If your compile dies with a error in
+/usr/include/pthread.h, try taking -ansi out of CXXFLAGS.  However,
+even with this fix, I couldn't get the threaded version of the
+bootstrap calculations to work.  Either I'm using threads in an
+abusive way, or something is broken on my test PPC platform.
+
+BTW, Goose is being primarily developed under Linux/x86.  I have
+access to a box running Linux/PPC, so I'm able to check that
+everything builds and runs properly on that platform.  (If anyone is
+willing to give me access to any other platform for goose portability
+testing, that would be great...)
+
+I'm told that Goose can be built under Win32.  I've never tried it.
+
+If you compile Goose with a recent version of egcs, you'll get *lots*
+of warnings.  This is mostly due to problems with the guile headers.
+
+I've had problems building with older releases of egcs (say, before 1.1.1).

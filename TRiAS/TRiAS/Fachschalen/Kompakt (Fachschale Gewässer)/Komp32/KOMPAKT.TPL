@@ -1,0 +1,16 @@
+; Moduldefinitionsdatei 
+
+DESCRIPTION	'TRIAS(R)- Erweiterung zur Anzeige des Kompakt-Systems, V@A.@B.@C, (C) #@D'
+
+EXPORTS
+	DllGetClassObject	= _DllGetClassObject@12		@1 PRIVATE
+	DllCanUnloadNow		= _DllCanUnloadNow@0		@2 PRIVATE
+	DllRegisterServer	= _DllRegisterServer@0		@3 PRIVATE
+	DllUnregisterServer	= _DllUnregisterServer@0	@4 PRIVATE
+	HoleTriasGewaesser	= HoleTriasGewaesser		@5
+	HoleTriasBauwerke	= HoleTriasBauwerke		@6
+	HoleTriasFlaechen	= HoleTriasFlaechen		@7
+	HoleKoordinaten		= HoleKoordinaten		@8
+	ZeigeTopKarte		= ZeigeTopKarte			@9
+	HydraulikTest		= HydraulikTest			@10
+	THoleKatalogProc	= THoleKatalogProc		@11

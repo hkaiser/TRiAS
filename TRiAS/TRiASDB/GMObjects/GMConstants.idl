@@ -1,0 +1,476 @@
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Konstantendefinitionen aus PClient.tlb
+// irgendwie werden diese Konstanten über das #import-Statement nicht mit erzeugt
+// Daher selbige mit dem OLE-Viewer ausgeschnippelt und in diese Pseudo-IDL eingebastelt
+
+[
+  uuid(18107990-B2DA-11d2-98DA-0060085FC1CE),
+  version(0.0),
+  helpstring("Intergraph GeoMedia Client Support 2.0"),
+  helpfile("warehouse_auto20.hlp"),
+  helpcontext(00000000)
+]
+library PClient
+{
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      helpstring("Predefined Constants used by the Connection object.")
+    ]
+    module ConnectionConstants {
+        [helpstring("Connection mode read-write.")] const long gmcModeReadWrite = 1;
+        [helpstring("Connection mode read-only.")] const long gmcModeReadOnly = 0;
+        [helpstring("Connection status open.")] const long gmcStatusOpen = 1;
+        [helpstring("Connection status closed.")] const long gmcStatusClosed = 0;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      helpstring("GDO Predefined Constants")
+    ]
+    module GConstants {
+        [helpstring("GAliasTable Types")] const LPSTR gdbCoordSystem = "GCoordSystemTable";
+        [helpstring("GAliasTable Types")] const LPSTR gdbModifications = "GModifications";
+        [helpstring("GAliasTable Types")] const LPSTR gdbModifiedTables = "GModifiedTables";
+        [helpstring("SQL Conformance Level")] const short gdbBasicQuery = 1;
+        [helpstring("SQL Conformance Level")] const short gdbPatternQuery = 2;
+        [helpstring("SQL Conformance Level")] const short gdbFullQuery = 3;
+        [helpstring("Spatial Filter Operators")] const short gdbEntirelyContains = 1;
+        [helpstring("Spatial Filter Operators")] const short gdbEntirelyContainedBy = 2;
+        [helpstring("Spatial Filter Operators")] const short gdbTouches = 3;
+        [helpstring("Spatial Filter Operators")] const short gdbNotTouches = 4;
+        [helpstring("Spatial Filter Operators")] const short gdbIndexIntersect = 5;
+        [helpstring("Geometry Types")] const short gdbPoint = 10;
+        [helpstring("Geometry Types")] const short gdbLinear = 1;
+        [helpstring("Geometry Types")] const short gdbAreal = 2;
+        [helpstring("Geometry Types")] const short gdbAnySpatial = 3;
+        [helpstring("Geometry Types")] const short gdbCoverage = 4;
+        [helpstring("Geometry Types")] const short gdbGraphicsText = 5;
+        [helpstring("Type (RecordSet, argument of OpenRecordset)")] const short gdbOpenDynaset = 2;
+        [helpstring("Type (RecordSet, argument of OpenRecordset)")] const short gdbOpenSnapshot = 4;
+        [helpstring("EditMode (Recordset)")] const short gdbEditNone = 0;
+        [helpstring("EditMode (Recordset)")] const short gdbEditInProgress = 1;
+        [helpstring("EditMode (Recordset)")] const short gdbEditAdd = 2;
+        [helpstring("Options argument (OpenRecordset)")] const short gdbDenyWrite = 1;
+        [helpstring("Options argument (OpenRecordset)")] const short gdbDenyRead = 2;
+        [helpstring("Options argument (OpenRecordset)")] const short gdbReadOnly = 4;
+        [helpstring("Options argument (OpenRecordset)")] const short gdbAppendOnly = 8;
+        [helpstring("Options argument (OpenRecordset)")] const short gdbForwardOnly = 256;
+        [helpstring("Options argument (OpenRecordset)")] const short gdbSeeChanges = 512;
+        [helpstring("Attributes (Field on Tabledef)")] const short gdbFixedField = 1;
+        [helpstring("Attributes (Field on Tabledef)")] const short gdbVariableField = 2;
+        [helpstring("Attributes (Field on Tabledef)")] const short gdbAutoIncrField = 16;
+        [helpstring("Attributes (Field on Tabledef)")] const short gdbUpdatableField = 32;
+        [helpstring("Attributes (Field on Tabledef)")] const short gdbDescending = 1;
+        [helpstring("Type (Field)")] const short gdbBoolean = 1;
+        [helpstring("Type (Field)")] const short gdbByte = 2;
+        [helpstring("Type (Field)")] const short gdbInteger = 3;
+        [helpstring("Type (Field)")] const short gdbLong = 4;
+        [helpstring("Type (Field)")] const short gdbCurrency = 5;
+        [helpstring("Type (Field)")] const short gdbSingle = 6;
+        [helpstring("Type (Field)")] const short gdbDouble = 7;
+        [helpstring("Type (Field)")] const short gdbDate = 8;
+        [helpstring("Type (Field)")] const short gdbText = 10;
+        [helpstring("Type (Field)")] const short gdbLongBinary = 11;
+        [helpstring("Type (Field)")] const short gdbMemo = 12;
+        [helpstring("Type (Field)")] const short gdbGuid = 15;
+        [helpstring("Type (Field)")] const short gdbSpatial = 32;
+        [helpstring("Type (Field)")] const short gdbGraphic = 33;
+        [helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangArabic = ";LANGID=0x0401;CP=1256;COUNTRY=0";
+        [helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangCzech = ";LANGID=0x0405;CP=1250;COUNTRY=0";
+        [helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangDutch = ";LANGID=0x0413;CP=1252;COUNTRY=0";
+        [helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangGeneral = ";LANGID=0x0409;CP=1252;COUNTRY=0";
+        [helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangGreek = ";LANGID=0x0408;CP=1253;COUNTRY=0";
+        [helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangHebrew = ";LANGID=0x040D;CP=1255;COUNTRY=0";
+        [helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangHungarian = ";LANGID=0x040E;CP=1250;COUNTRY=0";
+        [helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangIcelandic = ";LANGID=0x040F;CP=1252;COUNTRY=0";
+        [helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangNordic = ";LANGID=0x041D;CP=1252;COUNTRY=0";
+        [helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangNorwDan = ";LANGID=0x0414;CP=1252;COUNTRY=0";
+        [helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangPolish = ";LANGID=0x0415;CP=1250;COUNTRY=0";
+        [helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangCyrillic = ";LANGID=0x0419;CP=1251;COUNTRY=0";
+        [helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangSpanish = ";LANGID=0x040A;CP=1252;COUNTRY=0";
+        [helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangSwedFin = ";LANGID=0x040B;CP=1252;COUNTRY=0";
+        [helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangTurkish = ";LANGID=0x041F;CP=1254;COUNTRY=0";
+        [helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangJapanese = ";LANGID=0x0411;CP=932;COUNTRY=0";
+        [helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangChineseSimplified = ";LANGID=0x0804;CP=936;COUNTRY=0";
+        [helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangChineseTraditional = ";LANGID=0x0404;CP=950;COUNTRY=0";
+        [helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangKorean = ";LANGID=0x040C;CP=494;COUNTRY=0";
+        [helpstring("locale argument (CreateDatabase)")] const LPSTR gdbLangThai = ";LANGID=0x101E;CP=874;COUNTRY=0";
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortNeutral = 1024;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortArabic = 1025;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortCyrillic = 1049;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortCzech = 1029;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortDutch = 1043;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortGeneral = 1033;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortGreek = 1032;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortHebrew = 1037;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortHungarian = 1038;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortIcelandic = 1039;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortNorwdan = 1030;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortPDXIntl = 1033;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortPDXNor = 1030;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortPDXSwe = 1053;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortPolish = 1045;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortSpanish = 1034;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortSwedFin = 1053;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortTurkish = 1055;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortJapanese = 1041;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortChineseSimplified = 2052;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortChineseTraditional = 1028;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortKorean = 1036;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortThai = 4126;
+        [helpstring("CollatingOrder (Database, Field)")] const short gdbSortUndefined = -1;
+        [helpstring("Unknown value returned from property/method")] const short gdbUnknown = -1;
+        [helpstring("Modication Types")] const short gdbInsert = 1;
+        [helpstring("Modication Types")] const short gdbUpdate = 2;
+        [helpstring("Modication Types")] const short gdbDelete = 3;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      helpstring("GDO CSGuid Constants")
+    ]
+    module GCSGuidConstants {
+        [helpstring("Coordinate System Constants")] const short gdbgTransient = 1;
+        [helpstring("Coordinate System Constants")] const short gdbgPersistent = 2;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      helpstring("GDO CS Base Storage Constants")
+    ]
+    module GCSBaseStorageConstants {
+        [helpstring("Coordinate System Constants")] const short gdbbsProjected = 0;
+        [helpstring("Coordinate System Constants")] const short gdbbsGeographic = 1;
+        [helpstring("Coordinate System Constants")] const short gdbbsGeocentric = 2;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      helpstring("GDO CS Height Constants")
+    ]
+    module GCSHeightConstants {
+        [helpstring("Coordinate System Constants")] const short gdbhOrthometric = 0;
+        [helpstring("Coordinate System Constants")] const short gdbhGeometric = 1;
+        [helpstring("Coordinate System Constants")] const short gdbhUnspecified = 2;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      helpstring("GDO CS Longitude Normalization Constants")
+    ]
+    module GCSLongitudeNormalizationConstants {
+        [helpstring("Coordinate System Constants")] const short gdblnZeroTo360LeftInclude = 0;
+        [helpstring("Coordinate System Constants")] const short gdblnZeroTo360BothInclude = 1;
+        [helpstring("Coordinate System Constants")] const short gdblnMinus180ToPlus180LeftInclude = 2;
+        [helpstring("Coordinate System Constants")] const short gdblnMinus180ToPlus180BothInclude = 3;
+        [helpstring("Coordinate System Constants")] const short gdblnMinus360To0RightInclude = 4;
+        [helpstring("Coordinate System Constants")] const short gdblnMinus360To0BothInclude = 5;
+        [helpstring("Coordinate System Constants")] const short gdblnNoLongitudeNormalization = 6;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      helpstring("GDO CS Geodetic Datum Constants")
+    ]
+    module GCSGeodeticDatumConstants {
+        [helpstring("Coordinate System Constants")] const short gdbgdUserDefined = 0;
+        [helpstring("Coordinate System Constants")] const short gdbgdAFG = 1;
+        [helpstring("Coordinate System Constants")] const short gdbgdAustralian1966 = 2;
+        [helpstring("Coordinate System Constants")] const short gdbgdAustralian1984 = 3;
+        [helpstring("Coordinate System Constants")] const short gdbgdEuropean1950 = 4;
+        [helpstring("Coordinate System Constants")] const short gdbgdEuropean1979 = 5;
+        [helpstring("Coordinate System Constants")] const short gdbgdGeodDatum1949 = 6;
+        [helpstring("Coordinate System Constants")] const short gdbgdIndian = 7;
+        [helpstring("Coordinate System Constants")] const short gdbgdIreland1965 = 8;
+        [helpstring("Coordinate System Constants")] const short gdbgdNAD27 = 9;
+        [helpstring("Coordinate System Constants")] const short gdbgdNAD83 = 10;
+        [helpstring("Coordinate System Constants")] const short gdbgdOrdnanceSurveyGreatBritain = 11;
+        [helpstring("Coordinate System Constants")] const short gdbgdPulkovo1942 = 12;
+        [helpstring("Coordinate System Constants")] const short gdbgdQornoq = 13;
+        [helpstring("Coordinate System Constants")] const short gdbgdTokyo = 14;
+        [helpstring("Coordinate System Constants")] const short gdbgdWGS66 = 15;
+        [helpstring("Coordinate System Constants")] const short gdbgdWGS72 = 16;
+        [helpstring("Coordinate System Constants")] const short gdbgdWGS84 = 17;
+        [helpstring("Coordinate System Constants")] const short gdbgdSAD1956 = 18;
+        [helpstring("Coordinate System Constants")] const short gdbgdSAD1969 = 19;
+        [helpstring("Coordinate System Constants")] const short gdbgdIndonesian1974 = 20;
+        [helpstring("Coordinate System Constants")] const short gdbgdWGS60 = 21;
+        [helpstring("Coordinate System Constants")] const short gdbgdTananObservatory1925 = 22;
+        [helpstring("Coordinate System Constants")] const short gdbgdKertau1948 = 23;
+        [helpstring("Coordinate System Constants")] const short gdbgdPotsdam = 24;
+        [helpstring("Coordinate System Constants")] const short gdbgdUSStandard = 25;
+        [helpstring("Coordinate System Constants")] const short gdbgdMGICS = 26;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      helpstring("GDO CS Ellipsoid Constants")
+    ]
+    module GCSEllipsoidConstants {
+        [helpstring("Coordinate System Constants")] const short gdbeUndefined = 0;
+        [helpstring("Coordinate System Constants")] const short gdbeGRS80 = 1;
+        [helpstring("Coordinate System Constants")] const short gdbeWGS72 = 2;
+        [helpstring("Coordinate System Constants")] const short gdbeAussyNationalSAmerica69 = 3;
+        [helpstring("Coordinate System Constants")] const short gdbeKrassovsky = 4;
+        [helpstring("Coordinate System Constants")] const short gdbeInternational = 5;
+        [helpstring("Coordinate System Constants")] const short gdbeWGS66 = 6;
+        [helpstring("Coordinate System Constants")] const short gdbeClark1880 = 7;
+        [helpstring("Coordinate System Constants")] const short gdbeClark1866 = 8;
+        [helpstring("Coordinate System Constants")] const short gdbeHelmert1906 = 9;
+        [helpstring("Coordinate System Constants")] const short gdbeBessel1841 = 10;
+        [helpstring("Coordinate System Constants")] const short gdbeDanish = 11;
+        [helpstring("Coordinate System Constants")] const short gdbeStruve = 12;
+        [helpstring("Coordinate System Constants")] const short gdbeHough = 13;
+        [helpstring("Coordinate System Constants")] const short gdbeAiry1830 = 14;
+        [helpstring("Coordinate System Constants")] const short gdbeEverest1830 = 15;
+        [helpstring("Coordinate System Constants")] const short gdbeModAiry = 16;
+        [helpstring("Coordinate System Constants")] const short gdbeModEverest = 17;
+        [helpstring("Coordinate System Constants")] const short gdbeFischer1960Mercury = 18;
+        [helpstring("Coordinate System Constants")] const short gdbeModFischer1960SA = 19;
+        [helpstring("Coordinate System Constants")] const short gdbeFischer1968 = 20;
+        [helpstring("Coordinate System Constants")] const short gdbeUserDefined = 21;
+        [helpstring("Coordinate System Constants")] const short gdbeWGS84 = 22;
+        [helpstring("Coordinate System Constants")] const short gdbeIndoNational1974 = 23;
+        [helpstring("Coordinate System Constants")] const short gdbeWGS60 = 24;
+        [helpstring("Coordinate System Constants")] const short gdbeUnitSphere = 25;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      helpstring("GDO CS Projection Algorithm Constants")
+    ]
+    module GCSProjectionAlgorithmConstants {
+        [helpstring("Coordinate System Constants")] const short gdbpaUndefined = 0;
+        [helpstring("Coordinate System Constants")] const short gdbpaMercator = 1;
+        [helpstring("Coordinate System Constants")] const short gdbpaLambert = 2;
+        [helpstring("Coordinate System Constants")] const short gdbpaNorthPolar = 3;
+        [helpstring("Coordinate System Constants")] const short gdbpaSouthPolar = 4;
+        [helpstring("Coordinate System Constants")] const short gdbpaLinearElastic = 5;
+        [helpstring("Coordinate System Constants")] const short gdbpaTransverseMercator = 6;
+        [helpstring("Coordinate System Constants")] const short gdbpaUniversalTransverseMercator = 8;
+        [helpstring("Coordinate System Constants")] const short gdbpaIndonesianPoly = 9;
+        [helpstring("Coordinate System Constants")] const short gdbpaSPCS27 = 10;
+        [helpstring("Coordinate System Constants")] const short gdbpaPolyconic = 11;
+        [helpstring("Coordinate System Constants")] const short gdbpaAlbers = 12;
+        [helpstring("Coordinate System Constants")] const short gdbpaObliqueMercator = 13;
+        [helpstring("Coordinate System Constants")] const short gdbpaNewZealand = 14;
+        [helpstring("Coordinate System Constants")] const short gdbpaVanDerGrinten = 15;
+        [helpstring("Coordinate System Constants")] const short gdbpaAzimuthalEquidistant = 19;
+        [helpstring("Coordinate System Constants")] const short gdbpaOrthographic = 20;
+        [helpstring("Coordinate System Constants")] const short gdbpaSPCS83 = 21;
+        [helpstring("Coordinate System Constants")] const short gdbpaStereographic = 22;
+        [helpstring("Coordinate System Constants")] const short gdbpaGnomonic = 23;
+        [helpstring("Coordinate System Constants")] const short gdbpaRobinson = 24;
+        [helpstring("Coordinate System Constants")] const short gdbpaCassini = 25;
+        [helpstring("Coordinate System Constants")] const short gdbpaSinusoidal = 26;
+        [helpstring("Coordinate System Constants")] const short gdbpaLambertAzimuthalEqArea = 27;
+        [helpstring("Coordinate System Constants")] const short gdbpaMillerCyl = 28;
+        [helpstring("Coordinate System Constants")] const short gdbpaBonne = 29;
+        [helpstring("Coordinate System Constants")] const short gdbpaBritNGrid = 30;
+        [helpstring("Coordinate System Constants")] const short gdbpaMollweide = 31;
+        [helpstring("Coordinate System Constants")] const short gdbpaLocalSpaceRect = 32;
+        [helpstring("Coordinate System Constants")] const short gdbpaUniversalPolarStereo = 33;
+        [helpstring("Coordinate System Constants")] const short gdbpaRectifiedSkewOrthomorphic = 35;
+        [helpstring("Coordinate System Constants")] const short gdbpaIMWModPolycon = 36;
+        [helpstring("Coordinate System Constants")] const short gdbpaObliqueLambert = 37;
+        [helpstring("Coordinate System Constants")] const short gdbpaChamberlinTrimetric = 38;
+        [helpstring("Coordinate System Constants")] const short gdbpaCylEquirect = 39;
+        [helpstring("Coordinate System Constants")] const short gdbpaGeneralPerspective = 40;
+        [helpstring("Coordinate System Constants")] const short gdbpaConic = 41;
+        [helpstring("Coordinate System Constants")] const short gdbpaStereo3Step = 42;
+        [helpstring("Coordinate System Constants")] const short gdbpaGaussKruger = 43;
+        [helpstring("Coordinate System Constants")] const short gdbpaBIPOCC = 44;
+        [helpstring("Coordinate System Constants")] const short gdbpaLaborde = 45;
+        [helpstring("Coordinate System Constants")] const short gdbpaEckertIV = 46;
+        [helpstring("Coordinate System Constants")] const short gdbpaSpaceObliqueMercator = 47;
+        [helpstring("Coordinate System Constants")] const short gdbpaSpaceObliqueMercatorPS = 48;
+        [helpstring("Coordinate System Constants")] const short gdbpaKrovak = 49;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      helpstring("GDO CS Hemisphere Constants")
+    ]
+    module GCSHemisphereConstants {
+        [helpstring("Coordinate System Constants")] const short gdbhNorthern = 0;
+        [helpstring("Coordinate System Constants")] const short gdbhSouthern = 1;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      helpstring("GDO CS Satellite Constants")
+    ]
+    module GCSSatelliteConstants {
+        [helpstring("Coordinate System Constants")] const short gdbsLandsat1 = 0;
+        [helpstring("Coordinate System Constants")] const short gdbsLandsat2 = 1;
+        [helpstring("Coordinate System Constants")] const short gdbsLandsat3 = 2;
+        [helpstring("Coordinate System Constants")] const short gdbsLandsat4 = 3;
+        [helpstring("Coordinate System Constants")] const short gdbsLandsat5 = 4;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      helpstring("GDO CS Local Space Rectangular Constants")
+    ]
+    module GCSLocalSpaceRectConstants {
+        [helpstring("Coordinate System Constants")] const short gdblsrXAxisAzDefinedByDirect = 0;
+        [helpstring("Coordinate System Constants")] const short gdblsrXAxisAzDefinedByTwoPoints = 1;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      helpstring("GDO CS Oblique Mercator Constants")
+    ]
+    module GCSObliqueMercatorConstants {
+        [helpstring("Coordinate System Constants")] const short gdbomByOnePointAndAzimuth = 0;
+        [helpstring("Coordinate System Constants")] const short gdbomByTwoPoints = 1;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      helpstring("GDO CS Oblique Lambert Conformal Conic Constants")
+    ]
+    module GCSObliqueLambertConfConicConstants {
+        [helpstring("Coordinate System Constants")] const short gdbolccByRotatedNorthPole = 0;
+        [helpstring("Coordinate System Constants")] const short gdbolccByAzimuthOfCentralMeridian = 1;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      helpstring("GDO CS Spherical Model Constants")
+    ]
+    module GCSSphericalModelConstants {
+        [helpstring("Coordinate System Constants")] const short gdbsmEquatorial = 0;
+        [helpstring("Coordinate System Constants")] const short gdbsmEqualSurface = 1;
+        [helpstring("Coordinate System Constants")] const short gdbsmEqualVolume = 2;
+        [helpstring("Coordinate System Constants")] const short gdbsmGaussian = 3;
+        [helpstring("Coordinate System Constants")] const short gdbsmUserSpecified = 4;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      helpstring("GDO CS Chamberlin Trimetric Constants")
+    ]
+    module GCSChamberlinTrimetricConstants {
+        [helpstring("Coordinate System Constants")] const short gdbctOriginUserSpecified = 0;
+        [helpstring("Coordinate System Constants")] const short gdbctOriginAutomatic = 1;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      helpstring("GDO CS General Perspective Ang Orientation Proj Plane Constants")
+    ]
+    module GCSGeneralPerspectiveAngOrientationProjPlaneConstants {
+        [helpstring("Coordinate System Constants")] const short gdbgpaoppByRotations = 0;
+        [helpstring("Coordinate System Constants")] const short gdbgpaoppByTiltSwingAzimuth = 1;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      helpstring("GDO CS General Perspective Location Proj Plane Constants")
+    ]
+    module GCSGeneralPerspectiveLocProjPlaneConstants {
+        [helpstring("Coordinate System Constants")] const short gdbgplppByHeightAboveEllipAtNadir = 0;
+        [helpstring("Coordinate System Constants")] const short gdbgplppByFocalLength = 1;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      helpstring("GDO CS General Perspective Ref Coord Sys Constants")
+    ]
+    module GCSGeneralPerspectiveRefCoordSysConstants {
+        [helpstring("Coordinate System Constants")] const short gdbgprcsByGeographic = 0;
+        [helpstring("Coordinate System Constants")] const short gdbgprcsByGeocentric = 1;
+        [helpstring("Coordinate System Constants")] const short gdbgprcsByLocalHorizon = 2;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      helpstring("Notification Predefined Constants")
+    ]
+    module NotificationConstants {
+        [helpstring("Row deleted.")] const long gmnRowDeleted = 1;
+        [helpstring("Row modified.")] const long gmnRowModified = 2;
+        [helpstring("Member added.")] const long gmnMemberAdded = 3;
+        [helpstring("Member removed.")] const long gmnMemberRemoved = 4;
+        [helpstring("Row deleted")] const long gmnUpToDate = 1;
+        [helpstring("Row modified")] const long gmnStatusUnknown = 2;
+        [helpstring("GRecordset Open")] const long gmnStatusRecordsetOpen = 1;
+        [helpstring("Row changes")] const long gmnStatusRowChanges = 2;
+        [helpstring("Membership changes")] const long gmnStatusMembershipChanges = 4;
+    };
+
+    // NOTE: This module has no entry points and thus is invalid.
+    //       There is no way to extract the dllname of a module
+    //       with no entry points
+    // 
+    [
+      helpstring("Geometry Edit Constants")
+    ]
+    module GeometryEditConstants {
+        [helpstring("Edit Action Types")] const short gmgeMoveGeometry = 0;
+        [helpstring("Edit Action Types")] const short gmgeMoveKeypoint = 1;
+        [helpstring("Edit Action Types")] const short gmgeInsertVertex = 2;
+        [helpstring("Edit Action Types")] const short gmgeDeleteSelectedVertices = 3;
+    };
+};

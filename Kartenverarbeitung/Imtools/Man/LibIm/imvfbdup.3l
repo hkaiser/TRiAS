@@ -1,0 +1,66 @@
+
+
+
+IMVFBDUP(3IM)          SDSC IMAGE LIBRARY           IMVFBDUP(3IM)
+
+
+
+NAME
+     ImVfbDup - Duplicate a virtual frame buffer
+
+SYNOPSIS
+     #include "im.h"
+
+     ImVfb *ImVfbDup( srcVfb )
+          ImVfb *srcVfb ;
+
+
+DESCRIPTION
+     ImVfbDup duplicates a virtual frame  buffer  and  returns  a
+     pointer to the new Vfb.  _s_r_c_V_f_b is the Vfb to be duplicated.
+     It is not changed by this operation.
+
+RETURNS
+     An error causes IMVFBNULL to be returned and  the  value  of
+     ImErrNo to be set to the following:
+
+          IMEMALLOC   Cannot allocate enough memory for the new Vfb
+
+SEE ALSO
+     ImIntro (3IM), ImErrNo (3IM),  ImVfbAlloc  (3IM),  ImVfbCopy
+     (3IM)
+
+AUTHOR
+     Dave Nadeau
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SDSC              Last change: August 25, 1992                  1
+
+
+

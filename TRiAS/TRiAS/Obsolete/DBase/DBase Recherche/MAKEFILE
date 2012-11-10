@@ -1,0 +1,93 @@
+# Makefile fr Komlex-Recherche
+# Windows/DLL-Version
+# MSC V8.0 (Windows)
+
+NAME = komplexr
+DEBUG = 1
+VERS_FILE = VERS32
+
+# Generierungsdatum (yymmdd) und Version
+DATE=980105
+VERSION = 2
+RELEASE = 04
+BUILD = 026
+COPYRIGHT = JB$(DATE)
+
+PNAME = "Version f\374r den Vertrieb."
+PADDRESS = "uve GmbH Fernerkundungszentrum Potsdam"
+
+WINDIR = f:\trias\trias
+LINK = f:\c8\bin\link
+ASM = masm
+YACC = yacc
+YFLAGS = -d
+LEX = lex
+LFLAGS = 
+STUB = rights
+OUTDLL = $(NAME).dll
+RIGHTS = $(STUB).exe
+
+dqly.c: dql.y dql.scr dql.h yystype.hxx rechstat.hxx \
+	  groups.hxx tools.hxx expexpr.hxx komplexr.hxx expexpr.hxx \
+	  komplexr.h dqlyfct.hxx
+	copy yacc.par c:\lib > nul
+	$(YACC) $(YFLAGS) dql.y
+        sed -f dql.scr ytab.c > dqly.c
+
+dqllx.c: dqllx.lx dqllx.scr dql.h yystype.hxx winio.h tools.hxx dqllx.htp
+        $(LEX) dqllx.lx 
+        sed -f dqllx.scr lexyy.c > dqllx.c
+
+# Versionskontrolle -----------------------------------------------------------
+new:
+        @del $(NAME).def > nul
+	@del $(STUB).asm > nul
+	@del $(NAME).rcv > nul
+	@del defabout.dlg > nul
+        @del $(VERS_FILE).h > nul
+
+formake: $(NAME).def $(STUB).exe $(NAME).rcv defabout.dlg $(VERS_FILE).h
+
+$(NAME).def : $(NAME).tpl
+        ersetz $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) $(NAME).tpl $(NAME).def
+
+$(STUB).exe:    $(STUB).asm
+	masm rights;
+        $(LINK) /KNOWEAS rights;
+
+$(STUB).asm: $(STUB).tpl
+	ersetz $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) $(STUB).tpl $(STUB).asm
+
+$(VERS_FILE).h:    version.tpl
+        ersetz $(VERSION) $(RELEASE) version.tpl $(VERS_FILE).h
+
+# Personalisierungsinformation
+$(NAME).rcv: komplexv.tpl
+	ersetz $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) @A @B komplexv.tpl tmp.rcv
+	ersetz $(PNAME) $(PADDRESS) tmp.rcv $(NAME).rcv
+	@del tmp.rcv > nul
+
+defabout.dlg:   defabout.tpl
+	ersetz $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) @A @B defabout.tpl tmp.src
+	ersetz $(PNAME) $(PADDRESS) tmp.src defabout.dlg
+	@del tmp.src > nul
+
+# archivieren ---------------------------------------------------------------
+store:  
+	@echo off
+	del *.bak
+	del *.dmp
+	del *.tmp
+	del *.zip
+	del *.map
+	del *.sym
+	del *.sts
+	del *.lst
+	del *.aps
+	del *.pch
+	del *.bnd
+	del *.pdb
+	del *.sbr
+	del *.bsc
+        del *.lib
+        zip -m -x*.ncb dbasere

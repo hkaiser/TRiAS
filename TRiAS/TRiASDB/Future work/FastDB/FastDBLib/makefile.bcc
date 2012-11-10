@@ -1,0 +1,198 @@
+# -*- makefile -*-
+# Makefile for Microsoft Windows with Borland C++ Builder 5.2 compiler
+
+OBJS = class.obj compiler.obj database.obj hashtab.obj file.obj \
+	sync.obj symtab.obj ttree.obj cursor.obj query.obj w32sock.obj wwwapi.obj localcli.obj
+
+LIBOBJS = + class.obj + compiler.obj + database.obj + hashtab.obj + file.obj \
+        + sync.obj + symtab.obj + ttree.obj + cursor.obj + query.obj + w32sock.obj + wwwapi.obj + localcli.obj
+
+INCS = fastdb.h stdtp.h class.h database.h cursor.h reference.h \
+	array.h file.h hashtab.h ttree.h sync.h query.h datetime.h
+
+LIBS = fastdb.lib 
+
+EXES = subsql.exe
+
+EXAMPLES = guess.exe testdb.exe testjoin.exe testddl.exe testperf.exe testsync.exe testiref.exe testtrav.exe testidx.exe localclitest.exe 
+
+CC = BCC32.EXE
+
+# Possible FastDB compile time parameters (-Dxxx should be added to DEFS macro):
+# 1. USE_LOCALE_SETTING - use C locale for string comparison operations
+# 2. DEBUG - debug level
+#    - DEBUG_NODE - disable any checking and tracing (except asserts)
+#    - DEBUG_CHECK - disable trace message
+#    - DEBUG_TRACE - enable trace messages 
+# 3. SECURE_SERVER - enable authentication for remote logins: keep user/password table, 
+#                    check password for remote logins
+# 4. USE_QUEUE_MANAGER - use queue manager for internal HTTP server. This manager will manage pool
+#    of threads assigned for client connections. Otherwise all requests will be executed sequnetially
+#    in the main loop.
+# 5. FASTDB_DLL - create gigabase.dll
+# 6. THROW_EXCEPTION_ON_ERROR - throw C++ exception in case of database error 
+#    instead of abort(). Do not forgot to specify -GX option if using exceptions.
+# 7. IGNORE_CASE - perform all string comparisons as case insensitive
+# 8. USE_STD_STRING - support of std:;string type for class fields
+# 9. AUTOINCREMENT_SUPPORT support autoincrement fields (database built with this flag will be 
+#    incompatible with database built without it)
+# 10. CLONE_INDENTIFIERS - do not storef addresses of string constants in symbol table.
+#     This option is needed if DLL library using GigaBASE can be unloaded.
+# 11. DISKLESS_CONFIGURATION - only in-memory temporary database
+#
+DEFS = -DUSE_QUEUE_MANAGER -DUSE_STD_STRING -DTHROW_EXCEPTION_ON_ERROR
+#DEFS = -DUSE_QUEUE_MANAGER -DNO_MMAP
+#DEFS = -DTHROW_EXCEPTION_ON_ERROR -DUSE_QUEUE_MANAGER 
+
+CFLAGS = -c -Ox -N -w-8027 -DASM_CPUID_NOT_SUPPORTED $(DEFS)
+
+LD = $(CC)
+LDFLAGS = 
+
+AR = tlib
+ARFLAGS = 
+
+STDLIBS = 
+
+
+all: $(LIBS) $(EXES) $(EXAMPLES)
+
+
+class.obj: class.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) class.cpp
+
+compiler.obj: compiler.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) compiler.cpp
+
+query.obj: query.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) query.cpp
+
+database.obj: database.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) database.cpp
+
+localcli.obj: localcli.cpp compiler.h compiler.d symtab.h localcli.h  $(INCS)
+	$(CC) $(CFLAGS) localcli.cpp
+
+cursor.obj: cursor.cpp compiler.h compiler.d $(INCS)
+	$(CC) $(CFLAGS) cursor.cpp
+
+hashtab.obj: hashtab.cpp $(INCS)
+	$(CC) $(CFLAGS) hashtab.cpp
+
+file.obj: file.cpp $(INCS)
+	$(CC) $(CFLAGS) file.cpp
+
+sync.obj: sync.cpp $(INCS)
+	$(CC) $(CFLAGS) sync.cpp
+
+symtab.obj: symtab.cpp symtab.h $(INCS)
+	$(CC) $(CFLAGS) symtab.cpp
+
+ttree.obj: ttree.cpp $(INCS)
+	$(CC) $(CFLAGS) ttree.cpp
+
+wwwapi.obj: wwwapi.cpp wwwapi.h stdtp.h sockio.h
+	$(CC) $(CFLAGS) wwwapi.cpp
+
+w32sock.obj: w32sock.cpp w32sock.h sockio.h stdtp.h
+	$(CC) $(CFLAGS) w32sock.cpp
+
+cli.obj: cli.cpp cli.h cliproto.h
+	$(CC) $(CFLAGS) cli.cpp
+
+fastdb.lib: $(OBJS)
+        $(AR) $(ARFLAGS) fastdb.lib $(LIBOBJS)
+
+server.obj: server.cpp server.h compiler.h compiler.d subsql.h symtab.h $(INCS)
+	$(CC) $(CFLAGS) server.cpp
+
+subsql.obj: subsql.cpp compiler.h compiler.d subsql.h symtab.h $(INCS)
+	$(CC) $(CFLAGS) subsql.cpp
+
+subsql.exe: subsql.obj server.obj $(LIBS)
+	$(LD) $(LDFLAGS) subsql.obj server.obj $(LIBS) $(STDLIBS)
+
+clitest.obj: clitest.c cli.h
+	$(CC) $(CFLAGS) clitest.c
+
+clitest.exe: clitest.obj $(CLI_LIB)
+	$(LD) $(LDFLAGS) clitest.obj $(CLI_LIB) $(STDLIBS) $(SOCKLIBS)
+
+
+localclitest.exe: clitest.obj $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -elocalclitest.exe clitest.obj $(FASTDB_LIB) $(STDLIBS)
+
+guess.obj: guess.cpp $(INCS)
+	$(CC) $(CFLAGS) guess.cpp 
+
+guess.exe: guess.obj $(LIBS)
+	$(LD) $(LDFLAGS) guess.obj $(LIBS) $(STDLIBS)
+
+testdb.obj: testdb.cpp $(INCS)
+	$(CC) $(CFLAGS) testdb.cpp 
+
+testdb.exe: testdb.obj $(LIBS)
+	$(LD) $(LDFLAGS) testdb.obj $(LIBS) $(STDLIBS)
+
+testjoin.obj: testjoin.cpp $(INCS)
+	$(CC) $(CFLAGS) testjoin.cpp 
+
+testjoin.exe: testjoin.obj $(LIBS)
+	$(LD) $(LDFLAGS) testjoin.obj $(LIBS) $(STDLIBS)
+
+testddl.obj: testddl.cpp $(INCS)
+	$(CC) $(CFLAGS) testddl.cpp 
+
+testddl.exe: testddl.obj $(LIBS)
+	$(LD) $(LDFLAGS) testddl.obj $(LIBS) $(STDLIBS)
+
+testperf.obj: testperf.cpp $(INCS)
+	$(CC) $(CFLAGS) testperf.cpp 
+
+testperf.exe: testperf.obj $(LIBS)
+	$(LD) $(LDFLAGS) testperf.obj $(LIBS) $(STDLIBS)
+
+testidx.obj: testidx.cpp $(INCS)
+	$(CC) $(CFLAGS) testidx.cpp 
+
+testidx.exe: testidx.obj $(LIBS)
+	$(LD) $(LDFLAGS) testidx.obj $(LIBS) $(STDLIBS)
+
+testsync.obj: testsync.cpp $(INCS)
+	$(CC) $(CFLAGS) testsync.cpp 
+
+testsync.exe: testsync.obj $(LIBS)
+	$(LD) $(LDFLAGS) testsync.obj $(LIBS) $(STDLIBS)
+
+testiref.obj: testiref.cpp $(INCS)
+	$(CC) $(CFLAGS) testiref.cpp 
+
+testiref.exe: testiref.obj $(LIBS)
+	$(LD) $(LDFLAGS) testiref.obj $(LIBS) $(STDLIBS)
+
+testtrav.obj: testtrav.cpp $(INCS)
+	$(CC) $(CFLAGS) testtrav.cpp 
+
+testtrav.exe: testtrav.obj $(LIBS)
+	$(LD) $(LDFLAGS) testtrav.obj $(LIBS) $(STDLIBS)
+
+
+
+cleanobj:
+	del *.odb,*.obj,*.pch,*.pdb,*.ilk,*.dsp,*.dsw,*.ncb,*.opt
+
+cleandbs:
+	del *.fdb
+
+clean: cleanobj cleandbs
+	del *~,*.lib,*.exe
+
+
+zip: clean
+	cd ..
+	del fastdb.zip
+        zip -r fastdb.zip fastdb
+
+copyzip: zip
+	copy fastdb.zip a:
+

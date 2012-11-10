@@ -1,0 +1,34 @@
+'\"t
+.TH TAGENTRYFREE 3TAG "July 1990" "SDSC" "TAG TABLE"
+.SH NAME
+TagEntryFree - deallocate a tag table entry
+.SH SYNOPSIS
+\fB
+.nf
+#include "sdsc.h"
+
+extern int TagErrNo;
+
+void TagEntryFree( tagEntry )
+	TagEntry *tagEntry;
+.fi
+\fR
+.SH DESCRIPTION
+\fITagEntryFree\fR deallocates the tag table entry.
+If the tag table entry's value is a \fIPOINTER\fR type, the data
+pointed to by that value are not deallocated.
+.SH NOTES
+After freed, do not refer to the tag table entry.
+.SH RETURNS
+\fITagEntryFree\fR returns nothing.
+.SH SEE ALSO
+TagTableDelete(3TAG),
+TagEntryAlloc(3TAG),
+TagTableReplace(3TAG)
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

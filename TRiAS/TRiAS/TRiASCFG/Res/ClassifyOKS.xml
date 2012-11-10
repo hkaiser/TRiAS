@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Copyright © 1991 - 2004, Hartmut Kaiser, #HK020827 -->
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Hartmut Kaiser (Hartmut Kaiser) -->
+<!DOCTYPE GeoComponentSequence SYSTEM "GeoComponentSequence.dtd">
+<GeoComponentSequence Version="1.0">
+	<Name>Klassifizieren nach Objekteigenschaften</Name>
+	<GeoComponent ProgID="TRiASEx.SelectIdentObjTyp.1"/>
+	<GeoComponent ProgID="TRiASEx.PropertyChoice.1" Type="Sequence" Load="Registry">
+		<LoadInfo RegistryPath="TRiAS.Application.4\TRiASEx\ClassifyEngines">
+			<ErrorInfo>
+				<Caption>%s - Fehlerhafte Systemeinstellung</Caption>
+				<Prompt>Es wurden keine installierten Klassifikationsobjekte gefunden.
+Überprüfen und wiederholen Sie gegebenenfalls die Installation von %s.</Prompt>
+			</ErrorInfo>
+		</LoadInfo>
+	</GeoComponent>
+	<GeoComponent ProgID="TRiASEx.LimitPackets.1"/>
+	<GeoComponent ProgID="TRiASEx.ShowInObjectWindow.1"/>
+</GeoComponentSequence>

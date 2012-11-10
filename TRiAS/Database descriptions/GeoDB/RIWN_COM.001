@@ -1,0 +1,24 @@
+/* Datenbank - Projekt-Deklaration für DIRIS					*/
+/* File: RIWN_COM.DBS											*/
+/* Version für Compound-Documents								*/
+
+database riw [2048] extension riw {
+/* VersionsNummer */
+	version 6.00.00.001;
+
+/*         DB-Headerfile */ 
+	data file "Header"			contains prjhead, prjfhead;
+	btree key file "HeaderKey"	contains prjhdidn;
+
+/* Basisinformationen */
+	record prjhead {   /* DB-Headerfile */
+		unique key long prjhdidn[4];	/* Suchschlüssel */
+		char text[64];					/* Text */
+		long zntext;					/* nächster Satz */
+	}
+	record prjfhead {  /* DB-Headerfile, Fortsetzungssatz */
+		char textf[80];					/* Text */
+		long ztextf;					/* nächster Satz */
+	}
+}
+

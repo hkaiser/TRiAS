@@ -1,0 +1,132 @@
+
+
+
+     BBBBIIIINNNNPPPPEEEERRRRRRRROOOORRRR((((3333BBBBIIIINNNN))))         SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))          BBBBIIIINNNNPPPPEEEERRRRRRRROOOORRRR((((3333BBBBIIIINNNN))))
+
+
+
+     NNNNAAAAMMMMEEEE
+          BinPError, BinQError, BinErrNo  -  binary I/O package error
+          messages
+
+     SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+          #include "sdsc.h"
+
+          extern int BinErrNo;
+          extern int BinNErr;
+          extern char *BinErrList[ ];
+
+          void BinPError( leader )
+               char *leader;
+
+          char *BinQError( )
+
+     DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+          _B_i_n_P_E_r_r_o_r produces a short error message on _s_t_d_e_r_r
+          describing the last error encountered during a call to a
+          binary I/O package function.
+
+          If _l_e_a_d_e_r is not a NULL pointer and does not point to an
+          empty string, the string it points to is printed, followed
+          by a colon and one space, then the error message and a
+          NEWLINE.  If _l_e_a_d_e_r is a NULL pointer or an empty string,
+          just the error message and NEWLINE are printed.  The leader
+          string is typically the name of the program.
+
+          The error number is taken from the global variable _B_i_n_E_r_r_N_o,
+          which is set when errors occur in binary I/O package
+          routines, but not cleared when non-erroneous calls are made.
+
+          To allow programs to display error messages in other ways,
+          an array of error message strings is provided in _B_i_n_E_r_r_L_i_s_t.
+          _B_i_n_E_r_r_N_o may be used as an index into this table to get the
+          message string without the NEWLINE.
+
+          _B_i_n_N_E_r_r is the number of error messages provided for in the
+          table.  _B_i_n_E_r_r_N_o should be checked against _B_i_n_N_E_r_r prior to
+          indexing into _B_i_n_E_r_r_L_i_s_t because new error codes may be
+          added to the system before they are available in the error
+          message table.
+
+          _B_i_n_Q_E_r_r_o_r may be used to query the error message list and
+          return a pointer to the error text associated with the error
+          value of _B_i_n_E_r_r_N_o.
+
+     RRRREEEETTTTUUUURRRRNNNNSSSS
+          _B_i_n_P_E_r_r_o_r returns nothing.
+
+          _B_i_n_Q_E_r_r_o_r returns the character string message for the
+          current value of _B_i_n_E_r_r_N_o or "Unknown error" if there is no
+
+
+
+     Page 1                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNPPPPEEEERRRRRRRROOOORRRR((((3333BBBBIIIINNNN))))         SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))          BBBBIIIINNNNPPPPEEEERRRRRRRROOOORRRR((((3333BBBBIIIINNNN))))
+
+
+
+          message for the error number.
+
+     NNNNOOOOTTTTEEEESSSS
+          If _B_i_n_E_r_r_N_o is _B_I_N_E_S_Y_S, indicating a system call error
+          occurred, _B_i_n_P_E_r_r_o_r calls _p_e_r_r_o_r(3) to print the system
+          call's error message instead of the text for _B_I_N_E_S_Y_S, and
+          _A_r_g_Q_E_r_r_o_r returns the error text associated with _e_r_r_n_o.
+
+     SSSSEEEEEEEE AAAALLLLSSSSOOOO
+          BinByteOrder(3BIN), BinErrorHandler(3BIN), BinFRead(3BIN),
+          BinFReadStruct(3BIN), BinFWrite(3BIN),
+          BinFWriteStruct(3BIN), BinFloatFormat(3BIN),
+          BinQByteOrder(3BIN), BinQFloatFormat(3BIN),
+          BinQMachine(3BIN), BinRead(3BIN), BinReadStruct(3BIN),
+          BinSRead(3BIN), BinSWrite(3BIN), BinWrite(3BIN),
+          BinWriteStruct(3BIN), errno(2), perror(3)
+
+     AAAAUUUUTTTTHHHHOOOORRRRSSSS
+          Dave Nadeau
+          San Diego Supercomputer Center
+
+     CCCCOOOONNNNTTTTAAAACCCCTTTT
+          SDSC consultants, (619)534-5100, ccccoooonnnnssssuuuulllltttt@@@@yyyy1111....ssssddddsssscccc....eeeedddduuuu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Page 2                                          (printed 6/30/95)
+
+
+

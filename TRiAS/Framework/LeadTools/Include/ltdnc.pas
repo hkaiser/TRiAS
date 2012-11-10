@@ -1,0 +1,131 @@
+unit LTDNC;
+{ defines constants used by the LEAD Dicom Communication ActiveX Control }
+
+interface
+
+const
+
+   UID_VERIFICATION_CLASS                     = '1.2.840.10008.1.1';              
+   UID_IMPLICIT_VR_LITTLE_ENDIAN              = '1.2.840.10008.1.2';              
+   UID_EXPLICIT_VR_LITTLE_ENDIAN              = '1.2.840.10008.1.2.1';            
+   UID_EXPLICIT_VR_BIG_ENDIAN                 = '1.2.840.10008.1.2.2';            
+   UID_JPEG_BASELINE_1                        = '1.2.840.10008.1.2.4.50';         
+   UID_JPEG_EXTENDED_2_4                      = '1.2.840.10008.1.2.4.51';         
+   UID_JPEG_EXTENDED_3_5                      = '1.2.840.10008.1.2.4.52';         
+   UID_JPEG_SPECTRAL_NONHIER_6_8              = '1.2.840.10008.1.2.4.53';         
+   UID_JPEG_SPECTRAL_NONHIER_7_9              = '1.2.840.10008.1.2.4.54';         
+   UID_JPEG_FULL_NONHIER_10_12                = '1.2.840.10008.1.2.4.55';         
+   UID_JPEG_FULL_NONHIER_11_13                = '1.2.840.10008.1.2.4.56';         
+   UID_JPEG_LOSSLESS_NONHIER_14               = '1.2.840.10008.1.2.4.57';         
+   UID_JPEG_LOSSLESS_NONHIER_15               = '1.2.840.10008.1.2.4.58';         
+   UID_JPEG_EXTENDED_HIER_16_18               = '1.2.840.10008.1.2.4.59';         
+   UID_JPEG_EXTENDED_HIER_17_19               = '1.2.840.10008.1.2.4.60';         
+   UID_JPEG_SPECTRAL_HIER_20_22               = '1.2.840.10008.1.2.4.61';         
+   UID_JPEG_SPECTRAL_HIER_21_23               = '1.2.840.10008.1.2.4.62';         
+   UID_JPEG_FULL_HIER_24_26                   = '1.2.840.10008.1.2.4.63';         
+   UID_JPEG_FULL_HIER_25_27                   = '1.2.840.10008.1.2.4.64';         
+   UID_JPEG_LOSSLESS_HIER_PROCESS_28          = '1.2.840.10008.1.2.4.65';         
+   UID_JPEG_LOSSLESS_HIER_PROCESS_29          = '1.2.840.10008.1.2.4.66';         
+   UID_JPEG_LOSSLESS_NONHIER_14B              = '1.2.840.10008.1.2.4.70';         
+   UID_RLE_LOSSLESS                           = '1.2.840.10008.1.2.5';            
+   UID_MEDIA_DIRECTORY_STORAGE                = '1.2.840.10008.1.3.10';           
+   UID_BASIC_STUDY_NOTIFICATION_CLASS         = '1.2.840.10008.1.9';              
+   UID_STORAGE_COMMITMENT_PUSH_CLASS          = '1.2.840.10008.1.20.1';           
+   UID_STORAGE_COMMITMENT_PUSH_INSTANCE       = '1.2.840.10008.1.20.1.1';         
+   UID_STORAGE_COMMITMENT_PULL_CLASS          = '1.2.840.10008.1.20.2';           
+   UID_STORAGE_COMMITMENT_PULL_INSTANCE       = '1.2.840.10008.1.20.2.1';         
+   UID_APPLICATION_CONTEXT_NAME               = '1.2.840.10008.3.1.1.1';          
+   UID_DETACHED_PATIENT_CLASS                 = '1.2.840.10008.3.1.2.1.1';        
+   UID_DETACHED_PATIENT_META_CLASS            = '1.2.840.10008.3.1.2.1.4';        
+   UID_DETACHED_VISIT_CLASS                   = '1.2.840.10008.3.1.2.2.1';        
+   UID_DETACHED_STUDY_CLASS                   = '1.2.840.10008.3.1.2.3.1';        
+   UID_STUDY_COMPONENT_CLASS                  = '1.2.840.10008.3.1.2.3.2';        
+   UID_MODALITY_PERFORMED_CLASS               = '1.2.840.10008.3.1.2.3.3';        
+   UID_MODALITY_PERFORMED_RETRIEVE_CLASS      = '1.2.840.10008.3.1.2.3.4';        
+   UID_MODALITY_PERFORMED_NOTIFICATION_CLASS  = '1.2.840.10008.3.1.2.3.5';        
+   UID_DETACHED_RESULTS_CLASS                 = '1.2.840.10008.3.1.2.5.1';        
+   UID_DETACHED_RESULTS_META_CLASS            = '1.2.840.10008.3.1.2.5.4';        
+   UID_DETACHED_STUDY_META_CLASS              = '1.2.840.10008.3.1.2.5.5';        
+   UID_DETACHED_INTERPRETATION_CLASS          = '1.2.840.10008.3.1.2.6.1';        
+   UID_BASIC_FILM_SESSION_CLASS               = '1.2.840.10008.5.1.1.1';          
+   UID_BASIC_FILM_BOX_CLASS                   = '1.2.840.10008.5.1.1.2';          
+   UID_BASIC_GRAYSCALE_IMAGE_BOX_CLASS        = '1.2.840.10008.5.1.1.4';          
+   UID_BASIC_COLOR_IMAGE_BOX_CLASS            = '1.2.840.10008.5.1.1.4.1';        
+   UID_REFERENCED_IMAGE_BOX_CLASS             = '1.2.840.10008.5.1.1.4.2';        
+   UID_BASIC_GRAYSCALE_PRINT_META_CLASS       = '1.2.840.10008.5.1.1.9';          
+   UID_REFERENCED_GRAYSCALE_PRINT_META_CLASS  = '1.2.840.10008.5.1.1.9.1';        
+   UID_PRINT_JOB_CLASS                        = '1.2.840.10008.5.1.1.14';         
+   UID_BASIC_ANNOTATION_BOX_CLASS             = '1.2.840.10008.5.1.1.15';         
+   UID_PRINTER_CLASS                          = '1.2.840.10008.5.1.1.16';         
+   UID_PRINTER_INSTANCE                       = '1.2.840.10008.5.1.1.17';         
+   UID_BASIC_COLOR_PRINT_META_CLASS           = '1.2.840.10008.5.1.1.18';         
+   UID_REFERENCED_COLOR_PRINT_META_CLASS      = '1.2.840.10008.5.1.1.18.1';       
+   UID_VOI_LUT_BOX_CLASS                      = '1.2.840.10008.5.1.1.22';         
+   UID_PRESENTATION_LUT_CLASS                 = '1.2.840.10008.5.1.1.23';         
+   UID_IMAGE_OVERLAY_BOX_CLASS                = '1.2.840.10008.5.1.1.24';         
+   UID_PRINT_QUEUE_INSTANCE                   = '1.2.840.10008.5.1.1.25';         
+   UID_PRINT_QUEUE_CLASS                      = '1.2.840.10008.5.1.1.26';         
+   UID_STORED_PRINT_STORAGE_CLASS             = '1.2.840.10008.5.1.1.27';         
+   UID_HARDCOPY_GRAYSCALE_IMAGE_STORAGE_CLASS = '1.2.840.10008.5.1.1.29';         
+   UID_HARDCOPY_COLOR_IMAGE_STORAGE_CLASS     = '1.2.840.10008.5.1.1.30';         
+   UID_PULL_PRINT_REQUEST_CLASS               = '1.2.840.10008.5.1.1.31';         
+   UID_PULL_STORED_PRINT_META_CLASS           = '1.2.840.10008.5.1.1.32';         
+   UID_CR_IMAGE_STORAGE                       = '1.2.840.10008.5.1.4.1.1.1';      
+   UID_CT_IMAGE_STORAGE                       = '1.2.840.10008.5.1.4.1.1.2';      
+   UID_US_MULTIFRAME_IMAGE_STORAGE_RETIRED    = '1.2.840.10008.5.1.4.1.1.3';      
+   UID_US_MULTIFRAME_IMAGE_STORAGE            = '1.2.840.10008.5.1.4.1.1.3.1';    
+   UID_MR_IMAGE_STORAGE                       = '1.2.840.10008.5.1.4.1.1.4';      
+   UID_NM_IMAGE_STORAGE_RETIRED               = '1.2.840.10008.5.1.4.1.1.5';      
+   UID_US_IMAGE_STORAGE_RETIRED               = '1.2.840.10008.5.1.4.1.1.6';      
+   UID_US_IMAGE_STORAGE                       = '1.2.840.10008.5.1.4.1.1.6.1';    
+   UID_SC_IMAGE_STORAGE                       = '1.2.840.10008.5.1.4.1.1.7';      
+   UID_STANDALONE_OVERLAY_STORAGE             = '1.2.840.10008.5.1.4.1.1.8';      
+   UID_STANDALONE_CURVE_STORAGE               = '1.2.840.10008.5.1.4.1.1.9';      
+   UID_STANDALONE_MODALITY_LUT_STORAGE        = '1.2.840.10008.5.1.4.1.1.10';     
+   UID_STANDALONE_VOI_LUT_STORAGE             = '1.2.840.10008.5.1.4.1.1.11';     
+   UID_XA_IMAGE_STORAGE                       = '1.2.840.10008.5.1.4.1.1.12.1';   
+   UID_XRF_IMAGE_STORAGE                      = '1.2.840.10008.5.1.4.1.1.12.2';   
+   UID_XA_BIPLANE_IMAGE_STORAGE               = '1.2.840.10008.5.1.4.1.1.12.3';   
+   UID_NM_IMAGE_STORAGE                       = '1.2.840.10008.5.1.4.1.1.20';     
+   UID_PET_IMAGE_STORAGE                      = '1.2.840.10008.5.1.4.1.1.128';    
+   UID_STANDALONE_PET_CURVE_STORAGE           = '1.2.840.10008.5.1.4.1.1.129';    
+   UID_RT_IMAGE_STORAGE                       = '1.2.840.10008.5.1.4.1.1.481.1';  
+   UID_RT_DOSE_STORAGE                        = '1.2.840.10008.5.1.4.1.1.481.2';  
+   UID_RT_STRUCTURE_STORAGE                   = '1.2.840.10008.5.1.4.1.1.481.3';  
+   UID_RT_PLAN_STORAGE                        = '1.2.840.10008.5.1.4.1.1.481.5';  
+   UID_PATIENT_ROOT_QUERY_FIND                = '1.2.840.10008.5.1.4.1.2.1.1';    
+   UID_PATIENT_ROOT_QUERY_MOVE                = '1.2.840.10008.5.1.4.1.2.1.2';    
+   UID_PATIENT_ROOT_QUERY_GET                 = '1.2.840.10008.5.1.4.1.2.1.3';    
+   UID_STUDY_ROOT_QUERY_FIND                  = '1.2.840.10008.5.1.4.1.2.2.1';    
+   UID_STUDY_ROOT_QUERY_MOVE                  = '1.2.840.10008.5.1.4.1.2.2.2';    
+   UID_STUDY_ROOT_QUERY_GET                   = '1.2.840.10008.5.1.4.1.2.2.3';    
+   UID_PATIENT_STUDY_QUERY_FIND               = '1.2.840.10008.5.1.4.1.2.3.1';    
+   UID_PATIENT_STUDY_QUERY_MOVE               = '1.2.840.10008.5.1.4.1.2.3.2';    
+   UID_PATIENT_STUDY_QUERY_GET                = '1.2.840.10008.5.1.4.1.2.3.3';    
+   UID_MODALITY_WORKLIST_FIND                 = '1.2.840.10008.5.1.4.31';         
+
+   UID_PAPYRUS_3_IMPLICIT_VR_LITTLE_ENDIAN               = '1.2.840.10008.1.20';             
+   UID_DIGITAL_XR_IMAGE_STORAGE_PRESENTATION             = '1.2.840.10008.5.1.4.1.1.1.1';    
+   UID_DIGITAL_XR_IMAGE_STORAGE_PROCESSING               = '1.2.840.10008.5.1.4.1.1.1.1.1';  
+   UID_DIGITAL_MAMMOGRAPHY_XR_IMAGE_STORAGE_PRESENTATION = '1.2.840.10008.5.1.4.1.1.1.2';    
+   UID_DIGITAL_MAMMOGRAPHY_XR_IMAGE_STORAGE_PROCESSING   = '1.2.840.10008.5.1.4.1.1.1.2.1';  
+   UID_DIGITAL_INTRAORAL_XR_IMAGE_STORAGE_PRESENTATION   = '1.2.840.10008.5.1.4.1.1.1.3';    
+   UID_DIGITAL_INTRAORAL_XR_IMAGE_STORAGE_PROCESSING     = '1.2.840.10008.5.1.4.1.1.1.3.1';  
+   UID_VISIBLE_LIGHT_IMAGE_STORAGE                       = '1.2.840.10008.5.1.4.1.1.77.1';   
+   UID_VISIBLE_LIGHT_MULTIFRAME_IMAGE_STORAGE            = '1.2.840.10008.5.1.4.1.1.77.2';   
+   UID_WAVEFORM_STORAGE                                  = '1.2.840.10008.5.1.4.1.1.9.1';    
+   UID_ECG_WAVEFORM_STORAGE                              = '1.2.840.10008.5.1.4.1.1.9.1.1';  
+   UID_AUDIO_WAVEFORM_STORAGE                            = '1.2.840.10008.5.1.4.1.1.9.1.2';  
+   UID_GE_MAGNETIC_RESONANCE_IMAGE_INFORMATION_OBJECT    = '1.2.840.113619.4.2';             
+   UID_GE_COMPUTED_TOMOGRAPHY_IMAGE_INFORMATION_OBJECT   = '1.2.840.113619.4.3';             
+   UID_GE_DISPLAY_IMAGERMATION_INFO_OBJECT               = '1.2.840.113619.4.4';             
+   UID_GE_ARM_MIGRATION                                  = '1.2.840.113619.4.10';            
+   UID_GE_ARM_MIGRATION_INSTANCE                         = '1.2.840.113619.7.2';             
+
+   UID_BASIC_TEXT_SR                          = '1.2.840.10008.5.1.4.1.1.88.11';
+   UID_ENHANCED_SR                            = '1.2.840.10008.5.1.4.1.1.88.22';
+   UID_COMPREHENSIVE_SR                       = '1.2.840.10008.5.1.4.1.1.88.33';
+
+implementation
+
+end.

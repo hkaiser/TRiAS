@@ -1,0 +1,24 @@
+HKCR
+{
+	TRiAS.MapMgr.Import.1 = s 'TRiAS - Verwaltung von Hintergrundrasterbildern'
+	{
+		CLSID = s '{2CD725F3-0382-11D2-8F5A-0060085FC1CE}'
+	}
+	TRiAS.MapMgr.Import = s 'TRiAS - Verwaltung von Hintergrundrasterbildern'
+	{
+		CurVer = s 'TRiAS.MapMgr.Import.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {2CD725F3-0382-11D2-8F5A-0060085FC1CE} = s 'TRiAS - Verwaltung von Hintergrundrasterbildern'
+		{
+			ProgID = s 'TRiAS.MapMgr.Import.1'
+			VersionIndependentProgID = s 'TRiAS.MapMgr.Import'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

@@ -1,0 +1,38 @@
+HKCR
+{
+	TRiASEx.VBGeoComponent.1 = s 'Geokomponente für VB'
+	{
+		CLSID = s '{4A8BF07A-95E9-4FDB-BEBF-4E7B57F25574}'
+	}
+	TRiASEx.VBGeoComponent = s 'VBGeoComponent Class'
+	{
+		CLSID = s '{4A8BF07A-95E9-4FDB-BEBF-4E7B57F25574}'
+		CurVer = s 'TRiASEx.VBGeoComponent.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {4A8BF07A-95E9-4FDB-BEBF-4E7B57F25574} = s 'Geokomponente für VB'
+		{
+			ProgID = s 'TRiASEx.VBGeoComponent.1'
+			VersionIndependentProgID = s 'TRiASEx.VBGeoComponent'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiASEx.VBGeoComponent.1' = s '{4A8BF07A-95E9-4FDB-BEBF-4E7B57F25574}'
+			}
+		}
+	}
+}

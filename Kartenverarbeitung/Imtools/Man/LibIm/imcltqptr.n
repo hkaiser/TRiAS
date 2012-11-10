@@ -1,0 +1,96 @@
+'\"t
+.if t .TH IMCLTQPTR 3IM "August 19, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMCLTQPTR 3IM "August 19, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImCltQPtr - query the pointer to a particular entry in a color lookup table
+.br
+ImCltQFirst - query the pointer to the first entry in a color lookup table
+.br
+ImCltQLast - query the pointer to the last entry in a color lookup table
+.br
+ImCltQNext - query a pointer to the next entry in a color lookup table
+.br
+ImCltQPrev - query a pointer to the previous entry in a color lookup table
+.br
+ImCltSInc - increment a pointer to point to the next entry in a color lookup table
+.br
+ImCltSDec - decrement a pointer to point to the previous entry in a color lookup table
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+ImCltPtr ImCltQPtr( srcClt, i )
+	ImClt *srcClt ;
+	int i ;
+
+ImCltPtr ImCltQFirst( srcClt )
+	ImClt *srcClt ;
+
+ImCltPtr ImCltQLast( srcClt )
+	ImClt *srcClt ;
+
+ImCltPtr ImCltQNext( srcClt, p )
+	ImClt *srcClt ;
+	ImCltPtr p ;
+
+ImCltPtr ImCltQPrev( srcClt, p )
+	ImClt *srcClt ;
+	ImCltPtr p ;
+
+void ImCltSInc( srcClt, p )
+	ImClt *srcClt ;
+	ImCltPtr p ;
+
+void ImCltSDec( srcClt, p )
+	ImClt *srcClt ;
+	ImCltPtr p ;
+.fi
+\fR
+.SH DESCRIPTION
+These macros query and set pointers to color lookup table entries.
+.LP
+\fBImCltQPtr\fR returns a pointer to the \fIi\fR-th entry in \fIsrcClt\fR.
+Entries are numbered from 0 for the first entry.
+.LP
+\fBImCltQFirst\fR returns a pointer to the first entry in \fIsrcClt\fR
+and is a synonym for \fBImCltQPtr( srcClt, 0 )\fR.
+.LP
+\fBImCltQLast\fR returns a pointer to the last entry in \fIsrcClt\fR
+and is a synonym for \fBImCltQPtr( srcClt, ImCltQNColors( srcClt ) - 1 )\fR.
+.LP
+\fBImCltQNext\fR returns a pointer to the \fIsrcClt\fR entry following
+\fIp\fR.
+.LP
+\fBImCltQPrev\fR returns a pointer to the \fIsrcClt\fR entry preceding \fIp\fR.
+.LP
+\fBImCltSInc\fR increments the pointer \fIp\fR to advance it to the next
+entry in \fIsrcClt\fR.  This is the same as \fBp = ImCltQNext( srcClt, p )\fR.
+.LP
+\fBImCltSDec\fR decrements the pointer \fIp\fR to advance it to the previous
+entry in \fIsrcClt\fR.  This is the same as \fBp = ImCltQPrev( srcClt, p )\fR.
+.SH NOTES
+Each of these are C macros.
+.SH RETURNS
+\fBImCltQPtr\fR, \fBImCltQFirst\fR, \fBImCltQLast\fR, \fBImCltQNext\fR,
+and \fBImCltQPrev\fR return a pointer to a color lookup table entry.
+.LP
+\fBImCltSInc\fR and \fBImCltSDec\fR return nothing.
+.SH SEE ALSO
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBImVfbQFirst\fR (3IM),
+\fBImVfbQLast\fR (3IM),
+\fBImVfbQNext\fR (3IM),
+\fBImVfbQPrev\fR (3IM),
+\fBImVfbQPtr\fR (3IM),
+\fBImVfbSDec\fR (3IM),
+\fBImVfbSInc\fR (3IM)
+.SH AUTHOR
+Mike Bailey
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

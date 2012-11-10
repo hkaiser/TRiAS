@@ -1,0 +1,134 @@
+
+
+
+IMCLTALLOC(3IM)        SDSC IMAGE LIBRARY         IMCLTALLOC(3IM)
+
+
+
+NAME
+     ImCltAlloc - allocate a color lookup table
+
+SYNOPSIS
+     #include "im.h"
+
+     ImClt *ImCltAlloc( numColors )
+          int numColors ;
+
+
+DESCRIPTION
+     ImCltAlloc allocates a color  lookup  table  with  _n_u_m_C_o_l_o_r_s
+     entries  and returns a pointer to the new ImClt.  Each color
+     lookup table entry represents a color using 8 bits of red, 8
+     bits of green, and 8 bits of blue.
+
+     The new color table is not initialized (colors will be  ran-
+     dom).
+
+NOTES
+     Color lookup table  entries  are  accessed  by  obtaining  a
+     pointer to a specific entry using
+
+                Macro                             Meaning
+8          __________________________________________________________________
+          ImCltQPtr( c, i )    Returns a pointer to a particular ImClt entry
+
+          ImCltQFirst( c )     Returns a pointer to the first ImClt entry
+          ImCltQLast( c )      Returns a pointer to the last ImClt entry
+
+          ImCltQNext( c, p )   Returns a pointer to the next ImClt entry
+          ImCltQPrev( c, p )   Returns a pointer to the previous ImClt entry
+
+          ImCltSInc( c, p )    Same as p = ImCltQNext( c, p )
+          ImCltSDec( c, p )    Same as p = ImCltQPrev( c, p )
+
+     where _c is the specific color lookup table, _i  is  an  entry
+     number  (first  entry is entry number 0), and _p is a pointer
+     to a ImClt entry.
+
+     Using an ImClt entry pointer,  entries  in  a  color  lookup
+     table may be set and queried using:
+
+                 Macro                              Meaning
+8          _____________________________________________________________________
+          ImCltSRed( p, r )     Sets red component of a ImClt location
+          ImCltQRed( p )        Queries the red component of a ImClt location
+
+          ImCltSGreen( p, g )   Sets green component of a ImClt location
+          ImCltQGreen( p )      Queries the green component of a ImClt location
+
+          ImCltSBlue( p, b )    Sets blue component of a ImClt location
+          ImCltQBlue( p )       Queries the blue component of a ImClt location
+
+
+
+SDSC              Last change: August 19, 1992                  1
+
+
+
+
+
+
+IMCLTALLOC(3IM)        SDSC IMAGE LIBRARY         IMCLTALLOC(3IM)
+
+
+
+     The number of entries in a color lookup  table  may  queried
+     using:
+
+                Macro                           Meaning
+8          _______________________________________________________________
+          ImCltQNColors( c )   Queries the number of colors in this ImClt
+
+     A color lookup table may be  attached  to  a  virtual  frame
+     buffer  (see  ImVfbAlloc(3IM)).  To attach (set) the virtual
+     frame buffer's color lookup table, use  ImVfbSClt(3IM).   To
+     query  a  virtual  frame  buffer's  currently attached color
+     lookup table, use ImVfbQClt(3IM).
+
+                Macro                        Meaning
+8          _________________________________________________________
+          ImVfbSClt( v, c )   Attaches (set) the ImClt for an ImVfb
+          ImVfbQClt( v )      Queries the ImClt for an ImVfb
+
+RETURNS
+     Upon success, ImCltAlloc returns a new ImClt.   On  failure,
+     IMCLTNULL is returned and ImErrNo set to the following:
+
+          IMEMALLOC   Cannot allocate enough memory for the new ImClt
+
+SEE ALSO
+     ImIntro (3IM),  ImErrNo  (3IM),  ImCltDup  (3IM),  ImCltFree
+     (3IM),  ImCltGrayRamp  (3IM),  ImCltQBlue (3IM), ImCltQFirst
+     (3IM), ImCltQGreen (3IM),  ImCltQLast  (3IM),  ImCltQNColors
+     (3IM),  ImCltQNext (3IM), ImCltQPrev (3IM), ImCltQPtr (3IM),
+     ImCltQRed  (3IM),   ImCltRoll   (3IM),   ImCltSBlue   (3IM),
+     ImCltSDec   (3IM),   ImCltSGreen   (3IM),  ImCltSInc  (3IM),
+     ImCltSRed  (3IM),   ImVfbAlloc   (3IM),   ImVfbFree   (3IM),
+     ImVfbQClt (3IM), ImVfbSClt (3IM)
+
+AUTHOR
+     Mike Bailey
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2                 Last change: August 19, 1992               SDSC
+
+
+

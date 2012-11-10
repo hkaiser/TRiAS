@@ -1,0 +1,22 @@
+HKCR
+{
+	TRiASUI.PpgMaskEdit.1 = s 'TRiAS UserInterface - Maskedit Control PropertyPage'
+	{
+		CLSID = s '{51BB3DE2-0C38-11D2-8F6B-0060085FC1CE}'
+	}
+	TRiASUI.PpgMaskEdit = s 'TRiAS UserInterface - Maskedit Control PropertyPage'
+	{
+		CurVer = s 'TRiASUI.PpgMaskEdit.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {51BB3DE2-0C38-11D2-8F6B-0060085FC1CE} = s 'TRiAS UserInterface - Maskedit Control PropertyPage'
+		{
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

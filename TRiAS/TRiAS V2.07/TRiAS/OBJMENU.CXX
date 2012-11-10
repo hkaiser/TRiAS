@@ -1,0 +1,1525 @@
+// Menuverarbeitungsroutinen fuer ObjektInfoDlgBox ----------------------------
+// File: OBJMENU.CXX
+
+#include "triaspre.hxx"
+
+#include "triasres.h"
+
+#include <xtensnxx.h>
+#include <ospace/com/iterenum.h>		// IEnum<LONG>
+
+#include <xtsnguid.h>
+#include <undoguid.h>		// GUID
+#include <eonrguid.h>
+#include <dirisole.h>
+#include <selobwnd.h>
+#include <modidprp.h>
+#include <statguid.h>
+#include <DstObWnd.h>
+#include <ObjekteDoppelnGuid.h>
+
+#include <iunredo.hxx>		// Interface's
+#include <ipropseq.hxx>
+#include <istatus.h>
+
+#include "extmain3.hxx"
+#include "Strings.h"
+#include "tenums.h"
+	
+#include "merkedit.hxx"
+#include "objowndr.hxx"
+#include "objprop.hxx"
+
+#if defined(_DEBUG) && defined(WIN32)
+#undef THIS_FILE
+static char BASED_CODE THIS_FILE[] = __FILE__;
+#endif
+
+///////////////////////////////////////////////////////////////////////////////
+// benötigte SmartIF's
+DefineSmartInterface(DataObject);
+DefineEnumIIDWrapper(LONG);
+DefineSmartEnumerator(LONG);		// WEnumLONG etc.
+DefineSmartInterface(ProgressIndicator);
+
+///////////////////////////////////////////////////////////////////////////////
+// globale Variablen
+extern ExtDirisWindow *CurrActDirisW;
+extern HelpDisplay *IrisHD;
+extern HPALETTE hPalette;
+
+extern bool g_fFilters;			// ExportFilter installiert
+extern short GCancelFlag;       // General Cancel Flag
+
+extern class CLegendeWindow *pLegende;	// Legende
+
+char *FormatROString (char *pText, RECHOBJECT &rRO);
+short OTypToBits (ObjTyp);
+HRESULT DeleteObjsInitProgress (HWND hWnd, int iCntSel, IProgressIndicator **ppIProgInd);
+
+///////////////////////////////////////////////////////////////////////////////
+// MenuMessages auswerten 
+
+#if defined(_NEWORMENU)
+void ObjektInfo :: MenuCommand (MenuCommandEvt e) 
+{
+	DEX_CancelMode (true);			// Blinken abschalten
+	Update();						// Fenster zeichnen lassen
+
+// erst mal bei der ExtensionList nachfragen, ob dieser MenuPunkt zu einer 
+// Erweiterung gehört, wenn nichts in der LB ist, dann ist das das Problem der 
+// Erweiterung
+	if (m_rEL.DispatchMenuCommand (e, hWnd())) {
+		DEX_CancelMode (false);		// Blinken wieder zuschalten
+		return;
+	}
+
+// wenn nichts enthalten ist, dann raus
+	if (-1L == GetActiveObj()) 
+		return;	// nichts in der Listbox
+	
+// Commando verabeiten
+	BEGIN_COMMANDS(e)
+	// SystemMenu
+		ON_COMMAND_ID(IDM_REMOVEORWNDS, doRemoveAllORWnds);
+
+	// StandardMenu: Bearbeiten
+		ON_COMMAND_ID(ID_OBJMENU_CUT, doCut);		// Ausschneiden
+		ON_COMMAND_ID(ID_OBJMENU_COPY, doCopy);		// Kopieren
+		ON_COMMAND_ID(ID_OBJMENU_PASTE, doPaste);	// Einfügen
+		ON_COMMAND_ID(ID_OBJMENU_SELECTALL, doSelectAll);				// Alle Einträge selektieren
+		ON_COMMAND_ID(ID_OBJMENU_REVERSESELECTION, doReverseSelection);	// Selektion umkehren
+		ON_COMMAND_ID(IDM_ATTRIBUTE, doShowOIAttribute);	// Merkmale editieren
+		ON_COMMAND_ID(IDM_OBJPROPS, doObjectProps);	// Objekteigenschaften
+		ON_COMMAND_ID(IDM_ZOOMOBJECTS, doZoomIn);	// Objekte zeigen
+		ON_COMMAND_ID(IDM_KOMPLOBJECTS, doComplementObjects);	// Objekte zeigen
+
+	// Standardmenu: Aktionen
+		ON_COMMAND_ID(IDM_MODALLIDENTS, doModAllIdents);	// Objektklasse modifizieren
+		ON_COMMAND_ID(IDM_COPYOBJECTS, doCopyObjects);	// Objekte doppeln
+		ON_COMMAND_ID(IDM_EXPORT, doExportObjects);		// Objekte exportieren
+		ON_COMMAND_ID(IDM_OBJDELETE, doObjDelete);		// Objekte löschen
+		ON_COMMAND_ID(IDM_ADDTOLEGEND, doAddToLegend);	// Zu Legende hinzufügen
+		ON_COMMAND_ID(IDM_OBJMENU_SEARCH, doRecherche);	// Recherche aus ORWnd anwerfen
+		ON_COMMAND_ID(IDM_GENTEXTOBJECTS, doGenTextObjects);	// Textobjekte erzeugen
+
+	// StandardMenu: Hilfe anzeigen
+		ON_COMMAND_ID(IDM_OBJHELP, doHelp);
+
+	// nur als Accel vorhandeln
+		ON_COMMAND_ID(IDM_CANCEL, doCancel);			// Zeichnen abbrechen
+	END_COMMANDS;
+
+	App :: Exec (ExecWhileEvent);	// erstmal alles abarbeiten
+	DEX_CancelMode (false);		// Blinken wieder erlauben
+}
+
+void ObjektInfo :: MenuInit (MenuInitEvt e) 
+{
+	if (WM_INITMENU == e.Msg()) return;	// nur WM_INITMENUPOPUP bearbeiten
+
+	if (HIWORD(e.LParam())) {			// SystemMenu
+	short iCnt = DEX_ActiveObjectsCount();
+
+		EnableMenuItem (HMENU(e.WParam()), IDM_REMOVEORWNDS, 
+			iCnt > 1 ? MF_BYCOMMAND|MF_ENABLED : MF_BYCOMMAND|MF_GRAYED);
+		return;
+	}
+
+// Alle Erweiterungen fragen, ob sie etwas an den Menu's zu drehen haben
+CTable r(EL());
+
+	for (r.First(); r.Valid(); r.Next()) {
+	ExtensionLock l(r);
+
+		if (l && l -> isMyMenu (e)) 
+		// wenn Menu gefunden wurde
+			l -> MenuInit (e, hWnd());
+	}	
+
+// eigene MenuPunkte Enable'n
+	MenuEnable (&ObjektMenu, IDM_ADDTOLEGEND, pLegende != NULL);
+	MenuEnable (&ObjektMenu, IDM_EXPORT, g_fFilters);
+		
+// MenuText entspr. selektierter Objektanzahl richten
+HMENU hMenu = ObjektMenu.Handle (API_MENU_HMENU);
+
+	if (m_ulActCount > 1) {
+	// mehr als ein Objekt selektiert
+		ModifyMenu (hMenu, IDM_MODALLIDENTS,
+			    MF_BYCOMMAND|MF_STRING, IDM_MODALLIDENTS, 
+			    ResString (IDS_MODIDENT1, 30).Addr());
+
+		ModifyMenu (hMenu, IDM_OBJDELETE,
+			    MF_BYCOMMAND|MF_STRING, IDM_OBJDELETE, 
+			    ResString (IDS_OBJDELETE1, 30).Addr());
+	} else {
+	// genau ein Objekt selektiert              
+		ModifyMenu (hMenu, IDM_MODALLIDENTS,
+			    MF_BYCOMMAND|MF_STRING, IDM_MODALLIDENTS, 
+			    ResString (IDS_MODIDENT, 30).Addr());
+
+		ModifyMenu (hMenu, IDM_OBJDELETE,
+			    MF_BYCOMMAND|MF_STRING, IDM_OBJDELETE, 
+			    ResString (IDS_OBJDELETE, 30).Addr());
+	}
+	                         
+	DrawMenuBar (m_hWnd);
+
+// wenn kein Objekt selektiert ist, dann MenuPunkte passivieren
+bool ifRO = !DEX_GetROMode();
+
+	MenuEnable (&ObjektMenu, IDM_OBJDELETE, m_ulActCount > 0 && ifRO);
+	MenuEnable (&ObjektMenu, IDM_MODALLIDENTS, m_ulActCount > 0 && ifRO);
+	MenuEnable (&ObjektMenu, IDM_ZOOMOBJECTS, m_ulActCount > 0);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// MenuCommands
+bool ObjektInfo::doRemoveAllORWnds (void)
+{
+	DEX_PostRemoveAllORWnds();		// alle ORFenster löschen
+	return true;
+}
+
+bool ObjektInfo::doCut (void)				// Ausschneiden
+{
+	return false;
+}
+
+bool ObjektInfo::doCopy (void)				// Kopieren
+{
+	return false;
+}
+
+bool ObjektInfo::doPaste (void)				// Einfügen
+{
+	return false;
+}
+
+bool ObjektInfo::doSelectAll (void)			// Alle Einträge selektieren
+{
+CEierUhr Wait (GetParent());
+
+	m_pKurzInfo -> ChangeSelected(Range(0, GetCount()-1), true);
+	m_ulActCount = UpdateActivation();
+	UpdateCaption();	// Caption dieses Fensters aktualisieren
+	return true;
+}
+
+bool ObjektInfo::doReverseSelection (void)	// Selektion umkehren
+{
+CEierUhr Wait (GetParent());
+int iLastIndex = GetCount();
+
+	for (int iIndex = 0; iIndex < iLastIndex; iIndex++) {
+	bool isSel = m_pKurzInfo -> GetSelection (iIndex);
+
+		m_pKurzInfo -> ChangeSelected (iIndex, !isSel);
+	}
+	m_ulActCount = UpdateActivation();
+	UpdateCaption();	// Caption dieses Fensters aktualisieren
+	return true;
+}
+
+bool ObjektInfo::doObjectProps (void)		// Objekteigenschaften
+{
+CEierUhr Wait (this);
+WEnumLONG EnumObj;
+
+	if (CreateObjEnumerator (EnumObj.ppi(), ENUMOBJECTTYPE_ACTIVATED, (DWORD)(void *)hWnd())) 
+	{
+	LONG lRefONr = GetActiveObj(); 
+	ObjectPropertyDlg OPDlg (this, &m_rEL, EnumObj, (-1L == lRefONr) ? 0L : lRefONr);
+
+		Wait.Hide();
+		OPDlg.Show();
+		return OPDlg.Result();
+	}
+
+	return false;
+}
+
+bool ObjektInfo::doHelp (void)				// Hilfe anzeigen
+{
+	IrisHD -> Show (IDM_OBJHELP);
+	return true;
+}
+
+bool ObjektInfo::doCancel (void)			// Zeichnen abbrechen
+{
+	GCancelFlag = GCFAbort;
+	return true;
+}
+
+bool ObjektInfo::doRecherche (void)			// Objektrecherche
+{
+	return TextRecherche (m_hWnd, true);
+}
+
+bool ObjektInfo::doGenTextObjects (void)			// Textobjekte erzeugen
+{
+	return GenerateTextObjects (m_hWnd, true);
+}
+
+#else
+
+void ObjektInfo :: MenuCommand (MenuCommandEvt e) 
+{
+	if (e.GetItemID() == IDM_REMOVEORWNDS) {
+		DEX_PostRemoveAllORWnds();		// alle ORFenster löschen
+		return;
+	}
+
+	DEX_CancelMode (true);			// Blinken abschalten
+	Update();						// Fenster zeichnen lassen
+
+// erst mal bei der ExtensionList nachfragen, dieser MenuPunkt zu einer 
+// Erweiterung gehört, wenn nichts in der LB ist, dann ist das das Problem der 
+// Erweiterung
+	if (m_rEL.DispatchMenuCommand (e, hWnd())) {
+		DEX_CancelMode (false);		// Blinken wieder zuschalten
+		return;
+	}
+
+// wenn nichts enthalten ist, dann raus
+long lONr = GetActiveObj();
+
+	if (lONr == -1L) return;	// nichts in der Listbox
+	
+// ObjRechFenster-eigene MenuPunkte
+	switch (e.GetItemID()) {
+	case IDM_ATTRIBUTE:		// allgemeine Merkmale anzeigen
+		doShowOIAttribute ();
+		break;
+
+	case IDM_TOPOLOGIE:		// topologische Relationen
+		ShowOITopologie ();
+		break;
+
+	case IDM_THEMATIK:		// thematische Relationen
+		ShowOIThematik ();
+		break;
+
+	case IDM_OBJAREA:		// Flächeninhalt
+		ShowOIObjectArea ();
+		break;
+
+	case IDM_OBJCENTRE:		// Flächenschwerpunkt
+		ShowOIObjectCentre ();
+		break;
+
+	case IDM_OBJDELETE:		// Objekt physisch löschen
+		doObjDelete();
+		break;
+
+	case IDM_MODALLIDENTS:
+		doModAllIdents();
+		break;
+
+	case IDM_CREATEKO:		// KomplexObjekt bilden
+		CreateKObject();
+		break;
+
+	case IDM_OBJPROPS:
+		{
+		CEierUhr Wait (this);
+		IEnum<LONG> *pEnum = NULL;
+
+			if (CreateObjEnumerator (&pEnum, 
+						 ENUMOBJECTTYPE_ACTIVATED, 
+						 (DWORD)(void *)hWnd())) 
+			{
+			LONG lRefONr = GetActiveObj(); 
+			ObjectPropertyDlg OPDlg (this, &m_rEL, pEnum, (-1L == lRefONr) ? 0L : lRefONr);
+
+				Wait.Hide();
+				OPDlg.Show();
+				pEnum -> Release();
+			}
+		}
+		break;
+
+	case IDM_ZOOMOBJECTS:
+		doZoomIn();
+		break;
+		
+	case IDM_ADDTOLEGEND:
+		doAddToLegend();
+		break;
+		
+	case IDM_KOMPLOBJECTS:		// alle anderen Objekte anzeigen
+		doComplementObjects();
+		break;
+		
+	case IDM_EXPORT:
+		doExportObjects();
+		break;
+		
+	case IDM_OBJHELP:
+		IrisHD -> Show (IDM_OBJHELP);
+		break;
+	}
+
+	App :: Exec (ExecWhileEvent);	// erstmal alles abarbeiten
+	DEX_CancelMode (false);		// Blinken wieder erlauben
+}
+
+void ObjektInfo :: MenuInit (MenuInitEvt e) 
+{
+	if (WM_INITMENU == e.Msg()) return;	// nur WM_INITMENUPOPUP bearbeiten
+
+	if (HIWORD(e.LParam())) {		// SystemMenu
+	short iCnt = DEX_ActiveObjectsCount();
+
+		EnableMenuItem (HMENU(e.WParam()), IDM_REMOVEORWNDS, 
+			iCnt > 1 ? MF_BYCOMMAND|MF_ENABLED : MF_BYCOMMAND|MF_GRAYED);
+		return;
+	}
+
+// Alle Erweiterungen fragen, ob sie etwas an den Menu's zu drehen haben
+CTable r(EL());
+
+	for (r.First(); r.Valid(); r.Next()) {
+	ExtensionLock l(r);
+
+		if (l && l -> isMyMenu (e)) 
+		// wenn Menu gefunden wurde
+			l -> MenuInit (e, hWnd());
+	}	
+
+// eigene MenuPunkte Enable'n
+long lONr = GetActiveObj();
+bool isArea = (lONr == -1) ? false : DEX_GetObjectType (lONr) == OT_FLAECHE;
+
+	MenuEnable (&ObjektMenu, IDM_OBJAREA, isArea);
+	MenuEnable (&ObjektMenu, IDM_OBJCENTRE, isArea);
+	MenuEnable (&ObjektMenu, IDM_ADDTOLEGEND, pLegende != NULL);
+	MenuEnable (&ObjektMenu, IDM_EXPORT, g_fFilters);
+		
+// MenuText entspr. selektierter Objektanzahl richten
+HMENU hMenu = ObjektMenu.Handle (API_MENU_HMENU);
+
+	if (m_ulActCount > 1) {
+	// mehr als ein Objekt selektiert
+		ModifyMenu (hMenu, IDM_MODALLIDENTS,
+			    MF_BYCOMMAND|MF_STRING, IDM_MODALLIDENTS, 
+			    ResString (IDS_MODIDENT1, 30).Addr());
+
+		ModifyMenu (hMenu, IDM_OBJDELETE,
+			    MF_BYCOMMAND|MF_STRING, IDM_OBJDELETE, 
+			    ResString (IDS_OBJDELETE1, 30).Addr());
+	} else {
+	// genau ein Objekt selektiert              
+		ModifyMenu (hMenu, IDM_MODALLIDENTS,
+			    MF_BYCOMMAND|MF_STRING, IDM_MODALLIDENTS, 
+			    ResString (IDS_MODIDENT, 30).Addr());
+
+		ModifyMenu (hMenu, IDM_OBJDELETE,
+			    MF_BYCOMMAND|MF_STRING, IDM_OBJDELETE, 
+			    ResString (IDS_OBJDELETE, 30).Addr());
+	}
+	                         
+	DrawMenuBar (m_hWnd);
+
+// wenn kein Objekt selektiert ist, dann MenuPunkte passivieren
+bool ifRO = !DEX_GetROMode();
+
+	MenuEnable (&ObjektMenu, IDM_OBJDELETE, m_ulActCount > 0 && ifRO);
+	MenuEnable (&ObjektMenu, IDM_MODALLIDENTS, m_ulActCount > 0 && ifRO);
+	MenuEnable (&ObjektMenu, IDM_ZOOMOBJECTS, m_ulActCount > 0);
+}
+#endif // _NEWORMENU
+
+// Dialogfenster 'Attribute' generieren ---------------------------------------
+bool ObjektInfo::doShowOIAttribute (void) 
+{
+long lONr = GetActiveObj();
+
+	TX_ASSERT(-1 != lONr);
+	if ((DEX_GetObjectStatus (lONr) & OS_Temp)) 
+		return false;		// kein selektiertes oder temporäres Objekt
+
+	if (isDBTextObjekt (m_rDBO.DB().DBDesc(), lONr)) {
+	// wenn TextObjekt, dann anderes Fenster generieren
+
+		return CurrActDirisW -> EditTextObject (this, lONr);
+	} else {
+	ListObjektInfoDialog Info (this, m_rDBO, lONr, m_rDBO.RetrieveIdent (lONr), m_fSystem);
+
+		Info.Show();
+		return Info.Result();
+	}
+}
+
+#if !defined(_NEWORMENU)
+// ObjektInfofenster mit TopologieInfo generieren -----------------------------
+void ObjektInfo :: ShowOITopologie (void) 
+{
+CEierUhr Wait (GetParent());
+ObjFeld Objekte;                        // ArrayContainer
+ErrCode EC;                             // FehlerCode
+long lONr = GetActiveObj();
+
+	if (lONr == -1 || (DEX_GetObjectStatus (lONr) & OS_Temp)) 
+		return;		// kein selektiertes oder temporäres Objekt
+
+	if ((EC = m_rDBO.DB().RigInfo (lONr, Objekte)) != EC_OKAY) 
+		return;
+
+// Identifikatoren filtern
+	m_rDBO.DB().IdFilter (Objekte, m_rDBO.Idents());
+
+DEXXCREATEOBJEKTINFO crOI;
+
+	crOI.dwSize = sizeof(DEXXCREATEOBJEKTINFO);
+	crOI.lpCaption = StrDup (ResString (IDS_RIGINFOCAPTION, 30), RC_ButtonResponse);
+	crOI.lcObjs = &Objekte;
+	crOI.pcMColor = new Color (YELLOW);
+	crOI.ppntPos = new Point (0, 0);
+	crOI.fcnPos = NULL;
+	crOI.pData = NULL;
+
+	DEXX_CreateObjektInfo (crOI);	// RechercheFenster generieren
+
+	if (crOI.ppntPos) delete crOI.ppntPos;
+	if (crOI.pcMColor) delete crOI.pcMColor;
+	if (crOI.lpCaption) delete crOI.lpCaption;
+}
+
+// ObjektInfoFenster mit Objekten, die in thematischer Relation stehen --------
+void ObjektInfo :: ShowOIThematik (void) 
+{
+CEierUhr Wait (GetParent());
+ObjFeld Objekte;                        // ArrayContainer
+ErrCode EC;                             // FehlerCode
+long ONr = GetActiveObj();
+
+	if (ONr == -1 || (DEX_GetObjectStatus (ONr) & OS_Temp)) 
+		return;		// kein selektiertes oder temporäres Objekt
+
+	if ((EC = m_rDBO.DB().RelInfo (ONr, Objekte)) != EC_OKAY)
+		return;
+
+// Identifikatoren filtern
+	m_rDBO.DB().IdFilter (Objekte, m_rDBO.Idents());
+
+// Dialogfenster generieren
+DEXXCREATEOBJEKTINFO crOI;
+
+	crOI.dwSize = sizeof(DEXXCREATEOBJEKTINFO);
+	crOI.lpCaption = StrDup (ResString (IDS_RELINFOCAPTION, 30), RC_ButtonResponse);
+	crOI.lcObjs = &Objekte;
+	crOI.pcMColor = new Color (BLUE);
+	crOI.ppntPos = new Point (10, 10);
+	crOI.fcnPos = NULL;
+	crOI.pData = NULL;
+
+	DEXX_CreateObjektInfo (crOI);	// RechercheFenster generieren
+
+	if (crOI.ppntPos) delete crOI.ppntPos;
+	if (crOI.pcMColor) delete crOI.pcMColor;
+	if (crOI.lpCaption) delete crOI.lpCaption;
+}
+
+// Flächeninhalt der selektieren Fläche anzeigen ------------------------------
+void ObjektInfo :: ShowOIObjectArea (void) 
+{
+CTable t(m_rDBO.Shapes().ObjNumTree());
+double Area = 0.0;
+long lONr = GetActiveObj();
+
+	if (lONr == -1) return;		// kein selektiertes Objekt
+
+CEierUhr Wait (GetParent());
+
+	if (t.Find (&lONr)) {	// ON suchen
+	ExtShapeObjectLock l (t);
+
+		if (l) {
+		char OutBuff[140];
+		char DBuff[20];
+
+		// Flächeninhalt dieses PolyPolygonZuges
+			Area = ((GeoFlaeche *)(l -> operator GeoObjekt *())) -> Inhalt (m_rDBO.pCT());
+
+		// Hier noch Skalierung einfügen
+//			Area *= (K11*K22);
+			Area /= (1000.0*1000.0);
+
+		// Flächeninhalt ausgeben
+			strcpy (OutBuff, ResString (IDS_OBJAREA, 100));
+			if (Area >= 1.0) {	// im qkm
+				strcat (OutBuff, DtoA (DBuff, "%10.3f", Area));
+				strcat (OutBuff, ResString (IDS_KILOMETER2, 10));
+			} else if (Area >= 0.01) {	// in ha
+				strcat (OutBuff, DtoA (DBuff, "%10.3f", Area*1e2));
+				strcat (OutBuff, ResString (IDS_HEKTAR, 10));
+			} else {	// in qm
+				strcat (OutBuff, DtoA (DBuff, "%10.3f", Area*1e6));
+				strcat (OutBuff, ResString (IDS_METER2, 10));
+			}
+
+		InfoBox IB (ResString (IDS_OBJAREACAP, 30), OutBuff, CurrActDirisW);
+
+			IB.Show();
+		}
+	}
+}
+
+// Flächenschwerpunkt der selektierten Fläche anzeigen ------------------------
+void ObjektInfo :: ShowOIObjectCentre (void) 
+{
+CTable t(m_rDBO.Shapes().ObjNumTree());
+long lONr = GetActiveObj();
+
+	if (lONr == -1) return;		// kein selektiertes Objekt
+
+	if (t.Find (&lONr)) {	// ON suchen
+	ExtShapeObjectLock l (t);
+	Punkt Pt;
+
+		if (l) {
+		char OutBuff[140];
+		char XOutBuff[40], YOutBuff[40];
+		double XOut, YOut;
+
+		// Flächenschwerpunkt berechnen
+			((GeoFlaeche *)(l -> operator GeoObjekt *())) -> SchwerPunkt (Pt);
+
+		// Koordinaten korrigieren
+			m_rDBO.pCT() -> UnScale (Pt, &XOut, &YOut);
+			m_rDBO.pCT() -> Transform (&XOut, &YOut);
+
+		// Schwerpunkt ausgeben
+			wsprintf (OutBuff, ResString (IDS_SCHWPKTFRMT, 100), 
+				  DtoA (XOutBuff, "%10.0f", YOut), 
+				  DtoA (YOutBuff, "%10.0f", XOut));
+
+		// Ausgabefenster generieren	
+		InfoBox IB (ResString (IDS_OBJCENTRECAP, 40),
+			    OutBuff, CurrActDirisW);
+			IB.Show();
+		}
+	}
+}
+#endif // !_NEWORMENU
+
+///////////////////////////////////////////////////////////////////////////////
+// Selektierte Objekte löschen
+HRESULT DeleteObjsInitProgress (HWND hWnd, int iCntSel, IProgressIndicator **ppIProgInd)
+{
+	*ppIProgInd = NULL;
+
+WProgressIndicator Status;
+HRESULT hr = PiCreateInstance (IID_IProgressIndicator, Status.ppv());
+
+	if (FAILED(hr)) return hr;
+
+HWND hNewWnd = Status -> InitNew (hWnd, 0L);
+
+	if (NULL == hNewWnd) return E_FAIL;
+
+	hr = Status -> Restart (0L, (ULONG)iCntSel, 
+				  PIFLAG_CAPTION | PIFLAG_STATUS | PIFLAG_RESULT |
+				  PIFLAG_TIME | PIFLAG_ADJUSTPERCENT);
+	if (FAILED(hr)) return hr;
+
+// diverse Texte initialisieren
+ResString resCaption (IDS_OBJDELCAPTION, 64);
+ResString resStatus (IDS_OBJDELSTATUS, 64);
+
+	Status -> ChangeText (PIFLAG_CAPTION, resCaption);
+	Status -> ChangeText (PIFLAG_ADJUSTPERCENT, resStatus);
+
+	*ppIProgInd = Status.detach();
+	return NOERROR;
+}
+
+bool ObjektInfo::doObjDelete (void) 
+{
+int iCntSelected = m_pKurzInfo -> GetNoSelected();
+
+	if (0 == iCntSelected) return false;	// nichts selektiert
+
+CEierUhr Wait (GetParent());
+int maxIndex = GetCount();
+int oldIndex = m_pKurzInfo -> GetCaretIndex ();
+bool fDeleted = false;
+
+	{
+	int iCnt = 0;
+	WProgressIndicator Status;
+	ResString resUndo (IDS_UNDODELETEOBJECT, 30);
+
+		DEX_BeginUndoLevel (resUndo.Addr());
+		DeleteObjsInitProgress (hWnd(), iCntSelected, Status.ppi());		// Fehler nicht fatal
+
+		for (int iIndex = maxIndex -1; iIndex >= 0; iIndex--) {
+		bool fIsSel = m_pKurzInfo -> GetSelection (iIndex);
+		
+			if (fIsSel) { 	// nur markierte Löschen
+				DeleteObjectIndex (iIndex);
+				fDeleted = true;
+
+			// StatusFenster weiterstellen
+				if (NULL != (IProgressIndicator *)Status) {
+					Status -> SetPosition(++iCnt);
+					if (Status -> WasCanceled())
+						break;	// 'Abbrechen' gedrückt
+				}
+			}
+		}
+	} // Status freigeben
+
+	if (!fDeleted) {
+		DEX_CancelUndoLevel (false);
+		return false;		// nichts gemacht
+	}
+
+// neues Objekt in ListBox markieren und aktivieren
+	ActivateNextItem (oldIndex);
+	DEX_EndUndoLevel();
+
+// alles gelöscht: IrisWind neuzeichnen
+	UpdateCaption();
+	DEX_RePaint();
+	return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// neues Objekt in ListBox markieren und aktivieren
+void ObjektInfo::ActivateNextItem (int iOldIndex)
+{
+int ulCnt = GetCount();
+
+	if (ulCnt > 0) {
+	// noch ein Objekt da: dann nächstes aktivieren
+	int newIndex = (iOldIndex < ulCnt) ? iOldIndex : ulCnt -1;
+
+		m_pKurzInfo -> ChangeSelected (newIndex, true);
+		m_pKurzInfo -> SetCaretIndex (newIndex);
+
+	// neues Objekt aktivieren
+	long newONr = (long)m_pKurzInfo -> GetItem (newIndex);
+	CTable t (OITree());
+			
+	// neu selektiertes Objekt mitteilen
+		ActivateObj (newONr);
+		DEXN_ObjectSelected (newONr);
+		DEXN_ObjectActivated (newONr);
+
+		if (t.Find (&newONr)) {
+		ObjInfoItemLock l(t);
+		
+			if (l) {
+				l -> isActive (true);
+				l -> isSelected (true);
+
+				TX_ASSERT(m_ulActCount < OITree().Count());
+				m_ulActCount++;		// wieder eins mehr
+			}
+		}	
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Eine Objekteigenschaft wurde modifiziert
+bool ObjektInfo::HandleModifyFeature (long lONr, LPCSTR pcName)
+{
+	return RefreshEntry (lONr);		// nur neu einlesen
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Einen Objekteintrag neu lesen, dazu die bereits lange existierende Funktion 
+// HandleModifyIdent verwenden.
+bool ObjektInfo :: RefreshEntry (long lONr)
+{
+	return HandleModifyIdent (lONr, 0L);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// neue Objekteigenschaft setzen
+bool ObjektInfo::SetNewObjectProp (SHOWOBJPROP *pSOP)
+{
+	if (NULL != m_pIObjProp) {
+		m_pIObjProp -> Release();
+		m_pIObjProp = NULL;
+	}
+
+// neue Objekteigenschaft einstellen
+	if (NULL != pSOP -> m_pIObjProp) {
+	HRESULT hr = pSOP -> m_pIObjProp -> QueryInterface (IID_IObjectProperty, (LPVOID *)&m_pIObjProp);
+
+		if (FAILED(hr)) return false;
+	}
+
+// evtl. alle Einträge neu generieren
+	if (pSOP -> m_iFlags & SOPReloadProps) {
+	CTable t(OITree());
+
+		for (t.First(); t.Valid(); t.Next()) {
+		ObjInfoItemLock l(t);
+
+			if (!l) continue;
+			RefreshEntry (l -> ONr());
+		}
+	}
+
+return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Umklassifizieren eines Objektes der Liste 
+bool ObjektInfo :: HandleModifyIdent (long lONr, long lIdent, long lNewONr) 
+{
+	if (lONr <= 0L) return false;		// ungültige Objektnummer
+	
+	if (-1 == m_pKurzInfo -> FindItem ((void *)lONr))
+		return false;		// nicht in diesem Fenster enthalten
+
+	if (0L == lNewONr) lNewONr = lONr;	// ObjektNummer bleibt gleich
+	if (0L == lIdent) lIdent = DEX_GetObjIdent(lONr);
+
+// Identifikator in der ListBox ändern
+CTable t(OITree());
+Color oldColor (BLACK);
+Color oldActColor (BLACK);
+Color oldOPColor (BLACK);
+bool oldSelection = false;
+
+	if (t.Find (&lONr)) {
+	ObjInfoItemLock l(t);
+
+		if (l) {
+			oldColor = l -> StringColor();
+			oldActColor = l -> ActColor();
+			oldOPColor = l -> ObjPropColor();
+			oldSelection = l -> isSelected();
+		}
+	} 	// Lock aufheben
+	else return false;		// in diesem Fenster nicht vertreten
+
+bool fExistsOP = true;
+HRESULT hr = NOERROR;
+
+// wenn ObjProp vorgegeben ist, dann diese nutzen, sonst Voreinstellung
+	if (m_pIObjProp)
+		hr = m_pIObjProp -> Eval (lNewONr, m_pBuffer, _MAX_PATH, NULL);
+	else 
+		hr = m_rEL.InvokeActObjProp (lNewONr, m_pBuffer, _MAX_PATH, NULL);
+
+	if (S_OK != GetScode(hr)) 
+	{
+	// wenn keine OPF gegeben ist, dann IdentKurzText verwenden
+	PBD_Ident Id (&(m_rDBO.PbdDB()), lIdent);
+
+		strncpy (m_pBuffer, Id.GetKurzText(), TEXTLEN);	// default: IdKurzText
+		m_pBuffer[TEXTLEN] = '\0';
+		if (S_FALSE != GetScode(hr))
+			fExistsOP = false;
+	}
+
+// noch mal nen Rundspruch losschicken
+RECHOBJECT RO;
+
+	INITSTRUCT(RO, RECHOBJECT);
+	RO.lONr = lNewONr;
+	RO.lIdent = lIdent;
+	RO.lpText = m_pBuffer;
+	RO.iTextLen = _MAX_PATH-1;
+	RO.iOTyp = (short)m_rDBO.RetrieveObjTyp(lNewONr);
+	RO.iFlags = m_iFlags & ROHideFlags;	// Voreinstellung verwenden
+
+// Farben abgleichen
+	if (fExistsOP) 
+		oldOPColor = oldColor;
+	else {
+		if (RO.iOTyp == OT_KO) 	// Komplexobjekte werden DunkelGrün
+			oldOPColor = Color(ColorVal(64), ColorVal(0), ColorVal(0));
+		else {
+		COLORREF cr = GetSysColor (COLOR_GRAYTEXT);
+
+			oldOPColor = (Color &)cr;
+		}
+	}
+
+	if (FormatROString (m_pBuffer1, RO))
+	{	// Objekt hat zu rechierenden Ident
+	int iIndex = (int)m_pKurzInfo -> FindItem ((void *)lONr);
+	int iCurrIndex = m_pKurzInfo -> GetCaretIndex();
+
+		TX_ASSERT(0 <= iIndex);
+
+	// Objekt deaktivieren
+		if (lONr != lNewONr) {
+			if (iIndex == iCurrIndex) {
+				DEXN_ObjectUnSelected (lONr);
+				if (oldSelection) {
+					DEXN_ObjectDeActivated (lONr);
+					DeActivateObj();
+				}
+			} else if (oldSelection) {
+				DEXN_ObjectDeActivated (lONr);
+				DeActivateObj (true, false, lONr);
+			}			
+		}
+
+	// alten Eintrag aus Baum herauslöschen, neuen erzeugen
+		t.Delete();	
+		{
+		ObjInfoItemCreator OIICr (OITree());
+		ObjInfoItem *pII = ContCreate (OIICr, ObjInfoItem) 
+					  (lNewONr, OTypToBits (ObjTyp(RO.iOTyp)), m_pBuffer1, 
+					   !(m_iFlags & ROHideText) ? m_pBuffer : g_cbNil, 
+					   oldColor, oldActColor, oldOPColor);
+			if (pII) pII -> isSelected (oldSelection);
+		}		// neues Element wirklich wegspeichern
+
+	// neues Objekt evtl selektieren
+		if (lONr != lNewONr) {
+			if (iCurrIndex == iIndex) {
+				ActivateObj (lNewONr);
+				DEXN_ObjectSelected (lNewONr);
+				if (oldSelection)
+					DEXN_ObjectActivated (lNewONr);
+			} else if (oldSelection) {
+				ActivateObj (lNewONr, true, false);
+				DEXN_ObjectActivated (lNewONr);
+			}
+		}
+
+/*	LPUNDOREDOREPLACEOBJECTWND pIUndo = NULL;
+	HRESULT hr = UndoCreateInstance (IID_IUndoRedoReplaceObjectWnd,
+					 (LPVOID *)&pIUndo);
+
+		if (SUCCEEDED(hr) && 
+		    pIUndo -> Init (hWnd, lONr, lNewONr) == NOERROR) 
+		{
+			DEX_AddUndoRedo (pIUndo);
+		}
+		if (pIUndo) pIUndo -> Release();
+*/
+	// den Eintrag in der Listbox ersetzen, aber nur neu zeichnen, 
+	// wenn der neue Eintrag derzeit sichtbar ist
+		if (0 <= iIndex) {
+		string str = string (m_pBuffer1) + m_pBuffer;
+		Event e;
+
+			e.Msg() = WM_SETREDRAW;
+			e.WParam() = false;
+			m_pKurzInfo -> ForwardEvent(e);
+
+			m_pKurzInfo -> SetItemEx (lNewONr, str.c_str(), iIndex);
+			m_pKurzInfo -> ChangeSelected (iIndex, oldSelection);
+
+			e.WParam() = true;
+			m_pKurzInfo -> ForwardEvent(e);
+
+		HWND hCtrl = m_pKurzInfo->Handle(API_WINDOW_HWND);
+		int iTop = ListBox_GetTopIndex(hCtrl);
+			
+			if (iTop != LB_ERR && iIndex >= iTop && iIndex < iTop + m_iCntItems) 
+				InvalidateRect(hCtrl, NULL, true);
+		}
+	}
+
+return true;
+}
+
+// Herausnehmen eines Objektes aus der Liste ----------------------------------
+bool ObjektInfo :: HandleDeleteObject (long lONr, bool fUpdateCaption) 
+{
+	if (lONr == -1L) return false;
+
+int iIndex = (int)m_pKurzInfo -> FindItem ((void *)lONr);
+int iCurrIndex = m_pKurzInfo -> GetCaretIndex();
+
+	if (iIndex != -1) {	// in diesem Fenster vertreten
+	bool fSel = m_pKurzInfo -> GetSelection (iIndex);
+
+	LPUNDOREDODELETEOBJECTWND pIUndo = NULL;
+	HRESULT hr = UndoCreateInstance (IID_IUndoRedoDeleteObjectWnd,
+					 (LPVOID *)&pIUndo);
+
+		if (SUCCEEDED(hr) && 
+		    pIUndo -> Init (hWnd(), lONr) == NOERROR) 
+		{
+			DEX_AddUndoRedo (pIUndo);
+		}
+		if (pIUndo) pIUndo -> Release();
+
+	// Objekt deaktivieren
+		if (iIndex == iCurrIndex) {
+			DEXN_ObjectUnSelected (lONr);
+			if (fSel) {
+				DEXN_ObjectDeActivated (lONr);
+				DeActivateObj();
+			}
+		} else if (fSel) {
+			DEXN_ObjectDeActivated (lONr);
+			DeActivateObj (true, true, lONr);
+		}			
+	
+	// aus Listbox entfernen
+		m_pKurzInfo -> DelItemEx ((ushort)iIndex);
+		if (fSel) {
+			TX_ASSERT(m_ulActCount > 0);
+			m_ulActCount--;		// auch hier eins weniger
+		}
+
+		DEXN_ObjectDeletedFromList(lONr);
+
+	// Caption richten
+		if (fUpdateCaption) UpdateCaption();
+	}
+		
+return true;
+}
+
+// löschen eines Objektes -----------------------------------------------------
+void ObjektInfo :: DeleteObject (long lONr)
+{
+	DEX_DeleteObjectEx (lONr);	// löschen mit Undo
+}
+
+void ObjektInfo :: DeleteObjectIndex (short iIndex) 
+{
+long lONr = (long)m_pKurzInfo -> GetItem (iIndex);	// ObjektNummer holen
+
+	if (lONr == -1) return;		// Objekt nicht gefunden
+
+// Objekt(e) komplett herauslöschen (Textobjekt wird ebenfalls gelöscht)
+// Über die abgesetzten Notifikationen werden die Objekte aus der Listbox gelöscht
+// (HandleDeleteObject)
+	DEX_DeleteObjectEx (lONr);	// löschen mit Undo
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Modifizieren der Objektidentifikatoren aller selktierten Objekte ----------
+static const CLSID *cbModIdClsIds[] = {
+	&CLSID_SelectFromObjectWindow,
+	&CLSID_ModifyIdent,
+};
+static CALPCLSID calModIdClsIds = {
+	sizeof(cbModIdClsIds)/sizeof(cbModIdClsIds[0]),
+	cbModIdClsIds,
+	NULL,
+#if !defined(_TRIAS_OLDIMPLEMTATION1)
+	NULL,
+#endif // _TRIAS_OLDIMPLEMTATION1
+};
+
+bool ObjektInfo::doModAllIdents (void) 
+{
+ResString resCap (IDS_MODIDENTCAP_OR, 128);
+WDataObject IDataObj;
+HRESULT hr = DataObjectCreateInstance (NULL, IID_IDataObject, IDataObj.ppv());
+
+	if (SUCCEEDED(hr)) 
+		hr = SetHWNDData (m_hWnd, IDataObj);
+
+	hr = RunPropertyActionSequence (m_hWnd, resCap, &calModIdClsIds, 
+			NULL, SUCCEEDED(hr) ? (IDataObject *)IDataObj : NULL, NULL);
+	return SUCCEEDED(hr);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Koperen (doppeln) aller selektierten Objekte
+static const CLSID *cbCopyObjClsIds[] = {
+	&CLSID_SelectFromObjectWindow,
+	&CLSID_ObjekteDoppeln,
+	&CLSID_DestinationObjectWindow,
+};
+static CALPCLSID calCopyObjClsIds = {
+	sizeof(cbCopyObjClsIds)/sizeof(cbCopyObjClsIds[0]),
+	cbCopyObjClsIds,
+	NULL,
+#if !defined(_TRIAS_OLDIMPLEMTATION1)
+	NULL,
+#endif // _TRIAS_OLDIMPLEMTATION1
+};
+
+bool ObjektInfo::doCopyObjects (void) 
+{
+ResString resCap (IDS_COPYOBJECTSCAP_OR, 128);
+WDataObject IDataObj;
+HRESULT hr = DataObjectCreateInstance (NULL, IID_IDataObject, IDataObj.ppv());
+
+	if (SUCCEEDED(hr)) 
+		hr = SetHWNDData (m_hWnd, IDataObj);
+
+	hr = RunPropertyActionSequence (m_hWnd, resCap, &calCopyObjClsIds, 
+			NULL, SUCCEEDED(hr) ? (IDataObject *)IDataObj : NULL, NULL);
+	return SUCCEEDED(hr);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Modifizieren eines ObjektIdentifikators 
+void ObjektInfo::ModObjIdentEx (long lONr, long newId, 
+				  long SelOldId, short iIndex)
+{
+long oldId = DEX_GetObjIdent (lONr);
+
+	if (SelOldId == -1L || SelOldId == oldId) {
+	int iObjIndex = iIndex == -1 ? 
+			  (int)m_pKurzInfo -> FindItem ((void *)lONr) :
+			  iIndex;
+
+		m_rDBO.DB().SetDirty();
+		ModObjIdent (lONr, oldId, newId, iObjIndex);
+	}
+}
+
+extern char cFVisTyp (ObjTyp);
+
+static short VTypFromOTyp (ObjTyp iOTyp)
+{
+	switch (iOTyp) {
+	case OT_PUNKT:		return MODIDENT_PUNKT;
+	case OT_KANTE:		return MODIDENT_LINIE;
+	case OT_KREIS:
+	case OT_FLAECHE:	return MODIDENT_FLAECHE;
+	case OT_LABEL:
+	case OT_TEXT:		return MODIDENT_TEXT;
+	case OT_KO:
+	case OT_UNKNOWN:
+	default:		return MODIDENT_TYP;
+	}
+}
+
+void ObjektInfo :: ModObjIdent (long lONr, long, long newId, int) 
+{
+// umklassifizieren
+MODOBJIDENT MOI;
+				
+	INITSTRUCT (MOI, MODOBJIDENT);
+	MOI.lONr = lONr;
+	MOI.lNewIdent = newId;
+	MOI.iMode = MODIDENT_ADDTOVIEW|OTypToBits((ObjTyp)DEX_GetObjectType(lONr));
+	DEX_ModObjectIdent (MOI);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Auslesen des aktuell selektierten Objektes 
+long ObjektInfo :: GetActiveObj (void)
+{
+	if (m_lActObj != -1) return m_lActObj;
+	else if (OITree().Count() > 0) {
+	int iIndex = m_pKurzInfo -> GetCaretIndex();
+
+		if (iIndex != -1)
+			return (long)m_pKurzInfo -> GetItem (iIndex);
+	}
+
+return -1L;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Ändern der SelektionsFarbe eines Objektes im angegebenen Fenster 
+bool ObjektInfoListe :: ChangeActiveColor (CHANGEACTIVECOLOR *pCAC)
+{
+CTable t (*this);
+
+	if (t.Find ((void *)&pCAC -> hWnd)) {
+	ObjektInfoLock l(t);
+	
+		if (l) return l -> ChangeActiveColor (pCAC -> lONr, 
+						      *(Color *)&pCAC -> newC);
+	}
+
+return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Ändern der SelektionsFarbe eines markierten Objektes 
+bool ObjektInfo :: ChangeActiveColor (long lONr, Color &newC)
+{
+CTable t (OITree());
+
+	if (t.Find (&lONr)) {
+	ObjInfoItemLock l(t);
+	
+		if (l) {
+			newC = l -> ChangeActiveColor (newC);
+			return true;
+		}
+	}        
+	
+return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Dispatcher für diverse Messages an dieses Fenster 
+LRESULT EXPORTTRIAS ObjektInfo :: Dispatch (Event e)
+{
+	if (e.Msg() == __DexCmd) {
+	// diese Meldung ist für uns
+		switch (e.WParam()) {
+		case DEX_DELOBJECT:
+			DeleteObject (e.LParam());
+			break;			
+
+		case DEX_MODOBJIDENT:
+			{
+			MODOBJIDENT *pMOI = (MODOBJIDENT *)e.LParam();
+
+				ModObjIdentEx (pMOI -> lONr, pMOI -> lNewIdent);
+			}
+			break;
+
+		case DEX_ENUMALLIDENTS:		// alle Idents in Listbox liefern
+			{
+			ENUMNOKEYLONG *pK = (ENUMNOKEYLONG *)e.LParam();
+			
+				return EnumIdents (pK -> eFcn, pK -> ePtr, false);
+			}
+			
+		case DEX_ENUMIDENTSSELECTED:	// alle selektierten Idents in Listbox liefern
+			{
+			ENUMNOKEYLONG *pK = (ENUMNOKEYLONG *)e.LParam();
+			
+				return EnumIdents (pK -> eFcn, pK -> ePtr, true);
+			}
+			
+		case DEX_ENUMALLIDENTSEX:		// alle Idents in Listbox liefern
+			{
+			ENUMNOKEYLONG *pK = (ENUMNOKEYLONG *)e.LParam();
+			
+				return EnumIdents (pK -> eFcn, pK -> ePtr, false, true);
+			}
+			
+		case DEX_ENUMIDENTSSELECTEDEX:	// alle selektierten Idents in Listbox liefern
+			{
+			ENUMNOKEYLONG *pK = (ENUMNOKEYLONG *)e.LParam();
+			
+				return EnumIdents (pK -> eFcn, pK -> ePtr, true, true);
+			}
+			
+		case DEX_QUERYCNTACTIVEOBJECTS:		// Anzahl der selektierten Objekte
+			*(short *)e.LParam() = (short)m_ulActCount;
+			break;
+			
+		case DEX_ADDOBJECTTOLIST:		// neuen Eintrag in der ListBox machen
+			{
+			long lONr = e.LParam();
+			
+				if (lONr != -1L) 
+					RetrieveObjInfo (lONr);
+
+			// Caption richten
+				UpdateCaption();
+			}
+			break;
+
+		case DEX_REMOVEOBJECTFROMLIST:
+		// Objekt aus ListBox entfernen und Markierung rücksetzen
+			if (m_pKurzInfo) 
+				return HandleDeleteObject (e.LParam());
+			return false;
+
+		case DEX_OBJECTSELECTED:
+			if (m_pKurzInfo) {
+			long lONr = e.LParam();
+
+				if (lONr != -1) {
+				int iObjIndex = (int)m_pKurzInfo -> FindItem ((void *)lONr);
+
+					if (iObjIndex != -1) {
+						if (!m_pKurzInfo -> GetSelection (iObjIndex))
+							m_ulActCount++;
+						m_pKurzInfo -> ChangeSelected (iObjIndex);
+						UpdateActivation (iObjIndex);
+					}
+				} else {
+				// alle selektieren
+					m_pKurzInfo -> ChangeSelected (Range (0, (int)GetCount()-1));
+					m_ulActCount = UpdateActivation();
+				}
+				UpdateCaption();
+			} else
+				return false;
+			break;
+
+		case DEX_OBJECTUNSELECTED:
+			if (m_pKurzInfo) {
+			long lONr = e.LParam();
+
+				if (lONr != -1) {
+				int iObjIndex = (int)m_pKurzInfo -> FindItem ((void *)e.LParam());
+
+					if (iObjIndex != -1) {
+						if (m_pKurzInfo -> GetSelection (iObjIndex))
+							m_ulActCount--;
+						m_pKurzInfo -> ChangeSelected (iObjIndex, false);
+						UpdateActivation (iObjIndex);
+					}
+				} else {
+				// alles deselektieren
+					m_pKurzInfo -> ChangeSelected (Range (0, (int)GetCount()-1), false);
+					m_ulActCount = UpdateActivation();
+				}
+				UpdateCaption();
+			} else
+				return false;
+			break;
+
+		case DEX_OBJECTACTIVATED:
+			if (m_pKurzInfo) {
+			int iObjIndex = (int)m_pKurzInfo -> FindItem ((void *)e.LParam());
+
+				if (iObjIndex != -1) {
+					m_pKurzInfo -> SetCaretIndex (iObjIndex);
+					UpdateActivation (iObjIndex);
+					UpdateCaption();	// Caption dieses Fensters aktualisieren
+				}
+			} else
+				return false;
+			break;
+
+		case DEX_RECHOBJECTSTATUS:
+			{
+			RECHOBJECT *pRO = (RECHOBJECT *)e.LParam();
+
+				TX_ASSERT(sizeof(RECHOBJECT) == pRO->dwSize);
+				TX_ASSERT(IsValidONr(m_rDBO.DB().DBDesc(), pRO -> lONr));
+
+			int iIndex = (int)m_pKurzInfo -> FindItem ((void *)(pRO -> lONr));
+			short iRes = 0L;
+
+				if (iIndex != -1) {
+					iRes |= RSListed;
+					if (m_pKurzInfo -> GetSelection (iIndex))
+						iRes |= RSSelected;
+					if (m_pKurzInfo -> GetCaretIndex() == iIndex)
+						iRes |= RSActivated;
+
+				CTable t(OITree());
+
+					if (pRO -> iFlags & (RSFillIdent|RSFillText|RSFillOTyp) &&
+						t.Find (&pRO -> lONr)) 
+					{
+					ObjInfoItemLock l (t);
+
+						if (l) {
+							if (pRO -> iFlags & RSFillIdent) 
+								pRO -> lIdent = DEX_GetObjIdent(pRO -> lONr);
+							if ((pRO -> iFlags & RSFillText) && pRO -> lpText) {
+								strncpy (pRO -> lpText, l -> PropText(), pRO -> iTextLen);
+								pRO -> lpText[pRO -> iTextLen-1] = '\0';
+							}
+							if (pRO -> iFlags & RSFillOTyp) 
+								pRO -> iOTyp = l -> GetOType();
+						}
+					}
+					pRO -> iFlags |= iRes;
+				}
+			}
+			break;
+
+		case DEX_CANCELMODE:
+			return HandleCancelMode ((e.LParam() != 0) ? true : false);
+			
+		case DEX_GETSELECTEDTYPES:
+			if (e.LParam()) *((short *)e.LParam()) = m_iActObjTypes;
+			break;
+
+#if defined(WIN32)
+		case DEX_SHOWOBJPROP:		// diese Objekteigenschaft anzeigen
+			return SetNewObjectProp ((SHOWOBJPROP *)e.LParam());
+
+		case DEX_REPLACEOBJECTINLIST:
+			return ReplaceObjectInList ((REPLACEOBJECT *)e.LParam());
+
+		case DEX_SETTEXT:
+			{
+			IrisWind *pWnd = static_cast<IrisWind *>(GetParent());
+			string strT = pWnd->CorrectCaption (this, (LPSTR)e.LParam());
+			
+				Window::UpdateCaption(strT.c_str());
+				UpdateCaption();
+			}
+			return true;
+#endif // WIN32
+
+		default:
+			return OwnerDrawDialogWindow :: Dispatch (e);	// weiterleiten
+		}
+	}
+#if defined(WIN32)
+	else switch (e.Msg()) {
+	case WM_FAKENOTIFYFORWIN95:
+	// do Drag'n Drop
+		return OnNotify (e.WParam(), e.LParam());
+
+	case WM_VSCROLL:
+	// Scroll during Drag'n Drop: forward to ListBox
+		return m_pKurzInfo -> ForwardEvent(e);
+
+	case WM_GETMINMAXINFO:
+		return OnGetMinMaxInfo ((MINMAXINFO *)e.LParam());
+
+	default:
+		return OwnerDrawDialogWindow :: Dispatch (e);	// weiterleiten
+	}
+#else // WIN32
+	else 
+		return OwnerDrawDialogWindow :: Dispatch (e);	// weiterleiten
+#endif // WIN32
+
+return true;
+}
+
+#if defined(WIN32)
+bool ObjektInfo::PreTranslateMsg (MSG *pMsg)		// Accels bearbeiten
+{
+	if (m_hAccel && ::TranslateAccelerator(m_hWnd, m_hAccel, pMsg))
+		return true;
+	return OwnerDrawDialogWindow::PreTranslateMsg(pMsg);		// nicht für uns
+}
+
+LRESULT ObjektInfo::ReplaceObjectInList (REPLACEOBJECT *pRO)
+{
+	return HandleModifyIdent (pRO->lONr, 0L, pRO->lNewONr);
+}
+
+LRESULT ObjektInfo::OnGetMinMaxInfo (MINMAXINFO *pmmi)
+{
+//	pmmi->ptMaxSize; 
+//	pmmi->ptMinTrackSize;
+//	pmmi->ptMaxTrackSize; 
+	return true;
+}
+#endif
+
+///////////////////////////////////////////////////////////////////////////////
+// aktualisieren des FensterKopfes 
+void ObjektInfo::UpdateCaption (void)
+{
+char cbNewCaption[80];
+
+	GetCaption (cbNewCaption, 64);
+
+char *pPtr2 = strrchr (cbNewCaption, '(');
+
+	if (pPtr2 == NULL) {
+		strcat (cbNewCaption , " (");
+		pPtr2 = &cbNewCaption[strlen(cbNewCaption)];
+	}
+
+	wsprintf (pPtr2+1, "%ld/%ld)", (long)m_ulActCount, OITree().Count());
+	SetCaption (cbNewCaption);
+}
+
+string ObjektInfoListe::CorrectCaption (ObjektInfo *pOIDlg, LPCSTR pcTemplate)
+{
+	TX_ASSERT(NULL != pcTemplate);
+
+int iCnt = 1;
+string strT (pcTemplate);
+char cbBuffer[20];
+
+	while (CaptionExists (pOIDlg, strT.c_str())) 
+	{
+		wsprintf (cbBuffer, " %d", iCnt);
+		strT = string(pcTemplate) + cbBuffer;
+		++iCnt;
+	}
+	return strT;
+}
+
+bool ObjektInfoListe::CaptionExists (ObjektInfo *pOIDlg, LPCSTR pcCaption)
+{
+CTable t (*this);
+char cbBuffer[_MAX_PATH];
+
+	for (t.First(); t.Valid(); t.Next()) {
+	ObjektInfoLock l(t);
+	
+		TX_ASSERT(NULL != (ObjektInfo *)l);
+		if (l == pOIDlg) continue;	// uns selbst übergehen
+
+		l -> GetCaption (cbBuffer, _MAX_PATH-1);
+
+	char *pPtr = strrchr (cbBuffer, '(');
+
+		if (NULL == pPtr) continue;
+
+		*(pPtr-1) = '\0';
+		if (!strcmp (pcCaption, cbBuffer))
+			return true;
+	}
+
+return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Einstellen des GesamtContainers der selektierten Objekte als Ausschnitt 
+bool ObjektInfo::doZoomIn (void)
+{
+int maxIndex = GetCount();
+ObjContainer OC (MAXKOORD, 0, MAXKOORD, 0);
+ObjContainer ocT;
+bool fChanged = false;
+
+	for (int i = 0; i < maxIndex; i++) {
+	long lONr = (long)m_pKurzInfo -> GetItem (i);	// Eintrag holen
+	bool isSel = m_pKurzInfo -> GetSelection (i);
+						
+		if (!isSel) continue;	// nur selektierte Objekte behandeln
+	
+		if (DEX_GetObjContainer (lONr, ocT)) {
+			OC += ocT;
+			fChanged = true;
+		}
+	}
+	
+	if (fChanged) {
+		DEX_GetActiveSightContainer (ocT);
+		if (OC.isValid()) {	// gültiger Container
+			if (GetKeyState (VK_CONTROL) >= 0 && !DEX_IsHoldZoomActive())
+				OC = OC.InflateCont (200);	// 100% größerer Ausschnitt
+			else {
+			Ausdehnung A = OC - ocT;
+
+				OC = ocT.ShiftCont (A);
+			}
+		} else {			// PunktContainer
+			if (GetKeyState (VK_CONTROL) >= 0 && !DEX_IsHoldZoomActive())
+				ocT = ocT.InflateCont (-60);
+
+			Ausdehnung A = OC - ocT;	// 40% des aktuelle Ausschnitts
+
+			OC = ocT.ShiftCont (A);
+		}
+		
+	ObjContainer dbOC;
+	
+		DEX_GetProjectCont (dbOC);
+		OC &= dbOC;
+		DEX_SetActiveSightContainer (OC);
+		DEX_RePaint();
+	}
+
+return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Selektierte Objekte zu Legende hinzufügen
+bool ObjektInfo::doAddToLegend (void)
+{
+int maxIndex = GetCount();
+
+	for (int i = 0; i < maxIndex; i++) {
+	long lONr = (long)m_pKurzInfo -> GetItem (i);	// Eintrag holen
+	bool isSel = m_pKurzInfo -> GetSelection (i);
+						
+		if (!isSel) continue;	// nur selektierte Objekte behandeln
+	
+		DEX_AddObjectToLegend (lONr);
+	}
+	DEX_RefreshLegend();	
+	DEX_RepaintLegend();
+	
+	return true;
+}

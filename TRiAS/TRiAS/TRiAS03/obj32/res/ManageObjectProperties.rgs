@@ -1,0 +1,37 @@
+HKCR
+{
+	TRiASEx.ManageObjectProperties.1 = s 'ManageObjectProperties Class'
+	{
+		CLSID = s '{E0E89DE4-8550-4CE5-A11A-430425136057}'
+	}
+	TRiASEx.ManageObjectProperties = s 'ManageObjectProperties Class'
+	{
+		CLSID = s '{E0E89DE4-8550-4CE5-A11A-430425136057}'
+		CurVer = s 'TRiASEx.ManageObjectProperties.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {E0E89DE4-8550-4CE5-A11A-430425136057} = s 'ManageObjectProperties Class'
+		{
+			ProgID = s 'TRiASEx.ManageObjectProperties.1'
+			VersionIndependentProgID = s 'TRiASEx.ManageObjectProperties'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+	TRiAS.Application.4
+	{
+		TRiASEx
+		{
+			PropertySheetHandlers
+			{	
+				Options
+				{
+					TRiASEx.ManageObjectProperties.1 = s '{E0E89DE4-8550-4CE5-A11A-430425136057}'
+				}
+			}
+		}
+	}
+}

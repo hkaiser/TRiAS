@@ -1,0 +1,344 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.02 [en] (WinNT; I) [Netscape]">
+   <META NAME="Author" CONTENT="Marcel Kornacker">
+   <TITLE>Gistcmdline Reference</TITLE>
+</HEAD>
+<BODY>
+<!-- $Id: gistcmdline_ref.html,v 1.1 2000/03/15 00:26:53 mashah Exp $ -->
+<UL>
+<CENTER>
+<H1>
+Gistcmdline Reference</H1></CENTER>
+</UL>
+<HR WIDTH="100%"></CENTER>
+<h2> Commands </h2>
+<dl>
+<dt>anlinfo <i>analysis</i>
+</dt><dd>
+print information about analysis (which parts have been completed)
+<p>
+Example:<br>
+<code>libgist> anlinfo a1</code>
+</dd>
+<p>
+
+<dt>check <i>index</i></dt>
+<dd>
+Verify integrity of index (calls <code>gist::check()</code>).
+
+<p>
+Example:<br>
+<code>libgist> check t</code>
+</dd>
+<p>
+
+<dt>close <i>index</i></dt>
+<dd>
+Close index and deallocate associated resources (calls <code>gist::close()</code>).
+
+<p>
+Example:<br>
+<code>libgist> close t</code>
+</dd>
+<p>
+
+<dt>closeanl <i>analysis</i>
+<dd>
+Writes back analysis and deallocates it from memory.
+
+<p>
+Example:
+<code>libgist> closeanl a1</code>
+</dd>
+<p>
+
+<dt>create <i>index</i> <i>extension</i> <i>data-file</i> <i>fill-factor</i>
+<dd>
+Creates new index with given extension and bulk-loads it with the data file. 
+The pages are filled according to the specified fill factor.
+
+<p>
+Example:
+<code>libgist> create t rstar_point_ext point-data 0.8</code><br>
+which creates a point R*-tree named "t" and bulk-loads it with the data contained
+in file "point-data". The pages are filled up 80%.
+
+<p>
+Data files contain one item per line in the following format:<br>
+<code>"<i>key</i>" "<i>data</i>"</code><br>
+</dd>
+<p>
+
+<dt>create <i>index</i> <i>extension</i></dt>
+<dd>
+Creates empty index with given extension.
+
+<p>
+Example:<br>
+<code>libgist> create t rstar_point_ext</code>
+</dd>
+<p>
+
+<dt>createanl <i>analysis</i> <i>index</i> <i>scriptfile</i> <i>#random</i> <i>target-util</i>
+<dd>
+Creates analysis for given index, runs queries in script file and saves analysis 
+to file. The number of random runs and the target page utilization are stored for 
+future use.
+
+<p>
+Example:<br>
+<code>libgist> createanl a1 t query-script 10 0.8</code>
+</dd>
+<p>
+
+<dt>delete <i>index</i> "<i>qualification</i>"
+<dd>
+Removes items from index that match qualification (calls <code>gist::remove()</code>).
+
+<p>
+Example:<br>
+<code>libgist> remove t "< p 50 50"</code>
+</dd>
+<p>
+
+<dt>dump <i>index</i> [<i>pgno</i>]
+<dd>
+Dump contents of page to <code>cout</code>. If no page number is specified,
+dump contents of entire index. Calls <code>gist_ext_t::printPred()</code>.
+
+<p>
+Example:<br>
+<code>libgist> dump t 2</code>
+</dd>
+<p>
+
+<dt>help
+<dd>
+Print command and extension information.
+</dd>
+<p>
+
+<dt>insert <i>index</i> "<i>key</i>" "<i>data</i>"
+<dd>
+Insert new item into index.
+
+<p>
+Example:<br>
+<code>libgist> insert t "25.003 24" "51234"</code>
+which inserts a new item into a tree that stores 2-dimensional point data as
+keys and integers as data.
+</dd>
+<p>
+
+<dt>open <i>index</i>
+<dd>
+Open index (calls <code>gist::open()</code>)).
+
+<p>
+Example:<br>
+<code>libgist> open t</code>
+</dd>
+<p>
+
+<dt>openanl <i>analysis</i>
+<dd>
+Reads analysis data from file into memory.
+
+<p>
+Example:<br>
+<code>libgist> openanl a1</code>
+</dd>
+<p>
+
+<dt>penaltystats <i>analysis</i> <i>loadfile</i> [opt|act=default]
+<dd>
+Compute penalty statistics for analysis, using the items in load file for
+sample insertions. If <code>opt</code> is specified, the statistics will be computed
+for the tree derived from the optimal clustering, not the actual tree.
+
+<p>
+Example:<br>
+<code>libgist> penaltystats a1</code> 
+</dd>
+<p>
+
+<dt>quit
+<dd>
+Quit <code>gistcmdline</code>.
+</dd>
+<p>
+
+<dt>select <i>index</i> [<i>k</i>] [io(<i>limit</i>)] "<i>qualification</i>"
+<dd>
+Run query and display matching items and data. If specified, <i>k</i> limits the number
+of items that are returned and <i>limit</i> limits the number of page accesses
+that are performed.
+
+<p>
+Example:<br>
+<code>libgist> select t 20 "~ p 50 50"</code>,
+which runs a nearest-neighbor query on index <code>t</code> and stops returning
+items after the first 20 matches.
+</dd>
+<p>
+
+<dt>set echo (0|1)
+<dd>
+Turn command echoing off or on. If turned off, query results are not displayed
+(helpful for creating analyses).
+
+<p>
+Example:<br>
+<code>libgist> set echo 0</code>
+</dd>
+<p>
+
+<dt>splitstats <i>analysis</i> [opt|act=default]
+<dd>
+Compute split statistics for every leaf of given index. 
+If <code>opt</code> is specified, the statistics will be computed
+for the tree derived from the optimal clustering, not the actual tree.
+
+<p>
+Example:<br>
+<code>libgist> splitstats a1</code>
+</dd>
+<p>
+
+<dt>wkldstats <i>analysis</i>
+<dd>
+Compute execution statistics for every query of the analysis workload 
+(in <code>createanl</code>, a script is supplied that contains the workload queries). 
+
+<p>
+Example:<br>
+<code>libgist> wkldstats a1</code>
+</dd>
+<p>
+
+<dt>write loadfile <i>index</i> <i>filename</i>
+<dd>
+Write out load file that, when used for bulk-loading (fill factor: 1.0), creates
+an index with an identical leaf level as the given one.
+
+<p>
+Example:<br>
+<code>libgist> write loadfile t t-loadfile</code>
+</dd>
+<p>
+
+
+</dt>
+</dl>
+
+<h2> Extensions </h2>
+
+<table border=1 cellpadding=1>
+<tr><th>Extension <th>Type <th>Operators</th> <th>Keys</th> </tr>
+
+<tr><td>rt_point_ext <td>R-tree <td>spatial <td> points </tr>
+<tr><td>rt_rect_ext <td>R-tree <td>spatial <td> rectangles </tr>
+<tr><td>rstar_point_ext <td>R*-tree <td>spatial <td> points </tr>
+<tr><td>rstar_rect_ext <td>R*-tree <td>spatial <td> rectangles </tr>
+<tr><td>ss_point_ext <td>SS-tree <td>spatial <td> points </tr>
+<tr><td>sr_point_ext <td>SR-tree <td>spatial <td> points </tr>
+<tr><td>sp_point_ext <td>Sphere-tree <td>spatial <td> points </tr>
+<tr><td>bt_int_ext <td>B-tree <td>B-tree <td> integers </tr>
+<tr><td>bt_str_ext <td>B-tree <td>B-tree <td> strings </tr>
+
+</table>
+
+
+All extensions presently store integers as data (the component after the key in 
+the <code>insert</code> command).
+
+<h3>Spatial Extensions</h3>
+
+The following spatial query operators are supported:
+<table border=1 cellpadding=1>
+<tr><th>Operators</th> <th>Description</th> <th>Example</th </tr>
+
+<tr><td>= [p|r] <i>key</i> <td>equality with point (p) or rectangle (r)
+<td>"= p 5.5 6.5"</tr>
+
+<tr><td>& [p|r] <i>key</i> <td>overlap <td>"& r 0 10 0 10"</tr>
+
+<tr><td>< [p|r] <i>key</i> <td>containment (key contains index data item)
+<td>"< r 0 10 0 10"</tr>
+
+<tr><td>> [p|r] <i>key</i> <td>containment (index data item contains key)
+<td>"> p 5.5 6.5"</tr>
+
+<tr><td>~ p <i>key</i> <td>nearest-neighbor query <td>"~ p 5.5 6.5"</tr>
+
+</table>
+
+<p>
+Point keys are specified as "<i>x</i> <i>y</i> ...", rectangle keys as
+"<i>xmin</i> <i>xmax</i> <i>ymin</i> <i>ymax</i> ...".
+
+<p>
+The implementation details of the various tree structures are described in their
+respective publications:
+<dl>
+<dt>R-trees</dt>
+<dd>
+A. Guttman, ``R-trees: A Dynamic Index Structure for
+Spatial Searching,'' <I>Proc. 1984 ACM SIGMOD Conf. on Management of Data</I>,
+Boston, MA, June 1984, 47-57.
+</dd>
+
+<dt>R*-trees</dt>
+<dd>N. Beckmann, H.-P. Kriegel, R. Schneider and B. Seeger,
+``The R*-tree: An Efficient and Robust Access Method for Points and Rectangles,''
+<I>Proc.
+1990 ACM SIGMOD Conf. on Management of Data</I>, Atlantic City, NJ, May
+1990, 322-331.
+</dd>
+
+<dt>SS-trees</dt>
+<dd>
+D. A. White and R. Jain, ``Similarity Indexing with the
+SS-tree,'' <I>Proc. 12th Int'l Conf. on Data Engineering,</I> New Orleans,
+LA, Feb. 1996, 516-523.
+</dd>
+
+<dt>SR-trees</dt>
+<dd>
+N. Katayama and S. Satoh, ``The SR-tree: An Index Structure
+for High-Dimensional Nearest Neighbor Queries,'' <I>Proc. 1997 ACM SIGMOD
+Conf. on Management of Data</I>, Tucson, AZ, May 1997, 369-380.
+</dd>
+
+<dt>Sphere-trees</dt>
+<dd>
+P. van Oosterom and E. Claassen, ``Orientation Insensitive
+Indexing Methods for Geometric Objects,'' <I>Proc. 4th Int'l Symp. on Spatial
+Data Handling</I>, Z&uuml;rich, Switzerland, July 1990, 1016-1029.
+</dd>
+
+</dl>
+
+<h3>B-tree Extensions</h3>
+
+The following B-tree operators are supported:
+<table border=1 cellpadding=1>
+<tr><th>Operators</th> <th>Description</th> <th>Example</th </tr>
+
+<tr><td>= <i>key</i> <td>equality <td>"= 'hello'"</tr>
+<tr><td>< <i>key</i> <td>less <td>"< 5"</tr>
+<tr><td><= <i>key</i> <td>less or equal <td>"<= 'hello'"</tr>
+<tr><td>> <i>key</i> <td>greater <td>"> 5"</tr>
+<tr><td>>= <i>key</i> <td>greater or equal <td>">= 5"</tr>
+<tr><td>between <i>key1</i> <i>key2</i> <td>SQL BETWEEN <td>"between 5 10"</tr>
+
+</table>
+
+
+
+<P>Comments, questions and suggestions may be directed to <I><A HREF="mailto:gist@postgres.berkeley.edu">gist@postgres.berkeley.edu</A></I>
+<P><FONT SIZE=-2>Last modified: $Date: 2000/03/15 00:26:53 $ by $Author: mashah $.</FONT>
+</BODY>
+</HTML>

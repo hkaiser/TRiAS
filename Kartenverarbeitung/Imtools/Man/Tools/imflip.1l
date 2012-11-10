@@ -1,0 +1,132 @@
+
+
+
+IMFLIP(1IM)                IMAGE TOOLS                IMFLIP(1IM)
+
+
+
+NAME
+     imflip  -  Flip images vertically or horizontally and  store
+     in a new file
+
+SYNOPSIS
+     imflip [_o_p_t_i_o_n_s] _i_n_f_i_l_e_n_a_m_e _o_u_t_f_i_l_e_n_a_m_e
+
+DESCRIPTION
+     imflip reads each image in the input file and flips it vert-
+     ically,  horizontally, or both, then writes it to the output
+     file.  The input and output image file formats may  be  dif-
+     ferent.
+
+OPTIONS
+     imflip has a  variety  of  options  in  the  following  five
+     categories:
+
+          File Selection     What input and output files to use
+          Format Selection   What image file format to use
+          Format Control     What variant of a file format to generate
+          Standard           Standard generic options on all SDSC tools
+          Manipulation       How the image can be manipulated
+
+     _F_i_l_e _S_e_l_e_c_t_i_o_n, _F_o_r_m_a_t _S_e_l_e_c_t_i_o_n, _F_o_r_m_a_t _C_o_n_t_r_o_l, and  _S_t_a_n_-
+     _d_a_r_d options are common to all SDSC image tools and are dis-
+     cussed in depth in the man page for imconv(1IM).
+
+     All options can be abbreviated to the first few unique char-
+     acters.
+
+  Manipulation Options
+     -xflip flips the image left-to-right.
+
+     -yflip flips the image top-to-bottom.
+
+     -xflip and -yflip together flip the image left-to-right  and
+     top-to-bottom.
+
+NOTES
+     For notes regarding  file  format  conversion  and  standard
+     image tool options, see the man page on imconv(1IM).
+
+     Error messages are reported to stderr.
+
+EXAMPLES
+     To flip a Wavefront RLB file  top-to-bottom  and  store  the
+     result into an SGI RGB file, use the following:
+
+          imflip rightsideup.rlb -yflip upsidedown.rgb
+
+     To flip a TIFF image left-to-right  and  top-to-bottom,  use
+     the following:
+
+
+
+SDSC               Last change: June 27, 1995                   1
+
+
+
+
+
+
+IMFLIP(1IM)                IMAGE TOOLS                IMFLIP(1IM)
+
+
+
+          imflip unflipped.tiff -xflip -yflip flipped.tiff
+
+     To copy an entire input GIF image to a PCX file without  any
+     flipping, use the following:
+
+          imflip incoming.gif outgoing.pcx
+
+     With no flip arguments, the actions of imflip default to the
+     same  as  the SDSC image format conversion tool imconv(1IM),
+     but they take a little longer.
+
+SEE ALSO
+     imcopy (1IM), imroll (1IM), imrotate (1IM),  imscale  (1IM),
+     imshear (1IM), ImVfbFlip (3IM)
+
+     For information on SDSC's image library, see imintro(3IM).
+
+AUTHOR
+     Jim McLeod
+     San Diego Supercomputer Center
+
+     See the individual file format man pages for the authors  of
+     the  underlying  format  read  and write code.  The names of
+     these man pages begin with the letters "im" followed by  the
+     format  name.  For example, the name of the TIFF man page is
+     imtiff.  To display it, enter man imtiff.
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2                  Last change: June 27, 1995                SDSC
+
+
+

@@ -1,0 +1,428 @@
+//Microsoft App Studio generated resource script.
+//
+#include "identres.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resstrg.h"
+#include "identsdb.h"
+#include "defident.h"
+#include "defabout.h"
+#include "defiderr.h"
+#include "newident.h"
+#include "newmcode.h"
+#include "newrcode.h"
+#include "pbderr.h"
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+DEFIDICON               ICON    DISCARDABLE     "LUPE.ICO"
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDBMP_IERRORLOGO        BITMAP  MOVEABLE PURE   "IERROR.BMP"
+IDBMP_MERRORLOGO        BITMAP  MOVEABLE PURE   "MERROR.BMP"
+IDBMP_RERRORLOGO        BITMAP  MOVEABLE PURE   "RERROR.BMP"
+IDBMP_PERRORLOGO        BITMAP  MOVEABLE PURE   "PERROR.BMP"
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+PBDEXTENSIONMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&Beschreibungsdaten"
+    BEGIN
+        MENUITEM "&Identifikator definieren ...",IDM_DEFIDENT
+        MENUITEM "Identifikator löschen ...",   IDM_DELIDENT
+        MENUITEM "Identifikatorfehler ignorieren",IDM_ALLIDENTIGNORE
+        MENUITEM SEPARATOR
+        MENUITEM "&Merkmalscode definieren ...",IDM_DEFMCODE
+        MENUITEM "Merkmalscode löschen ...",    IDM_DELMCODE
+        MENUITEM "Merkmalscodefehler ignorieren",IDM_ALLMCODEIGNORE
+        MENUITEM SEPARATOR
+        MENUITEM "&Relationscode definieren ...",IDM_DEFRCODE
+        MENUITEM "Relationscode löschen ...",   IDM_DELRCODE
+        MENUITEM "Relationscodefehler ignorieren",IDM_ALLRCODEIGNORE
+        MENUITEM SEPARATOR
+        MENUITEM "In&fo ...",                   IDM_EXTABOUT
+    END
+END
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+DEFINEIDENT DIALOG DISCARDABLE  68, 62, 249, 137
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Definition eines Identifikators"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Beschreibungsdatenbasis:",-1,8,9,90,8
+    CONTROL         "",IDT_DEFIDDBNAME,"Static",SS_LEFTNOWORDWRAP,96,9,145,8
+    LTEXT           "&Identifikator:",-1,8,22,44,8
+    GROUPBOX        " Beschreibende Informationen ",-1,4,39,240,74
+    LTEXT           "&Kurztext:",-1,11,53,38,8
+    EDITTEXT        IDE_DEFIDSHORT,56,52,181,12,ES_AUTOHSCROLL
+    LTEXT           "&Langtext:",-1,11,70,36,8
+    EDITTEXT        IDE_DEFIDLONG,56,68,181,40,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    WS_VSCROLL
+    PUSHBUTTON      "&Hilfe",IDB_DEFIDHELP,4,118,55,14,WS_GROUP
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,127,118,55,14,WS_GROUP
+    DEFPUSHBUTTON   "&OK",IDOK,189,118,55,14
+    LTEXT           "",IDT_DEFIDIDENT,57,22,122,8
+    CONTROL         "",-1,"Static",SS_GRAYFRAME,3,5,241,30
+END
+
+DEFINEMERKMAL DIALOG DISCARDABLE  43, 29, 246, 206
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Definition eines Merkmalscodes"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Beschreibungsdatenbasis:",-1,8,9,88,8
+    CONTROL         "",IDT_DEFMKDBNAME,"Static",SS_LEFTNOWORDWRAP,98,9,141,8
+    LTEXT           "&Merkmalscode:",-1,8,19,49,8
+    LTEXT           "",IDT_DEFMKMCODE,60,19,60,8,NOT WS_GROUP
+    GROUPBOX        " Merkmalstyp ",-1,4,34,115,56,WS_GROUP
+    CONTROL         "&Textmerkmal",IDR_DEFMKTEXT,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,11,48,91,10
+    CONTROL         "&Ganzzahliges Merkmal",IDR_DEFMKINT,"Button",
+                    BS_AUTORADIOBUTTON,11,61,91,10
+    CONTROL         "Glei&tkomma-Merkmal",IDR_DEFMKFLOAT,"Button",
+                    BS_AUTORADIOBUTTON,11,74,91,10
+    GROUPBOX        " Merkmalsbezug ",106,123,34,119,56,WS_GROUP
+    CONTROL         "&Objektmerkmal",IDR_OBJMERKMAL,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,129,47,61,10
+    CONTROL         "&Identifikatormerkmal",IDR_IDENTMERKMAL,"Button",
+                    BS_AUTORADIOBUTTON,129,60,89,10
+    CONTROL         "&Sichtmerkmal",IDR_SICHTMERKMAL,"Button",
+                    BS_AUTORADIOBUTTON,129,74,105,10
+    CONTROL         "S&ysteminternes Merkmal",IDCB_SYSTEMFLAG,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,5,96,114,10
+    GROUPBOX        " Beschreibende Informationen ",-1,4,109,238,74,WS_GROUP
+    LTEXT           "&Kurztext:",-1,10,123,38,8
+    EDITTEXT        IDE_DEFMKSHORT,55,122,181,12,ES_AUTOHSCROLL
+    LTEXT           "&Langtext:",-1,10,140,36,8
+    EDITTEXT        IDE_DEFMKLONG,55,138,181,40,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | WS_VSCROLL
+    PUSHBUTTON      "&Hilfe",IDB_DEFMKHELP,4,187,55,14,WS_GROUP
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,126,187,55,14,WS_GROUP
+    DEFPUSHBUTTON   "OK",IDOK,187,187,55,14
+    CONTROL         "",-1,"Static",SS_GRAYFRAME,4,6,238,26
+END
+
+DEFINERELATION DIALOG DISCARDABLE  41, 37, 246, 168
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Definition eines Relationscodes"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Beschreibungsdatenbasis:",-1,10,12,90,8
+    CONTROL         "",IDT_DEFRELDBNAME,"Static",SS_LEFTNOWORDWRAP,98,13,141,
+                    8
+    LTEXT           "&Relationscode:",-1,11,23,49,8
+    GROUPBOX        " Relationstyp ",-1,4,37,238,30,WS_GROUP
+    CONTROL         "&Gleichrangige Relation",IDR_DEFRELHORIZ,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,11,50,91,10
+    CONTROL         "Komple&xrelation",IDR_DEFRELKOMPLEX,"Button",
+                    BS_AUTORADIOBUTTON,127,50,91,10
+    GROUPBOX        " Beschreibende Informationen ",-1,4,71,238,75,WS_GROUP
+    LTEXT           "&Kurztext:",-1,10,86,38,8
+    EDITTEXT        IDE_DEFRELSHORT,55,85,181,12,ES_AUTOHSCROLL
+    LTEXT           "&Langtext:",-1,10,103,36,8
+    EDITTEXT        IDE_DEFRELLONG,55,101,181,40,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | WS_VSCROLL
+    PUSHBUTTON      "&Hilfe",IDB_DEFRELHELP,3,151,55,14,WS_GROUP
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,126,151,55,14,WS_GROUP
+    DEFPUSHBUTTON   "&OK",IDOK,187,151,55,14
+    LTEXT           "",IDT_DEFRELRCODE,65,23,173,8
+    CONTROL         "",-1,"Static",SS_GRAYFRAME,4,8,238,27
+END
+
+UNDEFINEDMERKMAL DIALOG DISCARDABLE  69, 41, 225, 100
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Undefinierter Merkmalscode"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "TRiAS\256 hat den Merkmalscode %s als nicht definiert gemeldet.",
+                    IDT_DEFMKERRTEXT,10,15,129,35
+    DEFPUSHBUTTON   "&Definieren",IDOK,152,10,65,14,WS_GROUP
+    PUSHBUTTON      "&Ignorieren",IDCANCEL,152,40,65,14
+    PUSHBUTTON      "Immer I&gnorieren",IDB_DEFMKERRIGNORE,152,63,65,14
+    PUSHBUTTON      "&Alle ignorieren",IDB_DEFMKERRALLIGNORE,152,81,65,14
+    PUSHBUTTON      "&Hilfe",IDB_DEFMKERRHELP,79,81,65,14
+    CONTROL         "",IDF_MERRORLOGO,"Static",SS_BLACKFRAME | WS_GROUP,7,62,
+                    60,31
+    CONTROL         "",-1,"Static",SS_BLACKFRAME,6,11,137,44
+END
+
+UNDEFINEDIDENT DIALOG DISCARDABLE  69, 41, 224, 100
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Undefinierter Identifikator"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "TRiAS\256 hat den Identifikator %s als nicht definiert gemeldet.",
+                    IDT_DEFIDERRTEXT,10,15,129,36
+    DEFPUSHBUTTON   "&Definieren",IDOK,152,10,65,14,WS_GROUP
+    PUSHBUTTON      "&Ignorieren",IDCANCEL,152,42,65,14
+    PUSHBUTTON      "Immer I&gnorieren",IDB_DEFIDERRIGNORE,152,63,65,14
+    PUSHBUTTON      "&Alle ignorieren",IDB_DEFIDERRALLIGNORE,152,81,65,14
+    PUSHBUTTON      "&Hilfe",IDB_DEFIDERRHELP,79,81,65,14
+    CONTROL         "",IDF_IERRORLOGO,"Static",SS_BLACKFRAME | WS_GROUP,7,63,
+                    60,31
+    CONTROL         "",-1,"Static",SS_BLACKFRAME,6,11,138,45
+END
+
+UNDEFINEDRELATION DIALOG DISCARDABLE  69, 41, 225, 100
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Undefinierter Relationscode"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "TRiAS\256 hat den Relationscode %ld als nicht definiert gemeldet.",
+                    IDT_DEFRELERRTEXT,10,15,129,37
+    DEFPUSHBUTTON   "&Definieren",IDOK,152,10,65,14,WS_GROUP
+    PUSHBUTTON      "&Ignorieren",IDCANCEL,152,40,65,14
+    PUSHBUTTON      "Immer I&gnorieren",IDB_DEFRELERRIGNORE,152,63,65,14
+    PUSHBUTTON      "&Alle ignorieren",IDB_DEFRELERRALLIGNORE,152,81,65,14
+    PUSHBUTTON      "&Hilfe",IDB_DEFRELERRHELP,79,81,65,14
+    CONTROL         "",IDF_RERRORLOGO,"Static",SS_BLACKFRAME | WS_GROUP,7,63,
+                    60,31
+    CONTROL         "",-1,"Static",SS_BLACKFRAME,7,11,137,44
+END
+
+DEFINEIDENTDLG DIALOG DISCARDABLE  31, 33, 219, 122
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Identifikator definieren"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Identifikator ausw\344hlen:",-1,6,4,150,8
+    PUSHBUTTON      "&Hilfe",IDB_NEWIDHELP,159,104,55,14,WS_GROUP
+    DEFPUSHBUTTON   "&Definieren",IDOK,160,29,55,14,WS_GROUP
+    PUSHBUTTON      "&Schlie\337en",IDCANCEL,160,47,55,14,NOT WS_TABSTOP
+    EDITTEXT        IDE_NEWIDIDENT,5,14,114,12,ES_AUTOHSCROLL
+    LISTBOX         IDL_NEWIDLIST,13,29,141,88,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+END
+
+DELIDENTDLG DIALOG DISCARDABLE  29, 30, 214, 131
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Identifikator löschen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Identifikatoren ausw\344hlen:",-1,6,7,140,8
+    LISTBOX         IDL_DELIDLIST,6,19,141,90,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "&Nur unbenutze Identifikatoren anzeigen",
+                    IDB_DELIDUNUSED,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,5,113,143,10
+    PUSHBUTTON      "&R\374ckg\344ngig",IDB_DELIDRESTORE,153,34,55,14,
+                    WS_GROUP
+    PUSHBUTTON      "&L\366schen",IDB_DELIDDELETE,153,52,55,14
+    PUSHBUTTON      "&Alle ausw\344hlen",IDB_DELIDENTS_SELALL,153,80,55,14,
+                    WS_GROUP
+    PUSHBUTTON      "&Hilfe",IDB_DELIDHELP,153,110,55,14,WS_GROUP
+    DEFPUSHBUTTON   "&Schlie\337en",IDOK,153,8,55,14,WS_GROUP
+END
+
+DEFMERKMALDLG DIALOG DISCARDABLE  31, 30, 220, 125
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Merkmalscode definieren"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Merkmalscode ausw\344hlen:",-1,5,6,150,8
+    PUSHBUTTON      "&Hilfe",IDB_NEWMKHELP,159,107,55,14,WS_GROUP
+    DEFPUSHBUTTON   "&Definieren",IDOK,160,32,55,14,WS_GROUP
+    PUSHBUTTON      "&Schlie\337en",IDCANCEL,160,51,55,14,NOT WS_TABSTOP
+    EDITTEXT        IDE_NEWMKMCODE,5,17,114,12,ES_AUTOHSCROLL
+    LISTBOX         IDL_NEWMKMCODES,13,32,141,88,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+END
+
+DELMERKMALDLG DIALOG DISCARDABLE  28, 42, 211, 127
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Merkmalscode löschen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Merkmalscode ausw\344hlen:",-1,6,6,150,8
+    LISTBOX         IDL_DELMKMCODES,6,18,141,90,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "&Nur unbenutze Merkmalscodes anzeigen",
+                    IDB_DELMKUNUSEDMKS,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,5,112,168,10
+    PUSHBUTTON      "&L\366schen",IDB_DELMKDELETE,151,66,55,14,WS_GROUP
+    PUSHBUTTON      "&Hilfe",IDB_DELMKHELP,151,95,55,14,WS_GROUP
+    DEFPUSHBUTTON   "&Schlie\337en",IDOK,151,18,55,14,WS_GROUP
+    PUSHBUTTON      "&Restore",IDB_DELMKRESTORE,151,47,55,14
+END
+
+DEFINERELATIONDLG DIALOG DISCARDABLE  31, 33, 219, 122
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Relationscode definieren"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Relationscode ausw\344hlen:",-1,6,4,150,8
+    PUSHBUTTON      "&Hilfe",IDB_NEWRELHELP,159,104,55,14,WS_GROUP
+    DEFPUSHBUTTON   "&Definieren",IDOK,160,29,55,14,WS_GROUP
+    PUSHBUTTON      "&Schlie\337en",IDCANCEL,160,47,55,14,NOT WS_TABSTOP
+    EDITTEXT        IDE_NEWRELRCODE,5,14,114,12,ES_AUTOHSCROLL
+    LISTBOX         IDL_NEWRELLIST,13,29,141,88,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+END
+
+DELRELATIONDLG DIALOG DISCARDABLE  29, 30, 214, 128
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Relationscode löschen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Relationscode ausw\344hlen:",-1,6,6,150,8
+    LISTBOX         IDL_DELRELLIST,6,19,141,90,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "&Nur unbenutze Relationscodes anzeigen",
+                    IDB_DELRELUNUSED,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,5,113,146,10
+    PUSHBUTTON      "&L\366schen",IDB_DELRELDELETE,153,73,55,14,WS_GROUP
+    PUSHBUTTON      "&Hilfe",IDB_DELRELHELP,153,109,55,14,WS_GROUP
+    DEFPUSHBUTTON   "&Schlie\337en",IDOK,153,19,55,14,WS_GROUP
+    PUSHBUTTON      "&Restore",IDB_DELRELRESTORE,153,54,55,14
+END
+
+UNDEFINEDPBD DIALOG DISCARDABLE  69, 40, 221, 87
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Falsche oder fehlende Beschreibungsdatenbasis"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "F\374r das aktuelle Projekt ist eine falsche oder keine Beschreibungsdatenbasis definiert.",
+                    IDT_UNDEFINEDPBD,10,16,132,26
+    DEFPUSHBUTTON   "&Neu anlegen",IDOK,159,10,55,14,WS_GROUP
+    PUSHBUTTON      "&Ausw\344hlen",IDB_SELECTPBD,159,30,55,14
+    PUSHBUTTON      "&Ignorieren",IDCANCEL,159,68,55,14,WS_GROUP
+    PUSHBUTTON      "&Hilfe",IDB_UNDEFINEDPBDHELP,94,68,55,14,WS_GROUP
+    CONTROL         "",IDF_PERRORLOGO,"Static",SS_BLACKFRAME | WS_GROUP,7,51,
+                    60,31
+    CONTROL         "",IDT_UNDEFINEDPBD,"Static",SS_BLACKFRAME,6,11,139,34
+END
+
+#ifdef APSTUDIO_INVOKED
+//////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "identres.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""resstrg.h""\r\n"
+    "#include ""identsdb.h""\r\n"
+    "#include ""defident.h""\r\n"
+    "#include ""defabout.h""\r\n"
+    "#include ""defiderr.h""\r\n"
+    "#include ""newident.h""\r\n"
+    "#include ""newmcode.h""\r\n"
+    "#include ""newrcode.h""\r\n"
+    "#include ""pbderr.h""\r\n"
+    "\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "// personalisierte Resourcen\r\n"
+    "#include ""identsdb.rcv""\r\n"
+    "#include ""defabout.src""\r\n"
+    "\r\n"
+    "\0"
+END
+
+/////////////////////////////////////////////////////////////////////////////////////
+#endif    // APSTUDIO_INVOKED
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PBDOPENTEMPLATE     "IdentsDB-Name (*.pbd,*.stb)|*.pbd;*.stb"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_OBJPROPKTEXT        "Objektklasse (Kurztext)"
+    IDS_OBJPROPLTEXT        "Objektklasse (Langtext)"
+    IDS_TXIEXTENSION        ".txi"
+    IDS_TXMEXTENSION        ".txm"
+    IDS_TXREXTENSION        ".txr"
+    IDS_SAVETEMPLATE        "Identifikatoren (*.txi)|*.txi|Merkmalscodes (*.txm)|*.txm|Relationscodes (*.txr)|*.txr|Alle Listen (*.tx?)|*.   "
+    IDS_IDENTSDBSUBDIR      "IDENTSDB"
+    IDS_PBDCREATETEMPLATE   "IdentsDB-Name (*.pbd)|*.pbd"
+    IDS_PBDNAME             "PBD-NAME        "
+    IDS_IDENTSDBEXT         ".PBD"
+    IDS_KTEXTHELP           "Liefert die Kurzbeschreibung f\374r die Objektklasse des Objektes."
+    IDS_LTEXTHELP           "Liefert die ausf\374hrliche Beschreibung f\374r die Objektklasse des Objektes."
+    IDS_UNDEFINEDIDENT      "TRiAS\256 hat den Identifikator %s als nicht definiert gemeldet."
+    IDS_UNDEFINEDMCODE      "TRiAS\256 hat den Merkmalscode %s als nicht definiert gemeldet."
+    IDS_UNDEFINEDRCODE      "TRiAS\256 hat den Relationscode %ld als nicht definiert gemeldet."
+    IDS_UNDEFINEDPBD        "F\374r das aktuelle Projekt ist eine falsche oder keine Beschreibungsdatenbasis definiert."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXEXTENSIONPROC    "DEXEXTENSIONPROC"
+    IDS_DEXXEXTENSIONPROC   "DEXXEXTENSIONPROC"
+    IDS_DEXNOTIFICATIONPROC "DEXNOTIFICATIONPROCEX"
+END
+
+
+#ifndef APSTUDIO_INVOKED
+////////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+// personalisierte Resourcen
+#include "identsdb.rcv"
+#include "defabout.src"
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

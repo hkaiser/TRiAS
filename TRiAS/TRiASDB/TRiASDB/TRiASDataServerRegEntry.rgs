@@ -1,0 +1,19 @@
+HKCR
+{
+	TRiASDB.TRiASDataServerRegEntry.1 = s 'TRiASDataServerRegEntry Class'
+	{
+		CLSID = s '{F4B3F948-810E-11D1-9776-00A024D6F582}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {F4B3F948-810E-11D1-9776-00A024D6F582} = s 'TRiASDataServerRegEntry Class'
+		{
+			ProgID = s 'TRiASDB.TRiASDataServerRegEntry.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

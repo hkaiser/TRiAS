@@ -1,0 +1,23 @@
+HKCR
+{
+	TRiAS.NewArea.1 = s 'Neuerfassen von Flächenobjekten'
+	{
+		CLSID = s '{079638F5-3123-101C-BB62-00AA0018497C}'
+	}
+	TRiAS.NewArea = s 'Neuerfassen von Flächenobjekten'
+	{
+		CurVer = s 'TRiAS.NewArea.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {079638F5-3123-101C-BB62-00AA0018497C} = s 'Neuerfassen von Flächenobjekten'
+		{
+			ProgID = s 'TRiAS.NewArea.1'
+			VersionIndependentProgID = s 'TRiAS.NewArea'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

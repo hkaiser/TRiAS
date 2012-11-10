@@ -1,0 +1,25 @@
+HKCR 
+{
+	TRIAS.CS.Set.1 = s 'TRiAS® Koordinatensystemsatz' 
+	{
+		CLSID = s '{2FB28CB6-89D8-11D2-9894-0060085FC1CE}'
+	}
+	TRIAS.CS.Set = s 'TRiAS® Koordinatensystemsatz' 
+	{
+		CurVer = s 'TRIAS.CS.Set.1'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {2FB28CB6-89D8-11D2-9894-0060085FC1CE} = s 'TRiAS® Koordinatensystemsatz' 
+		{
+			ProgID = s 'TRIAS.CS.Set.1'
+			VersionIndependentProgID = s 'TRIAS.CS.Set'
+			ForceRemove 'Programmable'
+			ToolboxBitmap32 = s '%MODULE%,3'
+			InprocServer32 = s '%MODULE%' 
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

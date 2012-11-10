@@ -1,0 +1,282 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""bnaimp.rcv""\r\n"
+    "1 TYPELIB ""bnaimp.tlb""\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_POLYGISFEATURE_REG  REGISTRY DISCARDABLE    "Res\\PolyGISFeature.rgs"
+IDR_BNAIMPORTCONFIG_REG REGISTRY DISCARDABLE    "BNAImportConfig.rgs"
+IDR_DATIMPORTCONFIG_REG REGISTRY DISCARDABLE    "datimportconfig.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_STATUSDLG DIALOG DISCARDABLE  50, 50, 248, 63
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Status des aktuellen Imports"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Abbrechen",IDCANCEL,187,39,55,14
+    CONTROL         "Generic1",IDPB_STATUS,"msctls_progress32",PBS_SMOOTH,10,
+                    40,171,8
+    LTEXT           "Verarbeitung der Projekt-Informationen",IDT_PERCENT,10,
+                    24,124,9
+    LTEXT           "Datei: %s",IDT_FILENAME,10,13,171,9
+    LTEXT           "Objekt %ld",IDC_OBJECTNUMBER,137,24,50,9
+    LTEXT           "Verbleibende Zeit:",IDT_TIMETEXT,10,49,68,7
+    RTEXT           "",IDT_TIME,99,50,81,7
+END
+
+IDD_RESULTDLG DIALOG DISCARDABLE  0, 0, 202, 153
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Ergebnisse des Datenimportes"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Anzahl der importierten (abgeglichenen)",IDC_STATIC,10,
+                    5,125,8,NOT WS_GROUP
+    RTEXT           "Text-Objekte:",IDC_STATIC,15,17,109,8,NOT WS_GROUP
+    RTEXT           "Punkt-Objekte:",IDC_STATIC,15,27,109,8,NOT WS_GROUP
+    RTEXT           "Linien-Objekte:",IDC_STATIC,15,37,109,8,NOT WS_GROUP
+    RTEXT           "Flächen-Objekte:",IDC_STATIC,15,47,109,8,NOT WS_GROUP
+    LTEXT           "0",IDT_TEXTS,132,18,57,8,NOT WS_GROUP
+    LTEXT           "0",IDT_POINTS,132,28,57,8,NOT WS_GROUP
+    LTEXT           "0",IDT_LINES,132,38,57,8,NOT WS_GROUP
+    LTEXT           "0",IDT_AREAS,132,48,57,8,NOT WS_GROUP
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,12,85,179,1
+    RTEXT           "importierte Objekte:",IDC_STATIC,15,90,109,8
+    DEFPUSHBUTTON   "&OK",IDC_STATIC,139,133,55,14
+    LTEXT           "0",IDT_IMPORTED,132,90,57,8,NOT WS_GROUP
+    RTEXT           "Importzeit:",IDC_STATIC,15,115,109,8
+    LTEXT           "0",IDT_TIME,132,115,57,8
+    RTEXT           "nicht importierte Objekte:",IDC_STATIC,15,102,109,8
+    LTEXT           "0",IDT_NOTIMPORTED,132,102,57,8
+    RTEXT           "Davon mit Geometriefehlern:",IDC_STATIC,15,72,109,8
+    LTEXT           "0",IDT_WITHERRORS,132,72,57,8
+    RTEXT           "Komplexobjekte:",IDC_STATIC,15,57,109,8,NOT WS_GROUP
+    LTEXT           "0",IDT_KOMPLEX,132,58,57,8,NOT WS_GROUP
+END
+
+IDD_ASSOCIATE_LAYERS DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Zuordnung der in den zu importierenden Dateien enthaltenen Ebenen zu Objektklassen im aktuellen Projekt:",
+                    IDC_STATIC,1,2,274,18
+    CONTROL         "List1",IDC_LAYERS_AND_CLASSES,"SysListView32",
+                    LVS_REPORT | LVS_SHOWSELALWAYS | LVS_SHAREIMAGELISTS | 
+                    LVS_NOLABELWRAP | LVS_NOSORTHEADER | WS_BORDER | 
+                    WS_TABSTOP,0,26,275,94
+    LTEXT           "Objektklasse:",IDC_STATIC,44,127,46,8,NOT WS_GROUP
+    PUSHBUTTON      "Z&uordnen",IDC_ASSOCIATE,97,124,55,14,WS_GROUP
+    PUSHBUTTON      "&Hinzufügen",IDC_DEFINENEW,158,124,55,14
+    PUSHBUTTON      "Ü&bernehmen",IDC_COPYCLASS,219,124,55,14
+END
+
+IDD_PROGRESSBAR DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Bitte warten Sie, bis die zu importierenden Eingabedateien untersucht werden, um die darin enthaltenen Ebenen zu identifizieren:",
+                    IDC_STATIC,5,51,209,32
+    CONTROL         "Generic1",IDPB_FILES_STATUS,"msctls_progress32",
+                    PBS_SMOOTH,5,98,266,8
+    LTEXT           "Gesamt (%d von %d Dateien)",IDT_FILESPROMPT,5,86,266,9
+    CONTROL         "Generic1",IDPB_STATUS,"msctls_progress32",PBS_SMOOTH,5,
+                    130,266,8
+    LTEXT           "Datei: ",IDC_STATIC,6,118,22,8
+    LTEXT           "",IDT_FILENAME,32,118,239,8
+    CONTROL         "Animate1",IDC_ANIMATE_SEARCH,"SysAnimate32",ACS_CENTER | 
+                    ACS_TRANSPARENT | ACS_AUTOPLAY,230,51,32,32
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_BNAIMP              ICON    DISCARDABLE     "Res\\bnaimp.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_PLFT_LARGE          BITMAP  DISCARDABLE     "res\\plft_lar.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AVI
+//
+
+IDR_ANI_SEARCH          AVI     DISCARDABLE     "Res\\Search.avi"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Import aus dem Atlas*GIS BNA-Format"
+    IDS_FORMATDESCRIPTION   "Atlas*GIS BNA-Austauschformat"
+    IDS_DEFAULTEXTENSION    "bna"
+    IDS_PARSERERRORCAP      "Syntaxfehler"
+    IDS_PARSERERROR         "Beim Import der Datei %s ist in Zeile %ld folgender Syntaxfehler aufgetreten: %s."
+    IDS_FILETEMPLATE        "Bearbeitete Datei: %s"
+    IDS_PERCENTTEMPLATE     "Es wurden bereits %ld%% importiert: "
+    IDS_OBJECTNUMBERTEMPLATE "Objekt %ld"
+    IDS_IMPORTHEADER        "Verarbeitung der Projekt-Informationen"
+    IDS_POLYNAME1           "Name1 aus BNA-Import"
+    IDS_POLYNAME2           "Name2 aus BNA-Import"
+    IDS_POLYID              "Ident aus BNA-Import"
+    IDS_BNAKEYNAME1         "BNAName1"
+    IDS_BNAKEYNAME2         "BNAName2"
+    IDS_BNAKEYID            "BNAID"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_BNASTRASSENSCHLUESSEL "Strassencode"
+    IDS_BNASTRASSENNAME     "Strassenname"
+    IDS_BNAORTSTEIL         "GCO-Code"
+    IDS_BNAKEYSUFFIX        "BNASuffix"
+    IDS_POLYSUFFIX          "_nr"
+    IDS_BNAKEYORDNUNG       "Ordnung"
+    IDS_STRASSENORDNUNG     "Strassenordnung"
+    IDS_BNAKEYMEMO          "Memo"
+    IDS_MEMOKLASSE          "_Kontrolle"
+    IDS_BNAMEMO             "Ordnung"
+    IDS_KEYMEMOKLASSE       "MemoSuffix"
+    IDS_PROJEKTLAYER        "PolyGISWandler"
+    IDS_STANDARDDEFINITION  "Standarddefinitionen"
+    IDS_STANDARDKLASSEN     "Standardklassen"
+    IDS_MEMOKLASSEN         "Memoklassen"
+    IDS_STANDARD            "Standard"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_IMPORT              "Import"
+    IDS_EXPORT              "Export"
+    IDS_BNALAYER            "BNALayer"
+    IDS_BNALAYERNAME1       "Name1"
+    IDS_BNALAYERNAME2       "Name2"
+    IDS_BNALAYERID          "Id"
+    IDS_BNALAYERLAYER       "Layer"
+    IDS_ASSOCIATE_LAYERS_CAP "Zuordnen der Daten-Ebenen zu Objektklassen"
+    IDS_FILES_PROMPT        "Gesamt (%d von %d Dateien)"
+    IDS_HEADERTYP           "Typ"
+    IDS_HEADERLAYER         " Daten-Ebenen in Datei"
+    IDS_HEADERCLASS         "Objektklassen"
+    IDS_HEADERIMPORT        "Importieren"
+    IDS_NEWITEM             "<Objektklasse hinzufügen ...>"
+    IDS_KEYMEMOKLASSEREPLACE "MemoSuffixReplace"
+    IDS_BNAITEM             "<Objektklasse übernehmen ...>"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NEXTEXTENSION       "dat"
+    IDS_NEXTFORMAT          "PolyGIS-DAT-Austauschformat"
+    IDS_NEXTCLASSNAME       "Import aus dem PolyGIS-DAT-Format"
+    IDS_DATIMPORTGCO        "GCO-Code Original"
+    IDS_GPSEXTENSION        "txt"
+    IDS_GPSFORMAT           "GPS-Textformat"
+    IDS_GPSCLASSNAME        "Import aus dem GPS-Textformat"
+    IDS_IMPORTSTANDARDDAT   "StandardDATStruktur"
+    IDS_IMPORTPUNKTDAT      "PunktDATStruktur"
+    IDS_DATKEY01            "Key01"
+    IDS_DATKEY02            "Key02"
+    IDS_DATKEY03            "Key03"
+    IDS_GCAEXTENSION        "gca"
+    IDS_GCAFORMAT           "Format geocodierter Adressen"
+    IDS_GCACLASSNAME        "Import geocodierter Adressen"
+    IDS_GCACODE             "GCO-Code"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_GCASTRASSE          "Strassenname"
+    IDS_GCAHAUSNUMMER       "Hausnummer"
+    IDS_GCAHAUSNRZUSATZ     "Hausnummer-Zusatz"
+    IDS_GCABISHAUSNR        "Bis-Hausnummer"
+    IDS_GCABISHAUSNRZUSATZ  "Bis-Hausnummer-Zusatz"
+    IDS_GCAPLZ              "Postleitzahl"
+    IDS_GCAORT              "Ort"
+    IDS_GCAORTSTEIL         "Ortsteil"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "bnaimp.rcv"
+1 TYPELIB "bnaimp.tlb"
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

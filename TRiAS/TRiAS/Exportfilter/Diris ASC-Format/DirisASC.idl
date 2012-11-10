@@ -1,0 +1,26 @@
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#include "DirisASC.ver"
+
+#define STDINTERFACE(help)	object, dual, pointer_default(unique), helpstring(help)
+
+[ uuid(EC9D9D10-06E9-11d3-995A-0060085FC1CE)
+	, version(TYPELIB_DirisASC_VERSION)
+	, helpstring(TYPELIB_DirisASC_HELPSTRING)
+] library DirisASCExport {
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[ uuid(B8006843-06EF-11D3-995A-0060085FC1CE)
+		, STDINTERFACE("IDirisASCExport Interface")
+	] interface IDirisASCExport : IDispatch {
+	};
+
+	[ uuid(B8006844-06EF-11D3-995A-0060085FC1CE)
+		, helpstring("DirisASCExport Class")
+	] coclass DirisASCExport {
+		[default] interface IDirisASCExport;
+	};
+};

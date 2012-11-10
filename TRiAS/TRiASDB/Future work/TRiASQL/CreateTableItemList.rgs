@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASQL.CreateTableItemList.1 = s 'CreateTableItemList Class'
+	{
+		CLSID = s '{C9A6E64A-2D79-11D3-8582-00104B8CC00A}'
+	}
+	TRiASQL.CreateTableItemList = s 'CreateTableItemList Class'
+	{
+		CLSID = s '{C9A6E64A-2D79-11D3-8582-00104B8CC00A}'
+		CurVer = s 'TRiASQL.CreateTableItemList.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {C9A6E64A-2D79-11D3-8582-00104B8CC00A} = s 'CreateTableItemList Class'
+		{
+			ProgID = s 'TRiASQL.CreateTableItemList.1'
+			VersionIndependentProgID = s 'TRiASQL.CreateTableItemList'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{62ECE770-EC1D-4680-9A37-B5CD0BF0C1BC}'
+		}
+	}
+}

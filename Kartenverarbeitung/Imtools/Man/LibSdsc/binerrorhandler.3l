@@ -1,0 +1,264 @@
+
+
+
+     BBBBIIIINNNNEEEERRRRRRRROOOORRRRHHHHAAAANNNNDDDDLLLLEEEERRRR((((3333BBBBIIIINNNN))))   SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))    BBBBIIIINNNNEEEERRRRRRRROOOORRRRHHHHAAAANNNNDDDDLLLLEEEERRRR((((3333BBBBIIIINNNN))))
+
+
+
+     NNNNAAAAMMMMEEEE
+          BinErrorHandler  -  nominate an error condition handler
+          function
+
+     SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+          #include "sdsc.h"
+
+          void BinErrorHandler( func )
+               int (*func)( );
+
+     DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+          All binary I/O package routines check their arguments for
+          legality before proceeding to read or write the data file or
+          change any internal state.  However, some errors cannot be
+          detected until the data is actually read or written.  Such
+          errors include integer truncation and floating-point
+          overflow and underflow on one or more data items of those to
+          be read or written.  These conditions are generally ones
+          that cannot be corrected.  If a 128-bit VAX 'h' format float
+          in a file is being read into a Sun SPARCStation's 64-bit
+          IEEE 'double' format and overflow occurs, foreknowledge of
+          the problem is unlikely to stop overflow. The float in the
+          file is simply too big to be represented on the host.  The
+          most the program can do is to notify you that one or more of
+          the data items read in or written out will be incorrect
+          because of truncation, overflow or underflow.  The program
+          should notify the user, then exit or try to continue as if
+          nothing happened.
+
+          Notification of these data format errors is handled by
+          automatic invocation of an error handler function nominated
+          using _B_i_n_E_r_r_o_r_H_a_n_d_l_e_r.  If the program does not nominate
+          such a function, a default error handler in the binary I/O
+          package will be used that prints a warning message to
+          _s_t_d_e_r_r.
+
+          _f_u_n_c is a pointer to the program's error handling function
+          or either of the following:
+               _f_u_n_c                MMMMeeeeaaaannnniiiinnnngggg
+               BINDEFFUNC          Reset to the default handler that prints
+                                   to _s_t_d_e_r_r.
+               BINNOFUNC           Nominate no function.  The default action
+                                   is disabled.
+
+          _B_I_N_D_E_F_F_U_N_C reinstates the default handler.
+          Thereafter all error conditions causing a handler to be invoked are
+          shunted to the default handler, which prints a message to _s_t_d_e_r_r.
+
+          _B_I_N_N_O_F_U_N_C disables all handler calls.  Thereafter all error
+          conditions causing a handler to be invoked are ignored.  No messages
+          are printed to stderr.
+
+
+
+
+     Page 1                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNEEEERRRRRRRROOOORRRRHHHHAAAANNNNDDDDLLLLEEEERRRR((((3333BBBBIIIINNNN))))   SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))    BBBBIIIINNNNEEEERRRRRRRROOOORRRRHHHHAAAANNNNDDDDLLLLEEEERRRR((((3333BBBBIIIINNNN))))
+
+
+
+          If _f_u_n_c is a pointer to a program's own error handling function,
+          that function will be invoked as follows upon error conditions:
+
+               handler( fd, op, reason, data, frombits, tobits )
+                    int fd, op, reason;
+                    uchar *data;
+                    int frombits, tobits;
+
+          _f_d is the file's file descriptor.
+
+          _o_p is the operation in progress when the data format error
+          occurred and will be one of the following:
+
+               _o_p                 MMMMeeeeaaaannnniiiinnnngggg
+               BINOPREAD          _B_i_n_R_e_a_d(3BIN) in progress
+               BINOPREADSTRUCT    _B_i_n_R_e_a_d_S_t_r_u_c_t(3BIN) in progress
+               BINOPWRITE         _B_i_n_W_r_i_t_e(3BIN) in progress
+               BINOPWRITESTRUCT   _B_i_n_W_r_i_t_e_S_t_r_u_c_t(3BIN) in progress
+
+          _r_e_a_s_o_n indicates the reason the error handler function was
+          called and will be one of the following:
+
+               _r_e_a_s_o_n               MMMMeeeeaaaannnniiiinnnngggg
+               BINEFLOATOVERFLOW    Floating point overflow occurred
+               BINEFLOATUNDERFLOW   Floating point underflow occurred
+               BINEINTEGERTRUNC     Integer truncation occurred
+
+          floating-point overflow and underflow occur when the size of
+          a destination float's exponent is too small to accept the
+          exponent of a source float value without truncation.  If the
+          source float's exponent is too large, then overflow occurs.
+          If the source float's exponent is too small (a large
+          negative number), then underflow occurs.
+
+          Integer truncation occurs when the size of a destination
+          integer is too small to accept a source integer value
+          without truncation.  During truncation significant high bits
+          in the integer are lost.
+
+          The _d_a_t_a argument in the handler call is a _u_c_h_a_r pointer to
+          the array of source bytes that represents the integer or
+          float that is in error.
+
+          On integer truncation, _f_r_o_m_b_i_t_s is the length in bits of the
+          source integer, and _t_o_b_i_t_s is the length of the destination
+          integer.  _f_r_o_m_b_i_t_s is larger than _t_o_b_i_t_s.
+
+          On floating-point overflow and underflow, _f_r_o_m_b_i_t_s is the
+          length in bits of the source floating-point format's
+          exponent, and _t_o_b_i_t_s is the length of a destination float's
+          exponent.  _f_r_o_m_b_i_t_s is larger than _t_o_b_i_t_s.
+
+
+
+
+     Page 2                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNEEEERRRRRRRROOOORRRRHHHHAAAANNNNDDDDLLLLEEEERRRR((((3333BBBBIIIINNNN))))   SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))    BBBBIIIINNNNEEEERRRRRRRROOOORRRRHHHHAAAANNNNDDDDLLLLEEEERRRR((((3333BBBBIIIINNNN))))
+
+
+
+          The default handler prints messages of the form:
+
+               Bin:  integer truncation during read of file XYZ
+                 XYZ bit integer truncated on storage into XYZ bit integer
+                 Pre-truncation integer = 0xXYZ
+
+               Bin:  floating-point overflow during write of file XYZ
+                 XYZ bit exponent overflows when reduced to XYZ bits
+                 Pre-overflow float = 0xXYZ
+
+               Bin:  floating-point underflow during structure read of file XYZ
+                 XYZ bit exponent underflows when reduced to XYZ bits
+                 Pre-underflow float = 0xXYZ
+
+     RRRREEEETTTTUUUURRRRNNNNSSSS
+          _B_i_n_F_l_o_a_t_F_o_r_m_a_t returns nothing.
+
+     NNNNOOOOTTTTEEEESSSS
+          A typical error handler function sets a global flag that an
+          error occurred during the operation.  The main program
+          checks this flag regularly.  If the flag is set, a data
+          error occurred and the program issues a message to the user
+          and exits gracefully:
+
+               int errorOccurred = FALSE;
+
+               int
+               errorHandler( fd, op, reason, data, frombits, tobits )
+                    int fd, op, reason;
+                    uchar *data;
+                    int frombits, tobits;
+               {
+                    errorOccurred = TRUE;
+               }
+
+               main( ... )
+               {
+                    ...
+                    BinErrorHandler( errorHandler );
+                    ...
+                    BinRead( ... );
+                    if ( errorOccurred )
+                    {
+                         fprintf( stderr, "This data file contains data that\n" );
+                         fprintf( stderr, "cannot be represented accurately\n" );
+                         fprintf( stderr, "on this host.  It is impossible to\n" );
+                         fprintf( stderr, "continue processing this file\n" );
+                         fprintf( stderr, "and produce correct results.  Abort.\n" );
+                         exit( 1 );
+                    }
+                    ...
+               }
+
+
+
+     Page 3                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNEEEERRRRRRRROOOORRRRHHHHAAAANNNNDDDDLLLLEEEERRRR((((3333BBBBIIIINNNN))))   SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))    BBBBIIIINNNNEEEERRRRRRRROOOORRRRHHHHAAAANNNNDDDDLLLLEEEERRRR((((3333BBBBIIIINNNN))))
+
+
+
+     EEEEXXXXAAAAMMMMPPPPLLLLEEEESSSS
+        EEEExxxxaaaammmmpppplllleeee 1111
+          Nominate a custom error handler function.
+
+               BinErrorHandler( myHandler );
+
+        EEEExxxxaaaammmmpppplllleeee 2222
+          Disable the default error handler but don't install a new
+          one.
+
+               BinErrorHandler( BINNOFUNC );
+
+        EEEExxxxaaaammmmpppplllleeee 3333
+          Reinstate the default error handler.
+
+               BinErrorHandler( BINDEFFUNC );
+
+     SSSSEEEEEEEE AAAALLLLSSSSOOOO
+          BinByteOrder(3BIN), BinFRead(3BIN), BinFReadStruct(3BIN),
+          BinFWrite(3BIN), BinFWriteStruct(3BIN),
+          BinFloatFormat(3BIN), BinPError(3BIN), BinQByteOrder(3BIN),
+          BinQFloatFormat(3BIN), BinQMachine(3BIN), BinRead(3BIN),
+          BinReadStruct(3BIN), BinSRead(3BIN), BinSWrite(3BIN),
+          BinWrite(3BIN), BinWriteStruct(3BIN)
+
+     AAAAUUUUTTTTHHHHOOOORRRRSSSS
+          Dave Nadeau
+          San Diego Supercomputer Center
+
+     CCCCOOOONNNNTTTTAAAACCCCTTTT
+          SDSC consultants, (619)534-5100, ccccoooonnnnssssuuuulllltttt@@@@yyyy1111....ssssddddsssscccc....eeeedddduuuu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Page 4                                          (printed 6/30/95)
+
+
+

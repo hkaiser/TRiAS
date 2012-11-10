@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiAS.CS.TransformService.1 = s 'TRiASCSTransformService Object'
+	{
+		CLSID = s '{71B8F28B-10AE-406E-9679-796A63805801}'
+	}
+	TRiAS.CS.TransformService = s 'TRiASCSTransformService Object'
+	{
+		CLSID = s '{71B8F28B-10AE-406E-9679-796A63805801}'
+		CurVer = s 'TRiAS.CS.TransformService.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {71B8F28B-10AE-406E-9679-796A63805801} = s 'TRiASCSTransformService Object'
+		{
+			ProgID = s 'TRiAS.CS.TransformService.1'
+			VersionIndependentProgID = s 'TRiAS.CS.TransformService'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{2DF06A03-E3EF-11D1-8F3E-0060085FC1CE}'
+		}
+	}
+}

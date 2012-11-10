@@ -1,0 +1,146 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "ascimp.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+#include <dlgtrick.h>
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "ascimp.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "#include <dlgtrick.h>\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""ascimp.rcv""\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_STATUSDLG DIALOG DISCARDABLE  50, 50, 248, 63
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Status des aktuellen Imports"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Abbrechen",IDCANCEL,187,39,55,14
+    CONTROL         "Generic1",IDPB_STATUS,"msctls_progress32",0x0,10,40,171,
+                    8
+    LTEXT           "Verarbeitung der Projekt-Informationen",IDT_PERCENT,10,
+                    24,124,9
+    LTEXT           "Datei: %s",IDT_FILENAME,10,13,171,9
+    LTEXT           "Objekt %ld",IDC_OBJECTNUMBER,137,24,50,9
+    LTEXT           "Verbleibende Zeit:",IDT_TIMETEXT,10,49,68,7
+    RTEXT           "",IDT_TIME,99,50,81,7
+END
+
+IDD_RESULTDLG DIALOG DISCARDABLE  0, 0, 202, 153
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Ergebnisse des Datenimportes"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Anzahl der importierten (abgeglichenen)",IDC_STATIC,10,
+                    5,125,8,NOT WS_GROUP
+    RTEXT           "Text-Objekte:",IDC_STATIC,15,17,109,8,NOT WS_GROUP
+    RTEXT           "Punkt-Objekte:",IDC_STATIC,15,27,109,8,NOT WS_GROUP
+    RTEXT           "Linien-Objekte:",IDC_STATIC,15,37,109,8,NOT WS_GROUP
+    RTEXT           "Flächen-Objekte:",IDC_STATIC,15,47,109,8,NOT WS_GROUP
+    LTEXT           "0",IDT_TEXTS,132,18,57,8,NOT WS_GROUP
+    LTEXT           "0",IDT_POINTS,132,28,57,8,NOT WS_GROUP
+    LTEXT           "0",IDT_LINES,132,38,57,8,NOT WS_GROUP
+    LTEXT           "0",IDT_AREAS,132,48,57,8,NOT WS_GROUP
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,12,85,179,1
+    RTEXT           "importierte Objekte:",IDC_STATIC,15,90,109,8
+    DEFPUSHBUTTON   "&OK",IDC_STATIC,139,133,55,14
+    LTEXT           "0",IDT_IMPORTED,132,90,57,8,NOT WS_GROUP
+    RTEXT           "Importzeit:",IDC_STATIC,15,115,109,8
+    LTEXT           "0",IDT_TIME,132,115,57,8
+    RTEXT           "nicht importierte Objekte:",IDC_STATIC,15,102,109,8
+    LTEXT           "0",IDT_NOTIMPORTED,132,102,57,8
+    RTEXT           "Davon mit Geometriefehlern:",IDC_STATIC,15,72,109,8
+    LTEXT           "0",IDT_WITHERRORS,132,72,57,8
+    RTEXT           "Komplexobjekte:",IDC_STATIC,15,57,109,8,NOT WS_GROUP
+    LTEXT           "0",IDT_KOMPLEX,132,58,57,8,NOT WS_GROUP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ASCIMP              ICON    DISCARDABLE     "Res\\ascimp.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Import aus dem TRiAS Asc-Format"
+    IDS_FORMATDESCRIPTION   "TRiAS-Austauschformat"
+    IDS_DEFAULTEXTENSION    "asc"
+    IDS_PARSERERRORCAP      "Syntaxfehler"
+    IDS_PARSERERROR         "Beim Import der Datei %s ist in Zeile %ld folgender Syntaxfehler aufgetreten: %s."
+    IDS_FILETEMPLATE        "Bearbeitete Datei: %s"
+    IDS_PERCENTTEMPLATE     "Es wurden bereits %ld%% importiert: "
+    IDS_OBJECTNUMBERTEMPLATE "Objekt %ld"
+    IDS_IMPORTHEADER        "Verarbeitung der Projekt-Informationen"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "ascimp.rcv"
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

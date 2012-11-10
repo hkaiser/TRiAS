@@ -1,0 +1,24 @@
+HKCR 
+{
+	NoRemove %GDO_PROGID% 
+    {
+		TRiASDB 
+        {
+			CLSID = s '{B063A0A3-13FB-11d2-8F77-0060085FC1CE}' 
+			ForceRemove Description 
+            {
+				val DefaultExtension = s '.%GDO_DEFAULTTEXT%'
+				val LongName = s '%GDO_LONGNAME%'
+				val ShortName = s '%GDO_SHORTNAME%'
+				val NameDescription = s '%GDO_NAMEDESC%'
+				val NameIsDirectory = s '%GDO_NAMEISDIR%'
+				val NameIsFile = s '%GDO_NAMEISFILE%'
+				val ReadWrite = s '%GDO_READWRITE%'
+				val FilterString = s '%GDO_FILTERSTRING%'
+				val Version = s '%GDO_VERSION%'
+				val ToolBoxBitmap32 = d %GDO_BITMAP%
+			}
+		}
+	}
+}
+

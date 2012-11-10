@@ -1,0 +1,39 @@
+// EDBS_Cfg.idl : IDL-Quellcode für EDBS_Cfg.dll
+//
+
+// Diese Datei wird mit dem MIDL-Tool bearbeitet,
+// um den Quellcode für die Typbibliothek (EDBS_Cfg.tlb)und die Abruffunktionen zu erzeugen.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+	[
+		object,
+		uuid(73645433-AED5-11D3-8E7B-00105AF354F9),
+		dual,
+		helpstring("IEDBS_CfgImp-Schnittstelle"),
+		pointer_default(unique)
+	]
+	interface IEDBS_CfgImp : IDispatch
+	{
+	};
+
+[
+	uuid(73645424-AED5-11D3-8E7B-00105AF354F9),
+	version(1.0),
+	helpstring("EDBS_Cfg 1.0 Typbibliothek")
+]
+library EDBS_CFGLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(73645434-AED5-11D3-8E7B-00105AF354F9),
+		helpstring("EDBS_CfgImp Class")
+	]
+	coclass EDBS_CfgImp
+	{
+		[default] interface IEDBS_CfgImp;
+	};
+};

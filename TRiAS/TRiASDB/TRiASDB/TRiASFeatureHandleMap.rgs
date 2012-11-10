@@ -1,0 +1,20 @@
+HKCR
+{
+	TRiASDB.TRiASFeatureHandleMap.1 = s 'TRiASFeatureHandleMap Class'
+	{
+		CLSID = s '{95F58F33-DF2C-11D1-8606-00600875138A}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {95F58F33-DF2C-11D1-8606-00600875138A} = s 'TRiASFeatureHandleMap Class'
+		{
+			ProgID = s 'TRiASDB.TRiASFeatureHandleMap.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{1CB3AB53-2E87-11D1-969D-00A024D6F582}'
+		}
+	}
+}

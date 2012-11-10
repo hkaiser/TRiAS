@@ -1,0 +1,66 @@
+
+
+
+IMVFBQFIELDS(3IM)          SDSC IMAGE           IMVFBQFIELDS(3IM)
+
+
+
+     LIBRARY"
+
+NAME
+     ImVfbQFields - Query the pixel fields  of  a  virtual  frame
+     buffer
+
+SYNOPSIS
+     #include "im.h"
+
+     int ImVfbQFields( srcVfb )
+          ImVfb *srcVfb ;
+
+
+
+DESCRIPTION
+     ImVfbQFields returns a bitmask specifying the fields  stored
+     in _s_r_c_V_f_b.
+
+NOTES
+     _f_i_e_l_d_s specifies what information is to be  stored  in  each
+     pixel  of  the  Vfb.   _f_i_e_l_d_s  is a bitmask formed by or'ing
+     together one or more of  the  same  constants  used  by  the
+     _f_i_e_l_d_s parameter in ImVfbAlloc (3IM).
+
+     ImVfbQFields is a macro.
+
+RETURNS
+     ImVfbQFields returns the fields mask of the _s_r_c_V_f_b.
+
+SEE ALSO
+     ImIntro (3IM), ImErrNo  (3IM),  imadjust  (1IM),  ImVfbAlloc
+     (3IM)
+
+AUTHOR
+     Mike Bailey
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SDSC              Last change: August 25, 1992                  1
+
+
+

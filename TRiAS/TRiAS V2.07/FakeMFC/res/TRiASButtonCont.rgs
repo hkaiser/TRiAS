@@ -1,0 +1,23 @@
+HKCR
+{
+	Fakemfc.TRiASButtonCont.1 = s 'TRiASButtonCont Class'
+	{
+		CLSID = s '{3963E3A2-B249-11D0-955D-00A024D6F582}'
+	}
+	Fakemfc.TRiASButtonCont = s 'TRiASButtonCont Class'
+	{
+		CLSID = s '{3963E3A2-B249-11D0-955D-00A024D6F582}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {3963E3A2-B249-11D0-955D-00A024D6F582} = s 'TRiASButtonCont Class'
+		{
+			ProgID = s 'Fakemfc.TRiASButtonCont.1'
+			VersionIndependentProgID = s 'Fakemfc.TRiASButtonCont'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'both'
+			}
+		}
+	}
+}

@@ -1,0 +1,23 @@
+HKCR
+{
+	TRiAS.RestrictCursor.1 = s 'Nachziehen eines abgetrennten Cursors'
+	{
+		CLSID = s '{13A82790-CBF0-11d2-883F-00104BAF1F6B}'
+	}
+	TRiAS.RestrictCursor = s 'Nachziehen eines abgetrennten Cursors'
+	{
+		CurVer = s 'TRiAS.RestrictCursor.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {13A82790-CBF0-11d2-883F-00104BAF1F6B} = s 'Nachziehen eines abgetrennten Cursors'
+		{
+			ProgID = s 'TRiAS.RestrictCursor.1'
+			VersionIndependentProgID = s 'TRiAS.RestrictCursor'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

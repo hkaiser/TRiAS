@@ -1,0 +1,442 @@
+' **************************************************************************************
+' *                                                                                    *
+' *  Test auf Überschneidung von mehreren Objektklassen                                *
+' *  W. Mörtl/K.Kurth                                                                  *
+' *  02. 10. 98                                                                        *
+' *                                                                                    *
+' **************************************************************************************
+
+
+Option Explicit
+
+' ======================================================================================
+
+' anwendungsspezifische Konstanten
+
+Const strVers = "versiegelte Fläche"
+Const strDach = "Dachteilflächen"
+Const strStras = "Straße(allg.)"
+
+
+Const strUeber = "Überlappung"
+
+' --------------------------------------------------------------------------------------
+' ======================================================================================
+' globale Variable
+Private docGD As GeoDocument		' Projekt
+
+Private clsDach As GeoClass			' Objektklasse 
+Private clsVers As GeoClass			' Objektklasse 
+Private clsStras As GeoClass			' Objektklasse 
+
+Private objsDach As GeoObjects
+Private objsVers As GeoObjects
+Private objsStras As GeoObjects
+
+Private lngONrErr As Long 			' Objektnummer des bearbeiteten Objektes bei
+Private strBoxTitel As String
+
+Private dZahl As Double
+' ======================================================================================
+
+' Programmkonstanten
+Const NL = Chr$(13) + Chr$(10)			' NewLine
+'Const strBoxTitel = "Dachteilflächen/versiegelte Flächen testen"	' Titel der Message-Boxen
+
+' Hier gehts los
+Const strSelectIdent As String = "TRiASEx.SelectIdentObjTyp.1"
+Const strSelectFromORWnd As String = "TRiASEx.SelectFromObjectWindow.1"
+
+' ======================================================================================
+' Subroutine's-Deklarationen
+Declare Sub Overlapping (MyString As String, Status As StatusIndicator, lngCnt As Long, objs As GeoObjects, cls As GeoClass)
+Declare Sub AbbruchBeiFehler (lngFehlerNr As Long)
+Declare Function FlaechenInhalt (objGO As GeoObject) As Double
+Declare Function MasseinheitAbtrennen (MWert As String, MZahl As Double) As String
+Declare Function ObjektAnteil ( Obj1 As GeoObject, Obj2 As GeoObject ) As Boolean
+
+' ======================================================================================
+
+Sub Main()
+
+' Reaktion bei Runtime-Error
+	On Error GoTo CheckError
+
+' Initialisierungen
+
+  	Set docGD = GetActiveDocument
+	Dim strViewName As String
+
+	strViewName = docGD.ActiveViewName
+
+	Dim view As GeoView
+	Set view = docGD.GetView (strViewName)
+	If (view Is Nothing) Then
+		MsgBox "In TRiAS wurde noch keine Sicht ausgewählt!", _
+				ebInformation, strBoxTitel
+		Exit Sub
+	End If
+
+
+' =====================================================================
+	dZahl = 0.95	' 90 Prozent
+
+	Dim ObjS As GeoObjects
+
+	Dim Dlg As New PropertySequence
+
+	Dim objsRWin As GeoObjectWins	'Recherchefenster
+
+	Dlg.Description = "Wählen Sie bitte die zu prüfenden Objektklasse aus:"
+
+	Set objsRWin = docGD.GetGeoObjectWins()
+
+	If objsRWin.Count > 0 Then	
+		Dlg.AddAction "TRiASEx.SelectFromObjectWindow.1"
+	Else 
+		Dlg.AddAction "TRiASEx.SelectIdentObjTyp.1"
+	End If
+
+	Set ObjS = Dlg.DoActions()
+
+	If ObjS Is Nothing Then
+		MsgBox "Im Projekt wurden keine Objekte gefunden!", _
+			   ebInformation, strBoxTitel
+		Exit Sub
+	End If
+
+	Dim MyClass As String
+
+' =====================1.Klasse
+
+	MyClass = Objs(1).ObjClass.Name
+
+	Dim TestKlasse As String
+
+	TestKlasse = MyClass
+
+	strBoxTitel = MyClass + " testen"
+
+	Dim lngCnt As Long
+
+' weitere Initialisierungen
+
+	lngCnt = ObjS.Count			' Anzahl
+
+
+' ============= eventuell 2.Klasse ?
+
+	Dim ObjS1 As GeoObjects
+
+	Dim Dlg1 As New PropertySequence
+
+	Dlg1.Description = "Wählen Sie bitte die 2. zu prüfende Objektklasse aus:"
+
+ 	Dlg1.AddAction "TRiASEx.SelectIdentObjTyp.1"
+  
+	Set ObjS1 = Dlg1.DoActions()
+
+
+	If ObjS1 Is Not Nothing Then
+		strBoxTitel = MyClass + "/"
+		MyClass = ObjS1(1).ObjClass.Name
+		strBoxTitel = strBoxTitel + MyClass + " testen"
+		Set clsDach = view.GetClass (MyClass, OT_Area)
+	Else
+		MsgBox "Im Projekt wurden keine Objekte gefunden!", _
+		   ebInformation, strBoxTitel
+		Exit Sub
+	End If
+
+
+	Dim Status As New StatusIndicator	' Geduldsanzeige 
+
+
+' Test auf Überschneidung
+
+'	If lngCnt >= 2 Then Overlapping TestKlasse, Status, lngCnt, ObjS, clsDach
+	If lngCnt >= 1 Then Overlapping TestKlasse, Status, lngCnt, ObjS, clsDach
+
+
+	Beep
+	MsgBox "Und tschüß!", ebInformation, strBoxTitel
+
+	Exit Sub
+
+
+' Abbruch bei Runtime-Error
+CheckError:
+	AbbruchBeiFehler Err.Number
+
+End Sub ' Main
+
+'----------------------------------------------------------------------
+' Test auf Überschneidung
+Sub Overlapping (MyString As String, Status As StatusIndicator, lngCnt As Long, objsFlur As GeoObjects, clsFlur As GeoClass)
+
+	Dim intAnsw As Integer
+	Dim NeuString As String
+	NeuString = clsFlur.Name
+	
+'	intAnsw = MsgBox ("Sollen "+MyString+"/"+NeuString+" auf Überschneidung getestet werden?", _
+ '					  ebYesNoCancel Or ebDefaultButton1 Or ebQuestion, strBoxTitel)
+
+'	If intAnsw = 2 Then	AbbruchBeiFehler 18	' Cancel
+'	If intAnsw = 7 Then Exit Sub			' nein
+
+	Dim objFlur As GeoObject		
+	Dim j As Long				' Zähler für Geduldsanzeige
+
+	Dim xmin As Double, ymin As Double, xmax As Double, ymax As Double
+	Dim objsInGrund As GeoObjects	' im umschließenden Rechteck
+
+	Dim objInGrund As GeoObject		' ein einzelnes objsInGrund-Grundstück
+	Dim intRel As Integer			' Rückkehrwert von TopRelation()
+	Dim objDummy As GeoObject		' Rückkehrwert von Add()
+	Dim objsOverlap As GeoObjects	' sich überlappende Grundstücke
+	Set objsOverlap = docGD.CreateGeoObjectsCollection()
+
+	If (Status Is Not Nothing) Then
+		Status.Restart 1, lngCnt+1, STATUS_ShowAllFields
+		Status.Field(1) = Str$(lngCnt)
+		Status.Field(2) = MyString + " im Projekt"
+		Status.Field(3) = "Bearbeitungsstand:  %d %%"
+		Status.Caption = "Test auf Überschneidung " + MyString + "/" + NeuString
+	End If
+
+	j = 0
+	For Each objFlur In objsFlur
+		lngONrErr = objFlur.Value	' Vorsichtsmaßnahme für unvorhergesehenen Fehlerfall
+
+		If (Status Is Not Nothing) Then	' Status weiterschalten
+			j = j + 1
+			Status.SetPosition j
+			If Status.WasCanceled() Then
+				Set Status = Nothing	' Geduldsanzeige abschalten
+				AbbruchBeiFehler 18		' Cancel
+			End If
+		End If
+
+		Dim Feat As GeoFeature
+		Set Feat = objFlur.GetFeature(strUeber)
+		If Feat Is Not Nothing Then
+ 			objFlur.RemoveFeature strUeber
+		End If
+	
+		objFlur.GetGeometryRect xmin, ymin, xmax, ymax
+		Set objsInGrund = clsFlur.GetObjectsInRect (xmin, ymin, xmax, ymax)
+		If (objsInGrund Is Nothing) Then GoTo Continue2
+		' clsGrund liegt auf jeden Fall in seinem eigenen umschließenden Rechteck,
+		' deshalb nachfolgend Abfrage mit " <= 1 "
+'		If objsInGrund.Count <= 1 Then GoTo Continue2
+		If objsInGrund.Count < 1 Then GoTo Continue2
+
+		For Each objInGrund In objsInGrund
+			If objFlur.Value <> objInGrund.Value And _	' kein Test mit sich selbst
+			   objFlur.ObjType = OT_Area And objInGrund.ObjType = OT_Area Then
+				If (Status Is Not Nothing) Then	' Status weiterschalten
+					Status.Field(4) = objFlur.Value & " mit " & objInGrund.Value
+				End If
+
+				intRel = objFlur.TopRelation (objInGrund)
+
+
+				If intRel = 0 Or intRel = 2 Then	' innerhalb oder inner/außerhalb
+	' Korrektur am 02.10.98
+					If intRel = 0 Then 'Innen
+						Set objDummy = objsOverlap.Add(objFlur.Value)
+						Set objDummy = objsOverlap.Add(objInGrund.Value)
+					End If
+					If intRel = 2 Then 'Innen/Aussen
+						If ObjektAnteil(objFlur,objInGrund) = True Then
+							Set objDummy = objsOverlap.Add(objFlur.Value)
+							Set objDummy = objsOverlap.Add(objInGrund.Value)
+						End If
+					End If
+				End If
+			End If
+		Next objInGrund
+Continue2:
+	Next objFlur
+
+	If objsOverlap.Count > 0 Then
+
+		Dim Obj As GeoObject
+		For Each Obj In objsOverlap
+			Dim NewString As String
+			NewString = MyString
+			Dim MyFeat As GeoFeature
+			Set MyFeat = Obj.GetFeature(strUeber)
+			If MyFeat Is Nothing Then
+				Set MyFeat = Obj.AddFeature (strUeber,FEATURETYPE_WriteAble)
+			End If
+			If MyFeat Is Not Nothing Then
+				MyFeat.Feature$ = NewString
+			End If
+		Next Obj
+
+		Dim orwOverlap As GeoObjectWin
+		Set orwOverlap = objsOverlap.CreateGeoObjectWin()
+		orwOverlap.Name = "Überlappende Objekte"
+		orwOverlap.Visible = 1
+
+		Beep
+		MsgBox "Das Projekt enthält sich überlappende Objekte." + NL + _
+			   "Deshalb wird das Programm erst einmal abgebrochen." + NL + _
+			   "Viel Spaß und eine ruhige Hand beim Korrigieren.", _
+			   ebInformation, strBoxTitel
+		End
+	End If
+
+End Sub ' Overlapping
+
+'--------------------------------------------------------------------------------------
+
+
+' ======================================================================================
+' Subroutine's
+' --------------------------------------------------------------------------------------
+' "OnDocumentToClose()" wird nach dem Schließen des Projektes gerufen
+Sub OnDocumentToClose (Doc As GeoDocument)
+	SetBreakScript(true)	' der laufende Script wird angehalten
+
+End Sub
+' --------------------------------------------------------------------------------------
+' ein Runtime-Error ist aufgetreten
+Sub AbbruchBeiFehler (lngFehlerNr As Long)
+	Beep
+	If lngFehlerNr = 18 Then	' User interrupt (z.B. Cancel bei Geduldsanzeige)
+		MsgBox "Die Abarbeitung wurde durch den Anwender vorzeitig beendet!", _
+			   ebExclamation, strBoxTitel
+	Else
+		MsgBox "Das Programm wurde abgebrochen mit" & NL & _
+			   "Fehler " & lngFehlerNr & " (" & Error(lngFehlerNr) & ")", _
+			   ebCritical, strBoxTitel
+	End If
+
+	End
+
+End Sub ' AbbruchBeiFehler
+'======================================================================
+Function ObjektAnteil ( Obj1 As GeoObject, Obj2 As GeoObject ) As Boolean
+
+	Dim objsTO As GeoObjects	'in obj1 liegende Teilobjekte von obj2
+
+
+	Dim Fl1In As Double
+	Dim Fl2In As Double
+	Dim MyFl As Double
+
+	If obj2.ObjType = OT_Area Then
+		Fl2In = FlaechenInhalt (obj2)
+	End If
+
+	If obj1.ObjType = OT_Area Then
+		Fl1In = FlaechenInhalt (obj1)
+	End If
+
+	If Fl1In > Fl2In Then
+		MyFl = Fl2In
+'		Set objsTO = obj1.GetIntersectObjects (obj2)
+	Else
+		MyFl = Fl1In
+ '		Set objsTO = obj2.GetIntersectObjects (obj1)
+	End If
+
+	Set objsTO = obj1.GetIntersectObjects (obj2)
+
+	ObjektAnteil = False
+
+	If objsTO Is Nothing Then 
+ '		msgBox " Fläche : Fehler bei Durchschnitt",ebCritical,strBoxTitel
+		ObjektAnteil = False
+		Exit Function
+	End If
+
+	If objsTO.Count = 0  Then 
+  '		msgBox " Fläche : Fehler bei Durchschnitt : Objektanzahl 0",ebCritical,strBoxTitel
+   '		msgBox "Objekt " + STR$(Obj1.Value) + "/" + STR$(Obj2.Value)
+		ObjektAnteil = False
+		Exit Function
+	End If
+
+
+
+	Dim RefFL As Double
+	RefFL = 0.0
+
+	Dim objTO As GeoObject
+
+	For Each objTO In objsTO
+		If objTO.ObjType = OT_Area Then
+			Dim FL As Double
+			FL = FlaechenInhalt (objTO)
+			If FL > RefFL Then
+				RefFL = FL
+			End If
+		End If
+		docGD.RemoveObject objTO
+	next objTO
+
+	objsTO.Refresh
+	Set objsTO = Nothing
+
+	If RefFL/MyFl > dZahl Then
+		ObjektAnteil = True
+	End If
+
+End Function ' ObjektTeilen
+'=================================================================================================
+'-------------------------------------------------------------------------------------------------
+'Flächeninhalt eines GeoObjektes in m²; im Fehlerfall (unbekannte Maßeinheit) wird -1 zurückgegeben
+Function FlaechenInhalt (objGO As GeoObject) As Double
+	Dim ftFlInhalt As GeoFeature	
+	Set ftFlInhalt = objGO.GetFeature("Flächeninhalt")
+	If (ftFlInhalt Is Nothing) Then 
+		MsgBox "Bitte Statistikkomponente laden!", ebCritical, strBoxTitel
+		FlaechenInhalt = -1
+		Exit Function
+	End If
+
+	Dim Fl As String
+
+	Fl = Trim$(ftFlInhalt.Feature$)	'Flächeninhalt und Maßeinheit
+	If Fl = "" Then	'kein Flächenobjekt
+  		FlaechenInhalt = -1
+		Exit Function
+	End If
+
+	Dim Flaeche As Double				'Flächeninhalt ohne Maßeinheit
+	Dim ME As String
+	ME = MasseinheitAbtrennen (Fl, Flaeche)
+
+	Select Case LCase(Mid(ME,2,1))	'das 1. Zeichen von ME ist "["
+		Case "m"	'm²
+			FlaechenInhalt = Flaeche
+		Case "h"	'ha
+			FlaechenInhalt = 10000 * Flaeche
+		Case "k"	'km²
+			FlaechenInhalt = 1000000 * Flaeche
+		Case Else
+			MsgBox "Die ermittelte Maßeinheit ist unbekannt!", ebCritical, strBoxTitel
+			FlaechenInhalt = -1
+	End Select
+End Function 'FlaechenInhalt
+'-------------------------------------------------------------------------------------------------
+'Maßeinheit aus dem übergebenen String MWert eliminieren und in der Form "[...]"
+'zurückgeben; dabei wird vorausgesetzt, daß die Maßeinheit in eckige Klammern '[]'
+'eingeschlossen ist
+Function MasseinheitAbtrennen (MWert As String, MZahl As Double) As String
+	Dim Pos As Integer
+	Pos = InStr (MWert$,"[")		'Position der öffnenden Klammer "[" suchen
+	If Pos = 0 Then
+		MsgBox "Maßeinheit beginnt nicht mit [", ebCritical, strBoxTitel
+		MasseinheitAbtrennen = "  "	'Rückgabe bei Fehler
+	End If
+
+	Pos = InStr (MWert," ")			'Position zwischen Zahlenwert und Dimension
+	MZahl = Val (Left(MWert,Pos))	'Dimension abschneiden
+	MasseinheitAbtrennen = Right(MWert,Len(MWert)-Pos)	'Maßzahl ohne Maßeinheit als Rückgabewert
+End Function 'MasseinheitAbtrennen
+'-------------------------------------------------------------------------------------------------
+    

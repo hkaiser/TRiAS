@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Copyright © 1991 - 2002, GEOPunkt GmbH, NL Potsdam, #HK020110 -->
+<!-- edited with XML Spy v3.5 NT (http://www.xmlspy.com) by Hartmut Kaiser (Geopunkt GmbH & Co. KG) -->
+<!DOCTYPE GeoComponentSequence SYSTEM "GeoComponentSequence.dtd">
+<GeoComponentSequence Version="1.0">
+	<Name>Segmentieren von Daten</Name>
+	<GeoComponent ProgID="TRiASEx.PropertyChoice.1" Type="Sequence">
+		<GeoComponent ProgID="TRiASEx.SelectObjectsDatasource.1" Level="1">
+			<InitInfo Name="Datenquellen"/>
+		</GeoComponent>
+		<GeoComponent ProgID="TRiASEx.SelectIdentObjTyp.1" Level="1">
+			<InitInfo Name="Ansicht"/>
+		</GeoComponent>
+	</GeoComponent>
+	<GeoComponent ProgID="TRiASEx.LinesSplitting.1">
+		<InitInfo ForceTolerances="1" ReturnNotTouched="1" ForceSelectObjClass="1"/>
+	</GeoComponent>
+	<GeoComponent ProgID="TRiASEx.ModifyIdent.1">
+		<InitInfo CopyMode="2"/>
+	</GeoComponent>
+	<GeoComponent ProgID="TRiASEx.SegmentPropertyAction.1"/>
+</GeoComponentSequence>

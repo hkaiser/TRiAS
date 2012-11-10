@@ -1,0 +1,11 @@
+#define DEFINEIDENTDLG              105
+#define DELIDENTDLG                 106
+#define IDB_NEWIDHELP               1100
+#define IDL_NEWIDLIST               1101
+#define IDB_DELIDUNUSED             1102
+#define IDE_DELIDIDENT              1103
+#define IDL_DELIDLIST               1104
+#define IDB_DELIDHELP               1105
+#define IDB_DELIDDELETE             1106
+#define IDE_NEWIDIDENT              1108
+#define IDB_DELIDRESTORE            1110

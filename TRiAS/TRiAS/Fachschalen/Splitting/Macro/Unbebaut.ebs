@@ -1,0 +1,375 @@
+' **************************************************************************************
+' *                                                                                    *
+' *  Test von Grundstücken auf Bebauung und umklassifizieren,                          *
+' *  falls keine Dachteilflächen und Versiegelungen vorhanden sind					   *
+' *  K. Kurth   (14. 10. 02)                                                           *
+' *                                                                                    *
+' **************************************************************************************
+
+
+Option Explicit
+
+' ======================================================================================
+' anwendungsspezifische Konstanten
+Const strGrund = "Grundstück"
+Const strSiegel = "versiegelte Fläche"
+Const strDach = "Dachteilfläche"
+Const dblFlMin = 0.5					' Mindest-Flächeninhalt (in m²)
+Const dblOhne = 0.99					' Prozentwert für Suche nach Teilen der
+										' versiegelten bzw. Dachteilflächen, unter denen
+										' kein Grund- bzw. Flurstück liegt
+
+'Const strGr_Unbebaut = "unbebautes Grundstück"
+Const strGr_Unbebaut = "[112401]"
+' ======================================================================================
+' Programmkonstanten
+Const NL = Chr$(13) + Chr$(10)			' NewLine
+Const strBoxTitel = "Bebauungstest"	' Titel der Message-Boxen
+Const strErrTopRelation = "TopRelation"	' Fehlerausschrift
+Const strErrGetIntersectObjects = "GetIntersectObjects"
+
+Const strToolSearchLong As String = "Recherche von Grundstückseigenschaften"
+
+'=====================================================================================
+' ======================================================================================
+' globale Variable
+Private docGD As GeoDocument		' Projekt
+Private clsGrund As GeoClass		' Objektklasse (Grundstücke)
+Private clsSiegel As GeoClass		' Objektklasse (versiegelte Flächen)
+Private clsDach As GeoClass			' Objektklasse (Dachteilflächen)
+
+Private objsU As GeoObjects		' unbebaute Grundstücke
+
+Private MyQuelle As String
+
+Private Wins As GeoObjectWins
+' ======================================================================================
+' Subroutine's-Deklarationen
+Declare Sub AbbruchBeiFehler (lngFehlerNr As Long)
+Declare Sub StatistikFehler (Optional lngONr As Variant)
+
+Declare Private Sub Klassifizieren ( ObjS As GeoObjects, OKS As String)
+Declare Private Function ObjectInRect (  cls As GeoClass, objGrund As GeoObject,xmin As Double, ymin As Double, xmax  As Double, ymax As Double) As Boolean
+
+' -----------------------------------------------------------------------------
+' Hier gehts los
+Const strModifyIdent As String = "TRiASEx.ModifyIdent.1"
+Const strSelectFromORWnd As String = "TRiASEx.SelectFromObjectWindow.1"
+
+Const strNoShow As String = "NoShow=1"
+Const strQuShow As String = "NoShow=1;DataSource="
+
+'===============================================================
+
+
+' ======================================================================================
+Sub Unbebaut(strQuelle As String)
+
+' Reaktion bei Runtime-Error
+	On Error GoTo CheckError
+
+' Eingangsbild
+	Msg.Open NL & "   Routine: Bebaungstest" & NL & _
+			 "   Bitte etwas Geduld - die Abarbeitung wird vorbereitet!   " & NL, , _
+			 False, False
+
+' Initialisierungen
+  	Set docGD = GetActiveDocument
+
+	Dim strViewName As String
+
+	strViewName = docGD.ActiveViewName
+
+	Dim view As GeoView
+	Set view = docGD.GetView (strViewName)
+	If (view Is Nothing) Then
+		MsgBox "In TRiAS wurde noch keine Sicht ausgewählt!", _
+				ebInformation, strBoxTitel
+		Exit Sub
+	End If
+
+' Statistik laden !!!
+	Dim iFlag As Boolean
+	iFlag = False
+	iFlag = TRiAS.LoadExtension ("TRiAS.Statistik.1")
+
+' Nach OR-Fenster suchen
+
+	Dim fORWnd As Boolean
+	fORWnd = True
+
+	Set Wins = docGD.GetGeoObjectWins()
+	If (Wins Is Nothing) Then
+		fORWnd = False
+	ElseIf (Wins.Count = 0) Then
+		fORWnd = False
+	End If
+
+' neu
+	MyQuelle = strQuelle
+
+	If strQuelle = "" Then
+		Set clsGrund = docGD.GetClass (strGrund)
+		Set clsSiegel = docGD.GetClass (strSiegel)
+		Set clsDach = docGD.GetClass (strDach)
+	Else
+		Set clsGrund = docGD.GetClass (strGrund,strQuelle)
+		Set clsSiegel = docGD.GetClass (strSiegel,strQuelle)
+		Set clsDach = docGD.GetClass (strDach,strQuelle)
+	End If
+
+	Msg.Close
+
+	If (clsGrund Is Nothing) Then
+		MsgBox "Im Projekt wurden keine Grundstücke gefunden!", _
+				ebInformation, strBoxTitel
+		Exit Sub
+	End If
+
+	Dim intAnsw As Integer
+	If (clsSiegel Is Nothing) Then
+		MsgBox "Im Projekt wurden keine versiegelten Flächen gefunden!", _
+				ebInformation, strBoxTitel
+   		intAnsw = MsgBox ("Soll trotzdem weitergearbeitet werden?", _
+						  ebYesNoCancel Or ebDefaultButton1 Or ebQuestion, strBoxTitel)
+		If intAnsw = 2 Then	AbbruchBeiFehler 18	' Cancel
+   		If intAnsw = 7 Then Exit Sub			' nein
+	End If
+
+	If (clsDach Is Nothing) Then
+		MsgBox "Im Projekt wurden keine Dachteilflächen gefunden!", _
+			   ebInformation, strBoxTitel
+   		intAnsw = MsgBox ("Soll trotzdem weitergearbeitet werden?", _
+						  ebYesNoCancel Or ebDefaultButton1 Or ebQuestion, strBoxTitel)
+		If intAnsw = 2 Then	AbbruchBeiFehler 18	' Cancel
+   		If intAnsw = 7 Then Exit Sub			' nein
+	End If
+
+	Dim objsG As GeoObjects		' GeometrieObjekte (Grundstück)
+
+' Operation durchführen
+	Dim Seq As New PropertySequence
+
+	Seq.Description = strToolSearchLong
+
+	If (fORWnd = True) Then
+		Seq.AddAction strSelectFromORWnd, strNoShow
+		Set objsG = Seq.DoActions()
+	Else
+
+		Set objsG = clsGrund.GetObjects (OT_Area)
+		If (objsG Is Nothing) Then
+			MsgBox "Im Projekt wurden keine flächenförmigen Grundstücke gefunden!", _
+					ebInformation, strBoxTitel
+		End If
+	End If
+
+' --------------------------------------------------------------------------------------
+' Test, ob es Dachteilflächen, versiegelte Flächen , die
+' innerhalb/außerhalb eines Grundstückes liegen
+
+	Dim objGrund As GeoObject		' einzelnes Grundstück
+	Dim xmin As Double, ymin As Double, xmax As Double, ymax As Double
+
+
+	Dim lngAnzGrund As Long, j As Long
+	lngAnzGrund = objsG.Count	' Anzahl und
+	j = 0						' Zähler der abzuarbeitenden Grundstücke 
+
+	Dim Status As New StatusIndicator	' Geduldsanzeige 
+	If (Status Is Not Nothing) Then
+		Status.Restart 1, lngAnzGrund+1, STATUS_ShowAllFields
+		Status.Field(1) = Str$(lngAnzGrund)
+		Status.Field(3) = "Bearbeitungsstand:  %d %%"
+		Status.Caption = "Test auf Bebauung"
+	End If
+
+	Set objsU = docGD.CreateGeoObjectsCollection()
+
+	Dim objDummy As GeoObject
+
+' Abarbeitung aller Grundstücke
+	For Each objGrund In objsG
+
+		If (Status Is Not Nothing) Then	' Status weiterschalten
+			Status.Field(2) = "Grundstücke werden abgearbeitet"
+			Status.Field(4) = objGrund.Value
+			j = j + 1
+			Status.SetPosition j
+			If Status.WasCanceled() Then
+				Set Status = Nothing	' Geduldsanzeige abschalten
+				AbbruchBeiFehler 18		' Cancel
+			End If
+		End If
+
+		objGrund.GetGeometryRect xmin, ymin, xmax, ymax
+
+		If (Status Is Not Nothing) Then
+			Status.Field(2) = "Grundstücke: Dachteilflächen"
+			Status.Field(4) = objGrund.Value
+		End If
+
+
+		If ObjectInRect (clsDach, objGrund, xmin, ymin, xmax, ymax ) = False Then
+			If (Status Is Not Nothing) Then
+				Status.Field(2) = "Grundstücke: versiegelte Flächen"
+				Status.Field(4) = objGrund.Value
+			End If
+			If ObjectInRect (clsSiegel, objGrund, xmin, ymin, xmax, ymax ) = False Then
+
+			' Rest umklassifizieren
+				Set objDummy = objsU.Add(objGrund.Value)
+			End If
+		End If
+		
+	Next objGrund
+
+	Set Status = Nothing	' Geduldsanzeige abschalten
+
+	Dim OKS As String
+
+	OKS = strGr_Unbebaut
+
+	If objsU.Count > 0 Then
+		Klassifizieren objsU,OKS
+	End If
+
+	Beep
+	MsgBox "Und tschüß", _
+		   ebQuestion, strBoxTitel
+
+	Exit Sub
+
+
+' Abbruch bei Runtime-Error
+CheckError:
+	AbbruchBeiFehler Err.Number
+
+End Sub ' Main
+
+
+' ======================================================================================
+' Subroutine's
+' --------------------------------------------------------------------------------------
+' "OnDocumentToClose()" wird nach dem Schließen des Projektes gerufen
+Sub OnDocumentToClose (Doc As GeoDocument)
+	docGD.PreventRepaint = 0	' Zeichnen wieder ermöglichen
+	SetBreakScript(true)		' den laufenden Script anhalten
+End Sub
+
+
+' --------------------------------------------------------------------------------------
+' --------------------------------------------------------------------------------------
+' ein Runtime-Error ist aufgetreten
+Sub AbbruchBeiFehler (lngFehlerNr As Long)
+
+	Msg.Close					' Eingangsbild beenden
+	docGD.PreventRepaint = 0	' Zeichnen wieder ermöglichen
+	docGD.Repaint				' Veränderungen zeichnen
+
+	Beep
+	If lngFehlerNr = 18 Then	' User interrupt (z.B. Cancel bei Geduldsanzeige)
+		MsgBox "Die Abarbeitung wurde durch den Anwender vorzeitig beendet!", _
+			   ebExclamation, strBoxTitel
+		End
+	Else
+		MsgBox "Das Programm wurde abgebrochen mit" & NL & _
+			   "Fehler " & lngFehlerNr & " (" & Error(lngFehlerNr) & ")", _
+			   ebCritical, strBoxTitel
+		Resume Next		' für Fehlersuche
+	End If
+
+End Sub ' AbbruchBeiFehler
+
+
+' --------------------------------------------------------------------------------------
+' Fehler bei Abarbeitung einer TRiAS-Routine aufgetreten
+Sub TRiASFehler (strFehlerText As String, Optional lngONr1 As Variant, _
+				 Optional lngONr2 As Variant)
+	Dim strZusatz As String
+	strZusatz = ""
+	If Not isMissing(lngONr1) Then
+		If Not isMissing(lngONr2) Then
+			strZusatz = NL & " (beteiligte Objekte: " & lngONr1 & ", " &  lngONr2 & ")"
+		Else
+			strZusatz = NL & " (beteiligtes Objekt: " & lngONr1 & ")"
+		End If
+	End If
+
+	Beep
+	MsgBox "In der Funktion '" & strFehlerText & "' ist ein Fehler aufgetreten!" & _
+			strZusatz, ebCritical, strBoxTitel
+
+End Sub ' TRiASFehler
+
+
+' --------------------------------------------------------------------------------------
+' Fehler bei Statistik aufgetreten
+Sub StatistikFehler (Optional lngONr As Variant)
+	Beep
+	Dim strZusatz As String
+	strZusatz = "."
+	If Not isMissing(lngONr) Then
+		strZusatz = NL & "(beteiligtes Objekt: " & lngONr & ")."
+	End If
+	MsgBox "Das Programm mußte vorzeitig beendet werden" & strZusatz & NL & _
+		   "Prüfen Sie bitte, ob das Zusatzmodul" & NL & "'Statistische Auswertungen' geladen ist !", _
+		   ebCritical, strBoxTitel
+	End
+End Sub ' StatistikFehler
+
+
+' --------------------------------------------------------------------------------------
+Private Function ObjectInRect ( cls As GeoClass, objGrund As GeoObject,xmin As Double, ymin As Double, xmax  As Double, ymax As Double) As Boolean
+
+
+	Dim objsInGrund As GeoObjects	' Dachteil-, versiegelte Flächen ,
+									' die im umschließenden Rechteck des
+									' objGrund-Grundstückes liegen
+	Dim objInGrund As GeoObject		' eine einzelne objsInGrund-Fläche
+
+	Set objsInGrund = cls.GetObjectsInRect (xmin, ymin, xmax, ymax)
+
+	ObjectInRect = True
+
+	If (objsInGrund Is Not Nothing) Then
+		For Each objInGrund In objsInGrund
+			If objInGrund.ObjType = OT_Area Then
+				If objGrund.TopRelation (objInGrund) = 0 Then
+					Exit Function
+				End If
+				If objGrund.TopRelation (objInGrund) = 2 Then
+					Exit Function
+				End If
+			End If
+		Next objInGrund
+	End If
+
+	ObjectInRect = False
+
+End Function
+
+' --------------------------------------------------------------------------------------
+Private Sub Klassifizieren ( ObjS As GeoObjects, OKS As String)
+	If OKS$ = "" Then
+		Exit Sub
+	End If
+
+	If ObjS Is Not Nothing Then
+		If ObjS.Count > 0 Then
+   			Dim Seq2 As New PropertySequence
+
+			If MyQuelle = "" Then
+	   			Seq2.AddAction strModifyIdent, "NoShow=1;ModifyTo=" & OKS & ";AddToView=1"
+			Else
+	   			Seq2.AddAction strModifyIdent, "NoShow=1;DataSource=" & MyQuelle & ";ModifyTo=" & OKS & ";AddToView=1"
+			End If
+	
+  			Seq2.DoActions ObjS
+
+ '			Set Seq2 = Nothing
+		End If
+	End If
+
+End Sub
+' --------------------------------------------------------------------------------------

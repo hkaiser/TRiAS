@@ -1,0 +1,18 @@
+HKCR
+{
+	TRiAS.MessageMap.1 = s 'TRiAS Message Map Class'
+	{
+		CLSID = s '{00BFF6F8-1E4E-11D1-9679-00A024D6F582}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {00BFF6F8-1E4E-11D1-9679-00A024D6F582} = s 'TRiAS Message Map Class'
+		{
+			ProgID = s 'TRiAS.MessageMap.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+}

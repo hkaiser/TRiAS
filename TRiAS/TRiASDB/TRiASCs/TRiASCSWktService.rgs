@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASCs.TRiASCSWktService.1 = s 'TRiASCSWktService Class'
+	{
+		CLSID = s '{EF402E92-99D1-4B83-981C-7F53C7F6243E}'
+	}
+	TRiASCs.TRiASCSWktService = s 'TRiASCSWktService Class'
+	{
+		CLSID = s '{EF402E92-99D1-4B83-981C-7F53C7F6243E}'
+		CurVer = s 'TRiASCs.TRiASCSWktService.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {EF402E92-99D1-4B83-981C-7F53C7F6243E} = s 'TRiASCSWktService Class'
+		{
+			ProgID = s 'TRiASCs.TRiASCSWktService.1'
+			VersionIndependentProgID = s 'TRiASCs.TRiASCSWktService'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{2DF06A03-E3EF-11D1-8F3E-0060085FC1CE}'
+		}
+	}
+}

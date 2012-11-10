@@ -1,0 +1,306 @@
+
+
+The files included in this tar file are arranged as follows:
+
+	CHANGES			- changes since version 2.0
+	README.imtools		- this file
+	imtools/iminstall	- installation script
+	imtools/mach		- architecture identifying script
+	imtools/libsdsc		- source files for libsdsc
+	imtools/libsdsc/include	- header files for libsdsc
+	imtools/libim		- source files for libim
+	imtools/libim/include	- header files for libim
+	imtools/tools		- source files for image tools
+	imtools/tools/include	- header files for image tools
+	imtools/man/libim	- man pages for libim routines
+	imtools/man/libsdsc	- man pages for libsdsc routines
+	imtools/man/tools	- man pages for image tools
+	imtools/doc/...		- postscript versions of the man pages
+
+To install everything on the sun, dec or sgi, do the following:
+
+	1. Type
+		cd imtools
+
+	2. Type './mach'.  This will identify your architecture.  The
+	   name given by this script will also be used as the name
+	   of various subdirectories.  For the sake of clarity, the
+	   rest of these steps will assume that the output of 'mach'
+	   was 'sgi6.1'.  (i.e. you are installing onto an sgi)  If 
+	   the output was something else, then just replace sgi with 
+	   this below.
+
+	3. Obtain Sam Leffler's TIFF library.  
+	   This is available from sgi.com (192.48.153.1) in the 
+	   directory /graphics/tiff.  Put the header files for the 
+	   tiff library into the directory:
+
+		imtools/libtiff
+
+	   Put the file 'libtiff.a' into the directory
+
+		imtools/libtiff/sgi6.1
+
+	4. Obtain the Indendent JPEG Group's JPEG library.  
+	   This is available via anonymous ftp from ftp.uu.net 
+	   (192.48.96.9) in the directory /graphics/jpeg.  Put 
+	   the header files for the jpeg library into the directory:
+
+		imtools/libjpeg
+
+	   Put the file libjpeg.a into the directory:
+
+		imtools/libjpeg/sgi6.1
+
+	4. Type 
+
+		iminstall
+
+To install everything on the cray, do the following:
+
+	1. Type
+		cd imtools
+		iminstall
+
+	Note: This will not make use of the tiff or jpeg
+	library, and hence there will be no support for jpeg,
+	no read support for tiff, and only minimal write support
+	for tiff.
+
+	I haven't had time to attempt installation of the
+	jpeg or tiff libraries on the cray.  If you are able
+	to install the tiff and jpeg libraries, then follow the 
+	instructions above for sgi's, dec's, and sun's.
+
+These steps will install the following:
+
+	imtools/libsdsc/sgi6.1/libsdsc.a
+	imtools/libim/sgi6.1/libim.a
+	imtools/tools/sgi6.1/imconv
+	imtools/tools/sgi6.1/imadjust
+	imtools/tools/sgi6.1/im.... (the rest of the tools)
+
+If for some reason this doesn't work, then continue reading
+for instructions about customizing the installation process.
+
+The Makefiles search for the following compilers on the following
+architectures:
+
+	sgi5.3		cc (SGI ansi C compiler)
+	sgi6.1		cc (SGI ansi C compiler)
+	sun4		gcc (GNU ansi C compiler)
+	decalpha	gcc (GNU ansi C compiler)
+	crayc90		cc (Cray ansi C compiler)
+
+If the compiler on your platform does not match the pair
+above (or if your platform is not listed above), then
+you'll need to alter the files
+
+	/imtools/libim/Makefile
+	/imtools/libsdsc/Makefile
+	/imtools/tools/Makefile
+
+Please refer to these files directly for instructions about 
+specifying an architecture / compiler combination.
+
+Also, if you are unable to install the jpeg or the tiff
+library for some reason, please refer to these files
+for instructions in building without these two libraries.
+
+After installing everything you may verify that everything
+works by using imverify in the imtools/verify directory.  See the
+README file there for more details.
+
+You may verify libsdsc seperately by typing
+	make all
+from the libsdsc directory, and executing the
+various binaries which are created.
+
+Installing a shared library
+---------------------------
+Because the image library is so big, and because the entire
+library is used by each of the image tools, it is often
+desirable to create a dynamnic executable rather than a static
+executable.  The difference between these two types of 
+executables is that a dynamic executable links to the library
+at run-time, whereas a static executable links to the library
+at compile time.  This saves space because the image library
+is only in one place on the disk drive, rather than being
+replicated once for each image tool.  When such a library
+is used, it is refered to as a 'shared library'.
+
+The Makefiles contained herein are capable of creating a shared
+library and dynamic executables.  However, I've run into some
+problems when I've created these executables.  The instructions
+that follow are based on my own personal experience with the
+various compilers and quirks of various systems.
+
+The architectures vary in terms of whether or not it is possible 
+to link the tiff, jpeg and sdsc libraries to our executables at 
+run time.   It is always possible to link these libraries to 
+our executables at compile time, but it is desirable to do so 
+at run-time, since this decreases the sizes of the executables.
+Rather than mess with the tiff and jpeg source code and Makefiles,
+we simply link dynamically whenever the architecture allows us to.
+(i.e. This depends on whether or not two object files created by
+different compilers can be linked to the same executable, and whether
+or not the default of a compiler to create 'position independent code')
+
+1. SGI
+	Compilers:	CC (SGI C++ compiler) to generate the shared library
+			cc (SGI Ansi C compiler) to generate the executables
+			   (though CC works fine too)
+	
+	How 
+		Do the following:
+
+		'cd libsdsc'
+		'make lib'
+		'cd ..'
+		'cd libim'
+		'make so'
+		'cd ..'
+		'cd tools'
+		Edit 'Makefile'.  
+		  Change the line
+			MODE = static
+		  to 
+			MODE = dynamic
+		'make all'
+		This will generate the files
+			imtools/libim/sgi6.1/libim.so.3.0
+			imtools/libim/sgi6.1/so_locations
+			imtools/tools/sgi6.1/imadjust
+			imtools/tools/sgi6.1/imconv
+			imtools/tools/sgi6.1/im... (the rest of the tools)
+		In order to execute the binaries, you will need
+		to do one of two things:
+			1.  'cd imtools/libim/sgi6.1'
+			    'setenv LD_LIBRARY_PATH `pwd`'
+			-OR-
+			2.  Put the file 
+				imtools/libim/sgi6.1/libim.so.3.0   
+			    into one of the directories:
+				/usr/lib
+				/lib
+				the directory of the ansi C compiler, 'cc'
+			    AND
+				Append the file
+				   imtools/libim/sgi6.1/so_locations
+				to the end of whatever so_locations file is
+				already in your chosen directory.
+	Why
+		I've had no success using the standard ansi C compiler
+		to generate a shared object.  I've also had no success
+		using gcc to generate a shared object.  Hence the use
+		of the C++ compiler.  If you feel like changing the
+		Makefile in the imtools/tools directory to use CC
+		to generate the binaries, I suppose this will give
+		you a more homogenous executable, but it isn't a
+		necessary step.
+
+		On the SGI, we ARE capable of including libjpeg.a and
+		libtiff.a in the file libim.so.3.0.  This is good,
+		because it reduces the sizes of our executables 
+		considerably.
+
+2. decalpha
+	Compiler: 	gcc (GNU Ansi C compiler)
+	How
+		Do the following :
+			'cd libsdsc'
+			'make lib'
+			'cd ..'
+			'cd libim'
+			'make so'
+			'cd ..'
+			'cd imtools'
+		Edit 'Makefile'.  
+		  Change the line
+			MODE = static
+		  to 
+			MODE = dynamic
+		'make all'
+		This will generate the files
+			imtools/libim/decalpha/libim.so.3.0
+			imtools/libim/decalpha/so_locations
+			imtools/imtools/decalpha/imadjust
+			imtools/tools/decalpha/imconv
+			imtools/tools/decalpha/im... (the rest of the tools)
+		In order to execute the binaries, you will need
+		to do one of two things:
+			1.  'cd imtools/libim/decalpha'
+			    'setenv LD_LIBRARY_PATH `pwd`'
+			-OR-
+			2.  Put the file 
+				imtools/libim/decalpha/libim.so.3.0  
+			    into one of the directories:
+				/usr/lib
+				/lib
+			     AND
+			     Append the file
+				imtools/libim/decalpha/so_locations
+			     to whatever so_locations file already exists in your
+			     chosen directory.
+
+	Why
+		We use gcc for the same reason that we use gcc for 
+		libim.a; it is an Ansi compiler, while decalpha's
+		standard compiler is not.  When compiling the .c
+		files, we need to use the -fpic option of gcc.  This
+		generates position independent code.  
+
+		On the decalpha, are not capable of include libsdsc.a,
+		libtiff.a, or libjpeg.a in the file libim.so.3.0.  It
+		may look like we do, because these files are on the
+		same line as all of the .o files when libim.so.3.0 is
+		created, however the only reason they are present is
+		to avoid a compiler warning about unresolved symbols.
+
+3. sun
+	Compiler: gcc (GNU Ansi C compiler)
+	Linker:   ln  (Sun standard linker)
+
+	How
+		Do the following :
+			'cd libsdsc'
+			'make lib'
+			'cd ..'
+			'cd libim'
+			'make so'
+			'cd ..'
+			'cd imtools'
+		Edit 'Makefile'.  
+		  Change the line
+			MODE = static
+		  to 
+			MODE = dynamic
+		'make all'
+		This will generate the files
+			imtools/libim/sun4/libim.so.3.0
+			imtools/libim/sun4/libim.sa.3.0
+			imtools/tools/sun4/imadjust
+			imtools/tools/sun4/imconv
+			imtools/tools/sun4/im... (the rest of the tools)
+		In order to execute the binaries, you will need
+		to do one of two things:
+			1.  'cd imtools/libim/decalpha'
+			    'setenv LD_LIBRARY_PATH `pwd`'
+			-OR-
+			2.  Put the files 
+				imtools/libim/sun4/libim.so.3.0   AND
+				imtools/libim/sun4/libim.sa.3.0
+			    into one of the directories:
+				/usr/lib
+				/lib
+				the directory of the ansi C compiler, 'cc'
+
+	Why
+		The Sun Ansi compiler was unavailable to me at the time of
+		this release.  That's why I used gcc.  We need to use the
+		-fpic option of gcc to create position independent code.
+
+		On the sun, we are not capable of including libjpeg.a or
+		libtiff.a or libsdsc.a in the file libim.so.3.0.  Hence, 
+		we link them at compile time rather than run time.
+

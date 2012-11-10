@@ -1,0 +1,142 @@
+' -----------------------------------------------------------------------------
+' $DESCRIPTION: Alle Objekte einer Selektionsmenge vereinigen
+' -----------------------------------------------------------------------------
+'	'GrundstückeBilden.ebs'	TRiAS-MakroErweiterung
+' -----------------------------------------------------------------------------
+'	(c)	FEZ Potsdam GmbH, 23. September 1998, H.Kaiser
+' -----------------------------------------------------------------------------
+'	Bildet Grundstücke aus Flustücken.
+'	Spezielle Makroerweiterung für das Berlin (GBM)-Projekt.
+' -----------------------------------------------------------------------------
+
+Option Explicit
+
+' -----------------------------------------------------------------------------
+' Globale Variablen
+Private docGD As GeoDocument		' aktuelles Projekt
+
+Private Status As StatusIndicator 
+Private Wins As GeoObjectWins
+
+
+' -----------------------------------------------------------------------------
+' Beschreibungs-Strings
+Const NL = Chr$(13) + Chr$(10)		' Zeilenwechsel
+Const strBoxTitel As String = "Grundstücke bilden"
+Const strToolSearch As String = "Grundstücke bilden"
+Const strToolSearchLong As String = "Bilden von Grundstücken aus allen zusammengehörenden Flurstücken"
+
+Const strFlur = "Flurstück"
+Const strGrst = "Grundstück"
+
+' -----------------------------------------------------------------------------
+' Deklaration aller verwendeten Routinen
+' -----------------------------------------------------------------------------
+' "BeginScript()" wird immer vor der Script-Abarbeitung gerufen
+Sub BeginScript()
+
+	Set docGD = GetActiveDocument()
+
+End Sub
+
+' -----------------------------------------------------------------------------
+
+' -----------------------------------------------------------------------------
+' "EndScript()" wird immer nach Beendigung der Script-Abarbeitung gerufen
+Sub EndScript()
+
+	Set docGD = Nothing
+
+' Jetzt wird der Script wirklich abgebrochen
+'	SetBreakScript (True)
+End Sub
+
+' -----------------------------------------------------------------------------
+' "OnDocumentToClose()" wird bei Schließen des aktuellen Projektes gerufen
+Sub OnDocumentToClose (Doc As GeoDocument)
+	Set docGD = Nothing
+End Sub
+
+' "OnDocumentOpened()" wird bei Öffnen eines Projektes gerufen
+Sub OnDocumentOpened (Doc As GeoDocument)
+	Set docGD = GetActiveDocument()
+End Sub
+
+' -----------------------------------------------------------------------------
+' Hier gehts los
+Const strSelectIdent As String = "TRiASEx.SelectIdentObjTyp.1"
+Const strSelectFromORWnd As String = "TRiASEx.SelectFromObjectWindow.1"
+Const strClassify As String = "TRiASEx.ClassifyByObjProp.1"
+Const strCopyObjects As String = "TRiASEx.CopyObjects.1"
+Const strUnionObjects As String = "TRiASEx.UnionObjects.1"
+Const strModifyIdent As String = "TRiASEx.ModifyIdent.1"
+
+Const strNoShow As String = "NoShow=1"
+Const strQuShow As String = "NoShow=1;DataSource="
+
+Sub Blink(strQuelle As String)
+
+	Set docGD = GetActiveDocument()
+
+	Dim fORWnd As Boolean
+	fORWnd = True
+	Set Wins = docGD.GetGeoObjectWins()
+	If (Wins Is Nothing) Then
+		fORWnd = False
+	ElseIf (Wins.Count = 0) Then
+		fORWnd = False
+	End If
+
+
+' Operation durchführen
+Dim Seq As New PropertySequence
+
+
+	Dim MyShow As String
+	If strQuelle = "" Then
+		MyShow = strNoShow
+	Else
+		MyShow = strQuShow + strQuelle
+'		MyShow = strQuShow + strQuelle + ";"
+	End If
+
+
+	Dim clsGr As GeoClass
+
+	If strQuelle = "" Then
+		Set clsGr = docGD.GetClass (strGrst)
+	Else
+		Set clsGr = docGD.GetClass (strGrst,strQuelle)
+	End If
+
+	If (clsGr Is Nothing) Then
+		MsgBox "Im Projekt wurden keine Grundstücke definiert!", _
+				ebInformation, strBoxTitel
+		Exit Sub
+	End If
+
+
+
+
+	Seq.Description = strToolSearchLong
+
+	If (fORWnd = True) Then
+		Seq.AddAction strSelectFromORWnd, strNoShow
+	Else
+		Seq.AddAction strSelectIdent, strNoShow + ";Select=[D0010233]:4,[D0010239]:4"
+	End If
+
+	Seq.AddAction strClassify, strNoShow + ";ClassifyBy=Grundstücksnummer;UseAll=0"
+	Seq.AddAction strCopyObjects, MyShow
+	Seq.AddAction strUnionObjects, MyShow
+	Seq.AddAction strModifyIdent, MyShow + ";ModifyTo=[1124];AddToView=1"
+
+	Seq.DoActions
+
+	Beep
+	MsgBox "Und tschüß!", ebInformation, strBoxTitel
+
+End Sub
+
+' -----------------------------------------------------------------------------
+  

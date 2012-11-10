@@ -1,0 +1,25 @@
+HKCR 
+{
+	TRiASDB.GDOPpgCoordsys.1 = s 'GDOPpgCoordsys Class' 
+    {
+		CLSID = s '{B1D87073-D855-11D1-8F2E-0060085FC1CE}'
+        VersionIndependentProgID = s 'TRiASDB.GDOPpgCoordsys'
+	}
+	TRiASDB.GDOPpgCoordsys = s 'GDOPpgCoordsys Class' 
+    {
+		CLSID = s '{B1D87073-D855-11D1-8F2E-0060085FC1CE}'
+		CurVer = s 'TRiASDB.GDOPpgCoordsys.1'
+	}
+	NoRemove CLSID 
+    {
+		ForceRemove {B1D87073-D855-11D1-8F2E-0060085FC1CE} = s 'GDOPpgCoordsys Class' 
+        {
+			ProgID = s 'TRiASDB.GDOPpgCoordsys.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%' 
+            {
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASDB.$$safe_root$$.GeoFeature.1 = s '$$safe_root$$GeoFeature Class'
+	{
+		CLSID = s '{$$GUID_GEOFEATURE_OBJECT$$}'
+	}
+	TRiASDB.$$safe_root$$.GeoFeature = s '$$safe_root$$GeoFeature Class'
+	{
+		CLSID = s '{$$GUID_GEOFEATURE_OBJECT$$}'
+		CurVer = s 'TRiASDB.$$safe_root$$.GeoFeature.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {$$GUID_GEOFEATURE_OBJECT$$} = s '$$safe_root$$GeoFeature Class'
+		{
+			ProgID = s 'TRiASDB.$$safe_root$$.GeoFeature.1'
+			VersionIndependentProgID = s 'TRiASDB.$$safe_root$$.GeoFeature'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{$$GUID_LIBID$$}'
+		}
+	}
+}

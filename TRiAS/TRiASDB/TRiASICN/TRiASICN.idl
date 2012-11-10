@@ -1,0 +1,28 @@
+// TRiASICN.idl : IDL source for TRiASICN.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (TRiASICN.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(710B2C39-890F-11D2-9EFB-006008447800),
+	version(1.0),
+	helpstring("TRiASICN 1.0 Type Library")
+]
+library TRIASICNLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(710B2C47-890F-11D2-9EFB-006008447800),
+		helpstring("TRiASIconHandler Class")
+	]
+	coclass TRiASIconHandler
+	{
+		[default] interface IPersistFile;
+	};
+};

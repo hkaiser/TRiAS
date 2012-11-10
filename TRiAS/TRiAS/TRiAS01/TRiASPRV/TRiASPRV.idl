@@ -1,0 +1,148 @@
+// $Header: $
+// Copyright© 1999-2001 TRiAS GmbH Potsdam, All rights reserved
+// Created: 06.05.2001 11:46:38 
+//
+// @doc
+// @module TRiASPRV.idl | Definition of the interfaces and coclasses
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+import "TRiASExpression.idl";	// Expression hierarchy interfaces
+
+cpp_quote("#define TYPELIB_TRIASOLEDB_VERSION_MAJOR 1")
+cpp_quote("#define TYPELIB_TRIASOLEDB_VERSION_MINOR 0")
+cpp_quote("#define TYPELIB_TRIASOLEDB_VERSION \"1.0\"")
+cpp_quote("#define TYPELIB_TRIASOLEDB_LCID 0")
+
+#define TYPELIB_TRIASOLEDB_VERSION_MAJOR 1
+#define TYPELIB_TRIASOLEDB_VERSION_MINOR 0
+#define TYPELIB_TRIASOLEDB_VERSION 1.0
+#define TYPELIB_TRIASOLEDB_LCID 0
+
+///////////////////////////////////////////////////////////////////////////////
+// SQL Parser interfaces
+#include "TRiASQL/TRiASQLInterfaces.idl"
+
+///////////////////////////////////////////////////////////////////////////////
+// IFetchData Interface
+[ 
+	uuid(3D5B65DF-7BF6-4543-84BD-CE3B320855B7), 
+	pointer_default(unique),
+	local, 
+	helpstring("IHandleDataAccess Interface")
+]
+interface IHandleDataAccess : IUnknown
+{
+	import "OleDB.idl";
+
+	HRESULT FetchData ([in] INT_PTR hPrjHandle, [in] INT_PTR lONr, [in] DBBINDING *pBinding, [in, out] void **ppData);
+	HRESULT StoreData ([in] INT_PTR hPrjHandle, [in] INT_PTR lONr, [in] DBBINDING *pBinding, [in] ULONG ulSize, [in, size_is(ulSize)] void *pData);
+
+	HRESULT GetDataLength ([in] void *pData, [out, retval] ULONG *Length);
+	HRESULT ReleaseData ([in] void *pData);
+
+	[propget] HRESULT MustIndirectGetData ([out, retval] VARIANT_BOOL *Value);
+	[propget] HRESULT MustIndirectCompareData ([out, retval] VARIANT_BOOL *Value);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Typelibrary
+[
+	uuid(A69A6AD4-5AB7-4E36-86DD-708911E84229),
+	version(TYPELIB_TRIASOLEDB_VERSION),
+	lcid(TYPELIB_TRIASOLEDB_LCID),
+	helpstring("TRiAS OLE DB Provider 1.0 Type Library")
+]
+library TRiASOleDB
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+#include "TRiASQL/TRiASQLCoClasses.idl"
+
+	enum TRIASOLEDB_VERSIONS {
+		TYPELIB_TRiASOLEDB_VERSION_MAJOR = TYPELIB_TRIASOLEDB_VERSION_MAJOR,
+		TYPELIB_TRiASOLEDB_VERSION_MINOR = TYPELIB_TRIASOLEDB_VERSION_MINOR,
+	};
+
+	[
+		uuid(0B12EFD4-9A07-498B-A0A4-1E336569E1D0),
+		helpstring("TRiAS OLE DB Provider")
+	]
+	coclass TRiASOleDB
+	{
+		interface IUnknown;
+	};
+
+// diverse Objekte zur Verwaltung von Spaltendaten
+// HandleNativeAttribute Class: Verwaltung einer Objekteigenschaft
+	[ 
+		uuid(6C6D21C9-FE10-47E8-9466-205640DD38CE), 
+		helpstring("HandleNativeAttribute Object"),
+		noncreatable 
+	]
+	coclass HandleNativeAttribute
+	{
+		[default] interface IHandleDataAccess;
+		interface ITRiASExpression;
+	};
+
+// HandleBookmark Class: Verwaltung der Bookmark-Spalte
+	[ 
+		uuid(25F306E7-8EDA-4AB2-A083-E65F5C1F5C4E), 
+		helpstring("HandleBookmark Object"), 
+		noncreatable 
+	]
+	coclass HandleBookmark
+	{
+		[default] interface IHandleDataAccess;
+		interface ITRiASExpression;
+	};
+
+// HandleObjectGuid Class: Verwaltung der eindeutigen Objektkennung
+	[
+		uuid(9CC0ABFF-664A-4FCC-874B-768FB0A23EF1), 
+		helpstring("HandleObjectGuid Object"), 
+		noncreatable 
+	]
+	coclass HandleObjectGuid
+	{
+		[default] interface IHandleDataAccess;
+		interface ITRiASExpression;
+	};
+
+// HandleGeometry Class: Verwaltung der Geometrie
+	[ 
+		uuid(201016F1-B936-4EF4-9DB9-D6F489A486FF), 
+		helpstring("HandleGeometry Object"),
+		noncreatable
+	]
+	coclass HandleGeometry
+	{
+		[default] interface IHandleDataAccess;
+		interface ITRiASExpression;
+	};
+
+// HandleExpression Class: Verwaltung eines Ausdruckes 
+	[ 
+		uuid(AF6F4576-8E2D-43A5-AA60-89C5672EDCB5), 
+		helpstring("HandleExpression Object"),
+		noncreatable 
+	]
+	coclass HandleExpression
+	{
+		[default] interface IHandleDataAccess;
+		interface ITRiASExpression;
+	};
+
+// TRiASOleDBErrorLookup Class
+	[ 
+		uuid(F6DB2422-31E0-40E7-8ACB-E3651C282CF0), 
+		helpstring("TRiASOleDBErrorLookup Object") 
+	]
+	coclass TRiASOleDBErrorLookup
+	{
+		[default] interface IErrorLookup;
+	};
+};

@@ -1,0 +1,38 @@
+HKCR
+{
+	TRiASEx.AddAsObjectClass.1 = s 'AddAsObjectClass Class'
+	{
+		CLSID = s '{B5E77BA6-2BA0-4FB0-BB4E-D3E102EB505E}'
+	}
+	TRiASEx.AddAsObjectClass = s 'AddAsObjectClass Class'
+	{
+		CLSID = s '{B5E77BA6-2BA0-4FB0-BB4E-D3E102EB505E}'
+		CurVer = s 'TRiASEx.AddAsObjectClass.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {B5E77BA6-2BA0-4FB0-BB4E-D3E102EB505E} = s 'AddAsObjectClass Class'
+		{
+			ProgID = s 'TRiASEx.AddAsObjectClass.1'
+			VersionIndependentProgID = s 'TRiASEx.AddAsObjectClass'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiASEx.AddAsObjectClass.1' = s '{B5E77BA6-2BA0-4FB0-BB4E-D3E102EB505E}'
+			}
+		}
+	}
+}

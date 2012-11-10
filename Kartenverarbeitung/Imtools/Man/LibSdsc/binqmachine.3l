@@ -1,0 +1,330 @@
+
+
+
+     BBBBIIIINNNNQQQQMMMMAAAACCCCHHHHIIIINNNNEEEE((((3333BBBBIIIINNNN))))       SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))        BBBBIIIINNNNQQQQMMMMAAAACCCCHHHHIIIINNNNEEEE((((3333BBBBIIIINNNN))))
+
+
+
+     NNNNAAAAMMMMEEEE
+          BinQMachine  -  query the host machine's characteristics
+
+     SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+          #include "sdsc.h"
+
+          BinMachineInfo *BinQMachine( )
+
+     DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+          _B_i_n_Q_M_a_c_h_i_n_e queries the binary I/O package for attributes of
+          the host machine.  A pointer to a statically allocated
+          _B_i_n_M_a_c_h_i_n_e_I_n_f_o structure is returned:
+
+               typedef struct BinMachineInfo
+               {
+                         char      *bin_vendorName;
+                         char      *bin_machineName;
+                         char      *bin_cpuName;
+                         char      *bin_osName;
+
+                         int       bin_byteOrder;
+                         char      *bin_byteOrderName;
+                         int       bin_floatFormat;
+                         char      *bin_floatFormatName;
+
+                         int       *bin_typeSize;
+                         boolean   *bin_typeSigned;
+                         int       *bin_typeRes;
+                         int       *bin_typePad;
+                         char      **bin_typeName;
+
+                         int       bin_reserved[10];
+               } BinMachineInfo;
+
+          _b_i_n__v_e_n_d_o_r_N_a_m_e contains a NULL-terminated character string
+          giving the name of the machine's manufacturer.  This value
+          is obtained from the _V_E_N_D_O_R__N_A_M_E defined constant in
+          "sdscconfig.h".  If _V_E_N_D_O_R__N_A_M_E is not defined,
+          _b_i_n__v_e_n_d_o_r_N_a_m_e is the string "Unknown".
+
+          _b_i_n__m_a_c_h_i_n_e_N_a_m_e contains a NULL-terminated character string
+          giving the name of the machine, such as "VAX", "CRAY X-MP",
+          or "Iris 4D".  This value is obtained from the _M_A_C_H_I_N_E__N_A_M_E
+          defined constant in "sdscconfig.h".  If _M_A_C_H_I_N_E__N_A_M_E is not
+          defined, _b_i_n__m_a_c_h_i_n_e_N_a_m_e is the string "Unknown".
+
+          _b_i_n__c_p_u_N_a_m_e contains a NULL-terminated character string
+          giving the name of the CPU, such as "MIPS", "SPARC", or
+          "68030".  This value is obtained from the _C_P_U__N_A_M_E defined
+          constant in "sdscconfig.h".  If _C_P_U__N_A_M_E is not defined,
+          _b_i_n__c_p_u_N_a_m_e is the string "Unknown".
+
+
+
+
+     Page 1                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNQQQQMMMMAAAACCCCHHHHIIIINNNNEEEE((((3333BBBBIIIINNNN))))       SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))        BBBBIIIINNNNQQQQMMMMAAAACCCCHHHHIIIINNNNEEEE((((3333BBBBIIIINNNN))))
+
+
+
+          _b_i_n__o_s_N_a_m_e contains a NULL-terminated character string
+          giving the name of the operating system, such as "UNIX",
+          "IRIX", "ULTRIX", or "VMS".  This value is obtained from the
+          _O_S__N_A_M_E defined constant in "sdscconfig.h".  If _O_S__N_A_M_E is
+          not defined, _b_i_n__o_s_N_a_m_e is the string "Unknown".
+
+          _b_i_n__b_y_t_e_O_r_d_e_r indicates the byte order of the host machine
+          and is one of the values:
+
+               _o_r_d_e_r    MMMMeeeeaaaannnniiiinnnngggg
+               BINLBF   least-significant byte first
+               BINMBF   most-significant byte first
+
+          _b_i_n__b_y_t_e_O_r_d_e_r_N_a_m_e contains a NULL-terminated character
+          string giving the name of the byte order, "MBF" or "LBF".
+
+          _b_i_n__f_l_o_a_t_F_o_r_m_a_t indicates the floating-point format of the
+          host machine and is one of the values:
+
+               _f_o_r_m_a_t      MMMMeeeeaaaannnniiiinnnngggg
+               BINIEEE     IEEE formats
+               BINVAX      VAX formats (f, d, and h)
+               BINVAXG     VAX formats (f, g, and h)
+               BINCRAYMP   Cray X-MP/Y-MP formats
+
+          _b_i_n__f_l_o_a_t_F_o_r_m_a_t_N_a_m_e contains a NULL-terminated character
+          string giving the name of the floating-point format, such as
+          "IEEE", "VAX", "VAXG", or "CRAYMP".
+
+          _b_i_n__t_y_p_e_S_i_z_e, _b_i_n__t_y_p_e_S_i_g_n_e_d, _b_i_n__t_y_p_e_R_e_s, _b_i_n__t_y_p_e_P_a_d, and
+          _b_i_n__t_y_p_e_N_a_m_e are each pointers to the first entry in an
+          array of _B_I_N_N_T_Y_P_E entries.  Each entry indicates an
+          attribute of a variable type recognized by the binary I/O
+          package.  The known types and their defined constant names
+          may vary from site to site and may be found in the include
+          file "bin.h" (automatically included by "sdsc.h").  The
+          following types are considered standard and should be
+          available at all sites:
+
+               Type      MMMMeeeeaaaannnniiiinnnngggg
+               BOOLEAN   boolean
+               CHAR      signed character
+               DOUBLE    double-percision floating point
+               FLOAT     single-percision floating point
+               INT       signed int
+               INT16     signed 16-bit (or greater) integer
+               INT32     signed 32-bit (or greater) integer
+               INT64     signed 64-bit (or greater) integer
+               INT8      signed 8-bit (or greater) integer
+               LONG      signed long
+
+
+
+
+
+     Page 2                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNQQQQMMMMAAAACCCCHHHHIIIINNNNEEEE((((3333BBBBIIIINNNN))))       SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))        BBBBIIIINNNNQQQQMMMMAAAACCCCHHHHIIIINNNNEEEE((((3333BBBBIIIINNNN))))
+
+
+
+               SHORT     signed short
+               UCHAR     unsigned character
+               UINT      unsigned int
+               UINT16    unsigned 16-bit (or greater) integer
+               UINT32    unsigned 32-bit (or greater) integer
+               UINT64    unsigned 64-bit (or greater) integer
+               UINT8     unsigned 8-bit (or greater) integer
+               ULONG     unsigned long
+               USHORT    unsigned short
+
+          INT64 and UINT64 are only available on systems supporting
+          integer types of at least 64-bits in length.
+
+          _b_i_n__t_y_p_e_S_i_z_e contains the storage size in bytes of each
+          type.  For instance, on a VAX, an INT is 4 bytes, a SHORT 2
+          bytes, and a FLOAT 4 bytes.  On a CRAY Y-MP, INT, SHORT, and
+          FLOAT are each stored in 8 bytes.
+
+          _b_i_n__t_y_p_e_S_i_g_n_e_d contains a _T_R_U_E or _F_A_L_S_E value indicating if
+          the type is signed or not.
+
+          _b_i_n__t_y_p_e_R_e_s contains the resolution (precision) in bytes of
+          each type.  The resolution is the number of bytes actually
+          available for storage of data within the storage size for
+          the type.  On most systems the type size and resolution are
+          identical.  On a CRAY Y-MP, however, a SHORT is stored in 8
+          bytes, but only has a resolution of 3 bytes.
+
+          _b_i_n__t_y_p_e_P_a_d contains the padding or alignment boundary in
+          bytes required for the type when stored within a struct.  In
+          a C structure like the following:
+
+               struct thing
+               {
+                    char byte;
+                    int  integer;
+               };
+
+          there may or may not be empty storage space between the _b_y_t_e
+          field and the _i_n_t_e_g_e_r field.  Some CPUs can only access
+          integers or floats at word boundaries.  On such CPUs the
+          _i_n_t_e_g_e_r field's address must be advanced to the next legal
+          boundary.  On a SPARC processor, _i_n_ts must be aligned to 4-
+          byte boundaries, forcing the addition of 3-padding bytes
+          between the _b_y_t_e and _i_n_t_e_g_e_r fields in the structure above.
+          On a VAX running VMS, the C compiler does not require _i_n_ts
+          to be at any boundary so there would be no padding bytes
+          added in the above structure.
+
+          _b_i_n__t_y_p_e_P_a_d contains the alignment boundary for each type.
+          On a SPARC, the _b_i_n__t_y_p_e_P_a_d entry for INT would be 4.  On a
+          VAX/VMS machine, the same entry would be 1.  By definition,
+
+
+
+     Page 3                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNQQQQMMMMAAAACCCCHHHHIIIINNNNEEEE((((3333BBBBIIIINNNN))))       SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))        BBBBIIIINNNNQQQQMMMMAAAACCCCHHHHIIIINNNNEEEE((((3333BBBBIIIINNNN))))
+
+
+
+          the entry for CHAR is 1.
+
+          _b_i_n__t_y_p_e_N_a_m_e contains pointers to NULL-terminated strings
+          giving the lower-case C type names for each of the types.
+
+          _b_i_n__r_e_s_e_r_v_e_d is reserved for future expansion of the data
+          within the _B_i_n_M_a_c_h_i_n_e_I_n_f_o structure.
+
+     RRRREEEETTTTUUUURRRRNNNNSSSS
+          _B_i_n_Q_M_a_c_h_i_n_e returns a pointer to a statically allocated
+          _B_i_n_Q_M_a_c_h_i_n_e_I_n_f_o structure initialized to information about
+          the host machine.  _B_i_n_Q_M_a_c_h_i_n_e never returns an error.
+
+     NNNNOOOOTTTTEEEESSSS
+          The type arrays are used by the binary I/O package to
+          determine how to read and write values of various types and
+          when and how much to sign-extend integers.  The type array
+          pointers in the returned _B_i_n_M_a_c_h_i_n_e_I_n_f_o structure point to
+          the actual arrays of information used by the binary I/O
+          package.  These arrays should not be altered by the caller.
+
+          _B_i_n_Q_M_a_c_h_i_n_e returns a pointer to space statically allocated
+          within the binary I/O package.  The space should not be
+          deallocated using _f_r_e_e(3).
+
+     EEEEXXXXAAAAMMMMPPPPLLLLEEEESSSS
+        EEEExxxxaaaammmmpppplllleeee 1111
+          Query and print the vendor, machine, CPU, and operating
+          system names for the host.
+
+               BinMachineInfo *info;
+
+               info = BinQMachine( );
+
+               printf( "Vendor    = %s\n", info->bin_vendorName );
+               printf( "Machine   = %s\n", info->bin_machineName );
+               printf( "CPU       = %s\n", info->bin_cpuName );
+               printf( "OS        = %s\n", info->bin_osName );
+
+        EEEExxxxaaaammmmpppplllleeee 2222
+          Get the number of bytes of precision (not storage size) of a
+          LONG.
+
+               BinMachineInfo *info;
+               int long_bytes;
+
+               info = BinQMachine( );
+               long_bytes = info->bin_typeRes[LONG];
+
+        EEEExxxxaaaammmmpppplllleeee 3333
+          Print the name of the byte order and floating-point format
+          used by the host.
+
+
+
+     Page 4                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNQQQQMMMMAAAACCCCHHHHIIIINNNNEEEE((((3333BBBBIIIINNNN))))       SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))        BBBBIIIINNNNQQQQMMMMAAAACCCCHHHHIIIINNNNEEEE((((3333BBBBIIIINNNN))))
+
+
+
+               BinMachineInfo *info;
+
+               info = BinQMachine( );
+
+               printf( "Byte Order              = %s\n", info->bin_byteOrderName );
+               printf( "Floating-Point Format   = %s\n", info->bin_floatFormatName );
+
+     SSSSEEEEEEEE AAAALLLLSSSSOOOO
+          BinByteOrder(3BIN), BinErrorHandler(3BIN), BinFRead(3BIN),
+          BinFReadStruct(3BIN), BinFWrite(3BIN),
+          BinFWriteStruct(3BIN), BinFloatFormat(3BIN),
+          BinPError(3BIN), BinQByteOrder(3BIN), BinQFloatFormat(3BIN),
+          BinRead(3BIN), BinReadStruct(3BIN), BinSRead(3BIN),
+          BinSWrite(3BIN), BinWrite(3BIN), BinWriteStruct(3BIN)
+
+     AAAAUUUUTTTTHHHHOOOORRRRSSSS
+          Dave Nadeau
+          San Diego Supercomputer Center
+
+     CCCCOOOONNNNTTTTAAAACCCCTTTT
+          SDSC consultants, (619)534-5100, ccccoooonnnnssssuuuulllltttt@@@@yyyy1111....ssssddddsssscccc....eeeedddduuuu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Page 5                                          (printed 6/30/95)
+
+
+

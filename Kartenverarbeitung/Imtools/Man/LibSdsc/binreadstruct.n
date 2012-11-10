@@ -1,0 +1,367 @@
+'\"t
+.TH BINREADSTRUCT 3BIN "July 1990" "SDSC" "BINARY I/O"
+.SH NAME
+BinReadStruct  -  read structure from a binary file
+.br
+BinFReadStruct  -  read structure from a binary file
+.br
+BinSReadStruct  -  read structure from a binary string
+.SH SYNOPSIS
+.if t \fB
+.nf
+#include "sdsc.h"
+
+extern int BinErrNo;
+
+int BinReadStruct( fd, structure, fields )
+.in +0.5i
+int fd;
+struct ? *structure;
+BinField fields[ ];
+.in -0.5i
+
+int BinFReadStruct( fp, structure, fields )
+.in +0.5i
+FILE *fp;
+struct ? *structure;
+BinField fields[ ];
+.in -0.5i
+
+int BinSReadStruct( data, structure, fields )
+.in +0.5i
+char data[ ];
+struct ? *structure;
+BinField fields[ ];
+.in -0.5i
+.fi
+.if t \fR
+.SH DESCRIPTION
+\fIBinReadStruct\fR and \fIBinFReadStruct\fR read binary data from an
+open file or stream, while \fIBinSReadStruct\fR reads binary data from the
+caller's raw character \fIdata\fR array.
+\fIBinReadStruct\fR takes a UNIX file descriptor \fIfd\fR.
+\fIBinFReadStruct\fR takes a UNIX-buffered I/O \fIFILE\fR pointer \fIfp\fR.
+.LP
+All calls read items from the file or data array
+and store them into the C structure
+pointed to by \fIstructure\fR, taking into account the structure padding
+characteristics of the host C compiler.
+Structure fields in \fIstructure\fR are described by entries in the \fIfields\fR
+array.
+.LP
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+typedef struct BinField
+{
+	int bin_type;
+	int bin_nbytes;
+	int bin_count;
+} BinField;
+.in -0.5i
+.fi
+.LP
+\fIbin_type\fR is the declared type of the field in the caller's structure.
+The known values of \fIbin_type\fR may vary from site to site and may be found
+in the include file "bin.h" (automatically included by "sdsc.h").
+The following types are considered standard and should be available at
+all sites:
+.LP
+.in +0.5i
+.TS
+l l.
+\fIbin_type\fR	\fBMeaning\fR
+BOOLEAN	boolean
+CHAR	signed character
+DOUBLE	double-percision floating point
+FLOAT	single-percision floating point
+INT	signed int
+INT16	signed 16-bit (or greater) integer
+INT32	signed 32-bit (or greater) integer
+INT64	signed 64-bit (or greater) integer
+INT8	signed 8-bit (or greater) integer
+LONG	signed long
+SHORT	signed short
+UCHAR	unsigned character
+UINT	unsigned int
+UINT16	unsigned 16-bit (or greater) integer
+UINT32	unsigned 32-bit (or greater) integer
+UINT64	unsigned 64-bit (or greater) integer
+UINT8	unsigned 8-bit (or greater) integer
+ULONG	unsigned long
+USHORT	unsigned short
+.TE
+.in -0.5i
+.LP
+INT64 and UINT64 are only available on systems supporting integer types of
+at least 64-bits in length.
+.LP
+\fIbin_nbytes\fR is the number of bytes the item occupies in the file.
+This may be larger or smaller than the size of the field in host memory.
+\fIbin_nbytes\fR must be greater than 0.
+.LP
+\fIbin_count\fR is the number of items of this type and size that are to
+be read in to successive entries in the caller's structure.
+.LP
+The \fIfields\fR array is terminated on the first entry with a \fIbin_count\fR
+field of 0.
+.SH RETURNS
+\fIBinReadStruct\fR, \fIBinFReadStruct\fR, and \fIBinSReadStruct\fR
+return the number of bytes read in.
+On an error, all calls return -1 and set the global \fIBinErrNo\fR to
+an error code indicating the cause of the error.
+The following error codes may be returned by the calls:
+.LP
+.IP "\fIBINEFLOATUNSUPPORTED\fR = unsupported size for file float selection"
+The \fInbytes\fR argument selected a size of floating-point item to be read
+in that is undefined for the file floating-point format selected by
+\fIBinFloatFormat\fR(3BIN).
+.IP "\fIBINEMALLOC\fR = Cannot malloc more host memory"
+Dynamic allocation of host memory needed by the read call could not be
+completed.
+.IP "\fIBINENBYTES\fR = nbytes cannot be <= 0"
+A \fIbin_nbytes\fR field was less than or equal to zero.
+.IP "\fIBINESYS\fR = System error:  see errno"
+A system call error occurred when a read was attempted on the file.
+The global \fIerrno\fR, set by UNIX system calls, contains an error code
+indicating the cause of the error (see \fIerrno\fR(2)).
+.IP "\fIBINETYPE\fR = Unknown type selection"
+A \fIbin_type\fR field did not indicate a type known by the binary I/O
+package.
+The include file "bin.h" includes a list of #defined constants for the names
+of the known types.
+.SH NOTES
+Binary data files and streams are a compact and speedy
+way to store and transfer data.
+The binary format of a value can take fewer bytes to store than using the
+equivalent ASCII format.
+For instance, the number "32767" takes 16 bits to represent on a 2's complement
+integer machine.
+When written to a binary file or stream, the number can be stored in 2 bytes.
+The same number written to an ASCII file or stream requires 5
+bytes:  "3", "2", "7", "6", and "7".
+.LP
+While the UNIX \fIread\fR(2) and \fIwrite\fR(2) calls support reading and
+writing binary data, they do not create binary files that can be read in again
+on a machine with a different byte order or larger or smaller word size
+(without additional programing).
+The calls in the binary I/O package provide a portable means of reading and
+writing binary files and streams.
+Application code that calls \fIBinReadStruct\fR to read in a structure
+of 32-bit integers, 16-bit shorts, and 64-bit doubles
+from a binary file remains unchanged whether being compiled for
+a SPARCstation, a VAX running VMS, or a CRAY X-MP.
+Differences in byte ordering, word sizes, and structure field padding are
+handled by the binary I/O package.
+.LP
+The size (number of bytes) of an item in a binary file may differ from the
+size of the same item when in memory in a C variable or structure field.
+This is the case, for instance, when reading a 32-bit integer from
+a binary file into a CRAY's 64-bit \fIint\fR variable.
+.LP
+The \fIbin_type\fR field indicates the declared type of the field in the
+caller's \fIstructure\fR struct.
+From the type the read routines determine the number of bytes in \fIstructure\fR
+that are used for each data item read in.
+Appropriate sign extension or zero padding then takes place as data is read in.
+.LP
+The \fIbin_nbytes\fR field indicates the number of bytes used \fBIN THE FILE\fR
+for the item being read in.
+This may be larger or smaller than the size of the item as stored in the
+\fIstructure\fR struct.
+.LP
+.ne 5
+\fBInteger Types\fR
+.LP
+.RS 0.5i
+\fIbin_nbytes\fR need not be a multiple of 2 or of the word-size of the host.
+Reading in 3- or 11-byte integers is acceptable.
+.LP
+When \fIbin_nbytes\fR is smaller than the size of \fIbin_type\fR, zero
+padding and sign extension (signed types only) occurs as the data is
+placed into \fIstructure\fR.
+.LP
+When \fIbin_nbytes\fR is greater than the size of \fIbin_type\fR,
+incoming data is
+truncated to the least-significant bits.
+If significant bits are lost due to the truncation, the error handling
+function nominated
+by \fIBinErrHandler\fR(3BIN) is called:
+.LP
+.RS 0.5i
+handler( fd, BINOPREADSTRUCT, BINEINTEGERTRUNC, data, frombits, tobits )
+.RE
+.LP
+\fIfd\fR is the file's file descriptor.
+\fIdata\fR is \fIuchar\fR pointer to the array of bytes read from the
+file that represents the integer that is too large to be stored in the
+host's buffer.
+\fIfrombits\fR is the length in bits of the file integer, and \fItobits\fR
+is the length of an integer on the host.
+.RE
+.LP
+.ne 5
+\fBFloating-Point Types\fR
+.LP
+.RS 0.5i
+\fIbin_nbytes\fR is restricted to those sizes supported by the selected file
+floating-point format using \fIBinFloatFormat\fR(3BIN).
+For instance, IEEE floating-point supports only 4- and 8-byte lengths, so
+an \fIbin_nbytes\fR value of 5 would be illegal.
+When \fIbin_nbytes\fR is inconsistent with any legal size of the current floating
+point format selection, the error \fIBINEFLOATUNSUPPORTED\fR error is returned
+without reading anything.
+.LP
+When the file's floating-point format selected by \fIBinFloatFormat\fR(3BIN)
+has a smaller exponent and mantissa than the host's floating-point format,
+zero-padding of the exponent and mantissa occurs as the data is placed
+into \fIstructure\FR.
+.LP
+When the file's floating-point format has a larger mantissa than the host's
+format, the least-significant bits of the mantissa are silently truncated,
+causing a reduction in the accuracy of the number.
+.LP
+When the file's floating-point format has a larger exponent than the host's
+format, then the file's format may be able to represent floating-point
+numbers that are too large (overflow) or too small (underflow) for the host.
+The error handling function nominated by \fIBinErrHandler\fR(3BIN) is called
+.LP
+.RS 0.5i
+handler( fd, BINOPREADSTRUCT, reason, data, frombits, tobits )
+.RE
+.LP
+where reason is \fIBINEFLOATOVERFLOW\fR or \fIBINEFLOATUNDERFLOW\fR.
+.LP
+\fIfd\fR is the file's file descriptor.
+\fIdata\fR is \fIuchar\fR pointer to the array of bytes read from the
+file that represents the float whose exponent is too large or small
+to be stored in the host's buffer.
+\fIfrombits\fR is the length in bits of the file float exponent,
+and \fItobits\fR is the length of a float's exponent on the host.
+.RE
+.LP
+If the programmer has not indicated an error handling function, the default
+handler prints a warning message to \fIstderr\fR.
+.LP
+In a C structure like the following:
+.LP
+.in +0.5i
+.nf
+.ta +0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i,+0.5i
+struct thing
+{
+	char byte;
+	int  integer;
+};
+.in -0.5i
+.fi
+.LP
+there may, or may not, be empty storage space between the \fIbyte\fR
+field and the \fIinteger\fR field.
+Some CPUs can only access integers or floats at word boundaries.
+On such CPUs the address of the \fIinteger\fR field in the above structure
+must be advanced to the next legal boundary.
+On a SPARC processor, \fIint\fRs must be aligned to 4-byte boundaries,
+forcing the addition of 3-padding bytes between the \fIbyte\fR and
+\fIinteger\fR fields in the structure above.
+On a VAX running VMS the C compiler does not require \fIint\fRs to be
+at any boundary so there would be no padding bytes added in the above
+structure. 
+.LP
+Structure padding is handled automatically by \fIBinReadStruct\fR and
+\fIBinFReadStruct\fR.
+.LP
+To maintain portability of code written using the binary I/O package,
+\fBNEVER\fR use the C construct \fIsizeof()\fR to compute the \fIbin_nbytes\fR
+field.
+If a 32-bit quantity is to be read in, pass a "4", not "sizeof(int)".
+The size of an \fIint\fR is only "4" on 32-bit machines.
+Such code does not work properly on a CRAY where integers are 64-bits long.
+.LP
+The byte order and floating-point format
+of data in the file may be selected by calling
+\fIBinByteOrder\fR(3BIN) and \fIBinFloatFormat\fR(3BIN)
+prior to making read calls.
+If the byte order and floating-point format selected by the program is not
+correct for the file, then data read in will be incorrect.
+.LP
+Arrays of data may be read in using \fIBinRead\fR(3BIN), \fIBinFRead\fR(3BIN),
+and \fIBinSRead\fR(3BIN).
+.br
+.ne 5
+.SH EXAMPLES
+Read in a structure defined as:
+.LP
+.in +0.5i
+.nf
+.TS
+l s s
+l l l.
+struct thing
+{
+	int	magic;
+	char	name[MAXNAME];
+	int	sizes[4];
+	short	flag1, flag2;
+	float	gamma;
+};
+.TE
+.in -0.5i
+.fi
+.LP
+Integers in the file are 32-bits long.
+Shorts in the file are 16-bits long.
+Floats in the file are 32-bits long.
+.LP
+.in +0.5i
+.nf
+.TS
+l s s s s
+l l l l l.
+BinField fields[ ] =
+{
+	/* magic */	INT,	4,	1,
+	/* name */	CHAR,	1,	MAXNAME,
+	/* sizes */	INT,	4,	4,
+	/* flag1 */	SHORT,	2,	1,
+	/* flag2 */	SHORT,	2,	1,
+	/* gamma */	FLOAT,	4,	1,
+		0,	0,	0
+};
+.TE
+struct thing mystruct;
+int fd;
+
+BinReadStruct( fd, &mystruct, fields );
+.in -0.5i
+.fi
+.LP
+Each entry in \fIfields\fR describes one field in the structure \fIthing\fR.
+One 4-byte integer, MAXNAME 1-byte characters, four 4-byte integers,
+two 2-byte shorts, and one 4-byte float are to be read in.
+.SH "SEE ALSO"
+BinByteOrder(3BIN),
+BinErrorHandler(3BIN),
+BinFRead(3BIN),
+BinFWrite(3BIN),
+BinFWriteStruct(3BIN),
+BinFloatFormat(3BIN),
+BinPError(3BIN),
+BinQByteOrder(3BIN),
+BinQFloatFormat(3BIN),
+BinQMachine(3BIN),
+BinRead(3BIN),
+BinSRead(3BIN),
+BinSWrite(3BIN),
+BinWrite(3BIN),
+BinWriteStruct(3BIN),
+errno(2),
+perror(3)
+.br
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

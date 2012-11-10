@@ -1,0 +1,149 @@
+'\"t
+.if t .TH IMCLTALLOC 3IM "August 19, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMCLTALLOC 3IM "August 19, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImCltAlloc - allocate a color lookup table
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+ImClt *ImCltAlloc( numColors )
+	int numColors ;
+.fi
+\fR
+.SH DESCRIPTION
+\fBImCltAlloc\fR allocates a color lookup table with \fInumColors\fR
+entries and returns a pointer to the new \fBImClt\fR.
+Each color lookup table entry represents a color using 8 bits of red,
+8 bits of green, and 8 bits of blue.
+.LP
+The new color table is not initialized (colors will be random).
+.SH NOTES
+Color lookup table entries are accessed by obtaining a pointer to a
+specific entry using
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c
+l l.
+Macro	Meaning
+_
+\fBImCltQPtr( c, i )\fR	Returns a pointer to a particular \fBImClt\fR entry
+
+\fBImCltQFirst( c )\fR	Returns a pointer to the first \fBImClt\fR entry
+\fBImCltQLast( c )\fR	Returns a pointer to the last \fBImClt\fR entry
+
+\fBImCltQNext( c, p )\fR	Returns a pointer to the next \fBImClt\fR entry
+\fBImCltQPrev( c, p )\fR	Returns a pointer to the previous \fBImClt\fR entry
+
+\fBImCltSInc( c, p )\fR	Same as \fBp = ImCltQNext( c, p )\fR
+\fBImCltSDec( c, p )\fR	Same as \fBp = ImCltQPrev( c, p )\fR
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+where \fIc\fR is the specific color lookup table, \fIi\fR is an entry
+number (first entry is entry number 0),
+and \fIp\fR is a pointer to a \fBImClt\fR entry.
+.LP
+Using an \fBImClt\fR entry pointer,
+entries in a color lookup table may be set and queried using:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c
+l l.
+Macro	Meaning
+_
+\fBImCltSRed( p, r )\fR	Sets red component of a \fBImClt\fR location
+\fBImCltQRed( p )\fR	Queries the red component of a \fBImClt\fR location
+
+\fBImCltSGreen( p, g )\fR	Sets green component of a \fBImClt\fR location
+\fBImCltQGreen( p )\fR	Queries the green component of a \fBImClt\fR location
+
+\fBImCltSBlue( p, b )\fR	Sets blue component of a \fBImClt\fR location
+\fBImCltQBlue( p )\fR	Queries the blue component of a \fBImClt\fR location
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+The number of entries in a color lookup table may queried using:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c
+l l.
+Macro	Meaning
+_
+\fBImCltQNColors( c )\fR	Queries the number of colors in this \fBImClt\fR
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+A color lookup table may be attached to a virtual frame buffer (see
+\fBImVfbAlloc\fR(3IM)).  To attach (set) the virtual frame buffer's
+color lookup table, use \fBImVfbSClt\fR(3IM).  To query a virtual
+frame buffer's currently attached color lookup table, use \fBImVfbQClt\fR(3IM).
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c
+l l.
+Macro	Meaning
+_
+\fBImVfbSClt( v, c )\fR	Attaches (set) the \fBImClt\fR for an \fBImVfb\fR
+\fBImVfbQClt( v )\fR	Queries the \fBImClt\fR for an \fBImVfb\fR
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+.SH RETURNS
+Upon success, \fBImCltAlloc\fR returns a new \fBImClt\fR.  On failure,
+\fBIMCLTNULL\fR is returned and \fBImErrNo\fR set to the following:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEMALLOC	Cannot allocate enough memory for the new \fBImClt\fR
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH SEE ALSO
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBImCltDup\fR (3IM),
+\fBImCltFree\fR (3IM),
+\fBImCltGrayRamp\fR (3IM),
+\fBImCltQBlue\fR (3IM),
+\fBImCltQFirst\fR (3IM),
+\fBImCltQGreen\fR (3IM),
+\fBImCltQLast\fR (3IM),
+\fBImCltQNColors\fR (3IM),
+\fBImCltQNext\fR (3IM),
+\fBImCltQPrev\fR (3IM),
+\fBImCltQPtr\fR (3IM),
+\fBImCltQRed\fR (3IM),
+\fBImCltRoll\fR (3IM),
+\fBImCltSBlue\fR (3IM),
+\fBImCltSDec\fR (3IM),
+\fBImCltSGreen\fR (3IM),
+\fBImCltSInc\fR (3IM),
+\fBImCltSRed\fR (3IM),
+\fBImVfbAlloc\fR (3IM),
+\fBImVfbFree\fR (3IM),
+\fBImVfbQClt\fR (3IM),
+\fBImVfbSClt\fR (3IM)
+.SH AUTHOR
+Mike Bailey
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

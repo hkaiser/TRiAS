@@ -1,0 +1,42 @@
+'\"et
+.if t .TH IMFILEQNFORMAT 3IM "September 24, 1991" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMFILEQNFORMAT 3IM "September 24, 1991" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImFileQNFormat - query number of supported image file formats
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+int ImFileQNFormat( )
+.fi
+\fR
+.SH DESCRIPTION
+\fBImFileQNFormat\fR returns the number of image file formats supported by
+the image library.
+.SH NOTES
+\fBImFileQNFormat\fR is typically called to obtain a loop count when
+searching the image library's \fBImFileFormats\fR file format
+information table. 
+.SH RETURNS
+The number of formats in the \fBImFileFormats\fR table is returned.
+If there are no formats in the table, 0 is returned.
+.SH "SEE ALSO"
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBImFileFormatEquivs\fR (3IM),
+\fBImFileFormatOptions\fR (3IM),
+\fBImFileFRead\fR (3IM),
+\fBImFileFWrite\fR (3IM),
+\fBImFileQFFormat\fR (3IM),
+\fBImFileQFormat\fR (3IM),
+\fBImFileRead\fR (3IM),
+\fBImFileWrite\fR (3IM)
+.SH AUTHOR
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

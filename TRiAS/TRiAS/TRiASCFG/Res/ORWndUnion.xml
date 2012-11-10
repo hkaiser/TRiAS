@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Copyright © 1991 - 2004, Hartmut Kaiser, #HK020926 -->
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Hartmut Kaiser (Hartmut Kaiser) -->
+<!DOCTYPE GeoComponentSequence SYSTEM "GeoComponentSequence.dtd">
+<GeoComponentSequence Version="1.0">
+	<Name>Bilden der logischen Vereinigungsmenge</Name>
+	<GeoComponent ProgID="TRiASEx.JoinPropertyActions.1" Type="Sequence" Load="Direct">
+		<GeoComponent ProgID="TRiASEx.SelectFromObjectWindow.1" Level="1">
+			<InitInfo MinWindowCount="2" DisableCloseWhenReady="1"/>
+		</GeoComponent>
+	</GeoComponent>
+	<GeoComponent ProgID="TRiASEx.PropertyOperation.1">
+		<InitInfo Operation="A_Or_B"/>
+	</GeoComponent>
+	<GeoComponent ProgID="TRiASEx.ShowInObjectWindow.1">
+		<InitInfo NoShow="1" MarkColor="0,0,255" Caption="Vereinigungsmenge" ErrorMsg="Die zu erzeugende Vereinigungsmenge enthält keine Objekte."/>
+	</GeoComponent>
+</GeoComponentSequence>

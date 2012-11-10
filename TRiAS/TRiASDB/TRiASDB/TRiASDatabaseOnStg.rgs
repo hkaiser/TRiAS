@@ -1,0 +1,41 @@
+HKCR
+{
+	TRiASDB.TRiASDatabaseOnStg.1 = s 'TRiASDatabase 2.0 Class'
+	{
+		CLSID = s '{5A28AAC2-D4B3-4A72-90FA-6DDE007EF5BD}'
+		TRiASDB = s 'TRiAS.Document.3'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {5A28AAC2-D4B3-4A72-90FA-6DDE007EF5BD} = s 'TRiASDatabase 2.0 Class'
+		{
+			ProgID = s 'TRiASDB.TRiASDatabaseOnStg.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{1CB3AB53-2E87-11D1-969D-00A024D6F582}'
+		}
+	}
+	ForceRemove TRiAS.Document.3 = s 'Integrierte %TRIASNAME% 3.0 GIS-Datenquelle'
+	{
+		TRiASDB
+		{
+			CLSID = s '{5A28AAC2-D4B3-4A72-90FA-6DDE007EF5BD}'
+			Description 
+			{
+				val LongName = s 'Integrierte %TRIASNAME% Datenquelle, Daten können beliebig bearbeitet und gespeichert werden.'
+				val ShortName = s '%TRIASNAME%'
+				val NameDescription = s 'Integrierte Datenquelle'
+				val NameIsDirectory = s 0
+				val NameIsFile = s 0
+				val NameIsSubStorage = s 1
+				val ReadWrite = s 1
+				val Version = s '3.0'
+				val ToolboxBitmap32 = d 14
+				val NeedsCoordSysNew = s 1
+			}
+		}
+	}
+}

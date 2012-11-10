@@ -1,0 +1,25 @@
+HKCR
+{
+	TRiASDB.PolyGIS.WizPropExt.1 = s 'FindPolyGISWizPropExt Class'
+	{
+		CLSID = s '{C81DD8C5-A235-11D1-BA2A-080036D63803}'
+	}
+	TRiASDB.PolyGIS.WizPropExt = s 'FindPolyGISWizPropExt Class'
+	{
+		CLSID = s '{C81DD8C5-A235-11D1-BA2A-080036D63803}'
+		CurVer = s 'TRiASDB.PolyGIS.WizPropExt.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {C81DD8C5-A235-11D1-BA2A-080036D63803} = s 'FindPolyGISWizPropExt Class'
+		{
+			ProgID = s 'TRiASDB.PolyGIS.WizPropExt.1'
+			ForceRemove 'Programmable'
+			VersionIndependendProgId = s 'TRiASDB.PolyGIS.WizPropExt'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

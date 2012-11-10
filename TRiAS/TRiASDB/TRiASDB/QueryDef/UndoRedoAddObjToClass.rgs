@@ -1,0 +1,25 @@
+HKCR
+{
+	TRiAS.UndoRedoAddObjToClass.1 = s 'UndoRedoAddObjToClass Class'
+	{
+		CLSID = s '{982D05EE-534B-4165-888D-1E0869636CD8}'
+	}
+	TRiAS.UndoRedoAddObjToClass = s 'UndoRedoAddObjToClass Class'
+	{
+		CLSID = s '{982D05EE-534B-4165-888D-1E0869636CD8}'
+		CurVer = s 'TRiAS.UndoRedoAddObjToClass.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {982D05EE-534B-4165-888D-1E0869636CD8} = s 'UndoRedoAddObjToClass Class'
+		{
+			ProgID = s 'TRiAS.UndoRedoAddObjToClass.1'
+			VersionIndependentProgID = s 'TRiAS.UndoRedoAddObjToClass'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{1BF01AF0-33CF-11D3-94FA-0080C786297B}'
+		}
+	}
+}

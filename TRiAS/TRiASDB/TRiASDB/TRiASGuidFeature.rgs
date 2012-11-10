@@ -1,0 +1,20 @@
+HKCR
+{
+	TRiASDB.TRiASGuidFeature.1 = s 'TRiASGuidFeature Class'
+	{
+		CLSID = s '{BED66F36-7351-11D2-9EF1-006008447800}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {BED66F36-7351-11D2-9EF1-006008447800} = s 'TRiASGuidFeature Class'
+		{
+			ProgID = s 'TRiASDB.TRiASGuidFeature.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{1CB3AB53-2E87-11D1-969D-00A024D6F582}'
+		}
+	}
+}

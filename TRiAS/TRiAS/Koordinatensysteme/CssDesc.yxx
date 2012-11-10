@@ -1,0 +1,209 @@
+// @doc
+// @module CSSDesc.yxx | CSS-Parameterbeschreibung
+// Quelle:	OpenGIS® Simple Feature Specification For SQL, Open GIS Consortium, Inc.
+//			Revision 1.0, 13. March 1998, pp. 3-28, 3-29, Chapter 3.4 Well-known Text
+//			Representation of Spatial Reference Systems.
+
+/////////////////////////////////////////////////////////////////////////////
+// Headersection
+output lexer 	source "cssdescl.cpp" ;
+output lexer 	header "cssdescl.h" ;
+output parser 	source "cssdescy.cpp" ;
+output parser 	header "cssdescy.h" ;
+
+class css_desc ;
+
+/////////////////////////////////////////////////////////////////////////////
+// Lexersection
+lexer
+
+charset ASCII8 ;
+
+/////////////////////////////////////////////////////////////////////////////
+// Lexerklassen
+construct	NUMBER::default
+	member	{
+		protected:
+			double m_dValue;
+
+		public:
+				NUMBER (void) { m_dValue = 0.0; }
+
+			double &Value() { return m_dValue; }
+		}
+			
+	constructor initializer	
+		{
+			m_dValue(0.0)
+		}
+			
+	constructor body 
+		{
+		string strTok (yy_this_lex_ptr->yy_lex_token(), yy_this_lex_ptr->yy_lex_len());
+
+			m_dValue = atof(strTok.c_str());
+		}
+	;
+	
+construct 	IDENTIFIER::string
+	constructor body
+		{	// evtl. Anführungszeichen entfernen
+			if (yy_this_string[0] == '\"' || yy_this_string[0] == '\'') {
+			int iLen = yy_this_lex_ptr->yy_lex_len();
+
+				memmove (yy_this_string, yy_this_string+1, iLen-2);
+				yy_this_string[iLen-2] = '\0';
+			
+			} else {
+			yy_ref_obj &rObj = yy_this_lex_ptr -> yy_symtab_lookup_only_kw (
+									yy_this_lex_ptr -> yy_lex_token(), 
+									yy_this_lex_ptr -> yy_lex_len(), 
+									identifier_
+								);
+
+				if (NULL != rObj.as_sym_ptr) 		// keyword found
+					yy_this_lex_ptr -> yy_lex_rdc() = rObj.as_sym_ptr -> yy_sym_tkn_type();
+
+				yy_this_lex_ptr -> yy_lex_rslt().as_sym_ptr = rObj.as_sym_ptr;
+			}
+		}
+	;
+
+/////////////////////////////////////////////////////////////////////////////
+// Tokendefinitionen
+token			LEFT_BRACKET, RIGHT_BRACKET, IDENTIFIER, NUMBER, COMMA, SPACES ;
+
+LEFT_BRACKET:	"[" | "(" ;
+RIGHT_BRACKET:	"]" | ")" ;
+IDENTIFIER:		("a" .. "z" | "A" .. "Z" | "_") ("a" .. "z" | "A" .. "Z" | "_" | "0" .. "9")* ;
+
+COMMA:			"," ;
+
+SIGN:			("-" | "+") ? ;
+DIGIT:			"0" .. "9" ;
+EXPONENT:		"D" | "E" | "d" | "e" SIGN? DIGIT+ ;
+NUMBER:			SIGN DIGIT+							// Integerzahl
+			|	SIGN DIGIT+ "." DIGIT* EXPONENT?	// FloatPointZahl
+			|	SIGN DIGIT* "." DIGIT* EXPONENT?
+			|	SIGN DIGIT+ EXPONENT
+			;
+SPACES:			(" " | "\t" | "\n" { ++yy_buf_lineno(); } )+ ;
+
+insensitive keyword ;
+
+keyword			PROJCS, GEOGCS, GEOCCS, PROJECTION, PARAMETER, DATUM, UNIT, PRIMEM, SPHEROID ;
+
+discard token 	SPACES, COMMA ;
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Parsersection
+parser :: 
+	name yy_psr_wkcss_obj
+	member 
+	{
+	public:
+		bool CreateProjectedCS (css_base *pProjCS);
+	}
+	;
+
+global {
+	#include "yy_sym.h"
+	#include "CssDescm.h"
+}
+
+union {
+    yy_sym_ptr as_sym_ptr;
+	css_base *yy_as_cssbase;
+}
+
+remove	LEFT_BRACKET, RIGHT_BRACKET, coordinate_system, 
+		projected_cs, geographic_cs, geocentric_cs
+	;
+
+base construct css_base ::
+	member
+	{
+	protected:
+		string m_strName;
+
+	public:
+		void SetName (LPCSTR pcName) { m_strName = pcName; }
+		LPCSTR GetName() { return m_strName.c_str(); }
+	}
+	;
+
+construct projected_cs :: prefix 
+	base { public css_base }
+	name projcs 
+	constructor body
+	{
+		SetName (yy_this_psr_ptr -> yy_psr_ref(1).yy_string());
+	}
+	;
+
+construct geographic_cs :: prefix name geogcs ;
+construct geocentric_cs :: prefix name geoccs ;
+construct projection :: prefix name proj ;
+construct parameter :: prefix name param ;
+construct datum :: prefix name datum ;
+construct spheroid :: prefix name spher ;
+construct prime_meridian :: prefix name primem ;
+construct unit :: prefix name unit ;
+
+/////////////////////////////////////////////////////////////////////////////
+// Parserregeln
+coordinate_system:
+		projected_cs
+		{
+			if (!CreateProjectedCS (yy_psr_ref(1).yy_as_cssbase))
+				yy_err_report (E_OUTOFMEMORY);
+			delete this;		// wird nicht mehr gebraucht
+		}
+	|	geographic_cs
+	|	geocentric_cs
+	;
+
+projected_cs:
+		PROJCS LEFT_BRACKET IDENTIFIER geographic_cs projection parameter* unit /*linear_unit*/ RIGHT_BRACKET
+	|	PROJCS yy_error RIGHT_BRACKET
+	;
+
+geographic_cs:
+		GEOGCS LEFT_BRACKET IDENTIFIER datum prime_meridian unit /*angular_unit*/ RIGHT_BRACKET
+	|	GEOGCS yy_error RIGHT_BRACKET
+	;
+
+geocentric_cs:
+		GEOCCS LEFT_BRACKET IDENTIFIER datum prime_meridian unit /*linear_unit*/ RIGHT_BRACKET
+	|	GEOCCS yy_error RIGHT_BRACKET
+	;
+
+projection:
+		PROJECTION LEFT_BRACKET IDENTIFIER RIGHT_BRACKET
+	|	PROJECTION yy_error RIGHT_BRACKET
+	;
+
+parameter:
+		PARAMETER LEFT_BRACKET IDENTIFIER NUMBER /*value*/ RIGHT_BRACKET
+	|	PARAMETER yy_error RIGHT_BRACKET
+	;
+
+datum:	DATUM LEFT_BRACKET IDENTIFIER spheroid RIGHT_BRACKET
+	|	DATUM yy_error RIGHT_BRACKET
+	;
+
+spheroid:
+		SPHEROID LEFT_BRACKET IDENTIFIER NUMBER /*semi_major_axis*/ NUMBER /*inverse_flattening*/ RIGHT_BRACKET
+	|	SPHEROID yy_error RIGHT_BRACKET
+	;
+
+prime_meridian:
+		PRIMEM LEFT_BRACKET IDENTIFIER NUMBER /*longitude*/ RIGHT_BRACKET
+	|	PRIMEM yy_error RIGHT_BRACKET
+	;
+
+unit:	UNIT LEFT_BRACKET IDENTIFIER NUMBER /*conversion_factor*/ RIGHT_BRACKET
+	|	UNIT yy_error RIGHT_BRACKET
+	;
+

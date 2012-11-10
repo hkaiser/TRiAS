@@ -1,0 +1,264 @@
+
+
+
+     AAAARRRRGGGGQQQQVVVVAAAALLLLUUUUEEEE((((3333AAAARRRRGGGG))))       SSSSDDDDSSSSCCCC ((((SSSSeeeepppptttteeeemmmmbbbbeeeerrrr 1111999999991111))))       AAAARRRRGGGGQQQQVVVVAAAALLLLUUUUEEEE((((3333AAAARRRRGGGG))))
+
+
+
+     NNNNAAAAMMMMEEEE
+          ArgQValue  -  query value for an option on the commandline
+          ArgQNValue  -  query number of values for an option on the
+          commandline
+
+     SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+          #include "sdsc.h"
+
+          int ArgErrNo;
+
+          int ArgQNValue( keyword, noccur )
+               char *keyword;
+               int noccur;
+
+          ArgValue *ArgQValue( keyword, noccur, nvalue )
+               char *keyword;
+               int noccur;
+               int nvalue;
+
+     DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+          _A_r_g_Q_N_V_a_l_u_e and _A_r_g_Q_V_a_l_u_e retrieve information about the
+          commandline after it has been parsed by an earlier call to
+          _A_r_g_P_a_r_s_e(_3_A_R_G).
+
+          _A_r_g_Q_N_V_a_l_u_e queries the number of values in the _n_o_c_c_u_r-th
+          occurrence of the option with keyword _k_e_y_w_o_r_d.  The number
+          of values is returned as the function value.
+
+          _A_r_g_Q_V_a_l_u_e queries the _n_v_a_l_u_e-th value in the _n_o_c_c_u_r-th
+          occurrence of the option with keyword _k_e_y_w_o_r_d.  Values are
+          numbered from 0 for the first value and so on.  A pointer to
+          an _A_r_g_V_a_l_u_e structure containing the value is returned as
+          the function value.
+
+     SSSSTTTTRRRRUUUUCCCCTTTTUUUURRRREEEESSSS
+        _A_r_g_V_a_l_u_e ssssttttrrrruuuucccctttt
+          The _A_r_g_V_a_l_u_e structure describes a value argument for an
+          option on the commandline.  The type of the value (integer,
+          float, string, integer range, float range) is determined by
+          the _A_r_g_O_p_t_i_o_n structure passed to _A_r_g_P_a_r_s_e(_3_A_R_G) to describe
+          the option during command-line parsing.  The _A_r_g_V_a_l_u_e
+          structure is defined as follows:
+
+               typedef struct ArgValue
+               {
+                   int         arg_type;
+                   int         arg_rform;
+                   union
+                   {
+                               int                arg_i1;
+
+
+
+
+
+     Page 1                                          (printed 6/30/95)
+
+
+
+
+
+
+     AAAARRRRGGGGQQQQVVVVAAAALLLLUUUUEEEE((((3333AAAARRRRGGGG))))       SSSSDDDDSSSSCCCC ((((SSSSeeeepppptttteeeemmmmbbbbeeeerrrr 1111999999991111))))       AAAARRRRGGGGQQQQVVVVAAAALLLLUUUUEEEE((((3333AAAARRRRGGGG))))
+
+
+
+                               float              arg_f1;
+                               char               *arg_s1;
+                               int                arg_reserved1[4];
+                   } arg_v1;
+                   union
+                   {
+                               int                arg_i2;
+                               float              arg_f2;
+                               int                arg_reserved2[4];
+                   } arg_v2;
+                   int         arg_reserved[4];
+               } ArgValue;
+
+          _a_r_g__t_y_p_e
+               The _a_r_g__t_y_p_e field indicates the returned value type.
+               The value is identical to the _a_r_g__t_y_p_e field of the
+               _A_r_g_O_p_t_i_o_n structure describing the option (see
+               _A_r_g_P_a_r_s_e(3ARG)).
+
+          _a_r_g__r_f_o_r_m
+               The _a_r_g__r_f_o_r_m field indicates the format of a range
+               value, if _a_r_g__t_y_p_e indicates the value is a range
+               (integer or float).  The following range formats are
+               possible:
+
+                    NNNNaaaammmmeeee         FFFFoooorrrrmmmm   MMMMeeeeaaaannnniiiinnnngggg
+                    ARGRCLOSED   n-m    Numbers _n through _m
+                    ARGROPEN     n-     Numbers _n through the end
+                    ARGRSINGLE   n      Just the number _n
+
+               _A_R_G_R_C_L_O_S_E_D is a closed-ended range with explicit
+               starting and ending values.  The starting value is
+               given in the _a_r_g__v_1 union, while the ending value is
+               given in the _a_r_g__v_2 union.
+
+               _A_R_G_R_O_P_E_N is an open-ended range with an explicit
+               starting value but no ending value.  The ending value
+               should be something reasonable for what the command's
+               function is.  If dealing with line numbers, the ending
+               value might be the last line in the input file.  If
+               dealing with rotation angles, the ending value might be
+               full-circle back to the starting value.  The starting
+               value is given in the _a_r_g__v_1 union.
+
+               _A_R_G_R_S_I_N_G_L_E is a singlenumber; i.e., both the starting
+               and ending values are the same.  The single value is
+               given in the _a_r_g__v_1 union.
+
+          _a_r_g__v_1 and _a_r_g__v_2
+               The _a_r_g__v_1 and _a_r_g__v_2 fields are unions that contain
+               one field for each value type supported.
+
+
+
+
+     Page 2                                          (printed 6/30/95)
+
+
+
+
+
+
+     AAAARRRRGGGGQQQQVVVVAAAALLLLUUUUEEEE((((3333AAAARRRRGGGG))))       SSSSDDDDSSSSCCCC ((((SSSSeeeepppptttteeeemmmmbbbbeeeerrrr 1111999999991111))))       AAAARRRRGGGGQQQQVVVVAAAALLLLUUUUEEEE((((3333AAAARRRRGGGG))))
+
+
+
+               _a_r_g__i_1 and _a_r_g__i_2
+                    _a_r_g__i_1 and _a_r_g__i_2 contain integer values.  _a_r_g__i_2
+                    is only used for the ending value of an integer
+                    range.
+
+               _a_r_g__f_1 and _a_r_g__f_2
+                    _a_r_g__f_1 and _a_r_g__f_2 contain floating point values.
+                    _a_r_g__f_2 is only used for the ending value of a
+                    floating point range.
+
+               _a_r_g__s_1
+                    _a_r_g__s_1 contains a character pointer to a string
+                    value.  Note that there is no _a_r_g__s_2 because
+                    string ranges are not supported.
+
+               _a_r_g__r_e_s_e_r_v_e_d_1 and _a_r_g__r_e_s_e_r_v_e_d_2
+                    _a_r_g__r_e_s_e_r_v_e_d_1 and _a_r_g__r_e_s_e_r_v_e_d_2 are fields
+                    containing space reserved for future enhancements.
+
+          _a_r_g__r_e_s_e_r_v_e_d
+               _a_r_g__r_e_s_e_r_v_e_d is a field containing space reserved for
+               future enhancements.
+
+          Shortcuts for the union field names are the following
+          #_d_e_f_i_n_e's provided in _a_r_g._h:
+
+               NNNNaaaammmmeeee      EEEEqqqquuuuaaaallllssss          UUUUssssaaaaggggeeee
+               arg_i     arg_v1.arg_i1   Simple integer
+               arg_f     arg_v1.arg_f1   Simple float
+               arg_s     arg_v1.arg_s1   Simple string
+               arg_ir1   arg_v1.arg_i1   First integer in range
+               arg_ir2   arg_v2.arg_i2   Second integer in range
+               arg_fr1   arg_v1.arg_f1   First float in range
+               arg_fr2   arg_v2.arg_f2   Second float in range
+
+     RRRREEEETTTTUUUURRRRNNNNSSSS
+          _A_r_g_Q_N_V_a_l_u_e returns the number of values in an occurrence of
+          an option.  If _A_r_g_Q_N_V_a_l_u_e fails to complete, it returns -1
+          and sets the global _A_r_g_E_r_r_N_o to an error code indicating the
+          cause of the failure.  The following error codes may be
+          generated by _A_r_g_Q_N_V_a_l_u_e:
+
+          _A_R_G_E_N_O_C_C_U_R = occurrence count is too high or too low
+               The _n_o_c_c_u_r argument to _A_r_g_Q_N_V_a_l_u_e was less than zero or
+               greater than the number of occurrences of the option on
+               the commandline.
+
+          _A_R_G_E_N_O_V_A_L_U_E = option has no values
+               In the option's _A_r_g_O_p_t_i_o_n struct, _a_r_g__m_i_n_v_a_l_u_e_s and
+               _a_r_g__m_a_x_v_a_l_u_e_s were set to 0, indicating the option is
+               just a keyword, with no values following it.  Querying
+               the number of values of a valueless option is
+
+
+
+     Page 3                                          (printed 6/30/95)
+
+
+
+
+
+
+     AAAARRRRGGGGQQQQVVVVAAAALLLLUUUUEEEE((((3333AAAARRRRGGGG))))       SSSSDDDDSSSSCCCC ((((SSSSeeeepppptttteeeemmmmbbbbeeeerrrr 1111999999991111))))       AAAARRRRGGGGQQQQVVVVAAAALLLLUUUUEEEE((((3333AAAARRRRGGGG))))
+
+
+
+               meaningless.
+
+          _A_R_G_E_U_N_K_E_Y_W_O_R_D = keyword unknown
+               The keyword is not one of the keywords supplied in the
+               _o_p_t_i_o_n_s[] or _e_q_u_i_v[] arrays passed to _A_r_g_P_a_r_s_e(_3_A_R_G)
+               and is not one of the truncation abbreviations.
+
+          _A_r_g_Q_V_a_l_u_e returns a pointer to an _A_r_g_V_a_l_u_e structure
+          describing one value in an occurrence of an option.  If
+          _A_r_g_Q_V_a_l_u_e fails to complete, it returns a NULL and sets the
+          global _A_r_g_E_r_r_N_o to an error code indicating the cause of the
+          failure.  The following error codes may be generated by
+          _A_r_g_Q_V_a_l_u_e:
+
+          _A_R_G_E_N_O_C_C_U_R = occurrence count is too high or too low
+               See _A_r_g_Q_N_V_a_l_u_e's error list.
+
+          _A_R_G_E_N_O_V_A_L_U_E = option has no values
+               See _A_r_g_Q_N_V_a_l_u_e's error list.
+
+          _A_R_G_E_N_V_A_L_U_E = value count is too high or too low
+               The _n_v_a_l_u_e argument to _A_r_g_Q_V_a_l_u_e was less than zero or
+               greater than the number of values in this occurrence of
+               the option on the commandline.
+
+          _A_R_G_E_U_N_K_K_E_Y_W_O_R_D = keyword unknown
+               See _A_r_g_Q_N_V_a_l_u_e's error list.
+
+     NNNNOOOOTTTTEEEESSSS
+          The _k_e_y_w_o_r_d argument may be any keyword, equivalent keyword,
+          or unique abbreviation-by-truncation of keywords or
+          equivalent keywords.  For clarity, use the full keyword in
+          all _A_r_g_Q_N_V_a_l_u_e and _A_r_g_Q_V_a_l_u_e calls.
+
+     SSSSEEEEEEEE AAAALLLLSSSSOOOO
+          ArgIntro(3ARG), ArgParse(3ARG), ArgPError(3ARG),
+          ArgQNOccur(3ARG), ArgQNOpt(3ARG), ArgQOccurOpt(3ARG),
+          ArgQOpt(3ARG), errno(2), perror(3)
+
+     AAAAUUUUTTTTHHHHOOOORRRRSSSS
+          Dave Nadeau
+          San Diego Supercomputer Center
+
+     CCCCOOOONNNNTTTTAAAACCCCTTTT
+          SDSC consultants, (619)534-5100, ccccoooonnnnssssuuuulllltttt@@@@yyyy1111....ssssddddsssscccc....eeeedddduuuu
+
+
+
+
+
+
+
+
+
+
+     Page 4                                          (printed 6/30/95)
+
+
+

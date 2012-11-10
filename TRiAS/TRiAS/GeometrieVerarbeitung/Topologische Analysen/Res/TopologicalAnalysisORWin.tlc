@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Hartmut Kaiser (Hartmut Kaiser) -->
+<!-- Copyright © 1991 - 2004, Hartmut Kaiser, #HK040508 -->
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Hartmut Kaiser (Hartmut Kaiser) -->
+<!DOCTYPE GeoComponentSequence SYSTEM "GeoComponentSequence.dtd">
+<GeoComponentSequence Version="1.1">
+	<Name>Topologische Analyse</Name>
+	<GeoComponent ProgID="TRiASEx.SelectFromObjectWindow.1">
+		<InitInfo ShowConfigAlways="1" SelectObjs="Activated"/>
+	</GeoComponent>
+	<GeoComponent ProgID="TRiASEx.JoinPropertyActions.1" Type="Sequence">
+		<InitInfo PacketOffset="1"/>
+		<GeoComponent ProgID="TRiASEx.PropertyChoice.1" Type="Sequence" Level="1">
+			<GeoComponent ProgID="TRiASEx.SelectIdentObjTyp.1" Level="2">
+				<InitInfo Name="Objektklassen"/>
+			</GeoComponent>
+			<GeoComponent ProgID="TRiASEx.SelectFromObjectWindow.1" Level="2">
+				<InitInfo Name="Einzelobjekte" MinWindowCount="1"/>
+			</GeoComponent>
+		</GeoComponent>
+	</GeoComponent>
+	<GeoComponent ProgID="TRiASEx.TopoRelPropAct.1"/>
+	<GeoComponent ProgID="TRiASEx.ShowInObjectWindow.1">
+		<InitInfo NoShow="1"/>
+	</GeoComponent>
+</GeoComponentSequence>

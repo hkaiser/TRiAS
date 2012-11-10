@@ -1,0 +1,39 @@
+// PictView.odl : type library source for PictView.exe
+
+// This file will be processed by the Make Type Library (mktyplib) tool to
+// produce the type library (PictView.tlb).
+
+[ uuid(3ECD6802-A060-11D0-9886-006097556705), version(1.0) ]
+library PictView
+{
+	importlib("stdole32.tlb");
+	
+	//  Primary dispatch interface for CPictViewDoc
+	
+	[ uuid(3ECD6803-A060-11D0-9886-006097556705) ]
+	dispinterface IPictVi
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CPictViewDoc)
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CPictViewDoc)
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  Class information for CPictViewDoc
+	
+	[ uuid(3ECD6801-A060-11D0-9886-006097556705) ]
+	coclass Document
+	{
+		[default] dispinterface IPictVi;
+	};
+
+	//{{AFX_APPEND_ODL}}
+};

@@ -1,0 +1,268 @@
+'**************************************************************************
+'*                                                                        *
+'*  Neue Versiegelungen anlegen und nummerieren                           *
+'*                                                                        *
+'**************************************************************************
+
+Option Explicit
+
+' ======================================================================================
+' anwendungsspezifische Konstanten
+Const strGrund = "Grundstück"
+Const strFlur = "Flurstück"
+Const strGrNummer = "Grundstücksnummer"
+Const strKorNummer = "Korrektur_Ergänzung"	'jjmmtt
+
+
+' ======================================================================================
+'Programmkonstanten
+Const NL = Chr$(13) + Chr$(10)		'NewLine
+Const HT = Chr$(9)	   		' Tab		 
+Const strBoxTitel = "Korrektur/Ergänzung"	' Titel der Message-Boxen
+
+' ======================================================================================
+
+' Subroutine's-Deklarationen
+Declare Sub AbbruchBeiFehler (lngFehlerNr As Long)
+
+' ======================================================================================
+' globale Variable
+Private docGD As GeoDocument		' Projekt
+Private clsGrund As GeoClass			' Objektklasse (Grundstücke)
+Private clsFlur As GeoClass			' Objektklasse (Flurstücke)
+
+Private Feat As GeoFeature
+Private VFeat As GeoFeature
+
+'==================================================================
+
+'Hauptprogramm
+
+Sub Main()
+
+' Reaktion bei Runtime-Error
+	On Error GoTo CheckError
+
+'Pfade für BasicScript und Daten
+
+' Initialisierungen
+  	Set docGD = GetActiveDocument()			'Zugriff auf aktuelles Projekt
+	Set clsGrund = docGD.GetClass (strGrund)
+
+	If (clsGrund Is Nothing) Then
+		MsgBox "Im Projekt wurde kein " + strGrund +" gefunden!", _
+			   ebInformation, strBoxTitel
+		Exit Sub
+	End If
+
+
+' Grundstück auf Existenz testen
+
+	Dim objsGrund As GeoObjects
+	Set objsGrund = clsGrund.GetObjects (OT_Area)
+	If (objsGrund Is Nothing) Then
+		MsgBox "Im Projekt wurde kein " + strGrund + " gefunden!", _
+			   ebInformation, strBoxTitel
+		Exit Sub
+	End If
+ 
+
+	Dim ObjS As GeoObjects
+
+	Dim Dlg As New PropertySequence
+
+	Dim objsRWin As GeoObjectWins	'Recherchefenster
+
+	Dlg.Description = "Wählen Sie bitte die zu prüfenden Klassen aus:"
+
+	Set objsRWin = docGD.GetGeoObjectWins()
+
+	If objsRWin.Count > 0 Then	
+		Dlg.AddAction "TRiASEx.SelectFromObjectWindow.1"
+	Else 
+		Dlg.AddAction "TRiASEx.SelectIdentObjTyp.1"
+	End If
+
+	Set ObjS = Dlg.DoActions()
+
+	If ObjS Is Nothing Then
+		Msg.Close
+		MsgBox "Im Projekt wurden keine Objekte gefunden!", _
+			   ebInformation, strBoxTitel
+		Exit Sub
+	End If
+
+	Dim Obj As GeoObject
+
+	Dim xmin As Double, ymin As Double, xmax As Double, ymax As Double
+
+	Dim ObjsIn As GeoObjects
+
+	Dim IObjS As New GeoObjects
+
+
+	Dim ObjIn As GeoObject		' eine einzelne objsInGrund-Fläche
+	Dim objDummy As GeoObject		' Rückkehrwert von Add()
+
+
+	Dim SelObjS As Long
+	SelObjS = ObjS.Count
+' StatusAnzeige erzeugen und initialisieren
+	Dim Status As New StatusIndicator 
+
+	If (Status Is Not Nothing) Then
+		Status.Restart 0, SelObjs, STATUS_ShowAllFields
+		Status.Caption = " Objektrecherche " + strGrund
+		Status.Field(1) = Str$(SelObjs)
+		Status.Field(2) = "Objekte werden durchsucht."
+		Status.Field(3) = "Es wurden bereits %d%% der Objekte analysiert."
+	End If
+
+' Jetzt alle selektierten Objekte bearbeiten
+	Dim ActCnt As Long		' Zähler der bearbeiteten Objekte
+
+	ActCnt = 0
+
+	For Each Obj In ObjS
+
+	' Status weiterschalten
+		If (Status Is Not Nothing) Then
+			ActCnt = ActCnt + 1
+			Status.Field(4) = "Objekt: " + Str$(Obj.Value)
+			If (Status Is Not Nothing) Then
+				Status.SetPosition ActCnt
+				If (Status.WasCanceled()) Then	' Abbrechen gedrückt
+					Exit For					' innere Schleife beenden
+				End If
+			End If
+		End If
+
+		Set Feat = Obj.GetFeature ( strKorNummer)
+		If Feat Is Not Nothing Then
+			Dim MyFeat As String
+			MyFeat = Trim$(Feat.Feature$)
+			If MyFeat <> "" Then
+
+				Obj.GetGeometryRect xmin, ymin, xmax, ymax
+
+				Dim MyFlag As Integer
+				MyFlag = 0	' Unbekannt
+
+				Set ObjsIn = clsGrund.GetObjectsInRect (xmin, ymin, xmax, ymax)
+				If (ObjsIn Is Not Nothing) Then
+					If ObjsIn.Count > 0 Then
+
+
+		 			For Each ObjIn In ObjsIn
+
+						if obj.ObjType = OT_Area Then
+						'Rückgabewert kann sein: 
+						'innerhalb (0), außerhalb (1), inner/außerhalb (2) oder unklar (3)
+							Dim rel As Integer
+							rel = ObjIn.TopRelation(Obj)
+	
+							Select Case rel
+
+							Case 3	'unklar
+								MyFlag = 0
+
+							Case 2	'Innen/aussen
+
+								If MyFlag < 2 Then
+									MyFlag = 2
+								End If
+	
+							Case 1	'aussen
+
+								If MyFlag < 1 Then
+									MyFlag = 1
+								End If
+
+							Case 0  'innen
+								MyFlag = 3
+								Set VFeat = ObjIn.GetFeature(strKorNummer)
+								Dim NewFeat As String
+								If VFeat Is Not Nothing Then
+									NewFeat = Trim$(VFeat.Feature$)
+									If NewFeat = MyFeat Then
+										Set objDummy = IObjs.Add(ObjIn)
+										Exit For
+									End If
+								Else
+									Set VFeat = ObjIn.AddFeature(strKorNummer, FEATURETYPE_WriteAble)
+								End If
+								VFeat.Feature$ = MyFeat
+								Set objDummy = IObjs.Add(ObjIn)
+								Exit For
+
+							End Select
+
+						End If
+
+					Next ObjIn
+		  			End If
+
+				End If
+			End If
+		End If
+	Next Obj
+
+	Set Status = Nothing
+
+
+' Ausgabe des Rechercheergebnisses
+
+' Ergebnisanzeige in Recherchefenstern
+
+	Dim RWin1 As GeoObjectWin
+
+	If (IObjS Is Not Nothing) Then
+		If IObjS.Count > 0 Then
+  			Set RWin1 = IObjS.CreateGeoObjectWin()
+   			RWin1.Name = "Modifiziertes "+ strGrund
+   			RWin1.Visible = 1
+			RWin1.Top = 1
+		End If
+	End If
+
+	Beep
+	MsgBox "Und tschüß!", ebInformation, strBoxTitel
+
+	Exit Sub
+
+
+' Abbruch bei Runtime-Error
+CheckError:
+	AbbruchBeiFehler Err.Number
+
+End Sub ' Main
+
+' ======================================================================================
+' Subroutine's
+' --------------------------------------------------------------------------------------
+' "OnDocumentToClose()" wird nach dem Schließen des Projektes gerufen
+Sub OnDocumentToClose (Doc As GeoDocument)
+	SetBreakScript(true)	' der laufende Script wird angehalten
+
+End Sub
+
+
+' --------------------------------------------------------------------------------------
+' ein Runtime-Error ist aufgetreten
+Sub AbbruchBeiFehler (lngFehlerNr As Long)
+	Beep
+	If lngFehlerNr = 18 Then	' User interrupt (z.B. Cancel bei Geduldsanzeige)
+		MsgBox "Die Abarbeitung wurde durch den Anwender vorzeitig beendet!", _
+			   ebExclamation, strBoxTitel
+	Else
+		MsgBox "Das Programm wurde abgebrochen mit" & NL & _
+			   "Fehler " & lngFehlerNr & " (" & Error(lngFehlerNr) & ")", _
+			   ebCritical, strBoxTitel
+	End If
+
+	End
+
+End Sub ' AbbruchBeiFehler
+
+'=============================================================================
+ 

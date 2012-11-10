@@ -1,0 +1,109 @@
+// ----------------------------------------------------------------------
+//
+// allModel_h -- provide header code common to all models
+//
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\\
+//                                                                     \\
+// NOTICE:                                                             \\
+//   This file is part of "The SI Library of Unit-Based Computation."  \\
+//   See "doc/README" for copyright, license, and other information.   \\
+//                                                                     \\
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\\
+//
+// History:
+//   17-Aug-1998  WEB  Extracted from stdModel.h
+//   24-Aug-1998  WEB  Factored out more by introducing ourModel
+//   27-Aug-1998  WEB  Changed PeriodicTableEntry to Element
+//
+// ----------------------------------------------------------------------
+
+
+
+  // -----  Provide the standard dimensions:
+  //
+  typedef wv<OutLook(ourModel),RepType> WV;
+#if 1
+  #define u( name, p1, p2, p3, p4, p5, p6, p7 )		\
+    typedef Dim< RepType				\
+               , OutLook(ourModel)			\
+               , WV::D<p1,p2,p3,p4,p5,p6,p7>::d1	\
+               , WV::D<p1,p2,p3,p4,p5,p6,p7>::d2	\
+               , WV::D<p1,p2,p3,p4,p5,p6,p7>::d3	\
+               , WV::D<p1,p2,p3,p4,p5,p6,p7>::d4	\
+               , WV::D<p1,p2,p3,p4,p5,p6,p7>::d5	\
+               , WV::D<p1,p2,p3,p4,p5,p6,p7>::d6	\
+               , WV::D<p1,p2,p3,p4,p5,p6,p7>::d7	\
+               > name;
+#else
+  // Experimental -- the following inheritance is probably better,
+  // in lieu of the above typedef,
+  // but needs corresponding adjustments elsewhere; the assumption
+  // of typedef usage is ubiquitous
+  //
+  #define u( name, p1, p2, p3, p4, p5, p6, p7 )		\
+    typedef Dim< RepType				\
+               , OutLook(ourModel)			\
+               , WV::D<p1,p2,p3,p4,p5,p6,p7>::d1	\
+               , WV::D<p1,p2,p3,p4,p5,p6,p7>::d2	\
+               , WV::D<p1,p2,p3,p4,p5,p6,p7>::d3	\
+               , WV::D<p1,p2,p3,p4,p5,p6,p7>::d4	\
+               , WV::D<p1,p2,p3,p4,p5,p6,p7>::d5	\
+               , WV::D<p1,p2,p3,p4,p5,p6,p7>::d6	\
+               , WV::D<p1,p2,p3,p4,p5,p6,p7>::d7	\
+               > name ## __;				\
+    class name : public	name ## __ {			\
+      explicit inline name( RepType v ) : name ## __(v) {}	\
+      /* likely need copy constructor and op=(), too */	\
+    }
+#endif
+  #include "dims.dat"
+  #undef u
+
+
+  // -----  Declare the standard units and constants:
+  //
+  #define u( type, name, value )	\
+    extern type const name;
+  #define a( type, name, value )	\
+    namespace abbreviations { u(type, name, value) }
+
+  #include "consts.dat"
+
+  #undef a
+  #undef u
+
+
+  // -----  Declare information about elements:
+  //
+  namespace elements  {
+
+    struct Element  {
+      unsigned short atomicnumber;
+      AtomicWeight   atomicweight;
+    };  // Element
+
+    extern Element const periodictable[];
+
+    #define e(atnum, abbr, name, atwt)	\
+      extern Element const & name;	\
+      extern Element const & element ## atnum;
+    #include "elements.dat"
+    #undef e
+
+  }  // elements
+
+
+  // -----  Provide user-usable macro to provide custom names for dimensions:
+  //
+  #define CustomDimension( name, p1, p2, p3, p4, p5, p6, p7 )  \
+    typedef Dim< RepType                                       \
+               , OutLook(ourModel)                             \
+               , WV::D<p1,p2,p3,p4,p5,p6,p7>::d1               \
+               , WV::D<p1,p2,p3,p4,p5,p6,p7>::d2               \
+               , WV::D<p1,p2,p3,p4,p5,p6,p7>::d3               \
+               , WV::D<p1,p2,p3,p4,p5,p6,p7>::d4               \
+               , WV::D<p1,p2,p3,p4,p5,p6,p7>::d5               \
+               , WV::D<p1,p2,p3,p4,p5,p6,p7>::d6               \
+               , WV::D<p1,p2,p3,p4,p5,p6,p7>::d7               \
+               > name
+

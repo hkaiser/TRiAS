@@ -1,0 +1,48 @@
+HKCR {
+	TRiAS.AcadDXFExport.1 = s 'TRiAS Export in das Autocad-DXF Format' 
+	{
+		CLSID = s '{119B30E3-1DC0-11d3-9973-0060085FC1CE}'
+	}
+	TRiAS.AcadDXFExport = s 'TRiAS Export in das Autocad-DXF Format' 
+	{
+		CLSID = s '{119B30E3-1DC0-11d3-9973-0060085FC1CE}'
+		CurVer = s 'TRiAS.AcadDXFExport.1'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {119B30E3-1DC0-11d3-9973-0060085FC1CE} = s 'TRiAS Export in das Autocad-DXF Format' 
+		{
+			ProgID = s 'TRiAS.AcadDXFExport.1'
+			VersionIndependentProgID = s 'TRiAS.AcadDXFExport'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%' 
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{119B30E1-1DC0-11d3-9973-0060085FC1CE}'
+		}
+	}
+}
+
+HKCU 
+{
+	NoRemove Software 
+	{ 
+		TRiAS 
+		{ 
+			TRiAS 
+			{ 
+				Extensions 
+				{ 
+					TRiAS.Export.1 
+					{ 
+						Engines 
+						{
+							ForceRemove {119B30E3-1DC0-11d3-9973-0060085FC1CE} = s 'Autocad - DXF'
+						} 
+					} 
+				} 
+			} 
+		} 
+	}
+}

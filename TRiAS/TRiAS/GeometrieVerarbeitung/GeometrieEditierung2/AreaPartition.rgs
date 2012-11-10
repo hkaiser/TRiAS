@@ -1,0 +1,23 @@
+HKCR
+{
+	TRiAS.AreaPartition.1 = s 'Fläche teilen'
+	{
+		CLSID = s '{71924708-40C2-11d1-9B1F-444553540000}'
+	}
+	TRiAS.AreaPartition = s 'Fläche teilen'
+	{
+		CurVer = s 'TRiAS.AreaPartition.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {71924708-40C2-11d1-9B1F-444553540000} = s 'Fläche teilen'
+		{
+			ProgID = s 'TRiAS.AreaPartition.1'
+			VersionIndependentProgID = s 'TRiAS.AreaPartition'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

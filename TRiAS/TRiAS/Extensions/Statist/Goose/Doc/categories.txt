@@ -1,0 +1,160 @@
+
+What is Categorical Data?
+-------------------------
+
+Categorical data is the term in statistics for observations that are
+divided into a finite number of discrete categories.  Examples of some
+categories might be:
+
+* Major Cities: New York, London, Paris, Tokyo...
+* Sex of Respondant: Male, Female
+
+These categories correspond to unordered sets, in that there is no
+natural, a priori order to write the elements in that is "more right"
+than any other.  (We don't count arbitrary orderings, such as
+alphabetical order.)
+
+Sometimes categories have a natural ordering to them.  For example:
+
+Age: 0-12, 13-17, 18-35, 36-50, 51-65, 66-80, 81+
+Letter Grade: A+, A, A-, B+, B, B-, C+, C, C-, D+, D, D-, F
+
+In types of categories are called "ordinal".
+
+Goose's Category Class
+----------------------
+
+For many computational purposes, it is often convenient to "code"
+category entries mapping them to small integers.  For example, our
+first example above might be coded as
+
+     New York => 1
+       London => 2
+        Paris => 3
+        Tokyo => 4
+             etc.
+
+The Goose Category class keeps track of which elements fall into which
+categories, and also keeps track of such the coding scheme and whether
+or not the category is ordinal.
+
+The rules for the Category class are simple:
+
+* Each Category should be assigned a unique label.
+
+* The elements in a Category must have unique names.
+
+* We declare a Category to be ordinal by calling make_ordinal().
+
+* For ordinal categories, the natural order for the elements is taken
+  to be the order in which the elements are added. 
+
+* When we are done adding elements to a Category, we *must* call the
+  complete_category() function.
+
+* After complete_category() has been called, nothing about the
+  category can be changed.
+
+The Category coding scheme numbers elements from 0.  (Not 1, as we did
+above... we are C programmers, after all!)
+
+Here is some sample code for Category-ifying our cities example.
+
+     Category cities;
+     cities.set_name("Major Cities");
+     cities.add("New York");   // code = 0
+     cities.add("London");     // code = 1
+     cities.add("Paris");      // code = 2
+     cities.add("Tokyo");      // code = 3
+     // etc.
+     cities.complete_category();
+
+This object can now be used to map between are coding scheme and our
+names.
+
+     catcode_t x = cities.code("London"); // This sets x equal to 1.
+     string s = cities.decode(2);         // s now equals "Paris".
+
+The twist here is that the category we've defined here isn't tied only
+to the cities object.  Categorical types are cached and are globally
+available throughout a program.
+
+For example, the following bit of magic works:
+
+     Category foo("Major Cities");
+     catcode_t y = foo.code("London");    // y now also equals 1.
+
+Each category definition is assigned a unique key, that can also be
+used to construct a Category object.
+
+     catkey_t city_key = foo.category_key();
+     Category bar(city_key);
+     catcode_t z = bar.code("London");    // z, like all the rest, equals 1.
+
+A few notes:
+
+* If you give an illegal or out-of-bound value to the code() or
+  decode() functions, an exception will be thrown.
+
+* If you construct a Category object with an invalid category name or
+  catkey_t value, an exception will *not* be thrown during object
+  construction.  Instead, an exception will be thrown the first time
+  you try to actually do anything with the object.  You can use the
+  valid() function to test whether or not you have constructed a
+  well-formed Category object.
+
+* If the destructor is called for a non-empty category that has *not*
+  been saved with complete_category(), a warning is printed to stderr.
+  (Maybe an exception should be thrown, maybe it should fail
+  silently... I haven't decided what is the most useful behavior yet.)
+  
+* If you call complete_category() on a Category with less that two
+  elements, an exception is thrown.
+
+* If you add() the same element twice to the same Category, an
+  exception is *not* thrown.  This is meant to make your life
+  easier...
+
+
+Goose's CategoricalSet Class
+----------------------------
+ 
+A CategoricalSet class is provided to serve as a container for an
+ordered set of observations that correspond to a single Category
+class.  The associated Category must be specified when the
+CategoricalSet is constructed.  Each of the following would create a
+CategoricalSet for a list of cities.
+
+     // Assume that the Category cities is defined as above.
+
+     CategoricalData method_one(cities);
+     CategoricalData method_two("Major Cities");
+     CategoricalData method_three(cities.category_key());
+
+The add() function inserts an observation to the container.  Elements
+can be added either by name or by code number.
+
+    // This adds "London" twice.
+    catcode_t x = method_one.code("London");
+    method_one.add(x);    
+    method_one.add("London");
+
+The i-th element of a CategoricalSet can be accessed either by name or
+by code.
+
+     catcode_t y = method_one.data(0);
+        string s = method_one.item(0);
+
+The CategoricalData class also keeps track of the frequencies of the
+elements within it (i.e. the number of times each element appears
+inside).  Frequencies can be requested either by code or by name.
+
+     // If x is defined as above, this yields N1 = N2 = 2.
+     size_t N1 = method_one.frequency(x);
+     size_t N2 = method_one.frequency("London");
+
+You can perform all of the usual operations to CategoricalData.  It
+can be scrambled, permuted, sorted, etc.
+
+
+

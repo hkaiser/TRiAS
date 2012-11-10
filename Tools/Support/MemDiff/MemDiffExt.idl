@@ -1,0 +1,29 @@
+// @doc
+// @module MemDiffExt.idl | IDL source for MemDiffExt.ext
+
+// This file will be processed by the MIDL tool to
+// produce the type library (MemDiffExt.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(7E4D842B-8E98-49E2-A17A-A6568872DB29),
+	version(1.0),
+	helpstring("MemDiffExt 1.0 Type Library")
+]
+library MemDiffExt
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+// der eigentliche TRiAS-Zusatzmodul
+	[
+		uuid(DC7B45F9-1BF2-411E-A58F-87428655D45F),
+		helpstring("MemDiffExt Class")
+	]
+	coclass MemDiffExt
+	{
+		[default] interface IUnknown;
+	};
+};

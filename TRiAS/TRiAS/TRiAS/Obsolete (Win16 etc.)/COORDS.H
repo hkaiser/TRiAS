@@ -1,0 +1,17 @@
+#define AUSSCHNITTDLG          94
+#define IDB_AUSSCHNITTHELP     2754
+#define IDC_NEWMASSTAB         2774
+#define IDE_MITTELHOCHWERT     2778
+#define IDE_MITTELRECHTSWERT   2779
+#define IDE_OBENHOCHWERT       2750
+#define IDE_OBENRECHTSWERT     2751
+#define IDE_UNTENHOCHWERT      2752
+#define IDE_UNTENRECHTSWERT    2753
+#define IDR_AUSSCHNITT         2771
+#define IDR_MASSTAB            2772
+#define IDT_DELIMITER          955
+#define IDT_DELTAX             953
+#define IDT_DELTAY             954
+#define IDT_KOORDX             951
+#define IDT_KOORDY             952
+#define KOORDINATEN            65

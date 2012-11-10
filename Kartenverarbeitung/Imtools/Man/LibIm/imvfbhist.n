@@ -1,0 +1,352 @@
+'\"t
+.de Cb		\" Courier Begin
+.in +0.25i
+.ft CW
+\s-1
+.nf
+..
+.de Ce		\" Courier End
+.ft R
+.fi
+\s+1
+.in -0.25i
+..
+.if t .TH IMVFBHIST 3IM "December 2, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY" 
+.if n .TH IMVFBHIST 3IM "December 2, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImVfbHist, ImVfbHistTableFree - compute an image histogram and free its data
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+ImHistTable *ImVfbHist( vfb, fieldMask, sort )
+        ImVfb *vfb;           
+        int fieldMask;        
+        boolean sort;           
+
+void ImVfbHistTableFree( table )
+	ImHistTable *table;
+.fi
+\fR
+.SH DESCRIPTION
+\fBImVfbHist\fR computes a color histogram for pixels in the \fIvfb\fR
+by counting the number of occurrences of each unique color in the image.
+A pointer to a \fBImHistTable\fR struction containing
+a table of the computed data is returned as the function's
+value.  If \fIsort\fR is
+\fBTRUE\fR, the table of data will be sorted from most-often occurring
+colors to least-often occuring colors.
+.LP
+\fBImVfbHistTableFree\fR deallocates space associated with a
+\fBImHistTable\fR histogram occurrence table returned by a previous
+call to \fBImVfbHist\fR.
+.LP
+Histograms are computed by counting each unique color in the image.
+For instance, in an RGB image, the red, green, and blue fields act together
+to define a single color.  A histogram on these three fields would consider
+each unique triplet as a separate color and enter it in the returned histogram
+data table.
+.LP
+Histograms may be computed on any subset of the fields in the \fIvfb\fR
+by setting \fIfieldMask\fR to the fields of interest.  \fIfieldMask\fR is
+a bitmask of one or more of the following:
+.RS 0.5i
+.LP
+.TS
+l l.
+\fIfieldMask\fR	\fBUse\fR
+_
+\fBIMRED\fR	Compute on red values
+\fBIMGREEN\fR	Compute on green values
+\fBIMBLUE\fR	Compute on blue values
+_
+\fBIMMONO\fR	Compute on monochrome values
+\fBIMGRAY\fR	Compute on grayscale values
+\fBIMGREY\fR	Compute on grayscale values
+\fBIMINDEX8\fR	Compute on color indexes
+\fBIMINDEX16\fR	Compute on color indexes
+\fBIMALPHA\fR	Compute on alpha values
+_
+\fBIMHUE\fR	Compute on hue values
+\fBIMSATURATION\fR	Compute on saturation values
+\fBIMINTENSITY\fR	Compute on intensity values
+.TE
+.RE
+.LP
+Fields selected by \fIfieldMask\fR must exist in the \fIvfb\fR.  Hue,
+saturation, and intensity virtual fields may be used to compute histograms
+in the HSI color space on \fBIMVFBRGB\fR images.
+.LP
+Histograms may not be computed that mix color spaces/representations.  For
+instance, histograms on \fBIMRED | IMINDEX8\fR or \fBIMGREEN | IMHUE\fR
+don't make sense.
+.LP
+\fBImVfbHist\fR currently does not support computation of histograms on
+\fBIMZ\fR, \fBIMWPROT\fR, \fBIMIDATA\fR, or \fBIMFDATA\fR fields.
+.LP
+Histogram results are returned as a \fBImHistTable\fR structure allocated
+by \fBImVfbHist\fR.  The \fBImHistTable\fR structure contains header fields,
+followed by tables listing color values and the number of occurrences of
+each in the image.
+.RS 0.5i
+.LP
+.nf
+#define IMMAXFIELDS   20
+typedef struct ImHistTable
+{
+        int     imhist_nEntries;
+        int     imhist_fieldMask;
+        int     imhist_nFields;
+        uint32 *imhist_nOccur;
+        union
+	{
+                uint16 *imhist_val16;
+                uchar  *imhist_val8;
+                float  *imhist_valFloat;
+	} imhist_values[IMMAXFIELDS];
+} ImHistTable;
+.fi
+.RE
+.LP
+The \fBimhist_nEntries\fR field gives the number of unique color entries
+found and listed in the occurrence list.
+.LP
+The \fBimhist_fieldMask\fR field gives the fields on which the histogram
+was computed.  This will be identical to the \fIfieldMask\fR argument
+given to \fBImVfbHist\fR.
+.LP
+The \fBimhist_nFields\fR field gives the number of fields involved in
+the histogram.  If \fIfieldMask\fR is \fBIMRED | IMGREEN\fR, for instance,
+then the number of fields is 2.  If \fIfieldMask\fR is \fBIMHUE | IMSATURATION
+| IMINTENSITY | IMALPHA\fR, the number of fields is 4, and so on.
+.LP
+The remaining structure fields make up a set of parallel arrays for
+the histogram occurrence table listing
+each unique color in the image and the number of times it occurs.  Each of
+these list fields are dynamically allocated arrays created and set by
+\fBImVfbHist\fR.  They may be indexed like any C array.  For instance, to
+get the number of times the fourth most-often occuring color occurs in the
+image, reference \fBmyHistTable->imhist_nOccur[3]\fR.
+.LP
+The \fBimhist_nOccur\fR list gives the color occurrence count for each
+color given by the appropriate combination of \fIimhist_values\fR lists.
+.LP
+The \fIimhist_values\fR array of unions selects between multiple lists
+for different field types and different fields making up a color for the
+histogram.  The array is most easily referenced using a set of shorthands
+declared in \fBim.h\fR:
+.RS 0.5i
+.LP
+.TS
+l l.
+\fBShorthand\fR	\fBAction\fR
+_
+imhist_red	imhist_values[IMHISTRED].imhist_val8
+imhist_blue	imhist_values[IMHISTBLUE].imhist_val8
+imhist_green	imhist_values[IMHISTGREEN].imhist_val8
+imhist_alpha	imhist_values[IMHISTALPHA].imhist_val8
+imhist_hue	imhist_values[IMHISTHUE].imhist_valFloat
+imhist_saturation	imhist_values[IMHISTSATURATION].imhist_valFloat
+imhist_intensity	imhist_values[IMHISTINTENSITY].imhist_valFloat
+imhist_mono	imhist_values[IMHISTMONO].imhist_val8
+imhist_gray	imhist_values[IMHISTGRAY].imhist_val8
+imhist_grey	imhist_values[IMHISTGREY].imhist_val8
+imhist_index8	imhist_values[IMHISTINDEX8].imhist_val8
+imhist_index16	imhist_values[IMHISTINDEX16].imhist_val16
+.TE
+.RE
+.LP
+For instance, to get the red component of the 4th most-often occuring color
+in an RGB histogram, use:  \fBmyHistTable->imhist_red[3]\fR.
+.LP
+Structure array pointers for fields not computed in the histogram will be
+NULL pointers.  For instance, if you computed an RGB histogram, then
+\fBmyHistTable->imhist_index8\fR will be a NULL pointer because it was not
+used in the histogram.
+.SH NOTES
+\fBImVfbHist\fR computes correlated field histograms.  Each
+color in the output histogram is a unique combination of the selected input
+fields.  For instance, say an image has the following RGB colors:
+.RS 0.5i
+.LP
+.TS
+l l l.
+RED	GREEN	BLUE
+_
+0	0	0
+255	0	0
+0	255	255
+128	128	255
+255	255	255
+.TE
+.RE
+.LP
+A histogram on the red field alone would report that there are 3 different
+unique values:  0, 128, and 255.  Similarly, independent single-field
+histograms on the green and blue fields would report that green has 0, 128, and
+255 as unique values, and blue has just 0 and 255 as unique values.
+.LP
+A \fBcorrelated\fR histogram on all three fields, however, would report each
+unique combination of red, green, and blue field values that occur in the
+image.  The answer would be the table listed above.  In the table the second
+and fifth colors both have red values of 255, but differ in their green and
+blue components.  This makes them different colors, and thus different entries
+in the histogram.
+.LP
+Non-correlated single-field histograms are handy if you just want to see how
+many pixels have some amount of red in them.  However, what if you want to
+know how many have yellow in them?  For that you need to correlate a histogram
+showing red \fBand\fR green values.  Independent red and green histograms
+wouldn't show you anything useful.
+.LP
+\fBImVfbHist\fR may be used to compute either single-field histograms or
+multiple-field correlated histograms.  To compute single-field histograms on
+red and green, for instance, call \fBImVfbHist\fR twice,
+once with \fIfieldMask\fR set to \fBIMRED\fR,
+and once with \fIfieldMask\fR set to \fBIMGREEN\fR.
+Alternatively, to compute a
+red-green correlated histogram, call \fBImVfbHist\fR with \fIfieldMask\fR
+set to the bitwise OR of both fields:  \fBIMRED | IMGREEN\fR.
+.LP
+Computing single-field histograms is very quick and doesn't use much memory.
+Computing multiple-field correlated histograms can take quite a bit longer
+and use a lot more memory, depending upon the number of correlated fields,
+the size of the image, and the number of unique color combinations in the
+image.  The following table provides an idea of the memory explosion that
+can result when computing correlated histograms.  The table's values are
+based upon a worst case 1024 x 1280 image with every pixel a different color.
+.RS 0.5i
+.LP
+.TS
+l l l.
+\fBNumber	Color	Internal\fR
+\fBof Fields	Space	Memory Use\fR
+_
+1	RGBA	2K Bytes
+1	HSI	10K Bytes
+2	RGBA	328K Bytes
+2	HSIA	4,000K Bytes
+3	RGBA	9,175K Bytes
+3	HSI	20,972K Bytes
+4	RGBA	10,486K Bytes  
+4	HSIA	22,283K Bytes
+.TE
+.RE
+.LP
+The memory use reported above is for intermediate data structures
+internal to \fBImVfbHist\fR.  This does not include storage in memory of the
+image itself, nor any of the other administrative data structures needed.
+.LP
+Of note on this table is the use of some 22Mb for internal data when
+computing an HSI-Alpha correlated histogram on a pathological case
+1280 x 1024 image.  If your host doesn't have 22Mb (plus overhead)
+of memory, or the equivalent in swap space, \fBImVfbHist\fR will be unabled to
+compute the histogram.  Every effort has been made in \fBImVfbHist\fR to keep
+memory use to a minimum.  This high use of memory for correlated histograms
+cannot be avoided without resorting to temporary files for data storage,
+and the attendant sever execution speed impact.
+.LP
+Please note again that this table was produced for a pathological image
+that had a different color for every pixel.  Most images have considerably
+fewer colors.  In typical use, memory will not be a problem.
+.LP
+When you're done with the data, be sure to deallocate the \fBImHistTable\fR
+by calling \fBImVfbHistTableFree\fR.  There's quite a lot
+of memory used up by this table and calling \fIfree\fR(3) directly won't
+get rid of most of it!
+.LP
+Computation time for correlated histograms also goes up with the number
+of correlated fields, the size of the image, and the number of unique colors.
+The following table shows compute times for \fBImVfbHist\fR on
+a Silicon Graphics Indigo.
+.RS 0.5i
+.LP
+.TS
+c c c c c c c
+c c c c c c c
+l l l l l l l.
+\fBSize	Field	# of Unique	Compute\fR
+\fB(pixels)	Choice	Colors	(sec)\fR
+_
+64,000	R	7	<1
+64,000	RGB	14	<1
+64,000	H	10	<1
+64,000	HSI	14	1
+_
+90,000	R	140	<1
+90,000	RGB	256	1
+90,000	H	85	<1
+90,000	HSI	256	5
+_
+490,000	R	254	1
+490,000	RGB	149,942	210
+490,000	H	355	5
+490,000	HSI	149,942	345
+_
+1,000,000	R	217	2
+1,000,000	RGB	7,256	9
+1,000,000	H	284	7
+1,000,000	HSI	7,256	32
+.TE
+.RE
+.LP
+Column one shows the number of pixels in the test image.  Column two gives
+the fields used in computing the histogram.  Column three shows the number
+of unique colors found.  Column four shows execution time
+for computing the histogram.
+.LP
+This table illustrates that larger images with larger numbers of unique
+colors drastically increase the time it takes to compute a correlated
+histogram.  This is to be expected.  The table also shows that computing
+in the HSI domain, instead of RGB, takes longer.  This is due to the use
+of floating point computations and RGB-to-HSI conversions everywhere.
+.SH EXAMPLES
+Compute an RGB histogram and print it out to \fBstdout\fR:
+.RS 0.5i
+.Cb
+ComputeAndPrint( vfb )
+	ImVfb *vfb;
+{
+	ImHistTable *myTable;
+	int i;
+
+	myTable = ImVfbHist( vfb, IMRED|IMGREEN|IMBLUE, TRUE );
+	for ( i = 0; i < myTable->imhist_nEntries; i++ )
+	{
+		printf( "%6d   (%d,%d,%d)\n",
+			myTable->imhist_nOccur[i],
+			myTable->imhist_red[i],
+			myTable->imhist_green[i],
+			myTable->imhist_blue[i] );
+	}
+	ImVfbHistTableFree( myTable );
+}
+.SH RETURNS
+Upon success, \fBImVfbHist\fR returns a pointer to an \fBImHistTable\fR
+structure.
+Upon failure, \fBNULL\fR is returned and \fBImErrNo\fR set
+to one of the following:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEMALLOC	Cannot allocate enough memory
+IMEFIELD	\fIfieldMask\fR is bad
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH SEE ALSO
+\fBimhist\fR(1IM),
+\fBImIntro\fR(3IM),
+\fBImErrNo\fR(3IM),
+\fBImVfbStat\fR(3IM)
+.SH AUTHOR
+Dave Nadeau and Chris Groening
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

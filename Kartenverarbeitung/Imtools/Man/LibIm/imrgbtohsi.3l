@@ -1,0 +1,66 @@
+
+
+
+IMRGBTOHSI(3IM)        SDSC IMAGE LIBRARY         IMRGBTOHSI(3IM)
+
+
+
+NAME
+     ImRgbToHsi - Convert an RGB triplet to an HSI triplet
+
+SYNOPSIS
+     #include "im.h"
+
+     void ImRgbToHsi( rgb, hsi )
+          int  rgb[3];
+          float     hsi[3];
+
+
+DESCRIPTION
+     ImRgbToHsi converts an RGB triplet in _r_g_b to an HSI  triplet
+     returned in _h_s_i.
+
+     Maximum and minimum values for the  different  color  values
+     are:
+
+           Channel     Minimum   Maximum    Type
+8          ________________________________________
+          red          0         255       Integer
+          green        0         255       Integer
+          blue         0         255       Integer
+          hue          0.0       360.0     Integer
+          saturation   0.0       1.0       Float
+          intensity    0.0       1.0       Float
+
+SEE ALSO
+     ImIntro (3IM), ImErrNo (3IM), ImHsiToRgb (3IM)
+
+AUTHOR
+     Mike Bailey
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+9
+
+
+SDSC               Last change: August 7, 1992                  1
+
+
+

@@ -1,0 +1,153 @@
+/* Routinen, die gesonderte Fehlerbehandlung ermoeglichen       */
+/* File: ERRFKT.C                                               */
+
+#ifdef sccs
+static char SccsId[] = "ZIPEDB: @(#)errfkt.c   2.6  90/04/25";
+#endif
+
+#ifdef MSWIND
+#include <windows.h>
+#endif
+#include <stdio.h>
+#include <malloc.h>
+#include "dbtypes.h"
+#include "errdef.h"
+#include "dioexter.h"
+#include "dbproto.h"
+#include "protos.h"
+
+ERR_ENTRY FAR *err_table;	 /* Fehlertabelle */
+
+unsigned short error_count;        /* Anzahl der registrierten Fehlerroutinen */
+unsigned short max_error;          /* aktuelle maximale Groesse der Tabelle */
+
+// statische Funktionen
+short FUNCTYPE err_comp (void _huge *, void _huge *);
+
+INT FUNCTYPE
+errfkt_ (errcode, errmode, errfunc)     /* F77 rufbar */
+INT *errcode, *errmode;
+INT_FUNC *errfunc;
+{
+INT_FUNC *dummy;
+
+        if (*errmode == E_DEFAULT || *errmode == E_IGNORE)
+        /* wenn keine Funktionsadresse uebergeben ist */
+                return ((INT)err_install (*errcode, (INT_FUNC *)*errmode, &dummy));
+        else
+                return ((INT)err_install (*errcode, errfunc, &dummy));
+}
+
+int FUNCTYPE
+err_install (err_code, error_func, old_errfunc)
+INT err_code;           /* Fehlercode */
+INT_FUNC *error_func;	/* Fehlerbehandlungsroutine */
+INT_FUNC **old_errfunc; /* alte Einstellung */
+{
+ERR_ENTRY error;
+INT_FUNC *oldFunc;
+#ifdef MSWIND
+HANDLE handle;
+#endif
+
+	if (err_table == NULL) {
+        /* erster Aufruf -> Datenbereiche initialisieren */
+#ifdef MSWIND
+		handle = GlobalAlloc (GHND, ERROR_STEP*sizeof(ERR_ENTRY));
+		if (handle == NULL)
+			return (db_error (S_NOMEMORY, ERRINST));
+		err_table = (ERR_ENTRY FAR *)GlobalLock (handle);
+#else  // MSWIND
+		err_table = (ERR_TABLE)calloc(ERROR_STEP, sizeof(ERR_ENTRY));
+#endif // MSWINMD
+		if (err_table == NULL)
+			return (db_error (S_NOMEMORY, ERRINST));
+		error_count = 0;
+                max_error = ERROR_STEP;
+        } else if (error_count == max_error) {
+	/* Feld voll -> erweitern */
+#ifdef MSWIND
+		handle = (HANDLE)GlobalHandle (HIWORD(err_table));
+		GlobalUnlock (handle);
+		handle = GlobalReAlloc (handle,
+				    (max_error+ERROR_STEP)*sizeof(ERR_ENTRY),
+				    GMEM_MOVEABLE);
+		if (handle == NULL)
+			return (db_error (S_NOMEMORY, ERRINST));
+		err_table = (ERR_ENTRY FAR *)GlobalLock (handle);
+#else  // MSWIND
+		err_table = (ERR_TABLE)realloc(err_table,
+				(max_error+ERROR_STEP)*sizeof(ERR_ENTRY));
+#endif // MSWIND
+		if (err_table == NULL)
+                        return (db_error (S_NOMEMORY, ERRINST));
+		max_error += ERROR_STEP;
+        }
+
+	oldFunc = err_func (err_code);
+	error.error_code = (short)err_code;
+        error.error_handler = error_func;
+
+        if (oldFunc == (INT_FUNC *)E_DEFAULT) {
+                if (error_func != (INT_FUNC *)E_DEFAULT) 
+                /* neu installieren */
+			binary ((char *)&error, (char *)err_table, &error_count,
+                                sizeof(ERR_ENTRY), err_comp, ET_INSTALL);
+        } else {
+        /* Handler existiert bereits --> loeschen */
+		binary ((char *)&error, (char *)err_table, &error_count, sizeof(ERR_ENTRY),
+                        err_comp, ET_DELETE);
+                if (error_func != (INT_FUNC *)E_DEFAULT) 
+                /* neuen Handler installieren */
+			binary ((char *)&error, (char *)err_table, &error_count,
+                                sizeof(ERR_ENTRY), err_comp, ET_INSTALL);
+        }
+	if (old_errfunc != NULL)
+	// vorhergehenden Zustand liefern
+		*old_errfunc = oldFunc;
+
+return (db_status = S_OKAY);
+}
+
+/* Funktion, die Art der Fehlerbehandlung fuer errcode feststellt */
+int FUNCTYPE
+err_type (errcode)
+INT errcode;
+{
+register ERR_ENTRY FAR *error;
+
+	error = binary ((char FAR *)&errcode, (char FAR *)err_table, &error_count, sizeof(ERR_ENTRY),
+                        err_comp, ET_FIND);
+	if (error == NULL)
+                return (E_DEFAULT);     /* kein Handler installiert */
+	if (error->error_handler == E_IGNORE)
+                return (E_IGNORE);      /* Fehler ignorieren */
+       
+return (E_INSTALLED);   /* eigener Handler installiert */
+}
+
+
+/* Funktion, die Fehlerbehandlungsroutine liefert */
+INT_FUNC *
+err_func (errcode)
+INT errcode;
+{
+register ERR_ENTRY FAR *error;
+
+	error = binary ((char FAR *)&errcode, (char FAR *)err_table, &error_count, sizeof(ERR_ENTRY),
+                        err_comp, ET_FIND);
+	if (error == NULL)
+                return ((INT_FUNC *)E_DEFAULT);
+
+return ((INT_FUNC *)error->error_handler);
+}
+
+/* Vergleichsfunktion fuer binary */
+static short FUNCTYPE
+err_comp (frst, sec)
+void FAR *frst, FAR *sec;
+{
+        return (*(short *)frst - *(short *)sec);
+}
+
+

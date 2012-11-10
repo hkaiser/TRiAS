@@ -1,0 +1,35 @@
+HKCR 
+{
+	TRiASUI.Coordsystem.1 = s 'TRiAS® Koordinatensystembrowser' 
+	{
+		CLSID = s '{AE998A04-1127-11D2-8F75-0060085FC1CE}'
+		'Insertable'
+	}
+	TRiASUI.Coordsystem = s 'TRiAS® Koordinatensystembrowser' 
+	{
+		CurVer = s 'TRiASUI.Coordsystem.1'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {AE998A04-1127-11D2-8F75-0060085FC1CE} = s 'TRiAS® Koordinatensystembrowser' 
+		{
+			ProgID = s 'TRiASUI.Coordsystem.1'
+			VersionIndependentProgID = s 'TRiASUI.Coordsystem'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%' 
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			ForceRemove 'Control'
+			ForceRemove 'Programmable'
+			ForceRemove 'Insertable'
+			ForceRemove 'ToolboxBitmap32' = s '%MODULE%, 2'
+			'MiscStatus' = s '0' 
+			{
+			    '1' = s '131473'
+			}
+			'TypeLib' = s '{2DF06A03-E3EF-11D1-8F3E-0060085FC1CE}'
+			'Version' = s '1.0'
+		}
+	}
+}

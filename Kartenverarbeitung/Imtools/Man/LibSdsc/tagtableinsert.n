@@ -1,0 +1,86 @@
+'\"t
+.TH TAGTABLEINSERT 3TAG "July 1990" "SDSC" "TAG TABLE"
+.SH NAME
+TagTableInsert - insert a tag table entry into a tag table
+.SH SYNOPSIS
+\fB
+.nf
+#include "sdsc.h"
+
+extern int TagErrNo;
+
+int TagTableInsert( tagTable, afterNthEntry, tagEntry )
+	TagTable *tagTable;
+	int afterNthEntry;
+	TagEntry *tagEntry;
+.fi
+\fR
+.SH DESCRIPTION
+\fITagTableInsert\fR adds the \fItagEntry\fR to the \fItagTable\fR immediately
+after the \fIafterNthEntry\fR in the table.
+The \fInthEntry\fR and \fInthOccur\fR fields of the \fItagEntry\fR are set.
+.LP
+To insert before the first entry in the table, pass -1 for the
+\fIafterNthEntry\fR argument.
+.SH NOTES
+For a description of the fields of a tag table entry, see the \fBman\fP page
+on \fITagEntryAlloc\fR(3TAG).
+.LP
+Inserting an entry into the tag table places the entry after the
+\fIafterNthEntry\fR entry in the table, giving the new entry an
+\fInthEntry\fR field of \fIafterNthEntry+1\fR.
+The first entry in the table has an \fInthEntry\fR field of 0.
+The second entry in the table has an \fInthEntry\fR of 1, and so on.
+.LP
+Inserting an entry causes all further entries in the table to move down
+by one.
+This increases their \fInthEntry\fR fields by one each.
+.LP
+Tag entries may be retrieved based on their entry number using
+\fITagTableQLinear\fR(3TAG), which treats the tag table like a linear list.
+Tag entries may be deleted, and replaced based on their
+entry number using \fITagTableDelete\fR(3TAG) and \fITagTableReplace\fR(3TAG).
+Tag entries may be appended to a table using \fITagTableAppend\fR(3TAG).
+.LP
+Inserting an entry into the tag table also adds it to the list of occurrences
+of entries with the same tag.
+This gives it the highest \fInthOccur\fR field of any entry in the table
+with the same tag.
+The first entry in the table with this tag has an \fInthOccur\fR field of 0.
+The second entry in the table with this tag has an \fInthOccur\fR
+of 1, and so on.
+.LP
+Tag entries may be retrieved based on their tag and occurrence number using
+\fITagTableQDirect\fR(3TAG), which treats the tag table like a hash table.
+.SH RETURNS
+On success, \fITagTableInsert\fR returns the new total number of entries in
+the tag table.
+On failure, -1 is returned and \fITagErrNo\fR set to:
+.sp
+.ta 2i
+.nf
+TAGEBADNTHENTRY	The nth entry argument is < -1 or > 
+	the size of the table
+TAGEMALLOC	Cannot allocate enough memory
+TAGENULLTAGENTRY	The tag entry argument is bad
+TAGENULLTAGTABLE	The tag table argument is bad
+.SH SEE ALSO
+TagTableAppend(3TAG),
+TagTableDelete(3TAG),
+TagEntryAlloc(3TAG),
+TagEntryFree(3TAG),
+TagTableQDirect(3TAG),
+TagEntryQNthEntry(3TAG),
+TagEntryQNthOccur(3TAG),
+TagTableQLinear(3TAG),
+TagTableQNEntry(3TAG),
+TagTableReplace(3TAG),
+TagTableAlloc(3TAG),
+TagTableFree(3TAG)
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

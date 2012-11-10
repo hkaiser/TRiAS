@@ -1,0 +1,198 @@
+
+
+
+IMVFBRESIZE(3IM)       SDSC IMAGE LIBRARY        IMVFBRESIZE(3IM)
+
+
+
+NAME
+     ImVfbResize - Change  the  resolution  of  a  virtual  frame
+     buffer
+
+SYNOPSIS
+     #include "im.h"
+
+     ImVfb *ImVfbResize( srcVfb, algorithm, dstVfb, width, height )
+          ImVfb *srcVfb ;
+          int algorithm ;
+          ImVfb *dstVfb ;
+          int width, height ;
+
+
+DESCRIPTION
+     ImVfbResize increases or decreases the width and height of a
+     virtual  frame  buffer  and returns a pointer to the resized
+     destination VFB.
+
+     _s_r_c_V_f_b is the VFB to be copied and resized.  _s_r_c_V_f_b is unal-
+     tered by the operation.
+
+     _w_i_d_t_h and _h_e_i_g_h_t  are  the  dimensions  of  the  destination
+     resized VFB.
+
+     _a_l_g_o_r_i_t_h_m is what algorithm to use to change the resolution.
+     Legal values of _a_l_g_o_r_i_t_h_m are:
+
+              Value                  Meaning
+8          ______________________________________________
+          IMVFBBILINEAR   Perform bilinear interpolation
+          IMVFBPIXELREP   Perform pixel replication
+
+     _d_s_t_V_f_b is the VFB to contain the resized image.   If  _d_s_t_V_f_b
+     is  the constant IMVFBNEW, a new VFB is allocated as _w_i_d_t_h _x
+     _h_e_i_g_h_t pixels with the same fields as the _s_r_c_V_f_b.   The  new
+     VFB is returned.
+
+     If _d_s_t_V_f_b is not IMVFBNEW, it must be _w_i_d_t_h _x _h_e_i_g_h_t in size
+     and have the same fields as _s_r_c_V_f_b.
+
+NOTES
+  Increasing Image Size
+     Increasing the size of an image increases the number of pix-
+     els  in  the  image,  obviously.  The colors used by the new
+     additional pixels are determined by  the  resolution  change
+     algorithm used.
+
+     IMVFBPIXELREP performs the pixel replication, a simple  form
+     of  resolution change.  Using pixel replication, doubling an
+     image's size fills in new pixels by copying, or replicating,
+     adjacent  pixels.  For instance, an input image has the fol-
+     lowing scanline:
+
+
+
+SDSC              Last change: August 25, 1992                  1
+
+
+9
+
+
+IMVFBRESIZE(3IM)       SDSC IMAGE LIBRARY        IMVFBRESIZE(3IM)
+
+
+
+          A C E G I K M
+
+     Each letter is a different color in the  image.   When  this
+     image is doubled in size using pixel replication, each pixel
+     on the scanline becomes  two  pixels,  both  with  the  same
+     color.  The resized scanline will be:
+
+          A A C C E E G G I I K K M M
+
+     This has an effect similar to looking at the  image  with  a
+     magnifying  glass.   Small  pixels become big pixels.  Small
+     jaggies become big jaggies.
+
+     IMVFBPIXELREP may only be used when the new image width  and
+     height  are  each  multiples  of  the source image width and
+     height.  If the input _w_i_d_t_h or  _h_e_i_g_h_t  are  not  multiples,
+     ImVfbResize  returns  IMVFBNULL  and  sets  ImVfbErrNo to an
+     error code.
+
+     IMVFBBILINEAR performs bilinear  interpolation  to  increase
+     the  image  size.  This method resamples the source image by
+     overlaying atop the source image a  mathematical  grid  with
+     _w_i_d_t_h  _x  _h_e_i_g_h_t points.  This gives one grid point for each
+     pixel in the destination image.  The source  image  is  then
+     sampled  at  each  grid  point  to determine the destination
+     image's pixel colors.  Where grid points lie  directly  over
+     the center of a source pixel, the grid point's color is that
+     of the source pixel.  Where grid points lie  between  source
+     pixel  centers,  the  grid  point's  color  is determined by
+     linearly interpolating between adjacent pixel colors (verti-
+     cally  and  horizontally).  For instance, an input image has
+     the following scanline:
+
+          A C E G I K M
+
+     Each letter is a different color in the  image.   To  double
+     this  image's  size  a  mathematical grid will be overlayed.
+     Grid points will fall on the center of pixel 'A',  half  way
+     between  pixel  'A' and 'C', on the center of pixel 'C', and
+     so on.  Destination image pixels for grid points centered on
+     'A',  'C', 'E', etc, will have those pixel's colors.  Desti-
+     nation image pixels for grid points  in  between  'A',  'C',
+     'E', etc, will have colors interpolated between 'A' and 'C',
+     'C' and 'E', and so on.  The resized scanline will be:
+
+          A B C D E F G H I J K L M N
+
+     When using bilinear interpolation, the resized larger  image
+     will  appear  blury.   Hard  edges become softer and jaggies
+     less obvious.
+
+
+
+
+
+2                 Last change: August 25, 1992               SDSC
+
+
+
+
+
+
+IMVFBRESIZE(3IM)       SDSC IMAGE LIBRARY        IMVFBRESIZE(3IM)
+
+
+
+     IMVFBBILINEAR may be used for scaling an  image  up  by  any
+     arbitrary scaling factor.  It is not limited to multiples of
+     the source image size, as is IMVFBPIXELREP.
+
+  Decreasing Image Size
+     Decreasing the size of an image decreases the number of pix-
+     els in the image, of course.  The choice of how to color the
+     pixels that  remain  depends  upon  the  resizing  algorithm
+     chosen.
+
+     IMVFBPIXELREP is only applicable to increasing  image  size.
+     The  algorithm  may not be used when the image size is being
+     decreased.  If selected and _w_i_d_t_h or _h_e_i_g_h_t  are  less  than
+     that  of the source image, ImVfbResize returns IMVFBNULL and
+     sets ImVfbErrNo to an error code.
+
+     IMVFBBILINEAR may be used to decrease an image's size  using
+     bilinear  interpolation.   Pixel  values  in  the  resulting
+     smaller image will be determined  by  interpolating  between
+     pixel  values  in the source image in much the same way used
+     when increasing an image's size.
+
+RETURNS
+     Upon success, ImVfbResize returns a pointer to the  destina-
+     tion  VFB.  Upon failure, IMVFBNULL is returned, and ImErrNo
+     set to one of the following:
+
+          IMEBADALGORITHM   A legal algorithm was not specified
+          IMEHEIGHT         Height less than source VFB on PIXELREP
+          IMEMALLOC         Cannot allocate enough memory for the new VFB
+          IMEPIXELREP       New size not exact multiple of source on PIXELREP
+          IMEWIDTH          Width less than source VFB on PIXELREP
+
+SEE ALSO
+     ImIntro (3M), ImErrNo (3M), imflip  (1IM),  imresize  (1IM),
+     imroll  (1IM), imrotate (1IM), imshear (1IM), imscale (1IM),
+     ImVfbFlip (3IM), ImVfbRoll (3IM), ImVfbRotate (3IM), ImVfbX-
+     Shear (3IM), ImVfbYShear (3IM)
+
+AUTHORS
+     Mike Bailey, Dave Nadeau, and Chris Groening
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+SDSC              Last change: August 25, 1992                  3
+
+
+

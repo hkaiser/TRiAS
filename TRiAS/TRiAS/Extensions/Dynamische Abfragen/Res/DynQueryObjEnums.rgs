@@ -1,0 +1,18 @@
+HKCR
+{
+	TRiASEx.DynQueryObjEnums.1 = s 'DynQueryObjEnums Class'
+	{
+		CLSID = s '{079638E5-3123-101C-BB62-00AA0018497C}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {079638E5-3123-101C-BB62-00AA0018497C} = s 'DynQueryObjEnums Class'
+		{
+			ProgID = s 'TRiASEx.DynQueryObjEnums.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+}

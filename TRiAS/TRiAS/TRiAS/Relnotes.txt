@@ -1,0 +1,482 @@
+-----------------------------------------------------------------------------
+TRiAS® Release notes version 2.00 - 29 Mai 1997 bis 11. Januar 1998
+Datei: RELNOTES.TXT
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+Verfahren zum Verwenden dieses Dokuments
+-----------------------------------------------------------------------------
+
+Wenn Sie README.TXT im Editor auf dem Bildschirm anzeigen möchten, maximieren Sie 
+das Editorfenster. Wählen Sie ggf. im Menu "Bearbeiten" den Punkt "Zeilenumbruch" 
+um das gesamte Dkument sehen zu können.
+
+Um README.TXT auszudrucken, laden Sie die Datei im Editor oder einem anderen
+Textverarbeitungsprogramm und klicken im Menü "Datei" auf "Drucken".
+
+
+-----------------------------------------------------------------------------
+Dieses Dokument enthält Bemerkungen zu speziellen Versionen von TRiAS® und
+besteht aus folgenden Kapiteln:
+-----------------------------------------------------------------------------
+
+	1.	Änderungen von Version 2.02 zu V2.03
+	2.	Änderungen von Version 2.03 zu V2.04
+	3.	Änderungen von Version 2.04 zu V2.05
+	4.	Änderungen von Version 2.05 zu V2.06
+	5.	Änderungen von Version 2.06 zu V2.07
+	6.	Änderungen von Version 2.07 zu V2.08
+	7.	Änderungen von Version 2.08 zu V2.09
+	8.	Änderungen von Version 2.09 zu V2.10
+
+
+-----------------------------------------------------------------------------
+1.	Änderungen von Version 2.02 zu 2.03
+-----------------------------------------------------------------------------
+
+1.1 Probleme beim Registrieren unter WinNT (V3.51 und V4.0) beseitigt, die 
+auftraten, wenn der aktuelle Nutzer keine Administratorrechte besitzt. 
+
+1.2 Im Installationspaket fehlte die Datei OLEPRO32.DLL (welche standardmäßig 
+erst bei Windows OSR2 ausgeliefert wird). Dieser Fehler äußerte sich dadurch,
+daß nach der Installation von TRiAS® keine Symbolleisten angezeigt wurden.
+
+1.3 Im Installationspaket war eine veraltete Version des Modules MASCHBLD.EXT 
+enthalten, was zum Absturz bei der Linienvereinigung führen konnte.
+
+1.4 Neue Versionen der Import-Erweiterungen. Ein vollkommen unbedeutender Fehler
+wurde beseitigt, der sich in aüßerst seltenen Fällen ausgewirkt haben dürfte 
+indem sich die Importerweiterungen nicht bzw. unvollständig selbst registriert
+haben.
+
+1.5 Die Module Pufferung und Objektoperationen enthielten Probleme in der 
+Geometriebearbeitung, die sich selten als besondere Spezialfälle aüßerten.
+
+1.6 Auf Grund einer kleineren Inkompatibilität zwischen den verschiedenen 
+Versionen der Datei MFC42.DLL (Microsoft) wird diese ab dieser Installation 
+im TRiAS® Programmverzeichnis installiert, damit immer die richtige Version
+dieser Datei geladen wird.
+
+
+
+-----------------------------------------------------------------------------
+2.	Änderungen von Version 2.03 zu 2.04
+-----------------------------------------------------------------------------
+
+2.1 Im Dialog der während der Registrierung von TRiAS® angezeigt wird werden
+jetzt im Systemmode die Dateinamen der aktuell registrierten Dateien angezeigt.
+
+2.2 Als systemintern gekennzeichnete interne Objekteigenschaften (Merkmale)
+werden jetzt standardmäßig im Recherchefenster _nicht_ mehr angezeigt (Menupunkt
+'Anzeige.Thematische Attribute'. Um die bisherige Funktionalität wieder 
+zuzuschalten (Anzeigen aller internen Objekteigenschaften) muß in der 
+Systemregistry (Vorsicht!) folgender Eintrag hinzugefügt werden:
+\HKEY_CURRENT_USER\Software\uve\TRiAS\Config:ShowSysFeatures:REG_DWORD:1
+
+2.3 Probleme beim ASC-Import beseitigt, welche auftraten, wenn ein und der
+selbe Zahlencode sowohl als Identifikator als auch als Objektklassenschlüssel
+importiert werden sollte. Die Probleme äußerten sich darin, daß nach 
+'erfolgreichem' Import dieser Zahlencode doppelt als Objektklassenschlüssel 
+vergeben zu sein schien.
+
+2.4 Beim Neuzeichnen des Projektfensters gab es zuweilen Probleme im 
+Randbereich, die sich darin äußerten, daß ein oder zwei Pixel breite 
+Streifen nicht neu gezeichnet wurden, wodurch der Eindruck entstand, daß 
+Fenster, die normalerweise 'hinter' dem TRiAS® Fenster liegen durchscheinen 
+würden.
+
+2.5 Alle Flächenfüllmuster können jetzt transparent eingestellt werden.
+Ferner sind neue Flächenfüllmuster hinzugefügt worden (ab Füllmuster 56), die
+einer gleichmäßigen prozentualen Füllung entsprechen (ca. 5%, 10%, 20%, 25%, 
+30%, 40%, 50%, 60%, 70%, 75%, 80% und 90%).
+Mit diesem neuen 'transparent mode' können Flächen 'durchscheinend' dargestellt
+werden. Bisher waren für derartige Effekte lediglich einige Schraffuren 
+verfügbar.
+
+2.6 Ein Problem beseitigt, welches dazu geführt hat, daß beim Zeichnen 
+von Flächen mit Inseln ohne Füllmode (lediglich Zeichnen der Kontur) die 
+einzelnen Konturen durch einen Verbindungsstrich verbunden wurden.
+
+2.7 Während eines Visualisierungsimports auftretende Fehler wurden mit 
+eine falschen Zeilennummer ausgegeben (die ausgegebene Zeilennummer war doppelt
+so groß, wie die Nummer Zeile, in der der Fehler aufgetreten war). 
+
+2.8 Während des Visualisierungsexportes werden jetzt neben der aktuell
+exportierten Ansicht zusätzlich Informationen zum aktuell exportierten
+Visualisierungseintrag (Objektklasse bzw. Objekt) angezeigt.
+
+2.9 Die Option 'Existierende Beschreibungsdaten löschen' beim Import von
+Objektklassenschlüssel-Beschreibungen funktionierte nicht richtig. Von den 
+existierenden Beschreibungsdaten wurde lediglich der erste Eintrag gelöscht,
+alle nachfolgenden Einträge blieben unverändert.
+
+2.10 Die neue Dialogseite in Anpassen-Dialog zum Laden bzw. Entladen von
+Zusatzmodulen ist in erster Version fertiggestellt.
+
+2.11 Beim Zeichnen von aneinanderliegenden Rasterkarten trat bei kleinen
+Maßstäben unter Umständen der Effekt auf, daß schmale weiße Streifen zwischen
+den Rasterkarten sichtbar wurden. Dieser Effekt war auf einen Rundungsfehler 
+zurückzuführen und ist behoben.
+
+2.12 Es ist ein Kompatibilitätsmode implementiert worden, um zu gewährleisten, 
+daß Projekte, die mit TRiAS ab V2.00 bearbeitet wurden, auch mit vorherigen 
+Versionen von TRiAS (V1.30 - 16Bit) weiterbearbeitet werden können. 
+In diesem Mode sind Identifikatoren vollständig gleichgesetzt mit dem jeweils
+zugehörigen Objektklassenschlüssel.
+Dieser Kompatibilitätsmode muß beim Erzeugen eines neuen Projektes 
+('Zusätzliche Einstellungen für das neue Projekt') vorgegeben werden und
+kann nachfolgend weder zu- noch abgeschaltet werden.
+
+2.13 Beim Wechseln der aktuellen Ansicht über die Ansichten-ComboBox in einer
+der Werkzeugleisten wurde der Eintrag der Titelzeile nicht aktualisiert, sofern 
+dort durch '%v' die Anzeige der aktuellen Ansicht eingestellt war.
+
+2.14 In Ergänzung zu 2.12 wird zusätzlich die Verwendung der alten Punktsymbole
+erzwungen, da die standardmäßig ab V2.00 verwendeten Punktsymbole in der V1.30 
+nicht bzw. nicht vollständig unterstützt werden (Projekteigenschaten 
+'UseOldPointStyle':1).
+
+2.15 Fehler beim Import von Visualisierungsinformationen (*.vsc) behoben, der 
+u.U. dazu geführt hat, daß die Zeichenreihenfolge teilweise nicht richtig 
+importiert wurde. Dieser Fehler trat insbesondere bei Ansichten auf, die mehr 
+als 50 Objektklassen/Objekttypen enthalten.
+
+2.16 Fehler beim Import von Visualisierungsinformationen und Beschreibungsdaten 
+für Objektklassenschlüssel behoben, der in seltenen Fällen dazu geführt hat, daß
+die importierten Informationen nicht ordnungsgemäß zugeordnet wurden. Obwohl der
+Import augenscheinlich ohne Fehler durchgeführt werden konnte waren die 
+importierten Daten anschließend nicht im TRiAS-Projekt verfügbar.
+
+2.17 Ein völlig überarbeiteter Zusatzmodule 'Makroprogrammierung' ist in der 
+Installation enthalten. Hier eine kurze Übersicht über Änderungen, 
+Neuheiten, etc:
+
+Dem Makroeditor wurde ein Fenster (Baumstruktur vorhandener Makros) hinzugefügt, 
+in dem alle internen Makros eines TRiAS-Projektes enthalten und auswählbar sind.
+Neu sind neben den bereits bekannten allgemeinen Makros sogenannte 
+'Filtermakros' und 'Objekteigenschaftsmakros'.
+
+'Filtermakros' ermöglichen es, einzelne Objekte, die zu ausgewählten 
+Objektklassen gehören, zu bearbeiten. Diese sind nur editierbar angelegt 
+und müssen mittels eines anderen Makros, einer "Propertysequence", 
+oder anderweitig (siehe auch Menupunkt 'Makro.Filtermakros') gestartet werden.
+
+'Objekteigenschaftsmakros' gestatten es, neue Objekteigenschaften für 
+Objekte zu definieren. D.h. der Wert der neuen Objekteigenschaft für ein 
+Objekt wird durch das 'Objekteigenschaftsmakro' berechnet. Diese können 
+unter dem Menupunkt 'Extras.Anpassen' installiert und deinstalliert werden 
+und sind nach ihrer Installation gleichrangig mit allen anderen 
+Objekteigenschaften verfügbar (z.B. Recherchen etc.).
+
+Es ist jetzt möglich, "Untermakros" zu erzeugen und innerhalb eines 
+"Obermakros" zu starten. Damit muß nicht mehr der gesamte zu einem 
+Makroscript gehörige Makrotext an ein und der selben Stellen gespeichert 
+sein. Häufig benutzte Makroteile sind auslagerbar und damit leichter 
+wiederzuverwenden. Ebenfalls aufgehoben ist damit die Begrenzung, daß 
+ein Makrotext nicht größer als 32 kByte werden konnte.
+Der Name des Obermakros ist gleichzeitig der Name des "BasicScript-Projektes". 
+Startmakro ist dann immer das Obermakro (die jeweilige "Sub Main()"). 
+Es können alle TRiAS-Projekt-internen Makros mit ihren eigenen 
+Untermakros versehen werden.  
+
+Allgemeine Makros können außerhalb des Makroeditors über den Menupunkt 
+'Makro.Makros' und in dem daraufhin erscheinenenden Dialog ("Ausführen") 
+ausgeführt werden, ohne den Makroeditor zu benutzen. Darüberhinaus ist 
+es nun möglich, auch externe Makrodateien im gleichen Dialog 
+("Datei ausführen") zu starten. Ausführbare allgemeine Makros müssen 
+die Funktion "Main()" besitzen, die den Startpunkjt des jeweiligen 
+Makros darstellt.
+
+2.18 Bekannte Probleme des neuen Makroprogrammierungs-Modules:
+
+Sollten TRiAS-Projekt-interne Makros mit der alten BasicScript-Erweiterung 
+erzeugt worden sein, können diese mit der neuen Erweiterung geladen werden. 
+Es kann unter Umständen zu Schwierigkeiten bei Bearbeitung, Speicherung 
+u.a. dieser Makros kommen, da die neuen Makros eine andere Speicherstruktur 
+besitzen.
+
+Es kann vorkommen, dass kompilierter Code der alten Erweiterung nicht 
+ohne weiteres zu starten ist. Es erscheint die Fehlermeldung 
+"Cannot find extension.". In diesem Falle muß der Makrotext noch einmal 
+im Makroeditor kompiliert werden (Menupunkt: 'Test.Syntax testen').
+
+
+-----------------------------------------------------------------------------
+3.	Änderungen von Version 2.04 zu 2.05
+-----------------------------------------------------------------------------
+
+3.1 Der Befehl 'Bearbeiten.Ausschnitt kopieren' erzeugt jetzt in der 
+Zwischenablage neben den bisherigen Rasterformaten (geräteunabhängige Bitmap 
+und Bitmap) ebenfalls das Metafileformat (WMF). Damit kann jetzt auch in 
+solchen Programmen wie Corel Draw oder PowerPoint mit der Vektorgrafik 
+weitergearbeitet werden.
+
+3.2 Während der Selektion eines Ausschnittes mit der Maus können wie bisher
+die Strg-Taste bzw. die Umschalt-Taste verwendet werden, um den selektierten 
+Bereich symmetrisch bzw. quadratisch auszuwählen. Bisher wirkten sich diese 
+Tasten jedoch auch noch nach erfolgter Selektion auf den selektierten 
+Bereich aus. Dieser Fehler ist jetzt behoben.
+
+3.3 Flächenfüllmuster vom Typ 8 oder höher werden beim Kopieren in die 
+Zwischenablage grundsätzlich _nicht_ transparent dargestellt. Dieses Problem 
+wird in einer nächsten Version behoben werden.
+
+3.4 Die Auswahl der zusätzlichen Optionen beim Datenimport funktionierte 
+nicht richtig. Dieses Problem ist jetzt behoben.
+
+3.5 Beim Datenexport nach AutoCAD (DXF) oder ArcInfo (E00) konnte es zu 
+Problemen kommen, wenn das gesamte Projekt exportiert werden sollte.
+
+3.6 Eine Ansicht, deren Namen mit einem oder mehreren Leerzeichen begann, 
+konnte bisher nicht als Standard-Ansicht verwendet werden (die 
+Standard-Ansicht ist die Ansicht, die beim Öffnen des Projektes sofort 
+angezeigt wird).
+
+3.7 Ein neuer Fehler in der V2.04, der sich darin äußerte, daß der Befehl 
+'Objekt ausblenden' nicht mehr funktionierte ist wieder behoben.
+
+3.8 Beim Aufziehen eines Selektionsrechteckes über die linke oder obere 
+Fensterseite hinaus führte zum 'Umklappen' dieses Rechteckes nach rechts
+bzw. unten, was eine falsche Selektion zur Folge hatte.
+
+3.9 Die Funktion 'Anzeige.Gesamtübersicht' ist wieder verfügbar. Diese Funktion 
+war seit der Umstellung von der 16-Bit Version noch nicht neu implementiert 
+worden.
+Beim Klicken mit der rechten Maustaste in das Fenster der Gesamtübersicht wird 
+ein Menu angezeigt, über welches verschiedene Befehle in Bezug auf die 
+Gesamtübersicht verfügbar sind. Hier kann z.B. die aktuelle Ansicht zur 
+Anzeige in der Gesamtübersicht ausgewählt werden. Eine einmal ausgewählte
+Ansicht wird unabhängig von der im Projektfenster aktuell ausgewählten 
+Ansicht solange in der Gesamtübersicht angezeigt, bis eine andere explizit
+mit dem Menubefehl 'Aktuelle Ansicht übernehmen' aktiviert wird.
+
+3.10 Ein Problem bei der Flächenberechnung in Projekten mit Gauß-Krüger- bzw. 
+Nutzerkoordinatensystem wurde behoben, welches sich ausgewirkt hatte, wenn ein
+zusätzlicher Skalierungskoeffizient (Projekt-Kopfeintrag 'CoordScaling') 
+eingestellt ist (ungleich 1.0). So wurde z.B. bei einem Skalierungskoeffizienten
+von 100.0 der Flächeninhalt 10000.0 mal zu groß berechnet.
+
+3.11 Im Dialog zur Definition einer neuen bzw. Modifikation der aktuellen 
+Ansicht war es möglich, den Knopf 'Speichern' zu betätigen, ohne daß ein Name
+im Feld 'Name der Ansicht' ausgewählt bzw. eingegeben worden war.
+Dieser Fehler führte zur Definition einer neuen Ansicht, deren Name
+aus 3 Fragezeichen bestand ('???'). Dieses Problem ist behoben.
+
+3.12 Im Dialog zur Definition einer neuen bzw. Modifikation der aktuellen 
+Ansicht kann jetzt auch dann eine temporäre Ansicht definiert werden, wenn
+das Feld 'Name der Ansicht' keine Auswahl bzw. Eingabe enthält. Das ist nur
+zu logisch, da temporäre Ansichten sowieso keinen Namen besitzen.
+
+3.13 Im Fensterkopf von TRiAS wird jetzt unabhängig von den sonstigen 
+Einstellungen (s.u.) immer der Name des Programmes vorangestellt 
+('TRiAS® - '). Wie bisher bestehen außerdem folgende Möglichkeiten,
+den Fensterkopf-Text zu beeinflussen:
+(a) Im Dialog 'Thematik.Ansicht definieren' ist eine beliebige Zeichenkette
+vorgebbar (Eingabefeld: 'Beschreibung'), die den Fensterkopf-Text für diese
+Ansicht vorgibt;
+(b) Ist an dieser Stelle kein Text gegeben, so wird der Text verwendet, der 
+evtl. im Dialog 'Projekt.Eigenschaften', Dialogseite 'Projektkopf', unter
+den projektbezogenen Schlüssel 'Caption' gespeichert ist. Der hier 
+gegebene Text gilt daher für das gesamte Projekt und wird für alle
+Ansichten angezeigt, die keinen ansichtsbezogenen Texteintrag besitzen.
+(c) Fehlt auch dieser Eintrag so wird der volle Dateipfad des aktuellen 
+Projektes angezeigt.
+In den ersten beiden Fällen (a) und (b) besitzen einige Zeichenfolgen
+besondere Bedeutung und werden wie folgt ersetzt:
+	%v	durch den Namen der aktuellen Ansicht
+	%p	durch den vollen Dateipfad des aktuellen Projektes.
+
+3.14 Ab sofort ist im Installationspaket von TRiAS die ODBC-Version 3.0 
+(deutsch) und die DAO Version 3.5 enthalten. Die ODBC-Kopplung aus TRiAS 
+heraus unterstützt in diesem Zusammenhang nunmehr auch Datei-Datenquellen 
+(neben den bisherigen Systemdatenquellen und den Nutzerdatenquellen).
+Es wird die deutsche ODBC-Version installiert.
+
+3.15 Im 16Bit Kompatibilitätsmode werden jetzt im Dialog zur Einstellung 
+der Flächen-Visualisierung die Füllmodi > 'Füllmode 7' nicht mehr transparent 
+angeboten, da die TRiAS Version 1.30 (16 Bit) diese Option nicht unterstützt. 
+Ebenfalls werden die Füllmodi > 'Füllmode 56' nicht zur Auswahl angeboten.
+
+3.16 Im 16Bit Kompatibilitätsmode wird in der Titelleiste des TRiAS 
+Hauptfensters der Text '(16-Bit kompatibel)' an den generierten Titeltext 
+angehängt, damit eindeutig erkennbar ist, warum verschiedene Funktionalitäten 
+nicht oder ggf. nur teilweise verfügbar sind.
+
+3.17 Der Dialog zur Einstellung des Drucklayouts ermöglicht ab sofort die 
+Verwendung von Ausgabeformaten bis zu 3000mm x 3000mm. Bisher lag die Grenze
+bei 1500mm x 1500mm.
+
+3.18 Der Dialog zur Einstellung der Darstellungsparameter für Objektklassen
+ermöglicht ab sofort zusätzlich sichtbezogen eine Einstellung des 
+Maßstabsbereiches, in dem die Objekte einer Objektklasse Dargestellt werden.
+Um die Obere Maßstabsgrenze  einzustellen, müssen die gewünschten Objektklassen
+selektiert sein. Beim Drücken auf die Schaltfläche 'Maßstab' wird eine
+ComboBox eingeblendet, über die die gewünschte Bereichsgrenze ausgewählt
+werden kann. Die ComboBox erscheint ebenfalls beim Klicken mit der _rechten_ 
+Maustaste auf eine der selektierten Objektklassen in der Spalte 
+'Obere Maßstabsgrenze'.
+Die untere Grenze des Maßstabsbereiches wird analog durch Klicken mit der 
+_rechten_ Maustaste in die Spalte 'Untere Maßstabsgrenze' eingestellt.
+
+3.19 Unter bestimmten Bedingungen wurden Textobjekte angezeigt, obwohl sie
+entsprechend den aktuellen Einstellungen (eingestellte Textgröße und 
+Bezugsmaßstab) nicht hätten sichtbar sein dürfen. Dieser Fehler ist behoben.
+
+3.20 Wenn zu einer Objektklasse in der aktuellen Ansicht mehr als ein Objekttyp
+gehörte, dann konnte es dazu kommen, daß lediglich der von der Zeichenreihenfolge
+her erste Objekittyp richtig angezeigt wurde. Alle nachfolgenden Objekttypen
+waren dann nicht mehr sichtbar. Dieser Fehler ist behoben.
+
+3.21 Ergänzend zu 3.18 ist eine weitere Schaltfläche für die untere 
+Maßstabsbegrenzung hinzugefügt worden.
+
+
+-----------------------------------------------------------------------------
+4.	Änderungen von Version 2.05 zu 2.06
+-----------------------------------------------------------------------------
+
+4.1 Beim Export im TRiAS®-ASC Format wurde im Caption der Prefix 'TRiAS® - ' immer
+mit ausgegeben, so daß nach mehrfachem Export/Import dieser Prefix mehrfach im Caption 
+angezeigt wurde.
+
+4.2 Das Ausführen des Menubefehles 'Alle Fenster Schließen' aus dem Systemmenu
+eines Recherchefensters konnte unter Umständen (vor allem auf langsamen Rechnern)
+zum Absturz führen. Dieser Fehler ist behoben.
+
+4.3 Beim mehrfachen Laden/Entladen des Zusatzmodules "Abstandsmessung" kam es zum
+Verschwinden von Werkzeugen der Hauptwerkzeugleiste bzw. teilweise zu 
+Programmabstürzen. Dieser Fehler ist jetzt behoben.
+
+4.4 Nach Auswahl einer Maßstabsbegrenzung (s. 3.18/3.21) kam es teilweise zu
+fehlerhaften Zeichenoperationen in der Auswahlliste der Objektklassen. Dieser
+Fehler ist behoben.
+
+4.5 Im Installationspaket von TRiAS® sind ab sofort wieder die DAO-Module V3.2
+enthalten. Die DAO Module V3.5 werden auch weiterhin installiert, da diese für 
+ODBC 3.0 notwendig sind.
+
+4.6 Diverse seltene Geometrieprobleme beseitigt (Objektoperationen).
+
+4.7 Die ODBC Anbindung mit Datei-DatenQuellen funktionierte nicht in allen Fällen
+richtig, Dieses Problem ist beseitigt.
+
+
+-----------------------------------------------------------------------------
+5.	Änderungen von Version 2.06 zu 2.07
+-----------------------------------------------------------------------------
+
+5.1 Beim Import aus dem TRiAS®-ASC wurden spezielle Zeichenfolgen ('\n', '\t' etc.)
+in Merkmalen bzw. Texten nicht richtig importiert.
+
+5.2 Begleitrelationen zu Textobjekten wurden aus dem TRiAS®-ASC Format nicht mit 
+importiert.
+
+5.3 Beim Export/Import der Visualisierungsinformationen wird ab sofort die Information
+über die Startansicht mit exportiert/importiert (Ansicht, die bei Öffnen eines 
+Projektes automatisch angezeigt wird).
+
+5.4 Die Definition einer Ansicht als Startansicht durch gleichzeitigen Betätigen
+der Strg-Taste während der Auswahl einer Ansicht funktioniert jetzt auch aus der 
+ComboBox in der Ansichten-Symbolleiste.
+
+5.5 Der Recherchedialog (Menupunkt 'Bearbeiten.Recherche') erlaubt ab sofort, 
+das Auswahlkriterium zu invertieren. D.h. es werden all die Objekte selektiert, die das gegebene Auswahlkriterium _nicht_ erfüllen. Dazu muß im Dialog die Checkbox 'Gegenliste' selektiert werden.
+
+5.6 Die Textrecherche (Menupunkt 'Bearbeiten.Recherche...') funktionierte unter bestimmten Vorraussetzungen nicht richtig und lieferte falsche Ergebnisse. Insbesondere die Option 'Gegenliste' führte zu diversen Merkwürdigkeiten.
+
+5.7 Ein Fehler im Modul der Statistischen Analysen wurde beseitigt, der bei der Geometrie-Klassifikation aller Objekte einer Objektklasse auftrat.
+
+5.8 Diverse Probleme bei der Benutzung der Makro-Automatisierungssprache wurden beseitigt.
+
+5.9 Die Module der Geometrieverarbeitung (Objektoperationen, Topologische Analysen) sind 
+auf Grund intensiver Tests gründlich überarbeitet worden, dabei wurden eine Vielzahl von 
+Geometrie-Problemen beseitigt.
+
+-----------------------------------------------------------------------------
+6.	Änderungen von Version 2.07 zu 2.08
+-----------------------------------------------------------------------------
+
+6.1 In letzter Zeit kam es immer wieder zu Problemen bei der Bearbeitung von TRiAS®-Projekten, die mit älteren TRiAS®-Versionen angelegt wurden. Seit der V2.04 werden führende Nullen bei Objektklassenschlüsseln abeschnitten, was zu Inkompatibilitäten führen konnte. Um derartige Projekte weiter bearbeiten zu können wird jetzt ein Eintrag im Projektkopf (Menupunkt: Projekt.Eigenschaften') ausgewertet, der dieses Abschneiden der führenden Nullen im Objektklassenschlüssel unterbindet. Dieser Eintrag muß lauten (bitte Groß-/Kleinschreibung beachten!): 
+	'AllowLeadingZero', als Wert eine beliebige Zahl ungleich 0.
+Nach der Definition dieses Eintrages muß das betreffende Projekt gespeichert, geschlossen und wieder geöffnet werden, um diesen zu aktivieren.
+
+6.2 Eine Veränderung im Datenbankformat der TRiAS®- Datenbank wurde vorgenommen, um die
+Operationen 'Objekt löschen' und 'Objektklasse modifizieren' erheblich zu beschleunigen.
+Um diese Operationen schneller ausführen zu können (was ein Problem besonders bei großen Datenbanken ist), muß die jeweilige Datenbank im neuen Fromat neu erzeugt werden (Export/Import).
+
+6.3 Im Recherchedialog (Menupunkt 'Barbeiten.Recherche') wird jetzt eine zweite Dialogseite
+angeboten (SQLRecherche), die es gestattet, SQL-basierte Recherchen über angehängte
+ODBC-Daten durchzuführen. Dazu muß allerdings die Erweiterung 'Anzeige von 
+ODBC-Daten' geladen sein.
+
+6.4 Alle Objekte einer TRiAS®- Datenbank haben ab sofort eine 'Eindeutige Objektkennung'
+zugeordnet, welche die eindeutige Identifizierbarkeit eines Objektes über
+Projektgrenzen hinaus gewährleistet.
+Diese Objektkennung wird derzeit lediglich beim ASC-Import bzw. ASC-Export 
+ausgewertet. Sei ist intern als Objekteigenschaft 'Eindeutige Objektkennung' 
+sowie in der Makrosprache als Obj.UniqueID verfügbar.
+
+6.5 Die Maßstabsbegrenzung für die Anzeige von Objektklassen war auf Grund eines Fehlers
+unabhängig von der aktuellen Ansicht (s. 3.18 bzw. 3.21).
+
+6.6 Im Ergebnisfenster des Dialogen 'Objekteigenschaften' wurden am Ende der generierten
+Tabelle bei sehr großen Objektmengen (aufgetreten bei mind 2500) Smilies und andere 
+sinnlose Sonderzeichen mit ausgegeben.
+
+
+-----------------------------------------------------------------------------
+7.	Änderungen von Version 2.08 zu V2.09
+-----------------------------------------------------------------------------
+
+7.1 Drag'n Drop funktionierte wieder einmal nicht mehr. Dieser Fehler ist behoben.
+
+7.2 Die Eingabe sehr langer Texte für einzelne Legendeneinträge führte unter Umständen zu Abstürzen. Dieser Fehler ist behoben.
+
+
+-----------------------------------------------------------------------------
+8.	Änderungen von Version 2.09 zu V2.10 (11. Juni 1998)
+-----------------------------------------------------------------------------
+
+8.1 Vollkommen überarbeitete Geometrie-Editierung mit neuen Funktionalitäten, wie 
+Objekt verschieben, Stützpunktfolge fangen (grab), Inseln hinzufügen/löschen, Flächen 
+sind beim Neuerfassen immer geschlossen, Rechtwinklig machen uvam.
+
+8.2 Neue Hilfe
+
+8.3 Umgestaltetes Menu in allen Objektrecherchefenstern. Neue Funktionalitäten, wie 
+Textrecherche über selektierter Objektmenge, Alles Selektieren, Selektion umkehren usw.
+
+8.4 Eine zusätzliche Dialogseite im Dialog 'Drucken' ermöglicht die Vorgabe von zusätzlichen 
+Informationen für die Drucklegende. Diese Informationen waren bisher lediglich über direkte
+Manipulation der TLEGEND.INI veränderbar.
+
+8.5 Der Import von DXF-Daten unterstützt jetzt DXF-Blöcke, d.h. es ist möglich, Attribute 
+gemeinsam mit den zugehörigen Geometrieinformationen über das AutoCAD-DXF-Format zu 
+importieren. Der Import von DXF-Daten unterstützt damit das DXF-Format der AutoCAD-Version 12.
+
+8.6 Umfangreiche Beseitigung von kleineren und größeren Fehlern im gesamten Programmpaket.
+
+8.7 Vollkommene Neuimplementierung der Generierung von Textobjekten. Die bisherige Erweiterung
+zum Erzeugen von Textobjekten entfällt. Die diesbezügliche Funktionalität ist ab sofort 
+im Hauptmodul enthalten. 
+Gleichzeitig ist eine neue Art von Textobjekten geschaffen worden, welche eine beliebige 
+Objekteigenschaft ihres Bezugsobjektes dynamisch anzeigen, d.h. bei Änderung dieser 
+Objekteigenschaft am Bezugsobjekt wird der Text automatisch nachgeführt.
+
+8.7 Zwei neue Werkzeuge sind zur Symbolleiste 'Ansichten' hinzugefügt worden: 
+'Ausschnitt beibehalten', welches bewirkt, daß beim Befehl 'Objekte zeigen' aus 
+einem Recherchefenster die aktuelle Bildausschnittsvergrößerung beibehalten wird 
+und 'Neuzeichnen unterbinden', welches jegliches automatisches Zeichnen des aktuellen 
+Bildausschnittes unterbindet. Das direkte Neuzeichen durch den Befehl 'F3' bzw. den 
+äquivalenten Menubefehl ist dadurch nicht betroffen.
+
+8.8 Der Export von DXF-Daten kann jetzt wahlweise ebenfalls Blöcke erzeugen. Dabei wird jedes
+Objekt mit allen seinen Attributen in einen DXF-Block verpackt.
+
+8.9 Der Import von Visualisierungsinformationen funktioniert jetzt auch aus einem Verzeichnis
+heraus, welches Umlaute im Pfad der Importdatei enthält. Bisher wurde in solchen Fällen einfach
+nichts gemacht.
+
+8.10 Die Recherchefenster enthalten eine neue Menustruktur, die eine bessere Gruppierung der
+vorhandenen Funktionalltäten und einige neue Funktionen enthält.
+

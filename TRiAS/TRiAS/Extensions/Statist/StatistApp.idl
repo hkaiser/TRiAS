@@ -1,0 +1,1630 @@
+// @doc
+// @module StatistApp.Idl | IDL source for Statist interfaces and typelib
+// @group In diesem Modul definierte Interfaces
+// @index | INTERFACE & STATIST
+// @group In diesem Modul definierte Objekte (coclasses)
+// @index | OBJECT & STATIST
+// @end
+
+
+// This file will be processed by the MIDL tool to
+// produce the type library (Statist.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#include "olectl.h"
+
+#include <idl/Collection.idl>
+#include <idl/ConfigObjectProperty.idl>
+#include <idl/ValueProvider.idl>
+
+import "ProgInd2.idl";
+
+cpp_quote("#define TYPELIB_STATIST_VERSION_MAJOR 1")
+cpp_quote("#define TYPELIB_STATIST_VERSION_MINOR 0")
+cpp_quote("#define TYPELIB_STATIST_VERSION \"1.0\"")
+cpp_quote("#define TYPELIB_STATIST_LCID 0")
+
+#define TYPELIB_STATIST_VERSION_MAJOR 1
+#define TYPELIB_STATIST_VERSION_MINOR 0
+#define TYPELIB_STATIST_VERSION 1.0
+#define TYPELIB_STATIST_LCID 0
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declarations
+interface ITRiASSimpleStatistics;
+interface IGenericStatistics;
+
+interface ITRiASUnitIDs;
+interface ITRiASUnitsOfMeasure;
+
+interface IPopupTree;
+
+///////////////////////////////////////////////////////////////////////////////
+// Sonstige hier benötigte Konstanten
+#if !defined(VARIANT_TRUE)
+#define VARIANT_TRUE	((VARIANT_BOOL)0xffff)
+#define VARIANT_FALSE	((VARIANT_BOOL)0)
+#endif // !VARIANT_TRUE
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc	INTERFACE STATIST 
+// @interface IGenericStatistics | Über das <I IGenericStatistics> -Interface sind 
+// diverse Funktionalitäten zugänglich, die für die Berechnung unterschiedlicher 
+// statistischer Kenngrößen auf der Grundlage einer Stichprobenmenge notwendig sind.
+// @xref <i ITRiASSimpleStatistics>
+// @group Methoden und Eigenschaften von <i IGenericStatistics> 
+// @index | IGENERICSTATISTICS
+// @doc IGENERICSTATISTICS
+	[
+		object, 
+		uuid(85D47179-0B52-40D0-A30D-DB9BCBA26ED3), 
+		dual, 
+		oleautomation, 
+		helpstring("IGenericStatistics Interface"),
+		pointer_default(unique) 
+	]
+	interface IGenericStatistics : IDispatch
+	{
+	// @property BSTR | IGenericStatistics | Name | Die Eigenschaft <op .Name> liefert den Namen 
+	// der hier berechneten statistischen Kennzahl.
+	// @comm Die Eigenschaft <op .Name> kann nicht gesetzt werden.
+	// @supby <o TRiASSimpleStatistics>
+	// @xref <i ITRiASSimpleStatistics>
+		[propget, id(1), helpstring("Liefert den Namen der berechneten statistischen Kenngröße.")] HRESULT Name([out, retval] BSTR* pVal);
+
+	// @property BSTR | IGenericStatistics | Description | Die Eigenschaft <op .Description> liefert eine
+	// Beschreibung der hier berechneten statistischen Kennzahl.
+	// @comm Die Eigenschaft <op .Description> kann nicht gesetzt werden.
+	// @supby <o TRiASSimpleStatistics>
+	// @xref <i ITRiASSimpleStatistics>
+		[propget, id(2), helpstring("Liefert eine Beschreibung der berechneten statistischen Kenngröße.")] HRESULT Description([out, retval] BSTR* pVal);
+
+	// @method HRESULT | IGenericStatistics | AddValue | Die <om .AddValue>- Methode fügt 
+	// einen Wert zur Menge der zu analysierenden Werte hinzu.
+	// @parm double | Value | Der Parameter <p Value> enthält den zur Stichprobenmenge hinzuzufügenden Wert.
+	// @parm VARIANT | Data | Der Parameter <p Data> kann zusätzliche beliebige Daten enthalten, die diesem
+	// Wert zugeordnet werden sollen. 
+	// @comm Beim Entfernen dieses Wertes aus der Stichprobenmenge durch die <om .RemoveValue> -Methode
+	// bzw. beim Freigeben des Objektes werden die den Werten zugeordneten Daten typrichtig freigegeben.
+	// @supby <o TRiASSimpleStatistics>
+	// @xref <i IGenericStatistics>,<i ITRiASSimpleStatistics>
+		[id(100), helpstring("Fügt einen Wert zur Menge der zu analysierenden Werte hinzu.")] HRESULT AddValue([in] double Value, [in, optional] VARIANT Data);
+
+	// @method HRESULT | IGenericStatistics | RemoveValue | Die <om .RemoveValue>- Methode entfernt
+	// einen Wert aus der Menge der zu analysierenden Werte
+	// @parm double | Value | Der Parameter <p Value> enthält den aus Stichprobenmenge zu entfernenden Wert.
+	// @supby <o TRiASSimpleStatistics>
+	// @xref <i IGenericStatistics>,<i ITRiASSimpleStatistics>
+		[id(101), helpstring("Entfernt einen Wert aus der Menge der zu analysierenden Werte.")] HRESULT RemoveValue([in] double Value);
+
+	// @method HRESULT | IGenericStatistics | Reset | Die <om .Reset>- Methode setzt das 
+	// Objekt zurück, d.h. die Stichprobenmenge enthält keine Werte mehr.
+	// @supby <o TRiASSimpleStatistics>
+	// @xref <i IGenericStatistics>,<i ITRiASSimpleStatistics>
+		[id(102), helpstring("Setzt alle intern kumulierten Werte zurück.")] HRESULT Reset();
+
+	// @method HRSULT | IGenericStatistics | Calculate | Die <om .Calculate>- Methode berechnet
+	// den statistischen Wert, der durch das dieses Interface implementierende Objekt zur Verfügung
+	// gestellt wird.
+	// @xref <i IGenericStatistics>,<i ITRiASSimpleStatistics>
+		[id(103), helpstring("Berechnen einer statistischen Kenngröße der Stichprobenmenge")] HRESULT Calculate ([out, retval] VARIANT *Value);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc	INTERFACE STATIST 
+// @interface ITRiASSimpleStatistics | Über das <i ITRiASSimpleStatistics> -Interface können
+// diverse statistische Werte einer Stichprobenmenge berechnet werden.
+// @supby <o TRiASSimpleStatistics>
+// @xref <o TRiASSimpleStatistics>
+// @group Methoden und Eigenschaften von <i ITRiASSimpleStatistics> 
+// @index | ITRIASSIMPLESTATISTICS
+// @doc ITRIASSIMPLESTATISTICS
+	[
+		object,
+		uuid(0CB3A698-E5CE-11D2-9BD9-586A20524153),
+		dual,
+		helpstring("ITRiASSimpleStatistics Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASSimpleStatistics : IDispatch
+	{
+	// @property ULONG | ITRiASSimpleStatistics | Count | Liefert die Anzahl der Werte der
+	// gespeicherten Stichprobenmenge.
+	// @supby <o TRiASSimpleStatistics>
+	// @xref <i ITRiASSimpleStatistics>
+		[propget, id(1), helpstring("Liefert die Anzahl der zu analysierenden Werte.")] HRESULT Count([out, retval] ULONG *pVal);
+
+	// @property double | ITRiASSimpleStatistics | Sum | Liefert die Summe der Werte der
+	// gespeicherten Stichprobenmenge.
+	// @supby <o TRiASSimpleStatistics>
+	// @xref <i ITRiASSimpleStatistics>
+		[propget, id(2), helpstring("Liefert die Summe der zu analysierenden Werte.")] HRESULT Sum([out, retval] double *pVal);
+
+	// @property ULONG | ITRiASSimpleStatistics | CountNotNull | Liefert die Anzahl der Werte der
+	// gespeicherten Stichprobenmenge, deren Zahlenwert ungleich NULL ist.
+	// @supby <o TRiASSimpleStatistics>
+	// @xref <i ITRiASSimpleStatistics>
+		[propget, id(3), helpstring("Liefert die Anzahl der zu analysierenden Werte, die nicht den Zahlenwert Null besitzen.")] HRESULT CountNotNull([out, retval] ULONG *pVal);
+
+	// @property double | ITRiASSimpleStatistics | ArithmeticAverage | Berechnet den arithmetischen 
+	// Mittelwert aller in der Stichprobenmenge enthaltenen Werte.
+	// @supby <o TRiASSimpleStatistics>
+	// @xref <i ITRiASSimpleStatistics>
+		[propget, id(4), helpstring("Berechnet den arithmetischen Mittelwert aller übergebenen Werte.")] HRESULT ArithmeticAverage([out, retval] double *pVal);
+
+	// @property double | ITRiASSimpleStatistics | GeometricAverage | Berechnet den geometrischen 
+	// Mittelwert aller in der Stichprobenmenge enthaltenen Werte.
+	// @supby <o TRiASSimpleStatistics>
+	// @xref <i ITRiASSimpleStatistics>
+		[propget, id(5), helpstring("Berechnet den geometrischen Mittelwert aller übergebenen Werte.")] HRESULT GeometricAverage([out, retval] double *pVal);
+
+	// @property double | ITRiASSimpleStatistics | Median | Berechnet den empirischen Medianwert
+	// aller in der Stichprobenmenge enthaltenen Werte.
+	// @supby <o TRiASSimpleStatistics>
+	// @xref <i ITRiASSimpleStatistics>
+		[propget, id(6), helpstring("Berechnet den empirischen Medianwert aller übergebenen Werte.")] HRESULT Median([out, retval] double *pVal);
+
+	// @property double | ITRiASSimpleStatistics | MinValue | Liefert den vom Zahlenwert her kleinsten
+	// aller in der Stichprobenmenge enthaltenen Werte.
+	// @supby <o TRiASSimpleStatistics>
+	// @xref <i ITRiASSimpleStatistics>
+		[propget, id(7), helpstring("Liefert den kleinsten aller zu analysierenden Werte.")] HRESULT MinValue([out, retval] double *pVal);
+
+	// @property double | ITRiASSimpleStatistics | MaxValue | Liefert den vom Zahlenwert her größten
+	// aller in der Stichprobenmenge enthaltenen Werte.
+	// @supby <o TRiASSimpleStatistics>
+	// @xref <i ITRiASSimpleStatistics>
+		[propget, id(8), helpstring("Liefert den größten aller zu analysierenden Werte.")] HRESULT MaxValue([out, retval] double *pVal);
+
+	// @property double | ITRiASSimpleStatistics | Range | Liefert die Differenz des vom Zahlenwert 
+	// her größten und des vom Zahlenwert her kleinsten aller in der Stichprobenmenge enthaltenen Werte.
+	// @supby <o TRiASSimpleStatistics>
+	// @xref <i ITRiASSimpleStatistics>
+		[propget, id(9), helpstring("Liefert die Differenz des größten und des kleinsten aller zu analysierenden Werte.")] HRESULT Range([out, retval] double *pVal);
+
+	// @property double | ITRiASSimpleStatistics | StandardDeviation | Liefert die Standardabweichung aller 
+	// in der Stichprobenmenge enthaltenen Werte.
+	// @supby <o TRiASSimpleStatistics>
+	// @xref <i ITRiASSimpleStatistics>
+		[propget, id(10), helpstring("Liefert die Standardabweichung aller zu analysierenden Werte.")] HRESULT StandardDeviation([out, retval] double *pVal);
+
+	// @property double | ITRiASSimpleStatistics | Variance | Liefert den Varianzkoeffizienten aller 
+	// in der Stichprobenmenge enthaltenen Werte.
+	// @supby <o TRiASSimpleStatistics>
+	// @xref <i ITRiASSimpleStatistics>
+		[propget, id(11), helpstring("Liefert den Variationskoeffizienten aller zu analysierenden Werte.")] HRESULT Variance([out, retval] double *pVal);
+
+	// @method HRESULT | ITRiASSimpleStatistics | AddValue | Die <om .AddValue>- Methode fügt 
+	// einen Wert zur Menge der zu analysierenden Werte hinzu.
+	// @parm double | Value | Der Parameter <p Value> enthält den zur Stichprobenmenge hinzuzufügenden Wert.
+	// @parm VARIANT | Data | Der Parameter <p Data> kann zusätzliche beliebige Daten enthalten, die diesem
+	// Wert zugeordnet werden sollen. Diese Daten werden durch die Klassifikationsfunktionen
+	// <om .RangesByEqualCount>, <om .RangesByEqualRange> bzw. <om .RangesByStandardDeviation> auf die
+	// gebildeten Intervalle verteilt.
+	// @comm Beim entfernen dieses Wertes aus der Stichprobenmenge durch die <om .RemoveValue> -Methode
+	// bzw. beim freigeben des <o TRiASSimpleStatistics> -Objektes werden die den Werten zugeordneten
+	// daten typrichtig freigegeben.
+	// @supby <o TRiASSimpleStatistics>
+	// @xref <i ITRiASSimpleStatistics>, <om .RangesByEqualCount>, <om .RangesByEqualRange>, 
+	// <om .RangesByStandardDeviation>
+		[id(100), helpstring("Fügt einen Wert zur Menge der zu analysierenden Werte hinzu.")] HRESULT AddValue([in] double Value, [in, optional] VARIANT Data);
+
+	// @method HRESULT | ITRiASSimpleStatistics | RemoveValue | Die <om .RemoveValue>- Methode entfernt
+	// einen Wert aus der Menge der zu analysierenden Werte
+	// @parm double | Value | Der Parameter <p Value> enthält den aus Stichprobenmenge zu entfernenden Wert.
+	// @supby <o TRiASSimpleStatistics>
+	// @xref <i ITRiASSimpleStatistics>
+		[id(101), helpstring("Entfernt einen Wert aus der Menge der zu analysierenden Werte.")] HRESULT RemoveValue([in] double Value);
+
+	// @method HRESULT | ITRiASSimpleStatistics | Reset | Die <om .Reset>- Methode setzt das 
+	// <o TRiASSimpleStatistics> -Objekt zurück, d.h. die Stichprobenmenge enthält keine Werte 
+	// mehr.
+	// @supby <o TRiASSimpleStatistics>
+	// @xref <i ITRiASSimpleStatistics>
+		[id(102), helpstring("Setzt alle intern kumulierten Werte zurück.")] HRESULT Reset();
+
+	// @method HRESULT | ITRiASSimpleStatistics | RangesByEqualCount | Mit der <om .RangesByEqualCount> -Methode 
+	// werden die eingegebenen Werte der Stichprobenmenge über eine festgelegte Anzahl von Bereichen 
+	// verteilt, so daß jeder Bereich in etwa die gleiche Anzahl von Einträge enthält. Die Größe 
+	// der Bereiche schwankt dabei je nach Anzahl der in der Stichprobenmenge enthaltenen Werte. 
+	// @parm ULONG | NumOfRanges | Der Parameter <p NumOfRanges> enthält den einzigen für diese Methode 
+	// benötigte Eingabewert, die Anzahl der zu erzeugenden Bereiche.
+	// @parm SAFEARRAY(double) * | MinBounds | Der Parameter <p MinBounds> enthält nach erfolgreicher 
+	// Abarbeitung die unteren Grenzwerte der erzeugten Klassenintervalle. 
+	// @parm SAFEARRAY(double) * | MaxBounds | Der Parameter <p MaxBounds> enthält nach erfolgreicher 
+	// Abarbeitung die oberen Grenzwerte der erzeugten Klassenintervalle. 
+	// @parm SAFEARRAY(ULONG) * | Counts | Der Parameter <p Counts> enthält nach erfolgreicher 
+	// Abarbeitung die Anzahl der auf ein Klassenintervall entfallenden Werte der Stichprobenmenge.
+	// @parm SAFEARRAY(SAFEARRAY(VARIANT)) * | Data | Der Parameter <p Data> enthält nach erfolgreicher 
+	// Abarbeitung die den Klassifizierten Werten zugeordneten Daten in Form eines Feldes von Feldern.
+	// Die Anzahl der Elemente dieses Feldes entspricht der Anzahl der Intervalle, die Anzahl der Werte
+	// innerhalb eines der Intervallfelder entspricht der Anzahl der Werte dieses Intervalles (s. <p Counts>).
+	// @supby <o TRiASSimpleStatistics>
+	// @xref <i ITRiASSimpleStatistics>
+		[id(103), helpstring("Berechnet eine Klasseneinteilung derart, daß jede Klasse eine identische Anzahl von Werten enthält.")] HRESULT RangesByEqualCount([in] ULONG NumOfRanges, [in, out] SAFEARRAY(double) *MinBounds, [in, out] SAFEARRAY(double) *MaxBounds, [in, out] SAFEARRAY(ULONG) *Counts, [in, out] SAFEARRAY(SAFEARRAY(VARIANT)) *Data);
+
+	// @method HRESULT | ITRiASSimpleStatistics | RangesByEqualRange | Mit der <om .RangesByEqualRange> -Methode 
+	// werden die Eingabewerte so verteilt, daß jeder Bereich die gleiche Spanne von Werten enthält. 
+	// In den meisten Fällen enthält jeder Bereich eine unterschiedliche Anzahl Einträge. 
+	// @parm ULONG | NumOfRanges | Der Parameter <p NumOfRanges> enthält den einzigen für diese Methode 
+	// benötigte Eingabewert, die Anzahl der zu erzeugenden Bereiche.
+	// @parm double | StartValue | Der Parameter <p StartValue> gibt die untere Grenze des zu 
+	// untersuchenden Wertebereiches vor, in dem die einzelnen Werte der Stichprobenmenge den erzeugten
+	// Klassenintervallen zugeordnet werden.
+	// @parm double | EndValue | Der Parameter <p StartValue> gibt die obere Grenze des zu 
+	// untersuchenden Wertebereiches vor, in dem die einzelnen Werte der Stichprobenmenge den erzeugten
+	// Klassenintervallen zugeordnet werden.
+	// @parm SAFEARRAY(double) * | MinBounds | Der Parameter <p MinBounds> enthält nach erfolgreicher 
+	// Abarbeitung die unteren Grenzwerte der erzeugten Klassenintervalle. 
+	// @parm SAFEARRAY(double) * | MaxBounds | Der Parameter <p MaxBounds> enthält nach erfolgreicher 
+	// Abarbeitung die oberen Grenzwerte der erzeugten Klassenintervalle. 
+	// @parm SAFEARRAY(ULONG) * | Counts | Der Parameter <p Counts> enthält nach erfolgreicher 
+	// Abarbeitung die Anzahl der auf ein Klassenintervall entfallenden Werte der Stichprobenmenge.
+	// @parm SAFEARRAY(SAFEARRAY(VARIANT)) * | Data | Der Parameter <p Data> enthält nach erfolgreicher 
+	// Abarbeitung die den Klassifizierten Werten zugeordneten Daten in Form eines Feldes von Feldern.
+	// Die Anzahl der Elemente dieses Feldes entspricht der Anzahl der Intervalle, die Anzahl der Werte
+	// innerhalb eines der Intervallfelder entspricht der Anzahl der Werte dieses Intervalles (s. <p Counts>).
+	// @supby <o TRiASSimpleStatistics>
+	// @xref <i ITRiASSimpleStatistics>
+		[id(104), helpstring("Berechnet eine Klasseneinteilung derart, daß jede Klasse eine identische Intervallgröße besitzt.")] HRESULT RangesByEqualRange([in] ULONG NumberOfRanges, [in] double StartValue, [in] double EndValue, [in, out] SAFEARRAY(double) *MinBounds, [in, out] SAFEARRAY(double) *MaxBounds, [in, out] SAFEARRAY(ULONG) *Counts, [in, out] SAFEARRAY(SAFEARRAY(VARIANT)) *Data);
+
+	// @method HRESULT | ITRiASSimpleStatistics | RangesByStandardDeviation | Mit der 
+	// <om. RangesByStandardDeviation> -Methode werden die Eingabewerte in Intervalle mit der 
+	// Breite der Standardabweichung der Stichprobenmenge an jeder Seite der Glockenkurve verteilt. 
+	// In den meisten Fällen enthält jeder Bereich eine unterschiedliche Anzahl Einträge. 
+	// @parm ULONG | NumOfRanges | Der Parameter <p NumOfRanges> enthält den einzigen für diese Methode 
+	// benötigte Eingabewert, die Anzahl der zu erzeugenden Bereiche.
+	// @parm SAFEARRAY(double) * | MinBounds | Der Parameter <p MinBounds> enthält nach erfolgreicher 
+	// Abarbeitung die unteren Grenzwerte der erzeugten Klassenintervalle. 
+	// @parm SAFEARRAY(double) * | MaxBounds | Der Parameter <p MaxBounds> enthält nach erfolgreicher 
+	// Abarbeitung die oberen Grenzwerte der erzeugten Klassenintervalle. 
+	// @parm SAFEARRAY(ULONG) * | Counts | Der Parameter <p Counts> enthält nach erfolgreicher 
+	// Abarbeitung die Anzahl der auf ein Klassenintervall entfallenden Werte der Stichprobenmenge.
+	// @parm SAFEARRAY(SAFEARRAY(VARIANT)) * | Data | Der Parameter <p Data> enthält nach erfolgreicher 
+	// Abarbeitung die den Klassifizierten Werten zugeordneten Daten in Form eines Feldes von Feldern.
+	// Die Anzahl der Elemente dieses Feldes entspricht der Anzahl der Intervalle, die Anzahl der Werte
+	// innerhalb eines der Intervallfelder entspricht der Anzahl der Werte dieses Intervalles (s. <p Counts>).
+	// @supby <o TRiASSimpleStatistics>
+	// @xref <i ITRiASSimpleStatistics>
+		[id(105), helpstring("Berechnet eine Klasseneinteilung derart, daß jede Klasse eine zur Standardabweichung identische Intervallgröße besitzt.")] HRESULT RangesByStandardDeviation([in] ULONG NumberOfRanges, [in, out] SAFEARRAY(double) *MinBounds, [in, out] SAFEARRAY(double) *MaxBounds, [in, out] SAFEARRAY(ULONG) *Counts, [in, out] SAFEARRAY(SAFEARRAY(VARIANT)) *Data);
+	};
+
+
+cpp_quote("#if !defined(_UNITTYPECONSTANTS_DEFINED)")
+cpp_quote("#define _UNITTYPECONSTANTS_DEFINED")
+// @doc UNITTYPECONSTANTSENUM
+// @enum UNITTYPECONSTANTS | Mit der <t UNITTYPECONSTANTS> -Aufzählung wird bei vielen Methoden des 
+// <i ITRiASUnitsOfMeasure> -Interfaces festgelegt, welche Art von Einheit referenziert werden soll.
+// @xref <i ITRiASUnitsOfMeasure>
+	typedef [public, v1_enum, helpstring("Kategorie der Maßeinheit.")]
+	enum _tagUNITTYPECONSTANTS
+	{
+		[helpstring("Entfernung")] 
+			UNITTYPECONSTANTS_Distance = 1,						// @emem Entfernung
+		[helpstring("Winkel")] 
+			UNITTYPECONSTANTS_Angle = 2,						// @emem Winkel
+		[helpstring("Masse")] 
+			UNITTYPECONSTANTS_Mass = 3,							// @emem Masse
+		[helpstring("Zeit")] 
+			UNITTYPECONSTANTS_Time = 4,							// @emem Zeit
+		[helpstring("Temperatur")] 
+			UNITTYPECONSTANTS_Temperature = 5,					// @emem Temperatur
+		[helpstring("Elektrische Ladung")] 
+			UNITTYPECONSTANTS_ElectricCharge = 6,				// @emem Elektrische Ladung
+		[helpstring("Leuchtkraft")] 
+			UNITTYPECONSTANTS_LuminousIntensity = 7,			// @emem Leuchtkraft
+		[helpstring("Massebetrag")] 
+			UNITTYPECONSTANTS_AmountOfSubstance = 8,			// @emem Massebetrag
+		[helpstring("Raumwinkel")]	
+			UNITTYPECONSTANTS_SolidAngle = 9,					// @emem Raumwinkel
+		[helpstring("Winkelbeschleunigung")] 
+			UNITTYPECONSTANTS_AngularAcceleration = 10,			// @emem Winkelbeschleunigung
+		[helpstring("Impulsmoment")] 
+			UNITTYPECONSTANTS_AngularMomentum = 11,				// @emem Impulsmoment
+		[helpstring("Winkelgeschwindigkeit")] 
+			UNITTYPECONSTANTS_AngularVelocity = 12,				// @emem Winkelgeschwindigkeit
+		[helpstring("Fläche")] 
+			UNITTYPECONSTANTS_Area = 13,						// @emem Fläche
+		[helpstring("Körperkraft")] 
+			UNITTYPECONSTANTS_BodyForce = 14,					// @emem Körperkraft
+		[helpstring("Wärmeausdehnungskoeffizient")] 
+			UNITTYPECONSTANTS_CoefficientOfThermalExpansion = 15,	// @emem Wärmeausdehnungskoeffizient
+		[helpstring("Dichte")] 
+			UNITTYPECONSTANTS_Density = 16,						// @emem Dichte
+		[helpstring("Kapazität")] 
+			UNITTYPECONSTANTS_ElectricalCapacitance = 17,		// @emem Kapazität
+		[helpstring("Elektrischer Leitwert")] 
+			UNITTYPECONSTANTS_ElectricalConductance = 18,		// @emem Elektrischer Leitwert
+		[helpstring("Elektrische Feldstärke")] 
+			UNITTYPECONSTANTS_ElectricalFieldStrength = 19,		// @emem Elektrische Feldstärke
+		[helpstring("Elektrische Induktivität")] 
+			UNITTYPECONSTANTS_ElectricalInductance = 20,		// @emem Elektrische Induktivität
+		[helpstring("Elektrische Spannung")] 
+			UNITTYPECONSTANTS_ElectricalPotential = 21,			// @emem Elektrische Spannung
+		[helpstring("Elektrischer Widerstand")] 
+			UNITTYPECONSTANTS_ElectricalResistance = 22,		// @emem Elektrischer Widerstand
+		[helpstring("Energie")] 
+			UNITTYPECONSTANTS_Energy = 23,						// @emem Energie
+		[helpstring("Entropie")] 
+			UNITTYPECONSTANTS_Entropy = 24,						// @emem Entropie
+		[helpstring("Grenzschichtkoeffizient")] 
+			UNITTYPECONSTANTS_FilmCoefficient = 25,				// @emem Grenzschichtkoeffizient
+		[helpstring("Kraft")] 
+			UNITTYPECONSTANTS_Force = 26,						// @emem Kraft
+		[helpstring("Kraft pro Flächeneinheit")] 
+			UNITTYPECONSTANTS_ForcePerArea = 27,				// @emem Kraft  pro Flächeneinheit (Druck)
+		[helpstring("Kraft pro Entfernungseinheit")] 
+			UNITTYPECONSTANTS_ForcePerDistance = 28,			// @emem Kraft  pro Entfernungseinheit
+		[helpstring("Frequenz")] 
+			UNITTYPECONSTANTS_Frequency = 29,					// @emem Frequenz
+		[helpstring("Wärmekapazität")] 
+			UNITTYPECONSTANTS_HeatCapacity = 30,				// @emem Wärmekapazität
+		[helpstring("Wärmefluß pro Flächeneinheit")] 
+			UNITTYPECONSTANTS_HeatFluxPerArea = 31,				// @emem Wärmefluß pro Flächeneinheit
+		[helpstring("Wärmefluß pro Entfernung")] 
+			UNITTYPECONSTANTS_HeatFluxPerDistance = 32,			// @emem Wärmefluß pro Entfernung
+		[helpstring("Wärmequelle")] 
+			UNITTYPECONSTANTS_HeatSource = 33,					// @emem Wärmequelle
+		[helpstring("Leuchtstärke")] 
+			UNITTYPECONSTANTS_Illuminance = 34,					// @emem Leuchtstärke
+		[helpstring("Lineare Beschleunigung")] 
+			UNITTYPECONSTANTS_LinearAcceleration = 35,			// @emem Lineare Beschleunigung
+		[helpstring("Linear pro Winkel")] 
+			UNITTYPECONSTANTS_LinearPerAngular = 36,			// @emem Linear pro Winkel
+		[helpstring("Lineare Geschwindigkeit")] 
+			UNITTYPECONSTANTS_LinearVelocity = 37,				// @emem Lineare Geschwindigkeit
+		[helpstring("Lichtstrom")] 
+			UNITTYPECONSTANTS_LuminousFlux = 38,				// @emem Lichtstrom
+		[helpstring("Magnetische Feldstärke")] 
+			UNITTYPECONSTANTS_MagneticFieldStrength = 39,		// @emem Magnetische Feldstärke
+		[helpstring("Magnetischer Fluß")] 
+			UNITTYPECONSTANTS_MagneticFlux = 40,				// @emem Magnetischer Fluß
+		[helpstring("Magnetische Flußdichte")] 
+			UNITTYPECONSTANTS_MagneticFluxDensity = 41,			// @emem Magnetische Flußdichte
+		[helpstring("Massendurchsatz")] 
+			UNITTYPECONSTANTS_MassFlowRate = 42,				// @emem Massendurchsatz
+		[helpstring("Massenträgheitsmoment")] 
+			UNITTYPECONSTANTS_MassMomentOfInertia = 43,			// @emem Massenträgheitsmoment
+		[helpstring("Masse pro Fläche")] 
+			UNITTYPECONSTANTS_MassPerArea = 44,					// @emem Masse pro Fläche
+		[helpstring("Masse pro Länge")] 
+			UNITTYPECONSTANTS_MassPerLength = 45,				// @emem Masse pro Länge
+		[helpstring("Impuls")] 
+			UNITTYPECONSTANTS_Momentum = 46,					// @emem Impuls
+		[helpstring("Pro Entfernung")] 
+			UNITTYPECONSTANTS_PerDistance = 47,					// @emem Pro Entfernung
+		[helpstring("Leistung")] 
+			UNITTYPECONSTANTS_Power = 48,						// @emem Leistung
+		[helpstring("Elektrizitätsmenge")] 
+			UNITTYPECONSTANTS_QuantityOfElectricity = 49,		// @emem Elektrizitätsmenge
+		[helpstring("Strahlungsintensität")] 
+			UNITTYPECONSTANTS_RadiantIntensity = 50,			// @emem Strahlungsintensität
+		[helpstring("Drehsteifigkeit")] 
+			UNITTYPECONSTANTS_RotationalStiffness = 51,			// @emem Drehsteifigkeit
+		[helpstring("Trägheitsmoment")] 
+			UNITTYPECONSTANTS_SecondMomentOfArea = 52,			// @emem Trägheitsmoment
+		[helpstring("Wärmeleitfähigkeit")] 
+			UNITTYPECONSTANTS_ThermalConductivity = 53,			// @emem Wärmeleitfähigkeit
+		[helpstring("Dynamische Viskosität")]	
+			UNITTYPECONSTANTS_DynamicViscosity = 54,			// @emem Dynamische Viskosität
+		[helpstring("Kinetische Viskosität")] 
+			UNITTYPECONSTANTS_KinematicViscosity = 55,			// @emem Kinetische Viskosität
+		[helpstring("Volumen")] 
+			UNITTYPECONSTANTS_Volume = 56,						// @emem Volumen
+		[helpstring("Volumendurchfluß")] 
+			UNITTYPECONSTANTS_VolumeFlowRate = 57,				// @emem Volumendurchfl
+		[helpstring("Skalar")] 
+			UNITTYPECONSTANTS_Scalar = 58,						// @emem Skalar
+	} UNITTYPECONSTANTS;
+cpp_quote("#endif // _UNITTYPECONSTANTS_DEFINED")
+
+cpp_quote("#if !defined(_UNITCONSTANTS_DEFINED)")
+cpp_quote("#define _UNITCONSTANTS_DEFINED")
+// @doc UNITCONSTANTSENUM
+// @enum UNITCONSTANTS | Die <t UNITCONSTANTS> -Aufzählung dient bei vielen Methoden des 
+// <o TRiASUnitsOfMeasure> -Objekts zur Auswahl einer Identifikationsnummer für Maßeinheiten. 
+// @xref <i ITRiASUnitsOfMeasure>
+	typedef 
+	[
+		public, v1_enum, 
+		helpstring("Identifikationsnummern für Maßeinheiten.")
+	]
+	enum _tagUNITCONSTANTS
+	{
+		UNITCONSTANTS_Unknown = -1,
+		UNITCONSTANTS_BestFitSI = 0,
+		UNITCONSTANTS_DistanceMeter = 59,					// @emem Meter
+		UNITCONSTANTS_DistanceNanometer = 60,				// @emem Nanometer
+		UNITCONSTANTS_DistanceMillimeter = 61,				// @emem Millimeter
+		UNITCONSTANTS_DistanceCentimeter = 62,				// @emem Centimeter
+		UNITCONSTANTS_DistanceKilometer = 63,				// @emem Kilometer
+		UNITCONSTANTS_DistanceInch = 64,					// @emem Zoll
+		UNITCONSTANTS_DistanceFoot = 65,					// @emem Fuß
+		UNITCONSTANTS_DistanceYard = 66,					// @emem Yard
+		UNITCONSTANTS_DistanceMile = 67,					// @emem Meile
+		UNITCONSTANTS_DistanceTenth = 68,
+		UNITCONSTANTS_DistanceHundredth = 69,
+		UNITCONSTANTS_DistanceThousandth = 70,
+		UNITCONSTANTS_DistanceRod = 71,
+		UNITCONSTANTS_DistancePole = 72,
+		UNITCONSTANTS_DistanceLink = 73,
+		UNITCONSTANTS_DistanceChain = 74,
+		UNITCONSTANTS_DistancePoint = 75,
+		UNITCONSTANTS_DistanceFurlong = 76,
+		UNITCONSTANTS_AngleRadian = 77,
+		UNITCONSTANTS_AngleDegree = 78,
+		UNITCONSTANTS_AngleMinute = 79,
+		UNITCONSTANTS_AngleSecond = 80,
+		UNITCONSTANTS_AngleGradian = 81,
+		UNITCONSTANTS_AngleRevolution = 82,
+		UNITCONSTANTS_MassKilogram = 83,					// @emem Kilogramm
+		UNITCONSTANTS_MassGram = 84,						// @emem Gramm
+		UNITCONSTANTS_MassMilligram = 85,					// @emem Milligramm
+		UNITCONSTANTS_MassMegagram = 86,					// @emem Megagramm
+		UNITCONSTANTS_MassGrain = 87,
+		UNITCONSTANTS_MassSlug = 88,
+		UNITCONSTANTS_MassPoundMass = 89,					// @emem Punktmasse
+		UNITCONSTANTS_MassSlinch = 90,
+		UNITCONSTANTS_MassOunce = 91,
+		UNITCONSTANTS_MassMetricTon = 92,
+		UNITCONSTANTS_MassLongTon = 93,
+		UNITCONSTANTS_MassShortTon = 94,
+		UNITCONSTANTS_TimeSecond = 95,						// @emem Sekunde
+		UNITCONSTANTS_TimeMinute = 96,						// @emem Minute
+		UNITCONSTANTS_TimeHour = 97,						// @emem Stunde
+		UNITCONSTANTS_TimeDay = 98,							// @emem Tag
+		UNITCONSTANTS_TimeWeek = 99,						// @emem Woche
+		UNITCONSTANTS_TimeYear = 100,						// @emem Jahr
+		UNITCONSTANTS_TimeMillisecond = 101,				// @emem Millisekunde
+		UNITCONSTANTS_TimeNanosecond = 102,					// @emem Nanosekunde
+		UNITCONSTANTS_TemperatureKelvin = 103,				// @emem Grad Kelvin
+		UNITCONSTANTS_TemperatureFahrenheit = 104,			// @emem Grad Fahrenheit
+		UNITCONSTANTS_TemperatureCelcius = 105,				// @emem Grad Celcius
+		UNITCONSTANTS_TemperatureRankine = 106,
+		UNITCONSTANTS_ElectricChargeAmpere = 107,
+		UNITCONSTANTS_LuminousIntensityCandela = 108,
+		UNITCONSTANTS_AmountOfSubstanceMole = 109,
+		UNITCONSTANTS_SolidAngleSteradian = 110,
+		UNITCONSTANTS_AngularAccelerationRadianPerSqrSecond = 111,
+		UNITCONSTANTS_AngularAccelerationDegreePerSqrSecond = 112,
+		UNITCONSTANTS_AngularAccelerationCyclePerSqrSecond = 113,
+		UNITCONSTANTS_AngularMomentumKilogramSqrMeterPerSecond = 114,
+		UNITCONSTANTS_AngularVelocityRadianPerSecond = 115,
+		UNITCONSTANTS_AngularVelocityRadianPerMinute = 116,
+		UNITCONSTANTS_AngularVelocityRadianPerHour = 117,
+		UNITCONSTANTS_AngularVelocityCyclePerSecond = 118,
+		UNITCONSTANTS_AngularVelocityCyclePerMinute = 119,
+		UNITCONSTANTS_AngularVelocityCyclePerHour = 120,
+		UNITCONSTANTS_AngularVelocityDegreePerSecond = 121,
+		UNITCONSTANTS_AngularVelocityDegreePerMinute = 122,
+		UNITCONSTANTS_AngularVelocityDegreePerHour = 123,
+		UNITCONSTANTS_AreaSquareMeter = 124,				// @emem Quadratmeter
+		UNITCONSTANTS_AreaSquareMillimeter = 125,			// @emem Quadratmillimeter
+		UNITCONSTANTS_AreaSquareCentimeter = 126,			// @emem Quadratcentimeter
+		UNITCONSTANTS_AreaSquareKilometer = 127,			// @emem Quadratkilometer
+		UNITCONSTANTS_AreaSquareInch = 128,
+		UNITCONSTANTS_AreaSquareFoot = 129,
+		UNITCONSTANTS_AreaSquareYard = 130,
+		UNITCONSTANTS_AreaSquareMile = 131,
+		UNITCONSTANTS_AreaAcre = 132,
+		UNITCONSTANTS_BodyForceNewtonPerCubicMeter = 133,
+		UNITCONSTANTS_BodyForceNewtonPerCubicCentimeter = 134,
+		UNITCONSTANTS_BodyForceNewtonPerCubicMillimeter = 135,
+		UNITCONSTANTS_BodyForceKilonewtonPerCubicMeter = 136,
+		UNITCONSTANTS_BodyForcePoundForcePerCubicInch = 137,
+		UNITCONSTANTS_BodyForcePoundForcePerCubicFoot = 138,
+		UNITCONSTANTS_CoefficientOfThermalExpansionPerKelvin = 139,
+		UNITCONSTANTS_CoefficientOfThermalExpansionPerCelcius = 140,
+		UNITCONSTANTS_CoefficientOfThermalExpansionPerFahrenheit = 141,
+		UNITCONSTANTS_CoefficientOfThermalExpansionPerRankine = 142,
+		UNITCONSTANTS_DensityKilogramPerCubicMeter = 143,
+		UNITCONSTANTS_DensityKilogramPerCubicMillimeter = 144,
+		UNITCONSTANTS_DensityKilogramPerCubicCentimeter = 145,
+		UNITCONSTANTS_DensityPoundMassPerCubicFoot = 146,
+		UNITCONSTANTS_DensityPoundMassPerCubicInch = 147,
+		UNITCONSTANTS_DensitySlugPerCubicFoot = 148,
+		UNITCONSTANTS_DensitySlinchPerCubicInch = 149,
+		UNITCONSTANTS_ElectricalCapacitanceFarad = 150,
+		UNITCONSTANTS_ElectricalConductanceSiemens = 151,
+		UNITCONSTANTS_ElectricalFieldStrengthVoltPerMeter = 152,
+		UNITCONSTANTS_ElectricalPotentialVolt = 153,
+		UNITCONSTANTS_ElectricalResistanceOhm = 154,
+		UNITCONSTANTS_EnergyJoule = 155,
+		UNITCONSTANTS_EnergyMicrojoule = 156,
+		UNITCONSTANTS_EnergyKilojoule = 157,
+		UNITCONSTANTS_EnergyWattSecond = 158,
+		UNITCONSTANTS_EnergyWattHour = 159,
+		UNITCONSTANTS_EnergyKilowattHour = 160,
+		UNITCONSTANTS_EnergyInchPoundForce = 161,
+		UNITCONSTANTS_EnergyFootPoundForce = 162,
+		UNITCONSTANTS_EnergyBtu = 163,
+		UNITCONSTANTS_EnergyErg = 164,
+		UNITCONSTANTS_EnergyElectronVolt = 165,
+		UNITCONSTANTS_EntropyJoulePerKelvin = 166,
+		UNITCONSTANTS_FilmCoefficientWattPerSqrMeterKelvin = 167,
+		UNITCONSTANTS_FilmCoefficientBtuPerHourSqrFootFahrenheit = 168,
+		UNITCONSTANTS_FilmCoefficientFootPoundPerSqrFootFahrenheit = 169,
+		UNITCONSTANTS_FilmCoefficientInchPoundPerSqrInchFahrenheit = 170,
+		UNITCONSTANTS_ForceNewton = 171,
+		UNITCONSTANTS_ForceNanonewton = 172,
+		UNITCONSTANTS_ForceMillinewton = 173,
+		UNITCONSTANTS_ForceKilonewton = 174,
+		UNITCONSTANTS_ForcePoundForce = 175,
+		UNITCONSTANTS_ForceDyne = 176,
+		UNITCONSTANTS_ForceKip = 177,
+		UNITCONSTANTS_ForcePerAreaPascal = 178,
+		UNITCONSTANTS_ForcePerAreaMillipascal = 179,
+		UNITCONSTANTS_ForcePerAreaKilopascal = 180,
+		UNITCONSTANTS_ForcePerAreaMegapascal = 181,
+		UNITCONSTANTS_ForcePerAreaPoundForcePerSqrInch = 182,
+		UNITCONSTANTS_ForcePerAreaKipPerSqrInch = 183,
+		UNITCONSTANTS_ForcePerAreaPoundForcePerSqrFoot = 184,
+		UNITCONSTANTS_ForcePerAreaKipPerSqrFoot = 185,
+		UNITCONSTANTS_ForcePerAreaBar = 186,
+		UNITCONSTANTS_ForcePerAreaMillibar = 187,
+		UNITCONSTANTS_ForcePerAreaAtmosphere = 188,
+		UNITCONSTANTS_ForcePerDistanceNewtonPerMeter = 189,
+		UNITCONSTANTS_ForcePerDistanceNewtonPerMillimeter = 190,
+		UNITCONSTANTS_ForcePerDistanceNewtonPerCentimeter = 191,
+		UNITCONSTANTS_ForcePerDistanceKilonewtonPerMeter = 192,
+		UNITCONSTANTS_ForcePerDistancePoundForcePerInch = 193,
+		UNITCONSTANTS_ForcePerDistancePoundForcePerFoot = 194,
+		UNITCONSTANTS_ForcePerDistanceKipPerInch = 195,
+		UNITCONSTANTS_ForcePerDistanceKipPerFoot = 196,
+		UNITCONSTANTS_ForcePerDistanceDynePerMeter = 197,
+		UNITCONSTANTS_ForcePerDistanceDynePerMillimeter = 198,
+		UNITCONSTANTS_FrequencyPerSecond = 199,
+		UNITCONSTANTS_FrequencyPerMinute = 200,
+		UNITCONSTANTS_FrequencyPerHour = 201,
+		UNITCONSTANTS_HeatCapacityJoulePerKilogramKelvin = 202,
+		UNITCONSTANTS_HeatCapacityBtuPerPoundMassFahrenheit = 203,
+		UNITCONSTANTS_HeatFluxPerAreaWattPerSqrMeter = 204,
+		UNITCONSTANTS_HeatFluxPerAreaKilowattPerSqrMeter = 205,
+		UNITCONSTANTS_HeatFluxPerAreaInchPoundForcePerSecondSqrInch = 206,
+		UNITCONSTANTS_HeatFluxPerAreaFootPoundForcePerSecondSqrFoot = 207,
+		UNITCONSTANTS_HeatFluxPerAreaBtuPerHourSqrFoot = 208,
+		UNITCONSTANTS_HeatFluxPerAreaHorsepowerPerSqrFoot = 209,
+		UNITCONSTANTS_HeatFluxPerDistanceWattPerMeter = 210,
+		UNITCONSTANTS_HeatFluxPerDistanceKilowattPerMeter = 211,
+		UNITCONSTANTS_HeatFluxPerDistanceMicrowattPerMeter = 212,
+		UNITCONSTANTS_HeatFluxPerDistanceMicrowattPerMillimeter = 213,
+		UNITCONSTANTS_HeatFluxPerDistanceInchPoundForcePerSecondInch = 214,
+		UNITCONSTANTS_HeatFluxPerDistanceBtuPerHourFoot = 215,
+		UNITCONSTANTS_HeatFluxPerDistanceHorsepowerPerFoot = 216,
+		UNITCONSTANTS_HeatSourceWattPerCubicMeter = 217,
+		UNITCONSTANTS_HeatSourceKilowattPerCubicMeter = 218,
+		UNITCONSTANTS_HeatSourceInchPoundForcePerSecondCubicInch = 219,
+		UNITCONSTANTS_HeatSourceFootPoundForcePerSecondCubicFoot = 220,
+		UNITCONSTANTS_HeatSourceBtuPerHourCubicFoot = 221,
+		UNITCONSTANTS_HeatSourceHorsepowerPerCubicFoot = 222,
+		UNITCONSTANTS_IlluminanceLux = 223,
+		UNITCONSTANTS_LinearAccelerationMeterPerSqrSecond = 224,
+		UNITCONSTANTS_LinearAccelerationKilometerPerSqrSecond = 225,
+		UNITCONSTANTS_LinearAccelerationMillimeterPerSqrSecond = 226,
+		UNITCONSTANTS_LinearAccelerationCentimeterPerSqrSecond = 227,
+		UNITCONSTANTS_LinearAccelerationInchPerSqrSecond = 228,
+		UNITCONSTANTS_LinearAccelerationFootPerSqrSecond = 229,
+		UNITCONSTANTS_LinearAccelerationMilePerSqrSecond = 230,
+		UNITCONSTANTS_LinearAccelerationMilePerSqrHour = 231,
+		UNITCONSTANTS_LinearAccelerationKilometerPerSqrHour = 232,
+		UNITCONSTANTS_LinearPerAngularMeterPerRadian = 233,
+		UNITCONSTANTS_LinearPerAngularMeterPerRevolution = 234,
+		UNITCONSTANTS_LinearPerAngularMillimeterPerRevolution = 235,
+		UNITCONSTANTS_LinearPerAngularInchPerRevolution = 236,
+		UNITCONSTANTS_LinearPerAngularFootPerRevolution = 237,
+		UNITCONSTANTS_LinearVelocityMeterPerSecond = 238,
+		UNITCONSTANTS_LinearVelocityMillimeterPerSecond = 239,
+		UNITCONSTANTS_LinearVelocityCentimeterPerSecond = 240,
+		UNITCONSTANTS_LinearVelocityKilometerPerSecond = 241,
+		UNITCONSTANTS_LinearVelocityKilometerPerHour = 242,
+		UNITCONSTANTS_LinearVelocityInchPerSecond = 243,
+		UNITCONSTANTS_LinearVelocityFootPerSecond = 244,
+		UNITCONSTANTS_LinearVelocityMilePerSecond = 245,
+		UNITCONSTANTS_LinearVelocityMilePerHour = 246,
+		UNITCONSTANTS_LuminousFluxLumen = 247,
+		UNITCONSTANTS_MagneticFieldStrengthAmperePerMeter = 248,
+		UNITCONSTANTS_MagneticFluxWeber = 249,
+		UNITCONSTANTS_MagneticFluxDensityTesla = 250,
+		UNITCONSTANTS_MassFlowRateKilogramPerSecond = 251,
+		UNITCONSTANTS_MassFlowRateGramPerSecond = 252,
+		UNITCONSTANTS_MassFlowRateMegagramPerSecond = 253,
+		UNITCONSTANTS_MassFlowRatePoundMassPerSecond = 254,
+		UNITCONSTANTS_MassFlowRateSlugPerSecond = 255,
+		UNITCONSTANTS_MassFlowRateSlinchPerSecond = 256,
+		UNITCONSTANTS_MassMomentOfInertiaKilogramSqrMeter = 257,
+		UNITCONSTANTS_MassMomentOfInertiaKilogramSqrMillimeter = 258,
+		UNITCONSTANTS_MassMomentOfInertiaGramSqrMillimeter = 259,
+		UNITCONSTANTS_MassMomentOfInertiaGramSqrCentimeter = 260,
+		UNITCONSTANTS_MassMomentOfInertiaSlugSqrFoot = 261,
+		UNITCONSTANTS_MassMomentOfInertiaSlugSqrInch = 262,
+		UNITCONSTANTS_MassMomentOfInertiaSlinchSqrInch = 263,
+		UNITCONSTANTS_MassMomentOfInertiaPoundMassSqrInch = 264,
+		UNITCONSTANTS_MassMomentOfInertiaPoundMassSqrFoot = 265,
+		UNITCONSTANTS_MassPerAreaKilogramPerSqrMeter = 266,
+		UNITCONSTANTS_MassPerAreaKilogramPerSqrMillimeter = 267,
+		UNITCONSTANTS_MassPerAreaGramPerSqrMillimeter = 268,
+		UNITCONSTANTS_MassPerAreaGramPerSqrCentimeter = 269,
+		UNITCONSTANTS_MassPerAreaSlugPerSqrInch = 270,
+		UNITCONSTANTS_MassPerAreaSlugPerSqrFoot = 271,
+		UNITCONSTANTS_MassPerAreaSlinchPerSqrInch = 272,
+		UNITCONSTANTS_MassPerAreaPoundMassPerSqrInch = 273,
+		UNITCONSTANTS_MassPerAreaPoundMassPerSqrFoot = 274,
+		UNITCONSTANTS_MassPerLengthKilogramPerMeter = 275,
+		UNITCONSTANTS_MassPerLengthKilogramPerMillimeter = 276,
+		UNITCONSTANTS_MassPerLengthGramPerMillimeter = 277,
+		UNITCONSTANTS_MassPerLengthGramPerCentimeter = 278,
+		UNITCONSTANTS_MassPerLengthSlugPerInch = 279,
+		UNITCONSTANTS_MassPerLengthSlugPerFoot = 280,
+		UNITCONSTANTS_MassPerLengthSlinchPerInch = 281,
+		UNITCONSTANTS_MassPerLengthPoundMassPerInch = 282,
+		UNITCONSTANTS_MassPerLengthPoundMassPerFoot = 283,
+		UNITCONSTANTS_MomentumKilogramMeterPerSecond = 284,
+		UNITCONSTANTS_PerDistancePerMeter = 285,
+		UNITCONSTANTS_PerDistancePerNanometer = 286,
+		UNITCONSTANTS_PerDistancePerMillimeter = 287,
+		UNITCONSTANTS_PerDistancePerCentimeter = 288,
+		UNITCONSTANTS_PerDistancePerKilometer = 289,
+		UNITCONSTANTS_PerDistancePerInch = 290,
+		UNITCONSTANTS_PerDistancePerFoot = 291,
+		UNITCONSTANTS_PerDistancePerYard = 292,
+		UNITCONSTANTS_PerDistancePerMile = 293,
+		UNITCONSTANTS_PerDistancePerTenth = 294,
+		UNITCONSTANTS_PerDistancePerHundredth = 295,
+		UNITCONSTANTS_PerDistancePerMil = 296,
+		UNITCONSTANTS_PowerWatt = 297,
+		UNITCONSTANTS_PowerKilowatt = 298,
+		UNITCONSTANTS_PowerMicrowatt = 299,
+		UNITCONSTANTS_PowerInchPoundForcePerSecond = 300,
+		UNITCONSTANTS_PowerFootPoundForcePerSecond = 301,
+		UNITCONSTANTS_PowerBtuPerHour = 302,
+		UNITCONSTANTS_PowerHorsepower = 303,
+		UNITCONSTANTS_QuantityOfElectricityCoulomb = 304,
+		UNITCONSTANTS_RadiantIntensityWattPerSteradian = 305,
+		UNITCONSTANTS_RotationalStiffnessNewtonMeterPerRadian = 306,
+		UNITCONSTANTS_RotationalStiffnessNewtonMeterPerDegree = 307,
+		UNITCONSTANTS_RotationalStiffnessNewtonMillimeterPerRadian = 308,
+		UNITCONSTANTS_RotationalStiffnessNewtonMillimeterPerDegree = 309,
+		UNITCONSTANTS_RotationalStiffnessKilonewtonMeterPerRadian = 310,
+		UNITCONSTANTS_RotationalStiffnessKilonewtonMeterPerDegree = 311,
+		UNITCONSTANTS_RotationalStiffnessPoundForceInchPerRadian = 312,
+		UNITCONSTANTS_RotationalStiffnessPoundForceInchPerDegree = 313,
+		UNITCONSTANTS_RotationalStiffnessPoundForceFootPerRadian = 314,
+		UNITCONSTANTS_RotationalStiffnessPoundForceFootPerDegree = 315,
+		UNITCONSTANTS_SecondMomentOfAreaMeterToFourth = 316,
+		UNITCONSTANTS_SecondMomentOfAreaMillimeterToFourth = 317,
+		UNITCONSTANTS_SecondMomentOfAreaCentimeterToFourth = 318,
+		UNITCONSTANTS_SecondMomentOfAreaInchToFourth = 319,
+		UNITCONSTANTS_SecondMomentOfAreaFootToFourth = 320,
+		UNITCONSTANTS_ThermalConductivityWattPerMeterCelcius = 321,
+		UNITCONSTANTS_ThermalConductivityKilowattPerMeterCelcius = 322,
+		UNITCONSTANTS_ThermalConductivityBtuPerHourFahrenheit = 323,
+		UNITCONSTANTS_ThermalConductivityInchPoundForcePerSecondInchFahrenheit = 324,
+		UNITCONSTANTS_DynamicViscosityPascalSecond = 325,
+		UNITCONSTANTS_DynamicViscosityKilopascalSecond = 326,
+		UNITCONSTANTS_DynamicViscosityMegapascalSecond = 327,
+		UNITCONSTANTS_DynamicViscosityPoundForceSecondPerSqrInch = 328,
+		UNITCONSTANTS_KinematicViscositySqrMeterPerSecond = 329,
+		UNITCONSTANTS_KinematicViscositySqrMillimeterPerSecond = 330,
+		UNITCONSTANTS_KinematicViscositySqrCentimeterPerSecond = 331,
+		UNITCONSTANTS_KinematicViscositySqrInchPerSecond = 332,
+		UNITCONSTANTS_KinematicViscositySqrFootPerSecond = 333,
+		UNITCONSTANTS_VolumeCubicMeter = 334,					// @emem Kubikmeter
+		UNITCONSTANTS_VolumeCubicMillimeter = 335,				// @emem Kubikmillimeter
+		UNITCONSTANTS_VolumeLiter = 336,						// @emem Liter
+		UNITCONSTANTS_VolumeMilliliter = 337,					// @emem Milliliter
+		UNITCONSTANTS_VolumeCubicInch = 338,
+		UNITCONSTANTS_VolumeCubicFoot = 339,
+		UNITCONSTANTS_VolumeCubicYard = 340,
+		UNITCONSTANTS_VolumeGallon = 341,
+		UNITCONSTANTS_VolumeQuart = 342,
+		UNITCONSTANTS_VolumePint = 343,
+		UNITCONSTANTS_VolumeFluidOunce = 344,
+		UNITCONSTANTS_ScalarNull = 346,
+		UNITCONSTANTS_VolumeFlowRateCubicMeterPerSecond = 347,
+		UNITCONSTANTS_VolumeFlowRateCubicMillimeterPerSecond = 348,
+		UNITCONSTANTS_VolumeFlowRateLiterPerSecond = 349,
+		UNITCONSTANTS_VolumeFlowRateMilliliterPerSecond = 350,
+		UNITCONSTANTS_VolumeFlowRateCubicInchPerSecond = 351,
+		UNITCONSTANTS_VolumeFlowRateCubicFootPerSecond = 352,
+		UNITCONSTANTS_VolumeFlowRateCubicYardPerSecond = 353,
+		UNITCONSTANTS_VolumeFlowRateGallonPerSecond = 354,
+		UNITCONSTANTS_VolumeFlowRateGallonPerMinute = 355,
+		UNITCONSTANTS_ElectricalInductanceHenry = 356,
+		UNITCONSTANTS_AngleDegreeSymbol = 357,
+		UNITCONSTANTS_AngleMinuteSymbol = 358,
+		UNITCONSTANTS_AngleSecondSymbol = 359,
+		UNITCONSTANTS_DistanceFootSymbol = 360,
+		UNITCONSTANTS_DistanceInchSymbol = 361,
+		UNITCONSTANTS_AreaHectare = 362,
+		UNITCONSTANTS_ForcePerAreaNewtonPerSqrMillimeter = 363,
+		UNITCONSTANTS_DynamicViscosityPoise = 364,
+		UNITCONSTANTS_DynamicViscosityCentipoise = 365,
+		UNITCONSTANTS_VolumeCubicCentimeter = 366,
+		UNITCONSTANTS_AngleDegreesMinutesSeconds = 65536,
+		UNITCONSTANTS_AngleHPFormat = 65537,
+		UNITCONSTANTS_DistanceSurveyInchTwoCharacters = 65538,
+		UNITCONSTANTS_DistanceSurveyKilofootTwoCharacters = 65539,
+		UNITCONSTANTS_DistanceSurveyFootTwoCharacters = 65540,
+		UNITCONSTANTS_DistanceNauticalMile = 65541,
+		UNITCONSTANTS_DistanceKilofoot = 65542,
+		UNITCONSTANTS_DistanceSurveyInch = 65543,
+		UNITCONSTANTS_DistanceSurveyFoot = 65544,
+		UNITCONSTANTS_DistanceSurveyKilofoot = 65545,
+		UNITCONSTANTS_AreaDeciare = 65546,
+		UNITCONSTANTS_AreaAres = 65547,
+		UNITCONSTANTS_AreaCentare = 65548,
+		UNITCONSTANTS_AreaSquareRod = 65549,
+		UNITCONSTANTS_AreaPerch = 65550,
+		UNITCONSTANTS_AreaSquareChain = 65551,
+		UNITCONSTANTS_AreaSquareLink = 65552,
+		UNITCONSTANTS_DistanceDecimeter = 65553,
+		UNITCONSTANTS_AreaHektar = 65554,
+		UNITCONSTANTS_AreaSquareDecimeter = 65555,
+	} UNITCONSTANTS;
+cpp_quote("#endif // _UNITCONSTANTS_DEFINED")
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc	INTERFACE STATIST 
+// @interface ITRiASUnitsOfMeasure | Über das <i ITRiASUnitsOfMeasure> -Interface können
+// diverse Maßeinheiten verwaltet bzw. in einander umgerechnet werden.
+// @supby <o TRiASUnitsOfMeasure>
+// @xref <o TRiASUnitsOfMeasure>, <o TRiASUnitIDs>
+// @group Methoden und Eigenschaften von <i ITRiASUnitsOfMeasure> 
+// @index | ITRIASUNITSOFMEASURE
+// @doc ITRIASUNITSOFMEASURE
+	[
+		object,
+		uuid(A2497E88-EF70-11D2-9BE5-5AB320524153),
+		dual,
+		helpstring("ITRiASUnitsOfMeasure Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASUnitsOfMeasure : IDispatch
+	{
+	// @method HRESULT | ITRiASUnitsOfMeasure | GetUnitIDs | Die <om .GetUnitIDs> -Methode 
+	// liefert eine Sammlung aller Identifikationsnummern der Maßeinheiten, die für die jeweilige 
+	// Kategorie anwendbar sind.  
+	// @parm <t UNITTYPECONSTANTS> | UnitType | Der Parameter <p UnitType> legt fest, für welche
+	// Kategorie sämtliche verfügbaren Maßeinheiten geliefert werden sollen.
+	// @parm <t ITRiASUnitIDs> | **ppIUnitIDs | Der Parameter <p ppIUnitIDs> liefert das
+	// ITRiASUnitIDs - Interface zur Enumeration aller im System verfügbaren Maßeinheiten
+	// @comm Das Resultat wird in Form eines Zeigers auf ein <o TRiASUnitIDs> -Objekt geliefert.
+	// @supby <o ITRiASUnitsOfMeasure>
+	// @xref <i ITRiASUnitsOfMeasure>, <o TRiASUnitIDs>
+		[id(100), helpstring("Liefert eine Sammlung aller Identifikationsnummern einer Kategorie von Maßeinheiten.")] HRESULT GetUnitIDs([in] UNITTYPECONSTANTS UnitType, [out, retval] ITRiASUnitIDs **UnitIDs);
+
+	// @method HRESULT | ITRiASUnitsOfMeasure | GetUnitID | Die <om .GetUnitID> -Methode 
+	// liefert die Identifikationsnummer der gegebenen Maßeinheit.
+	// @parm <t UNITTYPECONSTANTS> | UnitType | Der Parameter <p UnitType> legt fest, zu welcher
+	// Kategorie die gegebene Maßeinheit gehört.
+	// @parm BSTR | UnitName | Der Parameter <p UnitName> gibt den lesbaren Namen der Maßeinheit vor.
+	// @parm VARIANT_BOOL | CaseFlag | Der Parameter <p CaseFlag> gibt vor, ob bei der Suche nach der
+	// Maßeinheit über ihren Namen (s. Parameter <p UnitName>) eine Unterscheidung nach Groß- bzw. 
+	// Kleinschreibung vorgenommen wird. Dieser Parameter ist optional.
+	// @parm LONG *| pUnitId | Der Parameter <p pUnitId> enthält die Identifikationsnummer der Maßeinheit.
+	// @comm Die <om .GetUnitID> -Methode liefert die Identifikationsnummer der Maßeinheit.
+	// @comm Hinter der Identifikationsnummer verbirgt sich im Fall einer vordefinierten Maßeinheit ein
+	// Wert aus der <t UNITCONSTANTS> -Aufzählung und für nutzerdefinierte Maßeinheiten der bei 
+	// der Definition durch die <om . AddUserDefinedUnit> -Methode vergebene eindeutige Zahlenwert.
+	// @supby <o ITRiASUnitsOfMeasure>
+	// @xref <i ITRiASUnitsOfMeasure>, <om . AddUserDefinedUnit>
+		[id(101), helpstring("Liefert die Identifikationsnummer der gegebenen Maßeinheit.")] HRESULT GetUnitID([in] UNITTYPECONSTANTS UnitType, [in] BSTR UnitName, [in/*, optional, defaultvalue(VARIANT_TRUE)*/] VARIANT_BOOL CaseFlag, [out, retval] LONG *pUnit);
+
+	// @method HRESULT | ITRiASUnitsOfMeasure | GetUnitName | Die <om .GetUnitName> -Methode 
+	// liefert die Bezeichung der Maßeinheit mit der angegebenen Identifikationsnummer. 
+	// @parm LONG | UnitId | Der Parameter <p UnitId> enthält die Identifikationsnummer der Maßeinheit.
+	// @parm BSTR *| pUnitName | Der Parameter <p pUnitName> gibt den lesbaren Namen der Maßeinheit vor.
+	// @comm Die <om .GetUnitName> -Methode gibt beispielsweise bei der Identifikationsnummer 
+	// <e UNITCONSTANTS.UNITCONSTANTS_DistanceMilliMeter> die Einheitsbezeichnung "mm" zurück.
+	// @supby <o ITRiASUnitsOfMeasure>
+	// @xref <i ITRiASUnitsOfMeasure>
+		[id(102), helpstring("Liefert die Bezeichung der Maßeinheit mit der angegebenen Identifikationsnummer.")] HRESULT GetUnitName([in] LONG UnitId, [out, retval] BSTR *UnitName);
+
+	// @method HRESULT | ITRiASUnitsOfMeasure | GetCompBaseUnit | Die <om .GetCompBaseUnit> -Methode 
+	// liefert die Identifikationsnummer der Basismaßeinheit einer bestimmten Kategorie.
+	// @parm <t UNITTYPECONSTANTS> | UnitType | Der Parameter <p UnitType> legt fest, zu welcher
+	// Kategorie die Basismaßeinheit geliefert werden soll.
+	// @parm BSTR *| pUnitName | Der Parameter <p pUnitName> gibt den lesbaren Namen der Maßeinheit vor.
+	// @parm LONG *| pUnitId | Der Parameter <p pUnitId> enthält die Identifikationsnummer der Maßeinheit.
+	// @comm Die Basismaßeinheit der Kategorie Länge ist zum Beispiel Meter. Daher wird mit der 
+	// <om .GetCompBaseUnit> -Methode für die Kategorie <e UNITTYPECONSTANTS.UNITTYPECONSTANTS_Distance>
+	// ein Wert von <e UNITCONSTANTS.UNITCONSTANTS_DistanceMeter> ausgegeben. 
+	// @supby <o ITRiASUnitsOfMeasure>
+	// @xref <i ITRiASUnitsOfMeasure>
+		[id(103), helpstring("Liefert die Identifikationsnummer der Basismaßeinheit einer bestimmten Kategorie.")] HRESULT GetCompBaseUnit([in] UNITTYPECONSTANTS UnitType, [out, retval] LONG *Unit);
+
+	// @method HRESULT | ITRiASUnitsOfMeasure | ConvertUnitToUnit | Die <om .ConvertUnitToUnit> -Methode 
+	// dient der Umwandlung von Werten von einer Maßeinheit in eine andere.
+	// @parm <t UNITTYPECONSTANTS> | UnitType | Der Parameter <p UnitType> legt fest, zu welcher
+	// Kategorie die umzurechnenden Maßeinheiten gehören.
+	// @parm double | ValueIn | Der umzurechnede Zahlenwert.
+	// @parm LONG | UnitIDFrom | Die Identifikationsnummer der Maßeinheit des umzurechnenden 
+	// Zahlenwertes
+	// @parm LONG | UnitIDTo | Die Identifikationsnummer der Maßeinheit des gewünschten 
+	// Resultates
+	// @parm double *| pValueOut | Liefert den umzurechnenden Zahlenwert.
+	// @comm Die <om .ConvertUnitToUnit> -Methode liefert den umgerechneten Zahlenwert. 
+	// @supby <o ITRiASUnitsOfMeasure>
+	// @xref <i ITRiASUnitsOfMeasure>
+		[id(104), helpstring("Umwandeln von Werten von einer Maßeinheit in eine Andere.")] HRESULT ConvertUnitToUnit([in] UNITTYPECONSTANTS UnitType, [in] double ValueIn, [in] LONG UnitIDFrom, [in] LONG UnitIDTo, [out, retval] double *ValueOut);
+
+	// @method HRESULT | ITRiASUnitsOfMeasure | AddUserDefinedUnit | Die <om .AddUserDefinedUnit> -Methode 
+	// dient der Definition zusätzlicher, noch nicht vordefinierter Maßeinheiten. Die neue Maßeinheit 
+	// wird der angegebenen Kategorie zugeordnet.
+	// @parm <t UNITTYPECONSTANTS> | UnitType | Der Parameter <p UnitType> legt fest, zu welcher
+	// Kategorie die neue Maßeinheit gehören soll.
+	// @parm BSTR | UnitName | Die Bezeichung der hinzuzufügenden Einheit.
+	// @parm double | NumCompBaseUnits | Umrechnungsfaktor zwischen der hinzuzufügenden Maßeinheit und 
+	// der Basismaßeinheit der zu messenden Kategorie. Die Basiseinheit wird mit dem in diesem Argument 
+	// enthaltenen Wert multipliziert. Ist die Kategorie der Maßeinheit beispielsweise "linear" 
+	// (Basiseinheit Meter), definiert der Wert 1,5 die neue Einheit als 1,5 mal die Länge eines Meters.
+	// @parm double | UnitOffset | Fügt dem umgerechneten Wert einen Offset-Wert hinzu. Für die Umrechnung 
+	// von Celsius in Fahrenheit wird zum Beispiel ein Offset-Wert von 32 benötigt. Bei den meisten 
+	// Einheiten ist jedoch kein Offset erforderlich. Dann wird dieses Argument auf Null gesetzt.
+	// @parm BSTR | bstrAppName | Zeichenfolge mit dem Namen der Anwendung. Dieses Argument dient zur 
+	// Bestimmung des Registrierungspfads für Informationen zur Maßeinheit.
+	// @parm BSTR | bstrAppVersion | Zeichenfolge mit der Versionsnummer der Anwendung. Dieses Argument dient 
+	// zur Bestimmung des Registrierungspfads für Informationen zur Maßeinheit.
+	// @parm LONG *| pUnitId | Der Parameter <p pUnitId> enthält die Identifikationsnummer der Maßeinheit.
+	// @comm Die <om .AddUserDefinedUnit> -Methode liefert eine Identifikationsnummer, die im weiteren 
+	// zum Zugriff auf die neue Maßeinheit verwendet werden kann.
+	// @supby <o ITRiASUnitsOfMeasure>
+	// @xref <i ITRiASUnitsOfMeasure>
+		[id(105), helpstring("Definieren zusätzlicher, noch nicht vordefinierter Maßeinheiten.")] HRESULT AddUserDefinedUnit([in] UNITTYPECONSTANTS UnitType, [in] BSTR UnitName, [in] double NumCompBaseUnits, [in] double UnitOffset, [in] BSTR AppName, [in] BSTR AppVersion, [out,retval] LONG *pUnit);
+
+	// @method HRESULT | ITRiASUnitsOfMeasure | DeleteUserDefinedUnit | Die <om .DeleteUserDefinedUnit> -Methode 
+	// kann eine vom Anwender definierte Maßeinheit gelöscht werden. 
+	// @parm <t UNITTYPECONSTANTS> | UnitType | Der Parameter <p UnitType> legt fest, zu welcher
+	// Kategorie die zu löschende Maßeinheit gehört.
+	// @parm LONG | UnitID | Die Identifikationsnummer der zu löschenden vom Anwender definierten Maßeinheit.
+	// @parm BSTR | AppName | Zeichenfolge mit dem Namen der Anwendung. Dieses Argument dient zur 
+	// Bestimmung des Registrierungspfads für Informationen zur Maßeinheit.
+	// @parm BSTR | AppVersion | Zeichenfolge mit der Versionsnummer der Anwendung. Dieses Argument dient 
+	// zur Bestimmung des Registrierungspfads für Informationen zur Maßeinheit.
+	// @comm Eine vom Anwender definierte Maßeinheit wird mit der <om .AddUserDefinedUnit> -Methode erzeugt.
+	// @comm Es können nur Maßeinheiten gelöscht werden, die zuvor mit der <om .AddUserDefinedUnit> -Methode
+	// erstellt worden sind. Der Versuch, eine UnitID einer vordefinierten Einheit zu löschen, führt zu 
+	// einem Fehler.
+	// @supby <o ITRiASUnitsOfMeasure>
+	// @xref <i ITRiASUnitsOfMeasure>, <om .AddUserDefinedUnit>
+		[id(106), helpstring("Löschen einer vom Anwender definierten Maßeinheit.")] HRESULT DeleteUserDefinedUnit([in] UNITTYPECONSTANTS UnitType, [in] LONG UnitID, [in] BSTR AppName, [in] BSTR AppVersionStr);
+
+	// @method HRESULT | ITRiASUnitsOfMeasure | LoadUserDefinedUnits | Die <om .LoadUserDefinedUnits> -Methode 
+	// liest die vom Anwender definierten Maßeinheiten aus der Registrierung ein und ordnet diese den 
+	// entsprechenden Kategorien zu. 
+	// @parm BSTR | AppName | Zeichenfolge mit dem Namen der Anwendung. Dieses Argument dient zur 
+	// Bestimmung des Registrierungspfads für Informationen zur Maßeinheit.
+	// @parm BSTR | AppVersion | Zeichenfolge mit der Versionsnummer der Anwendung. Dieses Argument dient 
+	// zur Bestimmung des Registrierungspfads für Informationen zur Maßeinheit.
+	// @comm Normalerweise wird die <om .LoadUserDefinedUnits> -Methode einmal beim Start der Anwendung 
+	// gerufen, damit alle benutzerdefinierten Einheiten, die zur Anwendung hinzugefügt worden sind, 
+	// in der aktuellen Sitzung verfügbar sind.
+	// @supby <o ITRiASUnitsOfMeasure>
+	// @xref <i ITRiASUnitsOfMeasure>
+		[id(107), helpstring("Liest die vom Anwender definierten Maßeinheiten aus der Registrierung ein.")] HRESULT LoadUserDefinedUnits([in] BSTR AppName, [in] BSTR AppVersionStr);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc	INTERFACE STATIST 
+// @interface ITRiASUnitIDs | Über das <i ITRiASUnitIDs> -Interface können
+// alle im System verfügbaren Maßeinheiten enumeriert werden.
+// @supby <o TRiASUnitIDs>
+// @xref <o TRiASUnitIDs>
+// @group Methoden und Eigenschaften von <i ITRiASUnitIDs> 
+// @index | ITRIASUNITIDS
+// @doc ITRIASUNITIDS
+	[
+		object,
+		uuid(A2497E98-EF70-11D2-9BE5-5AB320524153),
+		dual,
+		helpstring("ITRiASUnitIDs Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASUnitIDs : IStaticCollection
+	{
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc	INTERFACE STATIST 
+	[
+		object,
+		uuid(328F04FD-C376-47C8-BAB2-3427AC1D4331),
+		dual,
+		helpstring("IPopupTree Interface"),
+		pointer_default(unique)
+	]
+	interface IPopupTree : IDispatch
+	{
+		typedef [public, v1_enum] 
+		enum _tagPOPUPTREEMODE {
+			POPUPTREEMODE_UNKNOWN = 0,
+			POPUPTREEMODE_SHOWOBJPROPS = 1,
+			POPUPTREEMODE_SHOWSTATFUNCS = 2,
+		} POPUPTREEMODE;
+
+	// stock properties
+		[propputref, bindable, requestedit, id(DISPID_FONT)] HRESULT Font([in]IFontDisp* pFont);
+		[propput, bindable, requestedit, id(DISPID_FONT)] HRESULT Font([in]IFontDisp* pFont);
+		[propget, bindable, requestedit, id(DISPID_FONT)] HRESULT Font([out, retval]IFontDisp** ppFont);
+		[propput, bindable, requestedit, id(DISPID_ENABLED)] HRESULT Enabled([in]VARIANT_BOOL vbool);
+		[propget, bindable, requestedit, id(DISPID_ENABLED)] HRESULT Enabled([out,retval]VARIANT_BOOL* pbool);
+		[propput, bindable, requestedit, id(DISPID_TABSTOP)] HRESULT TabStop([in]VARIANT_BOOL vbool);
+		[propget, bindable, requestedit, id(DISPID_TABSTOP)] HRESULT TabStop([out, retval]VARIANT_BOOL* pbool);
+		[propput, bindable, requestedit, id(DISPID_CAPTION)] HRESULT Caption([in]BSTR strCaption);
+		[propget, bindable, requestedit, id(DISPID_CAPTION)] HRESULT Caption([out,retval]BSTR* pstrCaption);
+		[propput, bindable, requestedit, id(DISPID_VALID)] HRESULT Valid([in]VARIANT_BOOL vbool);
+		[propget, bindable, requestedit, id(DISPID_VALID)] HRESULT Valid([out, retval]VARIANT_BOOL* pbool);
+
+	// eigene Eigenschaften
+		[propput, bindable, requestedit, id(100)] HRESULT ButtonTooltipText([in]BSTR ToolTipText);
+		[propget, bindable, requestedit, id(100)] HRESULT ButtonTooltipText([out, retval]BSTR *ToolTipText);
+		[propput, bindable, requestedit, id(101)] HRESULT PopupTreeMode([in]POPUPTREEMODE Mode);
+		[propget, bindable, requestedit, id(101)] HRESULT PopupTreeMode([out, retval]POPUPTREEMODE *Mode);
+
+		[propget, id(102)] HRESULT HasSelection([out, retval]VARIANT_BOOL *HasSel);
+		[propget, id(103)] HRESULT Selection([in]REFIID riid, [iid_is(riid), out, retval]IUnknown **Selection);
+		[id(104)] HRESULT SetSelection([in]BSTR Selection);
+	};
+
+	[
+		object,
+		uuid(B3D935F5-3F95-4E5E-9BAF-3C13FE1CC010),
+		dual,
+		helpstring("IProjectValuePageCtrl Interface"),
+		pointer_default(unique)
+	]
+	interface IProjectValuePageCtrl : IDispatch
+	{
+		[propputref, id(DISPID_FONT)] HRESULT Font([in]IFontDisp* pFont);
+		[propput, id(DISPID_FONT)] HRESULT Font([in]IFontDisp* pFont);
+		[propget, id(DISPID_FONT)] HRESULT Font([out, retval]IFontDisp** ppFont);
+		[propput, bindable, requestedit, id(DISPID_ENABLED)] HRESULT Enabled([in]VARIANT_BOOL vbool);
+		[propget, bindable, requestedit, id(DISPID_ENABLED)] HRESULT Enabled([out,retval]VARIANT_BOOL* pbool);
+		[propput, bindable, requestedit, id(DISPID_TABSTOP)] HRESULT TabStop([in]VARIANT_BOOL vbool);
+		[propget, bindable, requestedit, id(DISPID_TABSTOP)] HRESULT TabStop([out, retval]VARIANT_BOOL* pbool);
+		[propput, bindable, requestedit, id(DISPID_VALID)] HRESULT Valid([in]VARIANT_BOOL vbool);
+		[propget, bindable, requestedit, id(DISPID_VALID)] HRESULT Valid([out, retval]VARIANT_BOOL* pbool);
+	};
+
+
+// ITRiASUsedUnits Interface
+	[ 
+		object, 
+		uuid(249B5720-57BE-45EB-B7E2-E78B24C819E8), 
+		dual, 
+		oleautomation, 
+		pointer_default(unique) 
+	]
+	interface ITRiASUsedUnits : IDispatch
+	{
+		[propget, id(1), helpstring("property UnitOfLength")] HRESULT UnitOfLength([out, retval] UNITCONSTANTS *pVal);
+		[propput, id(1), helpstring("property UnitOfLength")] HRESULT UnitOfLength([in] UNITCONSTANTS newVal);
+		[propget, id(2), helpstring("property UnitOfArea")] HRESULT UnitOfArea([out, retval] UNITCONSTANTS *pVal);
+		[propput, id(2), helpstring("property UnitOfArea")] HRESULT UnitOfArea([in] UNITCONSTANTS newVal);
+		[propget, id(3), helpstring("property AppendUnits")] HRESULT AppendUnits([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(3), helpstring("property AppendUnits")] HRESULT AppendUnits([in] VARIANT_BOOL newVal);
+		[id(4), helpstring("method SaveUsedUnits")] HRESULT SaveUsedUnits();
+		[id(5), helpstring("method RestoreUsedUnits")] HRESULT RestoreUsedUnits();
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// typelibrary
+[
+	uuid(CF461D81-EE47-11D2-9BE4-BAF620524153),
+	version(TYPELIB_STATIST_VERSION),
+	lcid(TYPELIB_STATIST_LCID),
+	helpstring("TRiAS Statistics Extension 1.0 Type Library")
+]
+library TRiASStatistics
+{
+///////////////////////////////////////////////////////////////////////////////
+// TLib : OLE Automation : {00020430-0000-0000-C000-000000000046}
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc	STATIST VERSION
+	enum STATIST_VERSIONS {
+		TYPELIB_STATIST_MAJOR_VERSION = TYPELIB_STATIST_VERSION_MAJOR,
+		TYPELIB_STATIST_MINOR_VERSION = TYPELIB_STATIST_VERSION_MINOR,
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc STATIST INTERFACE
+	[
+		uuid(987F28F0-4C14-4F53-82E2-AB190D3FF3E9),
+		helpstring("_IPopupTreeEvents Interface")
+	]
+	dispinterface _IPopupTreeEvents
+	{
+	properties:
+	methods:
+		[id(1)] void OnItemSelected();
+		[id(2)] void OnCanceledSelection();
+	};
+	
+///////////////////////////////////////////////////////////////////////////////
+// @doc STATIST INTERFACE
+	[
+		uuid(F5157D32-88E7-4DC4-9466-D80B3B2318BC),
+		helpstring("_IProjectValuePageCtrlEvents Interface")
+	]
+	dispinterface _IProjectValuePageCtrlEvents
+	{
+		properties:
+		methods:
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc STATIC INTERFACE
+	interface IValueProviderCallback;
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST
+// @object TRiASSimpleStatistics | Stellt verschiedene elementare statistische 
+// Operationen über eindimensionalen Stichproben-Wertemengen zur Verfügung.
+// @comm Das <o TRiASSimpleStatistics> -Objekt führt sämtliche Berechnungen über den
+// in diesem Objekt gespeicherten Werten einer eindimensionalen Stichprobenmenge durch. 
+// Diese Stichprobenmenge kann direkt durch mehrfaches Aufrufen der 
+// <om ITRiASSimpleStatistics.AddValue> -Methode gefüllt werden. 
+// @supint <i ITRiASSimpleStatistics> | Statistische Auswertung einer Stichprobenmenge.
+// @xref <i ITRiASSimpleStatistics>
+	[
+		uuid(0CB3A699-E5CE-11D2-9BD9-586A20524153),
+		helpstring("TRiASSimpleStatistics Class")
+	]
+	coclass TRiASSimpleStatistics
+	{
+		[default] interface ITRiASSimpleStatistics;
+	};
+
+// @ doc OBJECT STATIST
+// diverse statistische Kenngrößen
+	[ 
+		uuid(84B653D0-006E-430F-A998-132EFBA3E780), 
+		helpstring("TRiASStatistCount Class")
+	]
+	coclass TRiASStatistCount
+	{
+		[default] interface IGenericStatistics;
+	};
+
+	[ 
+		uuid(84B653DB-006E-430F-A998-132EFBA3E780), 
+		helpstring("TRiASStatistCountNotNull Class")
+	]
+	coclass TRiASStatistCountNotNull
+	{
+		[default] interface IGenericStatistics;
+	};
+
+	[ 
+		uuid(84B653D1-006E-430F-A998-132EFBA3E780), 
+		helpstring("TRiASStatistSum Class")
+	]
+	coclass TRiASStatistSum
+	{
+		[default] interface IGenericStatistics;
+	};
+
+	[ 
+		uuid(84B653D3-006E-430F-A998-132EFBA3E780), 
+		helpstring("TRiASStatistArithmeticAverage Class")
+	]
+	coclass TRiASStatistArithmeticAverage
+	{
+		[default] interface IGenericStatistics;
+	};
+
+	[ 
+		uuid(84B653D4-006E-430F-A998-132EFBA3E780), 
+		helpstring("TRiASStatistGeometricAverage Class")
+	]
+	coclass TRiASStatistGeometricAverage
+	{
+		[default] interface IGenericStatistics;
+	};
+
+	[ 
+		uuid(84B653D5-006E-430F-A998-132EFBA3E780), 
+		helpstring("TRiASStatistMedian Class")
+	]
+	coclass TRiASStatistMedian
+	{
+		[default] interface IGenericStatistics;
+	};
+
+	[ 
+		uuid(84B653D6-006E-430F-A998-132EFBA3E780), 
+		helpstring("TRiASStatistMinValue Class")
+	]
+	coclass TRiASStatistMinValue
+	{
+		[default] interface IGenericStatistics;
+	};
+
+	[ 
+		uuid(84B653D7-006E-430F-A998-132EFBA3E780), 
+		helpstring("TRiASStatistMaxValue Class")
+	]
+	coclass TRiASStatistMaxValue
+	{
+		[default] interface IGenericStatistics;
+	};
+
+	[ 
+		uuid(84B653D8-006E-430F-A998-132EFBA3E780), 
+		helpstring("TRiASStatistRange Class")
+	]
+	coclass TRiASStatistRange
+	{
+		[default] interface IGenericStatistics;
+	};
+
+	[ 
+		uuid(84B653D9-006E-430F-A998-132EFBA3E780), 
+		helpstring("TRiASStatistStandardDeviation Class")
+	]
+	coclass TRiASStatistStandardDeviation
+	{
+		[default] interface IGenericStatistics;
+	};
+
+	[ 
+		uuid(84B653DA-006E-430F-A998-132EFBA3E780), 
+		helpstring("TRiASStatistVariance Class")
+	]
+	coclass TRiASStatistVariance
+	{
+		[default] interface IGenericStatistics;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST
+// @object TRiASUnitsOfMeasure | Stellt verschiedene Methoden zur Definition von 
+// Maßeinheiten und zur Umrechnung von Zahlenwerten aus einer Maßeinheit in eine andere
+// zur Verfügung.
+// @supint <i ITRiASUnitsOfMeasure> | Definition von und Umrechnung zwischen Maßeinheiten.
+// @xref <i ITRiASUnitsOfMeasure>
+	[
+		uuid(A2497E89-EF70-11D2-9BE5-5AB320524153),
+		helpstring("TRiASUnitsOfMeasure Class")
+	]
+	coclass TRiASUnitsOfMeasure
+	{
+		[default] interface ITRiASUnitsOfMeasure;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST
+// @object TRiASUnitIDs | Stellt sämtliche dem System bekannten Maßeinheiten zur Verfügung
+// @supint <i ITRiASUnitIDs> | Enumeration der verfügbaren Maßeinheiten
+// @xref <i ITRiASUnitIDs>
+	[
+		uuid(A2497E99-EF70-11D2-9BE5-5AB320524153),
+		helpstring("TRiASUnitIDs Class")
+	]
+	coclass TRiASUnitIDs
+	{
+		[default] interface ITRiASUnitIDs;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST OBJECTPROPERTY
+// @object CountLinePoints | Objekteigenschaft, die die Anzahl der Stützpunkte
+// eines Geometrieobjektes liefert.
+// @supint <i IObjectProperty> | Standard-Interface einer Objekteigenschaft
+// @xref <i IObjectProperty>
+	[
+		uuid(A19D28F7-F022-11D2-9BE5-5AB320524153),
+		helpstring("CountLinePoints Class")
+	]
+	coclass CountLinePoints
+	{
+		[default] interface IUnknown;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST OBJECTPROPERTY
+// @object ObjContainerXMin | Objekteigenschaft, die den minimalen Rechtswert des Objektcontainers
+// eines Geometrieobjektes liefert.
+// @supint <i IObjectProperty> | Standard-Interface einer Objekteigenschaft
+// @xref <i IObjectProperty>
+	[
+		uuid(3C1EC684-70AA-11D3-A897-00104BAF20DA),
+		helpstring("ObjContainerXMin Class")
+	]
+	coclass ObjContainerXMin
+	{
+		[default] interface IUnknown;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST OBJECTPROPERTY
+// @object ObjContainerXMax | Objekteigenschaft, die den maximalen Rechtswert des Objektcontainers
+// eines Geometrieobjektes liefert.
+// @supint <i IObjectProperty> | Standard-Interface einer Objekteigenschaft
+// @xref <i IObjectProperty>
+	[
+		uuid(3C1EC686-70AA-11D3-A897-00104BAF20DA),
+		helpstring("ObjContainerXMax Class")
+	]
+	coclass ObjContainerXMax
+	{
+		[default] interface IUnknown;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST OBJECTPROPERTY
+// @object ObjContainerYMin | Objekteigenschaft, die den minimalen Hochwert des Objektcontainers
+// eines Geometrieobjektes liefert.
+// @supint <i IObjectProperty> | Standard-Interface einer Objekteigenschaft
+// @xref <i IObjectProperty>
+	[
+		uuid(3C1EC688-70AA-11D3-A897-00104BAF20DA),
+		helpstring("ObjContainerYMin Class")
+	]
+	coclass ObjContainerYMin
+	{
+		[default] interface IUnknown;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST OBJECTPROPERTY
+// @object ObjContainerXMax | Objekteigenschaft, die den maximalen Rechtswert des Objektcontainers
+// eines Geometrieobjektes liefert.
+// @supint <i IObjectProperty> | Standard-Interface einer Objekteigenschaft
+// @xref <i IObjectProperty>
+	[
+		uuid(3C1EC68A-70AA-11D3-A897-00104BAF20DA),
+		helpstring("ObjContainerYMax Class")
+	]
+	coclass ObjContainerYMax
+	{
+		[default] interface IUnknown;
+	};
+
+//////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST OBJECTPROPERTY
+// @object LengthOfLine | Objekteigenschaft, die die Länge
+// eines Linienobjektes liefert.
+// @supint <i IObjectProperty> | Standard-Interface einer Objekteigenschaft
+// @xref <i IObjectProperty>
+	[
+		uuid(5F9A0AB4-64E2-11D3-A88C-00104BAF20DA),
+		helpstring("LengthOfLine Class")
+	]
+	coclass LengthOfLine
+	{
+		[default] interface IUnknown;
+	};
+
+//////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST OBJECTPROPERTY
+// @object CountAreaIsland | Objekteigenschaft, die die Anzahl
+// der Innenkonturen eines Flächenobjektes liefert.
+// @supint <i IObjectProperty> | Standard-Interface einer Objekteigenschaft
+// @xref <i IObjectProperty>
+	[
+		uuid(6C6BB024-65CA-11D3-A88D-00104BAF20DA),
+		helpstring("CountAreaIsland Class")
+	]
+	coclass CountAreaIsland
+	{
+		[default] interface IUnknown;
+	};
+
+//////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST OBJECTPROPERTY
+// @object SimpleAreaFrame | Objekteigenschaft, die die Länge der Außenkontur
+// eines Flächenobjektes liefert.
+// @supint <i IObjectProperty> | Standard-Interface einer Objekteigenschaft
+// @xref <i IObjectProperty>
+	[
+		uuid(6C6BB026-65CA-11D3-A88D-00104BAF20DA),
+		helpstring("SimpleAreaFrame Class")
+	]
+	coclass SimpleAreaFrame
+	{
+		[default] interface IUnknown;
+	};
+
+//////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST OBJECTPROPERTY
+// @object FullAreaFrame | Objekteigenschaft, die die Länge der Kontur
+// eines Flächenobjektes liefert.
+// @supint <i IObjectProperty> | Standard-Interface einer Objekteigenschaft
+// @xref <i IObjectProperty>
+	[
+		uuid(6C6BB028-65CA-11D3-A88D-00104BAF20DA),
+		helpstring("FullAreaFrame Class")
+	]
+	coclass FullAreaFrame
+	{
+		[default] interface IUnknown;
+	};
+
+//////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST OBJECTPROPERTY
+// @object SuperficalContents | Objekteigenschaft, die den Flächeninhalt
+// eines Flächenobjektes liefert.
+// @supint <i IObjectProperty> | Standard-Interface einer Objekteigenschaft
+// @xref <i IObjectProperty>
+	[
+		uuid(B2735E54-668B-11D3-A88E-00104BAF20DA),
+		helpstring("SuperficialContents Class")
+	]
+	coclass SuperficialContents
+	{
+		[default] interface IUnknown;
+	};
+
+//////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST OBJECTPROPERTY
+// @object SimpleAreaRadius | Objekteigenschaft, die den Radius einer Kreisfläche mit identischem Flächeninhalt
+// des ausgewählten Flächenobjektes liefert.
+// @supint <i IObjectProperty> | Standard-Interface einer Objekteigenschaft
+// @xref <i IObjectProperty>
+
+	[
+		uuid(3C1EC68C-70AA-11D3-A897-00104BAF20DA),
+		helpstring("SimpleAreaRadius Class")
+	]
+	coclass SimpleAreaRadius
+	{
+		[default] interface IUnknown;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST OBJECTPROPERTY
+// @object PointCoordX | Objekteigenschaft, die den Rechtswert der Referenzkoordinate 
+// eines Geometrieobjektes im aktuell ausgewählten Darstellungsformat und Koordinatensystem
+// liefert.
+// @supint <i IObjectProperty> | Standard-Interface einer Objekteigenschaft
+// @xref <i IObjectProperty>
+	[
+		uuid(1E5FBF6A-F236-11D2-9BEB-0ECD20524153),
+		helpstring("PointCoordX Class")
+	]
+	coclass PointCoordX
+	{
+		[default] interface IUnknown;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST OBJECTPROPERTY
+// @object PointCoordY | Objekteigenschaft, die den Hochwert der Referenzkoordinate 
+// eines Geometrieobjektes im aktuell ausgewählten Darstellungsformat und Koordinatensystem
+// liefert.
+// @supint <i IObjectProperty> | Standard-Interface einer Objekteigenschaft
+// @xref <i IObjectProperty>
+	[
+		uuid(1E5FBF6B-F236-11D2-9BEB-0ECD20524153),
+		helpstring("PointCoordY Class")
+	]
+	coclass PointCoordY
+	{
+		[default] interface IUnknown;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST OBJECTPROPERTY
+// @object PointCentreCoordX | Objekteigenschaft, die den Rechtswert der Schwerpunktkoordinate 
+// eines Flächenobjektes im aktuell ausgewählten Darstellungsformat und Koordinatensystem
+// liefert.
+// @supint <i IObjectProperty> | Standard-Interface einer Objekteigenschaft
+// @xref <i IObjectProperty>
+	[
+		uuid(D49CF54A-6417-11D3-A88B-00104BAF20DA),
+		helpstring("PointCentreCoordX Class")
+	]
+	coclass PointCentreCoordX
+	{
+		[default] interface IUnknown;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST OBJECTPROPERTY
+// @object PointCentreCoordY | Objekteigenschaft, die den Hochwert der Schwerpunktkoordinate 
+// eines Flächenobjektes im aktuell ausgewählten Darstellungsformat und Koordinatensystem
+// liefert.
+// @supint <i IObjectProperty> | Standard-Interface einer Objekteigenschaft
+// @xref <i IObjectProperty>
+	[
+		uuid(D49CF547-6417-11D3-A88B-00104BAF20DA),
+		helpstring("PointCentreCoordY Class")
+	]
+	coclass PointCentreCoordY
+	{
+		[default] interface IUnknown;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST OBJECTPROPERTY
+// @object StatisticObjectProperty | Objekteigenschaft, die es ermöglicht, eine
+// statistischen  Wert über einer (anderen) Objekteigenschaft für alle Objekte
+// zu berechnen, die über eine Folge von Geokomponenten aus dem Bezugsobjekt
+// abgeleitet wurden.
+// @comm Die Folge von GeoKomponenten, die zur Auswahl der Objektmenge dient,
+// über welcher die statistische Berechnung vorgenommen wird, ist konfigurierbar.
+// @supint <i IObjectProperty> | Standard-Interface einer Objekteigenschaft
+// @xref <i IObjectProperty>
+	[
+		uuid(3357E0C8-3FBF-487A-80D6-7BDF7A7DAC57),
+		helpstring("StatisticObjectProperty Class")
+	]
+	coclass StatisticObjectProperty
+	{
+		[default] interface IUnknown;
+		interface IConfigObjectProperty;
+		interface IConfigSequenceForObjectProperty;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST OBJECTPROPERTY
+// @object MathOperationProperty | Objekteigenschaft, die das Ergebnis einer
+// vorgebbaren mathematischen Operation (+, -, * oder /) zweier vorgebbarer 
+// Obvjekteigenschaften zu berechnen.
+	[
+		uuid(AE9FD8D1-4BC1-4236-AD70-EA35610617DA),
+		helpstring("MathOperationProperty Class")
+	]
+	coclass MathOperationProperty
+	{
+		[default] interface IUnknown;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST PROPERTYACTION
+	[
+		uuid(6C743068-F9FA-42FA-9C6F-DD72B5315BE4),
+		helpstring("SelectStatistValue Class")
+	]
+	coclass SelectStatistValue
+	{
+		[default] interface IUnknown;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST PROPERTYACTION
+	[
+		uuid(BACFCBFF-5544-40BE-B43A-4A9C3C43DDE8),
+		helpstring("MeshGeneration Class")
+	]
+	coclass MeshGeneration
+	{
+		[default] interface IUnknown;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// Dialogseite zur Einstellung diverser Maßeinheiten
+	[
+		uuid(5A0BCA2C-13A9-4EF1-95D6-5753B29AE151),
+		helpstring("UnitsOfMeasurePP Class")
+	]
+	coclass UnitsOfMeasurePP
+	{
+		[default] interface IUnknown;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST XTENSION
+// der eigentliche TRiAS-Zusatzmodul
+	[
+		uuid(CF461D82-EE47-11D2-9BE4-BAF620524153),
+		helpstring("Statistics Extension Class")
+	]
+	coclass Statist
+	{
+		[default] interface IUnknown;
+		interface ITRiASUsedUnits;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST CONTROL
+	[
+		uuid(09C04255-07E6-4EFD-8DED-F362DAE31E2B),
+		helpstring("ObjPropTree Class")
+	]
+	coclass PopupTree
+	{
+		[default] interface IPopupTree;
+		[default, source] dispinterface _IPopupTreeEvents;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST CONTROL
+	[
+		uuid(F2B6B295-E366-4C3F-AA82-5C5668A2C057),
+		helpstring("ProjectValuePageCtrl Class")
+	]
+	coclass ProjectValuePageCtrl
+	{
+		[default] interface IProjectValuePageCtrl;
+		[default, source] dispinterface _IProjectValuePageCtrlEvents;
+	};
+
+// @doc OBJECT STATIST CONTROL
+	[
+		uuid(E92ECACF-E793-4736-9CAD-EBCC975326AC),
+		helpstring("ORWndValuePageCtrl Class")
+	]
+	coclass ORWndValuePageCtrl
+	{
+		[default] interface IProjectValuePageCtrl;
+		[default, source] dispinterface _IProjectValuePageCtrlEvents;
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT STATIST HELPER
+// ProjectValuesCallback Class
+	[ 
+		uuid(41F6DE64-8D87-43F2-B774-8EC07B66BF5E), 
+		noncreatable, 
+		helpstring("ProjectValuesCallback Class") 
+	]
+	coclass ProjectValuesCallback
+	{
+		[default] interface IUnknown;
+	};
+
+// @doc OBJECT STATIST HELPER
+// StatistUIOwner Class
+	[ 
+		uuid(3FF6E1AD-62E0-4E48-820B-7C98B9DA0D20), 
+		noncreatable, 
+		helpstring("StatistUIOwner Object") 
+	]
+	coclass StatistUIOwner
+	{
+		[default] interface IUnknown;
+	};
+
+// @doc OBJECT STATIST VALUEPROVIDER
+// ObjectCountInClass Class
+	[ 
+		uuid(BFDC4B6B-EB57-4C70-ADAF-4AB92F89DBB8), 
+		helpstring("ObjectCountInClass Object") 
+	]
+	coclass ObjectCountInClass
+	{
+		[default] interface IValueProvider;
+	};
+
+
+// @doc OBJECT STATIST VALUEPROVIDER
+// ObjectCountInDatasource Class
+	[ 
+		uuid(DB218675-9E7F-403B-BE83-AD4C16E8FED0), 
+		helpstring("ObjectCountInDatasource Object") 
+	]
+	coclass ObjectCountInDatasource
+	{
+		[default] interface IValueProvider;
+	};
+
+// @doc OBJECT STATIST VALUEPROVIDER
+// ObjectCountInORWndClass Class
+	[ 
+		uuid(76B7B7C1-696E-4FFA-997A-6D3BA8D9B373), 
+		helpstring("ObjectCountInORWndClass Object") 
+	]
+	coclass ObjectCountInORWndClass
+	{
+		[default] interface IValueProvider;
+	};
+
+
+// @doc OBJECT STATIST VALUEPROVIDER
+// ObjectCountInORWnd Class
+	[ 
+		uuid(B86C2D2C-308E-49DB-8447-23E38988CC98), 
+		helpstring("ObjectCountInORWnd Object") 
+	]
+	coclass ObjectCountInORWnd
+	{
+		[default] interface IValueProvider;
+	};
+};

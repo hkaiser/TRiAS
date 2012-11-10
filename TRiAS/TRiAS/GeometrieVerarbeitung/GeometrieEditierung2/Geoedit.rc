@@ -1,0 +1,548 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "GeoEditR.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "dlgs.h"
+#include "resstrg.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Deutsch (Deutschland) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_COORDMODIFY DIALOGEX 0, 0, 152, 54
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Koordinaten:",-1,3,6,44,8
+    LTEXT           "&X:",-1,3,21,10,8,NOT WS_GROUP
+    EDITTEXT        IDE_XKOORD,14,19,55,12,ES_AUTOHSCROLL,WS_EX_RIGHT
+    LTEXT           "&Y:",-1,83,21,8,8,NOT WS_GROUP
+    EDITTEXT        IDE_YKOORD,94,19,55,12,ES_AUTOHSCROLL,WS_EX_RIGHT
+    CONTROL         "",IDB_DELETE,"Button",BS_OWNERDRAW | WS_TABSTOP,15,39,
+                    12,12
+    LTEXT           "Letzen Stützpunkt &löschen",IDT_DELETE,34,41,116,8
+END
+
+IDD_MINIEDIT DIALOGEX 2, 15, 124, 58
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Modifizieren eines Stützpunktes"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Koordinaten:",-1,3,4,44,8
+    LTEXT           "&X:",-1,4,20,10,8,NOT WS_GROUP
+    EDITTEXT        IDE_XKOORD,17,18,45,13,ES_AUTOHSCROLL,WS_EX_RIGHT
+    LTEXT           "&Y:",-1,4,40,8,8,NOT WS_GROUP
+    EDITTEXT        IDE_YKOORD,17,38,45,13,ES_AUTOHSCROLL,WS_EX_RIGHT
+    DEFPUSHBUTTON   "&OK",IDOK,69,3,50,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,69,20,50,14
+    PUSHBUTTON      "&Löschen",IDB_DELETE,69,37,50,14
+END
+
+IDD_SINGLEDESIGNING DIALOGEX 0, 0, 149, 106
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        " Form ",IDC_STATIC,4,0,141,46
+    CONTROL         " &Strecke",IDR_STRECKE,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,10,10,45,10
+    CONTROL         " &Gerade",IDR_GERADE,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,10,21,50,10
+    CONTROL         " &Kreis",IDR_KREIS,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,10,32,50,10
+    GROUPBOX        " Parameter ",IDC_STATIC,4,49,141,53
+    CONTROL         " &rechter Winkel (90°)",IDR_ANGLE90,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,10,59,89,10
+    CONTROL         " sonstiger &Winkel (in Grad):",IDR_ANGLEFREE,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,10,70,100,10
+    EDITTEXT        IDE_ANGLE,113,69,27,12,ES_AUTOHSCROLL,WS_EX_RIGHT
+    LTEXT           "&Länge > 0 (in Meter):",IDT_DISTANCE,12,86,98,8
+    EDITTEXT        IDE_DISTANCE,113,84,27,12,ES_AUTOHSCROLL,WS_EX_RIGHT
+END
+
+IDD_FIXPOINTS DIALOGEX 0, 0, 210, 87
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CTEXT           "Rechtswert",IDC_STATIC,122,5,40,8,NOT WS_GROUP
+    CTEXT           "Hochwert",IDC_STATIC,167,5,40,8,NOT WS_GROUP
+    CONTROL         " &2. Endpunkt der Bezugsstrecke",IDR_END2,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,4,17,114,10
+    RTEXT           "",IDT_RW2,122,17,40,9,SS_SUNKEN | NOT WS_GROUP,
+                    WS_EX_RIGHT
+    RTEXT           "",IDT_HW2,167,17,40,9,SS_SUNKEN | NOT WS_GROUP,
+                    WS_EX_RIGHT
+    CONTROL         " &1. Endpunkt der Bezugsstrecke",IDR_END1,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,4,31,114,10
+    RTEXT           "",IDT_RW1,122,31,40,9,SS_SUNKEN | NOT WS_GROUP,
+                    WS_EX_RIGHT
+    RTEXT           "",IDT_HW1,167,31,40,9,SS_SUNKEN | NOT WS_GROUP,
+                    WS_EX_RIGHT
+    CONTROL         " &Mittelpunkt der Bezugsstrecke",IDR_MIDDLE,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,4,45,114,10
+    RTEXT           "",IDT_RWM,122,45,40,9,SS_SUNKEN | NOT WS_GROUP,
+                    WS_EX_RIGHT
+    RTEXT           "",IDT_HWM,167,45,40,9,SS_SUNKEN | NOT WS_GROUP,
+                    WS_EX_RIGHT
+    CONTROL         " Punkt vom Maus&klick",IDR_MOUSECLICK,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,4,59,114,10
+    RTEXT           "",IDT_RWK,122,59,40,9,SS_SUNKEN | NOT WS_GROUP,
+                    WS_EX_RIGHT
+    RTEXT           "",IDT_HWK,167,59,40,9,SS_SUNKEN | NOT WS_GROUP,
+                    WS_EX_RIGHT
+END
+
+IDD_EDITBASE DIALOG DISCARDABLE  0, 0, 209, 103
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Objektklasse auswählen:",IDC_STATIC,3,6,80,8
+    COMBOBOX        IDL_IDENTIFIKATOR,3,17,206,90,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Geometrieoptionen",IDT_OPTIONEN,4,34,60,8
+    CONTROL         "",IDP_BORDER,"Static",SS_ETCHEDHORZ,67,38,142,1
+    CONTROL         "",IDB_COMMONBORDER,"Button",BS_OWNERDRAW | WS_TABSTOP,9,
+                    46,12,12
+    LTEXT           "&Gemeinsame Linie bilden ",IDT_COMMONBORDER,28,48,81,8
+    CONTROL         "",IDB_CIRCLE,"Button",BS_OWNERDRAW | WS_TABSTOP,9,61,12,
+                    12
+    LTEXT           "&Kreis bzw. Kreisbogen erzeugen",IDT_CIRCLE,28,63,102,8
+    CONTROL         "",IDB_CLOSE,"Button",BS_OWNERDRAW | WS_TABSTOP,9,76,12,
+                    12
+    LTEXT           "Zur geschlossenen Linie &zuziehen",IDT_CLOSE,28,78,108,
+                    8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_TOOLBAREDIT         BITMAP  DISCARDABLE     "EditToolbar.bmp"
+IDB_TOOLBARDESIGN       BITMAP  DISCARDABLE     "DesignToolbar.bmp"
+IDB_COMM                BITMAP  DISCARDABLE     "CommonBorderUp.bmp"
+IDB_COMM_SEL            BITMAP  DISCARDABLE     "CommonBorderDown.bmp"
+IDB_COMM_FOCUS          BITMAP  DISCARDABLE     "CommonBorderFocus.bmp"
+IDB_COMM_DISABLED       BITMAP  DISCARDABLE     "CommonBorderDisabled.bmp"
+IDB_CIRC                BITMAP  DISCARDABLE     "KreisBogenUp.bmp"
+IDB_CIRC_SEL            BITMAP  DISCARDABLE     "KreisBogenDown.bmp"
+IDB_CIRC_FOCUS          BITMAP  DISCARDABLE     "KreisBogenFocus.bmp"
+IDB_CIRC_DISABLED       BITMAP  DISCARDABLE     "KreisBogenDisabled.bmp"
+IDB_CLOS                BITMAP  DISCARDABLE     "CloseContourUp.bmp"
+IDB_CLOS_SEL            BITMAP  DISCARDABLE     "CloseContourDown.bmp"
+IDB_CLOS_FOCUS          BITMAP  DISCARDABLE     "CloseContourFocus.bmp"
+IDB_CLOS_DISABLED       BITMAP  DISCARDABLE     "CloseContourDisabled.bmp"
+IDB_DELE                BITMAP  DISCARDABLE     "DeletePointUp.bmp"
+IDB_DELE_SEL            BITMAP  DISCARDABLE     "DeletePointDown.bmp"
+IDB_DELE_FOCUS          BITMAP  DISCARDABLE     "DeletePointFocus.bmp"
+IDB_DELE_DISABLED       BITMAP  DISCARDABLE     "DeletePointDisabled.bmp"
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "GeoEditR.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""dlgs.h""\r\n"
+    "#include ""resstrg.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""GeoEdit.rcv""\r\n"
+    "1 TYPELIB ""IGeoEdit.tlb""\r\n"
+    "#include ""GeoEditOutside.rc""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_POINTMODMENUE MENU DISCARDABLE 
+BEGIN
+    POPUP "TypKombi1"
+    BEGIN
+        MENUITEM "&Stützpunkt modifizieren ...", IDM_VERTEXMOD
+        MENUITEM SEPARATOR
+        MENUITEM "&Objekt löschen",             IDM_OBJECTDEL
+        MENUITEM SEPARATOR
+        MENUITEM "Abbrechen",                   IDCANCEL
+    END
+END
+
+IDR_LINEMODMENUE MENU DISCARDABLE 
+BEGIN
+    POPUP "TypKombi2"
+    BEGIN
+        MENUITEM "&Stützpunkt modifizieren ...", IDM_VERTEXMOD
+        MENUITEM "Stütz&punkt löschen",         IDM_VERTEXDEL
+        MENUITEM SEPARATOR
+        MENUITEM "&Gemeinsame Linie",           IDM_COMMONBORDER
+        MENUITEM "&Objekt löschen",             IDM_OBJECTDEL
+        MENUITEM SEPARATOR
+        MENUITEM "Abbrechen",                   IDCANCEL
+    END
+END
+
+IDR_AREAMODMENUE MENU DISCARDABLE 
+BEGIN
+    POPUP "TypKombi3"
+    BEGIN
+        MENUITEM "&Stützpunkt modifizieren ...", IDM_VERTEXMOD
+        MENUITEM "Stütz&punkt löschen",         IDM_VERTEXDEL
+        MENUITEM SEPARATOR
+        MENUITEM "Schnittlinie &bilden",        IDM_OBJECTPART, GRAYED
+        MENUITEM "&Gemeinsame Linie",           IDM_COMMONBORDER
+        MENUITEM "&Rechtwinkligkeit",           IDM_RECHTWINKL, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "&Insel hinzufügen",           IDM_ISLANDADD, GRAYED
+        MENUITEM "Insel &löschen",              IDM_ISLANDDEL, GRAYED
+        MENUITEM "&Objekt löschen",             IDM_OBJECTDEL
+        MENUITEM SEPARATOR
+        MENUITEM "Abbrechen",                   IDCANCEL
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_CURDELETE           CURSOR  DISCARDABLE     "delete.cur"
+IDC_CURVERTEX           CURSOR  DISCARDABLE     "move.cur"
+IDC_CURLINE             CURSOR  DISCARDABLE     "split.cur"
+IDC_CURGRAB             CURSOR  DISCARDABLE     "Palette.cur"
+IDC_CURINSIDE           CURSOR  DISCARDABLE     "innerh.cur"
+IDC_CUREDIT             CURSOR  DISCARDABLE     "cross_m.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_NEWPOINT            REGISTRY DISCARDABLE    "NewPoint.rgs"
+IDR_TOPICALOBJECTS      REGISTRY DISCARDABLE    "TopicalObjects.rgs"
+IDR_NEWLINE             REGISTRY DISCARDABLE    "NewLine.rgs"
+IDR_NEWAREA             REGISTRY DISCARDABLE    "NewArea.rgs"
+IDR_OBJECTMODIFY        REGISTRY DISCARDABLE    "ObjectModify.rgs"
+IDR_VERTEXMOVE          REGISTRY DISCARDABLE    "VertexMove.rgs"
+IDR_DRAGMULTILINE       REGISTRY DISCARDABLE    "DragMultiLine.rgs"
+IDR_VERTEXADD           REGISTRY DISCARDABLE    "VertexAdd.rgs"
+IDR_MAKERECTANGULAR     REGISTRY DISCARDABLE    "MakeRectangular.rgs"
+IDR_LINEELONGATION      REGISTRY DISCARDABLE    "LineElongation.rgs"
+IDR_AREAPARTITION       REGISTRY DISCARDABLE    "AreaPartition.rgs"
+IDR_OBJECTMOVE          REGISTRY DISCARDABLE    "ObjectMove.rgs"
+IDR_ISLANDADD           REGISTRY DISCARDABLE    "IslandAdd.rgs"
+IDR_DESIGNING           REGISTRY DISCARDABLE    "Designing.rgs"
+IDR_RESTRICTLINE        REGISTRY DISCARDABLE    "RestrictLine.rgs"
+IDR_RESTRICTCURSOR      REGISTRY DISCARDABLE    "RestrictCursor.rgs"
+IDR_ENUMOBJEKTGEOMETRIE REGISTRY DISCARDABLE    "EnumObjektGeometrie.rgs"
+IDR_COMMONBORDER        REGISTRY DISCARDABLE    "CommonBorder.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDB_TOOLBAREDIT TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_TOOL_PUNKTEDIT
+    BUTTON      ID_TOOL_LINIENEDIT
+    BUTTON      ID_TOOL_FLAECHENEDIT
+    BUTTON      ID_TOOL_MODIFYOBJ
+    BUTTON      ID_TOOL_MOVEOBJ
+    SEPARATOR
+    BUTTON      ID_TOOL_DESIGN
+END
+
+IDB_TOOLBARDESIGN TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_TOOL_DESIGN
+    BUTTON      ID_TOOL_DESIGNSTOP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_SINGLEDESIGNING, DIALOG
+    BEGIN
+        LEFTMARGIN, 4
+        RIGHTMARGIN, 145
+        TOPMARGIN, 4
+        BOTTOMMARGIN, 102
+    END
+
+    IDD_FIXPOINTS, DIALOG
+    BEGIN
+        LEFTMARGIN, 4
+        TOPMARGIN, 4
+        BOTTOMMARGIN, 83
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Geometrieerfassung"
+    IDS_UMARKGROESSE        "MinMarkGroesse"
+    IDS_OMARKGROESSE        "MaxMarkGroesse"
+    IDS_MARKCOLOR           "MarkColor"
+    IDS_MARKCOLORBEGIN      "MarkColorBegin"
+    IDS_MARKCOLOREND        "MarkColorEnd"
+    IDS_MARKBOUNDTHICK      "MarkColorThick"
+    IDS_SELFTOUCH           "SelfTouch"
+    IDS_DESIGNMODE          "DesignMode"
+    IDS_GEOREIN             "TRiAS.Bereinigung.1"
+    IDS_NOGEOREIN           "Das Zusatzmodul ""GeoRein.ext"" wurde nicht gefunden.\r\nDeshalb kann nicht getestet werden, ob das erfasste Objekt fehlerfrei ist."
+    IDS_NOOBJOPER           "Das Zusatzmodul ""ObjOper.ext"" wurde nicht gefunden.\r\nDeshalb kann die ausgewählte Operation nicht ausgeführt werden."
+    IDS_GEOFEHLERTEST       "GeoFehlerTest"
+    IDS_EDITBASECAP         "Grundfunktionen"
+    IDS_EDITCOORDCAP        "Koordinaten"
+    IDS_NEWPOINT            "Erfassen eines Punktobjektes"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NEWLINE             "Erfassen eines Linienobjektes"
+    IDS_NEWAREA             "Erfassen eines Flächenobjektes"
+    IDS_CAPTLINEELONG       "Modifizieren: Linienobjekt verlängern"
+    IDS_CAPTLINESELON       "Modifizieren: Linienobjekte verlängern"
+    IDS_CAPTISLANDADD       "Modifizieren: Innenkonturen hinzufügen"
+    IDS_MODVERTICES         "Modifizieren von Stützpunkten"
+    IDS_ADDVERTEX           "Hinzufügen eines Stützpunktes"
+    IDS_ADDVERTICES         "Hinzufügen von Stützpunkten"
+    IDS_DELOBJECTS          "Objekte löschen"
+    IDS_VERTICESMOD         "&Stützpunkte modifizieren ..."
+    IDS_VERTEXADD           "&Stützpunkt hinzufügen ..."
+    IDS_VERTICESADD         "&Stützpunkte hinzufügen ..."
+    IDS_VERTICESDEL         "Stütz&punke löschen"
+    IDS_OBJECTSROT          "Objekte &drehen"
+    IDS_LINEPART            "&Linie teilen"
+    IDS_LINESPART           "&Linien teilen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LINEELONG           "Linie &verlängern"
+    IDS_LINESELONG          "Linien &verlängern"
+    IDS_RECHTWINKL          "&Rechtwinkligkeit"
+    IDS_CLEARSELFTOUCH      "S&elbstinzidenzen bereinigen"
+    IDS_ISLANDSADD          "&Inseln hinzufügen"
+    IDS_ISLANDSDEL          "Inseln &löschen"
+    IDS_OBJECTSDEL          "&Objekte löschen"
+    IDS_UNDOVERTICESMOVE    "Stützpunkte verschieben"
+    IDS_UNDOVERTICESDEL     "Stützpunkte löschen"
+    IDS_UNDOOBJECTSROT      "Objekte drehen"
+    IDS_UNDORECTANGULAR     "Rechtwinkligkeit erzeugen"
+    IDS_UNDOOBJECTSDRAGDROP "Objekte verschieben/kopieren"
+    IDS_UNDOISLANDSADD      "Innenkonturen hinzufügen"
+    IDS_UNDOISLANDSDEL      "Innenkonturen löschen"
+    IDS_UNDOOBJECTSCUT      "Selbstinzidenzen bereinigen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DRAGVERTEX          "Stützpunkt bei Rechtwinkligkeit nachziehen"
+    IDS_STATKOORDMOD        "Stützpunkt durch manuelle Koordinatenkorrektur verschieben."
+    IDS_STATVERTDELETE      "Ausgewählten Stützpunkt löschen."
+    IDS_STATVERTADD         "Stützpunkt durch manuelle Koordinateneingabe hinzufügen."
+    IDS_STATLINIETEIL       "Linienobjekt teilen."
+    IDS_STATLINIEVERL       "Linienobjekt verlängern."
+    IDS_STATOBJDREHEN       "Objekt drehen."
+    IDS_STATOBJPART         "Anfang der Schnittlinie für Flächenteilung bilden."
+    IDS_STATOBJCUT          "Objekt an der angeklickten Stelle zerteilen"
+    IDS_STATADDINSEL        "Innenkontur hinzufügen."
+    IDS_STATSUBINSEL        "Innenkontur löschen."
+    IDS_STATRECHTWINKL      "Rechtwinkligkeit bezogen auf die angeklickte Strecke erzeugen"
+    IDS_MOVEDOBJECTS        "Verschobene Objekte"
+    IDS_DESIGNCAP           "Bilden von Konstruktionshilfslinien"
+    IDS_SINGLEDESIGNCAP     "Einfache Form"
+    IDS_DOUBLEDESIGNCAP     "Geknickte Form"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_FIXPOINTSCAP        "Fixpunktauswahl"
+    IDS_BEARB_OBJEKT        "Objekt: %ld"
+    IDS_DELETE_STATUS       "Es wurden bereits %ld %% der Objekte gelöscht."
+    IDS_STATOBJDELETE       "Die markierten Objekte unter der Mausspitze löschen."
+    IDS_STATABBRUCH         "Menü schließen."
+    IDS_CUREDIT             "Mauszeiger für Erfassung von neuen Objekten"
+    IDS_CURVERTEXMOVE       "Mauszeiger für Stützpunkt verschieben bzw. Klick mit der rechten Maustaste"
+    IDS_CURVERTEXADD        "Mauszeiger für Stützpunkt hinzufügen bzw. Klick mit der rechten Maustaste"
+    IDS_CURVERTEXDEL        "Mauszeiger für Stützpunkt löschen"
+    IDS_CUROBJECTMOVE       "Mauszeiger für Objekt verschieben/kopieren"
+    IDS_SPEICHERN           "&Speichern"
+    IDS_CONTBUTTON          "&Fortsetzen"
+    IDS_ISLBUTTON           "&Inselbeginn"
+    IDS_INMARKER            "Mauszeiger liegt innerhalb einer Stützpunktmarkierung"
+    IDS_AKTSTRECKE          "Länge der letzten Strecke: "
+    IDS_GESAMTLAENGE        ";  Gesamtlänge: "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_URSPRLAENGE         " + ursprüngliche Länge"
+    IDS_AKTINSEL            "Inhalt der erfaßten Insel: "
+    IDS_GESAMTINHALT        "gesamter Flächeninhalt: "
+    IDS_FLTEILEN            "Teilen eines Flächenobjektes"
+    IDS_SPLITBUTTON         "&Teilen"
+    IDS_NOTEILUNG           "Das Flächenobjekt konnte nicht geteilt werden."
+    IDS_PARTIALLINES        "Erzeugte Teillinien"
+    IDS_PARTIALAREAS        "Erzeugte Teilflächen"
+    IDS_OBJOPERERR          "Bei den Objektoperationen ist ein Fehler aufgetreten."
+    IDS_GEOFEHLERMOD        "Durch diese Aktion würde ein Geometriefehler entstehen.\r\nDeshalb werden die modifizierten Objekte nicht abgespeichert."
+    IDS_NOCOMBORDER1        "Die gemeinsame Linie kann nicht gebildet werden,\nda das Quell-Objekt nicht eindeutig ist."
+    IDS_NOCOMBORDER2        "Die gemeinsame Linie kann nicht gebildet werden, da die\n ausgewählten Punkte nicht zu einer Kontur des Quell-Objektes gehören."
+    IDS_NEWOBJTYPE          "Durch das Löschen dieses Stützpunktes würde der Objekttyp\nverändert werden. Wollen Sie trotzdem fortsetzen?"
+    IDS_DELISLAND           "Durch das Löschen dieses Stützpunktes würde die gesamte\nInnenkontur gelöscht werden. Wollen Sie trotzdem fortsetzen?"
+    IDS_NOSTORAGE           "Die Datenbank ist schreibgeschützt. Die Ergebnisse der Erfassung\nkönnen deshalb nur temporär abgespeichert werden."
+    IDS_LINEATVERTEX        "Die gewünschte Bezugsstrecke ist nicht eindeutig.\nWählen Sie bitte eine STRECKE aus und modifizieren Sie ggf. den Fixpunkt\nin der Registerkarte ""Fixpunktauswahl"" des dann angezeigten Dialogs."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LENGTH              "&Länge > 0 (in Meter):"
+    IDS_RADIUS              "Ra&dius > 0 (in Meter):"
+    IDS_OUTSECTPOINT        "Die Konstruktionshilfslinien schneiden sich (auch) außerhalb des\nBildschirmes. Soll der Bildausschnitt vergrößert werden?"
+    IDS_INOUTSECTPOINT      "Die Konstruktionshilfslinien schneiden sich teilweise außerhalb des\nBildschirmbereiches. Soll der Bildausschnitt vergrößert werden?"
+    IDS_NOSECTPOINT         "Die Konstruktionshilfslinien schneiden sich nicht.\nDeshalb ist die weitere Erfassung unklar.\nBilden Sie mindestens eine Hilfslinie neu oder\nbeenden Sie die Erfassung mit Hilfslinien."
+    IDS_LEFT                " &Linker Endpunkt"
+    IDS_RIGHT               " &Rechter Endpunkt"
+    IDS_TOP                 " &Oberer Endpunkt"
+    IDS_BOTTOM              " &Unterer Endpunkt"
+    IDS_LINETOAREA          "&Zu Fläche umwandeln"
+    IDS_STATLINETOAREA      "Linienobjekt in Flächenobjekt mit identischer Geometrie konvertieren."
+    IDS_LINESTOAREA         "&Zu Flächen umwandeln"
+    IDS_AREATOLINE          "&Zu Linie umwandeln"
+    IDS_STATAREATOLINE      "Flächenobjekt am Mauszeiger aufbrechen und zu einem Linienobjekt mit identischer Geometrie konvertieren"
+    IDS_NOSELFCLEANINGPOSSIBLE 
+                            "Ausgehend von dem angeklickten Stützpunkt ist eine\nBereinigung der Selbstinzidenzen nicht möglich."
+    IDS_GEOFEHLER           "Das Objekt %ld enthält einen Geometriefehler.\r\nDeshalb kann die ausgewählte Operation nicht\r\nausgeführt werden."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LINETOAREA_CAP      "Zur Fläche umwandeln"
+    IDS_LINETOAREA_WARNING  "Eine der zu einer Fläche umzuwandelnden Linien ist nicht geschlossen.\nSollen trotzdem Flächen mit entsprechender geschlossener Geometrie erzeugt werden?"
+    IDS_NEWITEM             "<Objektklasse hinzufügen ...>"
+    IDS_OBJECTNOTUNIQUE     "Das Objekt, von dem ein Linienabschnitt übernommen werden soll,\nist nicht eindeutig. Es kommen %ld Objekte in Frage."
+    IDS_NOSOURCEOBJECT      "Es wurde kein Objekt gefunden,\nvon dem ein Teilabschnitt übernommen werden könnte."
+    IDS_NOTSAMECONTOUR      "Die beiden Endpunkte des zu modifizierenden Linienabschnittes\nund der durch den Menüaufruf gegebene Bezugspunkt\ngehören nicht zur gleichen Flächenkontur."
+    IDS_KEYBOARDINPUT       "Arbeit fortsetzen mit folgenden Tasten:  TAB - Auswahl des  Linienabschnittes;  ENTER - Übernahme des Linienabschnittes;  ESC - Abbrechen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_WERKZEUGETOOLBAR    "Werkzeuge"
+    IDS_DESIGNTOOLCAPTION   "Konstruktionshilfslinien"
+    ID_TOOL_PUNKTEDIT       "Wählt das Hilfsmittel zum Erfassen von Punktobjekten aus.\nPunktobjekte erfassen"
+    ID_TOOL_LINIENEDIT      "Wählt das Hilfsmittel zum Erfassen von Linienobjekten aus.\nLinienobjekte erfassen"
+    ID_TOOL_FLAECHENEDIT    "Wählt das Hilfsmittel zum Erfassen von Flächenobjekten aus.\nFlächenobjekte erfassen"
+    ID_TOOL_MODIFYOBJ       "Wählt das Hilfsmittel zum Verändern vorhandener Objekte aus.\nObjektgeometrie verändern"
+    ID_TOOL_MOVEOBJ         "Wählt das Hilfsmittel zum Kopieren/Verschieben vorhandener Objekte aus.\nObjektgeometrie  kopieren/verschieben"
+    ID_TOOL_DESIGN          "Wählt das Hilfsmittel zum Bilden von Konstruktionshilfslinien aus.\nHilfslinien bilden"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_TOOL_DESIGNSTOP      "Beendet das Erfassen mit Konstruktionshilfslinien.\nOhne Hilfslinien erfassen"
+    IDS_ROMODE              "keine Änderung des Mauszeigers, da Objekt schreibgeschützt ist"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NOTSUPPORTED        "Eine nicht implementierte BasicFunktion wurde gerufen."
+    IDS_NOGEOOBJECTS        "Der Parameter der BasicFunktion ist nicht vom Typ ""GeoObjects""."
+    IDS_LINETOAREA_UNDO     "Linienobjekte in Flächen umwandeln"
+    IDS_AREATOLINE_UNDO     "Flächenobjekte in Linien umwandeln"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UIFORMAT            "EDIT_%ld"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXEXTENSIONPROC    "DEXEXTENSIONPROC"
+    IDS_DEXXEXTENSIONPROC   "DEXXEXTENSIONPROC"
+    IDS_DEXNOTIFICATIONPROC "DEXNOTIFICATIONPROCEX"
+END
+
+#endif    // Deutsch (Deutschland) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "GeoEdit.rcv"
+1 TYPELIB "IGeoEdit.tlb"
+#include "GeoEditOutside.rc"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

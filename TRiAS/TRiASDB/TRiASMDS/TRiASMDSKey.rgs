@@ -1,0 +1,23 @@
+HKCR 
+{
+	TRiASMDS.TRiASMDSKey.1 = s 'TRiAS® - Metadatenservice' 
+	{
+		CLSID = s '{0F4DBAD5-B5D2-11D2-98E3-0060085FC1CE}'
+	}
+	TRiASMDS.TRiASMDSKey = s 'TRiAS® - Metadatenservice' 
+	{
+		CLSID = s '{0F4DBAD5-B5D2-11D2-98E3-0060085FC1CE}'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {0F4DBAD5-B5D2-11D2-98E3-0060085FC1CE} = s 'TRiAS® - Metadatenservice' 
+		{
+			ProgID = s 'TRiASMDS.TRiASMDSKey.1'
+			VersionIndependentProgID = s 'TRiASMDS.TRiASMDSKey'
+			InprocServer32 = s '%MODULE%' 
+			{
+				val ThreadingModel = s 'Both'
+			}
+		}
+	}
+}

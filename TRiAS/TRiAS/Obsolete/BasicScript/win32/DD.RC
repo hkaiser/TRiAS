@@ -1,0 +1,82 @@
+/* --------------------------------------------------------------------
+ * Help ID Lookup Table
+ *
+ * This table translates between an ID generated from the debugger
+ * control and an ID appropriate for the Script Editor help file.
+ *
+ * A value of 0 indicates that no help will be invoked for that ID.
+ *
+ * The IDs generated from the debugger control are consecutive starting
+ * with the value 1. (These are defined in eb.h with comments as to their
+ * purpose.) At any rate, this number-1 is used as an index into this
+ * table:
+ *
+ *		RealHelpID = LOOKUP[debugger_control_help_id]
+ *
+ * ----------------------------------------------------------------- */
+
+//F1 on any menu command
+//Cannot select F1 from a top-level menu item -- selects wrong menu
+//F1 in Dialog Editor should display Contents dialog, not Contents topic
+//Stand along dialog editor needs to display contents dialog
+
+DD_HELPTOPICS RCDATA LOADONCALL DISCARDABLE
+BEGIN
+	1,		// ebDBGHELP_FILE
+	2,		// ebDBGHELP_EDIT
+	3,		// ebDBGHELP_RUN
+	4,		// ebDBGHELP_DEBUG
+	5,		// ebDBGHELP_HELP
+	0,		// ebDBGHELP_SYSTEM (no help for this one in Summit doc)
+	1,		// ebDBGHELP_FILE_EXIT
+	2,		// ebDBGHELP_EDIT_UNDO
+	9,		// ebDBGHELP_EDIT_CUT
+	10,	// ebDBGHELP_EDIT_COPY
+	11,	// ebDBGHELP_EDIT_PASTE
+	12,	// ebDBGHELP_EDIT_CLEAR
+	13,	// ebDBGHELP_EDIT_FIND
+	13,	// ebDBGHELP_EDIT_FINDNEXT
+	15,	// ebDBGHELP_EDIT_REPLACE
+	16,	// ebDBGHELP_EDIT_GOTOLINE
+	17,	// ebDBGHELP_EDIT_INSERTDIALOG
+	18,	// ebDBGHELP_EDIT_EDITDIALOG
+	20,	// ebDBGHELP_RUN_START
+	20,	// ebDBGHELP_RUN_END
+	3,		// ebDBGHELP_RUN_SYNTAXCHECK
+	20,	// ebDBGHELP_DEBUG_ADDWATCH
+	23,	// ebDBGHELP_DEBUG_DELETEWATCH
+	24,	// ebDBGHELP_DEBUG_MODIFY
+	20,	// ebDBGHELP_DEBUG_SINGLESTEP
+	20,	// ebDBGHELP_DEBUG_PROCEDURESTEP
+	20,	// ebDBGHELP_DEBUG_TOGGLEBREAKPOINT
+	28,	// ebDBGHELP_DEBUG_CLEARBREAKPOINTS
+	29,	// ebDBGHELP_DEBUG_SETNEXTSTATEMENT
+	20,	// ebDBGHELP_DEBUG_CALLS
+	5,		// ebDBGHELP_HELP_CONTENTS
+	5,		// ebDBGHELP_HELP_SEARCH
+	0,		// ebDBGHELP_SYSTEM_RESTORE (no help for this one in Summit doc)
+	0,		// ebDBGHELP_SYSTEM_MOVE (no help for this one in Summit doc)
+	0,		// ebDBGHELP_SYSTEM_SIZE (no help for this one in Summit doc)
+	0,		// ebDBGHELP_SYSTEM_MINIMIZE (no help for this one in Summit doc)
+	0,		// ebDBGHELP_SYSTEM_MAXIMIZE (no help for this one in Summit doc)
+	0,		// ebDBGHELP_SYSTEM_CLOSE (no help for this one in Summit doc)
+	0,		// ebDBGHELP_SYSTEM_SWITCHTO (no help for this one in Summit doc)
+	71,	// ebDBGHELP_DIALOG_ADDWATCH
+	24,	// ebDBGHELP_DIALOG_MODIFY
+	16,	// ebDBGHELP_DIALOG_GOTOLINE
+	67,	// ebDBGHELP_DIALOG_CALLS
+	0,		// ebDBGHELP_DIALOGEDITOR (translated by host)
+	79,	// ebDBGHELP_WATCHWINDOW
+	0,		// ebDBGHELP_KEYWORD (translated to keyword help by host)
+	79,	// ebDBGHELP_EDITWINDOW
+	0,		// ebDBGHELP_DIALOGABOUT (there is no About menu command any more)
+	49,	// ebDBGHELP_CONTENTS
+	49,	// ebDBGHELP_SEARCH
+	79,	// ebDBGHELP_PANESEPARATOR
+	79, 	// ebDBGHELP_STATUSBAR
+	13,	// ebDBGHELP_DIALOG_FIND
+	15,	// ebDBGHELP_DIALOG_REPLACE
+	0,		// ebDBGHELP_ERROR (no help for this one in Summit doc)
+	0,		// ebDBGHELP_EDIT_SELECTALL (no help for this one in Summit doc)
+	54		// ebDBGHELP_RUN_BREAK
+END

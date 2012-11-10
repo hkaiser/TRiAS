@@ -1,0 +1,100 @@
+$$// newproj.inf = template for list of template files
+$$//  format is 'sourceResName' \t 'destFileName'
+$$//    The source res name may be preceded by any combination of '=', '-',  '!', '?', ':', '#', and/or '*'
+$$//       '=' => the resource is binary
+$$//       '-' => the file should not be added to the project (all files are added to the project by default)
+$$//       '!' => the file should be marked exclude from build
+$$//       '?' => the file should be treated as a help file
+$$//       ':' => the file should be treated as a resource
+$$//       '#' => the file should be treated as a template (implies '!')
+$$//       '*' => bypass the custom AppWizard's resources when loading
+$$//	if name starts with / => create new subdir
+
+
+STDAFX.CPP	StdAfx.cpp
+STDAFX.H	StdAfx.h
+ROOT.CLW	$$root$$.clw
+ROOT.CPP	$$root$$.cpp
+ROOTAPP.H	$$root$$App.h
+ROOT.H	$$root$$.h
+
+CONFIG.H	$$root$$Config.h
+SMARTIFS.H	$$root$$SmartIFs.h
+DBUTIL.H	DBUtil.h
+DBUTIL.CPP	DBUtil.cpp
+STRINGS.H	Strings.h
+STRINGS.CPP	Strings.cpp
+
+DBENGINE.H	$$root$$DBEngine.h
+DBENGINE.CPP	$$root$$DBEngine.cpp
+CPDBENGINEEVENTS.H	CP$$root$$DBEngineEvents.h
+DATABASE.H	$$root$$Database.h
+DATABASE.CPP	$$root$$Database.cpp
+OBJECTSCOLLECTION.H	$$root$$ObjectsCollection.h
+OBJECTSCOLLECTION.CPP	$$root$$ObjectsCollection.cpp
+OBJECTS.H	$$root$$Objects.h
+OBJECTS.CPP	$$root$$Objects.cpp
+OBJECT.H	$$root$$Object.h
+OBJECT.CPP	$$root$$Object.cpp
+FEATURES.H	$$root$$Features.h
+FEATURES.CPP	$$root$$Features.cpp
+FEATURE.H	$$root$$Feature.h
+FEATURE.CPP	$$root$$Feature.cpp
+GEOFEATURES.H	$$root$$GeoFeatures.h
+GEOFEATURES.CPP	$$root$$GeoFeatures.cpp
+GEOFEATURE.H	$$root$$GeoFeature.h
+GEOFEATURE.CPP	$$root$$GeoFeature.cpp
+
+TRIASDBSDK.IDL	$$root$$.idl
+
+ROOT.RC	$$root$$.rc
+RESOURCE.H	Resource.h
+
+$$IF(EMIT_SAMPLE_CODE)
+SAMPLEDATATYPES.H	SampleDataTypes.h
+SAMPLEDATA.CPP	SampleData.cpp
+GEOMETRYBLOB.H	$$root$$GeometryBlob.h
+GEOMETRYBLOB.CPP	$$root$$GeometryBlob.cpp
+$$IF(READ_WRITE)
+CURSORPROPERTY.H	$$root$$CursorProperty.h
+CURSORPROPERTY.CPP	$$root$$CursorProperty.cpp
+$$ELSE
+OBJECTCURSORPROPERTY.H	$$root$$CursorProperty.h
+OBJECTCURSORPROPERTY.CPP	$$root$$CursorProperty.cpp
+$$ENDIF // $$IF(READ_WRITE)
+$$ENDIF // $$IF(EMIT_SAMPLE_CODE)
+
+PROPERTYBASE.H	$$root$$PropertyBase.h
+PROPERTYSUPPORT.H	$$root$$PropertySupport.h
+!PROPERTYSUPPORTIMPL.CPP	$$root$$PropertySupportImpl.cpp
+
+!DLLDATAX.C	dlldatax.c
+!DLLDATAX.H	dlldatax.h
+-TRIASDBSDKPS.DEF	$$root$$ps.def
+-TRIASDBSDKPS.MK	$$root$$ps.mk
+
+=-ERSETZ.EXE	ersetz.exe
+
+/RES
+:DBENGINE.RGS	.\Res\$$root$$DBEngine.rgs
+:DATABASE.RGS	.\Res\$$root$$Database.rgs
+:OBJECTSCOLLECTION.RGS	.\Res\$$root$$ObjectsCollection.rgs
+:OBJECTS.RGS	.\Res\$$root$$Objects.rgs
+:OBJECT.RGS	.\Res\$$root$$Object.rgs
+:FEATURES.RGS	.\Res\$$root$$Features.rgs
+:FEATURE.RGS	.\Res\$$root$$Feature.rgs
+:GEOFEATURES.RGS	.\Res\$$root$$GeoFeatures.rgs
+:GEOFEATURE.RGS	.\Res\$$root$$GeoFeature.rgs
+$$IF(EMIT_SAMPLE_CODE)
+$$IF(READ_WRITE)
+:CURSORPROPERTY.RGS	.\Res\$$root$$CursorProperty.rgs
+$$ELSE
+:OBJECTCURSORPROPERTY.RGS	.\Res\$$root$$CursorProperty.rgs
+$$ENDIF // $$IF(READ_WRITE)
+$$ENDIF // $$IF(EMIT_SAMPLE_CODE)
+ROOTV.TPL	.\Res\$$root$$v.tpl
+
+VERSION.TPL	Version.tpl
+ROOT.TPL	$$root$$.tpl
+!VERSION.MAK	Version.mak
+ROOT.DEF	$$root$$.def

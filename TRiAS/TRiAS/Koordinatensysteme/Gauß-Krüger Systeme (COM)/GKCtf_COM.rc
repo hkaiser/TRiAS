@@ -1,0 +1,196 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_COORDPARAM DIALOG DISCARDABLE  0, 0, 250, 135
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Koordinaten"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Internes Koordinatensystem des Projektes:",IDC_STATIC,1,
+                    5,138,8
+    CTEXT           "",IDC_COORDSYSTEM,1,17,248,8
+    CONTROL         "",IDC_GAUCOORDS,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
+                    WS_TABSTOP,10,47,14,10
+    COMBOBOX        IDC_SELELLIPSE,24,45,216,43,CBS_DROPDOWNLIST | 
+                    WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Mittelmeridian [°]:",IDT_MERIDIAN,12,65,56,8
+    CONTROL         "&Automatisch feststellen",IDC_AUTOMERIDIAN,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,70,65,95,10
+    CONTROL         "&Vorgeben:",IDC_SELECTMERIDIAN,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,70,80,49,10
+    COMBOBOX        IDC_MERIDIAN,133,78,38,49,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDVERT,180,64,1,30
+    LTEXT           "&Streifenbreite [°]:",IDT_STRBREITE,187,65,53,8
+    COMBOBOX        IDC_STRBREITE,202,78,38,49,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "",IDC_GEOCOORDS,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
+                    WS_TABSTOP,10,99,14,10
+    COMBOBOX        IDC_SELELLIPSEGEOD,24,97,216,43,CBS_DROPDOWNLIST | 
+                    WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Anzahl der anzuzeigenden &Nachkommastellen:",IDC_STATIC,
+                    38,118,148,8
+    EDITTEXT        IDC_PRECISION,201,115,38,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_PRECISIONSPIN,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,228,116,11,14
+    GROUPBOX        " Externes Koordinatensystem für Anzeige, Import und Export ",
+                    IDC_STATIC,1,32,248,102,WS_GROUP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_COORDPARAM, DIALOG
+    BEGIN
+        LEFTMARGIN, 1
+        RIGHTMARGIN, 249
+        VERTGUIDE, 10
+        VERTGUIDE, 240
+        TOPMARGIN, 2
+        BOTTOMMARGIN, 134
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_CTFEXCONTEXT        REGISTRY DISCARDABLE    "CTFExContext.rgs"
+IDR_REGISTRY            REGISTRY DISCARDABLE    "GKCtf.rgs"
+IDR_GKBESSELCOORDTRANS  REGISTRY DISCARDABLE    "GKBesselCoordTrans.rgs"
+IDR_GKKRASSCOORDTRANS   REGISTRY DISCARDABLE    "GKKrassCoordTrans.rgs"
+IDR_GKETRSCOORDTRANS    REGISTRY DISCARDABLE    "GKEtrsCoordTrans.rgs"
+IDR_GCOCOORDS           REGISTRY DISCARDABLE    "GKCtf_GCO.rgs"
+IDR_INTERNALCOORDS      REGISTRY DISCARDABLE    "GKCtf_Internal.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_EXCONTEXT_DESC      "Kontext für Koordinatentransformation"
+    IDS_INTERNALKOORDS_DLG  "Gauß/Krüger "
+    IDS_ETRS89_ELLIPSE      "Ellipsoid des ETRS 89/WGS 84"
+    IDS_GKCOORDS            "Gauß/Krüger Koordinaten, "
+    IDS_UTMCOORDS           "UTM Koordinaten, "
+    IDS_GEODAET_N_BREITE    "nB"
+    IDS_GEODAET_W_LAENGE    "wL"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DESCRIPTION         "Geodätische Koordinaten"
+    IDS_GEODCOORDS          "Geodätische Koordinaten, "
+    IDS_DESCRIPTIONGK       "Gauß/Krüger (%1/%2)"
+    IDS_DESCRIPTIONUTM      "UTM (%1/%2)"
+    IDS_DESCRIPTIONGKAUTO   "Gauß/Krüger (%1° Streifen)"
+    IDS_DESCRIPTIONUTMAUTO  "UTM (%1° Streifen)"
+    IDS_BESSEL_ELLIPSE      "Bessel-Ellipsoid [System RD83]"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_KRASSOVSKY_ELLIPSE  "Krassowski-Ellipsoid [System 42/83]"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_GEODAET_S_BREITE    "sB"
+    IDS_GEODAET_O_LAENGE    "öL"
+    IDS_PROJNAME            "GKCtf"
+    IDS_CATIDDESC           "TRiAS Koordinatentransformation"
+    IDS_INTERNALKOORDSUTM_DLG "UTM "
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""GKCtf_COM.rcv""\r\n"
+    "1 TYPELIB ""GKCtf_COM.tlb""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "GKCtf_COM.rcv"
+1 TYPELIB "GKCtf_COM.tlb"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

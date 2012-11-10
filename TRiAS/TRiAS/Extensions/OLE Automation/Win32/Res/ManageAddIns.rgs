@@ -1,0 +1,32 @@
+HKCR
+{
+	TRiASEx.ManageAddIns.1 = s 'ManageAddIns Class'
+	{
+		CLSID = s '{079638D7-3123-101C-BB62-00AA0018497C}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {079638D7-3123-101C-BB62-00AA0018497C} = s 'ManageAddIns Class'
+		{
+			ProgID = s 'TRiASEx.ManageAddIns.1'
+			VersionIndependentProgID = s 'TRiASEx.ManageAddIns'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+	NoRemove TRiAS.Application.2 
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertySheetHandlers
+			{
+				NoRemove Customize
+				{
+					ForceRemove 'TRiASEx.ManageAddIns.1' = s '{079638D7-3123-101C-BB62-00AA0018497C}'
+				}
+			}
+		}
+	}
+}

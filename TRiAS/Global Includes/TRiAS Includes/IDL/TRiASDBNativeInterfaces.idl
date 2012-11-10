@@ -1,0 +1,389 @@
+// $Header: $
+// Copyright© 1999 TRiAS GmbH Potsdam, All rights reserved
+// Created: 14.07.99 11:09:17 
+//
+// @doc
+// @module TRiASDBNativeInterfaces.idl | IDL source for TRiASDB interfaces and typelib
+// für TRiAS-eigene Datenbanken
+// @group In diesem Modul definierte Interfaces
+// @index | INTERFACE & TRIASGEODB
+
+#if !defined(_TRIASDBNATIVEINTERFACES_IDL__C750A280_39CB_11D3_94FA_0080C786297B__INCLUDED_)
+#define _TRIASDBNATIVEINTERFACES_IDL__C750A280_39CB_11D3_94FA_0080C786297B__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+
+// Header include diagnostics
+#if defined(_TRIAS_DBG_HEADER_DIAGNOSTICS)
+#pragma message(__TIME__": include " __FILE__ )
+#endif
+
+#include "idl/TRiASDBInterfaces.idl"
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declaration of defined interfaces
+interface ITRiASMainDBEngine;
+interface ITRiASSimpleDBEngine;
+
+interface ITRiASSimpleObject;
+interface ITRiASSimpleObjects;
+interface ITRiASSimpleObjectsCollection;
+interface ITRiASSimpleFeature;
+interface ITRiASSimpleFeatures;
+interface ITRiASSimpleGeoFeatures;
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIASGEODB
+// @interface ITRiASMainDBEngine | Genau eines der COM-Objekte, welche die TRiASDB- 
+// Schnittstellenmodule repräsentieren (z.B. <o TRiASDBEngine> oder <o TRiASGDOEngine>)
+// muß neben dem <i ITRiASDBEngine>- Interface zusätzlich das <i ITRiASMainDBEngine>- 
+// Interface implementieren. Die Methoden und Eigenschaften dieses Interfaces dienen
+// der Verwaltung von <tr>- Projekten.
+// @supby <o TRiASDBEngine>
+// @xref <o TRiASDBEngine>, <i ITRiASDBEngine>
+// @devnote Dieses Interface darf von keinem anderen Objekt als <o TRiASDBEngine> 
+// implementiert werden.
+// @group Methoden und Eigenschaften von <i ITRiASMainDBEngine> 
+// @index | IMAINDBENGINE
+// @doc IMAINDBENGINE
+	[
+		object,
+		uuid(1CB3AB7D-2E87-11D1-969D-00A024D6F582),
+		dual,
+		helpstring("ITRiASMainDBEngine Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASMainDBEngine : IDispatch
+	{
+	// @property <i ITRiASProjects> ** | ITRiASMainDBEngine | Projects | Die <op .Projects>-
+	// Eigenschaft liefert eine Sammlung aller derzeit geöffneter Projekte.
+	// @comm Die Eigenschaft <op .Projects> kann nicht gesetzt werden.
+	// @supby <o TRiASDBEngine>
+	// @xref <i ITRiASMainDBEngine>, <i ITRiASProjects>
+		[propget, id(1), helpstring("Liefert die Sammlung aller geöffneter Projekte.")] HRESULT Projects([out, retval] ITRiASProjects **pVal);
+
+	// @property <i ITRiASProject> ** | ITRiASMainDBEngine | ActiveProject | Die <op .ActiveProject>-
+	// Eigenschaft liefert das derzeit aktive Projekt (dessen Fenster den Eingabefokus besitzt.
+	// @comm Die Eigenschaft <op .ActiveProject> kann nicht gesetzt werden.
+	// @supby <o TRiASDBEngine>, <o TRiASDBEngine>
+	// @xref <i ITRiASMainDBEngine>, <i ITRiASProjects>
+		[propget, id(2), helpstring("Liefert das derzeit aktive Projekt.")] HRESULT ActiveProject([out, retval] ITRiASProject **pVal);
+
+	// @property <i ITRiASProject> ** | ITRiASMainDBEngine | ProjectToOpen | Die <op .ProjectToOpen>-
+	// Eigenschaft liefert den Namen des derzeit zu öffnenden Projektes. 
+	// @comm Die Eigenschaft <op .ProjectToOpen> kann nicht gesetzt werden. Diese Eigenschaft
+	// liefert lediglich während der Öffnungsphase eines Projektes einen gültigen Wert.
+	// @supby <o TRiASDBEngine>, <o TRiASDBEngine>
+	// @xref <i ITRiASMainDBEngine>, <i ITRiASProjects>
+		[propget, id(3), helpstring("Liefert den Namen des derzeit zu öffnenden Projektes.")] HRESULT ProjectToOpen([out, retval] BSTR *pVal);
+
+	// @method HRESULT | ITRiASMainDBEngine | OpenProject | Die <om .OpenProject>- Methode
+	// versucht ein <tr>- Projekt zu öffnen.
+	// @parm BSTR | Name | Der Parameter <p Name> gibt den Bezeichner des zu öffnenden 
+	// <tr>- Projektes vor.
+	// @parm VARIANT_BOOL | ReadOnly | Der (optionale) Parameter <p ReadOnly> gibt vor, ob das Projekt
+	// schreibgeschützt geöffnet werden soll. Fehlt dieser Parameter, dann wird das Projekt im
+	// beschreibbaren Mode geöffnet.
+	// @parm <i ITRiASProject> ** | Project | Zeiger auf eine Variable vom Typ ITRiASProject *, 
+	// welche nach erfolgreicher Abarbeitung der <om .OpenProject> das COM-Object
+	// enthält, welches das geöffnete Projekt repräsentiert.
+	// @comm Das geöffnete Projekt wird automatisch der Sammlung der derzeit geöffneten
+	// Projekte hinzugefügt, die durch die <op .Projects> abfragbar ist.
+	// @supby <o TRiASDBEngine>
+	// @xref <i ITRiASMainDBEngine>, <i ITRiASProject>
+		[id(100), helpstring("Öffnet ein existierendes TRiAS Projekt.")] HRESULT OpenProject([in] BSTR Name, [in, defaultvalue(OPENMODE_Unknown)] OPENMODE Mode, [out, retval] ITRiASProject **Project);
+
+	// @method HRESULT | ITRiASMainDBEngine | CreateProject | Die <om .CreateProject>- 
+	// Methode versucht ein neues <tr>- Projekt anzulegen und anschließend zu eröffnen. 
+	// @parm BSTR | Name | Der (optionale) Parameter <p Name> gibt den Bezeichner des neu zu 
+	// erzeugenden <tr>- Projektes vor. Fehlt dieser Parameter, so wird ein temporäres
+	// <tr>- Projekt erzeugt und geöffnet. Derartige Projekte müssen durch die 
+	// <om ITRiASProject.SaveAs>- Methode gespeichert werden, wenn evtl. modifizierte Daten 
+	// erhalten bleiben sollen.
+	// @parm <i ITRiASProject> ** | Project | Zeiger auf eine Variable vom Typ ITRiASProject *, 
+	// welche nach erfolgreicher Abarbeitung der <om .CreateProject> das neue COM-Object
+	// enthält, welches das neue Projekt repräsentiert.
+	// @comm Das neu erzeugte Projekt wird automatisch der Sammlung der derzeit geöffneten
+	// Projekte hinzugefügt, die durch die <op .Projects> abfragbar ist.
+	// @comm Das neu erzeugte Projekt wird im beschreibbaren Mode geöffnet.
+	// @supby <o TRiASDBEngine>
+	// @xref <i ITRiASMainDBEngine>, <i ITRiASProject>
+	// @end
+		[id(101), helpstring("Erzeugt ein neues TRiAS Projekt und öffnet es.")] HRESULT CreateProject([in, /*optional, */defaultvalue("")] BSTR Name, [in, defaultvalue(OPENMODE_Unknown)] OPENMODE Mode, [out, retval] ITRiASProject **Project);
+
+	// @method HRESULT | ITRiASMainDBEngine | OpenProjectStg | Die <om .OpenProjectStg>- Methode
+	// versucht ein <tr>- Projekt in einem gegebenen <i IStorage> zu öffnen.
+	// @parm <i IStorage> * | Stg | Der Parameter <p Stg> gibt Storage des zu öffnenden 
+	// <tr>- Projektes vor.
+	// @parm VARIANT_BOOL | ReadOnly | Der (optionale) Parameter <p ReadOnly> gibt vor, ob das Projekt
+	// schreibgeschützt geöffnet werden soll. Fehlt dieser Parameter, dann wird das Projekt im
+	// beschreibbaren Mode geöffnet.
+	// @parm <i ITRiASProject> ** | Project | Zeiger auf eine Variable vom Typ ITRiASProject *, 
+	// welche nach erfolgreicher Abarbeitung der <om .OpenProjectStg> das COM-Object
+	// enthält, welches das geöffnete Projekt repräsentiert.
+	// @comm Das geöffnete Projekt wird automatisch der Sammlung der derzeit geöffneten
+	// Projekte hinzugefügt, die durch die <op .Projects> abfragbar ist.
+	// @supby <o TRiASDBEngine>
+	// @xref <i ITRiASMainDBEngine>, <i ITRiASProject>, <i IStorage> 
+		[id(102), helpstring("Öffnet ein existierendes TRiAS Projekt in einem Storage.")] HRESULT OpenProjectStg([in] IUnknown *Stg, [in] BSTR bstrName, [in, defaultvalue(OPENMODE_Unknown)] OPENMODE Mode, [out, retval] ITRiASProject **Project);
+
+	// @method HRESULT | ITRiASMainDBEngine | CreateProjectStg | Die <om .CreateProjectStg>- 
+	// Methode versucht ein neues <tr>- Projekt in einem <i IStorage> anzulegen und anschließend 
+	// zu eröffnen. 
+	// @parm <i IStorage> *| Stg | Der Parameter <p Stg> gibt den Storage vor, in dem das
+	// <tr>- Projektes erzeugt werden soll. Fehlt dieser Parameter.
+	// @parm <i ITRiASProject> ** | Project | Zeiger auf eine Variable vom Typ ITRiASProject *, 
+	// welche nach erfolgreicher Abarbeitung der <om .CreateProjectStg> das neue COM-Object
+	// enthält, welches das neue Projekt repräsentiert.
+	// @comm Das neu erzeugte Projekt wird automatisch der Sammlung der derzeit geöffneten
+	// Projekte hinzugefügt, die durch die <op .Projects> abfragbar ist.
+	// @comm Das neu erzeugte Projekt wird im beschreibbaren Mode geöffnet.
+	// @supby <o TRiASDBEngine>
+	// @xref <i ITRiASMainDBEngine>, <i ITRiASProject>, <i IStorage>
+		[id(103), helpstring("Erzeugt ein neues TRiAS Projekt in einem Storage und öffnet es.")] HRESULT CreateProjectStg([in] IUnknown *Stg, [in] BSTR bstrName, [in, defaultvalue(OPENMODE_Unknown)] OPENMODE Mode, [out, retval] ITRiASProject **Project);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIASGEODB
+// @interface ITRiASSimpleDBEngine | Das Interface <i ITRiASSimpleDBEngine> enthält spziifische Funktionen
+// für ein <o TRiASSimpleDBEngine> -Objekt.
+// @group Methoden und Eigenschaften von <i ITRiASSimpleDBEngine> 
+// @index | ITRIASSIMPLEDBENGINE
+// @doc ITRIASSIMPLEDBENGINE
+	[
+		object,
+		uuid(1724BC8F-E51D-11D2-9BD8-E6AA20524153),
+		dual,
+		helpstring("ITRiASSimpleDBEngine Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASSimpleDBEngine : IDispatch
+	{
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIASGEODB
+// @interface ITRiASSimpleObject | Das Interface <i ITRiASSimpleObject> dient der 
+// Initialisierung bzw. Verwaltung eines spezifischen Objektes, welches in einer <tr>-Datenbank
+// durch eine konkrete Objektnummer repräsentiert wird.
+// @supby <o TRiASSimpleObject>
+// @group Methoden und Eigenschaften von <i ITRiASSimpleObject> 
+// @index | ISIMPLEOBJECT
+// @doc ISIMPLEOBJECT
+	[
+		object,
+		uuid(90378E23-C54C-11D1-85D2-00600875138A),
+		dual,
+		helpstring("ITRiASSimpleObject Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASSimpleObject : IDispatch
+	{
+	// @property INT_PTR | ITRiASSimpleObject | LocalHandle | Die <op .LocalHandle>- Eigenschaft 
+	// liefert die Objektnummer dieses Objektes innerhalb seiner Datenbank.
+	// @comm Die Eigenschaft <op .LocalHandle> kann nicht gesetzt werden.
+	// @supby <o TRiASSimpleObject> 
+	// @xref <i ITRiASSimpleObject>
+		[propget, id(1), helpstring("Liefert die Objektnummer dieses Objektes innerhalb seiner Datenbank.")] HRESULT LocalHandle ([out, retval] INT_PTR *pVal);
+
+	// @method HRESULT | ITRiASSimpleObject | InitTarget | Festlegen, auf welches 
+	// Objekt sich dieses <o TRiASSimpleObject> bezieht.
+	// @parm INT_PTR | ONr | Die Objektnummer, des Datenbank-Objektes, den dieses Objekt repräsentieren soll.
+	// @parm <t OBJECTTYPE> | ObjType | Der Typ des zu initialisierenden Objektes.
+	// @parm INT_PTR | Ident | Der (GeoDB-)Identifikator der Objektklasse, der das neue Objekt zugeordnet werden soll.
+	// @parm INT_PTR | hObjs | Die Zugriffsnummer der Objektklasse, der das neue Objekt zugeordnet werden soll.
+	// @parm INT_PTR * | hObj | Das Handle des Datenbank-Objektes, den dieses Objekt repräsentieren soll.
+	// @comm das <i ITRiASSimpleObject>- Interface ist spezifisch für <tr> Datenbanken.
+	// @comm Zur Erläuterung des Unterschiedes zwischen dem Parameter <p ONr> (Objektnummer) und dem 
+	// Parameter <p hObj> (Objekthandle):<nl>Die Objektnummer ist die Datenbank-bezogene Nummer des Objektes
+	// welches initialisiert werden soll. Diese ist über Datenbankgrenzen hinweg nicht eindeutig; daher 
+	// wird zusätzlich ein im Gesamtsystem eindeutiges Handle vergeben, welches das zu initialisierende 
+	// Objekt eindeutig identifizierbar macht.<nl>Ist die Objektnummer (<p ONr>) gleich Null, dann soll 
+	// ein neues Objekt erzeugt werden. In diesem Fall ist <p hObj> ebenfalls gleich Null. 
+	// @supby <o TRiASSimpleObject> 
+	// @xref <i ITRiASSimpleObject>
+		[id(100), helpstring("Festlegen, auf welches Datenbankobjekt sich dieses Objekt bezieht.")] HRESULT InitTarget([in] INT_PTR lONr, [in] OBJECTTYPE ObjType, [in] INT_PTR lIdent, [in] INT_PTR hObjs, [in, out] INT_PTR *phObj);
+
+	// @property <i ITRiASObject> ** | ITRiASSimpleObject | RelatedObject | Die <op .RelatedObject>- 
+	// Eigenschaft liefert bzw. setzt das zugehörige abhängige Textobjekt/Bezugsobjekt.
+	// @comm Die <op .RelatedObject> -Eigenschaft bezieht sich für Textobjekte auf das Bezugsobjekt, für
+	// alle anderen Objekttypen auf ein abhängiges Textobjekt.
+	// @comm Das abhängige Objekt muß immer in der selben Datenquelle enthalten sein, wie das Bezugsobjekt.
+	// @supby <o TRiASSimpleObject>
+	// @xref <i ITRiASObject>
+		[propget, id(2), helpstring("Liefert das abhängige Textobjekt/Bezugsobjekt für dieses Objekt.")] HRESULT RelatedObject ([out, retval] ITRiASObject **Obj);
+		[propput, id(2), helpstring("Setzt das abhängige Textobjekt/Bezugsobjekt für dieses Objekt.")] HRESULT RelatedObject ([in] ITRiASObject *Obj);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIASGEODB
+// @interface ITRiASSimpleObjects | Das Interface <i ITRiASSimpleObjects> dient der 
+// Initialisierung bzw. Verwaltung spezifischer Objektmengen, die in einer <tr>-Datenbank
+// einem Identifikator/Geometrietyp angehören.
+// @supby <o TRiASSimpleObjects>
+// @group Methoden und Eigenschaften von <i ITRiASSimpleObjects> 
+// @index | ISIMPLEOBJECTS
+// @doc ISIMPLEOBJECTS
+	[
+		object,
+		uuid(578D0E93-932B-11D1-BA04-080036D63803),
+		dual,
+		helpstring("ITRiASSimpleObjects Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASSimpleObjects : ITRiASObjectsEx
+	{
+	cpp_quote("#if !defined(_ENSURELOADEDPARAM_DEFINED)")
+	cpp_quote("#define _ENSURELOADEDPARAM_DEFINED")
+	// @doc ENSURELOADEDPARAMENUMS 
+	// @enum ENSURELOADEDPARAM | Der Typ eines zusätzlichen (optionalen) Parameters für die 
+	// <om ITRiASSimpleObjects.EnsureLoaded>- Methode.
+	// @xref <i ITRiASSimpleObjects>, <om ITRiASSimpleObjects.EnsureLoaded>
+		enum _tagENSURELOADEDPARAM {
+			[helpstring("Zu ladende Objekttypen.")]
+				ENSURELOADEDPARAM_ObjectTypes = 0,		// @emem Zu ladende Objekttypen
+			[helpstring("Koordinatenbereich, in dem Objekte gesucht werden")]
+				ENSURELOADEDPARAM_Window = 1,			// @emem Koordinatenbereich, in dem Objekte gesucht werden
+		};
+	cpp_quote("#endif // _ENSURELOADEDPARAM_DEFINED")
+
+	// @method HRESULT | ITRiASSimpleObjects | InitTarget | Festlegen, auf welche 
+	// Objektmenge (Identifikator/Geometrietyp) sich dieses Objekt bezieht.
+	// @parm long | Ident | Der Identifikator, den dieses Objekt repräsentieren soll.
+	// @parm <t OBJECTTYPE> | Type | Die zu diesem Identifikator gehörenden Objekttypen. Die <om .InitTarget> 
+	// kann mehrfach mit identischem Parameter <p Ident> gerufen werden, die übergebenen Objekttypen werden
+	// in diesem Fall kombiniert.
+	// @parm long * | hObjs | Das Handle des Datenbank-Identifikators, den dieses Objekt repräsentieren soll.
+	// @comm Zur Erläuterung des Unterschiedes zwischen dem Parameter <p Ident> (Identifikator) und dem 
+	// Parameter <p hObj> (Identifikatorhandle):<nl>Der Identifikator ist der Datenbank-bezogene Identifikator des Objektes
+	// welches initialisiert werden soll. Dieser ist über Datenbankgrenzen hinweg nicht eindeutig; daher 
+	// wird zusätzlich ein im Gesamtsystem eindeutiges Handle vergeben, welches das zu initialisierende 
+	// Objekt eindeutig identifizierbar macht.<nl>Ist der Identifikator (<p Ident>) gleich Null, dann soll 
+	// ein neues Objekt erzeugt werden. In diesem Fall ist <p hObjs> ebenfalls gleich Null. 
+	// @supby <o TRiASSimpleObjects> 
+	// @xref <i ISimpleTRiASObjects>
+		[id(100), helpstring("Festlegen, auf welche Objektmenge (Identifikator/Geometrietyp) sich dieses Objekt bezieht.")] HRESULT InitTarget([in] LONG lIdent, [in] OBJECTTYPE rgObjType, [in] VARIANT_BOOL fCreate, [in, out] INT_PTR *phObjs);
+
+	// @method HRESULT | ITRiASSimpleObjects | EnsureLoaded | Durch diese Funktion muß sichergestellt werden,
+	// das das übergebene Objekt im TRiASDB-Layer geladen ist.
+	// @parm INT_PTR | hObj | Der <p hObj>- Parameter repräsentiert das Objekt, welches geladen werden soll.
+	// @parm BSTR | GeomName | der <p GeomName>- Parameter enthält den Namen des zu untersuchenden Geometriefeldes.
+	// @parm SAFEARRAY(VARIANT) | Constraints | Zusätzliche Randbedingungen für das Laden des Objektes:
+	// @parm <i ITRiASObject> * | ppIObj | Der <p ppIObj>- Parameter enthält nach erfolgreicher Abarbeitung
+	// den Zeiger auf das geladene <o TRiASObject>- Objekt.
+	// @supby <o TRiASSimpleObjects> 
+	// @xref <i ISimpleTRiASObjects>, <i ITRiASObject>, <o TRiASObject>
+		[id(101), helpstring("Stellt sicher, das ein Objekt geladen ist.")] HRESULT EnsureLoaded([in] INT_PTR hObj, [in] BSTR GeomName, [in, out] SAFEARRAY(VARIANT) *Constraints, [out, retval] ITRiASObject **Obj);
+
+	// @method HRESULT | ITRiASSimpleObjects | MayUnload | Die Methode <om .MayUnload> teilt dem 
+	// TRiASDB-Layer mit, das ein <o TRiASObject>- Objekt entladen werden kann, da es nicht mehr 
+	// benötigt wird.
+	// @parm INT_PTR | hObj | Der <p hObj>- Parameter repräsentiert das Objekt, welches entladen werden kann.
+	// @supby <o TRiASSimpleObjects> 
+	// @xref <i ISimpleTRiASObjects>, <o TRiASObject>
+		[id(102), helpstring("Ein Objekt kann entladen werden.")] HRESULT MayUnload([in] INT_PTR Obj);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIASGEODB
+// @interface ITRiASSimpleObjectsCollection | Das Interface <i ITRiASSimpleObjectsCollection> dient 
+// der dient der Initialisierung bzw. Verwaltung aller Objektmengen, die in einer <tr>-Datenbank
+// enthalten sind.
+// @supby <o TRiASSimpleObjectsCollection>
+// @group Methoden und Eigenschaften von <i ITRiASSimpleObjectsCollection> 
+// @index | ISIMPLEOBJECTSCOLLECTION
+// @doc ISIMPLEOBJECTSCOLLECTION
+	[
+		object,
+		uuid(5F20C606-B87C-11D2-95A8-006008447800),
+		dual,
+		helpstring("ITRiASSimpleObjectsCollection Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASSimpleObjectsCollection : IDispatch
+	{
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIASGEODB
+// @interface ITRiASSimpleFeatures | Das Interface <i ITRiASSimpleFeatures> dient der Verwaltung
+// einer <tr>- spezifischen Sammlung von Objekteigenschaften.
+// @supby <o TRiASSimpleFeatures>
+// @group Methoden und Eigenschaften von <i ITRiASSimpleFeatures> 
+// @index | ISIMPLEFEATURES
+// @doc ISIMPLEFEATURES
+	[
+		object,
+		uuid(1B52E2A5-EA84-11D1-861E-00600875138A),
+		dual,
+		helpstring("ITRiASSimpleFeatures Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASSimpleFeatures : IDispatch
+	{
+	// @property <i ITRiASFeature> * | ISimpleTRiASFeatures | Feature | Die <op .Feature>- Eigenschaft 
+	// liefert eine Objekteigenschaf dieser Objektsammlung über einen gegebenes lokales Handle.
+	// @comm Die Eigenschaft <op .Feature> kann nicht gesetzt werden.
+	// @supby <o TRiASSimpleFeatures> 
+	// @xref <i ITRiASSimpleFeatures>, <i ITRiASFeature>
+		[propget, id(1), helpstring("Liefern einer Objekteigenschaft über ihr lokales Handle.")] HRESULT Feature ([in] INT_PTR hLocalFeat, [out, retval] ITRiASFeature **Feat);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIASGEODB
+// @interface ITRiASSimpleGeoFeatures | Das Interface <i ITRiASSimpleGeoFeatures> dient der Verwaltung
+// einer <tr>- spezifischen Sammlung von Objektgeometrien.
+// @supby <o TRiASSimpleGeoFeatures>
+// @group Methoden und Eigenschaften von <i ITRiASSimpleFeatures> 
+// @index | ISIMPLEGEOFEATURES
+// @doc ISIMPLEGEOFEATURES
+	[
+		object,
+		uuid(701CD5C4-FB01-11D1-863E-00600875138A),
+		dual,
+		helpstring("ITRiASSimpleGeoFeatures Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASSimpleGeoFeatures : IDispatch
+	{
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRIASGEODB
+// @interface ITRiASSimpleFeature | Das Interface <i ITRiASSimpleFeature> dient der Verwaltung
+// einer <tr>- spezifischen Objekteigenschaft.
+// @supby <o TRiASSimpleFeature>
+// @group Methoden und Eigenschaften von <i ITRiASSimpleFeature> 
+// @index | ISIMPLEFEATURE
+// @doc ISIMPLEFEATURE
+	[
+		object,
+		uuid(1B52E2A3-EA84-11D1-861E-00600875138A),
+		dual,
+		helpstring("ITRiASSimpleFeature Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASSimpleFeature : IDispatch
+	{
+	// @property INT_PTR | ITRiASSimpleObject | LocalHandle | Die <op .LocalHandle>- Eigenschaft 
+	// liefert den MerkmalsCode dieses Merkmales innerhalb seiner Datenbank.
+	// @comm Die Eigenschaft <op .LocalHandle> kann nicht gesetzt werden.
+	// @supby <o TRiASSimpleFeature> 
+	// @xref <i ITRiASSimpleFeature>
+		[propget, id(1), helpstring("Liefert den MerkmalsCode dieses Merkmales innerhalb seiner Datenbank.")] HRESULT LocalHandle ([out, retval] INT_PTR *pVal);
+
+	// @method HRESULT | ITRiASSimpleFeature | InitTarget | Festlegen, auf welches <tr>- Merkmal 
+	// sich dieses <o TRiASSimpleFeature> bezieht.
+	// @parm VARIANT | InitData | Der Parameter <p InitData> enthält Informationen, die vom Typ der 
+	// zu initialisierenden Objekteiegnschaft abhängig ist. So kann bspw. der MerkmalsCode des 
+	// Datenbank-Merkmales, den dieses Feature repräsentieren soll oder der Name des Geometriefeldes übergeben werden.
+	// @parm <t FEATURETYPE> | Type | Der Merkmalstyp des Datenbank-Merkmales, den dieses Feature repräsentieren soll.
+	// @comm Das <i ITRiASSimpleFeature>- Interface ist spezifisch für <tr> Datenbanken.
+	// @supby <o TRiASSimpleFeature> 
+	// @xref <i ITRiASSimpleFeature>, <t FEATURETYPE>
+		[id(100), helpstring("Festlegen, auf welches Datenbankmerkmal sich dieses Feature bezieht.")] HRESULT InitTarget([in] VARIANT InitData, [in] FEATURETYPE Type);
+	};
+
+#endif // !defined(_TRIASDBNATIVEINTERFACES_IDL__C750A280_39CB_11D3_94FA_0080C786297B__INCLUDED_)

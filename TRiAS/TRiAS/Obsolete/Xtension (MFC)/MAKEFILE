@@ -1,0 +1,80 @@
+# Erzeuge XTSNMFC-DLL für TRIAS /C8-Version
+# J. Benkenstein, 11.4.1993
+
+NAME = XTSNMFC
+OUTDLL = $(NAME).dll
+COPY = 0
+
+# Generierungsdatum (yymmdd) und Version
+VERSION = 1
+RELEASE = 30
+BUILD = 011
+DATE = 950301
+COPYRIGHT = JB$(DATE)
+
+PNAME = "Version für den Vertrieb"
+PADDRESS = "uve GmbH Fernerkundungszentrum Potsdam"
+
+DLLDEST = c:\trias\trias130.076\  # DLL-Ziel-Pfad
+LIBDEST = c:\triasdev\lib  # LIB-Ziel-Pfad
+DEF = $(NAME).def
+STUB = rights
+RIGHTS = $(STUB).exe
+ASM = masm
+LINK = c:\c8\bin\link
+REPLACE = ersetz
+
+!include "$(NAME).mak"
+     
+# -----------------------------------------------------------------------------
+# Projekt kopieren  
+copy:
+	copy $(OUTDLL) $(DLLDEST)$(NAME).ext
+
+# Projekt umbennen
+ren:
+	del $(NAME).ext
+	ren $(OUTDLL) $(NAME).ext
+	
+# CopyrightEintraege Generieren 
+new:
+    @del $(DEF)
+    @del $(STUB).asm
+    @del $(NAME).rcv
+
+formake:    $(DEF) $(STUB).exe $(NAME).rcv
+
+$(DEF): $(NAME).tpl
+    $(REPLACE) $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) $(NAME).tpl $(NAME).def
+
+$(STUB).asm:    $(STUB).tpl 
+    $(REPLACE) $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) $(STUB).tpl $(STUB).asm
+
+$(RIGHTS):  $(STUB).asm
+    $(ASM) $(STUB) ;
+    $(LINK) $(STUB) ;
+
+# Personalisierungsinformation
+$(NAME).rcv:    dbasev.tpl
+    $(REPLACE) $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) @A @B @C dbasev.tpl tmp.rcv
+    $(REPLACE) $(PNAME) $(PADDRESS) tmp.rcv $(NAME).rcv
+    @del tmp.rcv > nul
+
+# archivieren ---------------------------------------------------------------
+store:  
+	@echo off
+	del *.bak
+	del *.dmp
+	del *.tmp
+	del *.zip
+	del *.map
+	del *.sym
+	del *.sts
+	del *.lst
+	del *.aps
+	del *.pch
+	del *.bnd
+	del *.pdb
+	del *.sbr
+	del *.bsc 
+	zip -m $(NAME)

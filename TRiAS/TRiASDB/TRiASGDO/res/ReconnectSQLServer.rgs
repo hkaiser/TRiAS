@@ -1,0 +1,46 @@
+HKCR
+{
+	TRiASGDO.ReconnectSQLServer.1 = s 'ReconnectSQLServer Class'
+	{
+		CLSID = s '{B93F15FF-0BB7-4FD1-A928-29F45F01556F}'
+	}
+	TRiASGDO.ReconnectSQLServer = s 'ReconnectSQLServer Class'
+	{
+		CLSID = s '{B93F15FF-0BB7-4FD1-A928-29F45F01556F}'
+		CurVer = s 'TRiASGDO.ReconnectSQLServer.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {B93F15FF-0BB7-4FD1-A928-29F45F01556F} = s 'ReconnectSQLServer Class'
+		{
+			ProgID = s 'TRiASGDO.ReconnectSQLServer.1'
+			VersionIndependentProgID = s 'TRiASGDO.ReconnectSQLServer'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{624158F4-DE98-437F-A173-6B3BA0C27580}'
+		}
+	}
+	NoRemove SQLServerRO.GDatabase 
+    {
+		TRiASDB 
+        {
+            CLSID 
+            {
+				ReconnectDialog = s '{B93F15FF-0BB7-4FD1-A928-29F45F01556F}'
+			}
+        }
+    }
+	NoRemove SQLServerRW.GDatabase 
+    {
+		TRiASDB 
+        {
+            CLSID 
+            {
+				ReconnectDialog = s '{B93F15FF-0BB7-4FD1-A928-29F45F01556F}'
+			}
+        }
+    }
+}

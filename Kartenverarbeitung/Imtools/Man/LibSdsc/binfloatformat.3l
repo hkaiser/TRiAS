@@ -1,0 +1,264 @@
+
+
+
+     BBBBIIIINNNNFFFFLLLLOOOOAAAATTTTFFFFOOOORRRRMMMMAAAATTTT((((3333BBBBIIIINNNN))))    SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))     BBBBIIIINNNNFFFFLLLLOOOOAAAATTTTFFFFOOOORRRRMMMMAAAATTTT((((3333BBBBIIIINNNN))))
+
+
+
+     NNNNAAAAMMMMEEEE
+          BinFloatFormat  -  select the floating-point format for
+          reading/writing binary files
+          BinQFloatFormat  -  query the current floating-point format
+          used for binary files
+
+     SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+          #include "sdsc.h"
+
+          extern int BinErrNo;
+
+          int BinFloatFormat( format )
+               int format;
+
+          int BinQFloatFormat( )
+
+     DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+          _B_i_n_F_l_o_a_t_F_o_r_m_a_t selects the floating-point format to use when
+          writing data to, or reading data from, binary files managed
+          by the binary I/O package.  _f_o_r_m_a_t may be one of the
+          following:
+
+               _f_o_r_m_a_t      MMMMeeeeaaaannnniiiinnnngggg
+               BINIEEE     IEEE formats
+               BINVAX      VAX formats (f, d, and h)
+               BINVAXG     VAX formats (f, g, and h)
+               BINCRAYMP   Cray X-MP/Y-MP formats
+
+          The default floating-point format is BINIEEE.
+
+          _B_i_n_Q_F_l_o_a_t_F_o_r_m_a_t queries the current floating-point format
+          selection.
+
+     RRRREEEETTTTUUUURRRRNNNNSSSS
+          _B_i_n_F_l_o_a_t_F_o_r_m_a_t returns 0.  If an error occurs it returns -1
+          and the global _B_i_n_E_r_r_N_o set to an error code indicating the
+          cause of the error.  The following error code may be
+          returned:
+
+          _B_I_N_E_F_L_O_A_T_F_O_R_M_A_T = Unknown file floating-
+               point format selection
+               The _f_o_r_m_a_t argument did not match any supported
+               floating-point format.
+
+          _B_i_n_Q_F_l_o_a_t_F_o_r_m_a_t returns the current floating-point format
+          selection.
+
+     NNNNOOOOTTTTEEEESSSS
+          Binary data files and streams are a compact and speedy way
+          to store and transfer data.  The binary format of a value
+          can take fewer bytes to store than using the equivalent
+          ASCII format.  For instance, the number "32767" takes 16
+
+
+
+     Page 1                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNFFFFLLLLOOOOAAAATTTTFFFFOOOORRRRMMMMAAAATTTT((((3333BBBBIIIINNNN))))    SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))     BBBBIIIINNNNFFFFLLLLOOOOAAAATTTTFFFFOOOORRRRMMMMAAAATTTT((((3333BBBBIIIINNNN))))
+
+
+
+          bits to represent on a 2's compliment integer machine.  When
+          written to a binary file or stream, the number can be stored
+          in 2 bytes.  The same number written to an ASCII file or
+          stream requires 5 bytes:  "3", "2", "7", "6", and "7".
+
+          While the UNIX _r_e_a_d(2) and _w_r_i_t_e(2) calls support reading
+          and writing binary data, they do not create binary files
+          that can be read in again on a machine with a different byte
+          order or larger or smaller word size (without additional
+          programming).  The calls in the binary I/O package provide a
+          portable means of reading and writing binary files and
+          streams.  Application code that calls _B_i_n_R_e_a_d to read in an
+          array of 32-bit integers from a binary file remains
+          unchanged whether being compiled for a SPARCstation, a VAX
+          running VMS, or a CRAY X-MP.  Differences in byte ordering,
+          word sizes, and structure field padding are handled by the
+          binary I/O package.
+
+          Floating-point formats primarily differ in the number of
+          bits used to express the exponent and the mantissa.  If a
+          float in one format is interpreted as a float in a different
+          format, it is likely that no error will be detected.  The
+          value will simply be wrong.
+
+          The floating-point format of a file may differ from that of
+          the host trying to read or write it.  Some standard file
+          formats document the floating-point format they use.  Other
+          file formats include some flag near the top of the file that
+          a program may read to determine the floating-point format of
+          data in the file.
+
+          Because file format authors usually do not plan that their
+          files will be read on machines of a different type, most
+          formats don't include flags telling what float format to
+          use.  When in doubt, find out what type of machine the
+          author had.  The following is a list of common machines and
+          floating-point formats:
+
+               MMMMaaaacccchhhhiiiinnnneeee          FFFFoooorrrrmmmmaaaatttt
+               Cray X-MP        BINCRAYMP
+               Cray Y-MP        BINCRAYMP
+               DECStation       BINIEEE
+               SGI Iris 4D      BINIEEE
+               Stardent TITAN   BINIEEE
+               Sun 3            BINIEEE
+               Sun 4 (SPARC)    BINIEEE
+               DEC VAX          BINVAX and BINVAXG
+
+          IEEE is becoming the default standard, however, different
+          machines still use different byte orders of IEEE (DECStation
+          is LBF IEEE while a SPARCstation is MBF IEEE).
+          _B_i_n_B_y_t_e_O_r_d_e_r(3BIN) should be used to select the machine's
+
+
+
+     Page 2                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNFFFFLLLLOOOOAAAATTTTFFFFOOOORRRRMMMMAAAATTTT((((3333BBBBIIIINNNN))))    SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))     BBBBIIIINNNNFFFFLLLLOOOOAAAATTTTFFFFOOOORRRRMMMMAAAATTTT((((3333BBBBIIIINNNN))))
+
+
+
+          byte order.
+
+          Data may be read in using _B_i_n_R_e_a_d(3BIN) and
+          _B_i_n_R_e_a_d_S_t_r_u_c_t(3X) and written out using _B_i_n_W_r_i_t_e(3BIN) and
+          _B_i_n_W_r_i_t_e_S_t_r_u_c_t(3X).  These read and write calls each expect
+          an _n_b_y_t_e_s value that indicates the number of bytes a float
+          occupies in the file.  This may or may not be the same as
+          the number of bytes the same float occupies when stored in
+          host memory in the host's floating-point format.  For
+          instance, a file containing IEEE double-precision floats (8
+          bytes each) may be read on a VAX into its single-precision
+          floats (4 bytes each).
+
+          Not all values for _n_b_y_t_e_s are acceptable.  For instance,
+          there is no such thing as a 3-byte IEEE float or an 11-byte
+          VAX float.  Passing _n_b_y_t_e_s of 3 or 11 to a read or write
+          call to read or write a float will cause these routines to
+          return a _B_I_N_E_F_L_O_A_T_U_N_S_U_P_P_O_R_T_E_D error.  The following float
+          sizes are supported for each of the known floating point
+          formats:
+
+               FFFFoooorrrrmmmmaaaatttt      SSSSiiiizzzzeeeessss ((((iiiinnnn bbbbyyyytttteeeessss))))
+               BINIEEE     single (4), double (8)
+               BINVAX      f (4), d (8), h (16)
+               BINVAXG     f (4), g (8), h (16)
+               BINCRAYMP   single (8)
+
+          The CRAY's _d_o_u_b_l_e float is the same length and format as its
+          single-precision float.
+
+          The difference between the _B_I_N_V_A_X and _B_I_N_V_A_X_G format
+          selections is in their treatments of double-precision
+          floats.  The VAX supports two different double-precision
+          formats:  'd' and 'g'.  Each has a different numbers of bits
+          for the exponent and mantisssa.  Selection of the double-
+          precision format within a program is controlled through
+          compiler arguments.
+
+          The characteristics of the host CPU, including its
+          floating-point format, may be queried using
+          _B_i_n_Q_M_a_c_h_i_n_e(3BIN).
+
+     EEEEXXXXAAAAMMMMPPPPLLLLEEEESSSS
+        EEEExxxxaaaammmmpppplllleeee 1111
+          Read in a 1-byte flag at the top of a file.  If the flag is
+          "0x0", assume the file uses IEEE floating-point.  If the
+          flag is "0x1", assume the file uses VAX floating-point.  If
+          the flag is neither of these, issue an error.
+
+               int flag;
+               int fd;
+
+
+
+
+     Page 3                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNFFFFLLLLOOOOAAAATTTTFFFFOOOORRRRMMMMAAAATTTT((((3333BBBBIIIINNNN))))    SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))     BBBBIIIINNNNFFFFLLLLOOOOAAAATTTTFFFFOOOORRRRMMMMAAAATTTT((((3333BBBBIIIINNNN))))
+
+
+
+               BinRead( fd, flag, INT, 1, 1 );
+               if ( flag == 0x0 )
+                    BinFloatFormat( BINIEEE );
+               else if ( flag == 0x1 )
+                    BinFloatFormat( BINVAX );
+               else
+                    issue an error
+
+          Note that the floating-point format of the host is not an
+          issue.  The binary I/O package will automatically convert
+          from the file's float format to the format of the host.
+
+        EEEExxxxaaaammmmpppplllleeee 2222
+          Query the current floating-point format selection.
+
+               int format;
+
+               format = BinQFloatFormat( );
+
+     SSSSEEEEEEEE AAAALLLLSSSSOOOO
+          BinByteOrder(3BIN), BinErrorHandler(3BIN), BinFRead(3BIN),
+          BinFReadStruct(3BIN), BinFWrite(3BIN),
+          BinFWriteStruct(3BIN), BinPError(3BIN), BinQByteOrder(3BIN),
+          BinQMachine(3BIN), BinRead(3BIN), BinReadStruct(3BIN),
+          BinSRead(3BIN), BinSWrite(3BIN), BinWrite(3BIN),
+          BinWriteStruct(3BIN)
+
+     AAAAUUUUTTTTHHHHOOOORRRRSSSS
+          Dave Nadeau
+          San Diego Supercomputer Center
+
+     CCCCOOOONNNNTTTTAAAACCCCTTTT
+          SDSC consultants, (619)534-5100, ccccoooonnnnssssuuuulllltttt@@@@yyyy1111....ssssddddsssscccc....eeeedddduuuu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Page 4                                          (printed 6/30/95)
+
+
+

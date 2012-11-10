@@ -1,0 +1,89 @@
+'\"t
+.TH BINPERROR 3BIN "July 1990" "SDSC" "BINARY I/O"
+.fi
+.SH NAME
+BinPError, BinQError, BinErrNo  -  binary I/O package error messages
+.SH SYNOPSIS
+.if t \fB
+.nf
+#include "sdsc.h"
+
+extern int BinErrNo;
+extern int BinNErr;
+extern char *BinErrList[ ];
+
+void BinPError( leader )
+.in +0.5i
+char *leader;
+.in -0.5i
+
+char *BinQError( )
+.fi
+.if t \fR
+.SH DESCRIPTION
+\fIBinPError\fR produces a short error message on \fIstderr\fR
+describing the last error encountered during a call to a binary
+I/O package function.
+.LP
+If \fIleader\fR is not a NULL pointer and does not point to an empty
+string, the string it points to is printed, followed by a colon and
+one space, then the error message and a NEWLINE.
+If \fIleader\fR is a NULL pointer or an empty string, just the error
+message and NEWLINE are printed.
+The leader string is typically the name of the program.
+.LP
+The error number is taken from the global variable \fIBinErrNo\fR,
+which is set when errors occur in binary I/O package routines, but
+not cleared when non-erroneous calls are made.
+.LP
+To allow programs to display error messages in other ways, an
+array of error message strings is provided in \fIBinErrList\fR.
+\fIBinErrNo\fR may be used as an index into this table to get the
+message string without the NEWLINE.
+.LP
+\fIBinNErr\fR is the number of error messages provided for in the
+table.
+\fIBinErrNo\fR should be checked against \fIBinNErr\fR prior to
+indexing into \fIBinErrList\fR because new error codes may be added
+to the system before they are available in the error message table.
+.LP
+\fIBinQError\fR may be used to query the error message list and return a
+pointer to the error text associated with the error value of \fIBinErrNo\fR.
+.SH RETURNS
+\fIBinPError\fR returns nothing.
+.LP
+\fIBinQError\fR returns the character string message for the current value
+of \fIBinErrNo\fR or "Unknown error" if there is no message for the error
+number.
+.SH NOTES
+If \fIBinErrNo\fR is \fIBINESYS\fR, indicating a system call error
+occurred, \fIBinPError\fR calls \fIperror\fR(3) to print the
+system call's error message instead of the text for \fIBINESYS\fR, and
+\fIArgQError\fR returns the error text associated with \fIerrno\fR.
+.SH "SEE ALSO"
+BinByteOrder(3BIN),
+BinErrorHandler(3BIN),
+BinFRead(3BIN),
+BinFReadStruct(3BIN),
+BinFWrite(3BIN),
+BinFWriteStruct(3BIN),
+BinFloatFormat(3BIN),
+BinQByteOrder(3BIN),
+BinQFloatFormat(3BIN),
+BinQMachine(3BIN),
+BinRead(3BIN),
+BinReadStruct(3BIN),
+BinSRead(3BIN),
+BinSWrite(3BIN),
+BinWrite(3BIN),
+BinWriteStruct(3BIN),
+errno(2),
+perror(3)
+.br
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

@@ -1,0 +1,77 @@
+'\"t
+.TH TAGTABLEALLOC 3TAG "July 1990" "SDSC" "TAG TABLE"
+.SH NAME
+TagTableAlloc - allocate a new tag table
+.SH SYNOPSIS
+\fB
+.nf
+#include "sdsc.h"
+
+extern int TagErrNo;
+
+TagTable *TagTableAlloc( )
+.fi
+\fR
+.SH DESCRIPTION
+\fITagTableAlloc\fR allocates and returns a new empty tag table.
+.SH NOTES
+A tag table is a table of name-value pairs.
+The names, referred to as tags,
+are NULL-terminated character strings of \fITAGMAXLEN\fR
+characters or less and may include
+any character.
+The values are any of the standard C type, such as int, float, double,
+char, or pointer. 
+.LP
+A table is allocated using \fITagTableAlloc\fR, and thereafter may be
+appended to, inserted into, deleted from, or replaced within using
+\fITagTableAppend\fR(3TAG), \fITagTableInsert\fR(3TAG),
+\fITagTableDelete\fR(3TAG), and \fITagTableReplace\fR(3TAG).  When a
+table has no further use, it should be deallocated using
+\fITagTableFree\fR(3TAG). 
+.LP
+Tag tables are used by the image-file read routines of the image
+library (see \fIImIntro\fR(3IM)) to organize
+and store read data, and are used by the image file write routines to indicate
+what should be written.
+For instance, if an image file contained an image, a color table, a
+gamma-correction value, and an image title, the file read routine might fill a 
+tag table with the following tag-value pairs:
+.RS 0.5i
+.sp
+.TS
+center,box;
+l l.
+Tag	Value
+_
+vfb	an ImVfb pointer containing the file's image
+clt	an ImClt pointer containing the file's color table
+gamma	a float containing the gamma correction factor
+image title	a NULL-terminated character string giving the image title
+.TE
+.RE
+.SH RETURNS
+On success, \fITagTableAlloc\fR returns a new \fITagTable *\fR.
+On failure, \fITAGTABLENULL\fR is returned and \fITagErrNo\fR set to:
+.sp
+.TS
+center;
+l l.
+TAGEMALLOC	Cannot allocate enough memory for the new tag table
+.TE
+.SH SEE ALSO
+TagTableAppend(3TAG),
+TagTableDelete(3TAG),
+TagEntryAlloc(3TAG),
+TagTableInsert(3TAG),
+TagTableQDirect(3TAG),
+TagTableQLinear(3TAG),
+TagTableReplace(3TAG),
+TagTableFree(3TAG)
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

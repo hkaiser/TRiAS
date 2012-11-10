@@ -1,0 +1,31 @@
+// CvrtAsc.idl : IDL source for CvrtAsc.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (CvrtAsc.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#define _NO_LIBRARY
+#include "../CvrtCoords.idl"
+
+[
+	uuid(8161FB78-7BDA-4F58-B8F8-2804543E60C3),
+	version(1.0),
+	helpstring("CvrtAsc 1.0 Type Library")
+]
+library CvrtAsc
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(78981A25-5F91-46CA-9E19-2A8D36BC4F15),
+		helpstring("ConvertAscCoords Class")
+	]
+	coclass ConvertAscCoords
+	{
+		[default] interface ITransformLineOfText;
+	};
+};

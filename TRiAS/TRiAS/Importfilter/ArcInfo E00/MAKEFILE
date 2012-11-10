@@ -1,0 +1,97 @@
+# Makefile für Export-Filter für ArcInfo-Import
+# Windows/DLL-Version
+# MSVC V8.0c (Windows)
+
+!include $(TRIASINCLUDE)\triasver.mak
+
+# 
+.SUFFIXES: 
+.SUFFIXES: .cxx .obj .rc .res .c .cx
+
+COPY = 1
+NAME = ARCTRIAS
+DEF = $(NAME).def
+MAP = $(NAME).map
+
+# Generierungsdatum (yymmdd) und Version
+DATE = 040504
+VERSION = 3
+RELEASE = 00
+BUILD = 011
+COPYRIGHT = JB$(DATE)
+
+PNAME = $(TRIAS_PNAME)
+PADDRESS = $(TRIAS_PADDRESS)
+
+YACC_FLAGS = -n -d -s     # suppress line, produce header, produce short int
+YACC_DEBUG_DEFINES = 
+YACC_FN = arcy            # Yacc-Filename
+YACC = pcyacc
+YACC_HD = yytab           # Yacc-Header-File
+LEX = pclex
+LEX_DEBUG_DEFINES  =
+LEX_FLAGS = -l            # suppress line
+LEX_FN = arclx            # LEX-Filename
+
+OUTDLL = $(NAME).ext
+VERS_FILE = versio32.h
+
+#!include "arctrias.mak"
+
+$(LEX_FN).cx:   $(LEX_FN).l optparam.hxx
+		$(LEX) $(LEX_FLAGS) $(LEX_FN).l
+                sed -f $(LEX_FN).sed $(LEX_FN).c >$(LEX_FN).cx
+		@del $(LEX_FN).c
+
+$(YACC_FN).cxx: $(YACC_FN).y filepos.hxx merkmal.hxx \
+                optparam.hxx tools.hxx textconn.hxx
+		$(YACC) $(YACC_FLAGS) $(YACC_FN).y -C$(YACC_FN).c
+                sed -f $(YACC_FN).sed $(YACC_FN).c >$(YACC_FN).cxx
+		@del $(YACC_FN).c
+
+# Dateien kopieren ----------------------------------------------------------
+copy:
+!IF $(COPY)
+    copy $(NAME).dll $(WINDIR)\$(OUTDLL)
+!ENDIF
+
+# Versionskontrolle -----------------------------------------------------------
+
+# alle versionsabhängien Datein löschen
+new:
+	@del $(DEF) > nul
+	@del $(NAME).rcv > nul
+	@del $(VERS_FILE)
+       
+# nur Versionsabhängigkeiten auflösen
+formake: $(NAME).rcv $(DEF) $(VERS_FILE)
+
+# ModulDefinitionsDatei mit allen Exporten generieren
+$(DEF):  $(NAME).tpl makefile
+	ersetz \
+		$(VERSION) \
+		$(RELEASE) \
+		$(BUILD) \
+		$(COPYRIGHT) \
+			$(NAME).tpl $(DEF)
+
+$(VERS_FILE):   version.tpl makefile
+	ersetz \
+		$(VERSION) \
+		$(RELEASE) \
+			version.tpl $(VERS_FILE)
+
+# Personalisierungsinformation
+$(NAME).rcv:    arctriav.tpl makefile
+	ersetz \
+		$(VERSION) \
+		$(RELEASE) \
+		$(BUILD) \
+		$(COPYRIGHT) \
+		$(PNAME) \
+		$(PADDRESS) \
+		$(TRIAS_VERSION) \
+		$(TRIAS_RELEASE) \
+		$(COMPANYNAME) \
+			arctriav.tpl $(NAME).rcv
+	

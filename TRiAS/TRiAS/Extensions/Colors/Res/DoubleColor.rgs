@@ -1,0 +1,23 @@
+HKCR
+{
+	TRiAS.DoubleColor.1 = s 'Genauer Farbwert'
+	{
+		CLSID = s '{2CFAA6B8-4DCA-11D0-B0DC-00A024D6F582}'
+	}
+	TRiAS.DoubleColor = s 'Genauer Farbwert'
+	{
+		CLSID = s '{2CFAA6B8-4DCA-11D0-B0DC-00A024D6F582}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {2CFAA6B8-4DCA-11D0-B0DC-00A024D6F582} = s 'Genauer Farbwert'
+		{
+			ProgID = s 'TRiAS.DoubleColor.1'
+			VersionIndependentProgID = s 'TRiAS.DoubleColor'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'both'
+			}
+		}
+	}
+}

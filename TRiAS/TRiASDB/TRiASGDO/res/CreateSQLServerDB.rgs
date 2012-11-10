@@ -1,0 +1,36 @@
+HKCR
+{
+	TRiASGDO.CreateSQLServerDB.1 = s 'CreateSQLServerDB Class'
+	{
+		CLSID = s '{0F9867D3-4477-4BA9-9518-735F4B18A4A3}'
+	}
+	TRiASGDO.CreateSQLServerDB = s 'CreateSQLServerDB Class'
+	{
+		CLSID = s '{0F9867D3-4477-4BA9-9518-735F4B18A4A3}'
+		CurVer = s 'TRiASGDO.CreateSQLServerDB.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {0F9867D3-4477-4BA9-9518-735F4B18A4A3} = s 'CreateSQLServerDB Class'
+		{
+			ProgID = s 'TRiASGDO.CreateSQLServerDB.1'
+			VersionIndependentProgID = s 'TRiASGDO.CreateSQLServerDB'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{36D78AE3-2F23-11D1-969F-00A024D6F582}'
+		}
+	}
+	NoRemove SQLServerRW.GDatabase 
+    {
+		TRiASDB 
+        {
+            CLSID 
+            {
+				CreateDatabase = s '{0F9867D3-4477-4BA9-9518-735F4B18A4A3}'
+			}
+        }
+    }
+}

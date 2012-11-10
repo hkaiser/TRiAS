@@ -1,0 +1,264 @@
+
+
+
+IMPASTE(1IM)               IMAGE TOOLS               IMPASTE(1IM)
+
+
+
+NAME
+     impaste  -  Paste an image atop a background and store in  a
+     new file
+
+SYNOPSIS
+     impaste [_o_p_t_i_o_n_s] _i_n_f_i_l_e_n_a_m_e _b_a_c_k_f_i_l_e_n_a_m_e [_o_u_t_f_i_l_e_n_a_m_e]
+
+DESCRIPTION
+     impaste pastes an input image atop a  background  image  and
+     stores  the  result  in a new file or back in the background
+     image file.
+
+     If the input file contains multiple images, each input image
+     is  pasted  onto  a  fresh  copy of the background image and
+     added to the output file.  The output file contains one  new
+     image for each input image.
+
+     If the input and  background  files  each  contain  multiple
+     images, a one-for-one mapping occurs where input image #1 is
+     pasted atop background image #1, and so on.  The output file
+     contains one new image for each input image.
+
+     The input, background, and output image file formats may  be
+     different.
+
+OPTIONS
+     impaste has a variety  of  options  in  the  following  five
+     categories:
+
+          File Selection     What input and output files to use
+          Format Selection   What image file format to use
+          Format Control     What variant of a file format to generate
+          Standard           Standard generic options on all SDSC tools
+          Manipulation       How the image can be manipulated
+
+     _F_i_l_e _S_e_l_e_c_t_i_o_n, _F_o_r_m_a_t _S_e_l_e_c_t_i_o_n, _F_o_r_m_a_t _C_o_n_t_r_o_l, and  _S_t_a_n_-
+     _d_a_r_d options are common to all SDSC image tools and are dis-
+     cussed in depth in the man page for imconv(1IM).
+
+     If you don't specify an output file,  the  background  image
+     file  is  treated as the output file.  This allows paste-in-
+     place operations.
+
+     The input image or the background image, but not  both,  may
+     be taken from stdin.
+
+     All options can be abbreviated to the first few unique char-
+     acters.
+
+  Manipulation Options
+     The pasting location within the background image  is  speci-
+     fied by:
+
+
+
+SDSC               Last change: June 27, 1995                   1
+
+
+
+
+
+
+IMPASTE(1IM)               IMAGE TOOLS               IMPASTE(1IM)
+
+
+
+          -xposition _x   Left edge of paste location
+          -yposition _y   Top edge of paste location
+
+     The paste location may be outside the bounds  of  the  input
+     image.   The portion of the input image that lies within the
+     bounds of the background image will be pasted.  (0,0) is the
+     upper  left  corner of the image.  Both positions default to
+     values that center  the  incoming  image  left-to-right  and
+     top-to-bottom within the background image.
+
+     By giving a repeat count in the  X  and  Y  directions,  the
+     input  image  may  be  pasted  repeatedly to create a tiling
+     effect using the following:
+
+          -xrepeat _n_x        Number of times to paste horizontally
+          -yrepeat _n_y        Number of times to paste vertically
+          -xdirection _x_d_i_r   Horizontal tiling direction
+          -ydirection _y_d_i_r   Vertical tiling direction
+
+     -xrepeat and -yrepeat indicate how many times to  paste  the
+     input  image  onto  the same background image.  A value of 1
+     (default) pastes the image  once.   Values  greater  than  1
+     repeat the paste in X and Y.  A value of 0 for either repeat
+     count requests an "infinite" repeat that tiles the image  as
+     many  times as necessary to reach the horizontal or vertical
+     edge of the background image.
+
+     -xdirection and -ydirection select how tiling should advance
+     from image to image.  -xdirection takes one of the following
+     as its argument:
+
+          left    Tiling advances to the left
+          right   Tiling advances to the right
+
+     By default, tiling advances to the right.
+
+     -ydirection takes one of the following as its argument:
+
+          up     Tiling advances upward
+          down   Tiling advances downward
+
+     By default, tiling advances downward.
+
+NOTES
+     Pasting takes place without regard to  alpha  planes,  write
+     protect planes, and so on.  The input image is always placed
+     pixel-for-pixel atop the background image.
+
+     Internally, an input image is converted to the same depth as
+     the background image prior to being pasted.
+
+
+
+
+
+2                  Last change: June 27, 1995                SDSC
+
+
+
+
+
+
+IMPASTE(1IM)               IMAGE TOOLS               IMPASTE(1IM)
+
+
+
+     Pasting of non-RGB images can cause unexpected  results  but
+     is  allowed.   Consider this scenario:  An input color index
+     image uses color indexes 1, 2, and 3  for  red,  green,  and
+     blue.   The  background color index image uses color indexes
+     1, 2, and 3 as  well,  but  its  color  lookup  table  (CLT)
+     defines  them  as  orange, white, and black.  When the input
+     image is pasted atop the background image, its color indexes
+     are copied across and use the background image's CLT.  Input
+     pixels that used to be red become orange, input green pixels
+     become  white,  and  input  blue pixels become black because
+     they now reference the background image's CLT.  If  this  is
+     not what you want, convert the images to RGB prior to invok-
+     ing impaste.
+
+     For notes regarding  file  format  conversion  and  standard
+     image tool options, see the man page on imconv(1IM).
+
+     Error messages are reported to stderr.
+
+EXAMPLES
+     To paste a logo at (10,20) on a background  image  and  save
+     the result in a new file, use the following:
+
+          impaste  logo.rgb  background.hdf  -xpos  10  -ypos  20
+          result.rla
+
+     To paste an image in the center of a background and save  it
+     back in the same background file, use the following:
+
+          impaste image.pix background.pix
+
+     To tile a pattern across the whole background, use the  fol-
+     lowing:
+
+          impaste pattern.x -xpos 0 -ypos 0 -xrepeat 0 -yrepeat 0
+          background.tiff
+
+     To tile a pattern three times in X and none in  Y,  starting
+     at (-10, -20), use the following:
+
+          impaste pattern.ras -xrepeat  3  -xpos  -10  -ypos  -20
+          background.ras
+
+SEE ALSO
+     imcopy (1IM), ImVfbCopy (3IM)
+
+     For information on SDSC's image library, see imintro(3IM).
+
+AUTHOR
+     Dave Nadeau
+     San Diego Supercomputer Center
+
+
+
+
+SDSC               Last change: June 27, 1995                   3
+
+
+
+
+
+
+IMPASTE(1IM)               IMAGE TOOLS               IMPASTE(1IM)
+
+
+
+     See the individual file format man pages for the authors  of
+     the  underlying  format  read  and write code.  The names of
+     these man pages begin with the letters "im" followed by  the
+     format  name.  For example, the name of the TIFF man page is
+     imtiff.  To display it, enter man imtiff.
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4                  Last change: June 27, 1995                SDSC
+
+
+

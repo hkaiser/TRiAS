@@ -1,0 +1,30 @@
+HKCR
+{
+	%PROGID% = s 'TRiAS® Application'
+	{
+		CLSID = s '%CLSID%'
+		CurVer = s '%PROGID%.%VERSION%'
+	}
+	%PROGID%.%VERSION% = s 'TRiAS® %VERSION% Application'
+	{
+		CLSID = s '%CLSID%'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove %CLSID% = s 'TRiAS® %VERSION% Application'
+		{
+			ProgID = s '%PROGID%.%VERSION%'
+			VersionIndependentProgID = s '%PROGID%'
+			LocalServer32 = s '%TRIASMODULE% /Automation'
+			DefaultIcon = s '%TRIASMODULE%,0'
+			Programmable = s ''
+			TypeLib = s '%TYPELIB%'
+			ToolBoxBitmap32 = s '%MODULE%,2'
+		}
+		%CLSIDEXT%
+		{
+			ToolBoxBitmap32 = s '%MODULE%,1'
+			val AppID = s '%CLSID%'
+		}
+	}
+}

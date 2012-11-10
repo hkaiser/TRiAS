@@ -1,0 +1,2137 @@
+# Microsoft Developer Studio Generated NMAKE File, Format Version 4.20
+# ** DO NOT EDIT **
+
+# TARGTYPE "Win32 (x86) Application" 0x0101
+
+!IF "$(CFG)" == ""
+CFG=gak - Win32 Debug
+!MESSAGE No configuration specified.  Defaulting to gak - Win32 Debug.
+!ENDIF 
+
+!IF "$(CFG)" != "gak - Win32 Release" && "$(CFG)" != "gak - Win32 Debug"
+!MESSAGE Invalid configuration "$(CFG)" specified.
+!MESSAGE You can specify a configuration when running NMAKE on this makefile
+!MESSAGE by defining the macro CFG on the command line.  For example:
+!MESSAGE 
+!MESSAGE NMAKE /f "Gak.mak" CFG="gak - Win32 Debug"
+!MESSAGE 
+!MESSAGE Possible choices for configuration are:
+!MESSAGE 
+!MESSAGE "gak - Win32 Release" (based on "Win32 (x86) Application")
+!MESSAGE "gak - Win32 Debug" (based on "Win32 (x86) Application")
+!MESSAGE 
+!ERROR An invalid configuration is specified.
+!ENDIF 
+
+!IF "$(OS)" == "Windows_NT"
+NULL=
+!ELSE 
+NULL=nul
+!ENDIF 
+################################################################################
+# Begin Project
+# PROP Target_Last_Scanned "gak - Win32 Debug"
+MTL=mktyplib.exe
+CPP=cl.exe
+RSC=rc.exe
+
+!IF  "$(CFG)" == "gak - Win32 Release"
+
+# PROP BASE Use_MFC 6
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "Release"
+# PROP BASE Intermediate_Dir "Release"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 6
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "Release"
+# PROP Intermediate_Dir "Release"
+# PROP Target_Dir ""
+OUTDIR=.\Release
+INTDIR=.\Release
+
+ALL : "$(OUTDIR)\Gak.exe" "$(OUTDIR)\Gak.hlp"
+
+CLEAN : 
+	-@erase "$(INTDIR)\AbfallP.obj"
+	-@erase "$(INTDIR)\AbfArSet.obj"
+	-@erase "$(INTDIR)\AbfDoc.obj"
+	-@erase "$(INTDIR)\AbfFrame.obj"
+	-@erase "$(INTDIR)\AbfPage.obj"
+	-@erase "$(INTDIR)\AbfSet.obj"
+	-@erase "$(INTDIR)\AbfSetEx.obj"
+	-@erase "$(INTDIR)\AbfSheet.obj"
+	-@erase "$(INTDIR)\AbfView.obj"
+	-@erase "$(INTDIR)\about.obj"
+	-@erase "$(INTDIR)\Afidlg.obj"
+	-@erase "$(INTDIR)\anfpage.obj"
+	-@erase "$(INTDIR)\BetrPage.obj"
+	-@erase "$(INTDIR)\BrancheP.obj"
+	-@erase "$(INTDIR)\BranPage.obj"
+	-@erase "$(INTDIR)\ChangeNr.obj"
+	-@erase "$(INTDIR)\ChildFrm.obj"
+	-@erase "$(INTDIR)\Compact.obj"
+	-@erase "$(INTDIR)\daotools.obj"
+	-@erase "$(INTDIR)\DocumExt.obj"
+	-@erase "$(INTDIR)\DoImpPge.obj"
+	-@erase "$(INTDIR)\EnterNr.obj"
+	-@erase "$(INTDIR)\EntPage.obj"
+	-@erase "$(INTDIR)\Entspage.obj"
+	-@erase "$(INTDIR)\EntsSet.obj"
+	-@erase "$(INTDIR)\ErzFrame.obj"
+	-@erase "$(INTDIR)\ErzPar.obj"
+	-@erase "$(INTDIR)\ErzSheet.obj"
+	-@erase "$(INTDIR)\Exportre.obj"
+	-@erase "$(INTDIR)\FeldInfo.obj"
+	-@erase "$(INTDIR)\FirmaSet.obj"
+	-@erase "$(INTDIR)\firmpage.obj"
+	-@erase "$(INTDIR)\Gak.hlp"
+	-@erase "$(INTDIR)\gak.obj"
+	-@erase "$(INTDIR)\Gak.pch"
+	-@erase "$(INTDIR)\gak.res"
+	-@erase "$(INTDIR)\gakDoc.obj"
+	-@erase "$(INTDIR)\gakSet.obj"
+	-@erase "$(INTDIR)\Gaksete.obj"
+	-@erase "$(INTDIR)\gakView.obj"
+	-@erase "$(INTDIR)\GebietP.obj"
+	-@erase "$(INTDIR)\Getodbci.obj"
+	-@erase "$(INTDIR)\Importty.obj"
+	-@erase "$(INTDIR)\ImpParPg.obj"
+	-@erase "$(INTDIR)\ImpQuery.obj"
+	-@erase "$(INTDIR)\ImpResPg.obj"
+	-@erase "$(INTDIR)\ImprtDlg.obj"
+	-@erase "$(INTDIR)\ImpSumPg.obj"
+	-@erase "$(INTDIR)\InTablPg.obj"
+	-@erase "$(INTDIR)\KreisSet.obj"
+	-@erase "$(INTDIR)\Listext.obj"
+	-@erase "$(INTDIR)\MainFrm.obj"
+	-@erase "$(INTDIR)\NewQuery.obj"
+	-@erase "$(INTDIR)\Numedit.obj"
+	-@erase "$(INTDIR)\OutTbPg.obj"
+	-@erase "$(INTDIR)\PartPage.obj"
+	-@erase "$(INTDIR)\Peplus.obj"
+	-@erase "$(INTDIR)\Progress.obj"
+	-@erase "$(INTDIR)\QueryDlg.obj"
+	-@erase "$(INTDIR)\QueryPar.obj"
+	-@erase "$(INTDIR)\querypr.obj"
+	-@erase "$(INTDIR)\QueryRes.obj"
+	-@erase "$(INTDIR)\Recview.obj"
+	-@erase "$(INTDIR)\ResultP.obj"
+	-@erase "$(INTDIR)\SearchSe.obj"
+	-@erase "$(INTDIR)\SearRes.obj"
+	-@erase "$(INTDIR)\Selectex.obj"
+	-@erase "$(INTDIR)\SelNum.obj"
+	-@erase "$(INTDIR)\Selset.obj"
+	-@erase "$(INTDIR)\StatBarE.obj"
+	-@erase "$(INTDIR)\StatDlg.obj"
+	-@erase "$(INTDIR)\StdAfx.obj"
+	-@erase "$(INTDIR)\Strutil.obj"
+	-@erase "$(INTDIR)\TablNDlg.obj"
+	-@erase "$(INTDIR)\TransPge.obj"
+	-@erase "$(INTDIR)\TransSet.obj"
+	-@erase "$(INTDIR)\UserInfo.obj"
+	-@erase "$(INTDIR)\waitcext.obj"
+	-@erase "$(OUTDIR)\Gak.exe"
+	-@erase "$(OUTDIR)\Gak.ilk"
+
+"$(OUTDIR)" :
+    if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
+
+# ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Yu"stdafx.h" /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /D "MDB_VERSION20" /D "_BRANDENBURG" /Yu"stdafx.h" /c
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D\
+ "_AFXDLL" /D "_MBCS" /D "MDB_VERSION20" /D "_BRANDENBURG"\
+ /Fp"$(INTDIR)/Gak.pch" /Yu"stdafx.h" /Fo"$(INTDIR)/" /c 
+CPP_OBJS=.\Release/
+CPP_SBRS=.\.
+# ADD BASE MTL /nologo /D "NDEBUG" /win32
+# ADD MTL /nologo /D "NDEBUG" /win32
+MTL_PROJ=/nologo /D "NDEBUG" /win32 
+# ADD BASE RSC /l 0x407 /d "NDEBUG" /d "_AFXDLL"
+# ADD RSC /l 0x407 /d "NDEBUG" /d "_AFXDLL"
+RSC_PROJ=/l 0x407 /fo"$(INTDIR)/gak.res" /d "NDEBUG" /d "_AFXDLL" 
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+BSC32_FLAGS=/nologo /o"$(OUTDIR)/Gak.bsc" 
+BSC32_SBRS= \
+	
+LINK32=link.exe
+# ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
+# ADD LINK32 crpe32m.lib odbccp32.lib /nologo /subsystem:windows /incremental:yes /machine:I386 /stub:"rights.exe"
+LINK32_FLAGS=crpe32m.lib odbccp32.lib /nologo /subsystem:windows\
+ /incremental:yes /pdb:"$(OUTDIR)/Gak.pdb" /machine:I386 /stub:"rights.exe"\
+ /out:"$(OUTDIR)/Gak.exe" 
+LINK32_OBJS= \
+	"$(INTDIR)\AbfallP.obj" \
+	"$(INTDIR)\AbfArSet.obj" \
+	"$(INTDIR)\AbfDoc.obj" \
+	"$(INTDIR)\AbfFrame.obj" \
+	"$(INTDIR)\AbfPage.obj" \
+	"$(INTDIR)\AbfSet.obj" \
+	"$(INTDIR)\AbfSetEx.obj" \
+	"$(INTDIR)\AbfSheet.obj" \
+	"$(INTDIR)\AbfView.obj" \
+	"$(INTDIR)\about.obj" \
+	"$(INTDIR)\Afidlg.obj" \
+	"$(INTDIR)\anfpage.obj" \
+	"$(INTDIR)\BetrPage.obj" \
+	"$(INTDIR)\BrancheP.obj" \
+	"$(INTDIR)\BranPage.obj" \
+	"$(INTDIR)\ChangeNr.obj" \
+	"$(INTDIR)\ChildFrm.obj" \
+	"$(INTDIR)\Compact.obj" \
+	"$(INTDIR)\daotools.obj" \
+	"$(INTDIR)\DocumExt.obj" \
+	"$(INTDIR)\DoImpPge.obj" \
+	"$(INTDIR)\EnterNr.obj" \
+	"$(INTDIR)\EntPage.obj" \
+	"$(INTDIR)\Entspage.obj" \
+	"$(INTDIR)\EntsSet.obj" \
+	"$(INTDIR)\ErzFrame.obj" \
+	"$(INTDIR)\ErzPar.obj" \
+	"$(INTDIR)\ErzSheet.obj" \
+	"$(INTDIR)\Exportre.obj" \
+	"$(INTDIR)\FeldInfo.obj" \
+	"$(INTDIR)\FirmaSet.obj" \
+	"$(INTDIR)\firmpage.obj" \
+	"$(INTDIR)\gak.obj" \
+	"$(INTDIR)\gak.res" \
+	"$(INTDIR)\gakDoc.obj" \
+	"$(INTDIR)\gakSet.obj" \
+	"$(INTDIR)\Gaksete.obj" \
+	"$(INTDIR)\gakView.obj" \
+	"$(INTDIR)\GebietP.obj" \
+	"$(INTDIR)\Getodbci.obj" \
+	"$(INTDIR)\Importty.obj" \
+	"$(INTDIR)\ImpParPg.obj" \
+	"$(INTDIR)\ImpQuery.obj" \
+	"$(INTDIR)\ImpResPg.obj" \
+	"$(INTDIR)\ImprtDlg.obj" \
+	"$(INTDIR)\ImpSumPg.obj" \
+	"$(INTDIR)\InTablPg.obj" \
+	"$(INTDIR)\KreisSet.obj" \
+	"$(INTDIR)\Listext.obj" \
+	"$(INTDIR)\MainFrm.obj" \
+	"$(INTDIR)\NewQuery.obj" \
+	"$(INTDIR)\Numedit.obj" \
+	"$(INTDIR)\OutTbPg.obj" \
+	"$(INTDIR)\PartPage.obj" \
+	"$(INTDIR)\Peplus.obj" \
+	"$(INTDIR)\Progress.obj" \
+	"$(INTDIR)\QueryDlg.obj" \
+	"$(INTDIR)\QueryPar.obj" \
+	"$(INTDIR)\querypr.obj" \
+	"$(INTDIR)\QueryRes.obj" \
+	"$(INTDIR)\Recview.obj" \
+	"$(INTDIR)\ResultP.obj" \
+	"$(INTDIR)\SearchSe.obj" \
+	"$(INTDIR)\SearRes.obj" \
+	"$(INTDIR)\Selectex.obj" \
+	"$(INTDIR)\SelNum.obj" \
+	"$(INTDIR)\Selset.obj" \
+	"$(INTDIR)\StatBarE.obj" \
+	"$(INTDIR)\StatDlg.obj" \
+	"$(INTDIR)\StdAfx.obj" \
+	"$(INTDIR)\Strutil.obj" \
+	"$(INTDIR)\TablNDlg.obj" \
+	"$(INTDIR)\TransPge.obj" \
+	"$(INTDIR)\TransSet.obj" \
+	"$(INTDIR)\UserInfo.obj" \
+	"$(INTDIR)\waitcext.obj"
+
+"$(OUTDIR)\Gak.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
+    $(LINK32) @<<
+  $(LINK32_FLAGS) $(LINK32_OBJS)
+<<
+
+!ELSEIF  "$(CFG)" == "gak - Win32 Debug"
+
+# PROP BASE Use_MFC 6
+# PROP BASE Use_Debug_Libraries 1
+# PROP BASE Output_Dir "Debug"
+# PROP BASE Intermediate_Dir "Debug"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 6
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "Debug"
+# PROP Intermediate_Dir "Debug"
+# PROP Target_Dir ""
+OUTDIR=.\Debug
+INTDIR=.\Debug
+
+ALL : "$(OUTDIR)\Gak.exe" "$(OUTDIR)\Gak.hlp"
+
+CLEAN : 
+	-@erase "$(INTDIR)\AbfallP.obj"
+	-@erase "$(INTDIR)\AbfArSet.obj"
+	-@erase "$(INTDIR)\AbfDoc.obj"
+	-@erase "$(INTDIR)\AbfFrame.obj"
+	-@erase "$(INTDIR)\AbfPage.obj"
+	-@erase "$(INTDIR)\AbfSet.obj"
+	-@erase "$(INTDIR)\AbfSetEx.obj"
+	-@erase "$(INTDIR)\AbfSheet.obj"
+	-@erase "$(INTDIR)\AbfView.obj"
+	-@erase "$(INTDIR)\about.obj"
+	-@erase "$(INTDIR)\Afidlg.obj"
+	-@erase "$(INTDIR)\anfpage.obj"
+	-@erase "$(INTDIR)\BetrPage.obj"
+	-@erase "$(INTDIR)\BrancheP.obj"
+	-@erase "$(INTDIR)\BranPage.obj"
+	-@erase "$(INTDIR)\ChangeNr.obj"
+	-@erase "$(INTDIR)\ChildFrm.obj"
+	-@erase "$(INTDIR)\Compact.obj"
+	-@erase "$(INTDIR)\daotools.obj"
+	-@erase "$(INTDIR)\DocumExt.obj"
+	-@erase "$(INTDIR)\DoImpPge.obj"
+	-@erase "$(INTDIR)\EnterNr.obj"
+	-@erase "$(INTDIR)\EntPage.obj"
+	-@erase "$(INTDIR)\Entspage.obj"
+	-@erase "$(INTDIR)\EntsSet.obj"
+	-@erase "$(INTDIR)\ErzFrame.obj"
+	-@erase "$(INTDIR)\ErzPar.obj"
+	-@erase "$(INTDIR)\ErzSheet.obj"
+	-@erase "$(INTDIR)\Exportre.obj"
+	-@erase "$(INTDIR)\FeldInfo.obj"
+	-@erase "$(INTDIR)\FirmaSet.obj"
+	-@erase "$(INTDIR)\firmpage.obj"
+	-@erase "$(INTDIR)\Gak.hlp"
+	-@erase "$(INTDIR)\gak.obj"
+	-@erase "$(INTDIR)\Gak.pch"
+	-@erase "$(INTDIR)\gak.res"
+	-@erase "$(INTDIR)\gakDoc.obj"
+	-@erase "$(INTDIR)\gakSet.obj"
+	-@erase "$(INTDIR)\Gaksete.obj"
+	-@erase "$(INTDIR)\gakView.obj"
+	-@erase "$(INTDIR)\GebietP.obj"
+	-@erase "$(INTDIR)\Getodbci.obj"
+	-@erase "$(INTDIR)\Importty.obj"
+	-@erase "$(INTDIR)\ImpParPg.obj"
+	-@erase "$(INTDIR)\ImpQuery.obj"
+	-@erase "$(INTDIR)\ImpResPg.obj"
+	-@erase "$(INTDIR)\ImprtDlg.obj"
+	-@erase "$(INTDIR)\ImpSumPg.obj"
+	-@erase "$(INTDIR)\InTablPg.obj"
+	-@erase "$(INTDIR)\KreisSet.obj"
+	-@erase "$(INTDIR)\Listext.obj"
+	-@erase "$(INTDIR)\MainFrm.obj"
+	-@erase "$(INTDIR)\NewQuery.obj"
+	-@erase "$(INTDIR)\Numedit.obj"
+	-@erase "$(INTDIR)\OutTbPg.obj"
+	-@erase "$(INTDIR)\PartPage.obj"
+	-@erase "$(INTDIR)\Peplus.obj"
+	-@erase "$(INTDIR)\Progress.obj"
+	-@erase "$(INTDIR)\QueryDlg.obj"
+	-@erase "$(INTDIR)\QueryPar.obj"
+	-@erase "$(INTDIR)\querypr.obj"
+	-@erase "$(INTDIR)\QueryRes.obj"
+	-@erase "$(INTDIR)\Recview.obj"
+	-@erase "$(INTDIR)\ResultP.obj"
+	-@erase "$(INTDIR)\SearchSe.obj"
+	-@erase "$(INTDIR)\SearRes.obj"
+	-@erase "$(INTDIR)\Selectex.obj"
+	-@erase "$(INTDIR)\SelNum.obj"
+	-@erase "$(INTDIR)\Selset.obj"
+	-@erase "$(INTDIR)\StatBarE.obj"
+	-@erase "$(INTDIR)\StatDlg.obj"
+	-@erase "$(INTDIR)\StdAfx.obj"
+	-@erase "$(INTDIR)\Strutil.obj"
+	-@erase "$(INTDIR)\TablNDlg.obj"
+	-@erase "$(INTDIR)\TransPge.obj"
+	-@erase "$(INTDIR)\TransSet.obj"
+	-@erase "$(INTDIR)\UserInfo.obj"
+	-@erase "$(INTDIR)\vc40.idb"
+	-@erase "$(INTDIR)\vc40.pdb"
+	-@erase "$(INTDIR)\waitcext.obj"
+	-@erase "$(OUTDIR)\Gak.exe"
+	-@erase "$(OUTDIR)\Gak.ilk"
+	-@erase "$(OUTDIR)\Gak.pdb"
+
+"$(OUTDIR)" :
+    if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
+
+# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Yu"stdafx.h" /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /D "MDB_VERSION20" /D "_BRANDENBURG" /Yu"stdafx.h" /c
+CPP_PROJ=/nologo /MDd /W3 /Gm /GX /Zi /Od /D "_DEBUG" /D "WIN32" /D "_WINDOWS"\
+ /D "_AFXDLL" /D "_MBCS" /D "MDB_VERSION20" /D "_BRANDENBURG"\
+ /Fp"$(INTDIR)/Gak.pch" /Yu"stdafx.h" /Fo"$(INTDIR)/" /Fd"$(INTDIR)/" /c 
+CPP_OBJS=.\Debug/
+CPP_SBRS=.\.
+# ADD BASE MTL /nologo /D "_DEBUG" /win32
+# ADD MTL /nologo /D "_DEBUG" /win32
+MTL_PROJ=/nologo /D "_DEBUG" /win32 
+# ADD BASE RSC /l 0x407 /d "_DEBUG" /d "_AFXDLL"
+# ADD RSC /l 0x407 /d "_DEBUG" /d "_AFXDLL"
+RSC_PROJ=/l 0x407 /fo"$(INTDIR)/gak.res" /d "_DEBUG" /d "_AFXDLL" 
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+BSC32_FLAGS=/nologo /o"$(OUTDIR)/Gak.bsc" 
+BSC32_SBRS= \
+	
+LINK32=link.exe
+# ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386
+# ADD LINK32 crpe32m.lib odbccp32.lib /nologo /subsystem:windows /debug /machine:I386 /stub:"rights.exe"
+# SUBTRACT LINK32 /incremental:no
+LINK32_FLAGS=crpe32m.lib odbccp32.lib /nologo /subsystem:windows\
+ /incremental:yes /pdb:"$(OUTDIR)/Gak.pdb" /debug /machine:I386\
+ /stub:"rights.exe" /out:"$(OUTDIR)/Gak.exe" 
+LINK32_OBJS= \
+	"$(INTDIR)\AbfallP.obj" \
+	"$(INTDIR)\AbfArSet.obj" \
+	"$(INTDIR)\AbfDoc.obj" \
+	"$(INTDIR)\AbfFrame.obj" \
+	"$(INTDIR)\AbfPage.obj" \
+	"$(INTDIR)\AbfSet.obj" \
+	"$(INTDIR)\AbfSetEx.obj" \
+	"$(INTDIR)\AbfSheet.obj" \
+	"$(INTDIR)\AbfView.obj" \
+	"$(INTDIR)\about.obj" \
+	"$(INTDIR)\Afidlg.obj" \
+	"$(INTDIR)\anfpage.obj" \
+	"$(INTDIR)\BetrPage.obj" \
+	"$(INTDIR)\BrancheP.obj" \
+	"$(INTDIR)\BranPage.obj" \
+	"$(INTDIR)\ChangeNr.obj" \
+	"$(INTDIR)\ChildFrm.obj" \
+	"$(INTDIR)\Compact.obj" \
+	"$(INTDIR)\daotools.obj" \
+	"$(INTDIR)\DocumExt.obj" \
+	"$(INTDIR)\DoImpPge.obj" \
+	"$(INTDIR)\EnterNr.obj" \
+	"$(INTDIR)\EntPage.obj" \
+	"$(INTDIR)\Entspage.obj" \
+	"$(INTDIR)\EntsSet.obj" \
+	"$(INTDIR)\ErzFrame.obj" \
+	"$(INTDIR)\ErzPar.obj" \
+	"$(INTDIR)\ErzSheet.obj" \
+	"$(INTDIR)\Exportre.obj" \
+	"$(INTDIR)\FeldInfo.obj" \
+	"$(INTDIR)\FirmaSet.obj" \
+	"$(INTDIR)\firmpage.obj" \
+	"$(INTDIR)\gak.obj" \
+	"$(INTDIR)\gak.res" \
+	"$(INTDIR)\gakDoc.obj" \
+	"$(INTDIR)\gakSet.obj" \
+	"$(INTDIR)\Gaksete.obj" \
+	"$(INTDIR)\gakView.obj" \
+	"$(INTDIR)\GebietP.obj" \
+	"$(INTDIR)\Getodbci.obj" \
+	"$(INTDIR)\Importty.obj" \
+	"$(INTDIR)\ImpParPg.obj" \
+	"$(INTDIR)\ImpQuery.obj" \
+	"$(INTDIR)\ImpResPg.obj" \
+	"$(INTDIR)\ImprtDlg.obj" \
+	"$(INTDIR)\ImpSumPg.obj" \
+	"$(INTDIR)\InTablPg.obj" \
+	"$(INTDIR)\KreisSet.obj" \
+	"$(INTDIR)\Listext.obj" \
+	"$(INTDIR)\MainFrm.obj" \
+	"$(INTDIR)\NewQuery.obj" \
+	"$(INTDIR)\Numedit.obj" \
+	"$(INTDIR)\OutTbPg.obj" \
+	"$(INTDIR)\PartPage.obj" \
+	"$(INTDIR)\Peplus.obj" \
+	"$(INTDIR)\Progress.obj" \
+	"$(INTDIR)\QueryDlg.obj" \
+	"$(INTDIR)\QueryPar.obj" \
+	"$(INTDIR)\querypr.obj" \
+	"$(INTDIR)\QueryRes.obj" \
+	"$(INTDIR)\Recview.obj" \
+	"$(INTDIR)\ResultP.obj" \
+	"$(INTDIR)\SearchSe.obj" \
+	"$(INTDIR)\SearRes.obj" \
+	"$(INTDIR)\Selectex.obj" \
+	"$(INTDIR)\SelNum.obj" \
+	"$(INTDIR)\Selset.obj" \
+	"$(INTDIR)\StatBarE.obj" \
+	"$(INTDIR)\StatDlg.obj" \
+	"$(INTDIR)\StdAfx.obj" \
+	"$(INTDIR)\Strutil.obj" \
+	"$(INTDIR)\TablNDlg.obj" \
+	"$(INTDIR)\TransPge.obj" \
+	"$(INTDIR)\TransSet.obj" \
+	"$(INTDIR)\UserInfo.obj" \
+	"$(INTDIR)\waitcext.obj"
+
+"$(OUTDIR)\Gak.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
+    $(LINK32) @<<
+  $(LINK32_FLAGS) $(LINK32_OBJS)
+<<
+
+!ENDIF 
+
+.c{$(CPP_OBJS)}.obj:
+   $(CPP) $(CPP_PROJ) $<  
+
+.cpp{$(CPP_OBJS)}.obj:
+   $(CPP) $(CPP_PROJ) $<  
+
+.cxx{$(CPP_OBJS)}.obj:
+   $(CPP) $(CPP_PROJ) $<  
+
+.c{$(CPP_SBRS)}.sbr:
+   $(CPP) $(CPP_PROJ) $<  
+
+.cpp{$(CPP_SBRS)}.sbr:
+   $(CPP) $(CPP_PROJ) $<  
+
+.cxx{$(CPP_SBRS)}.sbr:
+   $(CPP) $(CPP_PROJ) $<  
+
+################################################################################
+# Begin Target
+
+# Name "gak - Win32 Release"
+# Name "gak - Win32 Debug"
+
+!IF  "$(CFG)" == "gak - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "gak - Win32 Debug"
+
+!ENDIF 
+
+################################################################################
+# Begin Source File
+
+SOURCE=.\ReadMe.txt
+
+!IF  "$(CFG)" == "gak - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "gak - Win32 Debug"
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\gak.cpp
+DEP_CPP_GAK_C=\
+	".\Abfdoc.h"\
+	".\Abfframe.h"\
+	".\AbfSet.h"\
+	".\AbfView.h"\
+	".\About.h"\
+	".\Childfrm.h"\
+	".\Compact.h"\
+	".\Daotools.h"\
+	".\Documext.h"\
+	".\Enternr.h"\
+	".\Erzframe.h"\
+	".\Gak.h"\
+	".\Gakdoc.h"\
+	".\Gakset.h"\
+	".\Gaksete.h"\
+	".\gakView.h"\
+	".\Getodbci.h"\
+	".\MainFrm.h"\
+	".\numedit.h"\
+	".\peplus.h"\
+	".\Querydlg.h"\
+	".\Recview.h"\
+	".\Searchse.h"\
+	".\Searres.h"\
+	".\Statbare.h"\
+	".\Stdafx.h"\
+	".\Userinfo.h"\
+	".\Waitcext.h"\
+	{$(INCLUDE)}"\crpe.h"\
+	{$(INCLUDE)}"\Listext.hpp"\
+	
+
+"$(INTDIR)\gak.obj" : $(SOURCE) $(DEP_CPP_GAK_C) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\StdAfx.cpp
+DEP_CPP_STDAF=\
+	".\Daotools.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+!IF  "$(CFG)" == "gak - Win32 Release"
+
+# ADD CPP /Yc"stdafx.h"
+
+BuildCmds= \
+	$(CPP) /nologo /MD /W3 /GX /O2 /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D\
+ "_AFXDLL" /D "_MBCS" /D "MDB_VERSION20" /D "_BRANDENBURG"\
+ /Fp"$(INTDIR)/Gak.pch" /Yc"stdafx.h" /Fo"$(INTDIR)/" /c $(SOURCE) \
+	
+
+"$(INTDIR)\StdAfx.obj" : $(SOURCE) $(DEP_CPP_STDAF) "$(INTDIR)"
+   $(BuildCmds)
+
+"$(INTDIR)\Gak.pch" : $(SOURCE) $(DEP_CPP_STDAF) "$(INTDIR)"
+   $(BuildCmds)
+
+!ELSEIF  "$(CFG)" == "gak - Win32 Debug"
+
+# ADD CPP /Yc"stdafx.h"
+
+BuildCmds= \
+	$(CPP) /nologo /MDd /W3 /Gm /GX /Zi /Od /D "_DEBUG" /D "WIN32" /D "_WINDOWS"\
+ /D "_AFXDLL" /D "_MBCS" /D "MDB_VERSION20" /D "_BRANDENBURG"\
+ /Fp"$(INTDIR)/Gak.pch" /Yc"stdafx.h" /Fo"$(INTDIR)/" /Fd"$(INTDIR)/" /c\
+ $(SOURCE) \
+	
+
+"$(INTDIR)\StdAfx.obj" : $(SOURCE) $(DEP_CPP_STDAF) "$(INTDIR)"
+   $(BuildCmds)
+
+"$(INTDIR)\Gak.pch" : $(SOURCE) $(DEP_CPP_STDAF) "$(INTDIR)"
+   $(BuildCmds)
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\MainFrm.cpp
+
+!IF  "$(CFG)" == "gak - Win32 Release"
+
+DEP_CPP_MAINF=\
+	".\Abfarset.h"\
+	".\Abfsetex.h"\
+	".\Afidlg.h"\
+	".\Daotools.h"\
+	".\Doimppge.h"\
+	".\Exportre.h"\
+	".\Gak.h"\
+	".\Gakset.h"\
+	".\Gaksete.h"\
+	".\Getodbci.h"\
+	".\Importty.h"\
+	".\Impparpg.h"\
+	".\Imprespg.h"\
+	".\Imprtdlg.h"\
+	".\Impsumpg.h"\
+	".\Intablpg.h"\
+	".\MainFrm.h"\
+	".\Outtbpg.h"\
+	".\Progress.h"\
+	".\Selectex.h"\
+	".\Selset.h"\
+	".\Statbare.h"\
+	".\Statdlg.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\MainFrm.obj" : $(SOURCE) $(DEP_CPP_MAINF) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+!ELSEIF  "$(CFG)" == "gak - Win32 Debug"
+
+DEP_CPP_MAINF=\
+	".\Abfarset.h"\
+	".\Abfsetex.h"\
+	".\Afidlg.h"\
+	".\Daotools.h"\
+	".\Doimppge.h"\
+	".\Exportre.h"\
+	".\Gak.h"\
+	".\Gakset.h"\
+	".\Gaksete.h"\
+	".\Getodbci.h"\
+	".\Importty.h"\
+	".\Impparpg.h"\
+	".\Imprespg.h"\
+	".\Imprtdlg.h"\
+	".\Impsumpg.h"\
+	".\Intablpg.h"\
+	".\MainFrm.h"\
+	".\Outtbpg.h"\
+	".\Progress.h"\
+	".\Selectex.h"\
+	".\Selset.h"\
+	".\Statbare.h"\
+	".\Statdlg.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\MainFrm.obj" : $(SOURCE) $(DEP_CPP_MAINF) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\ChildFrm.cpp
+DEP_CPP_CHILD=\
+	".\Childfrm.h"\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Recview.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\ChildFrm.obj" : $(SOURCE) $(DEP_CPP_CHILD) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\gakDoc.cpp
+DEP_CPP_GAKDO=\
+	".\Daotools.h"\
+	".\Documext.h"\
+	".\Gak.h"\
+	".\Gakdoc.h"\
+	".\Gakset.h"\
+	".\Gaksete.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\gakDoc.obj" : $(SOURCE) $(DEP_CPP_GAKDO) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\gakView.cpp
+DEP_CPP_GAKVI=\
+	".\AbfSet.h"\
+	".\Anfpage.h"\
+	".\Branpage.h"\
+	".\Changenr.h"\
+	".\Childfrm.h"\
+	".\Daotools.h"\
+	".\Documext.h"\
+	".\Entspage.h"\
+	".\Erzsheet.h"\
+	".\Firmpage.h"\
+	".\Gak.h"\
+	".\Gakdoc.h"\
+	".\Gakset.h"\
+	".\Gaksete.h"\
+	".\gakView.h"\
+	".\numedit.h"\
+	".\Partpage.h"\
+	".\Recview.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	{$(INCLUDE)}"\crpe.h"\
+	{$(INCLUDE)}"\peplus.h"\
+	
+
+"$(INTDIR)\gakView.obj" : $(SOURCE) $(DEP_CPP_GAKVI) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\gakSet.cpp
+DEP_CPP_GAKSE=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Gakset.h"\
+	".\Gaksete.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\gakSet.obj" : $(SOURCE) $(DEP_CPP_GAKSE) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\gak.rc
+DEP_RSC_GAK_R=\
+	".\res\artchad.bmp"\
+	".\res\artchaf.bmp"\
+	".\res\artchau.bmp"\
+	".\res\artchax.bmp"\
+	".\res\artdeld.bmp"\
+	".\res\artdelf.bmp"\
+	".\res\artdelu.bmp"\
+	".\res\artdelx.bmp"\
+	".\res\ARTNEUD.bmp"\
+	".\res\artneuf.bmp"\
+	".\res\artneuu.bmp"\
+	".\res\artneux.bmp"\
+	".\res\gak.rc2"\
+	".\res\gakDoc.ico"\
+	".\res\idr_main.ico"\
+	".\res\imageli.bmp"\
+	".\res\Toolbar.bmp"\
+	".\resource.hm"\
+	
+
+"$(INTDIR)\gak.res" : $(SOURCE) $(DEP_RSC_GAK_R) "$(INTDIR)"
+   $(RSC) $(RSC_PROJ) $(SOURCE)
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\hlp\gak.hpj
+
+!IF  "$(CFG)" == "gak - Win32 Release"
+
+# Begin Custom Build - Making help file...
+OutDir=.\Release
+ProjDir=.
+TargetName=Gak
+InputPath=.\hlp\gak.hpj
+
+"$(OutDir)\$(TargetName).hlp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+   "$(ProjDir)\makehelp.bat"
+
+# End Custom Build
+
+!ELSEIF  "$(CFG)" == "gak - Win32 Debug"
+
+# Begin Custom Build - Making help file...
+OutDir=.\Debug
+ProjDir=.
+TargetName=Gak
+InputPath=.\hlp\gak.hpj
+
+"$(OutDir)\$(TargetName).hlp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+   "$(ProjDir)\makehelp.bat"
+
+# End Custom Build
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\ErzSheet.cpp
+DEP_CPP_ERZSH=\
+	".\Anfpage.h"\
+	".\Branpage.h"\
+	".\Daotools.h"\
+	".\Entspage.h"\
+	".\Erzsheet.h"\
+	".\Firmpage.h"\
+	".\Gak.h"\
+	".\Partpage.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\ErzSheet.obj" : $(SOURCE) $(DEP_CPP_ERZSH) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\firmpage.cpp
+DEP_CPP_FIRMP=\
+	".\Daotools.h"\
+	".\Firmpage.h"\
+	".\Gak.h"\
+	".\Gakset.h"\
+	".\Gaksete.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\firmpage.obj" : $(SOURCE) $(DEP_CPP_FIRMP) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\anfpage.cpp
+DEP_CPP_ANFPA=\
+	".\Anfpage.h"\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Gakset.h"\
+	".\Gaksete.h"\
+	".\Selnum.h"\
+	".\Selset.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\anfpage.obj" : $(SOURCE) $(DEP_CPP_ANFPA) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\PartPage.cpp
+DEP_CPP_PARTP=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Gakset.h"\
+	".\Gaksete.h"\
+	".\Partpage.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\PartPage.obj" : $(SOURCE) $(DEP_CPP_PARTP) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\BranPage.cpp
+DEP_CPP_BRANP=\
+	".\Branpage.h"\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Gakset.h"\
+	".\Gaksete.h"\
+	".\Selnum.h"\
+	".\Selset.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\BranPage.obj" : $(SOURCE) $(DEP_CPP_BRANP) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\SelNum.cpp
+DEP_CPP_SELNU=\
+	".\Daotools.h"\
+	".\FeldInfo.h"\
+	".\Gak.h"\
+	".\Selnum.h"\
+	".\Selset.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\SelNum.obj" : $(SOURCE) $(DEP_CPP_SELNU) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\UserInfo.cpp
+DEP_CPP_USERI=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\numedit.h"\
+	".\Stdafx.h"\
+	".\Userinfo.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\UserInfo.obj" : $(SOURCE) $(DEP_CPP_USERI) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\EnterNr.cpp
+DEP_CPP_ENTER=\
+	".\Daotools.h"\
+	".\Enternr.h"\
+	".\Gak.h"\
+	".\numedit.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\EnterNr.obj" : $(SOURCE) $(DEP_CPP_ENTER) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\SearchSe.cpp
+DEP_CPP_SEARC=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Searchse.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\SearchSe.obj" : $(SOURCE) $(DEP_CPP_SEARC) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\SearRes.cpp
+DEP_CPP_SEARR=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\numedit.h"\
+	".\Searchse.h"\
+	".\Searres.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	{$(INCLUDE)}"\Listext.hpp"\
+	
+
+"$(INTDIR)\SearRes.obj" : $(SOURCE) $(DEP_CPP_SEARR) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\about.cpp
+DEP_CPP_ABOUT=\
+	".\About.h"\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\about.obj" : $(SOURCE) $(DEP_CPP_ABOUT) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\ChangeNr.cpp
+DEP_CPP_CHANG=\
+	".\Changenr.h"\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\numedit.h"\
+	".\Searchse.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\ChangeNr.obj" : $(SOURCE) $(DEP_CPP_CHANG) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\Compact.cpp
+DEP_CPP_COMPA=\
+	".\Compact.h"\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\Compact.obj" : $(SOURCE) $(DEP_CPP_COMPA) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\Selset.cpp
+DEP_CPP_SELSE=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Selset.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\Selset.obj" : $(SOURCE) $(DEP_CPP_SELSE) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\Gaksete.cpp
+DEP_CPP_GAKSET=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Gaksete.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\Gaksete.obj" : $(SOURCE) $(DEP_CPP_GAKSET) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\Recview.cpp
+DEP_CPP_RECVI=\
+	".\Changenr.h"\
+	".\Childfrm.h"\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Gaksete.h"\
+	".\numedit.h"\
+	".\Recview.h"\
+	".\Selnum.h"\
+	".\Selset.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	{$(INCLUDE)}"\crpe.h"\
+	{$(INCLUDE)}"\peplus.h"\
+	
+
+"$(INTDIR)\Recview.obj" : $(SOURCE) $(DEP_CPP_RECVI) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\AbfSet.cpp
+DEP_CPP_ABFSE=\
+	".\AbfSet.h"\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Gaksete.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\AbfSet.obj" : $(SOURCE) $(DEP_CPP_ABFSE) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\AbfView.cpp
+DEP_CPP_ABFVI=\
+	".\Abfarset.h"\
+	".\Abfdoc.h"\
+	".\AbfPage.h"\
+	".\AbfSet.h"\
+	".\Abfsheet.h"\
+	".\AbfView.h"\
+	".\BetrPage.h"\
+	".\Branpage.h"\
+	".\Changenr.h"\
+	".\Childfrm.h"\
+	".\Daotools.h"\
+	".\Documext.h"\
+	".\EntPage.h"\
+	".\Gak.h"\
+	".\Gakset.h"\
+	".\Gaksete.h"\
+	".\numedit.h"\
+	".\Recview.h"\
+	".\Selnum.h"\
+	".\Selset.h"\
+	".\Stdafx.h"\
+	".\TransPge.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\AbfView.obj" : $(SOURCE) $(DEP_CPP_ABFVI) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\AbfDoc.cpp
+DEP_CPP_ABFDO=\
+	".\Abfdoc.h"\
+	".\AbfSet.h"\
+	".\Daotools.h"\
+	".\Documext.h"\
+	".\Gak.h"\
+	".\Gaksete.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\AbfDoc.obj" : $(SOURCE) $(DEP_CPP_ABFDO) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\AbfPage.cpp
+DEP_CPP_ABFPA=\
+	".\Abfarset.h"\
+	".\AbfPage.h"\
+	".\AbfSet.h"\
+	".\Abfsheet.h"\
+	".\BetrPage.h"\
+	".\Branpage.h"\
+	".\Daotools.h"\
+	".\EntPage.h"\
+	".\Gak.h"\
+	".\Gaksete.h"\
+	".\numedit.h"\
+	".\Selnum.h"\
+	".\Selset.h"\
+	".\Stdafx.h"\
+	".\TransPge.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\AbfPage.obj" : $(SOURCE) $(DEP_CPP_ABFPA) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\AbfSheet.cpp
+DEP_CPP_ABFSH=\
+	".\AbfPage.h"\
+	".\Abfsheet.h"\
+	".\AbfView.h"\
+	".\BetrPage.h"\
+	".\Branpage.h"\
+	".\Daotools.h"\
+	".\EntPage.h"\
+	".\Gak.h"\
+	".\numedit.h"\
+	".\Recview.h"\
+	".\Stdafx.h"\
+	".\TransPge.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\AbfSheet.obj" : $(SOURCE) $(DEP_CPP_ABFSH) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\ErzFrame.cpp
+DEP_CPP_ERZFR=\
+	".\Childfrm.h"\
+	".\Daotools.h"\
+	".\Erzframe.h"\
+	".\Gak.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\ErzFrame.obj" : $(SOURCE) $(DEP_CPP_ERZFR) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\AbfFrame.cpp
+DEP_CPP_ABFFR=\
+	".\Abfframe.h"\
+	".\Childfrm.h"\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\AbfFrame.obj" : $(SOURCE) $(DEP_CPP_ABFFR) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\DocumExt.cpp
+DEP_CPP_DOCUM=\
+	".\Childfrm.h"\
+	".\Daotools.h"\
+	".\Documext.h"\
+	".\Gak.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\DocumExt.obj" : $(SOURCE) $(DEP_CPP_DOCUM) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\waitcext.cpp
+DEP_CPP_WAITC=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\MainFrm.h"\
+	".\Statbare.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\waitcext.obj" : $(SOURCE) $(DEP_CPP_WAITC) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\StatBarE.cpp
+DEP_CPP_STATB=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Statbare.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\StatBarE.obj" : $(SOURCE) $(DEP_CPP_STATB) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\AbfArSet.cpp
+DEP_CPP_ABFAR=\
+	".\Abfarset.h"\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Selset.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\AbfArSet.obj" : $(SOURCE) $(DEP_CPP_ABFAR) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\Strutil.cpp
+DEP_CPP_STRUT=\
+	".\Daotools.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\Strutil.obj" : $(SOURCE) $(DEP_CPP_STRUT) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\TransPge.cpp
+DEP_CPP_TRANS=\
+	".\AbfSet.h"\
+	".\Branpage.h"\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Gaksete.h"\
+	".\Selset.h"\
+	".\Stdafx.h"\
+	".\TransPge.h"\
+	".\Transset.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\TransPge.obj" : $(SOURCE) $(DEP_CPP_TRANS) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\TransSet.cpp
+DEP_CPP_TRANSS=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Selset.h"\
+	".\Stdafx.h"\
+	".\Transset.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\TransSet.obj" : $(SOURCE) $(DEP_CPP_TRANSS) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\FeldInfo.cpp
+DEP_CPP_FELDI=\
+	".\Daotools.h"\
+	".\FeldInfo.h"\
+	".\Gak.h"\
+	".\Selset.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\FeldInfo.obj" : $(SOURCE) $(DEP_CPP_FELDI) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\EntPage.cpp
+DEP_CPP_ENTPA=\
+	".\AbfSet.h"\
+	".\Branpage.h"\
+	".\Daotools.h"\
+	".\EntPage.h"\
+	".\Entsset.h"\
+	".\Gak.h"\
+	".\Gaksete.h"\
+	".\Selnum.h"\
+	".\Selset.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\EntPage.obj" : $(SOURCE) $(DEP_CPP_ENTPA) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\Entspage.cpp
+DEP_CPP_ENTSP=\
+	".\Daotools.h"\
+	".\Entspage.h"\
+	".\Gak.h"\
+	".\Gakset.h"\
+	".\Gaksete.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\Entspage.obj" : $(SOURCE) $(DEP_CPP_ENTSP) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\EntsSet.cpp
+DEP_CPP_ENTSS=\
+	".\Daotools.h"\
+	".\Entsset.h"\
+	".\Gak.h"\
+	".\Selset.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\EntsSet.obj" : $(SOURCE) $(DEP_CPP_ENTSS) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\QueryDlg.cpp
+DEP_CPP_QUERY=\
+	".\AbfallP.h"\
+	".\BrancheP.h"\
+	".\Daotools.h"\
+	".\ErzPar.h"\
+	".\Gak.h"\
+	".\GebietP.h"\
+	".\Impquery.h"\
+	".\Newquery.h"\
+	".\numedit.h"\
+	".\Querydlg.h"\
+	".\Querypar.h"\
+	".\Queryres.h"\
+	".\ResultP.h"\
+	".\Searchse.h"\
+	".\Searres.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	{$(INCLUDE)}"\Listext.hpp"\
+	
+
+"$(INTDIR)\QueryDlg.obj" : $(SOURCE) $(DEP_CPP_QUERY) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\NewQuery.cpp
+DEP_CPP_NEWQU=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Newquery.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\NewQuery.obj" : $(SOURCE) $(DEP_CPP_NEWQU) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\QueryPar.cpp
+DEP_CPP_QUERYP=\
+	".\AbfallP.h"\
+	".\BrancheP.h"\
+	".\Daotools.h"\
+	".\ErzPar.h"\
+	".\Gak.h"\
+	".\GebietP.h"\
+	".\numedit.h"\
+	".\Querypar.h"\
+	".\ResultP.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\QueryPar.obj" : $(SOURCE) $(DEP_CPP_QUERYP) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\QueryRes.cpp
+DEP_CPP_QUERYR=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Queryres.h"\
+	".\Stdafx.h"\
+	".\TablNDlg.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\QueryRes.obj" : $(SOURCE) $(DEP_CPP_QUERYR) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\TablNDlg.cpp
+DEP_CPP_TABLN=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Stdafx.h"\
+	".\TablNDlg.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\TablNDlg.obj" : $(SOURCE) $(DEP_CPP_TABLN) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\InTablPg.cpp
+DEP_CPP_INTAB=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Importty.h"\
+	".\Intablpg.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\InTablPg.obj" : $(SOURCE) $(DEP_CPP_INTAB) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\Importty.cpp
+DEP_CPP_IMPOR=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Importty.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\Importty.obj" : $(SOURCE) $(DEP_CPP_IMPOR) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\ImprtDlg.cpp
+DEP_CPP_IMPRT=\
+	".\Daotools.h"\
+	".\Doimppge.h"\
+	".\Gak.h"\
+	".\Importty.h"\
+	".\Impparpg.h"\
+	".\Imprespg.h"\
+	".\Imprtdlg.h"\
+	".\Impsumpg.h"\
+	".\Intablpg.h"\
+	".\Outtbpg.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\ImprtDlg.obj" : $(SOURCE) $(DEP_CPP_IMPRT) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\OutTbPg.cpp
+DEP_CPP_OUTTB=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Importty.h"\
+	".\Outtbpg.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\OutTbPg.obj" : $(SOURCE) $(DEP_CPP_OUTTB) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\ImpParPg.cpp
+DEP_CPP_IMPPA=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Importty.h"\
+	".\Impparpg.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\ImpParPg.obj" : $(SOURCE) $(DEP_CPP_IMPPA) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\ImpSumPg.cpp
+DEP_CPP_IMPSU=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Importty.h"\
+	".\Impsumpg.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\ImpSumPg.obj" : $(SOURCE) $(DEP_CPP_IMPSU) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\DoImpPge.cpp
+DEP_CPP_DOIMP=\
+	".\Daotools.h"\
+	".\Doimppge.h"\
+	".\Gak.h"\
+	".\Importty.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\DoImpPge.obj" : $(SOURCE) $(DEP_CPP_DOIMP) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\ImpResPg.cpp
+DEP_CPP_IMPRE=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Importty.h"\
+	".\Imprespg.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\ImpResPg.obj" : $(SOURCE) $(DEP_CPP_IMPRE) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\ImpQuery.cpp
+DEP_CPP_IMPQU=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Impquery.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\ImpQuery.obj" : $(SOURCE) $(DEP_CPP_IMPQU) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\StatDlg.cpp
+DEP_CPP_STATD=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Statdlg.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\StatDlg.obj" : $(SOURCE) $(DEP_CPP_STATD) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\daotools.cpp
+DEP_CPP_DAOTO=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\daotools.obj" : $(SOURCE) $(DEP_CPP_DAOTO) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\Listext.cpp
+DEP_CPP_LISTE=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	{$(INCLUDE)}"\Listext.hpp"\
+	
+
+"$(INTDIR)\Listext.obj" : $(SOURCE) $(DEP_CPP_LISTE) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\Getodbci.cpp
+DEP_CPP_GETOD=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Getodbci.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\Getodbci.obj" : $(SOURCE) $(DEP_CPP_GETOD) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\BetrPage.cpp
+DEP_CPP_BETRP=\
+	".\AbfSet.h"\
+	".\BetrPage.h"\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Gaksete.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\BetrPage.obj" : $(SOURCE) $(DEP_CPP_BETRP) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\Numedit.cpp
+
+!IF  "$(CFG)" == "gak - Win32 Release"
+
+DEP_CPP_NUMED=\
+	".\Daotools.h"\
+	".\numedit.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\Numedit.obj" : $(SOURCE) $(DEP_CPP_NUMED) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+!ELSEIF  "$(CFG)" == "gak - Win32 Debug"
+
+DEP_CPP_NUMED=\
+	".\Daotools.h"\
+	".\numedit.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\Numedit.obj" : $(SOURCE) $(DEP_CPP_NUMED) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+!ENDIF 
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\Progress.cpp
+DEP_CPP_PROGR=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Progress.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\Progress.obj" : $(SOURCE) $(DEP_CPP_PROGR) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\Selectex.cpp
+DEP_CPP_SELEC=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Selectex.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\Selectex.obj" : $(SOURCE) $(DEP_CPP_SELEC) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\Exportre.cpp
+DEP_CPP_EXPOR=\
+	".\Daotools.h"\
+	".\Exportre.h"\
+	".\Gak.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\Exportre.obj" : $(SOURCE) $(DEP_CPP_EXPOR) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\AbfSetEx.cpp
+DEP_CPP_ABFSET=\
+	".\Abfsetex.h"\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\AbfSetEx.obj" : $(SOURCE) $(DEP_CPP_ABFSET) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\BrancheP.cpp
+DEP_CPP_BRANC=\
+	".\BrancheP.h"\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\numedit.h"\
+	".\Selnum.h"\
+	".\Selset.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\BrancheP.obj" : $(SOURCE) $(DEP_CPP_BRANC) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\ErzPar.cpp
+DEP_CPP_ERZPA=\
+	".\Changenr.h"\
+	".\Daotools.h"\
+	".\ErzPar.h"\
+	".\FirmaSet.h"\
+	".\Gak.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\ErzPar.obj" : $(SOURCE) $(DEP_CPP_ERZPA) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\GebietP.cpp
+DEP_CPP_GEBIE=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\GebietP.h"\
+	".\Selnum.h"\
+	".\Selset.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\GebietP.obj" : $(SOURCE) $(DEP_CPP_GEBIE) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\AbfallP.cpp
+DEP_CPP_ABFAL=\
+	".\AbfallP.h"\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\numedit.h"\
+	".\Selnum.h"\
+	".\Selset.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\AbfallP.obj" : $(SOURCE) $(DEP_CPP_ABFAL) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\ResultP.cpp
+DEP_CPP_RESUL=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\ResultP.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\ResultP.obj" : $(SOURCE) $(DEP_CPP_RESUL) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\querypr.cpp
+DEP_CPP_QUERYPR=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\querypr.obj" : $(SOURCE) $(DEP_CPP_QUERYPR) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\FirmaSet.cpp
+DEP_CPP_FIRMA=\
+	".\Daotools.h"\
+	".\FirmaSet.h"\
+	".\Gak.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\FirmaSet.obj" : $(SOURCE) $(DEP_CPP_FIRMA) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\KreisSet.cpp
+DEP_CPP_KREIS=\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\KreisSet.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\KreisSet.obj" : $(SOURCE) $(DEP_CPP_KREIS) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\Afidlg.cpp
+DEP_CPP_AFIDL=\
+	".\Afidlg.h"\
+	".\Daotools.h"\
+	".\Gak.h"\
+	".\KreisSet.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	
+
+"$(INTDIR)\Afidlg.obj" : $(SOURCE) $(DEP_CPP_AFIDL) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\Peplus.cpp
+DEP_CPP_PEPLU=\
+	".\Daotools.h"\
+	".\peplus.h"\
+	".\Stdafx.h"\
+	".\Waitcext.h"\
+	{$(INCLUDE)}"\crpe.h"\
+	
+
+"$(INTDIR)\Peplus.obj" : $(SOURCE) $(DEP_CPP_PEPLU) "$(INTDIR)"\
+ "$(INTDIR)\Gak.pch"
+
+
+# End Source File
+# End Target
+# End Project
+################################################################################

@@ -1,0 +1,273 @@
+// $Header: $
+// Copyright© 1999-2002 Geopunkt GmbH & Co. KG, NL Potsdam, All rights reserved
+// Created: 07.05.2002 22:45:41 
+//
+// @doc
+// @module BaseGeometry.idl | Definition of the <c CBaseGeometry> class
+
+#if !defined(_BASEGEOMETRY_IDL)
+#define _BASEGEOMETRY_IDL
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declarations
+interface _DGMGeometry;
+interface _DGMPoint;
+interface _DGMVector;
+interface _DGMPoints;
+interface _DGMPointGeometry;
+interface _DGMOrientedPointGeometry;
+interface _DGMLineGeometry;
+interface _DGMPolylineGeometry;
+interface _DGMPolygonGeometry;
+interface _DGMTextPointGeometry;
+interface _DGMGeometryCollection;
+interface _DGMBoundaryGeometry;
+interface _DGMRectangleGeometry;
+
+///////////////////////////////////////////////////////////////////////////////
+// BasisInterface für alle Geometrien
+[
+	odl,
+	uuid(37E44E10-555B-11D1-A237-0060973831CE),
+	hidden,
+	dual,
+	nonextensible,
+	oleautomation
+]
+interface _DGMGeometry : IDispatch 
+{
+	[id(0x60020000), propget] HRESULT Type([out, retval] BSTR* typeName);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Punkt-Objekt
+[
+	odl,
+	uuid(CE361C90-B00C-11CF-ABEF-08003601B769),
+	hidden,
+	dual,
+	nonextensible,
+	oleautomation
+]
+interface _DGMPoint : IDispatch 
+{
+	[id(0x00000001), propget] HRESULT X([out, retval] double* returnValue);
+	[id(0x00000001), propput] HRESULT X([in] double returnValue);
+	[id(0x00000002), propget] HRESULT Y([out, retval] double* returnValue);
+	[id(0x00000002), propput] HRESULT Y([in] double returnValue);
+	[id(0x00000003), propget] HRESULT Z([out, retval] double* returnValue);
+	[id(0x00000003), propput] HRESULT Z([in] double returnValue);
+	[id(0x60020006), restricted, hidden] HRESULT GetPoint([out] double* point);
+	[id(0x60020007), restricted, hidden] HRESULT SetPoint([in] double* point);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Vektor-Objekt
+[
+	odl,
+	uuid(CE361C91-B00C-11CF-ABEF-08003601B769),
+	hidden,
+	dual,
+	nonextensible,
+	oleautomation
+]
+interface _DGMVector : IDispatch 
+{
+	[id(0x00000001), propget] HRESULT I([out, retval] double* returnValue);
+	[id(0x00000001), propput] HRESULT I([in] double returnValue);
+	[id(0x00000002), propget] HRESULT J([out, retval] double* returnValue);
+	[id(0x00000002), propput] HRESULT J([in] double returnValue);
+	[id(0x00000003), propget] HRESULT K([out, retval] double* returnValue);
+	[id(0x00000003), propput] HRESULT K([in] double returnValue);
+	[id(0x60020006), restricted, hidden] HRESULT GetVector([out] double* v);
+	[id(0x60020007), restricted, hidden] HRESULT SetVector([in] double* v);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Eine Punkt-Sammlung
+[
+	odl,
+	uuid(4DBFC540-B33E-11CF-ABEF-08003601B769),
+	hidden,
+	dual,
+	nonextensible,
+	oleautomation
+]
+interface _DGMPoints : IDispatch 
+{
+	[id(0x00000001), propget] HRESULT Count([out, retval] long* returnValue);
+	[id(0xfffffffc), propget, restricted, hidden] HRESULT NewEnum([out, retval] IUnknown** returnValue);
+	[id(0x00000000)] HRESULT Item([in] VARIANT index, [out, retval] _DGMPoint ** returnValue);
+	[id(0x00000002)] HRESULT Add([in] _DGMPoint * point, [in, optional] VARIANT index);
+	[id(0x00000003)] HRESULT Remove([in] VARIANT index);
+	[id(0x00000005), restricted, hidden] HRESULT GetPoint([in] long index, [out] double* point);
+	[id(0x00000004), restricted, hidden] HRESULT SetPoint([in] long index, [in] double* point);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Punkt-Geometrie
+[
+	odl,
+	uuid(EE622580-8CCE-11CF-ABDE-08003601B769),
+	hidden,
+	dual,
+	nonextensible,
+	oleautomation
+]
+interface _DGMPointGeometry : _DGMGeometry 
+{
+	[id(0x00000001), propget] HRESULT Origin([out, retval] _DGMPoint ** returnValue);
+	[id(0x00000001), propputref] HRESULT Origin([in] _DGMPoint * returnValue);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Orientierte Punkt-Geometrie
+[
+	odl,
+	uuid(EE622588-8CCE-11CF-ABDE-08003601B769),
+	hidden,
+	dual,
+	nonextensible,
+	oleautomation
+]
+interface _DGMOrientedPointGeometry : _DGMPointGeometry 
+{
+    [id(0x60040000), propget] HRESULT Orientation([out, retval] _DGMVector ** returnValue);
+    [id(0x60040000), propputref] HRESULT Orientation([in] _DGMVector * returnValue);
+};
+///////////////////////////////////////////////////////////////////////////////
+// Linien-Geometrie
+[
+	odl,
+	uuid(EE622581-8CCE-11CF-ABDE-08003601B769),
+	hidden,
+	dual,
+	nonextensible,
+	oleautomation
+]
+interface _DGMLineGeometry : _DGMGeometry 
+{
+	[id(0x00000001), propget] HRESULT Start([out, retval] _DGMPoint ** returnValue);
+	[id(0x00000001), propputref] HRESULT Start([in] _DGMPoint * returnValue);
+	[id(0x00000002), propget] HRESULT End([out, retval] _DGMPoint ** returnValue);
+	[id(0x00000002), propputref] HRESULT End([in] _DGMPoint * returnValue);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Polyline-Geometrie
+[
+	odl,
+	uuid(EE622582-8CCE-11CF-ABDE-08003601B769),
+	hidden,
+	dual,
+	nonextensible,
+	oleautomation
+]
+interface _DGMPolylineGeometry : _DGMGeometry 
+{
+	[id(0x00000000), propget] HRESULT Points([out, retval] _DGMPoints ** returnValue);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Polygon-Geometrie
+[
+	odl,
+	uuid(EE622583-8CCE-11CF-ABDE-08003601B769),
+	hidden,
+	dual,
+	nonextensible,
+	oleautomation
+]
+interface _DGMPolygonGeometry : _DGMPolylineGeometry 
+{
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Punkt-Geometrie
+[
+	odl,
+	uuid(EE622589-8CCE-11CF-ABDE-08003601B769),
+	hidden,
+	dual,
+	nonextensible,
+	oleautomation
+]
+interface _DGMTextPointGeometry : _DGMPointGeometry 
+{
+	[id(0x60040000), propget] HRESULT Rotation([out, retval] double* returnValue);
+	[id(0x60040000), propput] HRESULT Rotation([in] double returnValue);
+	[id(0x60040002), propget] HRESULT Alignment([out, retval] long* returnValue);
+	[id(0x60040002), propput] HRESULT Alignment([in] long returnValue);
+	[id(0x60040004), propget] HRESULT RichText([out, retval] BSTR* text);
+	[id(0x60040004), propput] HRESULT RichText([in] BSTR text);
+	[id(0x60040006), propget] HRESULT text([out, retval] BSTR* text);
+	[id(0x60040006), propput] HRESULT text([in] BSTR text);
+	[id(0x60040008), propget] HRESULT Format([out, retval] short* returnValue);
+	[id(0x60040009), propget] HRESULT Normal([out, retval] _DGMVector ** returnValue);
+	[id(0x60040009), propputref] HRESULT Normal([in] _DGMVector * returnValue);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Geometrie-Sammlung
+[
+	odl,
+	uuid(EE622586-8CCE-11CF-ABDE-08003601B769),
+	hidden,
+	dual,
+	nonextensible,
+	oleautomation
+]
+interface _DGMGeometryCollection : _DGMGeometry 
+{
+    [id(0x00000001), propget] HRESULT Count([out, retval] long* returnValue);
+    [id(0xfffffffc), propget, restricted, hidden] HRESULT NewEnum([out, retval] IUnknown** returnValue);
+    [id(0x00000000)] HRESULT Item([in] VARIANT index, [out, retval] IDispatch** returnValue);
+    [id(0x00000002)] HRESULT Add([in] IDispatch* geometry, [in, optional] VARIANT index);
+    [id(0x00000003)] HRESULT Remove([in] VARIANT index);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// PolyPolygon-Geometrie (mehrere Konturen)
+[
+	odl,
+	uuid(EE622585-8CCE-11CF-ABDE-08003601B769),
+	hidden,
+	dual,
+	nonextensible,
+	oleautomation
+]
+interface _DGMBoundaryGeometry : _DGMGeometry 
+{
+	[id(0x00000001), propget] HRESULT Exterior([out, retval] IDispatch** Exterior);
+	[id(0x00000001), propputref] HRESULT Exterior([in] IDispatch* Exterior);
+	[id(0x00000002), propget] HRESULT Holes([out, retval] _DGMGeometryCollection ** Holes);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Rechteck-Geometrie
+[
+	odl,
+	uuid(EE622587-8CCE-11CF-ABDE-08003601B769),
+	hidden,
+	dual,
+	nonextensible,
+	oleautomation
+]
+interface _DGMRectangleGeometry : _DGMGeometry 
+{
+	[id(0x60030000), propget] HRESULT Width([out, retval] double* returnValue);
+	[id(0x60030000), propput] HRESULT Width([in] double returnValue);
+	[id(0x60030002), propget] HRESULT Height([out, retval] double* returnValue);
+	[id(0x60030002), propput] HRESULT Height([in] double returnValue);
+	[id(0x60030004), propget] HRESULT Rotation([out, retval] double* returnValue);
+	[id(0x60030004), propput] HRESULT Rotation([in] double returnValue);
+	[id(0x60030006), propget] HRESULT Origin([out, retval] _DGMPoint ** returnValue);
+	[id(0x60030006), propputref] HRESULT Origin([in] _DGMPoint * returnValue);
+	[id(0x60030008), propget] HRESULT Normal([out, retval] _DGMVector ** returnValue);
+	[id(0x60030008), propputref] HRESULT Normal([in] _DGMVector * returnValue);
+};
+
+#endif // !defined(_BASEGEOMETRY_IDL)

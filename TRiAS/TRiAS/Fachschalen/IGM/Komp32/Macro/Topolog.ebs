@@ -1,0 +1,261 @@
+'**************************************************************************
+'*                                                                        *
+'*  IGM : Analysen                                                        *
+'*                                                                        *
+'*                                                                        *
+'**************************************************************************
+Declare Sub ObjektLTeilen ( obj1 As GeoObject, obj2 As GeoObject)
+Declare Sub ObjektFTeilen ( obj1 As GeoObject, obj2 As GeoObject)
+
+'======================================================================================
+'Programmkonstanten
+Const NL = Chr$(13) + Chr$(10)		'NewLine
+Const HT = Chr$(9)	   		' Tab		 
+
+
+'==================================================================
+
+Private docGD As GeoDocument		'Projekt
+Private objsErgeb As GeoObjects	'Ergebnis der Durchschnittsoperation 
+Private IObjsP As GeoObjects
+Private IObjsL As GeoObjects
+Private IObjsF As GeoObjects
+Private IAObjsL As GeoObjects
+Private IAObjsF As GeoObjects
+
+
+'======================================================================================
+
+'Titel der Message-Boxen
+Const strBoxTitel = "TRiAS®-IGMAnalysen"
+
+
+'========================================================================================
+'Hauptprogramm
+Sub TOPOLOG (MyObj As GeoObject)
+
+'Pfade für BasicScript und Daten
+
+  	Set docGD = GetActiveDocument()			'Zugriff auf aktuelles Projekt
+
+'	SetBreakScript(False)
+
+'	Objektklasse durchlesen
+	Dim IObjsP As New GeoObjects
+	Dim IObjsL As New GeoObjects
+	Dim IObjsF As New GeoObjects
+	Dim IAObjsL As New GeoObjects
+	Dim IAObjsF As New GeoObjects
+
+
+'Fenster
+	Dim myWin As GeoObjectWin
+
+
+	Dim ObjS As GeoObjects
+
+
+	Dim Obj As GeoObject
+
+	Dim Feat As GeoFeature 	' Ident
+	Dim MyFeat$
+
+	Dim Dlg As New PropertySequence
+	Dlg.Description = "Wählen Sie bitte die zu verschneidenden Objektklassen aus:"
+
+	Dlg.AddAction "TRiASEx.SelectIdentObjTyp.1"
+
+	Set ObjS = Dlg.DoActions()
+
+
+	If Objs Is Nothing Then
+		Exit Sub
+	End If
+
+	Set IObjsP = docGD.CreateGeoObjectsCollection()
+	Set IObjsL = docGD.CreateGeoObjectsCollection()
+	Set IObjsF = docGD.CreateGeoObjectsCollection()
+	Set IAObjsL = docGD.CreateGeoObjectsCollection()
+	Set IAObjsF = docGD.CreateGeoObjectsCollection()
+
+	'Geduldsanzeige starten
+
+	SelObjs& = ObjS.Count
+
+
+' StatusAnzeige erzeugen und initialisieren
+Dim Status As New StatusIndicator 
+
+	If (Status Is Not Nothing) Then
+		Status.Restart 0, SelObjs, STATUS_ShowAllFields
+		Status.Caption = "Recherchieren von Objekten"
+		Status.Field(1) = Str$(SelObjs)
+		Status.Field(2) = "Objekte werden selektiert."
+		Status.Field(3) = "Es wurden bereits %d%% Objekte verarbeitet."
+	End If
+
+	Dim ActCnt As Long
+	ActCnt = 0
+	For Each obj In ObjS
+	'Rückgabewert kann sein: 
+	'innerhalb (0), außerhalb (1), inner/außerhalb (2) oder unklar (3)
+		rel% = MyObj.TopRelation(obj)
+		Dim RefObj As GeoObject
+		Select Case rel%
+			Case 3	'unklar
+
+			Case 2	'Innen/aussen
+				If Obj.ObjType = OT_Line Then
+					ObjektLTeilen MyObj,Obj
+				End If
+				If Obj.ObjType = OT_Area Then
+					ObjektFTeilen MyObj,Obj
+				End If
+			Case 1	'aussen
+
+			Case 0  'innen
+				if Obj.ObjType = OT_Point Then
+					Set objDummy = IObjsP.Add(obj)
+				End If
+				if Obj.ObjType = OT_Line Then
+					Set objDummy = IObjsL.Add(obj)
+				End If
+				if Obj.ObjType = OT_Area Then
+					Set objDummy = IObjsF.Add(obj)
+				End If
+		End Select
+ 
+		' Status weiterschalten
+		If (Status Is Not Nothing) Then
+			ActCnt = ActCnt + 1
+			Status.Field(4) = "Objekt: " + Str$(obj.Value)
+			If (Status Is Not Nothing) Then
+				Status.SetPosition ActCnt
+				If (Status.WasCanceled()) Then	' Abbrechen gedrückt
+					Exit For					' innere Schleife beenden
+				End If
+			End If
+		End If
+
+	Next obj
+
+	Set Status = Nothing	' Geduldsanzeige ausblenden
+
+
+
+'///////////////// Fenster //////////////////////////
+	If IObjsP.Count > 0 Then
+		Set myWin = IObjsP.CreateGeoObjectWin()
+		myWin.Name$ = "Innenere Punkte"
+   		myWin.Visible = true 
+	End If
+'////////////////////////////////////////////////////
+	If IObjsL.Count > 0 Then
+		Set myWin = IObjsL.CreateGeoObjectWin()
+		myWin.Name$ = "Innenere Linien"
+   		myWin.Visible = true 
+	End If
+'////////////////////////////////////////////////////
+	If IObjsF.Count > 0 Then
+		Set myWin = IObjsF.CreateGeoObjectWin()
+		myWin.Name$ = "Innenere Flächen"
+   		myWin.Visible = true 
+	End If
+'////////////////////////////////////////////////////
+	If IAObjsL.Count > 0 Then
+		Set myWin = IAObjsL.CreateGeoObjectWin()
+		myWin.Name$ = "Geteilte Linien"
+   		myWin.Visible = true 
+	End If
+'////////////////////////////////////////////////////
+	If IAObjsF.Count > 0 Then
+		Set myWin = IAObjsF.CreateGeoObjectWin()
+		myWin.Name$ = "Geteilte Flächen"
+   		myWin.Visible = true 
+	End If
+
+'////////////////////////////////////////////////////
+	
+	DocGD.RePaint	  
+
+End Sub 
+'===========================================================================
+Sub ObjektFTeilen ( Obj1 As GeoObject, Obj2 As GeoObject )
+
+	KKS$ = obj2.ObjClass.Name$
+
+	Dim objsTO As GeoObjects	'in obj1 liegende Teilobjekte von obj2
+
+	Set objsTO = obj1.GeometryIntersection (obj2)
+'	Set objsTO = obj1.GetIntersectObjects (obj2)
+
+	If objsTO Is Nothing Then 
+		msgBox " Fläche : Fehler bei Durchschnitt",ebCritical,strBoxTitel
+		Exit Sub
+	End If
+
+	If objsTO.Count = 0  Then 
+		msgBox " Fläche : Fehler bei Durchschnitt : Objektanzahl 0",ebCritical,strBoxTitel
+		Exit Sub
+	End If
+
+	Dim objTO As GeoObject
+
+	Dim cls As GeoClass
+
+	Set cls = docGD.GetClass(KKS$)
+
+	For Each objTO In objsTO
+		If objTO.ObjType = OT_Area Then
+			cls.AddObject objTO
+			Set objDummy = IAObjsF.Add(objTO)
+		Else
+			docGD.RemoveObject objTO
+		End If
+	next objTO
+
+	objsTO.Refresh
+	Set objsTO = Nothing
+
+End Sub ' ObjektTeilen
+'=================================================================================================
+'===========================================================================
+Sub ObjektLTeilen ( Obj1 As GeoObject, Obj2 As GeoObject )
+
+	KKS$ = obj2.ObjClass.Name$
+
+	Dim objsTO As GeoObjects	'in obj1 liegende Teilobjekte von obj2
+
+	Set objsTO = obj1.GeometryIntersection (obj2)
+'	Set objsTO = obj1.GetIntersectObjects (obj2)
+
+	If objsTO Is Nothing Then 
+		msgBox " Linie : Fehler bei Durchschnitt",ebCritical,strBoxTitel
+		Exit Sub
+	End If
+
+	If objsTO.Count = 0  Then 
+		msgBox " Linie : Fehler bei Durchschnitt : Objektanzahl 0",ebCritical,strBoxTitel
+		Exit Sub
+	End If
+
+	Dim objTO As GeoObject
+
+	Dim cls As GeoClass
+
+	Set cls = docGD.GetClass(KKS$)
+
+	For Each objTO In objsTO
+		If objTO.ObjType = OT_Line Then
+			cls.AddObject objTO
+			Set objDummy = IAObjsL.Add(objTO)
+		Else
+			docGD.RemoveObject objTO
+		End If
+	next objTO
+
+	objsTO.Refresh
+	Set objsTO = Nothing
+
+End Sub ' ObjektTeilen
+'=================================================================================================

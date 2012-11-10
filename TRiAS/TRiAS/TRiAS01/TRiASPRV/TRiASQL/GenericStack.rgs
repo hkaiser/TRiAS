@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASQL.GenericStack.1 = s 'GenericStack Class'
+	{
+		CLSID = s '{6E28FF44-272F-11D3-857F-00104B8CC00A}'
+	}
+	TRiASQL.GenericStack = s 'GenericStack Class'
+	{
+		CLSID = s '{6E28FF44-272F-11D3-857F-00104B8CC00A}'
+		CurVer = s 'TRiASQL.GenericStack.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {6E28FF44-272F-11D3-857F-00104B8CC00A} = s 'GenericStack Class'
+		{
+			ProgID = s 'TRiASQL.GenericStack.1'
+			VersionIndependentProgID = s 'TRiASQL.GenericStack'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{62ECE770-EC1D-4680-9A37-B5CD0BF0C1BC}'
+		}
+	}
+}

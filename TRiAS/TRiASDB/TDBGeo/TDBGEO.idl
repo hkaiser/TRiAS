@@ -1,0 +1,518 @@
+// TDBGEO.idl : IDL source for TDBGEO.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (TDBGEO.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#include "TDBGeo.ver"
+#include <TDBGEO.hh>
+
+#include "TDBGeoConfig.h"
+#include <TRiASConfig.h>
+
+///////////////////////////////////////////////////////////////////////////////
+// Basis-Geometrie-Interfaces (Kopie der 'alten' GeoMedia Interfaces)
+#if !defined(_USE_GEOMEDIA_GEOMETRY_TYPELIBS)
+import "BaseGeometry.idl";
+#endif // !defined(_USE_GEOMEDIA_GEOMETRY_TYPELIBS)
+
+#if defined(_INCLUDE_OGC_OBJECTS)
+import "GeometryIdl.idl";
+#endif // defined(_INCLUDE_OGC_OBJECTS)
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declaration
+interface ITRiASCSDistanceService;
+interface ITRiASCSStorageService;
+interface ITRiASSpatialRelationService;
+
+interface ITRiASCloneGeometry;
+
+///////////////////////////////////////////////////////////////////////////////
+cpp_quote("#define TYPELIB_TDBGEO_VERSION_MAJOR 1")
+cpp_quote("#define TYPELIB_TDBGEO_VERSION_MINOR 0")
+cpp_quote("#define TYPELIB_TDBGEO_VERSION \"1.0\"")
+cpp_quote("#define TYPELIB_TDBGEO_LCID 0")
+
+#define TYPELIB_TDBGEO_VERSION 1.0
+#define TYPELIB_TDBGEO_LCID 0
+
+cpp_quote("#if !defined(_GEOMETRYTYPE_DEFINED)")
+cpp_quote("#define _GEOMETRYTYPE_DEFINED")
+// @doc GEOMETRYTYPE
+// @enum GEOMETRYTYPE | Mögliche Geometrietypen, die ein einzelnes Objekt haben kann.
+	typedef [public, v1_enum, helpstring("Mögliche Geometrietypen")] 
+	enum _tagGEOMETRYTYPE {
+		[helpstring("Punktgeometrie.")] 
+			GEOMETRYTYPE_Point = 1,		// @emem Punktobjekt
+		[helpstring("Liniengeometrie.")] 
+			GEOMETRYTYPE_Line = 2,		// @emem Linienobjekt
+		[helpstring("Flächengeometrie.")] 
+			GEOMETRYTYPE_Area = 4,		// @emem Flächenobjekt
+		[helpstring("Textgeometrie.")] 
+			GEOMETRYTYPE_Text = 8,		// @emem Textobjekt
+
+		[helpstring("Punktgeometrie mit Drehwinkel.")] 
+			GEOMETRYTYPE_OrientedPoint = 0x10001,	// @emem Punktgeometrie mit Drehwinkel
+		[helpstring("Flächengeometrie mit Inseln.")] 
+			GEOMETRYTYPE_Boundary = 0x10004,	// @emem Flächenobjekt mit Inseln
+
+		[helpstring("Flächengeometrie mit Inseln.")] 
+			GEOMETRYTYPE_Collection = 0x20000,	// @emem Flächenobjekt mit Inseln
+
+		[helpstring("Unbekannte Geometrie.")] 
+			GEOMETRYTYPE_Unknown = 0,		// @emem Unbekannter Objekttyp
+
+		[helpstring("Maske für Elementargeometrietyp.")] 
+			GEOMETRYTYPE_SimpleMask = 0xffff,		// @emem Maske für Elementargeometrietyp
+	} GEOMETRYTYPE;
+cpp_quote("#endif // _GEOMETRYTYPE_DEFINED")
+
+[
+	object,
+	uuid(80B9A2F5-02B0-11D2-8650-00600875138A),
+	dual,
+	helpstring("ITRiASCSStorageService Interface"),
+	pointer_default(unique)
+]
+interface ITRiASCSStorageService : IDispatch
+{
+	[id(1), helpstring("Konvertieren einer Geometrie im BLOB-Format in ein entsprechendes Geometrieobjekt.")] HRESULT StorageToGeometry([in] VARIANT Blob, [in, out] GEOMETRYTYPE *prgType, [out, retval] IDispatch **Geometry);
+	[id(2), helpstring("Konvertieren eines Geometrieobjektes in eine entsprechende Geometrie im BLOB-Format.")] HRESULT GeometryToStorage([in] GEOMETRYTYPE rgType, [in] IDispatch *Geometry, [out, retval] VARIANT *Blob);
+	[id(3), helpstring("Liefert den Typ eines Geometrieobjektes.")] HRESULT RetrieveType([in] IDispatch *Geometry, [out, retval] GEOMETRYTYPE *prgType);
+	[id(4), helpstring("Konvertieren eines COM-Objektes im BLOB-Format in ein entsprechendes instantiiertes Objekt.")] HRESULT StorageToObject([in] VARIANT Blob, [out, retval] IDispatch **Obj);
+	[id(5), helpstring("Konvertieren eines Instantiiertes Objekt in ein entsprechendes COM-Objekt im BLOB-Format.")] HRESULT ObjectToStorage([in] IDispatch *Obj, [out, retval] VARIANT *Blob);
+}
+
+[
+	object,
+	uuid(BF10A784-5907-11D2-9ED2-006008447800),
+	dual,
+	helpstring("ITRiASCloneGeometry Interface"),
+	pointer_default(unique)
+]
+interface ITRiASCloneGeometry : IDispatch
+{
+	[id(1), helpstring("Erzeugt eine Kopie des vorliegenden Geometrieobjektes.")] HRESULT Clone([out, retval] IDispatch **ClGeomOnedObj);
+}
+
+[
+	uuid(6A0120C3-70C6-11D1-974B-00A024D6F582),
+	lcid(TYPELIB_TDBGEO_LCID),
+	version(TYPELIB_TDBGeo_VERSION),
+	helpstring(TYPELIB_TDBGeo_HELPSTRING),
+] 
+library TDBGEO 
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+#if defined(_USE_GEOMEDIA_GEOMETRY_TYPELIBS)
+	importlib("PBasic.tlb");
+#endif // defined(_USE_GEOMEDIA_GEOMETRY_TYPELIBS)
+	importlib("TRiASCs.tlb");
+
+//	enum TDBGEO_VERSIONS {
+//		TYPELIB_TDBGEO_VERSION_MAJOR = TYPELIB_TDBGeo_VERSION_MAJOR,
+//		TYPELIB_TDBGEO_VERSION_MINOR = TYPELIB_TDBGeo_VERSION_MINOR,
+//	};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TDBGEO
+// @interface ITRiASSpatialRelationService | Über dieses Interface sind verschidene
+// Funktionen verfügbar, die es ermöglichen topologische Beziehungen zwischen zwei
+// Geometrien zu bestimmen oder zu testen.
+// @group Eigenschaften von <i ITRiASSpatialRelationService>
+// @index | ITRIASSPATIALRELATIONSERVICE & PROPERTY
+// @group Methoden von <i ITRiASSpatialRelationService>
+// @index | ITRIASSPATIALRELATIONSERVICE & METHOD
+// @doc ITRIASSPATIALRELATIONSERVICE
+	[
+		object,
+		uuid(C80B64C7-B0D8-4D93-A124-DD8A864BA25B),
+		dual,
+		helpstring("ITRiASSpatialRelationService IDispatch"),
+		pointer_default(unique)
+	]
+	interface ITRiASSpatialRelationService : IDispatch
+	{
+	// @doc SPATIALRELATIONENUMS 
+	// @enum SPATIALRELATION | Mögliche topologische Relationen zwischen zwei Geometrien.
+	// @xref <i ITRiASSpatialRelationService>
+		typedef [
+			public, 
+			v1_enum, 
+			helpstring("Mögliche topologische Relationen zwischen zwei Geometrien"),
+			helpcontext(SPATIALRELATION_enum)
+		] 
+		enum _tagSPATIALRELATION {
+			SPATIALRELATION_Unknown = 0x0,		// @emem Unbekannte bzw. unklare topologische Beziehing
+			SPATIALRELATION_Equals = 0x1,		// @emem Vollständig identisch mit dem Bezugsobjekt
+			SPATIALRELATION_Touches = 0x2,		// @emem Berührt das Bezugsobjekt von außen
+			SPATIALRELATION_Contains = 0x4,		// @emem Überdeckt das Bezugsobjekt vollständig
+			SPATIALRELATION_Within = 0x8,		// @emem Vollständig innerhalb des Bezugsobjektes
+			SPATIALRELATION_Disjoint = 0x10,	// @emem Keinerlei Gemeinsamkeiten mit dem Bezugsobjekt
+			SPATIALRELATION_Crosses = 0x20,		// @emem teilweise innerhalb, teilweise außerhalb 
+				// des Bezugsobjektes (nur für die Kombinationen Linie/Linie, Linie/Fläche und 
+				// Fläche/Linie; der Durchschnitt beider Objekte muß eine geringere Dimension als 
+				// die größere der beiden Dimensionen der Vergleichsobjekte haben)
+			SPATIALRELATION_Overlaps = 0x40,	// @emem Teilweise innerhalb, teilweise außerhalb 
+				// des Bezugsobjektes (nur für die Kombinationen Linie/Linie und Fläche/Fläche; 
+				// der Durchschnitt beider Objekte muß die gleiche Dimension wie die Vergleichsobjekte 
+				// haben)
+			SPATIALRELATION_Intersects = 0x80,	// @emem Mindestens ein Punkt mit dem Bezugsobjekt 
+				// gemeinsam (not SPATIALRELATION_Disjoint)
+		} SPATIALRELATION;
+
+		[id(100), helpstring("Liefert, ob zwei Geometrien zueinander die topologische Beziehung SPATIALRELATION_Equals haben."), helpcontext(ITRiASSpatialRelationService_Equals_meth)] HRESULT Equals([in] VARIANT CsOne, [in] IDispatch *GeomOne, [in] VARIANT CsTwo, [in] IDispatch *GeomTwo, [out, retval] VARIANT_BOOL *equals);
+		[id(101), helpstring("Liefert, ob zwei Geometrien zueinander die topologische Beziehung SPATIALRELATION_Touches haben."), helpcontext(ITRiASSpatialRelationService_Touches_meth)] HRESULT Touches([in] VARIANT CsOne, [in] IDispatch *GeomOne, [in] VARIANT CsTwo, [in] IDispatch *GeomTwo, [out, retval] VARIANT_BOOL *touches);
+		[id(102), helpstring("Liefert, ob zwei Geometrien zueinander die topologische Beziehung SPATIALRELATION_Contains haben."), helpcontext(ITRiASSpatialRelationService_Contains_meth)] HRESULT Contains([in] VARIANT CsOne, [in] IDispatch *GeomOne, [in] VARIANT CsTwo, [in] IDispatch *GeomTwo, [out, retval] VARIANT_BOOL *contains);
+		[id(103), helpstring("Liefert, ob zwei Geometrien zueinander die topologische Beziehung SPATIALRELATION_Within haben."), helpcontext(ITRiASSpatialRelationService_Within_meth)] HRESULT Within([in] VARIANT CsOne, [in] IDispatch *GeomOne, [in] VARIANT CsTwo, [in] IDispatch *GeomTwo, [out, retval] VARIANT_BOOL *within);
+		[id(104), helpstring("Liefert, ob zwei Geometrien zueinander die topologische Beziehung SPATIALRELATION_Disjoint haben."), helpcontext(ITRiASSpatialRelationService_Disjoint_meth)] HRESULT Disjoint([in] VARIANT CsOne, [in] IDispatch *GeomOne, [in] VARIANT CsTwo, [in] IDispatch *GeomTwo, [out, retval] VARIANT_BOOL *disjoint);
+		[id(105), helpstring("Liefert, ob zwei Geometrien zueinander die topologische Beziehung SPATIALRELATION_Crosses haben."), helpcontext(ITRiASSpatialRelationService_Crosses_meth)] HRESULT Crosses([in] VARIANT CsOne, [in] IDispatch *GeomOne, [in] VARIANT CsTwo, [in] IDispatch *GeomTwo, [out, retval] VARIANT_BOOL *crosses);
+		[id(106), helpstring("Liefert, ob zwei Geometrien zueinander die topologische Beziehung SPATIALRELATION_Overlaps haben."), helpcontext(ITRiASSpatialRelationService_Overlaps_meth)] HRESULT Overlaps([in] VARIANT CsOne, [in] IDispatch *GeomOne, [in] VARIANT CsTwo, [in] IDispatch *GeomTwo, [out, retval] VARIANT_BOOL *overlaps);
+		[id(107), helpstring("Liefert, ob zwei Geometrien zueinander die topologische Beziehung SPATIALRELATION_Intersects haben."), helpcontext(ITRiASSpatialRelationService_Intersects_meth)] HRESULT Intersects([in] VARIANT CsOne, [in] IDispatch *GeomOne, [in] VARIANT CsTwo, [in] IDispatch *GeomTwo, [out, retval] VARIANT_BOOL *intersects);
+		[id(108), helpstring("Liefert, ob zwei Geometrien zueinander eine der gebenen topologischen Beziehungen haben."), helpcontext(ITRiASSpatialRelationService_Relate_meth)] HRESULT Relate([in] VARIANT CsOne, [in] IDispatch *GeomOne, [in] VARIANT CsTwo, [in] IDispatch *GeomTwo, [in] SPATIALRELATION Pattern, [out, retval] VARIANT_BOOL *isrelated);
+		[id(109), helpstring("Liefert die topologische Beziehung die zwei Geometrien zueinander besitzen."), helpcontext(ITRiASSpatialRelationService_GetSpatialRelation_meth)] HRESULT GetSpatialRelation([in] VARIANT CsOne, [in] IDispatch *GeomOne, [in] VARIANT CsTwo, [in] IDispatch *GeomTwo, [out, retval] SPATIALRELATION *Pattern);
+
+	// @doc ITRIASSPATIALRELATIONSERVICE | PROPERTY
+	// @property <i ITRiASCSTransform> | ITRiASSpatialRelationService | TransformPipe | Die Eigenschaft <op .TransformPipe>
+	// setzt bzw. liefert das Transformationsobjekt, welches den Berechnungen zugrunde liegt.
+	// @comm Das Transformationsobjekt wird verwendet, um alle Koordinaten in ein einheitliches 
+	// Bezugskoordinatensystem umzusetzen, d.h. das im Transformationsobjekt eingestellte Ausgangskoordinatensystem 
+	// legt fest, auf welcher Grundlage die Berechnungen erfolgen. 
+	// @comm Die Eigenschaft <op .TransformPipe> muß nicht gesetzt werden. In diesem Fall wird als 
+	// Bezugskoordinatensysstem WGS84 (UTM Projektion 9°/6°, Längenmaßeinheit Meter) verwendet.
+	// @comm Das Transformationsobjekt bietet die Möglichkeit einer Optimierung, sowohl von vornherein sämtliche 
+	// auftretenden Koordinatensysteme als Eingangskoordinatensysteme (s. <om ITRiASCSTransform.AddInputCS>)
+	// zu registrieren, als auch u.U. das Ausgangskoordinatensystem auf das sowieso verwendete
+	// Koordinatensystem der zu verarbeitetenden Koordinatenpunkte zu initialisieren. In diesem Fall wären intern
+	// keine weiteren Transformationen notwendig, was die Verarbeitungszeit positiv beeinflußt.
+	// @supby <o TRiASSpatialRelationService>
+	// @xref <i ITRiASSpatialRelationService>, <i ITRiASCSTransform>
+		[propputref, id(1), helpstring("Setzt das Transformationsobjekt, welches den Berechnungen zugrunde liegt."), helpcontext(ITRiASSpatialRelationService_TransformPipe_prop)] HRESULT TransformPipe ([in] ITRiASCSTransform *newVal);
+		[propget, id(1), helpstring("Liest das Transformationsobjekt, welches den Berechnungen zugrunde liegt."), helpcontext(ITRiASSpatialRelationService_TransformPipe_prop)] HRESULT TransformPipe ([out, retval] ITRiASCSTransform **pVal);
+	};
+
+	[ 
+		object,
+		uuid(66BC9091-B4A0-11d2-98E0-0060085FC1CE),
+		helpstring("IPersistMemoryGDO"),
+		pointer_default(unique),
+		oleautomation
+	] 
+	interface IPersistMemoryGDO : IPersistMemory 
+	{
+		[local] HRESULT LoadGDO ([in, size_is(cbSize)] LPVOID pMem, [in] ULONG cbSize);
+		[local] HRESULT SaveGDO ([out, size_is(cbSize)] LPVOID pMem, [in] BOOL fClearDirty, [in] ULONG cbSize);
+	}
+
+	[ 
+		object,
+		uuid(97F2B75E-BDA5-4A5D-B14E-70824A7A94C8),
+		helpstring("IPersistMemoryWks"),
+		pointer_default(unique),
+		oleautomation
+	] 
+	interface IPersistMemoryWks : IPersistMemoryGDO
+	{
+		HRESULT GetSizeMaxWkb ([out] ULONG *pulSize);
+		[local] HRESULT LoadWkb ([in, size_is(cbSize)] LPVOID pMem, [in] ULONG cbSize);
+		[local] HRESULT SaveWkb ([out, size_is(cbSize)] LPVOID pMem, [in] BOOL fClearDirty, [in] ULONG cbSize);
+		HRESULT LoadWkt ([in] BSTR WKT);
+		HRESULT SaveWkt ([out] BSTR *WKT, [in] BOOL fClearDirty);
+	}
+
+	[ 
+		object,
+		uuid(66BC9090-B4A0-11d2-98E0-0060085FC1CE),
+		dual,
+		helpstring("ITRiASCSStorageServiceGDO Interface"),
+		pointer_default(unique)
+	] 
+	interface ITRiASCSStorageServiceGDO : IDispatch 
+	{
+		[id(1), helpstring("Konvertieren einer Geometrie im BLOB-Format in ein entsprechendes Geometrieobjekt.")] HRESULT StorageToGeometryGDO([in] VARIANT Blob, [in, out] GEOMETRYTYPE *prgType, [out, retval] IDispatch **Geometry);
+		[id(2), helpstring("Konvertieren eines Geometrieobjektes in eine entsprechendes Geometrie im BLOB-Format.")] HRESULT GeometryToStorageGDO([in] GEOMETRYTYPE rgType, [in] IDispatch *Geometry, [out, retval] VARIANT *Blob);
+		[id(3), helpstring("Bestimmt den Typ eines Geometrieobjektes.")] HRESULT RetrieveType([in] IDispatch *Geometry, [out, retval] GEOMETRYTYPE *prgType);
+	}
+
+	[ 
+		object,
+		uuid(A8C0586B-70AE-4E2F-822F-2C74C2069A26),
+		dual,
+		helpstring("ITRiASCSStorageServiceWks Interface"),
+		pointer_default(unique)
+	] 
+	interface ITRiASCSStorageServiceWks : IDispatch 
+	{
+		[id(1), helpstring("Konvertieren einer Geometrie im WKB-Format in ein entsprechendes Geometrieobjekt.")] HRESULT StorageToGeometryWkb([in] VARIANT Blob, [in, out] GEOMETRYTYPE *prgType, [out, retval] IDispatch **Geometry);
+		[id(2), helpstring("Konvertieren eines Geometrieobjektes in eine entsprechendes Geometrie im WKB-Format.")] HRESULT GeometryToStorageWkb([in] GEOMETRYTYPE rgType, [in] IDispatch *Geometry, [out, retval] VARIANT *Blob);
+		[id(3), helpstring("Konvertieren einer Geometrie im WKT-Format in ein entsprechendes Geometrieobjekt.")] HRESULT StorageToGeometryWkt([in] BSTR Wkt, [in, out] GEOMETRYTYPE *prgType, [out, retval] IDispatch **Geometry);
+		[id(4), helpstring("Konvertieren eines Geometrieobjektes in eine entsprechendes Geometrie im WKT-Format.")] HRESULT GeometryToStorageWkt([in] GEOMETRYTYPE rgType, [in] IDispatch *Geometry, [out, retval] BSTR *Wkt);
+		[id(5), helpstring("Bestimmt den Typ eines Geometrieobjektes.")] HRESULT RetrieveType([in] IDispatch *Geometry, [out, retval] GEOMETRYTYPE *prgType);
+	}
+
+	interface ITRiASSimpleRectangle;
+	[
+		object,
+		dual,
+		uuid(CBC5D024-03AF-11D2-8651-00600875138A),
+		helpstring("ITRiASCSGeometryProperties  Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASCSGeometryProperties : ITRiASCloneGeometry
+	{
+		[propget, id(2), helpstring("Liefert den Geometrietyp")] HRESULT Type([out, retval] GEOMETRYTYPE *pVal);
+		[propget, id(3), helpstring("Liefert den Geometriecontainer")] HRESULT Envelope([out, retval] ITRiASSimpleRectangle ** Rect);
+		[propget, id(0), helpstring("Liefert die Geometrie als Moniker-Zeichenkette.")] HRESULT InitString([out, retval] BSTR *pbstrMkName);
+		[propput, id(0), helpstring("Setzt die Geometrie als Moniker-Zeichenkette.")] HRESULT InitString([in] BSTR bstrMkName);
+	}
+
+	[ 
+		uuid(3EFE0E50-8003-11d2-9870-0060085FC1CE),
+		helpstring("Simple Rectangle Geometry"),
+		pointer_default(unique)
+	] 
+	interface ITRiASSimpleRectangle : _DGMRectangleGeometry
+	{
+		[propget, helpstring("property XMin")] HRESULT XMin([out, retval] double *pVal);
+		[propput, helpstring("property XMin")] HRESULT XMin([in] double newVal);
+		[propget, helpstring("property YMin")] HRESULT YMin([out, retval] double *pVal);
+		[propput, helpstring("property YMin")] HRESULT YMin([in] double newVal);
+		[propget, helpstring("property ZMin")] HRESULT ZMin([out, retval] double *pVal);
+		[propput, helpstring("property ZMin")] HRESULT ZMin([in] double newVal);
+		[propget, helpstring("property XMax")] HRESULT XMax([out, retval] double *pVal);
+		[propput, helpstring("property XMax")] HRESULT XMax([in] double newVal);
+		[propget, helpstring("property YMax")] HRESULT YMax([out, retval] double *pVal);
+		[propput, helpstring("property YMax")] HRESULT YMax([in] double newVal);
+		[propget, helpstring("property ZMax")] HRESULT ZMax([out, retval] double *pVal);
+		[propput, helpstring("property ZMax")] HRESULT ZMax([in] double newVal);
+		[helpstring("method GetRect")] HRESULT GetRect ([out] double *pValXMin, [out] double *pValYMin, [out] double *pValXMax, [out] double *pValYMax);
+		[helpstring("method SetRect")] HRESULT SetRect ([in] double newValXMin, [in] double newValYMin, [in] double newValXMax, [in] double newValYMax);
+	}
+
+	[
+		uuid(809D42DF-ECB5-47E4-8DBE-2F59EE0546B5),
+		helpstring("ITRiASSimplePoint Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASSimplePoint : _DGMPointGeometry
+	{
+		[helpstring("method GetPoint")] HRESULT GetPoint ([out] double *pVals);
+		[helpstring("method SetPoint")] HRESULT SetPoint ([in] double *pVals);
+		[propget, helpstring("property X")] HRESULT X([out, retval] double *pVal);
+		[propput, helpstring("property X")] HRESULT X([in] double newVal);
+		[propget, helpstring("property Y")] HRESULT Y([out, retval] double *pVal);
+		[propput, helpstring("property Y")] HRESULT Y([in] double newVal);
+		[propget, helpstring("property Z")] HRESULT Z([out, retval] double *pVal);
+		[propput, helpstring("property Z")] HRESULT Z([in] double newVal);
+	}
+
+	[
+		uuid(09E3D3D3-E334-43A0-803D-9B086F730EE5),
+		helpstring("ITRiASSimplePoints Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASSimplePoints : _DGMPoints
+	{
+		[helpstring("method GetPoints")] HRESULT GetPoints ([in] ULONG lFirst, [in] ULONG nCoords, [in, out, size_is(3*nCoords)] double *Coords);
+	}
+
+	[
+		object,
+		uuid(59FEEBE3-3B7D-11d2-8C6B-080036D63803),
+		helpstring("ITRiASCSMBRAccess Interface"),
+		pointer_default(unique)
+	]
+	interface ITRiASCSMBRAccess : IUnknown
+	{
+		[propget, id(1), helpstring("Liefert den Geometriecontainer")] HRESULT Envelope([out, retval] ITRiASSimpleRectangle ** Rect);
+	}
+
+	[
+		uuid(0BDC3C1E-503F-11D1-96F0-00A024D6F582),
+		helpstring("TRiASCSPoint Class")
+	]
+	coclass TRiASCSPoint
+	{
+		[default] interface _DGMPoint;
+	}
+
+	[
+		uuid(0BDC3C21-503F-11D1-96F0-00A024D6F582),
+		helpstring("TRiASCSPoints Class")
+	]
+	coclass TRiASCSPoints
+	{
+		[default] interface _DGMPoints;
+		interface ITRiASSimplePoints;
+	}
+	[
+		uuid(BC145188-013F-11D2-864C-00600875138A),
+		helpstring("TRiASCSVector Class")
+	]
+	coclass TRiASCSVector
+	{
+		[default] interface _DGMVector;
+	}
+
+	[
+		uuid(CF648167-9E24-11D1-BA1C-080036D63803),
+		helpstring("TRiASCSRectangleGeometry Class")
+	]
+	coclass TRiASCSRectangleGeometry
+	{
+		interface _DGMRectangleGeometry;
+		interface _DGMGeometry;
+		[default] interface ITRiASCSGeometryProperties;
+		interface ITRiASCloneGeometry;
+		interface ITRiASSimpleRectangle;
+	}
+	[
+		uuid(96D754A4-A21F-11D1-A050-0060975566B4),
+		helpstring("TRiASCSLineGeometry Class")
+	]
+	coclass TRiASCSLineGeometry
+	{
+		interface _DGMLineGeometry;
+		interface _DGMGeometry;
+		[default] interface ITRiASCSGeometryProperties;
+		interface ITRiASCloneGeometry;
+	}
+	[
+		uuid(3327AD94-A2B1-11D1-A051-0060975566B4),
+		helpstring("TRiASCSPointGeometry Class")
+	]
+	coclass TRiASCSPointGeometry
+	{
+		interface _DGMPointGeometry;
+		interface _DGMGeometry;
+		[default] interface ITRiASCSGeometryProperties;
+		interface ITRiASCloneGeometry;
+		interface ITRiASSimplePoint;
+	}
+	[
+		uuid(1369BDE5-2567-11D2-9EA2-006008447800),
+		helpstring("TRiASCSOrientedPointGeometry Class")
+	]
+	coclass TRiASCSOrientedPointGeometry
+	{
+		interface _DGMOrientedPointGeometry;
+		interface _DGMPointGeometry;
+		interface _DGMGeometry;
+		[default] interface ITRiASCSGeometryProperties;
+		interface ITRiASCloneGeometry;
+	}
+	[
+		uuid(3327AD96-A2B1-11D1-A051-0060975566B4),
+		helpstring("TRiASCSPolylineGeometry Class")
+	]
+	coclass TRiASCSPolylineGeometry
+	{
+		interface _DGMPolylineGeometry;
+		interface _DGMGeometry;
+		[default] interface ITRiASCSGeometryProperties;
+		interface ITRiASCloneGeometry;
+	}
+	[
+		uuid(3327AD98-A2B1-11D1-A051-0060975566B4),
+		helpstring("TRiASCSPolygonGeometry Class")
+	]
+	coclass TRiASCSPolygonGeometry
+	{
+		interface _DGMPolygonGeometry;
+		interface _DGMGeometry;
+		[default] interface ITRiASCSGeometryProperties;
+		interface ITRiASCloneGeometry;
+	}
+	[
+		uuid(3327AD9A-A2B1-11D1-A051-0060975566B4),
+		helpstring("TRiASCSBoundaryGeometry Class")
+	]
+	coclass TRiASCSBoundaryGeometry
+	{
+		interface _DGMBoundaryGeometry;
+		interface _DGMGeometry;
+		[default] interface ITRiASCSGeometryProperties;
+		interface ITRiASCloneGeometry;
+	}
+	[
+		uuid(3327AD9C-A2B1-11D1-A051-0060975566B4),
+		helpstring("TRiASCSGeometryCollection Class")
+	]
+	coclass TRiASCSGeometryCollection
+	{
+		[default] interface _DGMGeometryCollection;
+	}
+	[
+		uuid(ABEE61B0-B1B8-11D1-A074-0060975566B4),
+		helpstring("TRiASCSTextPointGeometry Class")
+	]
+	coclass TRiASCSTextPointGeometry
+	{
+		interface _DGMTextPointGeometry;
+		interface _DGMPointGeometry;
+		interface _DGMGeometry;
+		[default] interface ITRiASCSGeometryProperties;
+		interface ITRiASCloneGeometry;
+	}
+
+	[
+		uuid(80B9A2F6-02B0-11D2-8650-00600875138A),
+		helpstring("TRiASCSStorageService Class")
+	]
+	coclass TRiASCSStorageService
+	{
+		[default] interface ITRiASCSStorageService;
+		interface ITRiASCSStorageServiceGDO;
+		interface ITRiASCSStorageServiceWks;
+	}
+
+	[
+		uuid(67B5B598-3BFB-11D2-8C6C-080036D63803),
+		helpstring("TRiASCSPointEnum Class")
+	]
+	coclass TRiASCSPointEnum
+	{
+		[default] interface IEnumVARIANT;
+	}
+
+	[
+		uuid(AB41EB68-6218-43FD-B29F-DDF8A96AEEA1),
+		helpstring("TRiAS GeometryMoniker")
+	]
+	coclass GeometryMoniker
+	{
+		[default] interface IMoniker;
+	}
+
+// TRiASSpatialRelationService Class
+	[ 
+		uuid(49EA68E0-C4F9-4392-A083-B1A0D5E6AFF6), 
+		helpstring("TRiASSpatialRelationService Object") 
+	]
+	coclass TRiASSpatialRelationService
+	{
+		[default] interface ITRiASSpatialRelationService;
+	};
+	
+#if defined(_INCLUDE_OGC_OBJECTS)
+// OGC Geometries
+	[ 
+		uuid(C8FB764C-8BE0-40AB-9B3E-8EEFB32AF356), 
+		helpstring("TRiAS OGCPoint Class") 
+	]
+	coclass OGCPoint
+	{
+		[default] interface IGeometry;
+		interface IPoint;
+		interface IWks;
+		interface ISpatialOperator;
+		interface ISpatialRelation;
+		interface ISpatialRelation2;
+	};
+#endif // defined(_INCLUDE_OGC_OBJECTS)
+};

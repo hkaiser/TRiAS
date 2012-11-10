@@ -1,0 +1,101 @@
+'\"t
+.if t .TH IMMIFF 3IM "June 27, 1995" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMBMP 3IM "June 27, 1995" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+immiff \- ImageMagick's MIFF Image File Format file I/O
+.SH SYNOPSIS
+.nf
+\fB
+#include <stdio.h>
+#include "sdsc.h"
+#include "im.h"
+.sp 1
+int ImFileRead( fd, "miff", flagsTable, dataTable )
+	int         fd;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileFRead( fp, "miff", flagsTable, dataTable )
+	FILE         *fp;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileWrite( fd, "miff", flagsTable, dataTable )
+	int         fd;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileFWrite( fp, "miff", flagsTable, dataTable )
+	FILE         *fp;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+\fR
+.fi
+.SH DESCRIPTION
+.LP
+\fBmiff\fR image files are created by ImageMagick, a multi-platform
+image manipulation software package.  MIFF stands for
+either Machine Independent File Format or Magick Image File Format.  
+(Whichever you like.)
+.SH "FILE RECOGNITION"
+\fBmiff\fR image files are recognized by the filename suffix: .miff
+.SH NOTES
+SDSC image library support of the 
+ImageMagick \fBmiff\fR format does not require
+use of any ImageMagick libraries and contains no proprietary code.  
+ImageMagick \fBmiff\fR format handling
+is available on any machine for which the SDSC image library is 
+available.
+.LP
+If you wish to know the type of a \fBmiff\fR file without using
+the SDSC image library, you may simply type 'more filename.miff'.
+(The top of every \fBmiff\fR file is a description of it, followed
+by a form feed character.)
+.SS "Reading ImageMagick MIFF files"
+The SDSC image library reads \fBmiff\fR files which are non-compressed
+or run-length encoded.  The files may be color indexed, grayscale or RGB.
+RGB files may have alpha channels.  The images are stored in VFB's of
+type IMVFBINDEX8 or IMVFBRGB, as appropriate.
+.SS "Writing ImageMagick MIFF Files"
+Image library \fBIMVFBINDEX8\fR VFBs are written to non-compressed
+or RLE compressed 8-bit \fBmiff\fR files, with preference to
+non-compressed files.
+.LP
+Image library \fBIMVFBRGB\fR VFBs are written to non-compressed
+or RLE compressed 8-bit \fBmiff\fR RGB files, with preference
+given to non-compressed files.
+.LP
+Other image library VFB types are converted to 
+\fBIMVFBINDEX8\fR, or \fBIMVFBRGB\fR VFB's
+prior to being written out.  See the
+\fBImFileWrite\fR(3IM) \fBman\fP page for details.
+.SH ERRORS
+In addition to those listed for \fBImFileRead\fR(3IM),
+ImageMagick \fBmiff\fR file reading returns the following error codes:
+.ne 4
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMENOIMAGE	The header did not correctly specify an image.
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH DOCUMENTATION
+Anonymous ftp at ftp.x.org.  
+.br
+File: contrib/applications/ImageMagick/ImageMagick\-3.6.tar.gz
+.SH "SEE ALSO"
+\fBImIntro\fR(3IM),
+\fBImErrNo\fR(3IM),
+\fBimconv\fR(1IM),
+\fBimfile\fR(1IM),
+\fBimformats\fR(1IM),
+.SH AUTHOR
+Brian Duggan
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

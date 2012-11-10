@@ -1,0 +1,29 @@
+HKCR
+{
+	TRiASEx.ModifyIdent.1 = s 'Modifikation der Objektklasse von Objekten'
+	{
+		CLSID = s '{0E54C9ED-20DE-11CF-BA55-00AA0018497C}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {0E54C9ED-20DE-11CF-BA55-00AA0018497C} = s 'Modifikation der Objektklasse von Objekten'
+		{
+			val AppID = s '{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}'
+			ProgID = s 'TRiASEx.ModifyIdent.1'
+			InprocServer32 = s %MODULE%
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+	NoRemove TRiAS.Application.2
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove TRiASEx.ModifyIdent.1 = s '{0E54C9ED-20DE-11CF-BA55-00AA0018497C}'
+			}
+		}
+	}
+}

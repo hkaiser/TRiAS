@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASCS.TRiASCSVector.1 = s 'TRiASCSVector Class'
+	{
+		CLSID = s '{BC145188-013F-11D2-864C-00600875138A}'
+	}
+	TRiASCS.TRiASCSVector = s 'TRiASCSVector Class'
+	{
+		CLSID = s '{BC145188-013F-11D2-864C-00600875138A}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {BC145188-013F-11D2-864C-00600875138A} = s 'TRiASCSVector Class'
+		{
+			ProgID = s 'TRiASCS.TRiASCSVector.1'
+			VersionIndependendProgID = s 'TRiASCS.TRiASCSVector'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{6A0120C3-70C6-11D1-974B-00A024D6F582}'
+			'Version' = s '1.0'
+		}
+	}
+}

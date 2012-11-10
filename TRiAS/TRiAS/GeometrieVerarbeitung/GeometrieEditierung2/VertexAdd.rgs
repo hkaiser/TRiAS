@@ -1,0 +1,23 @@
+HKCR
+{
+	TRiAS.VertexAdd.1 = s 'Stützpunkt hinzufügen'
+	{
+		CLSID = s '{71924705-40C2-11d1-9B1F-444553540000}'
+	}
+	TRiAS.VertexAdd = s 'Stützpunkt hinzufügen'
+	{
+		CurVer = s 'TRiAS.VertexAdd.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {71924705-40C2-11d1-9B1F-444553540000} = s 'Stützpunkt hinzufügen'
+		{
+			ProgID = s 'TRiAS.VertexAdd.1'
+			VersionIndependentProgID = s 'TRiAS.VertexAdd'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

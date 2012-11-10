@@ -1,0 +1,121 @@
+//{{NO_DEPENDENCIES}}
+// Microsoft Developer Studio generated include file.
+// Used by Triasarc.RC
+//
+#define IDS_PROJNAME                    100
+#define IDT_MASSTABTEXT                 101
+#define IDS_DISPLAYNAME                 101
+#define IDB_MERM_HELP                   102
+#define IDR_TRIASARCEXPORT              102
+#define IDS_DEFEXT                      102
+#define IDS_LONGCLASSNAME               103
+#define IDS_ARCHEAD                     1000
+#define IDS_TXTHEAD                     1001
+#define IDS_LABHEAD                     1002
+#define IDS_COVERHEAD                   1003
+#define IDS_COVERFOOT                   1004
+#define IDS_INFOHEAD                    1005
+#define IDS_INFOFOOT                    1006
+#define IDS_TICEXT                      1007
+#define IDS_BNDEXT                      1008
+#define IDS_PATEXT                      1009
+#define IDS_AATEXT                      1010
+#define IDS_INFOKENNUNG                 1011
+#define IDS_EXPEXT                      1012
+#define IDS_IMPORT                      1013
+#define IDD_COVERNAME                   1014
+#define IDS_FOUR_COVER                  1014
+#define IDB_HELP                        1015
+#define IDS_MANY_COVER                  1015
+#define IDB_STORE                       1016
+#define IDS_BEZUGS_MASSTAB              1016
+#define IDB_OK                          1017
+#define IDS_CREATE_LABELS               1017
+#define IDB_ABBRUCH                     1018
+#define IDS_CREATE_NO_LABELS            1018
+#define IDL_COVERNAME                   1019
+#define IDS_ARIALTEXT                   1019
+#define IDE_COVERNAME                   1020
+#define IDS_INSEL                       1020
+#define IDS_IDTEXT                      1021
+#define IDS_OPERRTEXT                   1022
+#define IDS_NOT_INSEL                   1023
+#define IDS_EXISTERRTEXT                1024
+#define IDS_MERKM_NOT_CHECKED           1025
+#define IDS_STORECAPT                   1026
+#define IDS_STOREFORMAT                 1027
+#define IDS_PALHEAD                     1028
+#define IDS_CNTHEAD                     1029
+#define IDS_LABELEXT                    1030
+#define IDS_CNTEXT                      1031
+#define IDS_WARNUNG                     1032
+#define IDS_COMMENT                     1033
+#define IDS_INTERNID                    1034
+#define IDS_USERID                      1035
+#define IDS_MERKMAL                     1036
+#define IDS_MERKMALKTEXT                1037
+#define IDS_NOMERKMALNAME               1038
+#define IDS_MERKEXISTTEXT               1039
+#define IDS_MSTOREFORMAT                1040
+#define IDD_MERKMALNAME                 1041
+#define IDS_COVER_NOT_CHECKED           1041
+#define IDL_MERKMALNAME                 1042
+#define IDS_TEXT_TRUNC_WARN             1042
+#define IDE_MERKMALNAME                 1043
+#define IDB_STOREM                      1044
+#define IDB_ABBRUCHM                    1046
+#define IDB_OKM                         1047
+#define IDS_ERROR                       1048
+#define IDS_MERKMWARNGTYP               1049
+#define IDS_OKNAME                      1050
+#define IDS_NOTOKNAME                   1051
+#define IDS_CNAMEEXIST                  1052
+#define IDS_MNAMEEXIST                  1053
+#define IDS_LABMAINEXT                  1054
+#define IDS_LABUNIEXT                   1055
+#define IDS_MERKMWARGATTR               1056
+#define IDS_NOAREA                      1057
+#define IDS_NOLINE                      1058
+#define IDS_NOPOINT                     1059
+#define IDS_NOTEXT                      1060
+#define IDS_MERKMWARNGTYPX              1061
+#define IDS_MERKMWARGATTRX              1062
+#define IDS_NOMASSTAB                   1066
+#define IDS_IDENTWARNGTYP               1067
+#define IDS_IDENTWARNGATTR              1068
+#define IDS_TEXTOBJMKODE                1069
+#define IDS_POLYLAB                     1070
+#define IDD_PARAMS                      1072
+#define IDB_FOURCOVER                   1073
+#define IDB_MANYCOVERS                  1074
+#define IDB_COVERNAMES                  1075
+#define IDB_MERKMNAMES                  1076
+#define IDB_CREATELABELS                1077
+#define IDE_BEZUGSM                     1078
+#define IDS_OBJCLASSNAME                1080
+#define IDB_PARAMHELP                   1081
+#define IDS_COMPR_NONE                  1081
+#define BND_FORMAT                      1082
+#define IDS_COMPR_PARTIAL               1082
+#define TIC_FORMAT                      1083
+#define IDS_COMPR_FULL                  1083
+#define DATEI                           1084
+#define PAT_FORMAT                      1085
+#define AAT_FORMAT                      1086
+#define IDT_DESCRIPTION                 1087
+#define IDB_INSEL                       1088
+#define IDC_COMPRNONE                   1089
+#define IDC_COMPRPARTIAL                1090
+#define IDC_COMPRFULL                   1091
+#define IDC_STATIC                      -1
+
+// Next default values for new objects
+// 
+#ifdef APSTUDIO_INVOKED
+#ifndef APSTUDIO_READONLY_SYMBOLS
+#define _APS_NEXT_RESOURCE_VALUE        104
+#define _APS_NEXT_COMMAND_VALUE         101
+#define _APS_NEXT_CONTROL_VALUE         1092
+#define _APS_NEXT_SYMED_VALUE           103
+#endif
+#endif

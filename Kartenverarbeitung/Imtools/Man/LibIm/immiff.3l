@@ -1,0 +1,132 @@
+
+
+
+IMBMP(3IM)             SDSC IMAGE LIBRARY              IMBMP(3IM)
+
+
+
+NAME
+     immiff - ImageMagick's MIFF Image File Format file I/O
+
+SYNOPSIS
+     #include <stdio.h>
+     #include "sdsc.h"
+     #include "im.h"
+
+     int ImFileRead( fd, "miff", flagsTable, dataTable )
+          int         fd;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileFRead( fp, "miff", flagsTable, dataTable )
+          FILE         *fp;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileWrite( fd, "miff", flagsTable, dataTable )
+          int         fd;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileFWrite( fp, "miff", flagsTable, dataTable )
+          FILE         *fp;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+
+DESCRIPTION
+     miff image  files  are  created  by  ImageMagick,  a  multi-
+     platform  image  manipulation software package.  MIFF stands
+     for either Machine Independent File Format or  Magick  Image
+     File Format. (Whichever you like.)
+
+FILE RECOGNITION
+     miff image files are  recognized  by  the  filename  suffix:
+     .miff
+
+NOTES
+     SDSC image library support of the  ImageMagick  miff  format
+     does  not  require use of any ImageMagick libraries and con-
+     tains no proprietary code. ImageMagick miff format  handling
+     is available on any machine for which the SDSC image library
+     is available.
+
+     If you wish to know the type of a miff  file  without  using
+     the   SDSC   image   library,  you  may  simply  type  'more
+     filename.miff'.  (The top of every miff file is  a  descrip-
+     tion of it, followed by a form feed character.)
+
+
+
+
+
+SDSC               Last change: June 27, 1995                   1
+
+
+
+
+
+
+IMBMP(3IM)             SDSC IMAGE LIBRARY              IMBMP(3IM)
+
+
+
+  Reading ImageMagick MIFF files
+     The SDSC image library  reads  miff  files  which  are  non-
+     compressed  or  run-length  encoded.  The files may be color
+     indexed, grayscale or RGB.  RGB files may have  alpha  chan-
+     nels.  The images are stored in VFB's of type IMVFBINDEX8 or
+     IMVFBRGB, as appropriate.
+
+  Writing ImageMagick MIFF Files
+     Image library IMVFBINDEX8 VFBs are written to non-compressed
+     or  RLE compressed 8-bit miff files, with preference to non-
+     compressed files.
+
+     Image library IMVFBRGB VFBs are written to non-compressed or
+     RLE  compressed  8-bit miff RGB files, with preference given
+     to non-compressed files.
+
+     Other image library VFB types are converted to  IMVFBINDEX8,
+     or  IMVFBRGB  VFB's  prior  to  being  written out.  See the
+     ImFileWrite(3IM) man page for details.
+
+ERRORS
+     In addition to those listed for ImFileRead(3IM), ImageMagick
+     miff file reading returns the following error codes:
+
+          IMENOIMAGE   The header did not correctly specify an image.
+
+DOCUMENTATION
+     Anonymous ftp at ftp.x.org.
+     File:
+     contrib/applications/ImageMagick/ImageMagick-3.6.tar.gz
+
+SEE ALSO
+     ImIntro(3IM),   ImErrNo(3IM),   imconv(1IM),    imfile(1IM),
+     imformats(1IM),
+
+AUTHOR
+     Brian Duggan
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2                  Last change: June 27, 1995                SDSC
+
+
+

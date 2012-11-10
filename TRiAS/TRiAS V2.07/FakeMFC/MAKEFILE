@@ -1,0 +1,56 @@
+# Genrieren der Versionsinfo's fÅr KOMPOBJ.EXT
+
+!include <triasver207.mak>
+
+# Generierungsdatum (yymmdd) und Version
+DATE=980615
+VERSION = 2
+RELEASE = 00
+BUILD = 124
+
+COPYRIGHT = HK$(DATE)
+
+PNAME = $(TRIAS_PNAME)
+PADDRESS = $(TRIAS_PADDRESS)
+
+STUB = rights
+RIGHTS = $(STUB).exe
+REPLACE = ersetz
+NAME = fakemfc
+DEF = $(NAME).def
+
+ASM = masm
+ASMF = /D?PLM=0 /D?WIN=1
+LINK = link16.exe
+
+# Alles neubilden
+all:	formake 
+
+$(STUB).exe:	$(STUB).asm
+	$(ASM) $(ASMF) $(STUB) 
+	$(LINK) /NOLOGO /KNOWEAS $(STUB);
+
+# -----------------------------------------------------------------------------
+# CopyrightEintraege Generieren 
+new:
+	@del $(STUB).asm
+	@del $(NAME).rcv
+	@del $(DEF)
+	@del versio32.h
+
+formake:	$(DEF) $(STUB).exe $(NAME).rcv versio32.h
+
+$(STUB).asm:	$(STUB).tpl 
+	$(REPLACE) $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) $(STUB).tpl $(STUB).asm
+
+# Personalisierungsinformation
+$(NAME).rcv:	$(NAME)v.rc
+	$(REPLACE) $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) @A @B @C @D $(NAME)v.rc tmp.rcv
+	$(REPLACE) $(PNAME) $(PADDRESS) $(TRIAS_VERSION) $(TRIAS_RELEASE) tmp.rcv $(NAME).rcv
+	@del tmp.rcv > nul
+
+$(DEF):		$(NAME).tpl
+	$(REPLACE) $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) $(NAME).tpl $(DEF)
+
+versio32.h:	versio32.tpl
+	$(REPLACE) $(VERSION) $(RELEASE) versio32.tpl versio32.h

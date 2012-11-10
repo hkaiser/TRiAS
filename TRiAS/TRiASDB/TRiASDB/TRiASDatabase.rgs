@@ -1,0 +1,62 @@
+HKCR
+{
+	TRiASDB.TRiASDatabase.1 = s 'TRiASDatabase 2.0 Class'
+	{
+		CLSID = s '{6ACC24A4-3969-11D1-96B8-00A024D6F582}'
+		TRiASDB = s 'TRiAS.Document.2'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {6ACC24A4-3969-11D1-96B8-00A024D6F582} = s 'TRiASDatabase 2.0 Class'
+		{
+			ProgID = s 'TRiASDB.TRiASDatabase.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{1CB3AB53-2E87-11D1-969D-00A024D6F582}'
+		}
+	}
+	.ris = s 'TRiAS.Document.2'
+	ForceRemove TRiAS.Document = s '%TRIASNAME% GIS-Datenquelle'
+	{
+		CLSID = s '{937EEB40-2234-101B-AAE1-E7E7E7E7E7E7}'
+		CurVer = s 'TRiAS.Document.2'
+	}
+	ForceRemove TRiAS.Document.2 = s '%TRIASNAME% 2.0 GIS-Datenquelle'
+	{
+		CLSID = s '{937EEB40-2234-101B-AAE1-E7E7E7E7E7E7}'
+		VersionIndependendProgID = s 'TRiAS.Document'
+		shell 
+		{
+			open = s '&Datenbank öffnen'
+			{
+				command = s '%MAINMODULE% /convert "%%1"'
+			}
+		}
+		TRiASDB
+		{
+			CLSID = s '{6ACC24A4-3969-11D1-96B8-00A024D6F582}'
+			{
+				OpenWizPages = s '{C81DD8C5-A235-11D1-BA2A-080036D63803}'
+			}
+			Description 
+			{
+				val DefaultExtension = s '.ris'
+				val LongName = s '%TRIASNAME% Datenquelle, Daten können beliebig bearbeitet und gespeichert werden.'
+				val ShortName = s '%TRIASNAME%'
+				val NameDescription = s '%TRIASNAME% GIS-Datenquelle'
+				val NameIsDirectory = s 0
+				val NameIsFile = s 1
+				val NameIsSubStorage = s 0
+				val ReadWrite = s 1
+				val FilterString = s '%TRIASNAME% GIS-Datenquelle (*.ris)|*.ris|'
+				val Version = s '2.0'
+				val ToolboxBitmap32 = d 13
+				val TempName = s 'Ohne Namen.ris'
+				val NeedsCoordSysNew = s 1
+			}
+		}
+	}
+}

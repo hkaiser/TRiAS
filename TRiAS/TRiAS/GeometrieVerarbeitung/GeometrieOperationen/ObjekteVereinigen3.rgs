@@ -1,0 +1,32 @@
+HKCR
+{
+	TRiASEx.UnionObjects.1 = s 'Vereinigen aller Eingabeobjekte'
+	{
+		CLSID = s '{D32D1685-5308-11D2-9ECC-006008447800}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {D32D1685-5308-11D2-9ECC-006008447800} = s 'Vereinigen aller Eingabeobjekte'
+		{
+			ProgID = s 'TRiASEx.UnionObjects.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove TRiASEx.UnionObjects.1 = s '{D32D1685-5308-11D2-9ECC-006008447800}'
+			}
+		}
+	}
+}

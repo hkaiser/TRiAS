@@ -1,0 +1,154 @@
+1999-05-04  Federico Mena Quintero  <federico@nuclecu.unam.mx>
+
+	* src/util/DataConverter.cpp: #include <errno.h>
+
+1998-12-14  Asger Alstrup Nielsen  <alstrup@alstrup>
+
+	* src/StringSet.h: New file.  The beginning of a StringSet.
+
+	* src/GooseSet.h: The design is expanded to cover the array operations
+	as well, such that AsciiImport can be implemented.
+
+	* src/Value.h: The design evolves.
+	* src/DataType.h: The design evolves.
+
+	* src/DataSet.h: Adapted to GooseSet. It still remains to be renamed 
+	to RealSet as discussed.
+
+	* src/ColumnDivider.h: Small clean-ups.
+
+	* src/AsciiImport.cpp: Adapted to DataType/Value system.
+
+	* src/Access.h: new file.  Provides accessors to the polymorphic
+	Values.
+
+	* win32/README: Updated appropriately.
+
+	* goose.dsp: Added target for examples in win32 project file.
+
+	* examples/boot_bench.cpp: Fixed examples to compile under win32.
+
+1998-11-29  Asger Alstrup Nielsen  <alstrup@alstrup>
+
+	* src/constants.h: Changed #defines to constants.
+
+	* src/MetaCurve.cpp: Fixes to make goose work on Visual C.
+	In general, don't mix #include <iostream.h> and #include<iostream>
+	include styles.  We *only* use the latter ones.  A few other fixes
+	to make things work on Win32.
+
+	* win32/config.h: Hand-made config.h file for the Win32 platform.
+
+	* goose.dsp: Updated. We compile cleanly with Visual C.
+
+	* win32/README: New file with brief info about the Win32 port.
+
+	* src/AsciiImport.cpp: New structure:  The template stuff has been
+	pushed out to two helper classes: AsciiReader and WarningController.
+	This trims the AsciiImport.h file a lot, and hopefully helps on the
+	compilation problems we've had.
+
+	* src/AsciiReader.h: New file.  This is an interface to a  
+	ascii format reader used by the ascii import engine.  We provide a 
+	generic caching reader, CachingAsciiReader.
+
+	* src/WarningController.h: New file.  This is an interface to a simple
+	warning reporting facility.  This was pulled out of the big ascii
+	import class to make things more modular.
+
+	* examples/test_ascii_import.cpp: Updated to new structure.
+
+1998-11-24  Asger Alstrup Nielsen  <alstrup@alstrup>
+
+	* src/stringtools.h: bug fixes, and a few new functions.
+
+	* src/Value.h: new file. This implements a proposal for values in the
+	new type system proposal.
+
+	* src/DataType.h: Implemented proposal for new type system.
+
+	* src/DataSet.cpp: Reverted some of the changes required to get the
+	stuff compiling under MS Visual C++.  I discovered that Visual C++
+	can be set up to understand the for-scoping rules correctly.
+	Everything still compiles cleanly by Visual C++ v5 and v6.
+
+	* src/ColumnDivider.h: new file. This implements the splitting of the
+	input file into columns.  Taken from from AsciiImport.cpp/h and
+	expanded.  See also src/ColumnDivider.cpp.
+
+	* src/AsciiImport.h: Implemented more of the auto-setup stuff.
+
+	* examples/test_ascii_import.cpp: Now this test program can import
+	ascii files without any explicit set-up information.  Unfortunately,
+	egcs-2.90.29 (release v1.0.3) can only compile it with all optimizations
+	turned off.
+
+1998-11-06  Asger Alstrup Nielsen  <alstrup@alstrup>
+
+	* src/stringtools.cpp: new file with some useful string routines.
+	* src/stringtools.h: new file.
+
+	* src/AsciiImport.cpp: new file with column divider implementations.
+
+	* src/AsciiImport.h: Implemented parts of autosetup.
+
+1998-11-05  Asger Alstrup Nielsen  <alstrup@alstrup>
+
+	* test/basic.txt: new file.  Simple test-file for the ascii import
+	facility.
+
+	* doc/ascii_import.txt: new file. White-paper that describes the
+	ascii import facility specs.
+
+	* examples/test_ascii_import.cpp (main): new file.  This one tests
+	the AsciiImport class.  At the moment, it provides all set-up 
+	parameters by itself, but this should not be needed later.
+
+	* src/AsciiImport.h: New file.  This implements the Ascii Import
+	facility.  I haven't tested everything yet, and I haven't implemented
+	the automatic setup-stuff yet, but the framework is there.
+
+1998-10-28  Asger Alstrup Nielsen  <alstrup@alstrup>
+
+	* src/statfn.cpp: Provided implementations of erf() and erfc() for
+	Win32.  They were taken from the cephes public domain library.  Also,
+	the normal distribution was changed a bit according to the way it
+	was done in cephes.  It should be a little more precise now.
+
+	* src/StatsDB.cpp: Changed the form of initialization to make it
+	understandable even to the VC++ compiler.
+
+	* src/Random.cpp: A few "#if defined WIN32"s to get it going. Windows
+	does not have support for getpid() and "/dev/random".  So now, the
+	random seed is only initialized with time().  Hopefully, I'll figure
+	out a way to get more entropy on this platform later.
+
+	* src/DataSet.cpp: Got rid of a bunch of assert()s, and changed to
+	Exception's instead.  Unfortunately, I also had to rename a bunch
+	of index-variables, because the stupid VC++ compiler does not conform
+	to the C++ for-scoping standard.  I really hate this change, but
+	unfortunately, this is life.
+
+	* src/Exception.h: Removed the bunch of different exception classes.
+	I have chosen to just use the Exception class instead, because it was
+	difficult to decide which of the others to use.  Also, I reformatted
+	all thrown messages to hopefully look good when displayed in a GUI.
+
+	* src/DataImport.h: Changed #includes from <algo.h> to <algorithm>,
+	and <iostream.h> to <iostream>.  This should conform to STL better.
+	Also, when we need less<> and greater<>, we should include 
+	<functional>.  Finally a "using namespace std;" has been added in
+ 	order to comply with the C++ standard.
+	These kind of changes have been done in other files as well.
+
+	* goose.dsp: New Microsoft Developer Studio v6.0 project file.
+	This is just set up to compile the library for now.  Later I'll
+	get the DLL going.
+
+	* examples/test_statsdb.cpp: Renamed from statsdb.cpp because
+	Windows filesystem is not case sensitive, and thus the Microsoft
+	compiler was confusing this with StatsDB.cpp in src/.
+
+	* .cvsignore: Simplified a bit.  In doc/, we have to keep changes
+	to Makefile.am, because that one is not autogenerated.
+	

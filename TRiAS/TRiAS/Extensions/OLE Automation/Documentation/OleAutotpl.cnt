@@ -1,0 +1,302 @@
+:Base OLEAUTO.HLP
+:Title TRiAS® OLE-Automation Programmers Reference V@A.@B
+1 Inhaltsverzeichnis=Inhaltsverzeichnis
+1 TRiAS® Makroprogrammierung=Allgemeine_Vorbemerkungen
+1 BasicScript®, eine Einführung
+2 Variablen in BasicScript®
+3 Einführung=Variablen_in_BasicScript®
+3 Verwendbare Datentypen=Verwendbare_Datentypen
+3 Deklaration von Variablen=Deklaration_von_Variablen
+3 Implizite Deklaration von Variablen=Implizite_Deklaration_von_Variablen
+2 Objekte in BasicScript®
+3 Einführung=Objekte_in_BasicScript®
+3 Was ist ein Objekt=Was_ist_ein_Objekt
+3 Deklaration von Objektvariablen=Deklaration_von_Objektvariablen
+3 Zuweisen eines Wertes einer Objektvariablen=Zuweisen_eines_Wertes_einer_Objektvariablen
+3 Zugriff auf Eigenschaften eines Datenobjektes=Zugriff_auf_Eigenschaften_eines_Datenobjektes
+3 Anwenden von Methoden auf ein Datenobjekt=Anwenden_von_Methoden_auf_ein_Datenobjekt
+3 Vergleichen von Datenobjekten=Vergleichen_von_Datenobjekten
+3 Vordefinierte Objekte=Vordefinierte_Objekte
+3 Datenobjektsammlungen
+4 Einführung=Datenobjektsammlungen
+4 Typen von Datenobjektsammlungen=Typen_von_Datenobjektsammlungen
+
+1 TRiAS® Objekte in BasicScript®
+2 Typen von TRiAS® Datenobjekten=Typen_von_TRiAS®_Datenobjekten
+2 Allgemeine Eigenschaften
+3 Einführung=TRiAS®_Datenobjekte
+3 isA=DTRiASBaseClass_isA_prop
+3 Parent=DTRiASBaseClass_Parent_prop
+3 Application=DTRiASBaseClass_Application_prop
+3 IDispatch=DTRiASBaseClass_IDispatch_prop
+2 Allgemeine Eigenschaften und Methoden von Datenobjektsammlungen (Collections)
+3 Einführung=DTRiASCollection_int
+3 Count=DTRiASCollection_Count_prop
+3 Add=DTRiASCollection_Add_meth
+3 Item=DTRiASCollection_Item_meth
+3 Refresh=DTRiASCollection_Refresh_meth
+3 Remove=DTRiASCollection_Remove_meth
+
+1 TRiAS® Datenobjekte
+2 Das Application Objekt
+3 Routinen des Application Objektes=Application_obj
+3 Eigenschaften des Application Objektes
+4 ActiveDocument=DApplication_ActiveDocument_prop
+4 Caption=DApplication_Caption_prop
+4 DefaultFilePath=DApplication_DefaultFilePath_prop
+4 Documents=DApplication_Documents_prop
+4 FullName=DApplication_FullName_prop
+4 Height=DApplication_Height_prop
+4 Interactive=DApplication_Interactive_prop
+4 Left=DApplication_Left_prop
+4 Name=DApplication_Name_prop
+4 StartupPath=DApplication_StartupPath_prop
+4 StatusBar=DApplication_StatusBar_prop
+4 Tag=DApplication_Tag_prop
+4 Top=DApplication_Top_prop
+4 Value=DApplication_Value_prop
+4 Version=DApplication_Version_prop
+4 VersionLong=DApplication_VersionLong_prop
+4 Visible=DApplication_Visible_prop
+4 Width=DApplication_Width_prop
+3 Methoden des Application Objektes
+4 AddObjectProperty=DApplication_AddObjectProperty_meth
+4 Advise=DApplication_Advise_meth
+4 GetDocument=DApplication_GetDocument_meth
+4 NewDocument=DApplication_NewDocument_meth
+4 OpenDocument=DApplication_OpenDocument_meth
+4 Quit=DApplication_Quit_meth
+4 RemoveObjectProperty=DApplication_RemoveObjectProperty_meth
+4 UnAdvise=DApplication_UnAdvise_meth
+
+2 Das GeoDocument Objekt
+3 Routinen des GeoDocument Objektes=GeoDocument_obj
+3 Eigenschaften des GeoDocument Objektes
+4 ActiveViewName=DDocument_ActiveViewName_prop
+4 Author=DDocument_Author_prop
+4 ClassCount=DDocument_ClassCount_prop
+4 Comments=DDocument_Comments_prop
+4 Connections=DDocument_Connections_prop
+4 FullName=DDocument_FullName_prop
+4 IsDirty=DDocument_IsDirty_prop
+4 Keywords=DDocument_Keywords_prop
+4 Name=DDocument_Name_prop
+4 ObjectCount=DDocument_ObjectCount_prop
+4 Path=DDocument_Path_prop
+4 PreventRepaint=DDocument_PreventRepaint_prop
+4 ReadOnly=DDocument_ReadOnly_prop
+4 RefScale=DDocument_RefScale_prop
+4 Saved=DDocument_Saved_prop
+4 Subject=DDocument_Subject_prop
+4 Tag=DDocument_Tag_prop
+4 Title=DDocument_Title_prop
+4 Value=DDocument_Value_prop
+4 ViewCount=DDocument_ViewCount_prop
+3 Methoden des GeoDocument Objektes
+4 AddClass=DDocument_AddClass_meth
+4 AddObject=DDocument_AddObject_meth
+4 CloseIt=DDocument_CloseIt_meth
+4 CreateGeoObjectsCollection=DDocument_CreateGeoObjectsCollection_meth
+4 GetClass=DDocument_GetClass_meth
+4 GetClasses=DDocument_GetClasses_meth
+4 GetClassEx=DDocument_GetClassEx_meth
+4 GetGeoObjectWin=DDocument_GetGeoObjectWin_meth
+4 GetGeoObjectWins=DDocument_GetGeoObjectWins_meth
+4 GetHeaderEntry=DDocument_GetHeaderEntry_meth
+4 GetHeaderEntryEx=DDocument_GetHeaderEntryEx_meth
+4 GetHeaderEntryEx2=DDocument_GetHeaderEntryEx2_meth
+4 GetObject=DDocument_GetObject_meth
+4 GetObjects=DDocument_GetObjects_meth
+4 GetView=DDocument_GetView_meth
+4 GetViewRect=DDocument_GetViewRect_meth
+4 GetViews=DDocument_GetViews_meth
+4 QueryObjects=DDocument_QueryObjects_meth
+4 ReBuild=DDocument_ReBuild_meth
+4 Render=DDocument_Render_meth
+4 RePaint=DDocument_RePaint_meth
+4 RevertToSaved=DDocument_RevertToSaved_meth
+4 Save=DDocument_Save_meth
+4 SaveAs=DDocument_SaveAs_meth
+4 SetHeaderEntry=DDocument_SetHeaderEntry_meth
+4 SetHeaderEntryEx=DDocument_SetHeaderEntryEx_meth
+4 SetHeaderEntryEx2=DDocument_SetHeaderEntryEx2_meth
+4 SetViewRect=DDocument_SetViewRect_meth
+
+2 Das GeoView Objekt
+3 Routinen des GeoView Objektes=GeoView_obj
+3 Eigenschaften des GeoView Objektes
+4 Description=DView_Description_prop
+4 Name=DView_Name_prop
+4 RefScale=DView_RefScale_prop
+4 Scale=DView_Scale_prop
+4 Value=DView_Value_prop
+3 Methoden des GeoView Objektes
+4 GetActRect=DView_GetActRect_meth
+4 GetClass=DView_GetClass_meth
+4 GetClasses=DView_GetClasses_meth
+4 GetClipObject=DView_GetClipObject_meth
+4 GetConstraintRect=DView_GetConstraintRect_meth
+4 GetFeature=DView_GetFeature_meth
+4 GetFeatures=DView_GetFeatures_meth
+4 GetObject=DView_GetObject_meth
+4 GetObjects=DView_GetObjects_meth
+4 GetObjectsInRect=DView_GetObjectsInRect_meth
+4 ResetClipObject=DView_ResetClipObject_meth
+4 SetActRect=DView_SetActRect_meth
+4 SetClipObject=DView_SetClipObject_meth
+4 SetConstraintRect=DView_SetConstraintRect_meth
+
+2 Das GeoClass Objekt
+3 Routinen des GeoClass Objektes=GeoClass_obj
+3 Eigenschaften des GeoClass Objektes
+4 Code=DGeoClass_Code_prop
+4 Connection=DGeoClass_Connection_prop
+4 FullName=DGeoClass_FullName_prop
+4 IsQueryDef=DGeoClass_IsQueryDef_prop
+4 Name=DGeoClass_Name_prop
+4 Updatable=DGeoClass_Updatable_prop
+4 Value=DGeoClass_Value_prop
+3 Methoden des GeoClass Objektes
+4 GetFeature=DGeoClass_GetFeature_meth
+4 GetFeatures=DGeoClass_GetFeatures_meth
+4 GetObject=DGeoClass_GetObject_meth
+4 GetObjectFeature=DGeoClass_GetObjectFeature_meth
+4 GetObjectFeatures=DGeoClass_GetObjectFeatures_meth
+4 GetObjects=DGeoClass_GetObjects_meth
+4 GetObjectsInRect=DGeoClass_GetObjectsInRect_meth
+4 GetViews=DGeoClass_GetViews_meth
+4 GetVisInfo=DGeoClass_GetVisInfo_meth
+4 ResetVisInfo=DGeoClass_ResetVisInfo_meth
+4 SetVisInfo=DGeoClass_SetVisInfo_meth
+
+2 Das GeoObject Objekt
+3 Routinen des GeoObject Objektes=GeoObject_obj
+3 Eigenschaften des GeoObject Objektes
+4 Activated=DGeoObject_Activated_prop
+4 Connection=DGeoObject_Connection_prop
+4 Feature=DGeoObject_Feature_prop
+4 Guid=DGeoObject_Guid_prop
+4 ObjType=DGeoObject_ObjType_prop
+4 Name=DGeoObject_Name_prop
+4 Selected=DGeoObject_Selected_prop
+4 UniqueID=DGeoObject_UniqueID_prop
+4 Value=DGeoObject_Value_prop
+4 Visible=DGeoObject_Visible_prop
+3 Methoden des GeoObject Objektes
+4 AddFeature=DGeoObject_AddFeature_meth
+4 AnalyzeGeometry=DGeoObject_AnalyzeGeometry_meth
+4 AnalyzeGeometryObject=DGeoObject_AnalyzeGeometryObject_meth
+4 ClassDistance=DGeoObject_ClassDistance_meth
+4 CreateObjectRelation=DGeoObject_CreateObjectRelation_meth
+4 GeometryIntersection=DGeoObject_GeometryIntersection_meth
+4 GeometryUnion=DGeoObject_GeometryUnion_meth
+4 GeometryXOR=DGeoObject_GeometryXOR_meth
+4 GetBufferObjects=DGeoObject_GetBufferObjects_meth
+4 GetBufferObjectEx=DGeoObject_GetBufferObjectEx_meth
+4 GetCircleBufferObjects=DGeoObject_GetCircleBufferObjects_meth
+4 GetCommonContourObjects=DGeoObject_GetCommonContourObjects_meth
+4 GetFeature=DGeoObject_GetFeature_meth
+4 GetFeatures=DGeoObject_GetFeatures_meth
+4 GetGeometry=DGeoObject_GetGeometry_meth
+4 GetGeometryPt=DGeoObject_GetGeometryPt_meth
+4 GetGeometryRect=DGeoObject_GetGeometryRect_meth
+4 GetIntersectObjects=DGeoObject_GetIntersectObjects_meth
+4 GetIntersectObjectsClass=DGeoObject_GetIntersectObjectsClass_meth
+4 GetIntersectObjectsCollection=DGeoObject_GetIntersectObjectsCollection_meth
+4 GetRelatedObject=DGeoObject_GetRelatedObject_meth
+4 GetText=DGeoObject_GetText_meth
+4 GetTopRelationObjects=DGeoObject_GetTopRelationObjects_meth
+4 GetVisInfo=DGeoObject_GetVisInfo_meth
+4 Hilight=DGeoObject_Hilight_meth
+4 MakeRectangular=DGeoObject_MakeRectangular_meth
+4 ObjDistance=DGeoObject_ObjDistance_meth
+4 ObjeClass=DGeoObject_ObjClass_meth
+4 OldUniqueID=DGeoObject_OldUniqueID_prop
+4 PutGeometry=DGeoObject_PutGeometry_meth
+4 PutGeometryPt=DGeoObject_PutGeometryPt_meth
+4 PutText=DGeoObject_PutText_meth
+4 RemoveFeature=DGeoObject_RemoveFeature_meth
+4 RemoveObjectRelation=DGeoObject_RemoveObjectRelation_meth
+4 RePaint=DGeoObject_RePaint_meth
+4 ResetVisInfo=DGeoObject_ResetVisInfo_meth
+4 SetVisInfo=DGeoObject_SetVisInfo_meth
+4 ShiftGeometrySegment=DGeoObject_ShiftGeometrySegment_meth
+4 TopRelatio=DGeoObject_TopRelation_meth
+4 UnHilight=DGeoObject_UnHilight_meth
+4 CloneObject=DGeoObject_CloneObject_meth
+
+2 Das GeoFeature Objekt
+3 Routinen des GeoFeature Objektes=GeoFeature_obj
+3 Eigenschaften des GeoFeature Objektes
+4 ConfigData=DGeoFeature_ConfigData_prop
+4 Feature=DGeoFeature_Feature_prop
+4 Flags=DGeoFeature_Flags_prop
+4 FullName=DGeoFeature_FullName_prop
+4 Name=DGeoFeature_Name_prop
+4 Value=DGeoFeature_Value_prop
+3 Methoden des GeoFeature Objektes
+4 GetClasses=DGeoFeature_GetClasses_meth
+4 GetObjects=DGeoFeature_GetObjects_meth
+4 GetViews=DGeoFeature_GetViews_meth
+
+2 Das GeoObjectWin Objekt
+3 Routinen des GeoObjectWin Objektes=GeoObjectWin_obj
+3 Eigenschaften des GeoObjectWin Objektes
+3 Methoden des GeoObjectWin Objektes
+
+2 Das ProgressIndicator Objekt
+3 Routinen des ProgressIndicator Objektes=ProgressIndicator_obj
+3 Eigenschaften des ProgressIndicator Objektes
+4 Flags=IProgressIndicator2_Flags_prop
+3 Methoden des ProgressIndicator Objektes
+4 ChangeText=IProgressIndicator2_ChangeText_meth
+4 IncrementPosition=IProgressIndicator2_IncrementPosition_meth
+4 InitNew=IProgressIndicator2_InitNew_meth
+4 IsCanceled=IProgressIndicator2_IsCanceled_meth
+4 Restart=IProgressIndicator2_Restart_meth
+4 RetrieveRange=IProgressIndicator2_RetrieveRange_meth
+4 RetrieveText=IProgressIndicator2_RetrieveText_meth
+4 SetPosition=IProgressIndicator2_SetPosition_meth
+4 Show=IProgressIndicator2_Show_meth
+4 Hide=IProgressIndicator2_Hide_meth
+
+2 Geokomponenten und deren Funktionsweise
+3 Sequenzen von Geokomponenten
+4 Ausführen einer Sequenz von Geokomponenten=PropertySequenceService_obj
+4 Die Struktur der XML- Konfigurationsskripte=Die_Struktur_der_XML_Konfigurationsskripte
+3 Geokomponenten
+4 Routinen von Geokomponenten
+5 Eigenschaften von Geokomponenten
+5 Methoden von Geokomponenten
+
+1 TRiAS® Datenobjektsammlungen
+2 Das GeoViews Objekt
+3 Routinen des GeoViews Objektes=GeoViews_obj
+
+2 Das GeoClasses Objekt
+3 Routinen des GeoClasses Objektes=GeoClasses_obj
+
+2 Das GeoObjects Objekt
+3 Routinen des GeoObjects Objektes=GeoObjects_obj
+3 Methoden des GeoObjects Objektes
+4 _GeometryLinesUnion=DGeoObjects__GeometryLinesUnion_meth
+4 CreateGeoObjectWin=DGeoObjects_CreateGeoObjectWin_meth
+4 Difference=DGeoObjects_Difference_meth
+4 GeometryIntersection=DGeoObjects_GeometryIntersection_meth
+4 GeometryUnion=DGeoObjects_GeometryUnion_meth
+4 GetObjectsInRect=DGeoObjects_GetObjectsInRect_meth
+4 Intersection=DGeoObjects_Intersection_meth
+4 MakeGeoClass=DGeoObjects_MakeGeoClass_meth
+4 SymmetricDifference=DGeoObjects_SymmetricDifference_meth
+4 Union=DGeoObjects_Union_meth
+
+2 Das GeoFeatures Objekt
+3 Routinen des GeoFeatures Objektes=GeoFeatures_obj
+3 Eigenschaften des GeoFeatures Objektes
+3 Methoden des GeoFeatures Objektes
+
+2 Das GeoObjectWins Objekt
+3 Routinen des GeoObjectWins Objektes=GeoObjectWins_obj
+3 Eigenschaften des GeoObjectWins Objektes
+3 Methoden des GeoObjectWins Objektes
+

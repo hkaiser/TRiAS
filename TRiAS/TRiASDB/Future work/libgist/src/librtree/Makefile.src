@@ -1,0 +1,25 @@
+# Makefile.src
+# Copyright (c) 1998,  Regents of the University of California
+# $Header: /usr/local/devel/GiST/libgist/src/librtree/Makefile.src,v 1.5 2000/03/15 00:24:50 mashah Exp $
+
+SRCS += \
+	$(LIBRTREEDIR)/gist_rrtree.cc \
+	$(LIBRTREEDIR)/gist_rstartree.cc \
+	$(LIBRTREEDIR)/gist_rtpred.cc \
+	$(LIBRTREEDIR)/gist_rtpred_point.cc \
+	$(LIBRTREEDIR)/gist_rtpred_rect.cc \
+	$(LIBRTREEDIR)/gist_rtpred_rr.cc \
+	$(LIBRTREEDIR)/gist_rtpred_sphere.cc \
+	$(LIBRTREEDIR)/gist_rtpred_sr.cc \
+	$(LIBRTREEDIR)/gist_rtpred_ss.cc \
+	$(LIBRTREEDIR)/gist_rtree.cc \
+	$(LIBRTREEDIR)/gist_rtreecext.cc \
+	$(LIBRTREEDIR)/gist_sptree.cc \
+	$(LIBRTREEDIR)/gist_srtree.cc \
+	$(LIBRTREEDIR)/gist_sstree.cc \
+	$(LIBRTREEDIR)/gist_ball.cc
+
+ifeq (${AMDB},true)
+SRCS += $(LIBRTREEDIR)/amdb_rtree.cc \
+	$(LIBRTREEDIR)/amdb_rstartree.cc
+endif

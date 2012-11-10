@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASDB.PolyGIS.CursorProperty.1 = s 'PolyGISCursorProperty Class'
+	{
+		CLSID = s '{82364E79-DAB7-4DC6-B1C7-A72FF8514D7D}'
+	}
+	TRiASDB.PolyGIS.CursorProperty = s 'PolyGISCursorProperty Class'
+	{
+		CLSID = s '{82364E79-DAB7-4DC6-B1C7-A72FF8514D7D}'
+		Curver = s 'TRiASDB.PolyGIS.CursorProperty.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {82364E79-DAB7-4DC6-B1C7-A72FF8514D7D} = s 'PolyGISCursorProperty Class'
+		{
+			ProgID = s 'TRiASDB.PolyGIS.CursorProperty.1'
+			VersionIndependentProgID = s 'TRiASDB.PolyGIS.CursorProperty'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{E4CF961A-5184-4761-BCE1-DF29E60BB905}'
+		}
+	}
+}

@@ -1,0 +1,24 @@
+HKCR
+{
+	TRiASCTF.GKEtrsCoordTrans.1 = s 'UTM Koordinatentransformation Ellipsoid des ETRS 89'
+	{
+		CLSID = s '{089D69E1-B63E-11d2-8CEF-006097A8F384}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {089D69E1-B63E-11d2-8CEF-006097A8F384} = s 'UTM Koordinatentransformation Ellipsoid des ETRS 89'
+		{
+			ProgID = s 'TRiASCTF.GKEtrsCoordTrans.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C3-3123-101C-BB62-00AA0018497C}
+			}
+			ForceRemove OldName = s 'ETRS89GK'
+		}
+	}
+}

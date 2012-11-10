@@ -1,0 +1,524 @@
+%{
+// Scanner fuer GDB - Schnittstelle
+// File: GDB.LX
+
+static char SccsId[] = "uve FEZ: %W%  %E%";
+
+#include "stdafx.h"
+
+#include "ytab.h"
+#include "gdb.h"
+
+#include "dgeoobj.hxx"
+#include "yystype.hxx"
+
+#pragma warning(disable: 4102)
+
+// LEX - RetVal definieren
+extern YYSTYPE yylval;
+
+#if !defined(TRUE)
+#define TRUE (1)
+#endif
+
+int SatzTyp = 0;
+int tot_errs = 0;
+
+char InString[1025];
+
+extern int c_flag;		// Kommentarbehandlung
+
+struct keyentry {		// Tabelleneintrag fuer reservierte Worte
+	int  lx;
+	char *id;
+};
+
+struct keyentry keywords[] = {
+	{	ENUM, "ENUM"		},
+	{	ENUMI, "ENUMI"		},
+//	{	STUFE, "STU"		},
+	{	SM, "SM"		},
+	{	ST, "ST"		},
+	{	EB, "EB"		},
+	{	0, ""			},
+};
+
+// Funktionsprototypen --------------------------------------------------------
+void comment (char *, int);
+double ReadSicadFloat (char *);
+
+extern FILE *yyout;
+
+int yywrap (void);
+#if 0
+int yylook (void);
+int yyback (int *, int);
+
+void allprint (char);
+void sprint (char *);
+int printable (int);
+#endif
+
+void r_error (char *, int);
+void r_abort (char *);
+long xtol (char *);
+
+%}
+
+S		[-+]?
+D		[0-9]
+E		[DEde]{S}?{D}+
+S1		\'[^'\n\r\032]*
+S2		\'[^'\n\r\032]*\'
+ID		[a-zA-Z_]([a-zA-Z0-9_])*
+HEX 	[0-9A-F]
+SREAL	Z({HEX}{HEX})+
+STYP	[A-Z]([A-Z0-9])*
+
+%start	HStufe EnumHex
+
+%%
+
+^"ETYP=PK"		{	SatzTyp = PUNKT;	}
+^"ETYP=LI"		{	SatzTyp = LINIE;	}
+^"ETYP=KR"		{	SatzTyp = KREIS;	}
+^"ETYP=BO"		{	SatzTyp = BOGEN;	}
+^"ETYP=PG"		{	SatzTyp = PUNKTKOORD;	}
+^"ETYP=LY"		{	SatzTyp = POLYGON;	}
+^"ETYP=FL"		{	SatzTyp = FLAECHE;	}
+^"ETYP=TX"		{	SatzTyp = T_TEXT;		}
+^"ETYP=SY"		{	SatzTyp = SYMBOL;	}
+
+^X			return XSATZ;
+^Y			return YSATZ;
+^N			return NSATZ;
+^H			return HSATZ;
+^W			return WINKEL;
+^SWI			return SWINKEL;
+^A			return ASATZ;
+^M			return MSATZ;
+^R			return RADIUS;
+^PKZ			return PKZSATZ;
+^PNR			return PNRSATZ;
+^FLD			return FLDSATZ;
+^SA 		return SASATZ;
+^FLA			return FLASATZ;
+^H			return HSATZ;
+^OS 		return OSSATZ;
+
+^NAM			{	
+			// Rest der Zeile einlesen und als Token liefern
+				for (int i = 0; i < 1024; i++) {
+				int inChar = input();
+
+					if (inChar == '\n') {
+						unput ('\n');
+						break;
+					}
+					if (inChar == '\032') 
+						inChar = ' ';
+					if (inChar != '\r') 
+						InString[i] = inChar;
+					else
+						i--;
+				}
+				InString[i] = '\0';
+			// Token generieren
+			char *cptr = InString;
+			char *pInBuff;
+			// fuehrende Spaces ueberspringen
+				while (isspace (*cptr)) cptr++;
+				if (*cptr == '\'') cptr++;
+			// evtl abschliessende Spaces beruecksichtigen
+				if ((pInBuff = strchr (cptr, '\'')) != NULL)
+					*pInBuff = '\0';
+				if ((pInBuff = strchr (cptr, '\r')) != NULL)
+					*pInBuff = '\0';
+				pInBuff = new char [strlen(cptr) +1];
+				strcpy (pInBuff, cptr);
+
+			YYSTYPE tmpY (pInBuff, YYSTYPE :: YYString, yylineno);
+
+				yylval = tmpY;
+				return NAMSATZ;
+			}
+
+^POINTER		{	// dBase-Ankopplung: Rest der Zeile als Token liefern
+			int len = 0;
+
+				for (int i = 0; i < 1024; i++) {
+				int inChar = input();
+
+					if (inChar == '\r')
+						break;
+					if (inChar == '\032')
+						inChar = ' ';
+					InString [i] = inChar;
+				}
+				InString[i] = '\0';
+				char *pInBuff = InString;
+				while (pInBuff++ && *pInBuff == ' ')
+					;
+				if (*pInBuff) 
+					memmove (InString, pInBuff,
+						 len = strlen (pInBuff));
+				pInBuff = new char [strlen(InString) +1];
+				strcpy (pInBuff, InString);
+				pInBuff[len] = '\0';
+
+			YYSTYPE tmpY (pInBuff, YYSTYPE :: YYString, yylineno);
+
+				yylval = tmpY;
+				return POINTER;
+			}
+
+^CODE			{	// dBase-Ankopplung: Rest der Zeile als Token liefern
+				for (int i = 0; i < 1024; i++) {
+				int inChar = input();
+
+					if (inChar == '\r')
+						break;
+					if (inChar == '\032')
+						inChar = ' ';
+					InString [i] = inChar;
+				}
+				InString[i] = '\0';
+				char *pInBuff = InString;
+				while (pInBuff++ && *pInBuff == ' ')
+					;
+				if (*pInBuff) 
+					memmove (InString, pInBuff,
+						 strlen (pInBuff));
+				pInBuff = new char [strlen(InString) +1];
+				strcpy (pInBuff, InString);
+
+			YYSTYPE tmpY (pInBuff, YYSTYPE :: YYString, yylineno);
+
+				yylval = tmpY;
+				return CODESATZ;
+			}
+
+^"*"			{
+				if (c_flag) // Kommentar weiterleiten
+					fprintf (yyout, "; ");	 
+				comment ("\n", c_flag); 	/* Kommentar */
+				yylineno++;
+			}
+
+^TXT			{	// Rest der Zeile einlesen und als Token liefern
+				for (int i = 0; i < 1024; i++) {
+				int inChar = input();
+
+					if (inChar == '\n') {
+						unput ('\n');
+						break;
+					}
+					if (inChar == '\032') 
+						inChar = ' ';
+					if (inChar != '\r') 
+						InString[i] = inChar;
+					else
+						i--;	// Index koorigieren
+				}
+				InString[i] = '\0';
+			// Token generieren
+			char *cptr = InString;
+			char *pInBuff;
+			// fuehrende Spaces ueberspringen
+				while (isspace (*cptr)) cptr++;
+				if (*cptr == '\'') cptr++;
+			// evtl abschliessende Spaces beruecksichtigen
+				if ((pInBuff = strchr (cptr, '\r')) != NULL)
+					*pInBuff = '\0';
+				if ((pInBuff = strchr (cptr, '\'')) != NULL)
+					*pInBuff = '\0';
+				pInBuff = new char [strlen(cptr) +1];
+				strcpy (pInBuff, cptr);
+
+			YYSTYPE tmpY (pInBuff, YYSTYPE :: YYString, yylineno);
+
+				yylval = tmpY;
+				return TXTSATZ;
+			}
+
+^{STYP} 		{	// sonstiger SatzTyp
+			// alles bis zum ZeilenEnde ignorieren
+				comment ("\n", FALSE);	/* als Kommentar behandeln*/
+				yylineno++;
+			}
+
+"STU="			{	// nichts machen, nur Zustand merken
+				BEGIN HStufe;
+			}
+
+"/" 		|
+"=" 		{
+			// Stackelement setzen (ZeilenNummer)
+			YYSTYPE tmpY (NULL, YYSTYPE :: YYUnknown, yylineno);
+
+				yylval = tmpY;
+				if (*yytext == '/') BEGIN EnumHex;
+				return (*yytext);
+			}
+
+<HStufe>{D}+ {
+			/* Integer - StufenNummer */
+				BEGIN 0;
+			long *inVal = new long (atol (yytext));
+			YYSTYPE tmpY (inVal, YYSTYPE :: YYLong, yylineno);
+
+				yylval = tmpY;
+				if (*inVal == 1) {
+				int tmpVal = SatzTyp;
+
+					SatzTyp = 0;
+					switch (tmpVal) {
+					case PUNKT:
+						return PUNKT1;
+					case PUNKTKOORD:
+						return PUNKTKOORD1;
+					case LINIE:
+						return LINIE1;
+					case FLAECHE:
+						return FLAECHE1;
+					case BOGEN:
+						return BOGEN1;
+					case KREIS:
+						return KREIS1;
+					case POLYGON:
+						return POLYGON1;
+					case T_TEXT:
+						return TEXT1;
+					case SYMBOL:
+						return SYMBOL1;
+					default:
+						return tmpVal;
+					}
+				} else {
+				int tmpVal = SatzTyp;
+
+					SatzTyp = 0;
+					return tmpVal;
+				}
+						}
+
+{SREAL} 		{
+			double *ptmpD = new double (ReadSicadFloat (yytext+1)); 
+			YYSTYPE tmpY (ptmpD, YYSTYPE :: YYDouble, yylineno);
+
+				yylval = tmpY;
+				return SICADREAL;
+			}
+
+{D}+			{
+						/* Integer */
+			long *inVal = new long (atol (yytext));
+			YYSTYPE tmpY (inVal, YYSTYPE :: YYLong, yylineno);
+
+				BEGIN 0;
+				yylval = tmpY;
+							return (INTEGER);
+						}
+
+<EnumHex>{HEX}+ 	{
+			long *inVal = new long (xtol (yytext));
+			YYSTYPE tmpY (inVal, YYSTYPE :: YYLong, yylineno);
+
+				BEGIN 0;
+				yylval = tmpY;
+				return INTEGER;
+			}
+
+{S}{D}+"."{D}*({E})?	|
+{S}{D}*"."{D}+({E})?	|
+{S}{D}+{E}				{
+						/* Real Number */
+			double *inVal = new double (atof (yytext));
+			YYSTYPE tmpY (inVal, YYSTYPE :: YYDouble, yylineno);
+
+				yylval = tmpY;
+							return (ASCIIREAL);
+						}
+
+{ID}					{
+			int i;
+						/* ist ID ein reserviertes Wort ? */
+							for (i = 0; keywords[i].lx ; i++) {
+									if (!strcmp (keywords[i].id, yytext))
+											break;
+							}
+							if (keywords[i].lx) {	/* ID ist Schluesselwort */
+				char *inVal = new char [strlen(yytext)+1];
+					strcpy (inVal, yytext);
+							YYSTYPE tmpY (inVal, YYSTYPE :: YYString, yylineno);
+
+					yylval = tmpY;
+									return (keywords[i].lx);
+							}
+						/* ID ist sonstiger TextString */
+			char *cptr = yytext;
+			char *inVal;
+
+			// fuehrende Spaces ueberspringen
+				while (isspace (*cptr)) cptr++;
+			// evtl abschliessende Spaces beruecksichtigen
+				if ((inVal = strchr (cptr+1, '\'')) != NULL)
+					*inVal = '\0';
+				if ((inVal = strchr (cptr, '\r')) != NULL)
+					*inVal = '\0';
+				inVal = new char [strlen(cptr) +1];
+				strcpy (inVal, cptr);
+
+			YYSTYPE tmpY (inVal, YYSTYPE :: YYString, yylineno);
+
+				yylval = tmpY;
+								return (IDENT);
+						}
+
+{S1}			|
+{S2}			{
+			/* TextString */
+						register char *cptr = yytext;
+
+				if (*yytext == '\'') cptr++;
+				else while (isspace (*cptr)) cptr++;
+ 
+			char *inVal = new char [strlen(cptr)+1];
+				
+							strcpy (inVal, cptr);
+							if ((cptr = strchr (inVal, '\'')) != NULL)
+									*cptr = '\0';
+
+			YYSTYPE tmpY (inVal, YYSTYPE :: YYString, yylineno);
+
+				yylval = tmpY;
+							return (IDENT);
+			}
+
+\n			{
+				++yylineno;
+				return '\n';
+			}
+
+[ \t\r\032]*		;	/* ignore whites */
+
+
+.			;	/* ignore */
+
+%%
+
+// HexZahl konvertieren
+long xtol (char *pInBuff) {
+long InVal = 0;
+
+	while (*pInBuff) {
+		if (!isascii (*pInBuff)) 
+		// Fehler
+			return 0;
+	// Konvertierung
+		if (islower (*pInBuff)) 
+			*pInBuff = toupper (*pInBuff);
+		if (isdigit (*pInBuff))
+			InVal += InVal * 16 + *pInBuff - '0';
+		else if ((*pInBuff >= 'A') && (*pInBuff <= 'F'))
+			InVal += InVal * 16 + *pInBuff - 'A' + 10;
+		pInBuff++;	// nächstes Zeichen
+	}
+
+return InVal;
+}
+
+// Kommentar ueberlesen 
+void comment (char *mat, int Flag) {
+
+	register int c = 1;
+	register char *cp = mat;
+	int lno = yylineno;
+
+	while (*cp && c != 0) {
+		if ((c = input ()) != *cp++)
+			cp = mat;
+		if (Flag && c) 
+			fputc (c, yyout);	// Kommentar weiterleiten
+	}
+	if (c == 0) {
+		yylineno = lno;
+		r_abort ("EOF im Kommentar gelesen");
+	}
+}
+
+/* Parser Syntaxfehler */
+void /*_cdecl*/ yyerror (const char *s) 
+{
+	r_error ((char *)s, yylineno);
+}
+
+
+/* Formatdefinitionsfehler */
+void r_error (char *s, int ln) {
+char ErrOut[256];
+
+		++tot_errs;
+	sprintf (ErrOut, "\nZeile %d: %s, aktuelles Token: %s\n", ln, s, yytext);
+	fputs (ErrOut, stderr);
+}
+
+
+/* Schwerwiegender Formatdefinitionsfehler: Abbruch */
+void r_abort (char *s) {
+char ErrOut[256];
+
+	sprintf (ErrOut, "Zeile %d: Abbruch - %s", yylineno, s);
+	fputs (ErrOut, stderr);
+	abort();	/* Abbrechen des Compilerlaufes */
+}
+
+// nächste Eingabedatei eröffnen
+extern char *fnin[];
+extern int cntInput;
+extern int wasInput;
+
+int yywrap (void) {
+
+	yylineno = 1;
+	if (wasInput < cntInput)
+		return ascii_open (wasInput);	// nächstes File öffnen
+
+return 1;	// ansonsten beenden
+}
+
+#if 0
+void allprint(char c) {
+		extern FILE *yyout;
+		switch(c){
+				case '\n':
+						fprintf(yyout,"\\n");
+						break;
+				case '\t':
+						fprintf(yyout,"\\t");
+						break;
+				case '\b':
+						fprintf(yyout,"\\b");
+						break;
+				case ' ':
+						fprintf(yyout,"\\\bb");
+						break;
+				default:
+						if(!printable(c))
+								fprintf(yyout,"\\%-3o",c);
+						else 
+								putc(c,yyout);
+						break;
+				}
+		return;
+		}
+void sprint(char *s) {
+		while(*s)
+				allprint(*s++);
+		return;
+		}
+int printable(int c)
+		{
+		return(040 < c && c < 0177);
+		}
+#endif

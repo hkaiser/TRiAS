@@ -1,0 +1,31 @@
+HKCR
+{
+	TRiASEx.GewaesserPropPage.1 = s 'TRiAS Gewässerkataster Property Page'
+	{
+
+		CLSID = s '{079638B7-3123-101C-BB62-00AA0018497C}'	
+
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {079638B7-3123-101C-BB62-00AA0018497C} = s 'TRiAS Gewässerkataster Property Page'
+		{
+			val AppID = s '{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}'
+			ProgID = s 'TRiASEx.GewaesserPropPage.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+	NoRemove TRiAS.Document.2
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertySheetHandlers
+			{
+				ForceRemove TRiASEx.GewaesserPropPage.1 = s '{079638B7-3123-101C-BB62-00AA0018497C}'
+			}
+		}
+	}
+}

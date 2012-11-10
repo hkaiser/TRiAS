@@ -1,0 +1,487 @@
+' ***********************************************************************
+' *									*
+' *	Filter Grundstuecke vergleichen					*
+' *	IdentKorrektur.ebf						*
+' ***********************************************************************
+
+Option Explicit
+
+' ======================================================================================
+'Programmkonstanten
+Const NL = Chr$(13) + Chr$(10)		'NewLine
+Const HT = Chr$(9)	   		' Tab		 
+
+' anwendungsspezifische Konstanten
+Const strBoxTitel = "Grundstücke korrigieren"
+Const strNummer = "Identifikationsnummer"
+Const strKZ = "Kennungszeichen"
+
+Const strIdentNr = "Identifikationsnummer"	' Ziel-Merkmal für das Ergebnis
+Const strTabG = "Komplettliste"			' Tabelle in Access-Datenbank ( von SHW)
+Const strGIDE = "IDE"			' Feld in Tabelle
+Const strGIDFS = "FSKENN"			' Feld in Tabelle
+Const strGIDGS = "LFDNR"			' Feld in Tabelle
+
+
+' anwendungsspezifische Konstanten
+Const strGrund = "Grundstück"		' Kurztexte von TRiAS-Objektklassen
+Const strDachteil = "Dachteilfläche"
+Const strVersFlaeche = "versiegelte Fläche"
+Const dblFlAnteil = 0.95			' Prozentwert für Test auf anteilmäßiges
+
+' --------------------------------------------------------------------------------------
+
+Public strLogFileName As String
+
+' ---------------------------------------------------
+' FunktionsDeklarationen
+
+Declare Private Sub ErrFile (strErrText As String)
+Declare Private Sub FindIdent (MyFeat As String, Count As Long, IDF() As String)
+Declare Private Sub TauscheIdentifikator (o As GeoObject, MyFeat As String)
+
+Declare Function ObjektAnteil (obj1 As GeoObject, obj2 As GeoObject) As Boolean
+Declare Function FlaechenInhalt (objGO As GeoObject) As Double
+Declare Function MasseinheitAbtrennen (MWert$, MZahl#) As String
+
+
+Private bErrFile As Boolean			' Fehlerdatei angelegt (True)
+
+Private dbsJet As Database		' Access-Datenbank
+Private wsp As Workspace
+Private rstPG As Recordset	' Recordset-Objekt (eine Tabelle der Datenbank)
+
+Private docGD As GeoDocument
+Private clsDachteil As GeoClass		' Objektklasse (Dachteilflächen)
+Private clsVersFlaeche As GeoClass	' Objektklasse (versiegelte Flächen)
+
+' ---------------------------------------------------
+
+' Globale Variablen
+Dim lGlobalCnt As Long
+
+' ---------------------------------------------------
+' "BeginAction" wird gerufen, bevor die erste Objektmenge verarbeitet werden soll
+Function BeginAction() As Boolean
+
+' Hier notwendige Initialisierungen durchführen
+	
+' BeginAction für Abbruch auf 'False' setzen 
+	BeginAction = True
+	bErrFile = False	' Fehlerdatei (noch) nicht angelegt
+	lGlobalCnt = 0
+
+	Dim strDateiTyp As String
+	strDateiTyp = "Stadtbezirk.mdb:*.mdb"	' vorgewählter Dateityp für Dialog
+
+	Dim strMDBase As String	' Access-Datenbank für Stadtbezirk
+	' Öffnen eines Dialoges, in dem die Access-Datenbank für den Stadtbezirk
+	' ausgewählt werden kann
+	strMDBase = OpenFilename$ ("     Öffnen *.mdb für Stadtbezirk", strDateiTyp)
+	If strMDBase = "" Then
+		Exit Function
+	End If
+
+' Initialisierungen
+  	Set docGD = GetActiveDocument
+
+	Set wsp = DBEngine.Workspaces(0)
+
+	Set dbsJet = wsp.OpenDatabase (strMDBase)
+	If (dbsJet Is Nothing) Then
+		MsgBox "Die Datenbank " & strMDBase & " ist nicht offen!", _
+				ebCritical, strBoxTitel
+		If (wsp Is Not Nothing) Then wsp.Close
+		Exit Function
+	End If
+
+	Set rstPG = dbsJet.OpenRecordset (strTabG)
+
+' weitere Initialisierungen
+	Set clsDachteil = docGD.GetClass (strDachteil)
+	If (clsDachteil Is Nothing) Then
+		MsgBox "Das Projekt enthält keine Dachteilflächen", ebQuestion, strBoxTitel
+	End If
+
+	Set clsVersFlaeche = docGD.GetClass (strVersFlaeche)
+	If (clsVersFlaeche Is Nothing) Then
+		MsgBox "Das Projekt enthält keine versiegelten Flächen", ebQuestion, strBoxTitel
+	End If
+
+
+End Function
+
+' ---------------------------------------------------
+' "DoAction" wird für jede der zu verarbeitenden Objektmengen gerufen
+Function DoAction (Objs As GeoObjects) As GeoObjects
+Dim o As GeoObject
+Dim ObjsOrg As New GeoObjects
+ 
+
+	If Objs.Count = 1 Then 
+		Set DoAction = ObjS
+		Exit Function
+	End If
+
+
+	lGlobalCnt = lGlobalCnt + 1
+	Dim Feat As GeoFeature
+	Dim MyFeat As String
+	MyFeat = " "
+	Dim lNumber As Integer
+	lNumber = 0
+
+	Dim IDF(Objs.Count) As String
+
+	Set o = Objs(1)
+
+	Set Feat = o.GetFeature ( strNummer)
+
+	If Feat Is Not Nothing Then
+		MyFeat = Trim$(Feat.Feature$)
+	' Hier in MDBDatenbank suchen
+		FindIdent MyFeat, Objs.Count, IDF()
+	End If
+	Dim SelObjs As Long
+	SelObjs = Objs.Count
+
+' StatusAnzeige erzeugen und initialisieren
+	Dim Status As New StatusIndicator 
+
+	If (Status Is Not Nothing) Then
+		Status.Restart 0, SelObjs, STATUS_ShowAllFields
+		Status.Caption = "Korrektur der Grundstücke "
+		Status.Field(1) = Str$(SelObjs)
+		Status.Field(2) = "Objekte werden durchsucht."
+		Status.Field(3) = "Es wurden bereits %d%% der Objekte korrigiert."
+	End If
+
+' Jetzt alle selektierten Objekte bearbeiten
+	Dim ActCnt As Long		' Zähler der bearbeiteten Objekte
+
+	ActCnt = 0
+
+	For Each o in Objs
+
+	' Status weiterschalten
+		If (Status Is Not Nothing) Then
+			ActCnt = ActCnt + 1
+			Status.Field(4) = "Ident: " + IDF(lNumber-1)
+			If (Status Is Not Nothing) Then
+				Status.SetPosition ActCnt
+				If (Status.WasCanceled()) Then	' Abbrechen gedrückt
+					Exit For					' innere Schleife beenden
+				End If
+			End If
+		End If
+
+		ObjsOrg.Add o
+		lNumber = lNumber + 1
+		Set Feat = o.GetFeature ( strNummer)
+		Feat.Feature$ = IDF(lNumber-1)
+		TauscheIdentifikator o,IDF(lNumber)
+		ErrFile  "Objekt " + STR$(o.Value) + MyFeat + HT 
+	Next o
+
+' Ergebnisanzeige in Recherchefenstern
+
+	Dim RWin As GeoObjectWin
+	Set RWin = ObjsOrg.CreateGeoObjectWin()
+	RWin.Name = "Doppelt : " + MyFeat
+	RWin.Visible = 1
+
+	Set DoAction = Objs
+
+End Function
+'=================================================================
+' --------------------------------------------------------------------------------------
+' Fehlertext strErrText in Fehlerdatei (Name des aktuellen Projektes mit Attribut "err")
+' eintragen
+Sub ErrFile (strErrText As String)
+	Dim strErrDatei As String
+	strErrDatei = Left$(GetActiveDocument.FullName$,Len(GetActiveDocument.FullName$)-3) + "err"
+	Open strErrDatei For Append Lock Write As #1	' Fehler-Datei öffnen
+	Print #1, strErrText
+	Close											' Fehler-Datei schließen
+	bErrFile = True
+End Sub ' ErrFile
+
+'========================================================================
+Private Sub FindIdent (MyFeat As String, Count As Long, IDF() As String)
+
+	If MyFeat = "" Then
+		Exit Sub
+	End If
+	If Count <= 0 Then
+		Exit Sub
+	End If
+'	Ueber ID KZ finden
+
+	Dim strMySQL As String
+	strMySQL = "SELECT * FROM " + strTabG + " WHERE " + strGIDE + " LIKE '"+ MyFeat + "'"
+
+	Set rstPG = dbsJet.OpenRecordset (strMySQL, dbOpenSnapshot, dbReadOnly)
+
+	If rstPG Is Nothing Then
+		msgbox " Recordset nicht ladbar !",ebCritical, strBoxTitel
+		Exit Sub
+	End If
+
+	Dim fldMDBIDE As Field
+	Dim fldMDBIDFS As Field
+	Dim fldMDBIDGS As Field
+
+	Set fldMDBIDE = rstPG.Fields(strGIDE)
+	Set fldMDBIDFS = rstPG.Fields(strGIDFS)
+	Set fldMDBIDGS = rstPG.Fields(strGIDGS)
+
+  	If rstPG.RecordCount = 0 Then
+		Exit Sub
+	End If
+
+	rstPG.MoveFirst
+
+	Dim MyKZ As String
+	MyKZ =  TRIM$(fldMDBIDFS)
+	If MyKZ = "" Then
+		rstPG.Close	
+		Exit Sub
+	End If
+
+' Nun ueber KZ ID's suchen
+
+
+	strMySQL = "SELECT * FROM " + strTabG + " WHERE " + strGIDFS + " LIKE '"+ MyKZ + "'"
+
+	Set rstPG = dbsJet.OpenRecordset (strMySQL, dbOpenSnapshot, dbReadOnly)
+
+	If rstPG Is Nothing Then
+		msgbox " Recordset nicht ladbar !",ebCritical, strBoxTitel
+		Exit Sub
+	End If
+
+	Set fldMDBIDE = rstPG.Fields(strGIDE)
+	Set fldMDBIDFS = rstPG.Fields(strGIDFS)
+	Set fldMDBIDGS = rstPG.Fields(strGIDGS)
+
+  	If rstPG.RecordCount = 0 Then
+		Exit Sub
+	End If
+
+	rstPG.MoveFirst
+
+	Dim i As Long
+	i = 0
+
+	Do
+
+	IDF(i) = TRIM$(fldMDBIDE)
+	i = i + 1
+	rstPG.MoveNext
+	if  rstPG.EOF Then
+		rstPG.Close	
+		Exit Sub
+	End If
+
+	Loop While ( TRIM$(fldMDBIDFS) = MyKZ)
+
+	rstPG.Close
+
+End Sub
+
+' -----------------------------------------------------------------------
+' "EndAction" wird nach der Verarbeitung der
+' letzten Objektmenge gerufen
+Sub EndAction()
+
+' Hier notwendige Aufräumarbeiten durchführen
+	Set rstPG = Nothing	' Recordset-Objekt (eine Tabelle der Datenbank)
+	Set dbsJet = Nothing		' Access-Datenbank
+	Set wsp = Nothing
+
+	MsgBox "Es wurden " + STR$(lGlobalCnt) + " Identifikatornummern bearbeitet!", _
+	ebCritical, strBoxTitel
+
+End Sub
+'========================================================================
+Private Sub TauscheIdentifikator (o As GeoObject, MyFeat As String)
+
+	Dim xmin As Double, ymin As Double, xmax As Double, ymax As Double
+	o.GetGeometryRect xmin, ymin, xmax, ymax
+
+	Dim objsDach As GeoObjects
+	Dim objsVers As GeoObjects
+
+	Set objsDach = clsDachteil.GetObjectsInRect (xmin, ymin, xmax, ymax)
+	Set objsVers = clsVersFlaeche.GetObjectsInRect (xmin, ymin, xmax, ymax)
+
+	Dim objsRectObj As New GeoObjects
+
+	If (objsDach Is Not Nothing) Then
+		Set objsRectObj = objsRectObj.Union(objsDach)
+	End If
+
+	If (objsVers Is Not Nothing) Then
+		Set objsRectObj = objsRectObj.Union(objsVers)
+	End If
+
+	If (objsRectObj Is Nothing Or objsRectObj.Count = 0 ) Then Exit Sub
+
+	Dim objsIn As New GeoObjects	' vollständig innerhalb liegende Dachteil-, versiegelte
+								' Flächen bzw. allgemeine Straßen
+
+	Dim objSingle As GeoObject	' einzelnes Objekt für For-Each-Schleife
+	Dim intRel As Integer		' Rückkehrwert von TopRelation()
+	Dim objDummy As GeoObject	' Rückgabewert von Add()
+
+	For Each objSingle In objsRectObj
+		If objSingle.ObjType = OT_Area Then
+
+		' Relation des objSingle-Objektes zu dem objGrund-Grundstück
+			intRel = o.TopRelation (objSingle)
+			Select Case intRel		' Relation
+				Case 0		' innerhalb
+					Set objDummy = objsIn.Add(objSingle.Value)
+				Case 2		' inner/außerhalb
+					If ObjektAnteil (o, objSingle) = True Then
+						Set objDummy = objsIn.Add(objSingle.Value)
+					End If
+				Case 3		' unklar
+
+			End Select
+		End If
+	Next objSingle
+
+	Dim ftIdentNummer As GeoFeature
+	Set ftIdentNummer = o.GetFeature (strIdentNr)
+
+	Dim strGrundIdent As String	' Text des Merkmals "Identifikationsnummer"
+	If (ftIdentNummer Is Not Nothing) Then
+		strGrundIdent = ftIdentNummer.Feature$
+	Else
+		strGrundIdent = ""
+	End If
+
+	For Each objSingle In objsIn
+	' Identifikationsnummer vererben
+		If strGrundIdent <> "" Then
+			Set ftIdentNummer = objSingle.GetFeature (strIdentNr)
+			If (ftIdentNummer Is Nothing) Then
+				Set ftIdentNummer = objSingle.AddFeature (strIdentNr, FEATURETYPE_WriteAble)
+			End If
+
+			If (ftIdentNummer Is Not Nothing) Then
+				ftIdentNummer.Feature$ = strGrundIdent
+			End If
+		End If
+
+	Next objSingle
+
+
+End Sub
+'========================================================================
+
+' --------------------------------------------------------------------------------------
+' Testen, ob obj2 bezogen auf den Flächeninhalt zu mindestens
+' dblFlAnteil-Prozent in obj1 liegt (True)
+Function ObjektAnteil (obj1 As GeoObject, obj2 As GeoObject) As Boolean
+
+	ObjektAnteil = False
+
+	If obj1.ObjType <> OT_Area Or obj2.ObjType <> OT_Area Then
+		Exit Function
+	End If
+
+	Dim objsTO As GeoObjects	' in obj1 liegende Teilobjekte von obj2
+	Set objsTO = obj1.GetIntersectObjects (obj2)
+
+	If (objsTO Is Nothing) Then
+		MsgBox "Also das kann nun wirklich nicht sein !?", ebQuestion, strBoxTitel
+		Exit Function
+	End If
+	If objsTO.Count = 0 Then
+		MsgBox "Also das kann nun wirklich nicht sein !?", ebQuestion, strBoxTitel
+		Exit Function
+	End If
+
+	Dim objTO As GeoObject	' einzelnes objsTO-Objekt
+	Dim FL As Double		' Flächeninhalt eines objTO-Objektes
+	Dim RefFL As Double		' größter Flächeninhalt von allen objTO-Objekten
+	RefFL = 0.0				' Startwert
+
+	For Each objTO In objsTO
+		If objTO.ObjType = OT_Area Then
+			FL = FlaechenInhalt (objTO)
+			If FL > RefFL Then RefFL = FL
+		End If
+		docGD.RemoveObject objTO
+	Next objTO
+
+	objsTO.Refresh
+	Set objsTO = Nothing
+
+	If RefFL = 0.0 Then Exit Function
+
+	Dim MyFl As Double
+	MyFl = FlaechenInhalt (obj2)
+	If MyFl = 0.0 Then Exit Function
+
+	If RefFL/MyFl > dblFlAnteil Then ObjektAnteil = True
+
+End Function ' ObjektAnteil
+
+
+' --------------------------------------------------------------------------------------
+' Flächeninhalt eines GeoObjetktes in m²; im Fehlerfall (unbekannte Maßeinheit) wird -1
+' zurückgegeben
+Function FlaechenInhalt (objGO As GeoObject) As Double
+	Dim ftFlInhalt As GeoFeature	
+	Set ftFlInhalt = objGO.GetFeature("Flächeninhalt")
+	If (ftFlInhalt Is Nothing) Then 
+		FlaechenInhalt = 0.0
+		Exit Function
+	End If
+
+	Dim strFl As String, strME As String
+	strFl = Trim$(ftFlInhalt.Feature$)	' Flächeninhalt und Maßeinheit
+	If strFl = "" Then	' kein Flächenobjekt
+		FlaechenInhalt = 0
+		Exit Function
+	End If
+
+	Dim Flaeche As Double				' Flächeninhalt ohne Maßeinheit
+	strME = MasseinheitAbtrennen (strFl, Flaeche)
+
+	Select Case LCase(Mid(strME,2,1))	' das 1. Zeichen von strME ist "["
+		Case "m"	' m²
+			FlaechenInhalt = Flaeche
+		Case "h"	' ha
+			FlaechenInhalt = 10000 * Flaeche
+		Case "k"	' km²
+			FlaechenInhalt = 1000000 * Flaeche
+		Case Else
+			MsgBox "Die ermittelte Maßeinheit des Flächeninhalts ist unbekannt!", _
+					ebCritical, strBoxTitel
+			FlaechenInhalt = -1
+	End Select
+End Function ' FlaechenInhalt
+
+
+' --------------------------------------------------------------------------------------
+' Maßeinheit aus dem übergebenen String MWert eliminieren und in der Form "[...]"
+' zurückgeben; dabei wird vorausgesetzt, daß die Maßeinheit in eckige Klammern '[]'
+' eingeschlossen ist
+Function MasseinheitAbtrennen (MWert$, MZahl#) As String
+	Dim intPos As Integer
+	intPos = InStr (MWert$,"[")		' Position der öffnenden Klammer "[" suchen
+	If intPos = 0 Then
+		MsgBox "Maßeinheit des Flächeninhalts beginnt nicht mit [", _
+				ebCritical, strBoxTitel
+		MasseinheitAbtrennen = "  "	' Rückgabe bei Fehler
+	End If
+
+	intPos = InStr (MWert$," ")			' Position zwischen Zahlenwert und Dimension
+	MZahl# = Val (Left(MWert$,intPos))	' Dimension abschneiden
+	MasseinheitAbtrennen = Right(MWert$,Len(MWert$)-intPos)	' Maßzahl ohne Maßeinheit als Rückgabewert
+End Function ' MasseinheitAbtrennen
+'=============================================================================

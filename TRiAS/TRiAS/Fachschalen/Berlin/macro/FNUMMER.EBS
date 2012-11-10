@@ -1,0 +1,237 @@
+' -----------------------------------------------------------------------------
+' $DESCRIPTION: Alle Objekte einer Selektionsmenge vereinigen
+' -----------------------------------------------------------------------------
+'	'GrundstückeNummerieren.ebs'	TRiAS-MakroErweiterung
+' -----------------------------------------------------------------------------
+'	(c)	FEZ Potsdam GmbH, 13. Oktober 1999, K.Kurth
+' -----------------------------------------------------------------------------
+'	Sucht doppelte Flurstücke.
+'	Spezielle Makroerweiterung für das Berlin (GBM)-Projekt.
+' -----------------------------------------------------------------------------
+
+Option Explicit
+Const strBoxTitel = "Flurstücke vergleichen"
+Const strFlur = "Flurstück"
+Const strFlur1 = "Flurstück bereits bearbeitet"
+Const strFlurEcht = "ALK-Flurstück"
+Const strFlurKlasse = "[11111123]"
+Const strStanze = "[11111223]"
+Const strFlurAkt = "[1123]"
+
+' Objektattribute
+Const strKZ = "Kennungszeichen"
+
+' -----------------------------------------------------------------------------
+' Globale Variablen
+Private docGD As GeoDocument		' aktuelles Projekt
+
+Private Status As StatusIndicator 
+Private Wins As GeoObjectWins
+
+' -----------------------------------------------------------------------------
+' Beschreibungs-Strings
+Const NL = Chr$(13) + Chr$(10)		' Zeilenwechsel
+Const strToolSearch As String = "Flurstücke vergleichen"
+Const strToolSearchLong As String = "Suchen von Flurstücken mit gleichen Kennzeichen"
+
+
+' -----------------------------------------------------------------------------
+' Hier gehts los
+Const strModifyIdent As String = "TRiASEx.ModifyIdent.1"
+Const strClassify As String = "TRiASEx.ClassifyByObjProp.1"
+Const strNumObjects As String = "TRiASEx.OnlyOneObjects.1"
+Const strCopyObjects As String = "TRiASEx.CopyObjects.1"
+Const strUnionObjects As String = "TRiASEx.UnionObjects.1"
+
+Const strNoShow As String = "NoShow=1"
+
+'===============================================================
+Declare Private Sub Klassifizieren ( ObjS As GeoObjects, OKS As String)
+Declare Private Sub Stanze1123 ( ObjS As GeoObjects)
+
+' -----------------------------------------------------------------------------
+' -----------------------------------------------------------------------------
+' "BeginScript()" wird immer vor der Script-Abarbeitung gerufen
+Sub BeginScript()
+
+	Set docGD = GetActiveDocument()
+
+End Sub
+
+' -----------------------------------------------------------------------------
+' -----------------------------------------------------------------------------
+' "EndScript()" wird immer nach Beendigung der Script-Abarbeitung gerufen
+Sub EndScript()
+
+	Set docGD = Nothing
+
+End Sub
+
+' -----------------------------------------------------------------------------
+' "OnDocumentToClose()" wird bei Schließen des aktuellen Projektes gerufen
+Sub OnDocumentToClose (Doc As GeoDocument)
+	Set docGD = Nothing
+End Sub
+
+' "OnDocumentOpened()" wird bei Öffnen eines Projektes gerufen
+Sub OnDocumentOpened (Doc As GeoDocument)
+	Set docGD = GetActiveDocument()
+End Sub
+
+
+'=================================================================================
+
+Sub FNummer()
+
+	Set docGD = GetActiveDocument()
+
+
+' neu
+	Dim clsFlur As GeoClass
+	Dim objsFlur As GeoObjects
+	Set clsFlur = Nothing
+	Set objsFlur = Nothing
+
+'Geduldsanzeige starten
+	Msg.Open NL+"  Die Flurstücks-Verarbeitung wird vorbereitet ... bitte warten!  "+NL,,False,False
+
+	Set clsFlur = docGD.GetClass (strFlur)
+
+	Dim MyFlur As GeoClass
+	Set MyFlur = Nothing
+
+	Set MyFlur = docGD.GetClass(strFlur1)
+
+	If (clsFlur Is Nothing) Then
+		if (MyFlur Is Nothing) Then
+			MsgBox "Im Projekt wurden keine Flurstücke gefunden!", _
+					ebInformation, strBoxTitel
+			Exit Sub
+		End If
+	End If
+
+	Dim OKS As String
+
+	Set objsFlur = clsFlur.GetObjects (OT_Area)
+
+	OKS = strFlurKlasse
+
+	If objsFlur.Count = 0 Then
+		Set objsFlur = Nothing
+	Else
+		Klassifizieren objsFlur,OKS
+	End If
+
+	Dim MysFlur As GeoObjects
+	Set MysFlur = Nothing
+
+	Dim GeometrieTest As Boolean
+	GeometrieTest = False
+
+	OKS = strFlurAkt
+
+	If MyFlur Is Not Nothing Then
+
+		Set MysFlur = MyFlur.GetObjects(OT_Area)
+
+		If MysFlur.Count = 0 Then
+			Set MysFlur = Nothing
+		End if
+
+		If MysFlur Is Not Nothing Then
+
+			If objsFlur Is Nothing Then
+				Klassifizieren MysFlur , OKS
+				Exit Sub
+			End If
+
+'			Stanze1123 objsFlur
+
+			Set objsFlur = objsFlur.Union(MysFlur) 
+			If objsFlur Is Not Nothing Then
+				GeometrieTest = True
+			End If
+		Else
+			If objsFlur Is Not Nothing Then
+				Klassifizieren objsFlur , OKS
+			End If
+			Exit Sub
+		End If
+	Else
+		If objsFlur Is Not Nothing Then
+			Klassifizieren objsFlur , OKS
+		End If
+		Exit Sub
+	End If
+
+	Msg.Close
+
+	Msg.Open NL+"  Verarbeitung von "+STR$(objsFlur.Count) + " Flurstücken"+NL,,False,False
+
+	Dim NewObjs As GeoObjects
+
+	If GeometrieTest = False Then
+		MsgBox "Kein Handlungsbedarf!", ebInformation, strBoxTitel
+		Exit Sub
+	End If
+	
+
+	' Operation durchführen
+	Dim Seq As New PropertySequence
+	Seq.Description = strToolSearchLong
+
+'	Seq.AddAction strClassify
+	Seq.AddAction strClassify, strNoShow + ";ClassifyBy=Kennungszeichen;UseAll=0"
+	Seq.AddAction strNumObjects, strNoShow
+  	Seq.AddAction strModifyIdent, "NoShow=1;ModifyTo=" & OKS & ";AddToView=1"
+'  	Seq.AddAction strModifyIdent
+
+	Seq.DoActions objsFlur
+
+	GeometrieTest = False
+
+	Beep
+	MsgBox "Und tschüß!", ebInformation, strBoxTitel
+
+End Sub
+
+' -----------------------------------------------------------------------------
+Private Sub Stanze1123 ( ObjS As GeoObjects)
+
+	Dim OKSStanze As String
+
+	OKSStanze = strStanze
+
+	' Operation durchführen
+	Dim Seq1 As New PropertySequence
+	Seq1.Description = strToolSearchLong
+
+	Seq1.AddAction strCopyObjects, strNoShow
+	Seq1.AddAction strUnionObjects, strNoShow
+  	Seq1.AddAction strModifyIdent, "NoShow=1;ModifyTo=" & OKSStanze & ";AddToView=1"
+
+	Seq1.DoActions ObjS
+
+End Sub
+' --------------------------------------------------------------------------------------
+Private Sub Klassifizieren ( ObjS As GeoObjects, OKS As String)
+	If OKS$ = "" Then
+		Exit Sub
+	End If
+
+	If ObjS Is Not Nothing Then
+		If ObjS.Count > 0 Then
+   			Dim Seq1 As New PropertySequence
+
+   			Seq1.AddAction strModifyIdent, "NoShow=1;ModifyTo=" & OKS & ";AddToView=1"
+	
+  			Seq1.DoActions ObjS
+
+ '			Set Seq1 = Nothing
+		End If
+	End If
+
+End Sub
+' --------------------------------------------------------------------------------------
+
+    

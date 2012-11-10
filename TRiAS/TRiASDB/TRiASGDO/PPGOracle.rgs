@@ -1,0 +1,23 @@
+HKCR
+{
+	TRiASGDO.PPGOracle.1 = s 'PPGOracle Class'
+	{
+		CLSID = s '{E81DAD65-CC9D-11D2-9902-0060085FC1CE}'
+	}
+	TRiASGDO.PPGOracle = s 'PPGOracle Class'
+	{
+		CLSID = s '{E81DAD65-CC9D-11D2-9902-0060085FC1CE}'
+		CurVer = s 'TRiASGDO.PPGOracle.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {E81DAD65-CC9D-11D2-9902-0060085FC1CE} = s 'PPGOracle Class'
+		{
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

@@ -1,0 +1,66 @@
+// $Header: $
+// Copyright© 1999-2002 Geopunkt GmbH & Co. KG, NL Potsdam, All rights reserved
+// Created: 06.11.2002 09:25:38
+//
+// @doc
+// @module LineTools.idl | IDL source for LineTools.ext
+
+// This file will be processed by the MIDL tool to
+// produce the type library (LineTools.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "ProgInd2.idl";
+
+[
+	uuid(46537618-3D6B-4E6A-B438-7EB64BF92E53),
+	version(1.0),
+	helpstring("LineTools 1.0 Type Library")
+]
+library LineTools
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+// der eigentliche TRiAS-Zusatzmodul
+	[
+		uuid(169526E8-9BEA-4FA8-B47D-FAD4B7601B13),
+		helpstring("LineTools Class")
+	]
+	coclass LineTools
+	{
+		[default] interface IUnknown;
+	};
+	[
+		uuid(F04E9701-1841-4817-BDAF-22A466F8E911),
+		helpstring("CodeCheck Class")
+	]
+	coclass CodeCheck
+	{
+		[default] interface IUnknown;
+	};
+	[
+		uuid(5C31EB85-952F-484F-8EF6-E9564C012837),
+		helpstring("CCodeStat Class")
+	]
+	coclass CCodeStat
+	{
+		[default] interface IUnknown;
+	};
+	[
+		uuid(D2A96DE5-3EEC-491B-B35C-924660022503),
+		helpstring("CodeLine Class")
+	]
+	coclass CodeLine
+	{
+		[default] interface IUnknown;
+	};
+	[
+		uuid(E4A07A4C-E542-4149-9518-3043FE97B067),
+		helpstring("ClsfyByCode Class")
+	]
+	coclass ClsfyByCode
+	{
+		[default] interface IUnknown;
+	};
+};

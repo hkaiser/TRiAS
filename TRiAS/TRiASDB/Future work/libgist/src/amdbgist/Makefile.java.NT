@@ -1,0 +1,21 @@
+# 	Makefile for amdbgist, Windows platform
+# 	$$
+
+include ..\Makefile.inc.java.NT
+
+JSRCS = ResultProcessor.java \
+	ExtensionInfo.java \
+	Libgist.java \
+	LibgistException.java \
+	LibgistCommand.java \
+	DisplayPredInfo.java
+
+# generated headers for native functions
+GENHDRS = Libgist.h
+
+CLASSES = $(JSRCS:.java=.class)
+
+all: $(CLASSES) $(GENHDRS)
+
+clean:
+	del *.class Libgist.h *~

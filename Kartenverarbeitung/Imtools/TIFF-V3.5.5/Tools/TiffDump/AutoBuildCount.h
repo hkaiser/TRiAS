@@ -1,0 +1,6 @@
+// 16
+#ifndef AUTOBUILDCOUNT_H
+#define AUTOBUILDCOUNT_H
+#define BUILDCOUNT_NUM 16
+#define BUILDCOUNT_STR "16"
+#endif

@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASCS.TRiASCSRectangleGeometry.1 = s 'TRiASCSRectangleGeometry Class'
+	{
+		CLSID = s '{CF648167-9E24-11D1-BA1C-080036D63803}'
+	}
+	TRiASCS.TRiASCSRectangleGeometry = s 'TRiASCSRectangleGeometry Class'
+	{
+		CLSID = s '{CF648167-9E24-11D1-BA1C-080036D63803}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {CF648167-9E24-11D1-BA1C-080036D63803} = s 'TRiASCSRectangleGeometry Class'
+		{
+			ProgID = s 'TRiASCS.TRiASCSRectangleGeometry.1'
+			VersionIndependendProgID = s 'TRiASCS.TRiASCSRectangleGeometry'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Both'
+			}
+			'TypeLib' = s '{6A0120C3-70C6-11D1-974B-00A024D6F582}'
+			'Version' = s '1.0'
+		}
+	}
+}

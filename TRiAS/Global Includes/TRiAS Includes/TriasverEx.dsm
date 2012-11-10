@@ -1,0 +1,66 @@
+option explicit
+
+'------------------------------------------------------------------------------
+'FILE DESCRIPTION: A description was not provided.
+'------------------------------------------------------------------------------
+Sub MakeDpendencies()
+	Dim app, prj, cnf
+	dim nameParts, nParts
+	dim CFG, DIR
+	set prj = application.activeproject
+	if "Build" = prj.type then 
+		for each cnf in prj.configurations
+			nameParts = split( cnf.name, " ", -1, 1 )
+			nParts = uBound(nameparts)
+			if nParts >= 3 then
+				CFG = ""
+				if nameparts(nparts) = "Release" and nameparts(nparts-1) = "Win32" and nameparts(nparts-2) = "-" then
+					CFG = "NDEBUG"
+					DIR = "TRIASDIR_R"
+				elseif nameparts(nparts) = "Debug" and nameparts(nparts-1) = "Win32" and nameparts(nparts-2) = "-" then
+					CFG = "_DEBUG"
+					DIR = "TRIASDIR_D"
+				else
+					PrintToOutputWindow "???? " & prj.name & " " & cnf.name
+				end if
+				if CFG <> "" then 
+					dim prjname, custfile
+					prjname = prj.name
+					on error resume next
+					
+					custfile = "Version.mak"
+					cnf.AddCustomBuildStepToFile custfile _
+					, "nmake -nologo -f version.mak CFG=" & CFG _
+					, ".\" & prjname & ".ver" & vblf & ".\" & prjname & ".def" & vblf & ".\" & prjname & ".rcv" _
+					, ""
+					custfile = prjname & ".idl"
+					cnf.AddCustomBuildStepToFile custfile _
+					, "nmake -nologo -f version.mak CFG=" & CFG _
+					, ".\" & prjname & ".h" & vblf & ".\" & prjname & ".tlb" & vblf & "$(TRIASTLB)\" & prjname & ".tlb" _
+					, ""
+					custfile = prjname & ".mc"
+					cnf.AddCustomBuildStepToFile custfile _
+					, "nmake -nologo -f version.mak CFG=" & CFG _
+					, ".\" & prjname & ".hmc" & vblf & ".\res\msg00407.bin" & vblf & ".\res\msg00409.bin" _
+					, ""
+					custfile = ".\help\" & prjname & ".d"
+					cnf.AddCustomBuildStepToFile custfile _
+					, "nmake -nologo -f version.mak CFG=" & CFG _
+					, "$(TRIASINCLUDE)\help\$(InputName).hlp" _
+					, ""
+					if DIR = "TRIASDIR_R" then
+						cnf.AddCustomBuildStep _
+							"xcopy /F ""$(OutDir)\$(TargetName).dll"" ""$(TRIASDIR_R)"" " & vblf & "xcopy /F ""$(OutDir)\$(TargetName).pdb"" ""$(TRIASDIR_R)"" " _
+							, " ""$(TRIASDIR_R)\$(TargetName).dll"" " _
+							, ""
+					elseif DIR = "TRIASDIR_D" then
+						cnf.AddCustomBuildStep _
+							"xcopy /F ""$(OutDir)\$(TargetName).dll"" ""$(TRIASDIR_D)"" " & vblf & "xcopy /F ""$(OutDir)\$(TargetName).pdb"" ""$(TRIASDIR_D)"" " _
+							, " ""$(TRIASDIR_D)\$(TargetName).dll"" " _
+							, ""
+					end if
+				end if
+			end if
+		next
+	end if
+End Sub

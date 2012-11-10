@@ -1,0 +1,301 @@
+VERSION 5.00
+Begin VB.UserDocument Karteikarte 
+   ClientHeight    =   1170
+   ClientLeft      =   45
+   ClientTop       =   330
+   ClientWidth     =   3315
+   HasDC           =   0   'False
+   HScrollSmallChange=   15
+   KeyPreview      =   -1  'True
+   ScaleHeight     =   1170
+   ScaleWidth      =   3315
+   VScrollSmallChange=   15
+   Begin VB.Label Label1 
+      Alignment       =   2  'Zentriert
+      AutoSize        =   -1  'True
+      BorderStyle     =   1  'Fest Einfach
+      Caption         =   "Glückwunsch zur Erzeugung"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   18
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   930
+      Left            =   240
+      TabIndex        =   0
+      Top             =   90
+      Width           =   2775
+      WordWrap        =   -1  'True
+   End
+End
+Attribute VB_Name = "Karteikarte"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+
+Implements CommonPropertySheet
+
+Private Declare Function SetWindowPos Lib "user32" _
+    (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, _
+    ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+
+'Fenster sollten nur für Dialoge genommen werden, Erfassungsmasken
+'sollten mit UserDocument "DataSubSheet" erzeugt werden
+
+Private mDock As implDockControl 'Object  'DockControl
+
+Const PageCaption = 0
+Const PageTTT = 0
+Const PageHelpId = 0
+
+Private Property Get CommonPropertySheet_ActiveControl() As Object
+  Set CommonPropertySheet_ActiveControl = UserDocument.ActiveControl
+End Property
+
+Private Sub CommonPropertySheet_AfterInitPage()
+
+End Sub
+
+Private Property Let CommonPropertySheet_AutomaticRefresh(ByVal RHS As Boolean)
+
+End Property
+
+Private Property Get CommonPropertySheet_AutomaticRefresh() As Boolean
+
+End Property
+
+Private Property Let CommonPropertySheet_BackColor(ByVal RHS As Long)
+  UserDocument.BackColor = RHS
+End Property
+
+Private Property Get CommonPropertySheet_BackColor() As Long
+  CommonPropertySheet_BackColor = UserDocument.BackColor
+End Property
+
+Private Function CommonPropertySheet_BeforeSavePage() As Boolean
+  CommonPropertySheet_BeforeSavePage = True
+End Function
+
+Private Property Get CommonPropertySheet_Caption() As String
+  CommonPropertySheet_Caption = "Überschrift"
+End Property
+
+
+Private Function CommonPropertySheet_ClosePage() As Boolean
+  Set mDock = Nothing
+  CommonPropertySheet_ClosePage = True
+End Function
+
+Private Property Get CommonPropertySheet_ContextHelpId() As Long
+  CommonPropertySheet_ContextHelpId = PageHelpId
+End Property
+
+
+Private Property Get CommonPropertySheet_Controls() As Object
+  Set CommonPropertySheet_Controls = UserDocument.Controls
+End Property
+
+Private Function CommonPropertySheet_DataBeforeSave(ByVal SourceName As String) As Long
+
+End Function
+
+Private Sub CommonPropertySheet_DataReadComplete(ByVal Info As SABiS_CLASSES.implUserInfo, ByVal SourceName As String)
+
+End Sub
+
+Private Sub CommonPropertySheet_DataRefreshCalculatedFields(ByVal Info As SABiS_CLASSES.implUserInfo, ByVal ACommand As Variant, ByVal Para As Variant)
+
+End Sub
+
+
+Private Sub CommonPropertySheet_DataResetComplete(ByVal SourceName As String)
+
+End Sub
+
+
+Private Sub CommonPropertySheet_DataSaveComplete(ByVal Info As SABiS_CLASSES.implUserInfo, ByVal SourceName As String)
+
+End Sub
+
+
+Private Sub CommonPropertySheet_DataToggleWriteStatus(ByVal SourceName As String, ByVal DoEnable As Boolean)
+
+End Sub
+
+
+Private Function CommonPropertySheet_FireCommand(ByVal ACommand As String, ByVal CommandPara As Variant, ParamArray MoreData() As Variant) As Boolean
+
+End Function
+
+
+Private Property Get CommonPropertySheet_Height() As Long
+  CommonPropertySheet_Height = UserDocument.Height
+End Property
+
+
+Private Property Get CommonPropertySheet_HelpFile() As String
+  CommonPropertySheet_HelpFile = App.HelpFile
+End Property
+
+
+Private Property Get CommonPropertySheet_hWnd() As Long
+  CommonPropertySheet_hWnd = UserDocument.hwnd
+End Property
+
+
+
+Private Property Get CommonPropertySheet_IsDataChanged(ByVal Returntest As Boolean, ByVal DataTag As String) As Boolean
+
+End Property
+
+
+Private Sub CommonPropertySheet_MovePage(ByVal x As Long, ByVal y As Long, _
+  Optional ByVal cx As Variant, Optional ByVal cy As Variant)
+
+  Call SetWindowPos(CommonPropertySheet_hWnd, 0, x, y, _
+    ResolveParaZahl(Width, cx, True) \ Screen.TwipsPerPixelX, _
+    ResolveParaZahl(Height, cy, True) \ Screen.TwipsPerPixelY, 0)
+End Sub
+
+
+Function ResolveParaZahl(ByVal Standard As Long, _
+    Optional ByVal NewLong As Variant, Optional ByVal NullStandard As Variant) As Long
+  Dim Info As Long
+  
+  Info = Standard
+  If Not IsMissing(NewLong) Then
+    If Len(NewLong) > 0 Then 'vbnullstring!!
+      If VarTypeZahl(NewLong) Then
+        Info = NewLong
+      End If
+    End If
+  End If
+  If ResolveParaBoolean(False, NullStandard) And Info = 0 Then
+    Info = Standard
+  End If
+  ResolveParaZahl = Info
+End Function
+
+Function ResolveParaBoolean(ByVal Standard As Boolean, Optional ByVal NewBool As Variant) As Boolean
+  Dim Info As Boolean
+  
+  Info = Standard
+  If Not IsMissing(NewBool) Then
+    If Not VarTypeObj(NewBool) Then
+      If Len(NewBool) > 0 Then 'vbnullstring!!
+        If VarType(NewBool) = vbBoolean Then
+          Info = NewBool
+        Else
+          If VarTypeZahl(NewBool) Then
+            Info = CBool(NewBool)
+          ElseIf VarType(NewBool) = vbString Then
+            Info = NewBool = CStrValid
+          End If
+        End If
+      End If
+    End If
+  End If
+  ResolveParaBoolean = Info
+End Function
+
+
+Public Property Get VarTypeObj(NewObject As Variant) As Boolean
+  VarTypeObj = (VarType(NewObject) = vbObject) Or (VarType(NewObject) = vbDataObject)
+End Property
+
+Public Property Get VarTypeZahl(ByVal Zahl As Variant) As Boolean
+  Dim DerTyp As Long
+  
+  DerTyp = VarType(Zahl)
+  VarTypeZahl = DerTyp = vbInteger Or DerTyp = vbLong Or _
+    DerTyp = vbByte Or DerTyp = vbDouble Or DerTyp = vbSingle
+End Property
+
+Private Property Let CommonPropertySheet_NeedToRefresh(ByVal RHS As Boolean)
+
+End Property
+
+Private Property Get CommonPropertySheet_NeedToRefresh() As Boolean
+
+End Property
+
+Private Sub CommonPropertySheet_OnActivatePage()
+  On Error Resume Next
+  UserDocument.SetFocus
+End Sub
+
+Private Sub CommonPropertySheet_OnDeActivatePage()
+
+End Sub
+
+
+
+Private Function CommonPropertySheet_OnInitPage(ByVal Dock As implDockControl, _
+    ByVal Callback As CommonCallback, ByVal SubPageMode As PropertySheetUsages, _
+    ByVal Info As implUserInfo, Optional ByVal MoreData As Variant) As Boolean
+
+  Set mDock = Dock
+  CommonPropertySheet_OnInitPage = True
+End Function
+
+
+Private Sub CommonPropertySheet_OnSavePage(ByVal Temp As Boolean, _
+    ByVal Save As Boolean, ByVal Info As implUserInfo)
+
+End Sub
+
+
+Private Property Get CommonPropertySheet_PagehWnd() As Long
+  CommonPropertySheet_PagehWnd = 0 'Me.hWnd, wenn Controls
+    'mit Focus verwendet werden
+End Property
+
+
+Private Property Get CommonPropertySheet_PageId() As String
+  CommonPropertySheet_PageId = CStr(PageCaption)
+End Property
+
+Private Property Let CommonPropertySheet_Tag(ByVal RHS As String)
+
+End Property
+
+Private Property Get CommonPropertySheet_Tag() As String
+
+End Property
+
+
+Private Property Get CommonPropertySheet_TargetType() As String
+  CommonPropertySheet_TargetType = "UserDocument"
+End Property
+
+Private Property Get CommonPropertySheet_ToolTipText() As String
+  CommonPropertySheet_ToolTipText = "Tooltip-Text"
+End Property
+
+Private Property Get CommonPropertySheet_Width() As Long
+  CommonPropertySheet_Width = UserDocument.Width
+End Property
+
+
+
+Private Sub UserDocument_KeyDown(KeyCode As Integer, Shift As Integer)
+  If KeyCode = vbKeyEscape Or KeyCode = vbKeyReturn Then
+    If IsNotNothing(mDock) Then
+      Call mDock.OnKeyDown(KeyCode, Shift)
+    End If
+  End If
+End Sub
+
+
+
+
+Public Property Get IsNotNothing(ByVal Objekt As Object) As Boolean
+  IsNotNothing = Not (Objekt Is Nothing)
+End Property
+

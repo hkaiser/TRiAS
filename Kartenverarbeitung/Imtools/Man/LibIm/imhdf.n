@@ -1,0 +1,199 @@
+'\"et
+.if t .TH IMHDF 3IM "August 24, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMHDF 3IM "August 24, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+imhdf \- NCSA HDF image file translation
+.SH SYNOPSIS
+.nf
+\fB
+#include <stdio.h>
+#include "sdsc.h"
+#include "im.h"
+.sp 1
+int ImFileRead( fd, "hdf", flagsTable, dataTable )
+	int         fd;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileFRead( fp, "hdf", flagsTable, dataTable )
+	FILE         *fp;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileWrite( fd, "hdf", flagsTable, dataTable )
+	int         fd;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileFWrite( fp, "hdf", flagsTable, dataTable )
+	FILE         *fp;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+\fR
+.fi
+.SH DESCRIPTION
+\fBhdf\fR is a generic, tagged Hierarchical Data File format developed
+by the National Center for Supercomputing Applications (NCSA).  \fBhdf\fR
+files may contain images, scientific data sets, and miscellaneous data
+items.  Such files may be created by several NCSA tools.  See the NCSA
+documentation for details on how to use these tools.
+.LP
+\fBhdf\fR format handling 
+within the SDSC image library is limited to images of
+certain depths and storage methods.
+.SH "FILE RECOGNITION"
+\fBhdf\fR files are recognized by these filename suffixes: .hdf, .df,
+and .ncsa. 
+.SH NOTES
+SDSC image library support of the \fBhdf\fR format does not require
+use of NCSA's HDF library \fBlibdf.a\fR and contains no proprietary code.
+\fBhdf\fR is available on any machine for which the SDSC image library is
+available.
+.SS "Reading HDF image files"
+The SDSC image library can read \fBhdf\fR image files with one or more
+images and map them to VFBs as follows:
+.ne 4
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l l.
+\fBDepth/color	Type of compression	Mapped to VFB\fR
+8-bit color index	un- and RLE-compressed	IMVFBINDEX8
+16-bit color index	uncompressed only	IMVFBINDEX16
+24-bit color index	uncompressed only	IMVFBINDEX24
+32-bit color index	uncompressed only	IMVFBINDEX32
+24-bit RGB	un- and RLE-compressed	IMVFBRGB
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+All depths except 24-bit RGB may or may not contain a color lookup
+table (CLT). 
+.LP
+RGB images may be non-interlaced, scanline-interlaced, or
+plane-interlaced. 
+.LP
+Note that 24-bit and 32-bit color indexes are truncated to the lower
+16 bits when the file is read into an IMVFBINDEX16 VFB.
+.LP
+The HDF IMCOMP compression scheme is not supported.  HDF's byte-based
+RLE compression scheme is only supported on 8-bit color index and 24-bit
+RGB images.
+.LP
+Administrative header information for \fBhdf\fR files is required in
+MBF (most-significant byte first) byte order by the HDF specification. 
+Images, color tables, and other information in the file may be in either
+MBF or LBF (least-significant byte first) byte order.
+\fINote:\fR  \fBhdf\fR documentation refers to MBF as DFNTI_MBO
+(Motorola byte order) and LBF as either DFNTI_VBO (VAX byte order) or
+DFNTI_IBO (Intel byte order).
+.LP
+Floating-point file data may use IEEE, VAX, or CRAY floating-point formats.
+Character-string file data must be ASCII.  EBCDIC is not supported.
+.LP
+If the file's image has a color map, the image library VFB includes a CLT.
+.LP
+If the file contains multiple images, multiple VFBs are appended
+to the \fIdataTable\fR.
+.SS "Writing HDF image files"
+Images to be written out are mapped from image library VFBs as follows:
+.ne 4
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l l.
+\fBMapped from VFB	Depth/color	Type of compression\fR
+IMVFBINDEX8	8-bit color index	un- or RLE-compressed
+IMVFBINDEX16	16-bit color index	uncompressed only
+IMVFBRGB	24-bit RGB	uncompressed only
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+If the incoming VFB has a CLT, the image written to the \fBhdf\fR file 
+contains a CLT.
+.LP
+RGB images may be stored in non-interlaced, scanline-interlaced, and
+plane-interlaced modes.
+.LP
+\fINote:\fP  Previous versions of this code supported writing of
+compressed RGB images.  This feature has been temporarily removed
+pending full support for such images by the NCSA and SpyGlass tools.
+Macintosh-based HDF tools currently do not support 24-bit RGB images.
+The NCSA UNIX-based HDF tools reliably handle uncompressed RGB images
+only.  
+.LP 
+Other image library VFB types are converted to one of the above types
+prior to being written out.  See the \fBImFileWrite\fR(3IM) man page
+for details.
+.LP
+Administrative header information for \fBhdf\fR files is written in MBF
+byte order as required by the HDF specification.
+Images, color tables, and other information in the file is written in the
+same byte order as the host writing the file (MBF or LBF),
+which ensures the quickest possible I/O for the host.
+\fINote:\fR  \fBhdf\fR documentation refers to MBF as DFNTI_MBO
+(Motorola byte order) and LBF as either DFNTI_VBO (VAX byte order) or
+DFNTI_IBO (Intel byte order).
+.LP
+Floating-point file data is written using the same floating-point format
+as the host writing the file (IEEE, VAX, or CRAY).
+Character-string file data is always ASCII.  EBCDIC is not supported.
+.LP
+If the \fIdataTable\fR contains multiple images, the output \fBhdf\fR
+file also contains multiple images.
+.SH ERRORS
+In addition to those listed for \fBImFileRead\fR(3IM),
+\fBhdf\fR file reading returns the following error codes: 
+.ne 4
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEMAGIC	Bad Magic number in image file
+IMEMALLOC	Cannot allocate enough memory
+IMESYNTAX	Syntax error in HDF file
+IMESYS	System call error in read operation
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+In addition to those listed for \fBImFileWrite\fR(3IM),
+\fBhdf\fR file writing returns the following error codes: 
+.ne 2
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEMALLOC	Cannot allocate enough memory
+IMESYS	System call error in write operation
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH DOCUMENTATION
+\fINCSA HDF\fR,
+National Center for Supercomputing Applications.
+.sp
+\fINCSA HDF Calling Interfaces and Utilities\fR, Version 3.1, July 1990,
+National Center for Supercomputing Applications.
+.sp
+\fINCSA HDF Specifications\fR, March 1989,
+National Center for Supercomputing Applications.
+.SH SEE ALSO
+\fBImIntro\fR(3IM),
+\fBImErrNo\fR(3IM),
+\fBimcat\fR(1IM),
+\fBimconv\fR(1IM),
+\fBimfile\fR(1IM),
+\fBimformats\fR(1IM),
+\fBimsplit\fR(1IM)
+.SH AUTHOR
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR

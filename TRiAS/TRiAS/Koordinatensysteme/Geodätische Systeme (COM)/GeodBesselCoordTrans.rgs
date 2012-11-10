@@ -1,0 +1,24 @@
+HKCR
+{
+	TRiASCTF.GeodBesselCoordTrans.1 = s 'Geodätische Koordinatentransformation Bessel-Ellipsoid'
+	{
+		CLSID = s '{EA2905A3-A6A3-11D1-A05D-0060975566B4}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {EA2905A3-A6A3-11D1-A05D-0060975566B4} = s 'Geodätische Koordinatentransformation Bessel-Ellipsoid'
+		{
+			ProgID = s 'TRiASCTF.GeodBesselCoordTrans.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C3-3123-101C-BB62-00AA0018497C}
+			}
+			ForceRemove OldName = s 'BEGEOD'
+		}
+	}
+}

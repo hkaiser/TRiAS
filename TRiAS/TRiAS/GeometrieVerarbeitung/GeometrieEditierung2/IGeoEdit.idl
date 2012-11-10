@@ -1,0 +1,1049 @@
+// IGeoEdit.idl : IDL source for GeoEdit.ext
+
+
+// This file will be processed by the MIDL tool to
+// produce the type library (IGeoEdit.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+#include "EnumONr.idl"	// für IEnumObjectsByNumber
+#include "EnumObjektGeometrie.idl"
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+// Definition der Interface's
+
+// --------------------------------------------------------------------------------------------
+// IDragObject (vor ITopicalObjects)
+
+[
+	uuid(079638F0-3123-101C-BB62-00AA0018497C),
+	helpstring("IDragObject Interface"),
+	pointer_default(unique)
+]
+
+// Funktionen dieses Interface's
+
+interface IDragObject : IUnknown
+{
+	[helpstring("Hinzufügen eines weiteren Startpunktes")]
+	HRESULT (AddStartPoint) ([in] POINT PT);
+
+	[helpstring("Bildet die zu zeichnenden Linien")]
+	HRESULT (ConstructDragLines) (void);
+
+	[helpstring("Setzt Endpunkt für DragOperation")]
+	HRESULT (SetEndPoint) ([in] POINT ptEnd, [in] BOOL bIsPaint, [in] BOOL bWithDel);
+
+	[helpstring("Verändert die Startpunkte")]
+	HRESULT (ModStartPoints) ([in] POINT* pStartPT, [in] int iLineCount);
+
+	[helpstring("Löscht die letzte Lage auf dem Bildschirm ohne erneut zu zeichnen")]
+	HRESULT (DeleteLastSituation) ([in] BOOL bIsPaint);
+
+	[helpstring("Beendet DragOperation")]
+	HRESULT (DragTerminate) (void);
+
+	[helpstring("zu zeichnende Linien und Cursor beim Scrollen verschieben")]
+	HRESULT (EditWithScrolling) ([in] LONG lOffset, [in] BOOL bHorz);
+};
+
+
+// --------------------------------------------------------------------------------------------
+// ITopicalObjects (vor IEditExtensionSite)
+
+[		
+	uuid(71924702-40C2-11d1-9B1F-444553540000),		// IID_ITopicalObjects
+	helpstring("ITopicalObjects Interface"),
+	pointer_default(unique)
+]
+
+// Funktionen dieses Interface's
+
+interface ITopicalObjects : IUnknown
+{
+cpp_quote("#if !defined(_CURSPOS_DEFINED)")
+cpp_quote("#define _CURSPOS_DEFINED")
+
+	// CursorPositionen bezgl. eines Geometrieobjektes
+	typedef [public] enum _CursPos
+	{
+		[helpstring("Cursor im Marker eines beliebigen Stützpunktes")]
+		CURSPOS_VERTEX,
+
+		[helpstring("Cursor im Marker des ersten Stützpunktes")]
+		CURSPOS_FIRST_VERTEX,
+
+		[helpstring("Cursor im Marker des letzten Stützpunktes")]
+		CURSPOS_LAST_VERTEX,
+
+		[helpstring("Cursor im Marker eines beliebigen Stützpunktes der Außenkontur")]
+		CURSPOS_OUTBORDER_VERTEX,
+
+		[helpstring("Cursor im Marker eines beliebigen Stützpunktes der Innenkontur")]
+		CURSPOS_INBORDER_VERTEX,
+
+		[helpstring("Cursor 'in der Nähe' einer beliebigen Strecke")]
+		CURSPOS_LINE,
+
+		[helpstring("Cursor 'in der Nähe' der Strecke der Außenkontur")]
+		CURSPOS_OUTBORDER,
+
+		[helpstring("Cursor 'in der Nähe' der Strecke der Innenkontur")]
+		CURSPOS_INBORDER,
+
+		[helpstring("Cursor innerhalb eines Objektes")]
+		CURSPOS_OBJECT,
+
+		[helpstring("Cursor ohne Bezug zu einem Objekt")]
+		CURSPOS_OUTSIDE,
+
+		[helpstring("unbekannte Cursorposition")]
+		CURSPOS_UNKNOWN,
+
+	} CursPos;
+cpp_quote("#endif // _CURSPOS_DEFINED")
+
+	[helpstring("Übergibt den TRiAS®-Kontext an das Objekt")]
+	HRESULT SetXtensionSite([in] IUnknown* pISite);
+
+	[helpstring("Übernimmt alle selektierten Objekte")]
+	HRESULT InitWithSelectedObjects (void);
+
+	[helpstring("Übernimmt die übergebenen Objekte")]
+	HRESULT InitWithExternalObjects ([in] IEnumObjectsByNumber* pIE);
+
+	[helpstring("Übernimmt das pIOG-Objekt")]
+	HRESULT AddTopicalObjectGeometry ([in] IUnknown* pIOG);
+
+	[helpstring("Liefert die Objektnummern aller ausgewählten Objekte")]
+	HRESULT GetEnumTopicalObjects ([out, retval] IEnumObjectsByNumber **ppIEnum);
+
+	[helpstring("Liefert die Objektgeometrie'n aller ausgewählten Objekte")]
+	HRESULT GetEnumTopicalObjectsGeometry ([in] BOOL bAll,
+										   [out, retval] IEnumObjektGeometrie** ppIEnum);
+
+	[helpstring("Testet, ob lONr-Objekt in der Liste enthalten ist")]
+	HRESULT IsTopicalObject ([in] LONG lONr, [out] BOOL* pbContain);
+
+	[helpstring("Testet, pIOG lONr-Objekt in der Liste enthalten ist")]
+	HRESULT IsTopicalObjectGeometry ([in] IUnknown* pIOG, [out] BOOL* pbContain);
+
+	[helpstring("Entfernt ein ausgewähltes Objekt aus der Liste")]
+	HRESULT DeleteTopicalObject ([in] LONG lONr);
+
+	[helpstring("Entfernt das pIOG-Objekt aus der Liste")]
+	HRESULT DeleteTopicalObjectGeometry ([in] IUnknown* pIOG);
+
+	[helpstring("Entfernt ausgewählte Objekte aus der Liste")]
+	HRESULT DeleteTopicalObjects ([in] BOOL bAll);
+
+	[helpstring("Liefert Rechteck von ausgewählten Objekten")]
+	HRESULT GetTopicalObjectsRectangle ([in] BOOL bAll, [out] LONG* plXmin, [out] LONG* plXmax,
+										[out] LONG* plYmin, [out] LONG* plYmax);
+
+	[helpstring("Liefert die Anzahl der ausgewählten Objekte")]
+	HRESULT GetCount ([out, retval] LONG* plCnt);
+
+	[helpstring("Liefert die Objekttypen der ausgewählten Objekte")]
+	HRESULT GetObjTypes ([out, retval] int* piAllOT);
+
+	[helpstring("Liefert die Größe der Stützpunktmarkierungen in BS-Koordinaten")]
+	HRESULT GetMarkerSizeBS ([out] int* piMS);
+
+	[helpstring("Liefert die Größe der Stützpunktmarkierungen in DB-Koordinaten")]
+	HRESULT GetMarkerSizeDB ([out] LONG* plMBX, [out] LONG* plMBY);
+
+	[helpstring("Gibt Epsilon für Cursorumschaltung zurück")]
+	HRESULT GetEpsilon ([out] LONG* plEps);
+
+	[helpstring("Legt fest, ob Stützpunkte der ausgewählten Objekte markiert werden sollen")]
+	HRESULT SetMarkVis ([in] BOOL bMarkVis);
+
+	[helpstring("Markiert die Stützpunkte der ausgewählten Objekte")]
+	HRESULT VerticesIndicate (void);
+
+	[helpstring("Löscht die Stützpunktmarkierungen")]
+	HRESULT VerticesUnIndicate (void);
+
+	[helpstring("Liefert die Cursorposition bzgl. aller ausgewählten Objekte")]
+	HRESULT CursorAtTopicalObjects ([out] CursPos* pCP, [out] BOOL* pbSpezCP,
+						   [out] LONG* lGrabX, [out] LONG* lGrabY,
+						   [out, retval] IEnumObjektGeometrie** ppBelowObjs);
+
+	[helpstring("Liefert die Cursorposition bzgl. der pIObj-Objekte")]
+	HRESULT CursorInSomeTopObjects ([in] IEnumObjektGeometrie* pIObj, [in] BOOL bInBorder,
+									[out] CursPos* pCP);
+
+	[helpstring("Testet, ob sich Cursor in einem Marker der pIObj-Objekte befindet")]
+	HRESULT CursorInMarkerSomeTopObjects ([in] IEnumObjektGeometrie* pIObj, [out] CursPos* pCP);
+
+	[helpstring("Liefert die Cursorposition bzgl. der pIObj-Objekte")]
+	HRESULT CursorForAreaPartition ([in] IUnknown* pIOG, [out] CursPos* pCP,
+									[out] LONG* lGrabX, [out] LONG* lGrabY);
+
+	[helpstring("Liefert die Cursorposition bzgl. der pIObj-Objekte")]
+	HRESULT CursorForIslandAdd ([in] IEnumObjektGeometrie* pIObj, [in] BOOL bInBorder,
+								[out] CursPos* pCP);
+
+	[helpstring("Liefert GrabPunkt (lGrabX,lGrabY)")]
+	HRESULT NewVertexWithGrab ([in] POINT* pMPT, [in] IDragObject* pDO, [out] LONG* lGrabX,
+						   [out] LONG* lGrabY, [out, retval] IEnumObjektGeometrie** ppEnumOut);
+
+	[helpstring("Testet, ob Grab-Funktion möglich ist")]
+	HRESULT IsGrabAllowable (LONG lStartPktX, LONG lStartPktY, LONG lEndPktX, LONG lEndPktY,
+		IEnumObjektGeometrie* pStBelowObjs, IEnumObjektGeometrie* pAbBelowObjs, LONG lEpsilon);
+
+	[helpstring("Zeigt an, ob aktuell der Hintergrund gezeichnet wird")]
+	HRESULT IsPaint ([out] BOOL* pbIsPaint);
+
+};
+
+
+// --------------------------------------------------------------------------------------------
+// IRestrictLine (vor IEditExtensionSite)
+
+[
+//	uuid(8F2CA280-AB87-11d2-881A-00104BAF1F6B),
+	uuid(3CE54290-C57D-11d2-8837-00104BAF1F6B),
+
+	helpstring("IRestrictLine Interface"),
+	pointer_default(unique)
+]
+
+// Funktionen dieses Interface's
+
+interface IRestrictLine : IUnknown
+{
+cpp_quote("#if !defined(_RESTRTYPE_DEFINED)")
+cpp_quote("#define _RESTRTYPE_DEFINED")
+
+	// CursorPositionen bezgl. eines Geometrieobjektes
+	typedef [public] enum _RestrType
+	{
+		[helpstring("Konstruktionshilfslinie in Form einer Strecke")]
+		RESTRTYPE_STRECKE,
+
+		[helpstring("Konstruktionshilfslinie in Form einer Gerade")]
+		RESTRTYPE_GERADE,
+
+		[helpstring("Konstruktionshilfslinie in Form eines Kreises")]
+		RESTRTYPE_KREIS,
+
+		[helpstring("Konstruktionshilfslinie mit noch unklarer Form")]
+		RESTRTYPE_UNKNOWN
+
+	} RestrType;
+cpp_quote("#endif // _RESTRTYPE_DEFINED")
+
+	[helpstring("Liefert die Parameter einer Konstruktionshilfslinie")]
+	HRESULT (GetParameters) ([out] RestrType* pResType, [out] POINT* pEPT1, [out] POINT* pEPT2,
+			[out] POINT* pRefPT, [out] int* piRad, [out] LONG* plFixX, [out] LONG* plFixY,
+			[out] double* pdAngle);
+
+	[helpstring("Bildet die Konstruktionshilfslinie")]
+	HRESULT (BuildRestrictLine) ([in] LONG lFixX, [in] LONG lFixY, [in] RestrType ResType,
+			[in] double dAngle, [in] double dLength, [in] double dUFX, [in] double dUFY);
+
+	[helpstring("Setzt den Cursor auf eine Konstruktionshilfslinie")]
+	HRESULT (CursorTo1RestrictLine) ([in] LPARAM lParam, [out] POINT* pPTCur);
+
+
+	[helpstring("Setzt den Cursor auf die gemeinsamen Punkte zweier Konstruktionshilfslinien")]
+	HRESULT (CursorTo2RestrictLines) ([in] LPARAM lParam, [in] IRestrictLine* pRestrLine2,
+			[out] POINT* pPTCur);
+
+	[helpstring("Konstruktionshilfslinie auf dem Bildschirm zeichnen")]
+	HRESULT (Draw) (void);
+
+	[helpstring("Konstruktionshilfslinie auf dem Bildschirm löschen")]
+	HRESULT (UnDraw) (void);
+};
+
+
+// --------------------------------------------------------------------------------------------
+// IEditExtensionSite (Gegen-Interface zu IEditOperation)
+// Interface, das die GeoEdit-Erweiterung für die EditierOperationen bereitstellt, d.h. das
+// Interface, über das die EditierOperationen die GeoEdit-Erweiterung rufen können
+
+[
+	uuid(079638FE-3123-101C-BB62-00AA0018497C),
+	helpstring("Interface, das die GeoEdit-Erweiterung für die EditierOperationen bereitstellt"),
+	pointer_default(unique)
+]
+
+// Funktionen dieses Interface's
+
+interface IEditExtensionSite : IUnknown
+{
+	// Cursorformen bei Neuerfassung von bzw. Modifizierung vorhandener Geometrieobjekte
+	typedef [public] enum _CursForm
+	{
+		[helpstring("Standard-Cursor")]
+		CURSFORM_PFEIL,
+
+		[helpstring("Cursorform bei Editierung")]
+		CURSFORM_CROSS,
+
+		[helpstring("Cursorform bei Modifizierung der Geometrie im Marker eines Stützpunktes")]
+		CURSFORM_STERN,
+
+		[helpstring("Cursorform bei Position 'in der Nähe' einer Strecke")]
+		CURSFORM_TRENNER,
+
+		[helpstring("Cursorform bei Position im Marker eines Stützpunktes und Strg-Taste gedrückt")]
+		CURSFORM_KREUZ,
+
+		[helpstring("Cursorform bei Position innerhalb eines Objektes")]
+		CURSFORM_INOBJEKT,
+
+		[helpstring("Cursorform bei Neueditierung im Marker eines Stützpunktes")]
+		CURSFORM_FANGEN,
+
+	} CursForm;
+
+	[helpstring("Liefert das Interface der GeoEdit-Erweiterung")]
+	HRESULT (GetXtensionSite)([out, retval] IUnknown** ppIUnk);
+
+	[helpstring("Liefert den MenuOffset")]
+	HRESULT (GetMenuOffset) ([out, retval] UINT* pMenuOffset);
+
+	[helpstring("Setzt die Cursorform")]
+	HRESULT (SetCursor) ([in] CursForm CurForm, [in] BOOL bPseudoMove);
+
+	[helpstring("Liefert die aktuelle Cursorform")]
+	HRESULT (GetCursor) ([out, retval] CursForm* pCursor);
+
+	[helpstring("Liefert Interface zur Klasse CTopicalObjects")]
+	HRESULT (CreateInterfaceTO) ([out, retval] ITopicalObjects** ppTopObjs);
+
+	[helpstring("Öffnet den EditierDialog")]
+	HRESULT (ShowEditDialog) ([in] LPCSTR pcCapt,
+			[in] LPCSTR pcRegKey, [in] ULONG ulCnt, [in] IUnknown** ppIOG, [in] int* piGrabCnt,
+			[in] LONG* pGrabPktX, [in] LONG* pGrabPktY, [in] HRESULT hrComBorder,
+			[in] long lComONr, [in] int iCloseCnt, [in] LONG* plCloseX, [in] LONG* plCloseY,
+			[out, retval] int* piResult);
+
+	[helpstring("Speichert neu editiertes Objekt in die TRiAS-Datenbank")]
+	HRESULT (StoreNewObject) ([in] IUnknown* pIOG, [in] BSTR bsObjName);
+
+	[helpstring("Aktiviert Zusatzmodul 'Objektoperationen'")]
+	HRESULT (ObjOperInterface) ([out, retval] IUnknown** ppIObjOper);
+
+	[helpstring("GeoEdit liefert Pointer für Konstruktionshilfslinie an die EditierOperation")]
+	HRESULT (GetRestrictLine) ([out] IRestrictLine** ppRestrLine);
+
+	[helpstring("GeoEdit bekommt von EditierOperation Bezugsobjekt und Konstruktionshilfslinie zurück")]
+	HRESULT (SetRestrictLine) ([in] long lRegONr, [in] IRestrictLine* pRestrLine);
+
+	[helpstring("Löscht die Konstruktionshilfslinien")]
+	HRESULT (DeleteRestrictLines) (void);
+};
+
+
+// --------------------------------------------------------------------------------------------
+// IEditExternalObjects
+// Interface, das die GeoEdit-Erweiterung bereitstellt, damit die auszuwählenden Objekte
+// beliebig vorgegeben werden können
+
+[
+	uuid(71924704-40C2-11d1-9B1F-444553540000),
+	helpstring("Interface, das die GeoEdit-Erweiterung für die Übergabe beliebiger Objekte bereitstellt"),
+	pointer_default(unique)
+]
+
+// Funktionen dieses Interface's
+
+interface IEditExternalObjects : IUnknown
+{
+	[helpstring("Fügt ein Objekt zur Menge der ausgewählten Objekte hinzu")]
+	HRESULT (AddObject) (void);
+
+	[helpstring("Liefert ein Objekt aus der Menge der ausgewählten Objekte")]
+	HRESULT (GetObject) (void);
+
+	[helpstring("Löscht ein Objekt aus der Menge der ausgewählten Objekte")]
+	HRESULT (RemoveObject) (void);
+
+	[helpstring("Fügt extern bereitgestellte Objekte zu den auszuwählenden Objekten hinzu")]
+	HRESULT (AddObjects) ([in] IDispatch* pIDisp);
+
+	[helpstring("Liefert die ausgewählten Objekte")]
+	HRESULT (GetObjects) ([out] IDispatch** ppIDisp, LONG lObjTypes);
+
+	[helpstring("Rücknahme der extern bereitgestellten ausgewählten Objekte")]
+	HRESULT (RemoveObjects) (void);
+};
+
+
+// --------------------------------------------------------------------------------------------
+// IEditOperation (Gegen-Interface zu IEditExtensionSite)
+// Interface, das alle EditierOperationen für die GeoEdit-Erweiterung bereitstellen, d.h. das
+// Interface, über das die GeoEdit-Erweiterung die EditierOperationen rufen kann
+
+[
+	uuid(079638F2-3123-101C-BB62-00AA0018497C),
+	helpstring("Interface, das die EditierOperationen für die GeoEdit-Erweiterung bereitstellen"),
+	pointer_default(unique)
+]
+
+// Funktionen dieses Interface's
+
+interface IEditOperation : IUnknown
+{
+	[helpstring("Initialisierung der EditierOperationen")]
+	HRESULT SetEditExtensionSite ([in] IEditExtensionSite* pIEdExSite);
+
+	[helpstring("Informiert die EditierOperationen über Zustand der Konstruktionslinien")]
+	HRESULT InformRestrictLinesState ([in] IRestrictLine* pRestrLine1,
+									  [in] IRestrictLine* pRestrLine2);
+
+	[helpstring("Löscht den Cursor auf einer Konstruktionshilfslinie")]
+	HRESULT DeleteRestrictedCursor (void);
+};
+
+
+// --------------------------------------------------------------------------------------------
+// IMenuHandling
+// Interface, das EditierOperationen für die GeoEdit-Erweiterung bereitstellen, damit die
+// MenüBehandlung an die EditierOperationen weiterreichen zu können
+
+[
+	uuid(079638F8-3123-101C-BB62-00AA0018497C),
+	helpstring("Interface, das EditierOperationen für die GeoEdit-Erweiterung zur MenüBehandlung bereitstellen"),
+	pointer_default(unique)
+]
+
+// Funktionen dieses Interface's
+
+interface IMenuHandling : IUnknown
+{
+	[helpstring("Verarbeiten der übergebenen MenuCommand's")]
+	HRESULT WorkMenuCommand ([in] WPARAM wParam, [in] HWND hWnd);
+
+	[helpstring("Verarbeiten des übergebenen MenuInit")]
+	HRESULT WorkMenuInit ([in] HMENU hMenu, [in] LPARAM lParam, [in] HWND hWnd);
+
+	[helpstring("Verarbeiten des übergebenen MenuSelect")]
+	HRESULT WorkMenuSelect ([in] UINT uiMenuID, [in] HMENU hMenu, [in] HWND hWnd);
+};
+
+
+// --------------------------------------------------------------------------------------------
+// IModifyClassSite (Gegen-Interface zu IModifyOperation)
+// Interface, das die CObjectModify-Klasse für die ModifyOperation's bereitstellt, d.h. das
+// Interface, über das die ModifyOperation's die CObjectModify-Klasse rufen können
+
+[
+	uuid(079638F9-3123-101C-BB62-00AA0018497C),
+	helpstring("Interface, das die CObjectModify-Klasse für die ModifyOperation's bereitstellt"),
+	pointer_default(unique)
+]
+
+// Funktionen dieses Interface's
+
+interface IModifyClassSite : IUnknown
+{
+cpp_quote("#if !defined(_TESTRICHT_DEFINED)")
+cpp_quote("#define _TESTRICHT_DEFINED")
+
+	// Wahlmöglichkeiten bei verkürztem Test auf Geometriefehler
+	typedef [public] enum _TestRicht
+	{
+		[helpstring("Test nur mit der Strecke, die mit dem Bezugsindex und dessen Nachfolger gebildet wird")]
+		TESTRICHT_VORW,
+
+		[helpstring("Test nur mit der Strecke, die mit dem Bezugsindex und dessen Vorgänger gebildet wird")]
+		TESTRICHT_RUECKW,
+
+		[helpstring("Test nur mit den zwei Strecken, die mit dem Bezugsindex und sowohl dessen Vorgänger als auch dessen Nachfolger gebildet werden")]
+		TESTRICHT_VORRUECK,
+
+		[helpstring("kein Test auf Geometriefehler")]
+		TESTRICHT_OHNE,
+
+	} TestRicht;
+cpp_quote("#endif // _TESTRICHT_DEFINED")
+
+	[helpstring("Liefert zu verschiebenden Punkt und die betroffenen Objekte")]
+	HRESULT GetParameter ([out] LONG* lMPX, [out] LONG* lMPY,
+						  [out, retval] IEnumObjektGeometrie** ppBelowObjs);
+
+	[helpstring("Liefert rechteckigen Ausschnitt zum Neuzeichnen")]
+	HRESULT SectorToDraw ([in] IUnknown* pIOG, [in] LONG lModPktX, [in] LONG lModPktY,
+						  [in] LONG lInd, [in] BOOL bVtDel, [out, retval] RECT* pSector);
+
+	[helpstring("Speichert eine modifizierte Objektgeometrie")]
+	HRESULT ModObjSpeicherung ([in] IUnknown* pIOG, [in] LONG lModPktX,
+							   [in] LONG lModPktY, [in] LONG lInd, [in] BOOL bVtDel,
+							   [in] TestRicht trRicht, [out, retval] RECT* pRec);
+
+	[helpstring("GrabPunkt setzen")]
+	HRESULT SetGrabPoint ([in] LONG lGPX, [in] LONG lGPY);
+
+	[helpstring("CursorForm aktualisieren")]
+    HRESULT RefreshCursorForm (void);
+};
+
+
+// --------------------------------------------------------------------------------------------
+// IModifyOperation (Gegen-Interface zu IModifyClassSite)
+// Interface, das alle ModifyOperation's für die CObjectModify-Klasse bereitstellen, d.h. das
+// Interface, über das die CObjectModify-Klasse die ModifyOperation's rufen kann
+
+[
+	uuid(079638FA-3123-101C-BB62-00AA0018497C),
+	helpstring("Interface, das die ModifyOperation's für die CObjectModify-Klasse bereitstellen"),
+	pointer_default(unique)
+]
+
+// Funktionen dieses Interface's
+
+interface IModifyOperation : IUnknown
+{
+	[helpstring("Initialisierung der ModifyOperation's")]
+	HRESULT SetModifyClassSite ([in] IEditExtensionSite* pIEdExSite,
+								[in] IModifyClassSite* pIModClSite);
+
+	[helpstring("Verlängert Linienobjekte")]
+	HRESULT LineElongation ([in] IEnumObjektGeometrie* pModObjs, [in] LONG lRMX,
+							[in] LONG lRMY);
+
+	[helpstring("Teilt ein Flächenobjekt")]
+	HRESULT AreaPartition ([in] LONG lONr, [in] POINT PTRM);
+
+	[helpstring("Fügt eine Innenkontur hinzu")]
+	HRESULT IslandAddition ([in] IEnumObjektGeometrie* pModObjs);
+
+	[helpstring("Erzeugt Rechtwinkligkeit")]
+	HRESULT Rectangularity ([in] LONG lONr, [in] int iKInd, [in] LONG lStartInd,
+							[in] double dEps90, [in] double dEps180, [in] double dEpsCom,
+							[out, retval] IEnumObjectsByNumber** ppEnumOut);
+
+	[helpstring("Übernimmt Linienabschnitt")]
+	HRESULT MakeCommonBorder ([in] IEnumObjektGeometrie* pModObjs, [in] LONG lRMX,
+							  [in] LONG lRMY);
+};
+
+
+// --------------------------------------------------------------------------------------------
+// IRestrictCursor
+
+[
+	uuid(13A82791-CBF0-11d2-883F-00104BAF1F6B),
+
+	helpstring("IRestrictCursor Interface"),
+	pointer_default(unique)
+]
+
+// Funktionen dieses Interface's
+
+interface IRestrictCursor : IUnknown
+{
+	[helpstring("Bildet den abgetrennten Cursor")]
+	HRESULT (ConstructRestrictCursor) (void);
+
+	[helpstring("Setzt Punkt bei Cursorposition")]
+	HRESULT (SetPoint) ([in] POINT PTCent, [in] BOOL bIsPaint);
+
+	[helpstring("Setzt das bFirst-Flag")]
+	HRESULT (SetFirstFlag) ([in] BOOL bFirst);
+
+	[helpstring("Liefert das umschreibende Rechteck des Cursors")]
+	HRESULT (GetBoundingBox) ([out] RECT* pRec);
+
+	[helpstring("Liefert die Ausdehnung des Cursors")]
+	HRESULT (GetDimension) ([out] LONG* plWidth, [out] LONG* plHeight);
+
+	[helpstring("Löscht den Cursor")]
+	HRESULT (UnDraw) (void);
+};
+
+
+
+/*
+///////////////////////////////////////////////////////////////////////////////////////////////
+// GeoMedia-Interface's
+
+// --------------------------------------------------------------------------------------------
+// Interface _DGMPoint
+
+	[
+	  odl,
+	  uuid(CE361C90-B00C-11CF-ABEF-08003601B769),
+	  hidden,
+	  dual,
+	  nonextensible,
+	  oleautomation
+	]
+
+// Funktionen dieses Interface's
+
+    interface _DGMPoint : IDispatch {
+        [id(0x00000001), propget]
+        HRESULT _stdcall X([out, retval] double* returnValue);
+        [id(0x00000001), propput]
+        HRESULT _stdcall X([in] double returnValue);
+        [id(0x00000002), propget]
+        HRESULT _stdcall Y([out, retval] double* returnValue);
+        [id(0x00000002), propput]
+        HRESULT _stdcall Y([in] double returnValue);
+        [id(0x00000003), propget]
+        HRESULT _stdcall Z([out, retval] double* returnValue);
+        [id(0x00000003), propput]
+        HRESULT _stdcall Z([in] double returnValue);
+        [id(0x60020006), restricted, hidden]
+        HRESULT _stdcall GetPoint([out] double* Point);
+        [id(0x60020007), restricted, hidden]
+        HRESULT _stdcall SetPoint([in] double* Point);
+    };
+
+
+// --------------------------------------------------------------------------------------------
+// Interface _DGMGeometryDigitizeService
+
+    [
+      odl,
+      uuid(DAF15B80-E3C5-11CF-ABFE-08003601B769),
+      hidden,
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+
+// Funktionen dieses Interface's
+
+    interface _DGMGeometryDigitizeService : IDispatch {
+        [id(0x60020000), propget]
+        HRESULT _stdcall GeometryCount([out, retval] long* returnValue);
+        [id(0x60020001), propputref]
+        HRESULT _stdcall MapView([in] IDispatch* returnValue);
+        [id(0x60020001), propget]
+        HRESULT _stdcall MapView([out, retval] IDispatch** returnValue);
+        [id(0x60020003)]
+        HRESULT _stdcall AppendGeometry(
+                        [in] IDispatch* Geometry, 
+                        [in] IDispatch* geometryStyle, 
+                        [in, optional] VARIANT keyPointStyle, 
+                        [out, retval] long* Index);
+        [id(0x60020004)]
+        HRESULT _stdcall GetGeometry(
+                        [in] long Index, 
+                        [out, retval] IDispatch** Geometry);
+        [id(0x60020005)]
+        HRESULT _stdcall RemoveGeometry([in] VARIANT Item);
+        [id(0x60020006)]
+        HRESULT _stdcall RemoveAllGeometries();
+        [id(0x60020007)]
+        HRESULT _stdcall DynamicPoint(
+                        [in] _DGMPoint* point, 
+                        [in, optional] VARIANT Item);
+        [id(0x60020008)]
+        HRESULT _stdcall AppendPoint(
+                        [in] _DGMPoint* point, 
+                        [in, optional] VARIANT Item);
+        [id(0x60020009)]
+        HRESULT _stdcall RemoveLastPoint([in, optional] VARIANT Item);
+        [id(0x6002000a)]
+        HRESULT _stdcall RemoveAllPoints([in, optional] VARIANT Item);
+        [id(0x6002000b)]
+        HRESULT _stdcall IsGeometryValid(
+                        [in, optional] VARIANT Item, 
+                        [out, retval] VARIANT_BOOL* isValid);
+        [id(0x6002000c)]
+        HRESULT _stdcall IsGeometryComplete(
+                        [in, optional] VARIANT Item, 
+                        [out, retval] VARIANT_BOOL* isValid);
+    };
+
+
+// --------------------------------------------------------------------------------------------
+// Interface _DGMGeometryEditService
+
+    [
+      odl,
+      uuid(24BD4001-F12A-11CF-AC01-08003601B769),
+      hidden,
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+
+// Funktionen dieses Interface's
+
+    interface _DGMGeometryEditService : IDispatch {
+        [id(0x60020000), propget]
+        HRESULT _stdcall GeometryCount([out, retval] long* returnValue);
+        [id(0x60020001), propputref]
+        HRESULT _stdcall MapView([in] IDispatch* returnValue);
+        [id(0x60020001), propget]
+        HRESULT _stdcall MapView([out, retval] IDispatch** returnValue);
+        [id(0x60020003)]
+        HRESULT _stdcall AppendGeometry(
+                        [in] IDispatch* Geometry, 
+                        [in] IDispatch* geometryStyle, 
+                        [in, optional] VARIANT keyPointStyle, 
+                        [out, retval] long* Index);
+        [id(0x60020004)]
+        HRESULT _stdcall GetGeometry(
+                        [in] long Index, 
+                        [out, retval] IDispatch** Geometry);
+        [id(0x60020005)]
+        HRESULT _stdcall RemoveGeometry([in] VARIANT Item);
+        [id(0x60020006)]
+        HRESULT _stdcall RemoveAllGeometries();
+        [id(0x60020007)]
+        HRESULT _stdcall BeginMove([in] _DGMPoint* point);
+        [id(0x60020008)]
+        HRESULT _stdcall Move([in] _DGMPoint* point);
+        [id(0x60020009)]
+        HRESULT _stdcall EndMove([in] _DGMPoint* point);
+        [id(0x6002000a)]
+        HRESULT _stdcall CancelMove();
+        [id(0x6002000b)]
+        HRESULT _stdcall SelectKeypoint(
+                        [in] VARIANT Item, 
+                        [in] long keypoint, 
+                        [in, optional] VARIANT keyPointStyle);
+        [id(0x6002000c)]
+        HRESULT _stdcall SelectAllKeypoints(
+                        [in] VARIANT Item, 
+                        [in, optional] VARIANT keyPointStyle);
+        [id(0x6002000d)]
+        HRESULT _stdcall UnSelectKeypoint(
+                        [in] VARIANT Item, 
+                        [in] long keypoint);
+        [id(0x6002000e)]
+        HRESULT _stdcall UnSelectAllKeypoints([in] VARIANT Item);
+        [id(0x6002000f)]
+        HRESULT _stdcall SetKeypointStyle(
+                        [in] VARIANT Item, 
+                        [in] long keypointType, 
+                        [in] VARIANT style);
+        [id(0x60020010)]
+        HRESULT _stdcall IsKeypointSelected(
+                        [in] VARIANT Item, 
+                        [in] long keypoint, 
+                        [out, retval] VARIANT_BOOL* isSelected);
+        [id(0x60020011)]
+        HRESULT _stdcall IsEditable(
+                        [in] VARIANT Item, 
+                        [in] short action, 
+                        [out, retval] VARIANT_BOOL* IsEditable);
+        [id(0x60020012)]
+        HRESULT _stdcall InsertVertexBefore(
+                        [in] VARIANT Item, 
+                        [in] long vertex, 
+                        [in] _DGMPoint* point);
+        [id(0x60020013)]
+        HRESULT _stdcall InsertVertexAfter(
+                        [in] VARIANT Item, 
+                        [in] long vertex, 
+                        [in] _DGMPoint* point);
+        [id(0x60020014)]
+        HRESULT _stdcall DeleteVertex(
+                        [in] VARIANT Item, 
+                        [in] long vertex);
+        [id(0x60020015)]
+        HRESULT _stdcall DeleteSelectedVertices([in] VARIANT Item);
+        [id(0x60020016)]
+        HRESULT _stdcall BeginRotate(
+                        [in] _DGMPoint* point, 
+                        [in] _DGMPoint* origin);
+        [id(0x60020017)]
+        HRESULT _stdcall Rotate([in] _DGMPoint* point);
+        [id(0x60020018)]
+        HRESULT _stdcall EndRotate([in] _DGMPoint* point);
+        [id(0x60020019)]
+        HRESULT _stdcall CancelRotate();
+        [id(0x6002001a)]
+        HRESULT _stdcall keypointType(
+                        [in] VARIANT Item, 
+                        [in] long keypoint, 
+                        [out, retval] long* Type);
+    };
+*/
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+// Definition der CoClass'es in Library GeoEditLib
+
+[
+	uuid(061D9CB3-B716-11D0-9568-00A024D6F582),		// LIBID_GeoEditLib
+	version(1.0),
+	helpstring("GeoEdit 1.0 Type Library")
+]
+library GeoEditLib
+{
+	importlib("stdole32.tlb");
+
+	import "TRiASConnections.idl";
+
+// --------------------------------------------------------------------------------------------
+// TopicalObjects
+
+	[
+		uuid(71924703-40C2-11d1-9B1F-444553540000),	// CLSID_TopicalObjects
+		helpstring("TopicalObjects Class")
+	]
+	coclass TopicalObjects
+	{
+		[default] interface ITopicalObjects;
+		interface ITRiASNotificationSink;
+	};
+
+// --------------------------------------------------------------------------------------------
+// DragMultiLine
+
+	[
+		uuid(079638FC-3123-101C-BB62-00AA0018497C),	// CLSID_DragMultiLine
+		helpstring("DragMultiLine Class")
+	]
+	coclass DragMultiLine
+	{
+		[default] interface IDragObject;
+	};
+
+// --------------------------------------------------------------------------------------------
+// NewPoint
+
+	[
+		uuid(079638F3-3123-101C-BB62-00AA0018497C),	// CLSID_NewPoint
+		helpstring("NewPoint Class")
+	]
+	coclass NewPoint
+	{
+		[default] interface IEditOperation;
+		interface ITRiASSysNotificationSink;
+	};
+
+// --------------------------------------------------------------------------------------------
+// NewLine
+
+	[
+		uuid(079638F4-3123-101C-BB62-00AA0018497C),	// CLSID_NewLine
+		helpstring("NewLine Class")
+	]
+	coclass NewLine
+	{
+		[default] interface IEditOperation;
+		interface ITRiASNotificationSink;
+		interface ITRiASSysNotificationSink;
+	};
+
+// --------------------------------------------------------------------------------------------
+// NewArea
+
+	[
+		uuid(079638F5-3123-101C-BB62-00AA0018497C),	// CLSID_NewArea
+		helpstring("NewArea Class")
+	]
+	coclass NewArea
+	{
+		[default] interface IEditOperation;
+		interface ITRiASNotificationSink;
+		interface ITRiASSysNotificationSink;
+	};
+
+// --------------------------------------------------------------------------------------------
+// ObjectModify
+
+	[
+		uuid(079638F7-3123-101C-BB62-00AA0018497C),	// CLSID_ObjectModify
+		helpstring("ObjectModify Class")
+	]
+	coclass ObjectModify
+	{
+		[default] interface IEditOperation;
+		interface IMenuHandling;
+		interface ITRiASSysNotificationSink;
+	};
+
+// --------------------------------------------------------------------------------------------
+// VertexMove
+
+	[
+		uuid(079638FB-3123-101C-BB62-00AA0018497C),	// CLSID_VertexMove
+		helpstring("VertexMove Class")
+	]
+	coclass VertexMove
+	{
+		[default] interface IModifyOperation;
+		interface ITRiASSysNotificationSink;
+	};
+
+// --------------------------------------------------------------------------------------------
+// VertexAdd
+
+	[
+		uuid(71924705-40C2-11d1-9B1F-444553540000),	// CLSID_VertexAdd
+		helpstring("VertexAdd Class")
+	]
+	coclass VertexAdd
+	{
+		[default] interface IModifyOperation;
+		interface ITRiASSysNotificationSink;
+	};
+
+// --------------------------------------------------------------------------------------------
+// LineElongation
+
+	[
+		uuid(71924707-40C2-11d1-9B1F-444553540000),	// CLSID_LineElongation
+		helpstring("LineElongation Class")
+	]
+	coclass LineElongation
+	{
+		[default] interface IModifyOperation;
+	};
+
+// --------------------------------------------------------------------------------------------
+// AreaPartition
+
+	[
+		uuid(71924708-40C2-11d1-9B1F-444553540000),	// CLSID_AreaPartition
+		helpstring("AreaPartition Class")
+	]
+	coclass AreaPartition
+	{
+		[default] interface IModifyOperation;
+	};
+
+// --------------------------------------------------------------------------------------------
+// IslandAdd
+
+	[
+		uuid(7192470A-40C2-11d1-9B1F-444553540000),	// CLSID_IslandAdd
+		helpstring("IslandAdd Class")
+	]
+	coclass IslandAdd
+	{
+		[default] interface IModifyOperation;
+	};
+
+// --------------------------------------------------------------------------------------------
+// MakeRectangular
+
+	[
+		uuid(71924706-40C2-11d1-9B1F-444553540000),	// CLSID_MakeRectangular
+		helpstring("MakeRectangular Class")
+	]
+	coclass MakeRectangular
+	{
+		[default] interface IModifyOperation;
+	};
+
+// --------------------------------------------------------------------------------------------
+// ObjectMove
+
+	[
+		uuid(71924709-40C2-11d1-9B1F-444553540000),	// CLSID_ObjectMove
+		helpstring("ObjectMove Class")
+	]
+	coclass ObjectMove
+	{
+		[default] interface IEditOperation;
+		interface ITRiASSysNotificationSink;
+	};
+
+// --------------------------------------------------------------------------------------------
+// Designing
+
+	[
+		uuid(8F2CA281-AB87-11d2-881A-00104BAF1F6B),	// CLSID_Designing
+		helpstring("Designing Class")
+	]
+	coclass Designing
+	{
+		[default] interface IEditOperation;
+		interface ITRiASNotificationSink;
+		interface ITRiASSysNotificationSink;
+	};
+
+// --------------------------------------------------------------------------------------------
+// RestrictLine
+
+	[
+//		uuid(7E221250-AB2B-11d2-8819-00104BAF1F6B),	// CLSID_RestrictLine
+		uuid(D08560D0-C57B-11d2-8837-00104BAF1F6B),	// CLSID_RestrictLine
+		helpstring("RestrictLine Class")
+	]
+	coclass RestrictLine
+	{
+		[default] interface IRestrictLine;
+	};
+
+
+// --------------------------------------------------------------------------------------------
+// RestrictCursor
+
+	[
+		uuid(13A82790-CBF0-11d2-883F-00104BAF1F6B),	// CLSID_RestrictCursor
+
+		helpstring("RestrictCursor Class")
+	]
+	coclass RestrictCursor
+	{
+		[default] interface IRestrictCursor;
+	};
+
+// --------------------------------------------------------------------------------------------
+// EnumObjektGeometrie
+
+	[
+		uuid(E8579C71-D21F-11D2-9BBB-144020524153),	// CLSID_EnumObjektGeometrie
+
+		helpstring("EnumObjektGeometrie Class")
+	]
+	coclass EnumObjektGeometrie
+	{
+		[default] interface IEnumObjektGeometrie;
+	};
+
+// --------------------------------------------------------------------------------------------
+// CommonBorder
+
+	[
+		uuid(12A72E58-B157-4D03-9297-73A6429E131A),	// CLSID_CommonBorder
+		helpstring("CommonBorder Class")
+	]
+	coclass CommonBorder
+	{
+		[default] interface IModifyOperation;
+	};
+
+
+/*
+// ============================================================================================
+// GeoMedia-CoClass'es
+// --------------------------------------------------------------------------------------------
+// CoClass GeometryDigitizeService  (bei GeoMedia: 298F2F50-E1AD-11CF-ABFE-08003601B769)
+
+    [
+      uuid(71924700-40C2-11d1-9B1F-444553540000)
+    ]
+    coclass GeometryDigitizeService {
+        [default] interface _DGMGeometryDigitizeService;
+    };
+
+	// mögliche Editiervorgänge
+	typedef [public] enum GeometryEditConstants
+	{
+		[helpstring("Edit Action Types")]gmgeMoveGeometry = 0,
+		[helpstring("Edit Action Types")]gmgeMoveKeypoint = 1,
+		[helpstring("Edit Action Types")]gmgeInsertVertex = 2,
+		[helpstring("Edit Action Types")]gmgeDeleteSelectedVertices = 3,
+	} GeometryEditConstants;
+
+
+// --------------------------------------------------------------------------------------------
+// CoClass GeometryEditService  (bei GeoMedia: 24BD4000-F12A-11CF-AC01-08003601B769)
+
+    [
+      uuid(71924701-40C2-11d1-9B1F-444553540000)
+    ]
+    coclass GeometryEditService {
+        [default] interface _DGMGeometryEditService;
+    };
+*/
+};

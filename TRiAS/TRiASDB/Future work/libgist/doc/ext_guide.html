@@ -1,0 +1,1604 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.02 [en] (WinNT; I) [Netscape]">
+   <META NAME="Author" CONTENT="Marcel Kornacker">
+   <TITLE>Guide to Writing Extensions</TITLE>
+</HEAD>
+<BODY>
+<!-- $Id: ext_guide.html,v 1.5 1998/12/15 00:40:33 marcel Exp $ -->
+<Center>
+<H1>Guide to Writing Extensions</H1>
+<HR WIDTH="100%"></CENTER>
+
+<CENTER>
+<H2>
+Table of Contents</H2></CENTER>
+
+<UL>
+
+<LI>
+<A HREF="#introduction">Introduction</A></LI>
+<li>
+<a href="#structural">Writing Structural Extensions</a>
+</li>
+<ul>
+<LI>
+<A HREF="#Overview of the Class Hierarchy">Overview of the Class Hierarchy</A></LI>
+
+<LI>
+<A HREF="#Simple Extension Interface">Simple Extension Interface</A></LI>
+
+<LI>
+<A HREF="#Node-Layout Extension Interface">Node-Layout Extension Interface</A></LI>
+
+<LI>
+<A HREF="#Ancillary Classes for the Node-Layout Extension">Ancillary Classes
+for the Node-Layout Extension Interface</A></LI>
+</ul>
+<li>
+<a href="#behavior">Writing Search-Behavior Extensions</a>
+</li>
+<ul>
+<li><A href="#cursor_abstract">Cursor Abstractions</a></li>
+
+<li><A href="#cursor_basic">Basic Cursor Implementations</a></li>
+
+<li><A href="#cursor_custom">Customized Cursor Extension Objects</a></li>
+</ul>
+
+<LI>
+<A HREF="#Appendix A: Class Definitions">Appendix A: Class Definitions</A></LI>
+
+<UL>
+<LI>
+<A HREF="#Appendix A.1: gist">Appendix A.1: gist</A></LI>
+
+<LI>
+<A HREF="#Appendix A.2: gist_ext_t">Appendix A.2: gist_ext_t</A></LI>
+
+<LI>
+<A HREF="#Appendix A.3: bt_ext_t">Appendix A.3: bt_ext_t</A></LI>
+
+<LI>
+<A HREF="#Appendix A.4: gist_unorderedn_t">Appendix A.4: gist_unorderedn_t</A></LI>
+
+<LI>
+<A HREF="#Appendix A.5: gist_unordered_t">Appendix A.5: gist_unordered_t</A></LI>
+
+<LI>
+<A HREF="#Appendix A.6: rt_ext_t">Appendix A.6: rt_ext_t</A></LI>
+</UL>
+
+<LI>
+<A HREF="#Appendix B: gist_p.h">Appendix B: gist_p.h</A></LI>
+
+<LI>
+<A HREF="#Appendix C: vec.h">Appendix C: vec_t.h</A></LI>
+</UL>
+
+<CENTER>
+<H3>
+
+<HR WIDTH="100%"></H3></CENTER>
+<center>
+<h2>
+<A NAME="introduction">Introduction</H2></a>
+</center>
+
+This document explains how to extend libgist with new types of access
+methods (AMs). The extensions are written in C++ and complement the
+standard libgist class hierarchy. Before attempting to write
+extensions, you should know how to use libgist as an application
+programmer (refer to the libgist <A HREF="user_manual.html">User
+Manual</A> for the details).
+
+<HR WIDTH="100%"></H3></CENTER>
+<center>
+<h2>
+<A NAME="structural">Writing Structural Extensions</H2></a>
+</center>
+
+<H2>
+<A NAME="Overview of the Class Hierarchy"></A>Overview of the Class Hierarchy</H2>
+Libgist extensions are implemented through function tables, which are provided
+- true to the C++ style - in the form of classes and objects. Extension
+classes implement the general behavior of AMs, whereas an object of an
+extension class provides datatype-specific details. To give an example,
+consider the B-tree extension supplied as part of the standard libgist
+distribution. The extension class <TT>bt_ext_t</TT> implements the standard
+B-tree AM (with sorted nodes and partitioning of the key space by the BPs)
+without reference to any specific datatype. The extension object <TT>bt_int_ext</TT>
+adds integer-specific functions (mainly comparison and storage size computation)
+that complement the general behavior implemented by the class to create
+an integer B-tree extension. The extension object is implemented as a function
+table that can be used to create, update and query B-trees containing integer
+keys.
+
+<P>The original GiST publication [<A HREF="http://gist.cs.berkeley.edu/gist1.html#Papers">HNP95</A>]
+specifies an extension interface that is relatively simple and assumes
+a node organization and node traversal algorithms similar to those of R-tree
+nodes (which store entries in an unordered, heap-like fashion on a page;
+as a result, every entry on a page must be checked when traversing the
+page or when looking for matches to a query). Libgist implements this simple
+interface and another, more low-level extension interface. The latter allows
+a derived extension class to implement a node layout that is tuned for
+the particular AM at hand. An example of this is again the B-tree extension,
+which implements ordered node entries in order to do binary search when
+checking for matching entries.
+
+<P>The following is an overview of the classes and their roles within libgist.
+The classes relevant for extension designers are <TT>gist_ext_t</TT> and
+<TT>gist_unordered_t</TT>.
+<BR>&nbsp;
+<TABLE BORDER WIDTH="100%" >
+<TR>
+<TD><A HREF="#Appendix A.1: gist">gist</A></TD>
+
+<TD>Class for index objects, which also contains all the manipulation and
+query functions for indices.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#Appendix A.2: gist_ext_t">gist_ext_t</A></TD>
+
+<TD>Low-level extension class, which specifies a node-action-oriented extension
+interface in order to allow the AM designer to tune the node layout.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#Appendix A.4: gist_unorderedn_t">gist_unorderedn_t</A></TD>
+
+<TD>Subclass of <TT>gist_ext_t</TT>, which implements an R-tree-style unordered
+node layout.In order to create an object of this class, an object of class
+gist_unordered_t must be supplied as a parameter.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#Appendix A.3: bt_ext_t">bt_ext_t</A></TD>
+
+<TD>Subclass of <TT>gist_ext_t</TT>, which implements an ordered node layout.
+(Since this is tantamount to B-trees, we decided not to call this class
+<TT>gist_orderedn_t</TT>.)</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#Appendix A.5: gist_unordered_t">gist_unordered_t</A></TD>
+
+<TD>Base class for the simple extension interface as described in the original
+GiST publication.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#Appendix A.6: rt_ext_t">rt_ext_t</A></TD>
+
+<TD>Subclass of <TT>gist_unordered_t</TT>, which implements the traversal
+and node split behavior of R-trees.</TD>
+</TR>
+</TABLE>
+<p>
+In what follows, we will make reference to <i>cursors</i> and
+<i>predicate cursors</i>.  The cursor abstraction is a standard
+concept in database systems, encapsulating the notions of a kind of
+file traversal (<i>e.g.</i>, depth-first search of a tree) as well as
+the specific state (<i>e.g.</i>, the current location within the file)
+corresponding to an instance of such a traversal.  Libgist predicate
+cursors (<tt>gist_predcursor_t</tt>) are a specific realization of a
+cursor for a specific index node.  Predicate cursors look like a C
+array containing the set of node entries that match the current search
+predicate.  More detail on cursors and on writing specialized cursors
+can be found in the <a href="#behavior">next section</a>.
+
+<H2>
+<A NAME="Simple Extension Interface"></A>Simple Extension Interface</H2>
+The simple extension interface implements the extension architecture described
+in the original GiST publication [<A HREF="http://gist.cs.berkeley.edu/gist1.html#Papers">HNP95</A>].
+This interface requires the extension implementor to supply four functions
+that support navigation for queries and updates and determine the overall
+physical structure of the index tree. The basis of the physical tree structure
+are nodes that store their items in an arbitrary order. Consequently, one
+of the core classes of the simple extension interface implements an unordered
+node structure (class <TT><A HREF="#Appendix A.4: gist_unorderedn_t">gist_unorderedn_t</A></TT>).
+The interface functions themselves are encapsulated in the class <TT><A HREF="#Appendix A.5: gist_unordered_t">gist_unordered_t</A></TT>
+(note the missing "n"!), which serves as the base class for extension classes
+that use the simple interface. The R-tree extension is an example of how
+the two core classes and the user-supplied extension class fit together.
+The following code snippet summarizes the class structure and the construction
+of one extension object.
+<PRE>class gist_ext_t {
+&nbsp;&nbsp;&nbsp; ...
+};
+class gist_unorderedn_t : gist_ext_t {
+&nbsp;&nbsp;&nbsp; ...
+&nbsp;&nbsp;&nbsp; gist_unorderedn_t::gist_unorderedn_t(const gist_unordered_t&amp; fcts);
+};
+class gist_unordered_t {
+&nbsp;&nbsp;&nbsp; ...
+};
+class rt_ext_t : public gist_unordered_t {
+&nbsp;&nbsp;&nbsp; ...
+};
+gist_unorderedn_t bt_int_ext(rt_ext_t(...));</PRE>
+
+The R-tree example shows that:
+<UL>
+<LI>
+extension objects are created from class <TT>gist_unorderedn_t</TT>;</LI>
+
+<LI>
+the AM-specific extension class is a subclass of <TT>gist_unordered_t</TT>;</LI>
+
+<LI>
+an (unnamed) object of the extension class is required as a parameter to
+the <TT>gist_unorderedn_t</TT> constructor when creating a particular extension
+object.</LI>
+</UL>
+The class <TT>gist_unordered_t</TT> is a virtual class, which forces an
+extension subclass to provide implementations of the following procedures:
+<DL>
+<DT>
+consistent(const void* query, const void* pred, int predlen, int level)</DT>
+
+<DD>
+This function evaluates a predicate stored on an index page with respect
+to a query. The level within the tree of the page that contains the predicate
+is indicated by the <TT>level</TT> parameter. The <TT>pred</TT> parameter
+points to the part of an on-disk page entry that holds the predicate and
+the <TT>predlen</TT> parameter contains the storage size in bytes. The
+function must return <TT>true</TT> if the predicate is consistent with
+the query, otherwise <TT>false</TT>.</DD>
+
+<DT>
+penalty(const void* bp, int bplen, int level, const void* key, int keylen,
+gist_penalty_t&amp; p)</DT>
+
+<DD>
+This function is used to locate a leaf node when inserting a new entry.
+Applied to the BP of an entry in an internal node and the predicate of
+the new entry, it computes the penalty for inserting the new entry into
+the subtree corresponding to the internal node's entry. The <TT>bp</TT>
+parameter points to the on-disk BP and the <TT>bplen</TT> parameter specifies
+its size in bytes. The <TT>key</TT> and <TT>keylen</TT> parameters point
+to the key of the new entry and its length in bytes, respectively.</DD>
+
+<DT>
+union_bp(const gist_predcursor_t&amp; pcursor, 
+const gist_p&amp; page,
+const vec_t&amp; pred1,
+const vec_t&amp; pred2,
+vec_t&amp; bp,
+bool&amp; bpChanged,
+bool bpIsValid)</dt>
+
+<DD>
+This function computes the BP for a page and up to two additional predicates. It
+is called in the following scenarios:
+<ul>
+<li> after inserting one or two new entries into a node, this function computes
+the new BP.
+</ul>
+
+<DT>
+union_key(void* bp, int&amp; bplen, int level, const void* key, int keylen,
+bool&amp; changed)</DT>
+
+<DD>
+After inserting a new entry on a node, this function computes the node's
+new BP as the union of the old BP and the new key. The <TT>bp</TT> and
+<TT>key</TT> parameters point to the BP and the new entry's predicate,
+respectively, and the <TT>bplen</TT> and <TT>keylen</TT> parameters indicate
+their sizes in bytes. The <TT>level</TT> parameter indicates the level
+of the page for which the BP is updated.</DD>
+
+<DT>
+union_page(void* bp, int&amp; bplen, int level, gist_predcursor_t&amp;
+pcursor, bool&amp; changed)</DT>
+
+<DD>
+After deleting an entry from a page, this function computes the node's
+new BP (possibly as the union of the remaining predicates on the page,
+although this is not required; in fact, partitioning trees will not change
+the BP). The set of predicates stored on the page is accessible through
+the <TT><A HREF="#Appendix A.5: gist_unordered_t">gist_predcursor_t</A></TT>
+parameter <TT>pcursor</TT>, which contains an array <TT>elems</TT> of predicate
+pointer/predicate length pairs (the predicate pointers point directly to
+the data stored on the index nodes, and therefore must not be modified).
+The reference parameter <TT>changed</TT> must be set to <TT>true</TT> if
+the BP did change.</DD>
+
+<DT>
+pickSplit(gist_predcursor_t&amp; pcursor, int level, int rightEntries[],
+int&amp; numRight, const void* oldBp, int oldlen, void* leftBp, int&amp;
+leftlen, void* rightBp, int&amp; rightlen)</DT>
+
+<DD>
+This function determines how a split is performed on a page overflow by
+deciding which entries stay on the original node and which go on the new
+right sibling. This decision is based on the set of predicates stored on
+the page, which is passed in through the <TT>pcursor</TT> parameter (at
+this point, no direct information about the full size of the node entries
+is available; this will not be a limitation for the extension implementor,
+unless the data pointers on leaf pages are varying-length). The <TT>pcursor</TT>
+parameter also contains a reference to the predicate of the new entry that
+caused the overflow. The split information is returned through the <TT>rightEntries</TT>
+parameter, which contains the page positions (i.e., the slot indices) of
+those entries on the original page that go on the new right sibling (the
+<TT>numRight</TT> parameter contains the number of those entries). The
+page position of each entry is equal to the array index of the corresponding
+predicate in the <TT>pcursor</TT> parameter. In addition to providing the
+split info, the <TT>pickSplit</TT> function must also compute the new BPs
+of the original page and the new right sibling (returned through parameters
+<TT>leftBp</TT> and <TT>rightBp</TT>, which point to preallocated memory,
+and <TT>leftLen</TT> and <TT>rightLen</TT>, which must be set to their
+lengths in bytes). A pointer to the original BP stored in the node is provided
+by the <TT>oldBp</TT> parameter; this BP must not be modified.</DD>
+
+<DT>
+check(const void* bp, int bplen, const void* pred, int predlen, int level)</DT>
+
+<DD>
+This debugging function is called by <TT>gist::check() </TT>to test whether
+a node's BP "contains" all of its entries. It returns <TT>true</TT> if
+the BP contains the given entry, otherwise <TT>false</TT>. The parameters
+have the same meaning as those for <TT>union_key</TT>.</DD>
+
+<DT>
+printPred(const void* pred, int predlen, int level)</DT>
+
+<DD>
+This debugging function prints a predicate to <TT>stdout</TT>. The <TT>pred</TT>
+parameter points to on-disk data and must not be modified.</DD>
+
+<DT>
+printData(const void* data, int datalen)</DT>
+
+<DD>
+This debugging function prints a data pointer to <TT>stdout</TT>. The data
+parameter points to on-disk data and must not be modified.</DD>
+</DL>
+
+<H2>
+<A NAME="Node-Layout Extension Interface"></A>Node-Layout Extension Interface</H2>
+The node layout extension interface is the foundation of the libgist extension
+architecture; it differs from the simple extension interface in that it
+is an abstraction of the basic page-oriented actions like insertion and
+deletion of tuples, rather than the logical properties of the data. This
+gives the implementor control over how the predicates are stored on a node,
+so that storage format of predicates as well as node-oriented activities
+such as searching for matching predicates or searching for the minimum-penalty
+predicate can be tuned for the particular tree structure.
+
+<P>The extension implementor can design an extension class that utilizes
+the node layout extension interface in two ways:
+<OL>
+<LI>
+The extension is separated into three classes: a node layout class; a virtual
+base class that specifies the data-related aspects for that particular
+node layout; an implementation class for the extension itself, subclassed
+from the virtual base class. The design of the R-tree extension is an example
+that fits this mold: it is composed of a node layout (<TT>gist_unorderedn_t</TT>),
+a virtual base class (<TT>gist_unordered_t</TT>) and an R-tree implementation
+class (<TT>rt_ext_t</TT>). Factoring out the node layout in this fashion
+makes sense if the particular node layout could potentially be useful for
+other extensions as well.</LI>
+
+<LI>
+The extension class is a direct subclass of <TT>gist_ext_t</TT>, in which
+case the storage- and data-related aspects of the extension are handled
+by a single class. The B-tree extension is an example of a case which is
+designed this way.</LI>
+</OL>
+A node layout requires the extension implementor to supply a subclass of
+<TT>gist_ext_t</TT> with the virtual functions of that class implemented.
+This subclass can utilize any of the <TT>gist_</TT>p (libgist page class,
+which is described in more detail in the next section) member functions
+for that purpose;. the implementation of the node layout is only restricted
+by a few assumptions that libgist makes about the contents and structure
+of a page and its entries (see the next section for the details). Other
+than that, the node layout class is free to arrange page entries in any
+order it desires and also compress the predicates in any way. This makes
+it possible to employ B-tree style predicate compression on internal nodes
+(where key intervals are only stored with one boundary, and the other boundary
+is stored in one of the neighboring entries) or represent tree structures
+on a page (where the nodes would be contained in page entries and the pointers
+to children could be the slot indices of those entries that contain the
+children). Although node layout classes are free to assign entries to slots
+arbitrarily, there are restrictions on when that assignment can be changed.
+In particular, slot indices must be stable from the time they are "reported
+to the outside world" until the next successful call to a page modification
+function. In other words, interface functions that only retrieve information
+from a page cannot modify the slot assignment (although they may modify
+entries).
+
+<P>The following are the interface functions that subclasses of <TT>gist_ext_t</TT>
+must implement. The parameters of class <TT>vec_t</TT> are vectors of data
+pointer/length (described in more detail in the next section as well).
+<DL>
+<DT>
+insert(gist_p&amp; page, const vec_t&amp; key, const vec_t&amp; data, shpid_t
+child)</DT>
+
+<DD>
+Creates a new entry on a page and returns <TT>RCOK</TT> if it is successful
+and <TT>eRECWONTFIT</TT> if there is not enough space. If the entry is
+for a leaf page, the <TT>child</TT> parameter will be set to 0; if the
+entry is for an internal page, the <TT>data</TT> parameter will be empty
+(data.size() == 0).</DD>
+
+<DT>
+remove(gist_p&amp; page, int slots[], int numSlots)</DT>
+
+<DD>
+Removes a number of entries, which are identified by their slot indices.</DD>
+
+<DT>
+updateKey(gist_p&amp; page, int&amp; slot, const vec_t&amp; key)</DT>
+
+<DD>
+This function is only applied to internal nodes; it updates the predicate
+of the entry in slot <TT>slot</TT> with the new predicate given in <TT>key</TT>.
+If there is not enough space on the page, the function returns <TT>eRECWONTFIT</TT>
+without having changed the slot assignment of the original entry. If the
+function updates the entry successfully, it returns with <TT>RCOK</TT>
+and may change the slot assignment.</DD>
+
+<DT>
+findMinPen(const gist_p&amp; page, const vec_t&amp; key, const vec_t&amp;
+data, int&amp; slot)</DT>
+
+<DD>
+Finds the entry with the lowest penalty for inserting a new entry (given
+by parameters <TT>key</TT> and <TT>data</TT>) into the corresponding subtree.
+The index of that entry is returned through parameter <TT>slot</TT>.</DD>
+
+<DT>
+search(gist_p&amp; page, const void* query, int matches[], int&amp; numMatches)</DT>
+
+<DD>
+Searches the page for entries whose predicates are consistent with the
+parameter query and returns the slot indices of those entries in the parameter
+<TT>matches</TT> (matches has <TT>gist_p::max_scnt </TT>elements) and the
+number of matches found in <TT>numMatches</TT>.</DD>
+
+<DT>
+getKey(gist_p&amp; page, int slot, vec_t&amp; key)</DT>
+
+<DD>
+After locating matching entries on a leaf page, this function is called
+to convert the storage format of the predicates on the page to what the
+calling application expects. The parameter slot specifies a single entry
+from which to extract the predicate. The output parameter key receives
+that predicate (<TT>key.ptr(0)</TT> points to preallocated memory of size
+<TT>gist_p::max_tup_sz</TT>). If no decompression takes place, <TT>getKey</TT>
+can avoid the copy operation by setting <TT>key.ptr(0)</TT> to point to
+the on-page predicate. If decompression takes place (for example, when
+applying prefix compression to string keys in a B-tree), <TT>getKey</TT>
+must store the computed key in the memory pointed to by <TT>key.ptr(0)</TT>
+and set <TT>key.len(0)</TT> to the correct length (see the B-tree code
+in libbtree/gist_btree.cc for an example of how to reset <TT>vec_t </TT>objects).</DD>
+
+<DT>
+pickSplit(gist_p&amp; page, int rightEntries[], int&amp; numRight, const
+vec_t&amp; oldBp, vec_t&amp; leftBp, vec_t&amp; rightBp, const vec_t&amp;
+entry1, bool&amp; oneGoesRight, const vec_t&amp; entry2, bool&amp; twoGoesRight)</DT>
+
+<DD>
+This function determines how a split is performed by deciding which entries
+stay on the original node and which go on the new right sibling. The split
+info is returned through the <TT>rightEntries</TT> parameter, which contains
+the page positions (i.e., the slot indices) of those entries on the original
+page that go on the new right sibling (the <TT>numRight</TT> parameter
+contains the number of those entries). <TT>PickSplit</TT> also computes
+the new BPs of the original page and the new right sibling, which are returned
+through the parameters <TT>leftBp</TT> and <TT>rightBp</TT>, respectively.
+The new entry or entries that will be inserted on the page after the split
+may influence the split and the shape of the BPs. There may be two new
+entries, because an internal node will experience two insertions: one for
+the parent entry of the new child node and one for the parent entry of
+a split page (it was removed before the split when the update failed due
+to lack of space). They are passed in as parameters <TT>entry1</TT> and
+<TT>entry2</TT>. If the page to be split is a leaf page, those <TT>vec_t
+</TT>parameters have two components: component 0 (<TT>&lt;x>.ptr(0)</TT>)
+is the predicate and component 1 the data pointer; if the page is an internal
+node, the entries only contain a predicate as component 0. If only one
+entry is passed in, <TT>entry2.size()</TT> will be equal to 0. Aside from
+taking the new entries into account when computing the new BPs, <TT>pickSplit</TT>
+must also determine where these new entries go (original page or right
+sibling) after the split and returns this in the <TT>&lt;x>GoesRight</TT>
+parameters.</DD>
+
+<DT>
+union_page(gist_p&amp; page, vec_t&amp; bp, bool&amp; changed)</DT>
+
+<DD>
+This function is equivalent to the <TT>union_page</TT> function in <TT>gist_unordered_t</TT>,
+except that instead of a predicate cursor the page is passed in directly
+and the BP is passed in as a <TT>vec_t</TT> parameter. The function sets
+<TT>changed</TT> to <TT>true</TT> if the BP changed.</DD>
+
+<DT>
+union_key(vec_t&amp; bp, int level, const vec_t&amp; pred, bool&amp; changed)</DT>
+
+<DT>
+check(const vec_t&amp; bp, const vec_t&amp; pred, int level)</DT>
+
+<DT>
+printPred(const vec_t&amp; pred, int level)</DT>
+
+<DT>
+printData(const vec_t&amp; data)</DT>
+
+<DD>
+These functions are identical to their counterparts in <TT>gist_unordered_t</TT>,
+except that the predicate pointer and byte size are encapsulated in a <TT>vec_t
+</TT>parameter.</DD>
+</DL>
+
+<H2>
+<A NAME="Ancillary Classes for the Node-Layout Extension"></A>Ancillary
+Classes for the Node-Layout Extension Interface</H2>
+There are two ancillary classes for the libgist extension designer: <TT><A HREF="#gist_p">gist_p</A></TT>
+(header file <TT><A HREF="#Appendix B: gist_p.h">gist_p.h</A></TT>), the
+index node class, and <TT><A HREF="#vec_t">vec_t</A></TT> (header file
+- you might have guessed it - <TT><A HREF="#Appendix C: vec.h">vec_t.h</A></TT>),
+which simplify dealing with pointer/length pairs.
+
+<P>Libgist makes the page structure and management functions of its
+index nodes available through the class <TT><A
+HREF="#gist_p">gist_p</A></TT>.  This class implements a simple
+slotted page organization (defined by <TT><A
+HREF="#page_s">page_s</A></TT>) - with a page header at the beginning
+and a slot directory at the end of the page - and specifies the format
+of the page entries. The entries have headers (structure <TT><A
+HREF="#keyrec_t">keyrec_t</A></TT>), which contain the size in bytes
+of the predicate and the data pointer, as well as a child pointer
+(only useful for internal nodes). The entries are required to store
+the predicate and data pointer portions contiguously (but either one
+can have length 0). Also, the length info stored in the header must
+reflect the actual length of the predicate stored on the page, even if
+it is compressed and the expanded lengths deviate from the stored
+length. Class <TT>gist_p</TT> stores a header record and a BP on every
+page in the first and second available slot (only root pages do not
+contain a BP). Nevertheless, the data entries added to the page by the
+<TT>gist_p</TT> user still start at slot index 0, because the public
+member functions of <TT>gist_p</TT> automatically compensate for the
+header and the BP. Subclasses of <TT>gist_ext_t</TT> must use
+<TT>gist_p</TT> to implement the desired node layout and the entries
+of a node must have the <TT>keyrec_t</TT> header. Furthermore, every
+item on the page that has its own data or child pointer must have its
+own slot and header associated with it, so that both pointers are
+accessible via <TT>gist_p::rec(slotindex).elem()</TT> and
+<TT>gist_p::rec(slotindex).child()</TT>.  (Unfortunately, this rules
+out storing duplicates as (pred, data ptr1, data ptr2, ...) lists;
+this might be fixed in a future version of libgist.)  The constant
+<tt>gist_p::max_tup_sz</tt> specifies the maximum size that a
+predicate in a data entry is allowed to have.
+
+<P>Class <A HREF="#vec_t">vec_t</A> is used frequently in the interfaces
+of <TT>gist_ext_t</TT> and <TT>gist_p</TT> to pass data pointer/length
+pairs or vectors of these pairs as a single parameter. The interfaces of
+<TT>vec_t</TT> and <TT><A HREF="#cvec_t">cvec_t</A></TT> (for vectors of
+constant pointer/length pairs) contain functions to <A HREF="#vec_t::vec_t">construct</A>
+vectors (in various flavors), <A HREF="#cvec_t::reset">reset</A> and inspect
+the vectors (<TT><A HREF="#vec_t::ptr">ptr</A></TT> and <TT><A HREF="#vec_t::len">len</A></TT>).
+<center><hr
+width="100%"> <h2><A NAME="behavior">Writing Search-Behavior
+Extensions</H2></a></center>
+
+<p>
+A somewhat more conceptual overview may be obtained by reading
+[<A HREF="http://gist.cs.berkeley.edu/gist1.html#Papers">HNP95</A>,
+<A HREF="http://gist.cs.berkeley.edu/gist1.html#Papers">Aok98</A>].
+
+<a name="cursor_abstract"><h2>Cursor Abstractions</h2></a>
+
+<p>
+The <i>cursor</i> (<tt>gist_cursor_t</tt>) corresponds to the basic
+notions of a scan and its associated state.  The application
+instantiates the cursor object directly, but the object cannot be used
+until it has been initialized.  Among other things, this cursor
+initialization process creates an instance of the appropriate
+<i>cursor extension object</i> (<tt>gist_cursorext_t</tt>) and
+attaches it to its parent cursor.  The relationship between a cursor
+and a cursor extension object is analogous to that of a GiST
+(<tt>gist</tt>) and its GiST extension object (<tt>gist_ext_t</tt>).
+That is, the cursor extension abstracts the customization interface
+from the cursor interface that is visible to the application.
+
+<p>
+The value of this abstraction is demonstrated by the following
+(exemplary) sequence of events.  An application constructs a query
+object specified by user input (<i>e.g.</i>, using the
+<tt>amdb_ext_t::parseQuery</tt> interface).  The application
+instantiates a generic query cursor and initializes it using the
+user-specified query object.  The initialization process automatically
+determines the type of traversal (<i>e.g.</i>, depth-first search or
+nearest-neighbor search) from the query object and sets up the cursor
+data structure appropriately.  The application can now retrieve
+records using the cursor.  At no time during this process does the
+application itself have to know what data type or search semantics the
+user has specified.
+
+<p>
+We now restate the abstraction in terms of the code.  The
+<tt>gist_cursorext_t</tt> objects are never made directly visible to
+the application.  As mentioned above, cursor extension objects are
+instantiated when the cursor is initialized.  Specifically, this
+happens when <tt>gist::fetch_init</tt> calls
+<tt>gist_ext_t::queryCursor</tt> with a specified
+<tt>gist_query_t</tt> query object.  Subsequent operations are only
+invoked by various <tt>gist_ext_t</tt> methods (<i>e.g.</i>,
+<tt>fetch</tt>).
+
+<a name="cursor_basic"><h2>Basic Cursor Implementations</h2></a>
+
+<p>
+The cursor instance contains pointers to its associated metadata (the
+extension object <tt>gist_ext_t</tt>, the query predicate object
+<tt>gist_query_t</tt>, <i>etc.</i>).  It also provides a place for
+cursor implementations to store two kinds of information between
+invocations: the <i>iterator</i> (an object which stores the records
+yet to be visited) and any additional <i>state</i> (scratchpad
+information).  While the iterator is just a particular kind of
+scratchpad state, it is useful to decouple the two because
+<i>traversal order</i> and the overall <i>computation</i> are often
+independent.  For example, the notion of ``first <i>n</i> results''
+search can be applied to either depth-first search or nearest-neighbor
+search (albeit with different semantics).  The <tt>gist_cursor_t</tt>
+interface is specified in <tt>gist_cursor.h</tt>.
+
+<p>
+Libgist provides two kinds of iterators, both of which are also
+implemented in <tt>gist_cursor.h</tt>.  The <i>priority queue</i>
+iterator (<tt>gist_prioq_t</tt>) provides the basic abstraction: node
+entries are inserted into the iterator and are then extracted in an
+arbitrary user-defined order.  The user-defined orders are stored in
+an instance of type <tt>gist_penalty_t</tt>; node entries are
+extracted smallest-value-first.  The <i>lookup stack</i> iterator
+(<tt>gist_lstk</tt>) is just a special case of the priority queue
+abstraction, but since stacks are used to implement a very common form
+of traversal (depth-first search), they are provided as a separate,
+low-overhead implementation option.
+
+<p>
+If you are writing a basic search tree that only uses depth-first
+search, your implementation of <tt>queryCursor</tt> need only return
+the generic stack-based cursor extension (the B-tree extension does
+exactly this in <tt>bt_ext_t::queryCursor</tt>).  If your access
+method supports other functionality, you will need to provide
+customized cursor extension objects as described below.
+
+<a name="cursor_custom"><h2>Customized Cursor Extension Objects</h2></a>
+
+The following material is only necessary for extenders who intend to
+write their own cursor extensions.
+
+<p>
+<tt>gist_cursorext_t</tt> is an abstract virtual class.  This class
+(and its immediate subclasses) are defined in
+<tt>gist_cursorext.h</tt>.  It defines two interfaces:
+<ul>
+
+<li><b>Run-time registration</b>.  Each cursor extension must be
+assigned a unique identifier entry in
+<tt>gist_cursorext_t::gist_cursorext_id</tt>.  When the libgist
+application instantiates a given cursor extension object, the base
+<tt>gist_cursorext_t</tt> class initializer registers the extension's
+presence in a global data structure.  This enables other objects to
+refer to a cursor extension <i>by name</i> (<i>i.e.</i>, by searching
+the global data structure using its well-known identifier).  (This is
+analogous to the registration interface by which each structural
+extension must be registered using <tt>gist_ext_t::gist_ext_ids</tt>.)
+
+<li><b>Iterator interface</b>.  The actual functional interface
+provided by each cursor extension is fairly simple and essentially
+constitutes a generic wrapper around the interface of its underlying
+iterator.
+
+<ul>
+
+<li><tt>iter_reset</tt>.
+Clears any previous state from the iterator.
+
+<li><tt>iter_init</tt>.
+Prepares a new or newly-reset iterator for its first use.
+
+<li><tt>iter_update</tt>.
+Inserts a new node entry into the iterator.
+
+<li><tt>iter_fetch</tt>.
+Retrieves a previously-stored node entry from the iterator.
+
+</ul>
+
+The specific interfaces are documented in the header file
+<tt>gist_cursorext.h</tt>. 
+
+</ul>
+
+<p>
+A given <tt>gist_cursorext_t</tt> may be applied to any
+<tt>gist_ext_t</tt> that contains the same pair of internal/leaf key
+types and supports the same query object.  Just as a
+<tt>gist_ext_t</tt> corresponds to the 4-tuple
+{internal-type,leaf-type,query-type,AM} and contains the necessary
+``system catalog'' information for that combination, a
+<tt>gist_cursorext_t</tt> corresponds to the 4-tuple
+{internal-type,leaf-type,query-type,iterator}.
+
+<p>
+We expect that most custom cursor extensions will be produced by
+subclassing <tt>gist_queue_cursorext_t</tt>.  This is because
+<tt>gist_cursorext_t</tt> does not provide any iterator behavior and
+<tt>gist_stack_cursorext_t</tt> already provides all of the
+functionality needed any stack-based cursor extension.  The
+<tt>gist_queue_cursorext_t</tt> class provides two user-extensible
+callbacks, one to store an instance of a specific data type in the
+priority queue and another to compute the priority with which that
+instance will be retrieved.  For example, nearest-neighbor search can
+be easily implemented in this framework by providing a distance
+function as the priority callback.
+
+<center><hr
+width="100%"></center>
+<H2>
+<A NAME="Appendix A: Class Definitions"></A>Appendix A: Class Definitions</H2>
+
+<H3>
+<A NAME="Appendix A.1: gist"></A>Appendix A.1: gist</H3>
+
+<PRE>class gist_cursor_t;
+class gist_lstk;
+class gist_ustk;
+class gist_p;
+
+class gist {
+
+public:
+
+&nbsp;&nbsp;&nbsp; gist();
+&nbsp;&nbsp;&nbsp; ~gist();
+
+&nbsp;&nbsp;&nbsp; // create an empty Gist
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; create(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const char*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; filename,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_ext_t*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ext);
+
+&nbsp;&nbsp;&nbsp; // open an existing Gist
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; open(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const char*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; filename,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_ext_t*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ext);
+
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; close();
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; flush();&nbsp;
+
+&nbsp;&nbsp;&nbsp; // insert a single key
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; insert(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; key,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; keyLen,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dataPtr,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dataPtrLen);
+
+&nbsp;&nbsp;&nbsp; // remove all keys matching the query
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; remove(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; query);
+
+&nbsp;&nbsp;&nbsp; // initialize the cursor
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fetch_init(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_cursor_t&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cursor,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; query);
+
+&nbsp;&nbsp;&nbsp; // fetch the next data item
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fetch(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_cursor_t&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cursor,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; key,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; smsize_t&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; keyLen,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dataPtr,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; smsize_t&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dataPtrLen,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eof);
+
+&nbsp;&nbsp;&nbsp; // returns true if tree contains no data
+&nbsp;&nbsp;&nbsp; bool&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; is_empty();
+
+&nbsp;&nbsp;&nbsp; // checks structural and data integrity of the tree;
+&nbsp;&nbsp;&nbsp; // outputs violations to stderr
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check();
+
+&nbsp;&nbsp;&nbsp; // dumps the content of a page to stdout;
+&nbsp;&nbsp;&nbsp; // if 0 is specified as the pgno, dumps out the tree
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dump(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; shpid_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pgno = 0);
+};</PRE>
+
+<H3>
+<A NAME="Appendix A.2: gist_ext_t"></A>Appendix A.2: gist_ext_t</H3>
+
+<PRE>class gist_predcursor_t;
+
+class gist_penalty_t {
+public:
+&nbsp;&nbsp;&nbsp; const double max_penalty = MAXDOUBLE;
+
+&nbsp;&nbsp;&nbsp; gist_penalty_t() {}
+&nbsp;&nbsp;&nbsp; gist_penalty_t(double p) : p(p) {}
+&nbsp;&nbsp;&nbsp; double p; // a double must be enough
+
+&nbsp;&nbsp;&nbsp; bool operator&lt;(const gist_penalty_t &amp;pen) { return p &lt; pen.p; }
+&nbsp;&nbsp;&nbsp; gist_penalty_t&amp; operator=(const gist_penalty_t &amp;pen) { p = pen.p; return *this; }
+};
+
+
+class gist_ext_t {
+public:
+
+&nbsp;&nbsp;&nbsp; // here are the node layout-specific routines
+
+&nbsp;&nbsp;&nbsp; // Create a new entry on a page.
+&nbsp;&nbsp;&nbsp; // Return eRECWONTFIT if the new entry does not fit on the page.
+&nbsp;&nbsp;&nbsp; virtual rc_t insert(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; key,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; data,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; shpid_t child)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0;
+
+&nbsp;&nbsp;&nbsp; // Remove a number of entries, identified by their slot indices.
+&nbsp;&nbsp;&nbsp; virtual rc_t remove(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int slots[],
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int numSlots)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0;
+
+&nbsp;&nbsp;&nbsp; // For internal nodes only: update the key for the entry in the given slot.
+&nbsp;&nbsp;&nbsp; virtual rc_t updateKey(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&amp; slot, // in/out: old/new slot assignment
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; newKey)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0;
+
+&nbsp;&nbsp;&nbsp; // Find the entry with the lowest insertion penalty for the given key;
+&nbsp;&nbsp;&nbsp; // return the slot index in 'slot'.
+&nbsp;&nbsp;&nbsp; virtual void findMinPen(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; key,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; data,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&amp; slot)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0;
+
+&nbsp;&nbsp;&nbsp; // Search the page for entries matching the given query;
+&nbsp;&nbsp;&nbsp; // return their slot indices in 'matches'.
+&nbsp;&nbsp;&nbsp; virtual void search(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void* query,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int matches[],
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&amp; numMatches)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0;
+
+&nbsp;&nbsp;&nbsp; // Return the key of the entry in the given slot. If a conversion/decompression
+&nbsp;&nbsp;&nbsp; // of the key takes place, the key is written into the memory pointed to by&nbsp;
+&nbsp;&nbsp;&nbsp; // key.ptr(0).
+&nbsp;&nbsp;&nbsp; // If no conversion takes place, the key points to the buffered page.
+&nbsp;&nbsp;&nbsp; virtual void getKey(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int slot,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vec_t&amp; key)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0;
+
+&nbsp;&nbsp;&nbsp; // Determine how to split the given node. The split info is the slot indices of
+&nbsp;&nbsp;&nbsp; // those entries that go to the right sibling. Make sure that rightEntries only&nbsp;
+&nbsp;&nbsp;&nbsp; // contains the indices of existing slots. This procedure also calculates the&nbsp;
+&nbsp;&nbsp;&nbsp; // new BPs (which have to be copied into left-/rightBp).
+&nbsp;&nbsp;&nbsp; // The new entry/-ies that will be inserted after the split are given in
+&nbsp;&nbsp;&nbsp; // entry1 and -2 (if they are leaf entries, the second component will hold the data
+&nbsp;&nbsp;&nbsp; // pointer); those need to be taken into consideration when calculating the BPs.
+&nbsp;&nbsp;&nbsp; // (if there's no second entry to be inserted, entry2.size() == 0). The caller also&nbsp;
+&nbsp;&nbsp;&nbsp; // needs to know which page to insert each entry on; this information is returned
+&nbsp;&nbsp;&nbsp; // in *GoesRight.
+&nbsp;&nbsp;&nbsp; virtual rc_t pickSplit(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int rightEntries[],
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&amp; numRight,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; oldBp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vec_t&amp; leftBp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vec_t&amp; rightBp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; entry1,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool&amp; oneGoesRight,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; entry2,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool&amp; twoGoesRight)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0;
+
+&nbsp;&nbsp;&nbsp; // Compute the BP of the page after item(s) were deleted, given the prior
+&nbsp;&nbsp;&nbsp; // BP.&nbsp;
+&nbsp;&nbsp;&nbsp; virtual void unionPage(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vec_t&amp; bp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool&amp; bpChanged) // set to true if BP changed
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0;&nbsp;
+
+
+&nbsp;&nbsp;&nbsp; // here are the datatype-specific routines
+
+&nbsp;&nbsp;&nbsp; // union the newly inserted pred to the BP;
+&nbsp;&nbsp;&nbsp; // the storage allocated for the bp is max_tup_sz;
+&nbsp;&nbsp;&nbsp; // indicate if BP changed;
+&nbsp;&nbsp;&nbsp; virtual void unionKey(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vec_t&amp; bp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level, // level of page where BP is on
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; pred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool &amp;bpChanged&nbsp; // out: true if bp changed
+&nbsp;&nbsp;&nbsp; ) = 0;
+
+&nbsp;&nbsp;&nbsp; // Return true if the predicate is contained by the BP.
+&nbsp;&nbsp;&nbsp; // Used during gist_t::check() to verify the integrity of&nbsp;
+&nbsp;&nbsp;&nbsp; // the node's content.
+&nbsp;&nbsp;&nbsp; virtual bool check(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; bp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; pred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level) // level of page
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0;
+
+&nbsp;&nbsp;&nbsp; virtual void printPred(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; pred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level) // level of page where pred is stored
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0;
+
+&nbsp;&nbsp;&nbsp; virtual void printData(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; data)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+};</PRE>
+
+<H3>
+<A NAME="Appendix A.3: bt_ext_t"></A>Appendix A.3: bt_ext_t</H3>
+
+<PRE>class bt_ext_t : public gist_ext_t {
+public:
+
+&nbsp;&nbsp;&nbsp; // generic comparison function
+&nbsp;&nbsp;&nbsp; typedef int (*CmpFct)(const void *a, const void *b);
+&nbsp;&nbsp;&nbsp; CmpFct keyCmp; // for keys
+&nbsp;&nbsp;&nbsp; CmpFct dataCmp; // for data pointers
+
+&nbsp;&nbsp;&nbsp; // returns the size in bytes of a key stored on a disk page;
+&nbsp;&nbsp;&nbsp; // the goal is to get to the data pointer portion of an internal entry,
+&nbsp;&nbsp;&nbsp; // given the pointer to the key portion
+&nbsp;&nbsp;&nbsp; typedef int (*SizeFct)(const void *e);
+&nbsp;&nbsp;&nbsp; SizeFct size;
+
+&nbsp;&nbsp;&nbsp; // for printPred()
+&nbsp;&nbsp;&nbsp; typedef void (*PrintFct)(const void *pred);
+&nbsp;&nbsp;&nbsp; PrintFct prPred, prData;
+
+&nbsp;&nbsp;&nbsp; // for pickSplit() (creating new BPs)
+&nbsp;&nbsp;&nbsp; typedef void (*NegInftyFct)(void *x);
+&nbsp;&nbsp;&nbsp; NegInftyFct negInftyKey, negInftyData;
+
+&nbsp;&nbsp;&nbsp; bt_ext_t(CmpFct keyCmp, CmpFct dataCmp, SizeFct size, PrintFct prPred, PrintFct prData,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NegInftyFct negInftyKey, NegInftyFct negInftyData) :
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; keyCmp(keyCmp), dataCmp(dataCmp), size(size), prPred(prPred), prData(prData),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; negInftyKey(negInftyKey), negInftyData(negInftyData) {};
+
+&nbsp;&nbsp;&nbsp; rc_t insert(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; key,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; data,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; shpid_t child);
+
+&nbsp;&nbsp;&nbsp; rc_t remove(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int slots[],
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int numSlots);
+
+&nbsp;&nbsp;&nbsp; rc_t updateKey(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&amp; slot,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; newKey);
+
+&nbsp;&nbsp;&nbsp; void findMinPen(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; key,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; data,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&amp; slot);
+
+&nbsp;&nbsp;&nbsp; void search(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void* query,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int matches[],
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&amp; numMatches);
+
+&nbsp;&nbsp;&nbsp; void getKey(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int slot,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vec_t&amp; key);
+
+&nbsp;&nbsp;&nbsp; rc_t pickSplit(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int rightEntries[],
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&amp; numRight,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; oldBp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vec_t&amp; leftBp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vec_t&amp; rightBp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; entry1,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool&amp; oneGoesRight,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; entry2,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool&amp; twoGoesRight);
+
+&nbsp;&nbsp;&nbsp; void unionPage(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vec_t&amp; bp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool&amp; bpChanged);&nbsp;
+
+&nbsp;&nbsp;&nbsp; void unionKey(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vec_t&amp; bp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; pred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool &amp;bpChanged);
+
+&nbsp;&nbsp;&nbsp; bool check(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; bp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; pred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level);
+
+&nbsp;&nbsp;&nbsp; void printPred(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; pred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level);
+
+&nbsp;&nbsp;&nbsp; void printData(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; data);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+};</PRE>
+
+<H3>
+<A NAME="Appendix A.4: gist_unorderedn_t"></A>Appendix A.4: gist_unorderedn_t</H3>
+
+<PRE>class gist_unorderedn_ext_t : public gist_ext_t {
+public:
+
+&nbsp;&nbsp;&nbsp; gist_unordered_ext_t&amp; ext;
+
+&nbsp;&nbsp;&nbsp; rc_t insert(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; key,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; data,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; shpid_t child);
+
+&nbsp;&nbsp;&nbsp; rc_t remove(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int slots[],
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int numSlots);
+
+&nbsp;&nbsp;&nbsp; rc_t updateKey(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&amp; slot,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; newKey);
+
+&nbsp;&nbsp;&nbsp; void findMinPen(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; newKey,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; data,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&amp; slot);
+
+&nbsp;&nbsp;&nbsp; void search(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void* query,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int matches[],
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&amp; numMatches);
+
+&nbsp;&nbsp;&nbsp; void getKey(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int slot,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vec_t&amp; key);
+
+&nbsp;&nbsp;&nbsp; rc_t pickSplit(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int rightEntries[],
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&amp; numRight,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; oldBp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vec_t&amp; leftBp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vec_t&amp; rightBp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; entry1,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool&amp; oneGoesRight,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; entry2,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool&amp; twoGoesRight);
+
+&nbsp;&nbsp;&nbsp; void unionPage(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p&amp; page,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vec_t&amp; bp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool&amp; bpChanged);&nbsp;
+
+&nbsp;&nbsp;&nbsp; void unionKey(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vec_t&amp; bp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; pred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool &amp;bpChanged);
+
+&nbsp;&nbsp;&nbsp; bool check(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; bp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; pred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level);
+
+&nbsp;&nbsp;&nbsp; void printPred(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; pred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level);
+
+&nbsp;&nbsp;&nbsp; void printData(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const vec_t&amp; data);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; gist_unorderedn_ext_t(gist_unordered_ext_t&amp; ext);
+
+};</PRE>
+
+<H3>
+<A NAME="Appendix A.5: gist_unordered_t"></A>Appendix A.5: gist_unordered_t</H3>
+
+<PRE>class gist_predcursor_t {
+public:
+
+&nbsp;&nbsp;&nbsp; struct entry {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void *key;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int keyLen;
+&nbsp;&nbsp;&nbsp; };
+
+
+&nbsp;&nbsp;&nbsp; // + 2: for new entries
+&nbsp;&nbsp;&nbsp; const int maxElems = gist_p::max_scnt + 2;
+&nbsp;&nbsp;&nbsp; int numElems;
+&nbsp;&nbsp;&nbsp; entry elems[maxElems];
+
+&nbsp;&nbsp;&nbsp; gist_predcursor_t();
+&nbsp;&nbsp;&nbsp; ~gist_predcursor_t();&nbsp;
+
+&nbsp;&nbsp;&nbsp; // make cursor return predicate
+&nbsp;&nbsp;&nbsp; void add(const void* data, int len);
+
+&nbsp;&nbsp;&nbsp; // make cursor return keys on page (except for BP)
+&nbsp;&nbsp;&nbsp; void add(gist_p&amp; page);
+
+&nbsp;&nbsp;&nbsp; // start from the beginning
+&nbsp;&nbsp;&nbsp; void reset();
+};
+
+
+class gist_unordered_ext_t&nbsp; {
+public:
+
+&nbsp;&nbsp;&nbsp; // consistent: evaluates pred w.r.t. query
+&nbsp;&nbsp;&nbsp; virtual bool consistent(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void* query,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void* pred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int predLen,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level) = 0; // at what level was that predicate found (leaf = 1)
+
+&nbsp;&nbsp;&nbsp; // returns insertion penalty of new key into subtree
+&nbsp;&nbsp;&nbsp; virtual void penalty(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void* subtreePred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int predLen,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level, // at what level was that predicate found
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void* newKey,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int keyLen,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_penalty_t&amp; p) = 0;
+
+&nbsp;&nbsp;&nbsp; // union the newly inserted pred to the BP;
+&nbsp;&nbsp;&nbsp; // the length of the old bp is&nbsp;
+&nbsp;&nbsp;&nbsp; // indicate if BP changed;
+&nbsp;&nbsp;&nbsp; virtual void union_key(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void* bp, // in: old BP, out: updated BP
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&amp; len, // in: length of old BP; out: length of changed BP
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level, // level of page where BP is on
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void* newPred, // leaf-type predicate
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int newLen, // length of predicate
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool&amp; changed&nbsp; // out: true if bp changed
+&nbsp;&nbsp;&nbsp; ) = 0;
+
+&nbsp;&nbsp;&nbsp; // union all the keys on a single page
+&nbsp;&nbsp;&nbsp; // done after an item was deleted;
+&nbsp;&nbsp;&nbsp; // indicate if BP changed;
+&nbsp;&nbsp;&nbsp; virtual void union_page(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void* bp, int &amp;len, int level, // level of BP
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_predcursor_t&amp; pcursor,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool&amp; changed) = 0;
+
+&nbsp;&nbsp;&nbsp; // Determine which entries go on the new sibling after a split&nbsp;
+&nbsp;&nbsp;&nbsp; // (the indices of the entries that should be moved right are stored in rightEntries,
+&nbsp;&nbsp;&nbsp; // their number in numRight; the indices are returned by gist_predcursor_t::fetch() and do
+&nbsp;&nbsp;&nbsp; // not have to be stored in the order delivered by fetch() in rightEntries);
+&nbsp;&nbsp;&nbsp; // compute the new BPs for both nodes
+&nbsp;&nbsp;&nbsp; // (can't do it with union, because we might need to know the BP of the&nbsp;
+&nbsp;&nbsp;&nbsp; // other sibling).
+&nbsp;&nbsp;&nbsp; // If the old BP is NULL, we're splitting the root; the bounds should
+&nbsp;&nbsp;&nbsp; // be assumed to be infinite in this case.
+&nbsp;&nbsp;&nbsp; virtual void pickSplit(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_predcursor_t&amp; pcursor, // used to retrieve entries for page
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level, // level of page (1 = leaf)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int rightEntries[], // out: store indices of entries to go on right sibling
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&amp; numRightEntries, // out: store number of entries to go right
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void* oldBp, // pre-split BP of original page
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int oldLen, // length of pre-split BP
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void* leftBp, // out: new BP of original page
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&amp; leftLen, // out: length of new left BP
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void* rightBp, // out: new BP of new right sibling
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&amp; rightLen) // out: length of new right BP
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0;
+
+&nbsp;&nbsp;&nbsp; // Return true if the predicate is contained by the BP.
+&nbsp;&nbsp;&nbsp; // Used during gist_t::check() to verify the integrity of&nbsp;
+&nbsp;&nbsp;&nbsp; // the node's content.
+&nbsp;&nbsp;&nbsp; virtual bool check(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void* bp, // BP on page
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int bplen, // length of BP
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void* pred, // single entry's predicate
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int predlen, // length of predicate
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level) // level of page
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0;
+
+&nbsp;&nbsp;&nbsp; virtual void printPred(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void* pred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int plen,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level) // level of page where pred is stored
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0;
+
+&nbsp;&nbsp;&nbsp; virtual void printData(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void* data,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int dlen)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+};</PRE>
+
+<H3>
+<A NAME="Appendix A.6: rt_ext_t"></A>Appendix A.6: rt_ext_t</H3>
+
+<PRE>class rt_ext_t : public gist_unordered_ext_t {
+public:
+
+&nbsp;&nbsp;&nbsp; const int numLvl = 2; // only 2 levels to distinguish: leaf/non-leaf
+
+&nbsp;&nbsp;&nbsp; typedef bool (*CmpFct)(const void *, int, const void *);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // any point/rect comparison function
+
+&nbsp;&nbsp;&nbsp; // function table: one for each operator, possible argument type
+&nbsp;&nbsp;&nbsp; // and leaf/internal level
+&nbsp;&nbsp;&nbsp; typedef CmpFct CmpFctTbl[numLvl][rt_query_t::rt_numarg][rt_query_t::rt_numoper];
+
+&nbsp;&nbsp;&nbsp; CmpFctTbl cmpFcts; // for consistent()
+
+&nbsp;&nbsp;&nbsp; // for penalty()/pickSplit()/union_key():
+&nbsp;&nbsp;&nbsp; // expand rect with rect/pt
+&nbsp;&nbsp;&nbsp; typedef void (*ExpandFct)(rt_rect &amp;r, const void *item, int len);&nbsp;
+&nbsp;&nbsp;&nbsp; ExpandFct expand;
+
+&nbsp;&nbsp;&nbsp; // for pickSplit()
+&nbsp;&nbsp;&nbsp; typedef double (*DistanceFct)(const void *item1, const void *item2, int len);
+&nbsp;&nbsp;&nbsp; DistanceFct dist; // compute the distance between two rects/pts
+&nbsp;&nbsp;&nbsp; typedef int (*DimFct)(int dataSz); // returns dimension of points/rects
+&nbsp;&nbsp;&nbsp; DimFct dim;
+&nbsp;&nbsp;&nbsp; typedef void (*RectFct)(rt_rect &amp;r, const void *item, int len);
+&nbsp;&nbsp;&nbsp; RectFct copyRect; // creates rect from pt/rect
+
+&nbsp;&nbsp;&nbsp; rt_ext_t(CmpFctTbl tbl, ExpandFct exp, DistanceFct distance, DimFct dim,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RectFct rf);
+
+&nbsp;&nbsp;&nbsp; bool consistent(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void&nbsp; *query,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void *pred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int predLen,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level);
+
+&nbsp;&nbsp;&nbsp; void penalty(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void *subtreePred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int predLen,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void *newKey,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int keyLen,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_penalty_t &amp;p);
+
+&nbsp;&nbsp;&nbsp; void union_key(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void *bp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int &amp;len,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void *newPred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int newLen,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool &amp;changed);
+
+&nbsp;&nbsp;&nbsp; void union_page(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void *bp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int &amp;len,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_predcursor_t &amp;pcursor,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool &amp;changed);
+
+&nbsp;&nbsp;&nbsp; void pickSplit(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_predcursor_t &amp;pcursor,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int rightEntries[] /*out*/,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int &amp;numRightEntries /*out*/,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void *oldBp,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int oldLen,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void *leftBp /*out*/,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int &amp;leftLen /*in/out*/,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void *rightBp /*out*/,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int &amp;rightLen /*int/out*/);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; bool check(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void *bp,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int bplen,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void *pred,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int predlen,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level);&nbsp;
+
+&nbsp;&nbsp;&nbsp; void printPred(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void *pred,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int plen,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int level);&nbsp;
+
+&nbsp;&nbsp;&nbsp; void printData(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const void *data,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int dlen);
+
+};</PRE>
+
+<H2>
+<A NAME="Appendix B: gist_p.h"></A>Appendix B: <TT>gist_p.h</TT></H2>
+
+<PRE>/*
+&nbsp;* Basic page structure for all pages.
+<A NAME="page_s"></A> */
+struct page_s {
+&nbsp;&nbsp;&nbsp; struct slot_t {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int2 offset;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // -1 if vacant
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; uint2 length;
+&nbsp;&nbsp;&nbsp; };
+
+&nbsp;&nbsp;&nbsp; class space_t {
+&nbsp;&nbsp;&nbsp; public:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; space_t()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {};
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ~space_t()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {};
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void init(int);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int nfree() const;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; usable();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // slot_bytes means bytes for new slots
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; acquire(int amt, int slot_bytes);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; release(int amt);
+
+&nbsp;&nbsp;&nbsp; private:
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void _check_reserve();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int2&nbsp;&nbsp;&nbsp; _nfree;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // free space counter
+&nbsp;&nbsp;&nbsp; };
+
+&nbsp;&nbsp;&nbsp; enum {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; data_sz = (SM_PAGESIZE&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - sizeof(lpid_t)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - sizeof(space_t)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - 3 * sizeof(int2)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - 2 * sizeof(slot_t)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - 2 * sizeof(int2)),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; max_slot = data_sz / sizeof(slot_t) + 2
+&nbsp;&nbsp;&nbsp; };
+
+&nbsp;&nbsp;&nbsp; lpid_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pid;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // id of the page
+&nbsp;&nbsp;&nbsp; space_t&nbsp;&nbsp;&nbsp;&nbsp; space;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // space management
+&nbsp;&nbsp;&nbsp; uint2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; end;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // offset to end of data area
+&nbsp;&nbsp;&nbsp; int2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nslots;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // number of slots
+&nbsp;&nbsp;&nbsp; int2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nvacant;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // number of vacant slots
+&nbsp;&nbsp;&nbsp; char&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; data[data_sz];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // must be aligned
+&nbsp;&nbsp;&nbsp; slot_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; reserved_slot[1];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // 2nd slot (declared to align
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // end of _data)
+&nbsp;&nbsp;&nbsp; slot_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; slot[1];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // 1st slot
+};
+<A NAME="keyrec_t"></A>
+class keyrec_t {
+public:
+&nbsp;&nbsp;&nbsp; struct hdr_s {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; uint2&nbsp;&nbsp; klen;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; uint2&nbsp;&nbsp; elen;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; shpid_t child;
+&nbsp;&nbsp;&nbsp; };
+
+&nbsp;&nbsp;&nbsp; const char* key() const;
+&nbsp;&nbsp;&nbsp; const char* elem() const;
+&nbsp;&nbsp;&nbsp; const char* sep() const;
+&nbsp;&nbsp;&nbsp; smsize_t klen() const;
+&nbsp;&nbsp;&nbsp; smsize_t elen() const;
+&nbsp;&nbsp;&nbsp; smsize_t slen() const;
+&nbsp;&nbsp;&nbsp; smsize_t rlen() const;
+&nbsp;&nbsp;&nbsp; shpid_t child() const;
+&nbsp;&nbsp;&nbsp;&nbsp;
+private:
+&nbsp;&nbsp;&nbsp; hdr_s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _hdr;
+&nbsp;&nbsp;&nbsp; char*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _body() const;
+};
+
+
+struct gistctrl_t {
+&nbsp;&nbsp;&nbsp; lpid_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; root;
+&nbsp;&nbsp;&nbsp; int2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; level;&nbsp; // leaf if 1, non-leaf if > 1
+
+&nbsp;&nbsp;&nbsp; gistctrl_t();
+};
+
+
+<A NAME="gist_p"></A>
+class gist_p {
+public:
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; typedef page_s::slot_t slot_t;
+
+&nbsp;&nbsp;&nbsp; enum {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; data_sz = page_s::data_sz,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; max_slot = data_sz / sizeof(slot_t) + 2
+&nbsp;&nbsp;&nbsp; };
+
+&nbsp;&nbsp;&nbsp; enum {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; max_tup_sz = data_sz / 3 - sizeof(slot_t) - sizeof(keyrec_t),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // 1 BP and 2 entries minimum
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; max_scnt = (data_sz - sizeof(gistctrl_t)) /&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (sizeof(keyrec_t) + sizeof(slot_t)) + 1
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // max # of slots on a page
+&nbsp;&nbsp;&nbsp; };
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gist_p();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ~gist_p();
+
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; format(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const lpid_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pid,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const gistctrl_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *hdr);
+
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; insert(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const keyrec_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp;tup);
+
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; copy(gist_p&amp; rsib);
+
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; set_hdr(const gistctrl_t&amp; new_hdr);
+&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; level() const;
+&nbsp;&nbsp;&nbsp; void&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; root(lpid_t&amp; r) const;
+&nbsp;&nbsp;&nbsp; shpid_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; root() const;
+
+&nbsp;&nbsp;&nbsp; bool&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; is_leaf() const;
+&nbsp;&nbsp;&nbsp; bool&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; is_node() const;
+&nbsp;&nbsp;&nbsp; bool&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; is_root() const;
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; // Gist-specific record access:
+&nbsp;&nbsp;&nbsp; // masks the BP, so that the first entry on the page has idx = 0;
+&nbsp;&nbsp;&nbsp; // the BP can be accessed with idx = -1
+&nbsp;&nbsp;&nbsp; const int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bpSlot = -1;
+&nbsp;&nbsp;&nbsp; const keyrec_t&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rec(int idx) const;
+&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rec_size(int idx) const;
+&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nrecs() const;
+
+&nbsp;&nbsp;&nbsp; // the slot index is automatically corrected if a BP is present on the page
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; insert(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const cvec_t&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; key,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const cvec_t&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; el,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; slot,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; shpid_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; child = 0);
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; remove(int slot);
+
+public:
+
+&nbsp;&nbsp;&nbsp; bool&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; is_fixed() const;
+&nbsp;&nbsp;&nbsp; gist_p&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; operator=(const gist_p&amp; p);
+&nbsp;&nbsp;&nbsp; smsize_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; usable_space();
+&nbsp;&nbsp;&nbsp; const lpid_t&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pid() const;
+
+private:
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; insert_expand(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; idx,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cnt,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const cvec_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tp[]);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; remove_compress(int idx, int cnt);
+&nbsp;&nbsp;&nbsp; rc_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; overwrite(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; idx,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; start,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const cvec_t&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; data);
+
+&nbsp;&nbsp;&nbsp; // state
+&nbsp;&nbsp;&nbsp; page_s*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _pp;
+&nbsp;&nbsp;&nbsp; gist_file::page_descr*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; descr;
+
+&nbsp;&nbsp;&nbsp; friend class gist;
+&nbsp;&nbsp;&nbsp; // what I really meant was:
+&nbsp;&nbsp;&nbsp; //friend rc_t gist::_fix_page(gist_p &amp;page, shpid_t pageNo);
+&nbsp;&nbsp;&nbsp; //friend rc_t gist::_unfix_page(gist_p &amp;page);
+
+&nbsp;&nbsp;&nbsp; void&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _compress(int idx = -1);
+
+&nbsp;&nbsp;&nbsp; // formerly from page_p
+&nbsp;&nbsp;&nbsp; inline smsize_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; used_space();
+&nbsp;&nbsp;&nbsp; smsize_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; contig_space();
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; smsize_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tuple_size(int idx) const;
+&nbsp;&nbsp;&nbsp; void*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tuple_addr(int idx) const;
+&nbsp;&nbsp;&nbsp; inline bool&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; is_tuple_valid(int idx) const;
+&nbsp;&nbsp;&nbsp; const void*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get_hdr() const;
+};</PRE>
+
+<H2>
+<A NAME="Appendix C: vec.h"></A>Appendix C: <TT>vec_t.h</TT></H2>
+
+<PRE>#define MAX_SMALL_VEC_SIZE 8
+
+#define CADDR_T const unsigned char *
+
+struct vec_pair_t {
+&nbsp;&nbsp;&nbsp; CADDR_T&nbsp;&nbsp;&nbsp;&nbsp; ptr;
+&nbsp;&nbsp;&nbsp; size_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; len;
+};
+
+struct VEC_t {
+&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _cnt;
+&nbsp;&nbsp;&nbsp; size_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _size;
+&nbsp;&nbsp;&nbsp; vec_pair_t* _base;&nbsp; // pointer to beginning of _pair or malloced
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // space
+&nbsp;&nbsp;&nbsp; vec_pair_t&nbsp; _pair[MAX_SMALL_VEC_SIZE];
+};
+<A NAME="cvec_t"></A>
+class cvec_t : protected VEC_t {
+&nbsp;&nbsp;&nbsp; friend class vec_t; // so vec_t can look at VEC_t
+public:
+&nbsp;&nbsp;&nbsp; enum dummy_enumid { max_small = MAX_SMALL_VEC_SIZE };
+&nbsp;&nbsp;&nbsp; cvec_t() {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _cnt = 0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _size = 0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _base = &amp;_pair[0];
+&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp; cvec_t(const cvec_t&amp; v1, const cvec_t&amp; v2) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _base= &amp;_pair[0];
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; set(v1, v2);
+&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp; cvec_t(const void* p, size_t l) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _base = &amp;_pair[0];
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; set(p, l);
+&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp; ~cvec_t();
+
+&nbsp;&nbsp;&nbsp; bool _is_large() const {return _base != &amp;_pair[0];}
+&nbsp;&nbsp;&nbsp; cvec_t&amp; put(const void* p, size_t l);
+&nbsp;&nbsp;&nbsp;<A NAME="cvec_t::reset"></A> cvec_t&amp; put(const cvec_t&amp; v);
+&nbsp;&nbsp;&nbsp; cvec_t&amp; reset()&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _cnt = _size = 0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return *this;
+&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp; cvec_t&amp; set(const cvec_t&amp; v1, const cvec_t&amp; v2)&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return reset().put(v1).put(v2);
+&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp; cvec_t&amp; set(const void* p, size_t l)&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return reset().put(p, l);
+&nbsp;&nbsp;&nbsp; }
+
+&nbsp;&nbsp;&nbsp; size_t size() const {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return _size;
+&nbsp;&nbsp;&nbsp; }
+
+&nbsp;&nbsp;&nbsp; size_t copy_to(void* p, size_t limit = 0x7fffffff) const;
+&nbsp;&nbsp;&nbsp;&nbsp;
+};
+<A NAME="vec_t"></A>
+class vec_t : public cvec_t {
+public:
+&nbsp;&nbsp;&nbsp;&nbsp;<A NAME="vec_t::vec_t"></A>vec_t() : cvec_t()&nbsp; {};
+&nbsp;&nbsp;&nbsp; vec_t(const cvec_t&amp; v1, const cvec_t&amp; v2) : cvec_t(v1, v2)&nbsp; {};
+&nbsp;&nbsp;&nbsp; vec_t(const void* p, size_t l) : cvec_t(p, l)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {};
+&nbsp;&nbsp;&nbsp; //vec_t(const vec_t&amp; v, size_t offset, size_t limit)
+&nbsp;&nbsp;&nbsp; //: cvec_t(v, offset, limit)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {};
+<A NAME="vec_t::ptr"></A>
+&nbsp;&nbsp;&nbsp; void*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ptr(int index) const { return (index >= 0 &amp;&amp; index &lt; _cnt) ?&nbsp;
+&nbsp;<A NAME="vec_t::len"></A>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (void*)_base[index].ptr : NULL; }
+&nbsp;&nbsp;&nbsp; size_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; len(int index) const { return (index >= 0 &amp;&amp; index &lt; _cnt) ?&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _base[index].len : 0; }
+};</PRE>
+
+<CENTER>
+<HR WIDTH="100%"></CENTER>
+
+
+<P>Comments, questions and suggestions may be directed to <I><A HREF="mailto:gist@postgres.berkeley.edu">gist@postgres.berkeley.edu</A></I>
+<P><FONT SIZE=-2>Last modified: $Date: 1998/12/15 00:40:33 $ by $Author:
+aoki $.</FONT>
+</BODY>
+</HTML>

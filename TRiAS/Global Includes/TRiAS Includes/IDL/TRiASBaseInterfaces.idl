@@ -1,0 +1,418 @@
+// @doc
+// @module TRiASBaseInterfaces.idl | Basis-Interfaces für TRiAS-Objekte
+
+#if !defined(_TRIASBASEINTERFACES_IDL)
+#define _TRIASBASEINTERFACES_IDL
+
+#include <OleAuto.hh>
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declarations
+interface DTRiASBaseClass;
+interface DTRiASProperty;
+interface DTRiASProperties;
+interface DTRiASCollection;
+
+///////////////////////////////////////////////////////////////////////////////	
+// ObjektTypen
+// @doc RTTIENUMS 
+// @enum RTTI | <tr>- Datenobjekttypen werden durch einen der folgenden Typen 
+// identifiziert.
+// @xref <i DTRiASBaseClass>, <op DTRiASBaseClass.isA>
+cpp_quote("#if !defined(_RTTI_DEFINED)")
+cpp_quote("#define _RTTI_DEFINED")
+enum _tagRTTI {
+	[helpstring("Unknown object"), helpcontext(RTTI_enum)]	
+		RTTI_Unknown = 0x00,		// @emem Unbekannter Datenobjekttyp
+	[helpstring("Application object"), helpcontext(RTTI_enum)]
+		RTTI_Application = 0x01,	// @emem Das Datenobjekt ist vom Typ <o Application>
+	[helpstring("Document object"), helpcontext(RTTI_enum)] 
+		RTTI_Document = 0x02,		// @emem Das Datenobjekt ist vom Typ <o GeoDocument>
+	[helpstring("Documents object"), helpcontext(RTTI_enum)] 
+		RTTI_Documents = 0x03,		// @emem Das Datenobjekt ist vom Typ <o GeoDocuments>
+	[helpstring("GeoView object"), helpcontext(RTTI_enum)]	
+		RTTI_GeoView = 0x04,		// @emem Das Datenobjekt ist vom Typ <o GeoView>
+	[helpstring("GeoViews object"), helpcontext(RTTI_enum)] 
+		RTTI_GeoViews = 0x05,		// @emem Das Datenobjekt ist vom Typ <o GeoViews>
+	[helpstring("GeoClass object"), helpcontext(RTTI_enum)] 
+		RTTI_GeoClass = 0x06,		// @emem Das Datenobjekt ist vom Typ <o GeoClass>
+	[helpstring("GeoClasses object"), helpcontext(RTTI_enum)] 
+		RTTI_GeoClasses = 0x07,		// @emem Das Datenobjekt ist vom Typ <o GeoClasses>
+	[helpstring("GeoObject object"), helpcontext(RTTI_enum)] 
+		RTTI_GeoObject = 0x08,		// @emem Das Datenobjekt ist vom Typ <o GeoObject>
+	[helpstring("GeoObjects object"), helpcontext(RTTI_enum)] 
+		RTTI_GeoObjects = 0x09,		// @emem Das Datenobjekt ist vom Typ <o GeoObjects>
+	[helpstring("GeoFeature object"), helpcontext(RTTI_enum)] 
+		RTTI_GeoFeature = 0x0A,		// @emem Das Datenobjekt ist vom Typ <o GeoFeature>
+	[helpstring("GeoFeatures object"), helpcontext(RTTI_enum)]	
+		RTTI_GeoFeatures = 0x0B,	// @emem Das Datenobjekt ist vom Typ <o GeoFeatures>
+	[helpstring("GeoObjectWin object"), helpcontext(RTTI_enum)] 
+		RTTI_GeoObjectWin = 0x0C,	// @emem Das Datenobjekt ist vom Typ <o GeoObjectWin>
+	[helpstring("GeoObjectWins object"), helpcontext(RTTI_enum)] 
+		RTTI_GeoObjectWins = 0x0D,	// @emem Das Datenobjekt ist vom Typ <o GeoObjectWins>
+	[helpstring("VisInfo object"), helpcontext(RTTI_enum)]	
+		RTTI_VisInfo = 0x0E,		// @emem Das Datenobjekt ist vom Typ <o VisInfo>
+	// subtypes
+		[helpstring("PointVisInfo object"), helpcontext(RTTI_enum)] 
+			RTTI_PointVisInfo = 0x0001000E,		// @emem Das Datenobjekt ist vom Typ <o PointVisInfo>
+		[helpstring("LineVisInfo object"), helpcontext(RTTI_enum)]
+			RTTI_LineVisInfo = 0x0002000E,		// @emem Das Datenobjekt ist vom Typ <o LineVisInfo>
+		[helpstring("AreaVisInfo object"), helpcontext(RTTI_enum)]
+			RTTI_AreaVisInfo = 0x0003000E,		// @emem Das Datenobjekt ist vom Typ <o AreaVisInfo>
+		[helpstring("TextVisInfo object"), helpcontext(RTTI_enum)]
+			RTTI_TextVisInfo = 0x0004000E,		// @emem Das Datenobjekt ist vom Typ <o TextVisInfo>
+	[helpstring("ToolBar object"), helpcontext(RTTI_enum)]
+		RTTI_ToolBar = 0x0F,		// @emem Das Datenobjekt ist vom Typ <o ToolBar>
+	[helpstring("ToolBars object"), helpcontext(RTTI_enum)] 
+		RTTI_ToolBars = 0x10,		// @emem Das Datenobjekt ist vom Typ <o ToolBars>
+	[helpstring("ToolBarButton object"), helpcontext(RTTI_enum)] 
+		RTTI_ToolBarButton = 0x11,	// @emem Das Datenobjekt ist vom Typ <o ToolBarButton>
+	[helpstring("ToolBarButtons object"), helpcontext(RTTI_enum)] 
+		RTTI_ToolBarButtons = 0x12,	// @emem Das Datenobjekt ist vom Typ <o ToolBarButtons>
+	[helpstring("TRiASProperty object"), helpcontext(RTTI_enum)] 
+		RTTI_Property = 0x13,		// @emem Das Datenobjekt ist vom Typ <o Property>
+	[helpstring("TRiASProperties object"), helpcontext(RTTI_enum)]
+		RTTI_Properties = 0x14,		// @emem Das Datenobjekt ist vom Typ <o Properties>
+	[helpstring("TRiASConnection object"), helpcontext(RTTI_enum)] 
+		RTTI_Connection = 0x15,		// @emem Das Datenobjekt ist vom Typ <o TRiASConnection>
+	[helpstring("TRiASConnections object"), helpcontext(RTTI_enum)]
+		RTTI_Connections = 0x16,	// @emem Das Datenobjekt ist vom Typ <o TRiASConnections>
+};
+cpp_quote("#endif // _RTTI_DEFINED")
+
+///////////////////////////////////////////////////////////////////////////////
+// Interfaces
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE | TRIASTLB
+// @interface DTRiASBaseClass | BasisInterface für sämtliche <tr>- Interfaces
+// der OLE-Automationsschnittstelle
+// @supby <o Application>, <o GeoDocument>, <o GeoView>, <o GeoClass>, <o GeoObject>
+// <o GeoFeature>
+// @xref <o Application>, <o GeoDocument>, <o GeoView>, <o GeoClass>, <o GeoObject>
+// <o GeoFeature>
+// @group Eigenschaften von <i DTRiASBaseClass> 
+// @index | DTRIASBASECLASS & PROPERTY
+// @group Internen Macrosprache: zusätzliche Eigenschaften von <i DTRiASBaseClass>
+// @index | DTRIASBASECLASS & BSPROPERTY
+// @doc DTRIASBASECLASS
+[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+	helpcontext(DTRiASBaseClass_int),
+#endif // _INCLUDE_HELP_CONTEXTS
+	odl, 
+	object, 
+	oleautomation, 
+	dual, 
+	nonextensible, 
+	uuid(8DE4E3E0-4D53-101B-AAE1-E7E7E7E7E7E7), 
+	helpstring("Basisklasse für alle TRiAS®-Datenobjekte.")
+]
+interface DTRiASBaseClass : IDispatch 
+{
+	import "oaidl.idl";
+	import "objidl.idl";
+
+// @doc DTRIASBASECLASS | PROPERTY
+// @property <t RTTI> | DTRiASBaseClass | isA | Die <op .isA>- Eigenschaft liefert den Typ des 
+// Datenobjektes, für das es gerufen wurde (readonly).
+// @comm Die Eigenschaft <op .isA> kann nicht gesetzt werden.
+// @comm Diese Funktion ist für alle <tr> Datenobjekte definiert.
+// @xref <t RTTI>, <i DTRiASBaseClass>
+	[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+		helpcontext(DTRiASBaseClass_isA_prop),
+#endif // _INCLUDE_HELP_CONTEXTS
+		id(7), 
+		propget
+	] 
+	HRESULT isA ([out, retval]LONG *RTTI);		// ObjektTyp (RTTI)
+
+// @doc DTRIASBASECLASS | PROPERTY
+// @property IDispatch * | DTRiASBaseClass | Parent | Die <op .Parent>- Eigenschaft
+// setzt bzw. liefert das übergeordnete Objekt dieses Projektes.
+// @xref <i DTRiASBaseClass>
+	[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+		helpcontext(DTRiASBaseClass_Parent_prop),
+#endif // _INCLUDE_HELP_CONTEXTS
+		id(1), 
+		propget, 
+		hidden
+	]
+	HRESULT Parent ([out, retval]IDispatch **Base);	// übergeordnetes Objekt
+	[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+		helpcontext(DTRiASBaseClass_Parent_prop),
+#endif // _INCLUDE_HELP_CONTEXTS
+		id(1), 
+		propput, 
+		hidden
+	] 
+	HRESULT Parent ([in]IDispatch *Base);
+
+// @doc DTRIASBASECLASS | PROPERTY
+// @property IDispatch * | DTRiASBaseClass | Application | Die <op .Application>- Eigenschaft
+// setzt bzw. liefert das zugehörige Application-Objekt (<tr> selbst).
+// @xref <i DTRiASBaseClass>
+	[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+		helpcontext(DTRiASBaseClass_Application_prop),
+#endif // _INCLUDE_HELP_CONTEXTS
+		id(2), 
+		propget, 
+		hidden
+	] 
+	HRESULT Application ([out, retval]IDispatch **App);	// Anwendung
+	[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+		helpcontext(DTRiASBaseClass_Application_prop),
+#endif // _INCLUDE_HELP_CONTEXTS
+		id(2), 
+		propput, 
+		hidden
+	]
+	HRESULT Application ([in]IDispatch *App);	// Anwendung
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE | TRIASTLB
+// @interface DTRiASCollection | Basisklasse für alle Collection-Interfaces von TRiAS
+// @base public | <i DTRiASBaseClass>
+// @supby <o GeoDocuments>, <o GeoViews>, <o GeoClasses>, <o GeoObjects>, <o GeoFeatures>
+// @xref <o GeoViews>, <o GeoClasses>, <o GeoObjects>, <o GeoFeatures>
+// @xref <i DTRiASBaseClass>
+// @group Eigenschaften von <i DTRiASCollection> 
+// @index | DTRIASCOLLECTION & PROPERTY
+// @group Methoden von <i DTRiASCollection> 
+// @index | DTRIASCOLLECTION & METHOD
+// @doc DTRIASCOLLECTION
+[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+	helpcontext(DTRiASCollection_int),
+#endif // _INCLUDE_HELP_CONTEXTS
+	odl, 
+	object, 
+	oleautomation, 
+	dual, 
+	nonextensible, 
+	uuid(8DE4E3DF-4D53-101B-AAE1-E7E7E7E7E7E7), 
+	helpstring("BasisKlasse für alle Sammlungen von TRiAS®-Datenobjekten.")
+]
+interface DTRiASCollection : DTRiASBaseClass 
+{
+	import "oaidl.idl";
+	import "objidl.idl";
+
+// @doc DTRIASCOLLECTION | PROPERTY
+// @property long | DTRiASCollection | Count | Die <op .Count>- Eigenschaft
+// liefert die Anzahl der in dieser Objektsammlung enthaltenen Datenobjekte (readonly).
+// @comm Die Eigenschaft <op .Count> kann nicht gesezt werden.
+// @xref <i DTRiASCollection>
+	[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+		helpcontext(DTRiASCollection_Count_prop),
+#endif // _INCLUDE_HELP_CONTEXTS
+		id(4), 
+		propget
+	]
+	HRESULT Count ([out, retval]long *Count);		// Anzahl der Elemente
+
+// @doc DTRIASCOLLECTION | METHOD
+// @method IDispatch * | DTRiASCollection | Item | Die Methode <om .Item> liefert ein bestimmtes
+// Datenobjekt aus der vorliegenden Sammlung. 
+// @parm VARIANT | Which | Der Parameter <p Which> gibt vor, welches der enthaltenen Datenobjekte 
+// geliefert wird. Es können verschiedene Parametertypen übergeben werden. Dabei werden Zahlenwerte z.B.
+// als direkter Index in die Liste der enthaltenen Objekte interpretiert. Dieser Index muß im 
+// Zahlenbereich zwischen 1 und dem Wert liegen, der durch die Eigenschaft <op .Count> geliefert wird.
+// In vielen Fällen kann als Index gleichfalls der Bezeichner des gesuchten Datenobjektes 
+// übergeben werden (wird i.a. durch die Eigenschaft <om .Name> des jeweiligen Datenobjektes
+// geliefert). Bei einzelnen Datenobjektsammlungen können ggf. andere Indizies eingesetzt werden.
+// @rdesc Die Methode <om .Item> liefert das gesuchte Datenobjekt, wenn es in der Datenobjektsammlung
+// enthalten ist.
+// @xref <i DTRiASCollection>, <om. Count>
+	[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+		helpcontext(DTRiASCollection_Item_meth),
+#endif // _INCLUDE_HELP_CONTEXTS
+		id(DISPID_VALUE)
+	]
+	HRESULT Item ([in, optional]VARIANT Which, [out, retval]IDispatch **Item);
+	
+// @doc DTRIASCOLLECTION | METHOD
+// @method IEnumUnknown * | DTRiASCollection | _NewEnum | Liefert einen neuen
+// Enumerator, der alle Objekte enthält, die in der vorliegenden Sammlung zusammengefaßt sind.
+// @parm IUnknown ** | Enum | Zeiger auf eine Variable vom Typ IUnknown *, welche nach erfolgreicher 
+// Abarbeitung der Methode <om ._NewEnum> den Ergebnis-Enumerator enthält.
+// @comm Der gelieferte Enumerator ist vom Typ <i IEnumVARIANT>. Daher sollte der Rückgabewert
+// explizit durch einen QueryInterface-Aufruf konvertiert werden.
+// @ex Das folgende Beispiel verdeutlicht die empfohlene Vorgehensweise |
+// IEnumVARIANT *pIEnum = NULL;
+// IUnknown *pIUnk = NULL;
+// HRESULT hr = pIEntries -> _NewEnum (&pIUnk);
+//
+//	if (SUCCEEDED(hr)) {
+//		hr = pIUnk -> QueryInterface(IID_IEnumVARIANT, (LPVOID *)&pIEnum);
+//		pIUnk -> Release();
+//	}
+//	...
+// @comm Normalerweise wird diese Funktion nicht direkt gerufen, Sie ist lediglich
+// für die Nutzung in Automation-Werkzeugen wie z.B. VisualBasic vorgesehen, wo sie
+// für Programmkonstrukte wie 'For Each ...' notwendig ist.
+// @xref <i DTRiASCollection>
+	[
+		id(DISPID_NEWENUM), restricted
+	]
+	HRESULT _NewEnum ([out, retval]IUnknown **NewEnum);
+		
+// @doc DTRIASCOLLECTION | METHOD
+// @method IDispatch * | DTRiASCollection | Add | Die Methode <om .Add> fügt ein weiteres Datenobjekt
+// dieser Sammlung der Datenobjekte hinzu.
+// @parm VARIANT | ToAdd | Der Parameter <p ToAdd> enthält das Datenobjekt welches zu dieser Sammlung
+// von Datenobjekten hizugefügt werden soll. Es können verschiedene Paremetertypen übergeben werden. 
+// So kann z.B. das Datenobjekt selbst, sein Bezeichner (wird i.a. durch die Eigenschaft <om .Name> des 
+// zugehörigen Datenobjektes geliefert) oder seine eindeutige Zugriffsnummer (wird i.a. durch die 
+// Eigenschaft <om .Value> des zugehörigen Datenobjektes geliefert) übergeben werden.
+// @rdesc Die Methode <om .Add> liefert das neu hinzugefügte Objekt zurück, wenn es gefunden bzw. 
+// erzeugt werden konnte.
+// @comm Der Typ des hinzuzufügenden Datenobjektes muß mit dem Typ der Datenobjektsammlung 
+// korrespondieren. Es ist daher nicht möglich Datenobjekte unterschiedlichen Typs in ein und der 
+// selben Sammlung zu speichern.
+// @xref <i DTRiASCollection>
+	[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+		helpcontext(DTRiASCollection_Add_meth),
+#endif // _INCLUDE_HELP_CONTEXTS
+		id(5)
+	]
+	HRESULT Add ([in]VARIANT ToAdd, [out, retval]IDispatch **NewItem);
+	
+// @doc DTRIASCOLLECTION | METHOD
+// @method void | DTRiASCollection | Remove | Die Methode <om .Remove> entfernt ein Datenobjekt aus 
+// der vorliegenden Sammlung.
+// @parm VARIANT | ToRemove | Der Parameter <p ToRemove> gibt vor, welches der enthaltenen Datenobjekte 
+// entfernt wird. Es können verschiedene Parametertypen übergeben werden. Dabei werden Zahlenwerte z.B.
+// als direkter Index in die Liste der enthaltenen Objekte interpretiert. Dieser Index muß im 
+// Zahlenbereich zwischen 1 und dem Wert liegen, der durch die Eigenschaft <op .Count> geliefert wird.
+// In vielen Fällen kann als Index gleichfalls der Bezeichner des gesuchten Datenobjektes 
+// übergeben werden (wird i.a. durch die Eigenschaft <om .Name> des jeweiligen Datenobjektes
+// geliefert). Bei einzelnen Datenobjektsammlungen können ggf. andere Indizies eingesetzt werden.
+// @xref <i DTRiASCollection>
+	[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+		helpcontext(DTRiASCollection_Remove_meth),
+#endif // _INCLUDE_HELP_CONTEXTS
+		id(6)
+	]
+	HRESULT Remove ([in]VARIANT ToRemove);
+	
+// @doc DTRIASCOLLECTION | METHOD
+// @method void | DTRiASCollection | Refresh | Die Methode <om .Refresh> liest die 
+// Sammlung von Datenobjekten neu ein.
+// <nl>Diese Methode kann vor z.B. dann von Nutzen sein, wenn sichergestellt werden soll, daß
+// alle enthaltene Datenobjekte noch existieren bzw. gültig sind.
+// @comm Die Abarbeitung der Methode <om .Refresh> kann unter Umständigen eine zeitaufwendige 
+// Operation sein.
+// @xref <i DTRiASCollection>
+	[
+#if defined(_INCLUDE_HELP_CONTEXTS)
+		helpcontext(DTRiASCollection_Refresh_meth),
+#endif // _INCLUDE_HELP_CONTEXTS
+		id(8)
+	]
+	HRESULT Refresh (void);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE | TRIASTLB
+[
+	odl, 
+	object, 
+	dual,
+	uuid(079638C1-3123-101C-BB62-00AA0018497C),
+	helpstring("Eine Eigenschaft eines TRiAS®-Datenobjektes."),
+	oleautomation
+]
+interface DTRiASProperty : DTRiASBaseClass
+{
+	import "oaidl.idl";
+	import "objidl.idl";
+
+///////////////////////////////////////////////////////////////////////////////
+// Properties/Property
+	typedef 
+	[
+		public, 
+		helpstring("Typ einer Objekteigenschaft.")
+	]
+	enum _tagPROPERTYTYPE {
+		PROPERTYTYPE_INTEGER = VT_I4,	
+		PROPERTYTYPE_DOUBLE = VT_R8,
+		PROPERTYTYPE_BSTR = VT_BSTR,	
+		PROPERTYTYPE_DISPATCH = VT_DISPATCH,	
+		PROPERTYTYPE_VARIANT = VT_VARIANT,
+		PROPERTYTYPE_UNKNOWN = VT_UNKNOWN,
+	} PROPERTYTYPE;
+
+	[
+		id(DISPID_VALUE), 
+		propget
+	] 
+	HRESULT Value ([out, retval] VARIANT *Value);
+	
+	[
+		id(DISPID_VALUE), 
+		propput
+	] 
+	HRESULT Value ([in] VARIANT Value);
+	
+	[
+		id(3), 
+		propget
+	] 
+	HRESULT Name ([out, retval] BSTR *Name);
+	
+	[
+		id(3), 
+		propput
+	] 
+	HRESULT Name ([in] BSTR Name);
+	
+	[
+		id(1700), 
+		propget
+	] 
+	HRESULT Inherited ([out, retval] VARIANT_BOOL *IsInherited);
+	
+	[
+		id(1701), 
+		propget
+	] 
+	HRESULT Type ([out, retval] PROPERTYTYPE *PropType);
+	
+	[
+		id(1701), 
+		propput
+	] 
+	HRESULT Type ([in] PROPERTYTYPE PropType);
+}; 
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE | TRIASTLB
+[
+	odl, 
+	object, 
+	dual, 
+	uuid(079638C2-3123-101C-BB62-00AA0018497C),
+	helpstring("Eine Sammlung von Eigenschaften von TRiAS®-Datenobjekten."),
+	oleautomation
+]
+interface DTRiASProperties : DTRiASCollection
+{
+	import "oaidl.idl";
+	import "objidl.idl";
+
+	// intentionally left free
+};
+
+#endif // _TRIASBASEINTERFACES_IDL

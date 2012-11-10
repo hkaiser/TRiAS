@@ -1,0 +1,142 @@
+LIBRARY		TRIAS01
+
+DESCRIPTION	'TRIAS(R) - Datenbasiszugriff V5.20.042, (C) #HK960501'
+
+EXETYPE		WINDOWS 	PROTMODE
+
+STUB		'RIGHTS.EXE'
+
+CODE		LOADONCALL MOVEABLE DISCARDABLE
+DATA		PRELOAD MOVEABLE SINGLE 
+
+HEAPSIZE	10000
+
+SEGMENTS
+	INIT_TEXT	PRELOAD		MOVEABLE 	DISCARDABLE
+
+EXPORTS
+	WEP                                                     	@1	RESIDENTNAME PRIVATE
+	?UserDelete@ErrorTree@@NECXPEX@Z                        	@2
+	ACT_META                                                	@3
+	BIS                                                     	@4
+	BIT                                                     	@5
+	BITCNT                                                  	@6
+	CLEANUPTRIAS01                                          	@7
+	CREATEBACKUPFILE                                        	@8
+	CREATEBACKUPSTREAM                                      	@9
+	CREATEDATAFILE                                          	@10
+	CREATEDATASTREAM                                        	@11
+	CREATEGEOTREEFILE                                       	@12
+	CREATEGEOTREESTREAM                                     	@13
+	CREATEKEYFILE                                           	@14
+	CREATEKEYSTREAM                                         	@15
+	CREATETREEKEYFILE                                       	@16
+	CREATETREEKEYSTREAM                                     	@17
+	CRYPT                                                   	@18
+	DBCODB_                                                 	@19
+	DBINIT_                                                 	@20
+	DB_FLUSH                                                	@21
+	DB_PZALLOC                                              	@22
+	DB_PZFLUSH                                              	@23
+	DB_PZREREAD                                             	@24
+	DELHD_                                                  	@25
+	EMESSG_                                                 	@26
+	ERR_DATA                                                	@27
+	ERR_INSTALL                                             	@28
+	ERR_TYPE                                                	@29
+	EXTERRINSTALL                                           	@30
+	FEGET_                                                  	@31
+	FEINI_                                                  	@32
+	FELEN_                                                  	@33
+	FEPUT_                                                  	@34
+	FEREAD_                                                 	@35
+	FEREL_                                                  	@36
+	FEWRIT_                                                 	@37
+	FLEXADR                                                 	@38
+	FLEXSHRINK                                              	@39
+	FLQSRT_                                                 	@40
+	FLREDN_                                                 	@41
+	GEN_BACKUP                                              	@42
+	GETCOPYMODE                                             	@43
+	GETDBSTATUS                                             	@44
+	GETDBVERSION                                            	@45
+	GETHDLEN                                                	@46
+	GETHD_                                                  	@47
+	GETKEYCONTEXT                                           	@48
+	GETPROJECTSTORAGE                                       	@49
+	GETROMODE                                               	@50
+	HTCONT                                                  	@51
+	HTWIND_                                                 	@52
+	HWINDOW                                                 	@53
+	INITTRIAS01                                             	@54
+	LADR_                                                   	@55
+	LREC_                                                   	@56
+	MYCRYPT                                                 	@57
+	NGMC_                                                   	@58
+	NGMINI_                                                 	@59
+	OPENSTORAGEPROJECT                                      	@60
+	PUTHD_                                                  	@61
+	QTCONT                                                  	@62
+	QTWIND_                                                 	@63
+	QWINDOW                                                 	@64
+	RECORDTABLE                                             	@65
+	REINDEXFILE                                             	@66
+	RELEASEERRORTREE                                        	@67
+	SETCOPYRIGHTFLAG                                        	@68
+	SETERRORDBENV                                           	@69
+	SETERR_                                                 	@70
+	SETKEYCONTEXT                                           	@71
+	SETUPINTERRUPTHANDLER                                   	@72
+	SETVEC_                                                 	@73
+	SET_DB_STATUS                                           	@74
+	SHUTDOWNINTERRUPTHANDLER                                	@75
+	STORE_ERROR                                             	@76
+	STRNCHR                                                 	@77
+	STRRLCHR                                                	@78
+	ZACT_                                                   	@79
+	ZCLOSE_                                                 	@80
+	ZDISP_                                                  	@81
+	ZFIND_                                                  	@82
+	ZFIRST_                                                 	@83
+	ZKREAD_                                                 	@84
+	ZLAST_                                                  	@85
+	ZNEW_                                                   	@86
+	ZNEXT_                                                  	@87
+	ZOPEN_                                                  	@88
+	ZPREV_                                                  	@89
+	ZREAD_                                                  	@90
+	ZWRITE_                                                 	@91
+	Z_ACCESS                                                	@92
+	Z_ACTIVATE                                              	@93
+	Z_CLOSE                                                 	@94
+	Z_DISPOSE                                               	@95
+	Z_FILLNEW                                               	@96
+	Z_KEYFIND                                               	@97
+	Z_KEYFIRST                                              	@98
+	Z_KEYLAST                                               	@99
+	Z_KEYNEXT                                               	@100
+	Z_KEYPREV                                               	@101
+	Z_KEYREAD                                               	@102
+	Z_OPEN                                                  	@103
+	Z_OPEN_STORAGE                                          	@104
+	Z_OPEN_STORAGE_PBD                                      	@105
+	Z_RACCESS                                               	@106
+	Z_READREC                                               	@107
+	Z_RESTORE                                               	@108
+	Z_SETFILES                                              	@109
+	Z_SETPAGES                                              	@110
+	Z_TOUCH                                                 	@111
+	Z_WRITEREC                                              	@112
+	_db_error                                               	@113
+	_einvaddr                                               	@114
+	_enomem                                                 	@115
+	_ErrorWindow                                            	@116
+	_error_message                                          	@117
+	_err_func                                               	@118
+	_getlis_                                                	@119
+	_putlis_                                                	@120
+	_ReportExtError                                         	@121
+	_ReportNotFoundError                                    	@122
+	_ReportVisError                                         	@123
+	_reslis_                                                	@124
+	_WEP                                                    	@125

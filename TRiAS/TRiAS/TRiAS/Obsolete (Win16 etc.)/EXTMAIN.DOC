@@ -1,0 +1,38 @@
+Erweiterungsschnittstelle fÅr DIRIS
+
+Eine Erweiterungs-DLL hat die Mîglichkeit Åber einen Satz von Messages faktisch
+beliebige Informationen Åber das aktuelle Projekt, ein bestimmtes Objekt oder
+eine Sicht etc. anzufordern. 
+
+Die Messages gliedern sich in mehrere Gruppen:
+
+	. allgemeine Anfragen (common queries)
+	. objektbezogene Anfragen (object oriented queries)
+	. Mitteilungen Åber erfolgte Modifikationen in diversen INI-Dateien
+	  (notifications)
+	. Modifikationsanforderungen an DIRIS
+	. Enumerations-Anforderungen an DIRIS 
+	. sonstige Befehle an DIRIS
+
+Jede Message enthÑlt in wMsg den Wert, den RegisterWindowMessage liefert, 
+wenn das Argument "TriasExtensionMessage" Åbergeben wird, in wParam ist die 
+konkrete Messagekonstante und in lParam die fÅr die konkrete Message 
+spezifische Information enthalten. 
+
+
+Im einzelnen stehen folgende Messages zur VerfÅgung
+
+
+Allgemeine Anfragen
+
+Anforderung des vollen Dateinamens des aktuellen Projektes
+
+	wParam:	DEX_QUERYACTIVEPROJECT
+	lParam: Adresse des Zeichenpuffers, in den der Dateiname geschrieben werden
+		soll. Dieser Zeichenpuffer mu· gro· genug sein, den vollen Dateinamen
+		aufzunehmen.
+
+	return: Adresse des Zeichenpuffers, der den Pfadnamen enthÑlt bzw. NULL bei
+		Fehler oder wenn kein Projekt geîffnet ist.
+
+	

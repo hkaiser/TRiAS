@@ -1,0 +1,101 @@
+; GBM-InterTRiAS, (c) 1997, 1998, FEZ Potsdam GmbH
+;
+; Steuerdatei für den Beitragsbescheid
+;
+; Eine Steuerdatei besteht aus drei Bestandteilen:
+;  - Kommentare (gekennzeichnet durch ein Semikolon am Anfang der Zeile)
+;  - Steuerkodes (eingeschlossen in {}, stets am Anfang einer Zeile)
+;  - zu druckender Text, ergänzt durch Variablen (eingeschlossen in <<>>)
+;
+; Steuerkodes existieren für Schriftart, Schriftgröße:
+;  ohne Kode -  große Schrift, normal;
+;  'Klein'   -  kleine Schrift;
+;  'Fett'    -  fette Schrift (kann mit 'Klein' kombiniert werden);
+;
+; und Textposition:
+;  ohne Kode -  am Anfang einer neuen Zeile;
+;  'L=n'     -  am Anfang einer neuen Zeile nach n Leerzeilen;
+;  'O=n'     -  relativ zur aktuellen um n Zeilen versetzt (n==0 ==> in der
+;                 aktuellen Zeile!), die aktuelle Zeile wird nicht weitergezählt)
+;  'X=n'     -  an Tabulatorposition n (Tabulatoren mit konstantem Abstand, 
+;                 das Druckdatum wird in Pos. 11 und 12 gedruckt!)
+;  (die Kodes L und O können nicht kombiniert werden, L wird dann ignoriert)
+;
+; Derzeit verfügbare Variablen im Text sind:
+;
+;   NFP1_IDE   -> Grundstücksnummer
+;   NFP1_ENA   -> Eigentümer
+;   NFP1_EAN   -> Strasse (Eigentümeranschrift)
+;   NFP1_EPL   -> PLZ (Eigentümeranschrift)
+;   NFP1_EOR   -> Ort (Eigentümeranschrift)
+;   NFP1_KASS  -> Kassenzeichen (Kundennummer)
+;
+;   STR_DECO   -> Strasse (Grundstücksanschrift, wird aus IDE ermittelt) !!
+;   NFP1_ORT   -> Ort     (Grundstücksanschrift, wird aus IDE ermittelt) !!
+;   NFP1_FLU   -> Flur
+;   NFP1_FST   -> Flurstück
+;   NFP1_GFZ
+;   NFP1_AGG
+;   NFP1_VGZ
+;   VOLLIE2
+;   VOLLIE3
+;   NFP1_DBM
+;
+; Darüber hinaus können mit Hilfe des Steuerzeichens '#' am Begin einer Zeile
+; Variablen definiert werden. Derzeit sind die Variablen Adr1 ... 4 implementiert,
+; welche Textzeilen für den Kopfbereich des Formulares definieren. Eine weitere,
+; logische Variable 'Datum' legt fest, ob das aktuelle Datum des Ausdruckes ge-
+; druckt werden soll (Eintrag '#Datum' vorhanden) oder nicht (Eintrag nicht
+; vorhanden oder auskommentiert).
+;
+; Im Bereich des Textteiles besteht weiterhin die Möglichkeit, bedingte Textpassagen
+; zu definieren. Über die Konstruktion
+;
+; [IF bedingung]
+; ... Text A
+; [ELSE]
+; ... Text B
+; [ENDIF]
+;
+; kann erreicht werden, daß 'Text A' (auch mehrere Zeilen) gedruckt wird, wenn
+; 'bedingung' wahr ist. Andernfalls wird 'Text B' gedruckt. (Fehlt die '[ELSE]'-Klausel,
+; wird kein Text gedruckt, wenn 'bedingung' nicht wahr ist.)
+; Für 'bedingung' ist derzeit lediglich die Klausel 'B_PLAN' implementiert. Alle anderen
+; Bedingungen werden stets als wahr interpretiert!
+; Eine Verschachtelung von 'IF'-Klauseln ist nicht möglich.
+;
+#Adr1=Abwasserzweckverband "Musterhausen"
+#Adr2=12345 Musterhausen
+#Adr3=...
+#Adr4=Adressfeld 4
+#Adr5=Beispielallee 135, Tel.: 12345/123456789
+;#Datum
+{Fett}Beitragsbescheid für die öffentliche Abwasseranlage (Herstellungsbeitrag)
+{Fett;L=1}I. Beitragspflichtiges Grundstück
+{L=1}Gemeinde / Stadt:  <<NFP1_ORT>>
+{L=1}Straße:  <<STR_DECO>>
+{L=1}Flur:  <<NFP1_FLU>>
+{O=0;X=5}Flurstück:  <<NFP1_FST>>
+{L=1}Anzahl Wohneinheiten:  <<NFP1_GFZ>>
+[IF B_PLAN]
+{Fett;L=2}II. Herstellungsbeitrag gem. § 4a, § 6 der Herstellungsbeitragssatzung
+[ELSE]
+{Fett;L=2}II. Herstellungsbeitrag gem. § 4, § 5 der Herstellungsbeitragssatzung
+[ENDIF]
+{L=1}heranzuziehende
+{}Grundstücksfläche
+{X=9;O=0}Schmutzwasser-
+{}lt. Anlage
+{X=6;O=0}Beitragssatz
+{X=9;O=0}beitrag
+{L=1}<<NFP1_AGG>> m²  x   <<VOLLIE2>>%   x
+{X=6;O=0}7,13 DM/m²   =
+{X=9;O=0}<<NFP1_BDM>> DM
+[IF B_PLAN]
+{L=1}Für das beitragspflichtige Grundstück besteht ein Bebauungsplan. Dem entsprechend
+{}werden <<VOLLGESCH>> Vollgeschosse angerechnet.
+[ELSE]
+{L=1}Für das beitragspflichtige Grundstück besteht kein Bebauungsplan. Als tatsächlich
+{}vorhandene Vollgeschosse wurde <<VOLLGESCH>> festgestellt.
+[ENDIF]
+{Klein;L=2}(Für das erste Vollgeschoß sind 100%, für jedes weitere zusätzlich 60% der heranzuziehenden Grundstücksfläche anzusetzen.)

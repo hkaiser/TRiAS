@@ -1,0 +1,108 @@
+
+
+
+CREATE PROCEDURE PROC_CALC_HALTGEFALLE( dx DECIMAL(15, 3),dy DECIMAL(15, 3),dLange DECIMAL(15, 3), nIDHaltung INTEGER) 
+AS
+  DECLARE VARIABLE dGefaelle  FLOAT;
+BEGIN
+/*  UPDATE HALTUNG SET HALTUNG.MARKIERUNG = "GEFAELLE_1" WHERE HALTUNG.ID = :nIDHaltung;
+*/
+  IF (dLange > 0.0 ) THEN BEGIN
+    dGefaelle = (((dx - dy) / dLange ) * 1000.0);
+    UPDATE HALTUNG SET HALTUNG.GEFAELLE = :dGefaelle WHERE HALTUNG.ID = :nIDHaltung;
+/*    UPDATE HALTUNG SET HALTUNG.MARKIERUNG = "GEFAELLE" WHERE HALTUNG.ID = :nIDHaltung; */
+  END
+END !!
+
+
+CREATE PROCEDURE PROC_CALC_FABS(d FLOAT) RETURNS (res FLOAT)
+AS
+BEGIN
+  res = d;
+  IF (d < 0.0) THEN BEGIN
+   res = - d;
+  END
+END !!
+
+
+CREATE PROCEDURE PROC_CALC_SQRT( d FLOAT ) RETURNS (dRes FLOAT)
+AS
+  DECLARE VARIABLE dLastRes  FLOAT;
+  DECLARE VARIABLE dStep     FLOAT;
+  DECLARE VARIABLE dBuf      FLOAT;
+  DECLARE VARIABLE dBuf2     FLOAT;
+  DECLARE VARIABLE i         Integer;
+  DECLARE VARIABLE lDir      SmallInt;
+  DECLARE VARIABLE lLoop     SmallInt;
+BEGIN
+  if (d > 1.0) then begin
+    dStep = 4.0;
+  end else begin
+    dStep = 1.0;
+  end
+  dRes = 5.0;
+  dLastRes = 0.0;
+  lDir = 0;
+  i=0;
+  lLoop = 1;
+  while (lLoop = 1) do begin
+    dLastRes = dRes;
+    if ((dRes * dRes) > d) then begin
+      dRes = dRes - dStep;
+      if (lDir = 1) then dStep = dStep / 2.0;
+      lDir = 0;
+    end else if ((dRes * dRes) < d) then begin
+      dRes = dRes + dStep;
+      if (lDir= 0) then dStep = dStep / 2.0;
+      lDir = 1;
+    end
+    i = i + 1;
+    dBuf = dRes - dLastRes;
+    EXECUTE PROCEDURE PROC_CALC_FABS :dBuf RETURNING_VALUES :dBuf2;
+    IF ((dBuf2 < 0.001) OR (i > 500)) THEN BEGIN
+      lLoop = 0;
+    END
+    IF (i > 500) THEN BEGIN
+      dRes = -1;
+    END
+  end
+end  !!
+
+
+/* nTyp = 0 -> Lange Deckel */
+/* nTyp = 1 -> Lange Haltung */
+/* nTyp = 2 -> Lange Schacht */
+CREATE PROCEDURE PROC_CALC_HALTLANGE( dx1 DECIMAL(15, 3),dy1 DECIMAL(15, 3),dx2 DECIMAL(15, 3),dy2 DECIMAL(15, 3), nIDHaltung INTEGER, nTyp INTEGER) 
+AS
+  DECLARE VARIABLE dxDiff  FLOAT;
+  DECLARE VARIABLE dyDiff  FLOAT;
+  DECLARE VARIABLE dLange  FLOAT;
+  DECLARE VARIABLE dBuf    FLOAT;
+  DECLARE VARIABLE lOk     SmallInt;
+
+BEGIN
+  lOk = 1;
+  IF ((dx1 = 0.0) or (dy1 = 0.0) or (dx2 = 0.0) or (dy2 = 0.0)) THEN BEGIN
+    lOk = 0;
+  END
+  IF ((dx1 IS NULL) or (dy1 IS NULL) or (dx2 IS NULL) or (dy2 IS NULL)) THEN BEGIN
+    lOk = 0;
+  END
+  if (lOk = 1) then begin
+    dxDiff = dx1 - dx2;
+    EXECUTE PROCEDURE PROC_CALC_FABS :dxDiff RETURNING_VALUES :dxDiff;
+    dyDiff = dy1 - dy2;
+    EXECUTE PROCEDURE PROC_CALC_FABS :dyDiff RETURNING_VALUES :dyDiff;
+  
+
+    dBuf = (dxDiff * dxDiff) + (dyDiff * dyDiff);
+    EXECUTE PROCEDURE PROC_CALC_SQRT :dBuf RETURNING_VALUES :dLange;
+    IF (nTyp =0 ) THEN BEGIN
+      UPDATE HALTUNG SET HALTUNG.LANGEDECKEL  = :dLange WHERE HALTUNG.ID = :nIDHaltung; 
+    END ELSE IF (nTyp=1) THEN BEGIN
+      UPDATE HALTUNG SET HALTUNG.LANGEHALTUNG = :dLange WHERE HALTUNG.ID = :nIDHaltung; 
+    END ELSE IF (nTyp=2) THEN BEGIN
+      UPDATE HALTUNG SET HALTUNG.LANGESCHACHT = :dLange WHERE HALTUNG.ID = :nIDHaltung; 
+    END
+  END
+END !!

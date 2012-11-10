@@ -1,0 +1,62 @@
+'\"t
+.if t .TH IMCLTDUP 3IM "August 19, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMCLTDUP 3IM "August 19, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImCltDup - duplicate a color lookup table
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+ImClt *ImCltDup( srcClt )
+	ImClt *srcClt ;
+.fi
+\fR
+.SH DESCRIPTION
+\fBImCltDup\fR duplicates a color lookup table \fIsrcClt\fR
+and returns a pointer to the new \fBImClt\fR.
+The \fIsrcClt\fR is not changed by this operation.
+.SH RETURNS
+Upon success, \fBImCltDup\fR returns a new \fBImClt\fR.  On failure,
+\fBIMCLTNULL\fR is returned and \fBImErrNo\fR set to one of the following:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEMALLOC	Cannot allocate enough memory for the new \fBImClt\fR
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH SEE ALSO
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBImCltAlloc\fR (3IM),
+\fBImCltFree\fR (3IM),
+\fBImCltGrayRamp\fR (3IM),
+\fBImCltQBlue\fR (3IM),
+\fBImCltQFirst\fR (3IM),
+\fBImCltQGreen\fR (3IM),
+\fBImCltQLast\fR (3IM),
+\fBImCltQNColors\fR (3IM),
+\fBImCltQNext\fR (3IM),
+\fBImCltQPrev\fR (3IM),
+\fBImCltQPtr\fR (3IM),
+\fBImCltQRed\fR (3IM),
+\fBImCltRoll\fR (3IM),
+\fBImCltSBlue\fR (3IM),
+\fBImCltSDec\fR (3IM),
+\fBImCltSGreen\fR (3IM),
+\fBImCltSInc\fR (3IM),
+\fBImCltSRed\fR (3IM),
+\fBImVfbQClt\fR (3IM),
+\fBImVfbSClt\fR (3IM),
+\fBImVfbQDup\fR (3IM)
+.SH AUTHOR
+Mike Bailey
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

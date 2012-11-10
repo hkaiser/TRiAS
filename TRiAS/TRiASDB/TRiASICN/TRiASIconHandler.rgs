@@ -1,0 +1,62 @@
+HKCR
+{
+	TRiAS.TRiASIconHandler.1 = s 'TRiAS® Iconhandler'
+	{
+		CLSID = s '{710B2C47-890F-11D2-9EFB-006008447800}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {710B2C47-890F-11D2-9EFB-006008447800} = s 'TRiAS® Iconhandler'
+		{
+			ProgID = s 'TRiAS.TRiASIconHandler.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+	NoRemove 'TRiAS.Document.1' 
+	{
+		shellex
+		{
+			ForceRemove IconHandler = s '{710B2C47-890F-11D2-9EFB-006008447800}'
+		}
+	}
+	NoRemove 'TRiAS.Document.2' 
+	{
+		shellex
+		{
+			ForceRemove IconHandler = s '{710B2C47-890F-11D2-9EFB-006008447800}'
+		}
+	}
+	NoRemove 'TRiAS.Workspace.1' 
+	{
+		shellex
+		{
+			ForceRemove IconHandler = s '{710B2C47-890F-11D2-9EFB-006008447800}'
+		}
+	}
+}
+HKLM
+{
+	NoRemove Software
+	{
+		NoRemove Microsoft
+		{
+			NoRemove Windows
+			{
+				NoRemove CurrentVersion
+				{
+					NoRemove 'Shell Extensions'
+					{
+						NoRemove Approved
+						{
+							val '{710B2C47-890F-11D2-9EFB-006008447800}' = s 'TRiAS® Iconhandler'
+						}
+					}
+				}
+			}
+		}
+	}
+}
+

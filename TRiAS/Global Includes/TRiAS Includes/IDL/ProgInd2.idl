@@ -1,0 +1,304 @@
+// $Header: $
+// Copyright© 1999-2000 TRiAS GmbH Potsdam, All rights reserved
+// Created: 18.03.2000 17:54:45
+//
+// @doc
+// @module ProgInd2.idl | IDL source for IProgressIndicator2 et.al.
+
+#if !defined(_PROGIND2_IDL__745BEDA7_D948_4912_93CB_730AED0CA2AA__INCLUDED_)
+#define _PROGIND2_IDL__745BEDA7_D948_4912_93CB_730AED0CA2AA__INCLUDED_
+
+#include <OleAuto.hh>
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declarations
+interface IProgressIndicator2;
+interface IMultiProgressIndicator;
+
+cpp_quote("#ifndef _LPPROGRESSINDICATOR_DEFINED")
+cpp_quote("#define _LPPROGRESSINDICATOR_DEFINED")
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE | TRIASTLB
+// @interface IProgressIndicator2 | Über das Interface <i IProgressIndicator2> 
+// sind sämtliche Eigenschaften und Methoden eines Statusindikators zugänglich
+// der in Form eines Fensters angezeigt werden kann.
+// @supby <o ProgressIndicator>
+// @xref <o ProgressIndicator>
+// @group Eigenschaften von <i IProgressIndicator2>
+// @index | IPROGRESSINDICATOR2 & PROPERTY
+// @group Methoden von <i IProgressIndicator2>
+// @index | IPROGRESSINDICATOR2 & METHOD
+// @doc IPROGRESSINDICATOR2
+[
+	uuid(079638D1-3123-101C-BB62-00AA0018497C),
+	dual, oleautomation,
+	helpstring("IProgressIndicator2 Interface"),
+    pointer_default(unique)
+]
+interface IProgressIndicator2 : IDispatch
+{
+	import "oaidl.idl";
+
+cpp_quote("#if !defined(_PIFLAGS_DEFINED)")
+cpp_quote("#define _PIFLAGS_DEFINED")
+	// @doc PIFLAGSENUMS 
+	// @enum PIFLAGS | Werte für die Beeinflussung der anzuzeigenden Informationen
+	// für ein <o ProgressIndicator> -Objekt. Diese Werden werden beim Aufruf der Methoden
+	// <om IProgressIndicator2.Restart>, <om IProgressIndicator2.ChangeText> und 
+	// <om IProgressIndicator2.RetrieveText> verwendet.
+	// @xref <i IProgressIndicator2>, <om IProgressIndicator2.Restart>, 
+	// <om IProgressIndicator2.ChangeText>, <om IProgressIndicator2.RetrieveText>
+	typedef [public, v1_enum] enum tagPIFLAGS {
+		[helpstring("Caption beeinflussen")] 
+			PIFLAGS_CAPTION = 0x0001,		// @emem Das Caption des 
+				// <o ProgressIndicator> -Fensters ist über das Interface <i IProgressIndicator2>
+				// beeinflußbar.
+		[helpstring("Feld 'Datei:' beeinflussen")] 
+			PIFLAGS_FILE = 0x0002,	// @emem Das Feld 1 (siehe Bild unter <o ProgressIndicator>) 
+				// ist angezeigt und über das Interface <i IProgressIndicator2> beeinflußbar.
+		[helpstring("Feld 'Dateiname' beeinflussen")] 
+			PIFLAGS_FILENAME = 0x0004,// @emem Das Feld, in dem ein Dateiname angezeigt werden kann 
+				// (Feld 2, siehe Bild unter <o ProgressIndicator>) ist angezeigt und über das Interface 
+				// <i IProgressIndicator2> beeinflußbar.
+		[helpstring("Statusfeld1 beeinflussen")] 
+			PIFLAGS_STATUS = 0x0008,	// @emem Das Feld 3 (siehe Bild unter <o ProgressIndicator>) 
+				// ist angezeigt und über das Interface <i IProgressIndicator2> beeinflußbar.
+				// Die in diesem Feld gesetzte Zeichenkette kann die Zeichenfolge '%d' enthalten
+				// um die Prozentzahl der abgearbeiteten Schritte anzuzeigen. Dazu muß zusätzlich
+				// beim Aufruf der methode <om IProgressIndicator2.Restart> der Wert 
+				// <e PIFLAGS.PIFLAGS_ADJUSTPERCENT> gesetzt sein.
+		[helpstring("Statusfeld2 beeinflussen")] 
+			PIFLAGS_RESULT = 0x0010,	// @emem Das Feld 4 (siehe Bild unter <o ProgressIndicator>) 
+				// ist angezeigt und über das Interface <i IProgressIndicator2> beeinflußbar.
+		[helpstring("Automatische Zeitanzeige aktivieren")] 
+			PIFLAGS_TIME = 0x0020,		// @emem Es wird automatisch die vorraussichtlich verbleibende
+				// Bearbeitungszeit angezeigt. Diese Zeit wird ausgehend von den eingestellten
+				// Anzeigegrenzen, der aktuellen Position und der seit dem letzten Restart vergangenen
+				// Zeit berechnet und bei jedem <om IProgressIndicator2.SetPosition> bzw. 
+				// <om IProgressIndicator2.IncrementPosition> aktualisiert.
+		[helpstring("Automatisch Prozente aktualisieren")] 
+			PIFLAGS_ADJUSTPERCENT = 0x0040,		// @emem Eine im Statustext 1 enthaltene Zeichenfolge
+				// '%d' wird durch die aktuell abgearbeitete Prozentzahl ersetzt.
+		[helpstring("Fenster erst mit erstem Wert anzeigen")] 
+			PIFLAGS_INIT_SHOWWINDOW = 0x0100,	// @emem Das erzeugte Fenster wird erst mit dem ersten
+				// Aufruf der Methode <om IProgressIndicator2.SetPosition> oder 
+				// <om IProgressIndicator2.IncrementPosition> angezeigt. Fehlt dieser Wert, so erfolgt
+				// die Anzeige des Fensters sofort mit dem Aufruf der Methode <om IProgressIndicator2.Restart>.
+
+		[helpstring("Copy-AVI anzeigen")] 
+			PIFLAGS_AVI_COPY = 0x1000,		// @emem zeigt ein Fenster an, das das animierte Standardbild
+				// für 'Kopieren' enthält
+		[helpstring("Move-AVI anzeigen")] 
+			PIFLAGS_AVI_MOVE = 0x2000,		// @emem zeigt ein Fenster an, das das animierte Standardbild
+				// für 'Verschieben' enthält
+		[helpstring("Löschen-AVI anzeigen")] 
+			PIFLAGS_AVI_DELETE = 0x3000,	// @emem zeigt ein Fenster an, das das animierte Standardbild
+				// für 'Löschen' enthält
+		[helpstring("Maske für AVI-Nummer"), hidden] 
+			PIFLAGS_AVI_MASK = 0x7000,
+
+		[helpstring("Alle Felder anzeigen")] 
+			PIFLAGS_ALL = 0x007f,	// @emem alle Felder des Fensters werden angezeigt und sind beeinflußbar.
+	
+	// Flag für Restart
+		[helpstring("Lediglich 'Canceled' -Status rücksetzen")] 
+			PIFLAGS_RESETCANCEL = 0x8000,	// @emem Der Aufruf der Methode <om IProgressIndicator2.Restart>
+				// mit diesem Wert setzt lediglich den evtl. passivierten 'Abbrechen' -Knopf zurück.
+	} PIFLAGS;
+cpp_quote("#endif // !defined(_PIFLAGS_DEFINED)")
+
+	// @doc IPROGRESSINDICATOR2 | METHOD
+	// @method HWND | IProgressIndicator2 | InitNew | Die Methode <om .InitNew>
+	// initialisiert das <o ProgressIndicator> Objekt und kann dazu verwendet werden, dem neu zu erzeugenden
+	// Fenster ein Parent-Fenster zuzuordnen.
+	// @parm long | hWndParent | Der Parameter <p hWndParent> gibt das als Parent-Fenster zu verwendende
+	// Fensterhandle (hWnd) vor.
+	// @parm unsigned long | dwReserved | Der Parameter <p dwReserved> wird zur Zeit nicht ausgewertet.
+	// @rdesc Die methode <om .InitNew> liefert das Fensterhandle des neu erzeugten Fensters zurück.
+	// @xref <i IProgressIndicator2>
+	[id(100), helpcontext(IProgressIndicator2_InitNew_meth)] 
+		HRESULT InitNew ([in] LONG hWndParent, [in] LONG dwReserved, [out, retval] LONG *phWnd);
+
+ 	// @doc IPROGRESSINDICATOR2 | METHOD
+	// @method void | IProgressIndicator2 | Restart | Die Methode <om .Restart>
+	// dient der Definition verschiedener Initialisierungswerte, die die Anzeigeparameter
+	// des <o ProgressIndicator> Objektes beeinflussen.
+	// @parm unsigned long | MinPos | Der Parameter <p MinPos> legt den unteren Wert der
+	// Anzeigeskala fest.
+	// @parm unsigned long | MaxPos | Der Parameter <p MaxPos> legt den oberen Wert der 
+	// Anzeigeskala fest
+	// @parm UserDefined | Flags | Der Parameter <p Flags> muß Werte des Types <t PIFLAGS> enthalten, 
+	// die den zu verwendenden Anzeigemode beeinflussen (Was wird wie angezeigt?).
+	// @comm Das <o ProgressIndicator> Objekt skaliert die Anzeigeskale automatisch zwischen den
+	// in der Methode <om .Restart> vorgegeben Werten. Anzeigepositionen, die durch die
+	// Methode <om .SetPosition> eingestellt werden sollen, werden in Bezug auf die hier
+	// definierten Anzeigegrenzen ausgewertet.
+	// @xref <i IProgressIndicator2>, <om .SetPosition>, <t PIFLAGS>
+	[id(101), helpcontext(IProgressIndicator2_Restart_meth)] 
+		HRESULT Restart ([in] LONG ulMinPos, [in] LONG ulMaxPos, [in] PIFLAGS rgFlags);
+
+	// @doc IPROGRESSINDICATOR2 | METHOD
+	// @method void | IProgressIndicator2 | ChangeText | Die Methode <om .ChangeText>
+	// setzt einen der im Fenster angezeigten Texte.
+	// @parm <t PIFLAGS> | WhichText | Der Parameter <p WhichText> gibt vor, welcher
+	// der Texte zu modifizieren ist. Der Parameter muß Werte des Types <t PIFLAGS> enthalten.
+	// @parm BSTR | NewText | Der Parameter <p bstrNewText> enthält den neu anzuzeigenden Text.
+	// @xref <i IProgressIndicator2>, <t PIFLAGS>
+    [id(102), helpcontext(IProgressIndicator2_ChangeText_meth)] 
+		HRESULT ChangeText ([in] PIFLAGS rgWhichText, [in] BSTR bstrNewText);
+
+	// @doc IPROGRESSINDICATOR2 | METHOD
+	// @method BSTR | IProgressIndicator2 | RetrieveText | Die Methode <om .RetrieveText>
+	// liefert einen der im fenster angezeigten Texte.
+	// @parm <t PIFLAGS> | WhichText | Der Parameter <p WhichText> gibt vor, welcher
+	// der Texte geliefert werden soll. Der Parameter muß Werte des Types <t PIFLAGS> enthalten.
+	// @xref <i IProgressIndicator2>, <t PIFLAGS>
+    [id(103), helpcontext(IProgressIndicator2_RetrieveText_meth)] 
+		HRESULT RetrieveText ([in]PIFLAGS rgWhichText, [out, retval] BSTR *pbstrOutText);
+
+	// @doc IPROGRESSINDICATOR2 | METHOD
+	// @method long | IProgressIndicator2 | SetPosition | Die Methode <om .SetPosition>
+	// setzt die Anzeigeposition des Statusindikators auf den vorgegebenen Wert.
+	// @parm long | NewPos | Der Parameter <p NewPos> gibt die neue Anzeigeposition des
+	// Statusindikators vor.
+	// @comm Der übergebene Wert wird in Bezug auf die beim letzten Aufruf der methode <om .Restart>
+	// definierten Anzeigegrenzen interpretiert.
+	// @rdesc Die Methode <om .SetPosition> liefert den aktuellen Abarbeitungsstand in Prozent zurück.
+	// @xref <i IProgressIndicator2>, <om .IncrementPosition>
+	[id(104), helpcontext(IProgressIndicator2_SetPosition_meth)] 
+		HRESULT SetPosition ([in] LONG ulNewPos, [out, retval] INT *piPercent);
+
+	// @doc IPROGRESSINDICATOR2 | METHOD
+	// @method long | IProgressIndicator2 | IncrementPosition | Die Methode <om .IncrementPosition>
+	// erhöht die aktuelle Anzeigeposition des Statusindikators um Eins.
+	// @rdesc Die Methode <om .IncrementPosition> liefert den aktuellen Abarbeitungsstand in Prozent zurück.
+	// @xref <i IProgressIndicator2>, <om .SetPosition>
+	[id(105), helpcontext(IProgressIndicator2_IncrementPosition_meth)] 
+		HRESULT IncrementPosition ([out, retval] INT *piPercent);
+
+	// @doc IPROGRESSINDICATOR2 | METHOD
+	// @method HRESULT | IProgressIndicator2 | IsCanceled | Die Methode <om .IsCanceled>
+	// testet, ob der 'Abbrechen' -Knopf durch den Nutzer betätigt wurde.
+	// @comm Sobald der Nutzer den 'Abbrechen' -Knopf betätigt, wird dieser passiviert und kann
+	// erst durch den Aufruf der Methode <om .Restart> wieder aktiviert werden.
+	// @xref <i IProgressIndicator2>
+    [id(106), helpcontext(IProgressIndicator2_IsCanceled_meth), restricted, hidden] 
+		HRESULT IsCanceled (void);
+
+	// @doc IPROGRESSINDICATOR2 | PROPERTY
+	// @property <t PIFLAGS> | IProgressIndicator2 | Flags | Die Eigenschaft <op .Flags>
+	// setzt bzw. liest die aktuellen Einstellungen, die z.B. durch den letzten Aufruf der Methode
+	// <om .Restart> vorgegeben wurden.
+	// @xref <i IProgressIndicator2>, <om .Restart>
+	[id(107), propget, helpcontext(IProgressIndicator2_Flags_prop)] 
+		HRESULT Flags ([out, retval] PIFLAGS *prgFlags);
+	[id(107), propput, helpcontext(IProgressIndicator2_Flags_prop)] 
+		HRESULT Flags ([in] PIFLAGS rgFlags);
+
+	// @doc IPROGRESSINDICATOR2 | METHOD
+	// @method void | IProgressIndicator2 | RetrieveRange | Die Methode <om .RetrieveRange>
+	// liefert die beim letzten Aufruf der Methode <om .restart> eingestellten Anzeigegrenzen.
+	// @parm long | MinPos | Der (ByRef) Parameter <p MinPos> liefert die untere Anzeigegrenze.
+	// @parm long | MaxPos | Der (ByRef) Parameter <p MaxPos> liefert die obere Anzeigegrenze.
+	// @xref <i IProgressIndicator2>, <om .Restart>
+	[id(108), helpcontext(IProgressIndicator2_RetrieveRange_meth)] 
+		HRESULT RetrieveRange ([in, out] LONG *pulMinPos, [in, out] LONG *pulMaxPos);
+
+	// @doc IPROGRESSINDICATOR2 | METHOD
+	// @method void | IProgressIndicator2 | Show | Die Methode <om .Show>
+	// blendet das fenster der Statusanzeige ein.
+	// @xref <i IProgressIndicator2>, <om .Hide>
+	[id(109), helpcontext(IProgressIndicator2_Show_meth)] 
+		HRESULT Show();
+
+	// @doc IPROGRESSINDICATOR2 | METHOD
+	// @method void | IProgressIndicator2 | Hide | Die Methode <om .Hide>
+	// blendet das fenster der Statusanzeige aus.
+	// @xref <i IProgressIndicator2>, <om .Show>
+	[id(110), helpcontext(IProgressIndicator2_Hide_meth)] 
+		HRESULT Hide();
+
+	// @doc IPROGRESSINDICATOR2 | PROPERTY
+	// @method HRESULT | IProgressIndicator2 | Canceled | Die Eigenschaft <om .Canceled>
+	// testet, ob der 'Abbrechen' -Knopf durch den Nutzer betätigt wurde.
+	// @comm Sobald der Nutzer den 'Abbrechen' -Knopf betätigt, wird dieser passiviert und kann
+	// erst durch den Aufruf der Methode <om .Restart> wieder aktiviert werden.
+	// @xref <i IProgressIndicator2>
+    [propget, id(111), helpcontext(IProgressIndicator2_Canceled_prop)] 
+		HRESULT Canceled ([out, retval] VARIANT_BOOL *IsCanceled);
+};
+cpp_quote("#endif")
+
+cpp_quote("#ifndef _MULTIPROGRESSINDICATOR_DEFINED")
+cpp_quote("#define _MULTIPROGRESSINDICATOR_DEFINED")
+[
+	uuid(079638D4-3123-101C-BB62-00AA0018497C),		
+	dual,
+	oleautomation,
+	helpstring("IMultiProgressIndicator Interface"),
+]
+interface IMultiProgressIndicator : IDispatch
+{
+	[
+		id(200), 
+		helpstring("Init an MultiprogressIndicator with the given range count.")
+	]
+	HRESULT Init ([in] int iRangeCnt, [in] IProgressIndicator2 *pPI);		
+
+	[
+		id(201), 
+		helpstring("Get an SubProgressIndicator for the given range.")
+	] 
+	HRESULT GetRange ([in] int iRange, [out, retval] IProgressIndicator2 **ppPI);		
+
+	[
+		id(202), 
+		propget,
+		helpstring("Get the count of ranges for which an SubProgressIndicator exists.")
+	]
+	HRESULT RangeCnt ([out, retval] int *piRangeCnt);							
+};
+cpp_quote("#endif // _MULTIPROGRESSINDICATOR_DEFINED")
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc OBJECT TRIASTLB
+// @object ProgressIndicator | Ein Datenobjekt vom Typ <o ProgressIndicator> kann dazu
+// verwendet werden, um längere Operationen durch Anzeige eines Fensters mit einer
+// Statusanzeige für den Nutzer transparenter zu gestalten.
+// @supint <i IProgressIndicator2> | Über das Interface <i IProgressIndicator2> sind sämtliche Eigenschaften
+// und Methoden zugänglich, die ein <o ProgressIndicator> betreffen
+// @comm Ein Datenobjekt vom Typ <o ProgressIndicator> repräsentiert ein Dialogfenster, 
+// welches zur Fortschrittsanzeige verwendet werden kann. Das folgende Bild zeigt ein 
+// diesbezügliches Beispiel:
+//
+// <bmp StatInd.bmp>
+//
+// Ein <o ProgressIndicator> kann überall dort eingesetzt werden, wo längere Operationen 
+// für den Anwender transparent gestaltet werden sollen. Ein Datenobjekt dieses Types kann 
+// faktisch frei an beliebige Vorgänge angepaßt werden, da alle Texte frei vorgebbar sind.
+// @ex Beispiel der Verwendung des <o ProgressIndicator> Objektes |
+//	Dim Status As New ProgressIndicator	
+//
+//		Status.InitNew hWnd		' Parentfensterhandle 
+//		Status.Restart 0, 1000, PIFLAGS_AVI_MOVE Or PIFLAGS_ALL 
+//		Status.ChangeText(PIFLAGS_CAPTION, _
+//				"Verschieben von Objekten")
+//		Status.ChangeText(PIFLAGS_FILE, "Verschieben")
+//		Status.ChangeText(PIFLAGS_FILENAME, "von Objekten")
+//		Status.ChangeText(PIFLAGS_STATUS, _
+//				"Es wurden bereits %d%% bearbeitet")
+//	
+//		For i% = 0 To 1000
+//			Status.SetPosition i%
+//			Status.ChangeText(PIFLAGS_RESULT, _
+//				"Objekt: " + Str$(i%))
+//			Sleep (100)
+//			If (Status.IsCanceled()) Then
+//				Exit For
+//			End If
+//		Next i%
+//		Set Status = Nothing	' ausblenden
+//
+// @xref <i IProgressIndicator2>
+
+#endif // !defined(_PROGIND2_IDL__745BEDA7_D948_4912_93CB_730AED0CA2AA__INCLUDED_)

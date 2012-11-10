@@ -1,0 +1,18 @@
+HKCR
+{
+	TRiAS.WrapperExtension.1 = s 'Wrapper für externe Erweiterungen'
+	{
+		CLSID = s '{ED9655EA-3122-101C-BB62-00AA0018497C}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {ED9655EA-3122-101C-BB62-00AA0018497C} = s 'Wrapper für externe Erweiterungen'
+		{
+			ProgID = s 'TRiAS.WrapperExtension.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

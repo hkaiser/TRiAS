@@ -1,0 +1,24 @@
+HKCR
+{
+	TRiAS.RegularExpression.1 = s 'ParseRegularExpression Class'
+	{
+		CLSID = s '{C21AAF93-2DE5-11D1-969A-00A024D6F582}'
+	}
+	TRiAS.RegularExpression = s 'ParseRegularExpression Class'
+	{
+		CurVer = s 'TRiAS.RegularExpression.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {C21AAF93-2DE5-11D1-969A-00A024D6F582} = s 'ParseRegularExpression Class'
+		{
+			ProgID = s 'TRiAS.RegularExpression.1'
+			VersionIndependentProgID = s 'TRiAS.RegularExpression'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

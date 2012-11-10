@@ -1,0 +1,310 @@
+<html>
+<title>
+Views - a C++ Standard Template Library extension.
+</title>
+<body>
+<h2>
+Views - a C++ Standard Template Library extension
+</h2>
+Last updated: 7th January, 1996
+<hr>
+<h3>Overview</h3>
+The C++ Standard Template Library provides templates that define
+generic container and iterator classes. The software described
+here extends the Standard Template Library by adding template
+classes that define views.
+<p>
+<h4>What is a view?</h4>
+A view is an abstract container whose contents
+are determined by applying a filtering transformation to an encapsulated
+domain of elements. In the most general case, a view is defined in terms
+of the encapsulated domain, a filtering predicate and 
+a transformation function. 
+<p>
+A view's encapsulated domain is an entity that behaves like an abstract
+container. In particular it defines an iterator class that conforms
+to the interface of an STL bidirectional iterator and two member 
+functions (begin, end) that generate appropriately initialised iterators. 
+Any instance of an STL container that supports use of a 
+bidirectional iterator conforms to the specification of a domain used here.
+Although a domain is usually implemented by a physical container, it need
+not be. The header file <a href="../include/domain.h">domain.h</a> contains
+an example of a domain (scalar_domain) built from a
+non-container.
+<p>
+An important specialisation of a view is a class known
+as a subdomain. A subdomain is a view whose transformation function
+is implemented by the identity function. In other words, a subdomain
+is the subset of the encapsulated domain that complies with the
+subdomain's predicate.
+<p>
+It should be noted that an important property of a view is that
+it is <strong>not</strong> formed by copying the encapsulated domain.
+Instead a view is implemented by defining new iterator classes that
+adapt to iterators of the encapsulated domain. The end result is that
+the user uses a view that behaves to all and intents and purposes like
+a normal STL container.
+<p>
+<h4>How are domain views related to relational views?</h4>
+Relational database theory also defines a concept known
+as a view. There is a fairly strong analogy between the
+concept of a relational view and that of the domain view defined here.
+For example, consider a relational view that is described by SQL of the
+form:
+<pre>
+   select column_expression_list from table  where where_clause.
+</pre>
+The following table shows the analogy between a domain
+view and a relational view of that form.
+<menu>
+<li>
+<table>
+<tr>
+<th>Domain view
+<th>Relational view
+<tr>
+<td>transformation
+<td>column_expression_list
+<tr>
+<td>domain
+<td>table
+<tr>
+<td>predicate
+<td>where_clause
+<tr>
+<td>subdomain
+<td>select * from table where where_clause
+</table>
+</menu>
+<h4>Why use a view?</h4>
+One reason for using a view is reduce the complexity 
+of code that works with containers. 
+<p>
+It is often the case that only a subset of a container's
+elements are interesting to a user of the container.
+Views allow the user to create an abstract container that 
+contains only the interesting elements. 
+<p>
+A view constructed in this way is represented by a single object. Such an object 
+(or the iterators it generates) can 
+be passed to algorithms that operate on containers without these algorithms 
+needing to know precisely how the view was constructed.
+<p>
+A trivial benefit of using a view is that conditional filtering code can
+be eliminated from the body of processing loops. Examples of this
+can be seen in the sample program, <a href="../samples/examples.cpp">examples.cpp</a>.
+<p>
+A view can be useful when the user of a container needs
+to use a set of objects functionally derived from the objects in the container,
+rather than the objects themselves. In this case, the user defines a view
+using a transformation function that implements the required transformation.
+For an example of a view being used for this purpose, see the definition
+of the map_keys template in <a href="../include/mapview.h">mapview.h</a> and
+the associated example in <a href="../samples/examples.cpp">examples.cpp</a>.
+<p>
+<h3>Template Directory</h3>
+This directory lists the major templates provided by this software:
+<dl>
+<dt>downcast_dereference in <a href="../include/downcast.h">downcast.h</a>
+<dd>
+The downcast_dereference template implements a function that converts
+a base class pointer to a subclass reference using a safe downcast
+member defined by the base class.
+<p>
+This template class is used as the transform class
+by the downcast_dereference_view template.
+<p>
+<dt>downcast_dereference_view  in <a href="../include/downcast.h">downcast.h</a>    
+<dd>
+The downcast reference view template converts a container of base class pointers
+into an abstract container of objects of a particular sub class. 
+<p>
+<dt>identity  in <a href="../include/transform.h">transform.h</a>    
+<dd>
+The identity template 
+implements the identity function by returning a reference to its argument.
+<p>
+This template is used as the transform class by the subdomain template.
+<p>
+<dt>is_subtype in <a href="../include/downcast.h">downcast.h</a>    
+<dd>
+The is_subtype template implements a test on the subclass of the object
+referred to by a base class pointer using a safe downcast member function
+defined by the base class.
+<p>
+This is_subtype template class is used as predicate class by the downcast_dereference_view template.
+<p>
+<dt>map_keys in <a href="../include/mapview.h">mapview.h</a>
+<dd>
+The map_keys template defines an abstract container that contains the keys of a map. 
+<p>
+The map_keys template is an example of a view implements a non-filtering transformation. 
+<p>
+<dt>map_values in <a href="../include/mapview.h">mapview.h</a>
+<dd>
+The map_values template defines an abstract container that contains the values of a map. 
+<p>
+The map_values template is an another example of a view implements a non-filtering transformation. 
+<p>
+<dt>pair_first in <a href="../include/transform.h">transform.h</a>
+<dd>
+A transformation function that answers the first element of a pair.
+<p>
+Used as the transformation function by the map_keys template
+to answer the key part of map pair.
+<p>
+<dt>pair_second in <a href="../include/transform.h">transform.h</a>
+<dd>
+A transformation function that answers the second element of a pair.
+<p>
+Used as the transformation function by the map_values template 
+to answer the value part of map pair.
+<p>
+<dt>scalar_domain in <a href="../include/domain.h">domain.h</a>    
+<dd>
+The scalar_domain template forms a domain from a range of scalars. 
+<p>
+<dt>subdomain in <a href="../include/domain.h">domain.h</a>
+<dd>
+The subdomain template is a subclass of a view template in which the
+transformation function is implemented by the identity function.
+<p>
+A property of a subdomain is that all members of the subdomain 
+are also members of the encapsulated domain.
+<p>
+<dt>subrange_domain in <a href="../include/domain.h">domain.h</a>
+<dd>
+The subrange_domain template defines a domain delimited by a pair of iterators. 
+<p>
+<dt>unary_tautology in <a href="../include/predicate.h">predicate.h</a>
+<dd>
+A unary predicate that is always true. This predicate is used
+by non-filtering views.
+<p>
+<dt>view in <a href="../include/view.h">view.h</a>
+<dd>
+The view template defines an abstract container in terms of an encapsulated
+domain, a filtering predicate and a transformation function.
+<p>
+</dl>
+<h3>Examples</h3>
+For examples of the use of this software, see 
+<a href="../samples/examples.cpp">examples.cpp</a>.
+<h3>Changes</h3>
+<dl>
+<dt>v1.0  - 30th December, 1995
+<dd>
+Implemented the concept of a filtering iterator. 
+<p>
+<dt>v2.0  - 6th January, 1996
+<dd>
+Made explicit the subdomain concept implicit in the definition
+of the filtering iterator. Generalised the subdomain concept to 
+yield the concept of a view. 
+<p>
+<strong>Note:</strong> What was called a filtering iterator
+in v1.0 is now simply the iterator class defined by the subdomain
+template. Filtering iterators have disappeared as a distinct concept.
+<p>
+<dt>v2.0a - 7th January, 1996
+<dd>
+Fixed a bug in downcast_dereference_view. Minor edits in documentation.
+Removed range.h. Removed range parameter from view template. Removed
+operator that did assignment from domain_iterator_t in view&lt;&gt;::iterator.
+Changed semantics of operator ==(iterator, domain_iterator_t) in view&lt;&gt;::iterator.
+<p>
+</dl>
+<h3>Acknowledgements</h3>
+Thanks to James Kanze and John Max Skaller for critiquing my initial
+implementation of filtering iterators.
+<h3>To do</h3>
+This software could be extended in a number of ways, including:
+<ul>
+<li>ensuring tighter compliance with the specification of STL iterators and containers
+<li>adding further examples
+<li>generalising the types of iterators that can be used in defining a view
+<li>extending the analogy between domain views and relational views
+<li>thinking of a better name for downcast_dereference_view (<a href="mailto:jon@zeta.org.au">anyone</a>?).
+</ul>
+<p>
+If you have need for such an extension or would like to add one, send 
+<a href="mailto:jon@zeta.org.au">me</a> a note.
+<p>
+<h3>Feedback</h3>
+I'd appreciate feedback about the design and implementation of this
+software. If you have any such comments please send <a href="mailto:jon@zeta.org.au">me</a> a note.
+<h3>Files</h3>
+<a href="../views.zip">views.zip</a> contains:<br>
+<dl>
+<dt>
+<a href="../include/view.h">include/view.h</a>
+<dd>
+view templates<br>
+<dt>
+<a href="../include/domain.h">include/domain.h</a>
+<dd>
+domain templates<br>
+<dt>
+<a href="../include/downcast.h">include/downcast.h</a>
+<dd>
+support for typesafe dereferencing of pointer containers<br>
+<dt>
+<a href="../include/predicate.h">include/predicate.h</a>
+<dd>
+useful predicates<br>
+<dt>
+<a href="../include/mapview.h">include/mapview.h</a>
+<dd>
+STL map views<br>
+<dt>
+<a href="../samples/examples.cpp">samples/examples.cpp</a>
+<dd>
+sample program<br>
+<dt>
+<a href="../include/transform.h">include/transform.h</a>
+<dd>
+useful transformation functions<br>
+<dt>
+<a href="views.html">doc/views.html</a>
+<dd>
+documentation<br>
+<dt>
+<a href="../include/views.h">include/views.h</a>
+<dd>
+top level header file for views related headers
+<br>
+</dl>
+<hr>
+<h3>Copyright</h3>
+Copyright (c) 1995, 1996 - Jon Seymour
+<p>
+Views - a C++ Standard Template Library extension
+<p>
+Permission to use, copy, modify, distribute and sell this software
+and its documentation for any purpose is hereby granted without fee,
+provided that this notice appears unmodified in all derivative
+works.
+<p>
+The author makes no representations about the suitability of 
+this software for any purpose.  It is provided "as is" 
+without express or implied warranty.
+<p>
+For more information about this software, refer to:
+<p>
+<menu>
+<li><a href="http://www.zeta.org.au/~jon/STL/views/doc/views.html">http://www.zeta.org.au/~jon/STL/views/doc/views.html</a>
+</menu>
+<p>
+Please send comments about this software to:
+<p>
+<menu>
+<li>Jon Seymour (<a href="mailto:jon@zeta.org.au">jon@zeta.org.au</a>)
+</menu>
+<p>
+<p>
+<hr>
+<address>
+Copyright (c) 1995, 1996 <a href="mailto:jon@zeta.org.au">jon seymour</a>
+</address>
+</body>
+</html>

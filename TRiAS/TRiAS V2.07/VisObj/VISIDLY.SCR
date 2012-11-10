@@ -1,0 +1,15 @@
+/yylval/ 	s/yylval/(*pyylval)/g
+/yyval/  	s/yyval/(*pyyval)/g
+
+/ = yypv\[1\];/	d
+/		goto yystack;  \/\* stack new state and value \*\// {
+i\
+\		(*pyy2val) = yy2pv[1];
+}
+
+/		switch(yym){/ {
+i\
+\		App :: Exec (ExecWhileEvent);
+}
+
+		s/yy/yy2/g

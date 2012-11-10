@@ -1,0 +1,19 @@
+NAME	     TriasED
+
+DESCRIPTION  'Editor für TRIAS'
+
+EXETYPE      WINDOWS
+
+STUB	     'WINSTUB.EXE'
+
+CODE	     PRELOAD MOVEABLE
+DATA	     PRELOAD MOVEABLE MULTIPLE
+
+HEAPSIZE     0xAFFF   ; 45k
+STACKSIZE    5120
+
+EXPORTS
+	MainWndProc	@1
+	About		@2
+	AbortDlg	@3	; called so user can abort print function
+	AbortProc	@4	; Processes messages intended for abort box

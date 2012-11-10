@@ -1,0 +1,211 @@
+'\"et
+.if t .TH IMDISSOLVE 1IM "June 27, 1995" "San Diego Supercomputer Center" "IMAGE TOOLS" 
+.if n .TH IMDISSOLVE 1IM "June 27, 1995" "SDSC" "IMAGE TOOLS"
+.SH NAME
+imdissolve  -  Dissolve any field between two images and store in a new file
+.SH SYNOPSIS
+\fBimdissolve\fR [\fIoptions\fR] \fIinfilename\fR \fIoutfilename\fR
+.SH DESCRIPTION
+\fBimdissolve\fR reads each image in the input files and dissolves their fields
+together, then writes it to the output file.
+The input and output image file formats may be different.
+.SH OPTIONS
+\fBimdissolve\fR has a variety of options in the following five categories:
+.LP
+.RS +0.5i
+.TS
+l l.
+File Selection	What input and output files to use
+Format Selection	What image file format to use
+Format Control	What variant of a file format to generate
+Standard	Standard generic options on all SDSC tools
+Manipulation	How the image can be manipulated
+.TE
+.RE
+.LP
+\fIFile Selection\fR, \fIFormat Selection\fR, \fIFormat Control\fR, and
+\fIStandard\fR options are common to all SDSC image tools and are
+discussed in depth in the \fBman\fP page for \fBimconv\fR(1IM).
+.LP
+All options can be abbreviated to the first few unique characters.
+.LP
+.SS "Manipulation Options"
+\fB-infile1 <file>\fR specifies the first image to dissolve.
+.LP
+\fB-infile2 <file>\fR specifies the second image to dissolve. 
+.LP
+\fB-outfile <file>\fR specifies the output image filename.
+.LP
+\fB-weight <value> or <start-end>\fR specifies weights to use in dissolving.
+.LP
+\fB-frames <value> or <start-end>\fR specifies how many frames in dissolve sequence.
+.LP
+\fB-frameincrement <value>\fR specifies how to increment through the frames.
+.LP
+\fB-rgbfield\fR specifies to dissolve just the red, green, and blue fields.
+.LP
+\fB-redfield\fR specifies to dissolve just the red field.
+.LP
+\fB-greenfield\fR specifies to dissolve just the green field.
+.LP
+\fB-bluefield\fR specifies to dissolve just the blue field.
+.LP
+\fB-index8field\fR specifies to dissolve just the index8 field.
+.LP
+\fB-index16field\fR specifies to dissolve just the index16 field.
+.LP
+\fB-alphafield\fR specifies to dissolve just the alpha field.
+.LP
+\fB-monofield\fR specifies to dissolve just the mono field.
+.LP
+\fB-zbufferfield\fR specifies to dissolve just the zbuffer field.
+.LP
+\fB-idatafield\fR specifies to dissolve just the integer data field.
+.LP
+\fB-fdatafield\fR specifies to dissolve just the floating point data field.
+.LP
+\fB-wprotfield\fR specifies to dissolve just the write protect field.
+.LP
+.SH NOTES
+For notes regarding file format conversion and standard image tool
+options, see the \fBman\fP page on \fBimconv\fR(1IM).
+.LP
+Error messages are reported to \fBstderr\fR.
+.SH EXAMPLES
+Typical Fade-to-black Invocations:
+    Dim a single image to 50%:
+.RS 0.5i
+.LP
+        \fBimdissolve -weight 0.5 image.pix -outfile result.hdf\fR
+.RE
+.LP
+    Generate 20 frames fading a static image to black:
+.RS 0.5i
+.LP
+        \fBimdissolve image.pix -frames 20 result.%02d.ras\fR
+.RE
+.LP
+    Generate 20 frames fading from black to a static image:
+.RS 0.5i
+.LP
+        \fBimdissolve -weight 0.0-1.0 -frames 20 image.rla result.%02d.xwd\fR
+.RE
+.LP
+    Fade to black a sequence of 10 frames (10-19):
+.RS 0.5i
+.LP
+        \fBimdissolve -frames 10-19 anim%05d.gif final.%05d.tiff\fR
+.RE
+.LP
+Typical Dissolve Between Frames Invocations:
+    Mix together 50% each of two images:
+.RS 0.5i
+.LP
+        \fBimdissolve -weight 0.5 first.pix second.rla output.pcx\fR
+.RE
+.LP
+    Mix together 70% of the first image with 30% of the second:
+.RS 0.5i
+.LP
+        \fBimdissolve -weight 0.7 first.pix second.rla output.pcx\fR
+.RE
+.LP
+    Generate 30 frames dissolving between two static images:
+.RS 0.5i
+.LP
+        \fBimdissolve static1.gif static2.gif -frames 30 anim.%03d.gif\fR
+.RE
+.LP
+    Dissolve a sequence of 10 frames into a static image:
+.RS 0.5i
+.LP
+        \fBimdissolve anim.%02d.tiff -frames 0-9 static.ras resultanim.%03d.x\fR
+.RE
+.LP
+    Dissolve between two sequences of 100 frames:
+.RS 0.5i
+.LP
+        \fBimdissolve first.%d.hdf second.%d.hdf -frames 100 final.%d.hdf\fR
+.RE
+.LP
+    Dissolve between two sequences of 100 frames outputting every 10th frame:
+.RS 0.5i
+.LP
+        \fBimdissolve first.%d.hdf second.%d.hdf -frames 100 -frameincrement 10 final.%d.hdf\fR
+.RE
+.LP
+
+The default actions are as followed:
+     The default is to expect two input files and an output file if only one
+.br
+          input file is given then the output file must be preceeded by -outfile
+.br
+          and the second image will be defaulted to a black image.
+     The default is to dissolve all of the fields.
+     The default start weight is 1.0 and the end weight is 0.0.
+     The default start and end frames are 0.
+.LP
+Here is what happens when dissolve is invocated and the input files only
+hold a single image:
+.sp 1
+.in +0.5i
+.TS
+box;
+c c c
+l l l.
+FILE 1	FILE 2	FILEOUT
+single file	single file	single file
+multiple files	single file	multiple files
+single file	multiple files	multiple files
+multiple files	multiple files	multiple files
+.TE
+.in -0.5i
+If both input names have multiple files then they must have the same number
+of files.
+.br
+To output multiple files the output file name must have a % in it.
+.sp 1
+Here is what happens when dissolve is invocated and the input files can
+have more than a single image:
+.sp 1
+.in +0.5i
+.TS
+box;
+c c c
+l l l.
+FILE 1	FILE 2	FILEOUT
+single image	single image	single image
+multiple images	single image	multiple images
+single image	multiple images	multiple images
+multiple images	multiple images	multiple images
+.TE
+.in -0.5i
+If both input names have multiple images then they must have the same number
+of images.
+.sp 1
+No matter what, if there is a mixture of mutiple files that have multiple
+images then imdissolve will get angry.
+.sp 1
+If the input images do not use rgb color type then they will be changed to
+rgb and then dissolved and outputted as rgb unless a different output
+invocation is explicitly enterred overriding the rgb.
+.SH "SEE ALSO"
+\fBimadjust\fR (1IM),
+\fBimcomp\fR (1IM),
+\fBimfill\fR (1IM),
+\fBImVfbMix\fR (3IM)
+.sp 1
+For information on SDSC's image library, see \fBimintro\fR(3IM). 
+.SH AUTHOR
+Chris Groening
+.br
+San Diego Supercomputer Center
+.LP
+See the individual file format \fBman\fR pages for the authors of the underlying
+format read and write code.  The names of these \fBman\fR pages begin
+with the letters "im" followed by the format name.
+For example, the name of the TIFF \fBman\fR page is \fBimtiff\fR.
+To display it, enter \fBman imtiff\fR.
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

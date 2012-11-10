@@ -1,0 +1,257 @@
+// $Header: $
+// Copyright© 1999-2000 TRiAS GmbH Potsdam, All rights reserved
+// Created: 22.07.2000 18:17:39
+//
+// @doc
+// @module EsriConfig.yxx | Parser/Lexer for ESRI configuration files
+
+///////////////////////////////////////////////////////////////////////////////
+// Dateinamen der Ausgabe (Lexer/Parser) 
+output lexer source "esricfgl.cpp";
+output lexer header "esricfgl.h";
+output parser source "esricfgy.cpp";
+output parser header "esricfgy.h";
+
+///////////////////////////////////////////////////////////////////////////////
+// main class
+class esri_cfg;
+
+///////////////////////////////////////////////////////////////////////////////
+// Lexer
+
+lexer
+
+charset 		ASCII8;
+token			T_INTEGER, T_HEXINTEGER, T_STRING, T_DOUBLE, T_NODENAME, T_VERSION;
+discard token	T_NEWLINE, T_WHITESPACE;
+
+///////////////////////////////////////////////////////////////////////////////
+// Tokenklassen
+
+// Versionsstring wurde im Inputzeichenstream identifiziert
+construct T_VERSION::STRING
+	constructor body
+		{
+		// "/" ausblenden, umkopieren und abschneiden
+			memmove (yy_this_string, yy_this_string+1, yy_this_lex_ptr->yy_lex_len()-1);
+			yy_this_string[yy_this_lex_ptr->yy_lex_len()-1] = '\0';
+		}
+	;
+
+// Zeichenkette wurde im Inputzeichenstream identifiziert
+construct T_STRING::STRING 
+	constructor body 
+		{
+		// Anführungszeichen ausblenden, umkopieren und abschneiden
+			memmove (yy_this_string, yy_this_string+1, yy_this_lex_ptr->yy_lex_len()-2);
+			yy_this_string[yy_this_lex_ptr->yy_lex_len()-2] = '\0';
+		}
+	;
+
+// allgemeiner Bezeichner wurde im Inputzeichenstream identifiziert
+construct T_NODENAME::STRING
+	;
+
+// Dezimalzahl wurde im Inputzeichenstream identifiziert
+construct T_INTEGER::DEFAULT
+	member	
+		{
+		private:
+			int m_iValue;		// Zahlenwert
+
+		public:
+			int yy_integer (void) { return m_iValue; }
+			void yy_integer (int iValue) { m_iValue = iValue; }
+		}
+	constructor initializer	
+		{ 
+			m_iValue(0)
+		}
+	constructor body 
+		{
+		string str (yy_this_lex_ptr->yy_lex_token(), yy_this_lex_ptr->yy_lex_len());
+
+			m_iValue = strtoul (str.c_str(), NULL, 10);
+		}
+	;
+
+// Hexadezimalzahl wurde im Inputzeichenstream identifiziert
+construct T_HEXINTEGER::DEFAULT
+	member	
+		{
+		private:
+			int m_iValue;		// Zahlenwert
+
+		public:
+			int yy_hexinteger (void) { return m_iValue; }
+			void yy_hexinteger (int iValue) { m_iValue = iValue; }
+		}
+	constructor initializer	
+		{ 
+			m_iValue(0)
+		}
+	constructor body 
+		{
+		string str (yy_this_lex_ptr->yy_lex_token(), yy_this_lex_ptr->yy_lex_len());
+
+			m_iValue = strtoul (str.c_str(), NULL, 16);
+		}
+	;
+
+// Doublezahl wurde im Inputzeichenstream identifiziert
+construct T_DOUBLE::DEFAULT
+	member	
+		{
+		private:
+			double m_dValue;		// Zahlenwert
+
+		public:
+			double yy_double (void) { return m_dValue; }
+			void yy_double (double dValue) { m_dValue = dValue; }
+		}
+	constructor initializer	
+		{ 
+			m_dValue(0)
+		}
+	constructor body 
+		{
+		string str (yy_this_lex_ptr->yy_lex_token(), yy_this_lex_ptr->yy_lex_len());
+
+			m_dValue = atof (str.c_str());
+		}
+	;
+
+///////////////////////////////////////////////////////////////////////////////
+// Tokendefinitionen
+
+// Vorzeichen
+T_SIGN:		"-" | "+";
+
+// Ziffer
+T_DIGIT:	("0" .. "9");
+T_HEXDIGIT:	("0" .. "9" | "a" .. "f" | "A" .. "F");
+
+// Integerzahl
+T_INTEGER:	T_SIGN? T_DIGIT+;
+
+// Exponent einer Doublezahl
+T_EXP:		("e" | "E") T_SIGN? T_DIGIT+;
+
+// Doublezahl
+T_DOUBLE:		T_SIGN? T_DIGIT+ ("." | ("." T_DIGIT* T_EXP?));
+
+// Zeichenkette
+T_STRING:		'"' ("\\\"" | "\\\\" | "\\" @ | @)* '"'
+	|		"'" ("\\'" | "\\\\" | "\\" @ | @)* "'"
+	;
+
+// Hexadezimalzahl
+T_HEXINTEGER:	("0x" | "0X") T_HEXDIGIT+;
+
+// Name/Bezeichner
+T_NODENAME:	("a" .. "z" | "A" .. "Z" | "_") 
+			("a" .. "z" | "A" .. "Z" | "0" .. "9" | "_")*
+	;
+
+// Dateiversion
+T_VERSION:	"/" T_DIGIT "." T_DIGIT
+	;
+
+T_WHITESPACE:	(" " | "\t")+;
+
+T_NEWLINE:	"\n" 
+	{ 
+		++yy_buf_lineno(); 
+	}
+	;
+
+///////////////////////////////////////////////////////////////////////////////
+// Parser
+
+parser ::
+	member 
+		{
+		public:
+			class CEsriCfg &GetNodes() { _ASSERTE(NULL != m_pNodes); return *m_pNodes; }
+			HRESULT InitParser();
+
+		private:
+			CEsriCfg *m_pNodes;
+		}
+	;
+
+///////////////////////////////////////////////////////////////////////////////
+// Globale Deklarationen
+global {
+	#include "EsriCfgM.h"
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Klassen im Parserstack
+construct noderef :: INFIX
+	;
+
+// Simulation des Suffixtypes 'LAST'
+construct nodevalue* :: LEAF
+	;
+
+///////////////////////////////////////////////////////////////////////////////
+// die grammar an sich ... :-)
+remove grammar, version, node;
+
+// Die gesamte Konfiguration
+grammar:	version node+
+	;
+
+version:	T_VERSION
+		{
+			_ASSERTE(T_VERSION_ == yy_psr_type(1));
+
+		T_VERSION *pVersion = reinterpret_cast<T_VERSION *>(yy_psr_ref(1).yy_ptr);
+
+			m_pNodes -> SetVersion (atof (pVersion -> yy_string()));
+		}
+	;
+
+// Konfigurations-Node
+node:		"(" T_NODENAME "." T_INTEGER noderef* ")"
+		{
+			_ASSERTE(T_NODENAME_ == yy_psr_type(2));
+			_ASSERTE(T_INTEGER_ == yy_psr_type(4));
+
+		T_NODENAME *pNodeName = reinterpret_cast<T_NODENAME *>(yy_psr_ref(2).yy_ptr);
+		T_INTEGER *pNodeNum = reinterpret_cast<T_INTEGER *>(yy_psr_ref(4).yy_ptr);
+		CNode *pNode  = new CNode(pNodeName -> yy_string(), pNodeNum -> yy_integer());
+
+			for (int i = 5; i <= yy_psr_last()-1; ++i) {
+				_ASSERTE(noderef_ == yy_psr_type(i));
+
+			noderef *pNodeRef = reinterpret_cast<noderef *>(yy_psr_ref(i).yy_ptr);
+
+				pNode -> AddNodeRef (pNodeRef);		// eine weitere NodeReferenz hinzufügen
+			}
+			m_pNodes -> AddNode (pNode);				// den neuen Node in der Map speichern
+		}
+	;
+
+// Konfigurations-Item
+noderef:	T_NODENAME ":" nodevalue 
+	;
+
+// Konfigurationswert
+nodevalue:	T_STRING
+	|		T_INTEGER 
+	|		T_INTEGER T_INTEGER
+		{
+			_ASSERTE(T_INTEGER_ == yy_psr_type(1) && T_INTEGER_ == yy_psr_type(2));
+
+		char cByteH = BinInteger (reinterpret_cast<T_INTEGER *>(yy_psr_ref(1).yy_ptr));
+		char cByteL = BinInteger (reinterpret_cast<T_INTEGER *>(yy_psr_ref(2).yy_ptr));
+
+			yy_psr_type(1) = T_HEXINTEGER_;
+			reinterpret_cast<T_INTEGER *>(yy_psr_ref(1).yy_ptr) -> yy_integer(MAKEWORD(cByteL, cByteH));
+		}
+	|		T_HEXINTEGER
+	|		T_DOUBLE
+	;
+

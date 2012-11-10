@@ -1,0 +1,39 @@
+HKCR
+{
+	TRiASEx.SelectStatistValue.1 = s 'SelectStatistValue Class'
+	{
+		CLSID = s '{6C743068-F9FA-42FA-9C6F-DD72B5315BE4}'
+	}
+	TRiASEx.SelectStatistValue = s 'SelectStatistValue Class'
+	{
+		CLSID = s '{6C743068-F9FA-42FA-9C6F-DD72B5315BE4}'
+		CurVer = s 'TRiASEx.SelectStatistValue.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {6C743068-F9FA-42FA-9C6F-DD72B5315BE4} = s 'SelectStatistValue Class'
+		{
+			ProgID = s 'TRiASEx.SelectStatistValue.1'
+			VersionIndependentProgID = s 'TRiASEx.SelectStatistValue'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{CF461D81-EE47-11D2-9BE4-BAF620524153}'
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiASEx.SelectStatistValue.1' = s '{6C743068-F9FA-42FA-9C6F-DD72B5315BE4}'
+			}
+		}
+	}
+}

@@ -1,0 +1,25 @@
+HKCR 
+{
+	TRiAS.CS_GCS.1 = s 'TRiAS® Koordinatensystem, geodätische Grundlage' 
+	{
+		CLSID = s '{73372654-E66A-11D1-8F40-0060085FC1CE}'
+	}
+	TRiAS.CS_GCS = s 'TRiAS® Koordinatensystem, geodätische Grundlage' 
+	{
+		CurVer = s 'TRiAS.CS_GCS.1'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {73372654-E66A-11D1-8F40-0060085FC1CE} = s 'TRiAS® Koordinatensystem, geodätische Grundlage' 
+		{
+			ProgID = s 'TRiAS.CS_GCS.1'
+			VersionIndependentProgID = s 'TRiAS.CS_GCS'
+			ForceRemove 'Programmable'
+			ToolboxBitmap32 = s '%MODULE%,1'
+			InprocServer32 = s '%MODULE%' 
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

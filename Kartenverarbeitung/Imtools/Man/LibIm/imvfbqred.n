@@ -1,0 +1,314 @@
+'\"t
+.if t .TH IMVFBQRED 3IM "August 25, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMVFBQRED 3IM "August 25, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImVfbQRed - Query the red value of a pixel in a virtual frame buffer
+.br
+ImVfbQGreen - Query the green value of a pixel in a virtual frame buffer
+.br
+ImVfbQBlue - Query the blue value of a pixel in a virtual frame buffer
+.br
+ImVfbQAlpha - Query the alpha value of a pixel in a virtual frame buffer
+.br
+ImVfbQMono - Query the monochrome value of a pixel in a virtual frame buffer
+.br
+ImVfbQIndex8 - Query the 8-bit index value of a pixel in a virtual
+frame buffer 
+.br
+ImVfbQIndex16 - Query the 32-bit index value of a pixel in a virtual
+frame buffer 
+.br
+ImVfbQIndex - Query the index value of a pixel in a virtual frame buffer
+.br
+ImVfbQZ - Query the z-buffer value of a pixel in a virtual frame buffer
+.br
+ImVfbQGray, ImVfbQGrey - Query the gray scale value of a pixel in a
+virtual frame buffer 
+.br
+ImVfbQFData - Query the floating-point data value of a pixel in a
+virtual frame buffer 
+.br
+ImVfbQIData - Query the integer data value of a pixel in a virtual
+frame buffer 
+.br
+ImVfbSRed - Set the red value of a pixel in a virtual frame buffer
+.br
+ImVfbSGreen - Set the green value of a pixel in a virtual frame buffer
+.br
+ImVfbSBlue - Set the blue value of a pixel in a virtual frame buffer
+.br
+ImVfbSAlpha - Set the alpha value of a pixel in a virtual frame buffer
+.br
+ImVfbSMono - Set the monochrome value of a pixel in a virtual frame buffer
+.br
+ImVfbSIndex8 - Set the 8-bit index value of a pixel in a virtual frame
+buffer 
+.br
+ImVfbSIndex16 - Set the 32-bit index value of a pixel in a virtual
+frame buffer 
+.br
+ImVfbSIndex - Set the index value of a pixel in a virtual frame buffer
+.br
+ImVfbSZ - Set the z-buffer value of a pixel in a virtual frame buffer
+.br
+ImVfbSGray, ImVfbSGrey - Set the gray scale value of a pixel in a
+virtual frame buffer 
+.br
+ImVfbSFData - Set the floating-point data value of a pixel in a virtual frame buffer
+.br
+ImVfbSIData - set the integer data value of a pixel in a virtual frame buffer
+.br
+ImVfbSameRGB - Determine whether the red, green, and blue values corresponding to
+two vfb pointers are the same
+.br
+ImVfbSameRGBA - Determine whether the red, green, blue, and alpha values corresponding
+to two vfb pointers are the same
+.br
+ImVfbSameIndex8 - Determine whether the index8 values corresponding to two vfb pointers 
+are the same
+.br
+ImVfbSameIndex16 - Determine whether the index16 value corresponding to two vfb pointers
+are the same
+.br
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+int ImVfbQRed( srcVfb, p )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+
+int ImVfbQGreen( srcVfb, p )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+
+int ImVfbQBlue( srcVfb, p )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+
+int ImVfbQAlpha( srcVfb, p )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+
+int ImVfbQMono( srcVfb, p )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+
+int ImVfbQIndex8( srcVfb, p )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+
+int ImVfbQIndex16( srcVfb, p )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+
+int ImVfbQIndex( srcVfb, p )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+
+int ImVfbQZ( srcVfb, p )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+
+int ImVfbQGray( srcVfb, p )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+
+int ImVfbQGrey( srcVfb, p )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+
+float ImVfbQFData( srcVfb, p )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+	float f ;
+
+int ImVfbQIData( srcVfb, p )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+
+void ImVfbSRed( srcVfb, p, r )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+	int r ;
+
+void ImVfbSGreen( srcVfb, p, g )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+	int g ;
+
+void ImVfbSBlue( srcVfb, p, b )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+	int b ;
+
+void ImVfbSAlpha( srcVfb, p, a )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+	int a ;
+
+void ImVfbSMono( srcVfb, p, m )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+	int m ;
+
+void ImVfbSIndex8( srcVfb, p, i8 )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+	int i8 ;
+
+void ImVfbSIndex16( srcVfb, p, i32 )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+	int i32 ;
+
+void ImVfbSIndex( srcVfb, p, i )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+	int i ;
+
+void ImVfbSZ( srcVfb, p, z )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+	int z ;
+
+void ImVfbSGray( srcVfb, p, g )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+	int g ;
+
+void ImVfbSGrey( srcVfb, p, g )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+	int g ;
+
+void ImVfbSFData( srcVfb, p, f )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+	float f ;
+
+void ImVfbSIData( srcVfb, p, i )
+	ImVfb *srcVfb ;
+	ImVfbPtr p ;
+	int i ;
+
+void ImVfbSameRGB( vfb, p1, p2)
+	ImVfb* vfb;
+	ImVfbPtr p1;
+	ImVfbPtr p2;
+
+void ImVfbSameRGBA( vfb, p1, p2)
+	ImVfb* vfb;
+	ImVfbPtr p1;
+	ImVfbPtr p2;
+
+void ImVfbSameIndex8( vfb, p1, p2)
+	ImVfb* vfb;
+	ImVfbPtr p1;
+	ImVfbPtr p2;
+
+void ImVfbSameIndex16( vfb, p1, p2)
+	ImVfb* vfb;
+	ImVfbPtr p1;
+	ImVfbPtr p2;
+
+
+.fi
+\fR
+.SH DESCRIPTION
+These routines store information into and query information from a pixel
+(pointed to by \fIp\fR) in Vfb \fIsrcVfb\fR.
+.LP
+\fBImVfbSRed\fR,
+\fBImVfbSGreen\fR, and \fBImVfbSBlue\fR set RGB information into a Vfb.
+They are only valid if the Vfb was \fBImVfbAlloc\fRed with \fBIMVFBRGB\fR in
+the field mask.
+\fBImVfbQRed\fR,
+\fBImVfbQGreen\fR, and \fBImVfbQBlue\fR query the RGB information.
+.LP
+\fBImVfbSAlpha\fR sets an alpha-channel value.
+It is only valid if the Vfb was \fBImVfbAlloc\fRed with \fBIMVFBALPHA\fR
+in the field mask.
+\fBImVfbQAlpha\fR queries the alpha-channel value.
+.LP
+\fBImVfbSMono\fR sets an monochrome \fBImClt\fR value.
+It is only valid if the Vfb was \fBImVfbAlloc\fRed with \fBIMVFBMONO\fR
+in the field mask.
+\fBImVfbQMono\fR queries the monochrome \fBImClt\fR value.
+.LP
+\fBImVfbSIndex8\fR sets an 8-bit \fBImClt\fR index.
+It is only valid if the Vfb was \fBImVfbAlloc\fRed with \fBIMVFBINDEX8\fR
+in the field mask.
+\fBImVfbQIndex8\fR queries the 8-bit \fBImClt\fR index.
+.LP
+\fBImVfbSIndex16\fR sets a 16-bit \fBImClt\fR index.
+It is only valid if the Vfb was \fBImVfbAlloc\fRed with \fBIMVFBINDEX16\fR
+in the field mask.
+\fBImVfbQIndex16\fR queries the 16-bit \fBImClt\fR index.
+.LP
+\fBImVfbSIndex\fR sets an 8- or 16-bit \fBImClt\fR index.
+It is only valid if the Vfb was \fBImVfbAlloc\fRed with \fBIMVFBINDEX8\fR
+or \fBIMVFBINDEX16\fR
+in the field mask.
+\fBImVfbSIndex\fR uses whichever type of index is being used in \fIsrcVfb\fR.
+\fBImVfbQIndex\fR queries the \fBImClt\fR index.
+.LP
+\fBImVfbSZ\fR sets the z-buffer value.
+It is only valid if the Vfb was \fBImVfbAlloc\fRed with \fBIMVFBZ\fR
+in the field mask.
+\fBImVfbQZ\fR queries the z-buffer value.
+.LP
+\fBImVfbSGray\fR and \fBImVfbSGrey\fR are identical to \fBImVfbSIndex8\fR, and
+\fBImVfbQGray\fR and \fBImVfbQGrey\fR are identical to \fBImVfbQIndex8\fR.
+.LP
+\fBImVfbSFData\fR sets an arbitrary floating-point value.
+It is only valid if the Vfb was \fBImVfbAlloc\fRed with \fBIMVFBFDATA\fR
+in the field mask.
+\fBImVfbQFData\fR queries the floating-point value.
+.LP
+\fBImVfbSIData\fR sets an arbitrary integer value.
+It is only valid if the Vfb was \fBImVfbAlloc\fRed with \fBIMVFBIDATA\fR
+in the field mask.
+\fBImVfbQIData\fR queries the integer value.
+.LP
+\fBImVfbSameRGB\fR queries the red, green, and blue values associated
+with the vfb pointers, compares the values, and returns a nonzero value
+if and only if all three values are the same for both pointers.  This
+routine may be used on pointers that point to different vfbs.  In such a
+case, the first parameter is irrelevant.
+.LP
+\fBImVfbSameRGBA\fR queries the red, green, blue and alpha values associated
+with the vfb pointers, compares the values, and returns a nonzero value
+if and only if all four values are the same for both pointers.  This
+routine may be used on pointers that point to different vfbs.  In such a
+case, the first parameter is irrelevant.
+.LP
+\fBImVfbSameIndex8\fR queries the index8 value associated with the vfb pointers, 
+compares the values, and returns a nonzero value if and only if the index8 values
+are the same for the two pointers.  This routine may be used on pointers that point 
+to different vfbs.  In such a case, the first parameter is irrelevant.
+.LP
+\fBImVfbSameIndex16\fR queries the index16 value associated with the vfb pointers, 
+compares the values, and returns a nonzero value if and only if the index16 values
+are the same for the two pointers.  This routine may be used on pointers that point 
+to different vfbs.  In such a case, the first parameter is irrelevant.
+.SH NOTES
+All of these routines are C macros.
+.SH SEE ALSO
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBImCltQBlue\fR (3IM),
+\fBImCltQGreen\fR (3IM),
+\fBImCltQRed\fR (3IM),
+\fBImCltSBlue\fR (3IM),
+\fBImCltSGreen\fR (3IM),
+\fBImCltSRed\fR (3IM)
+.SH AUTHOR
+Mike Bailey
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

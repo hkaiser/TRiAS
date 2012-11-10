@@ -1,0 +1,553 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "bscriptr.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DEBUGGERDLG DIALOG DISCARDABLE  50, 50, 288, 201
+STYLE WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CLIPSIBLINGS | 
+    WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Makro editieren"
+MENU IDR_DLGMENU
+FONT 8, "MS Sans Serif"
+BEGIN
+END
+
+IDD_DUMMYPARENT DIALOG DISCARDABLE  0, 0, 138, 23
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Parent für Laufzeitdialoge"
+FONT 8, "MS Sans Serif"
+BEGIN
+END
+
+IDD_SCRIPTDLG DIALOGEX 0, 0, 217, 153
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Makroscripts des Projektes"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "&Makro auswählen :",IDC_STATIC,7,7,143,8
+    EDITTEXT        IDC_MACRONAME,7,18,143,12,ES_AUTOHSCROLL
+    LTEXT           "&Liste der verfügbaren Makros:",IDC_STATIC,7,34,143,8
+    LISTBOX         IDC_MAKROLIST,7,45,143,89,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "A&usführen",IDC_RUN,159,45,51,14,WS_GROUP
+    DEFPUSHBUTTON   "&Editieren",IDOK,159,100,51,14,WS_GROUP
+    PUSHBUTTON      "E&ntfernen",IDC_ENTFERNEN,159,120,51,14
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,159,7,51,14,WS_GROUP
+    CONTROL         "Autostart",IDC_AUTOSTART,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,137,44,11
+END
+
+IDD_CUSTOMIZEDLG DIALOG DISCARDABLE  0, 0, 250, 134
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION | WS_SYSMENU
+CAPTION "Menü"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Projektmakros:",IDC_STATICMACROS,7,11,46,8
+    CONTROL         "Tree1",IDC_MENUTREE,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | TVS_EDITLABELS | 
+                    TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | WS_BORDER | 
+                    WS_TABSTOP,7,43,236,84
+    COMBOBOX        IDC_MACROLIST,60,7,183,77,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "&Einfügen",IDC_EINFUEGEN,139,24,50,14
+    PUSHBUTTON      "&Löschen",IDC_LOESCHEN,193,24,50,14
+    PUSHBUTTON      "<<",IDC_LINKS,7,27,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      ">>",IDC_RECHTS,7,21,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      "OK",IDOK,193,7,50,14,NOT WS_VISIBLE
+END
+
+IDD_FILTERDLG DIALOG DISCARDABLE  0, 0, 276, 141
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Filtermakros :",IDC_STATIC,1,5,42,8
+    COMBOBOX        IDC_COMBOOPATESCRIPTS,48,3,114,84,CBS_DROPDOWN | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "&Entfernen",IDC_ENTFERNEN,170,2,50,14,WS_GROUP
+    PUSHBUTTON      "&Syntaxtest",IDC_SYNTAXTEST,225,2,50,14
+    LTEXT           "",IDC_DEBUGGERSIZE,1,20,274,120
+END
+
+IDD_OBJECTFEATURESCRIPTDLG DIALOG DISCARDABLE  0, 0, 217, 153
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Objekteigenschaften"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Install",IDC_INSTALL,160,61,50,14
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,160,7,50,14
+    PUSHBUTTON      "&Uninstall",IDC_UNINSTALL,160,81,50,14
+    CONTROL         "List1",IDC_MACROLIST,"SysListView32",LVS_LIST | 
+                    LVS_SINGLESEL | LVS_NOLABELWRAP | LVS_AUTOARRANGE | 
+                    LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,7,18,144,128
+    LTEXT           "Makros:",IDC_STATIC,7,6,120,8
+    PUSHBUTTON      "&Editieren",IDC_BUTTON2,160,132,50,14
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "bscriptr.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""bscript.rcv""\r\n"
+    "#include ""bscrext.rc""\r\n"
+    "#include ""azhelp.rc""\r\n"
+    "#include ""dd.rc""\r\n"
+    "#include ""dg.rc""\r\n"
+    "\r\n"
+    "\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MACRO MENU DISCARDABLE 
+BEGIN
+    POPUP "&Makro"
+    BEGIN
+        MENUITEM "&Makroeditor",                IDM_TEST
+        MENUITEM "Ma&kros ...",                 IDM_DBSCRIPT
+        MENUITEM SEPARATOR
+        MENUITEM "&Filter starten",             IDM_FILTERSCRIPT
+    END
+END
+
+IDR_DLGMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&Datei"
+    BEGIN
+        MENUITEM "&Neu\tStrg+N",                ID_DEBUG_NEW
+        MENUITEM "Ö&ffnen ...\tStrg+O",         ID_DEBUG_OPEN
+        MENUITEM "&Speichern\tStrg+S ",         ID_DEBUG_SAVE
+        MENUITEM "Speichern &unter ...",        ID_DEBUG_SAVEAS
+        MENUITEM SEPARATOR
+        MENUITEM "&Beenden",                    IDM_CLOSE
+    END
+    POPUP "&Bearbeiten"
+    BEGIN
+        MENUITEM "&Rückgängig\tStrg+Z",         ID_DEBUG_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "&Ausschneiden\tStrg+X",       ID_DEBUG_CUT
+        MENUITEM "&Kopieren\tStrg+C",           ID_DEBUG_COPY
+        MENUITEM "&Einfügen\tStrg+V",           ID_DEBUG_PASTE
+        MENUITEM "&Löschen\tEntf",              ID_DEBUG_DELETE
+        MENUITEM SEPARATOR
+        MENUITEM "&Suchen ...\tStrg+F",         ID_DEBUG_FIND
+        MENUITEM "&Weitersuchen\tF3",           ID_DEBUG_FINDNEXT
+        MENUITEM "Erse&tzen ...\tStrg+R",       ID_DEBUG_REPLACE
+        MENUITEM "&Gehe zu Zeile ...\tStrg+G",  ID_DEBUG_GOTOLINE
+        MENUITEM SEPARATOR
+        MENUITEM "&Neuen Dialog einfügen...",   ID_DEBUG_NEWDIALOG
+        MENUITEM "&Dialog editieren ...",       ID_DEBUG_EDITDIALOG
+        MENUITEM SEPARATOR
+        MENUITEM "Schri&ftarten ...",           ID_DEBUG_FONTS
+    END
+    POPUP "&Ausführen"
+    BEGIN
+        MENUITEM "&Start\tF5",                  ID_DEBUG_GO
+        MENUITEM "&Anhalten",                   ID_DEBUG_SUSPEND
+        MENUITEM SEPARATOR
+        MENUITEM "&Einzelschritt\tF8",          ID_DEBUG_TRACEIN
+        MENUITEM "Ü&berspringen\tF12",          ID_DEBUG_TRACEOVER
+    END
+    POPUP "T&est"
+    BEGIN
+        MENUITEM "Watch &hinzufügen ...\tStrg+W", ID_DEBUG_ADDWATCH
+        MENUITEM "&Watch entfernen ...\tStrg+U", ID_DEBUG_DELETEWATCH
+        MENUITEM SEPARATOR
+        MENUITEM "Haltepunkt &umschalten\tF9",  ID_DEBUG_BREAKPOINT
+        MENUITEM "&Aufrufstack ...",            ID_DEBUG_CALLSTACK
+        MENUITEM SEPARATOR
+        MENUITEM "S&yntax testen",              ID_DEBUG_SYNTAX
+    END
+    POPUP "&Hilfe"
+    BEGIN
+        MENUITEM "&Editor",                     ID_DEBUG_EDITORHELP
+        MENUITEM "&Trias",                      ID_DEBUG_TRIASHELP
+        MENUITEM "&A-Z",                        ID_DEBUG_GETHELPON
+    END
+END
+
+IDR_RBUTTONDEBUGGER MENU DISCARDABLE 
+BEGIN
+    POPUP "Debugger"
+    BEGIN
+        MENUITEM "&Hilfe",                      ID_DEBUG_GETHELPON
+        MENUITEM SEPARATOR
+        MENUITEM "&Rückgängig\tStrg+Z",         ID_DEBUG_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "&Ausschneiden\tStrg+X",       ID_DEBUG_CUT
+        MENUITEM "&Kopieren\tStrg+C",           ID_DEBUG_COPY
+        MENUITEM "&Einfügen\tStrg+V",           ID_DEBUG_PASTE
+        MENUITEM "&Löschen\tEntf",              ID_DEBUG_DELETE
+        MENUITEM SEPARATOR
+        MENUITEM "&Neuen Dialog einfügen ...",  ID_DEBUG_NEWDIALOG
+        MENUITEM "&Dialog editieren ...",       ID_DEBUG_EDITDIALOG
+        MENUITEM SEPARATOR
+        MENUITEM "Haltepunkt &umschalten\tF9",  ID_DEBUG_BREAKPOINT
+    END
+    POPUP "Watch"
+    BEGIN
+        MENUITEM "Watch hinzufügen\tStrg+W",    ID_DEBUG_ADDWATCH
+        MENUITEM "Watch löschen\tStrg+U",       ID_DEBUG_DELETEWATCH
+        MENUITEM "Watch editieren",             ID_DEBUG_MODIFYDLG
+        MENUITEM SEPARATOR
+        MENUITEM "Hexa-/dezimale Anzeige",      ID_DEBUG_HEX
+    END
+END
+
+IDR_RBUTTONFILTER MENU DISCARDABLE 
+BEGIN
+    POPUP "Debugger"
+    BEGIN
+        MENUITEM "&Hilfe",                      ID_DEBUG_GETHELPON
+        MENUITEM SEPARATOR
+        MENUITEM "&Rückgängig\tStrg+Z",         ID_DEBUG_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "&Ausschneiden\tStrg+X",       ID_DEBUG_CUT
+        MENUITEM "&Kopieren\tStrg+C",           ID_DEBUG_COPY
+        MENUITEM "&Einfügen\tStrg+V",           ID_DEBUG_PASTE
+        MENUITEM "&Löschen\tEntf",              ID_DEBUG_DELETE
+        MENUITEM SEPARATOR
+        MENUITEM "&Neuen Dialog einfügen ...",  ID_DEBUG_NEWDIALOG
+        MENUITEM "&Dialog editieren",           ID_DEBUG_EDITDIALOG
+        MENUITEM SEPARATOR
+        MENUITEM "Haltepunkt &umschalten\tF9",  ID_DEBUG_BREAKPOINT
+        MENUITEM SEPARATOR
+        MENUITEM "&Speichern\tStrg+S",          ID_DEBUG_SAVE
+        MENUITEM SEPARATOR
+        MENUITEM "Datei importieren ...",       ID_DEBUG_IMPORT
+        MENUITEM "Datei exportieren ...",       ID_DEBUG_EXPORT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_DEBUGFRAME          BITMAP  MOVEABLE PURE   "TOOLBAR.BMP"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_SCRIPTDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 210
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 146
+    END
+
+    IDD_CUSTOMIZEDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 127
+    END
+
+    IDD_FILTERDLG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 275
+        VERTGUIDE, 164
+        VERTGUIDE, 170
+        VERTGUIDE, 220
+        VERTGUIDE, 225
+    END
+
+    IDD_OBJECTFEATURESCRIPTDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 210
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 146
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MACRO               ICON    DISCARDABLE     "MACRO.ICO"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_FILTERSCRIPT_REG    REGISTRY DISCARDABLE    "Res\\FilterScript.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "Erweiterung zur Makroprogrammierung"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_STATUSBAR_PANE1      "Bereit"
+    ID_STATUSBAR_PANE2      "Z:  "
+    ID_STATUSBAR_PANE3      "00000"
+    ID_STATUSBAR_PANE4      "Sp: "
+    ID_STATUSBAR_PANE5      "00000"
+    IDS_TEMPSTOR            "c:\\temp.str"
+    IDS_STRUNTITLED         "Untitled"
+    IDS_MAIN                "Main"
+    IDS_MACROSAVE           "Sollen geänderte Makroscripte gespeichert werden ?"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Makroprogrammierung"
+    IDS_DEFAULTSCRIPT       "' ""BeginScript()"" wird vor Script-Abarbeitung gerufen\r\nSub BeginScript()\r\n' Hier notwendige Initialisierungen durchführen\r\n\t\r\nEnd Sub\r\n\r\n'__________________________________\r\n\r\nSub Main()\r\n' Hier notwendige Verarbeitungen durchführen\r\n\t\r\nEnd Sub \r\n\r\n'__________________________________\r\n\r\n' ""EndScript()"" wird nach Beendigung der Script-Abarbeitung gerufen\r\nSub EndScript()\r\n' Hier notwendige Aufräumarbeiten durchführen\r\n\t\r\nEnd Sub\r\n"
+    IDS_NOERRORSFOUND       "Es wurden keine Fehler im editierten Makroscript gefunden."
+    IDS_ILLBREAKPOINT       "Unterbrechungspunkte in TRiAS®-Rückruffunktionen  werden leider nicht unterstützt."
+    IDS_UNTITLED            "Kein Name"
+    IDS_SAVEPROMPT          "Soll der modifizierte Script in der Datei '%s' gespeichert werden ?"
+    IDS_SAVEPROMPTUNTITLED  "Soll der modifizierte Script gespeichert werden ?"
+    IDS_CANTCREATEFILE      "Kann die Datei '%s' nicht erzeugen. Überprüfen Sie, ob genügend Speicherplatz verfügbar ist."
+    IDS_CANTWRITEFILE       "Kann nicht den vollständigen Script in die Datei '%s' schreiben. Überprüfen Sie, ob genügend Speicherplatz verfügbar ist."
+    IDS_SAVEASFILTERS       "Scripts (*.ebs)|*.ebs|Kompilierte Scripts (*.ebc)|*.ebc|Nur Kompilierter Code (*.ebc)|*.ebc|Alle Dateien (*.*)|*.*||"
+    IDS_SCRIPTEXT           ".ebs"
+    IDS_COMPLIEDSCRIPTEXT   ".ebc"
+    IDS_CANTOPENFILE        "Kann die Datei '%s' nicht eröffnen."
+    IDS_CANTREADFILE        "Kann nicht den vollständigen Script aus der datei '%s' lesen."
+    IDS_FILETOLARGE         "Die Datei '%s' ist zu groß, um vollständig geladen zu werden. Daher werden lediglich die ersten 64kBytes des Scriptes verwendet."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_DEBUG_OPEN           "Öffnet einen neuen Script und lädt ihn ins Editorfenster."
+    ID_DEBUG_DELETE         "Text löschen"
+    ID_DEBUG_EDITDIALOG     "Ruft den Dialogeditor und erlaubt, den markierten Dialog zu editieren."
+    ID_DEBUG_RECORDING      "Zeichnet ein Makro auf."
+    ID_DEBUG_FONTS          "Ändert die verwendete Schriftart."
+    ID_DEBUG_NEWDIALOG      "Ruft den Dialogeditor und fügt einen neuen Dialog an der Einfügestelle ein."
+    ID_DEBUG_FIND           "Sucht Text."
+    ID_DEBUG_FINDNEXT       "Sucht das nächste Vorkommen eines Textes."
+    ID_DEBUG_REPLACE        "Sucht und ersetzt Text."
+    ID_DEBUG_GOTOLINE       "Springt im akuellen Makroscript an eine bestimmte Stelle."
+    ID_DEBUG_IMPORT         "Importiert einen Script und lädt ihn ins Editorfenster."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_DEBUG_UNDO           "Macht die letzte Aktion rückgängig"
+    ID_DEBUG_CUT            "Schneidet die Markierung aus und überträgt sie in die Zwischenablage."
+    ID_DEBUG_COPY           "Kopiert die Markierung und überträgt sie in die Zwischenablage."
+    ID_DEBUG_PASTE          "Fügt den Inhalt der Zwischenablage an der Einfügemarke ein."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DUMMYMACRO          " "
+    ID_MRU_FILE             "Öffnet die erste Datei aus der Dateiliste."
+    ID_MRU_FILE2            "Öffnet die zweite Datei aus der Dateiliste."
+    ID_MRU_FILE3            "Öffnet die dritte Datei aus der Dateiliste."
+    ID_MRU_FILE4            "Öffnet die vierte Datei aus der Dateiliste."
+    IDS_DUMMYFILE           " "
+    ID_MRU_STORAGE          "Importiert die erste Datei aus der Dateiliste."
+    ID_MRU_STORAGE2         "Importiert die zweite Datei aus der Dateiliste."
+    ID_MRU_STORAGE3         "Importiert die dritte Datei aus der Dateiliste."
+    ID_MRU_STORAGE4         "Importiert die vierte Datei aus der Dateiliste."
+    IDS_COMPILESTART        "Start der Kompilierung..."
+    IDS_COMPILEEND          "Kompilierung beendet."
+    IDS_SCRIPTEXECUTESTART  "Ausführung des Scriptes..."
+    IDS_SCRIPTEXECUTEEND    "Ausführung beendet."
+    IDS_SUSPENDED           "Script ist angehalten"
+    IDS_OPENSCRIPT          "Script öffnen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_SAVESCRIPT          "Script speichern "
+    IDS_SAVETEXT            "&Text speichern"
+    IDM_CLOSE               "Beendet die Editierung und fordert zur Speicherung des Makroscriptes auf."
+    ID_DEBUG_EXPORT         "Exportiert den aktuellen Script in eine Datei."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_DEBUG_GO             "Startet den editierten Makroscript."
+    ID_DEBUG_SUSPEND        "Hält die Ausführung des editierten Makroscriptes an."
+    ID_DEBUG_SYNTAX         "Testet den editierten Makroscript auf syntaktische Richtigkeit."
+    ID_DEBUG_ADDWATCH       "Fügt neuen Watch hinzu"
+    ID_DEBUG_DELETEWATCH    "Löscht Watch"
+    ID_DEBUG_TRACEIN        "Springt in die Funktion"
+    ID_DEBUG_TRACEOVER      "Überspringt die Funktion"
+    ID_DEBUG_BREAKPOINT     "Setzt oder löscht einen Haltepunkt in der Zeile des Einfügepunktes."
+    ID_DEBUG_CALLSTACK      "Ruft den Callstack auf"
+    ID_DEBUG_NEW            "Erzeugt einen neuen leeren Script."
+    ID_DEBUG_SAVE           "Speichert den aktuellen Script."
+    ID_DEBUG_SAVEAS         "Speichert den aktuellen Script unter einem neuen Namen."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_DEBUG_TRACEIN_TT     "Einzelschritt (trace)"
+    ID_DEBUG_TRACEOVER_TT   "Einzelschritt (step)"
+    ID_DEBUG_BREAKPOINT_TT  "Haltepunkt umschalten"
+    ID_DEBUG_CALLSTACK_TT   "Aufrufstack"
+    ID_DEBUG_SAVETEXT       "Speichert nur den Text des aktuellen Scripts."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_POPUP0              "Dient zum Erstellen, Öffnen und Speichern von Makroscripten"
+    IDS_POPUP1              "Rückgängig machen, Löschen und Kopieren, Suchen und Ersetzen"
+    IDS_POPUP2              "Testen, Ausführen und Anhalten des Scriptes"
+    IDS_POPUP3              "Dient zum Anzeigen von Variablenwerten, des Aufrufstacks und dem Umschalten von Haltepunkten"
+    IDS_SETTINGSNOTSAVED    "Es ist ein Fehler beim Speichern der aktuellen Makroeditor-Einstellungen aufgetreten.\r\nBeim Neustart des Macroeditors köönen unter Umständen nicht alle Voreinstellungen wiederhergestellt wereden."
+    IDS_NOMEMORY            "Es ist kein Speicherplatz mehr verfügbar, die Operation wird abgebrochen."
+    IDS_REACHEDEOF          "Dateiende erreicht."
+    IDS_TEXTNOTFOUND        "Suchtext '%s' nicht gefunden"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_DEBUG_UNDO_TT        "Rückgängig"
+    ID_DEBUG_CUT_TT         "Ausschneiden"
+    ID_DEBUG_COPY_TT        "Kopieren"
+    ID_DEBUG_PASTE_TT       "Einfügen"
+    ID_DEBUG_GO_TT          "Script starten"
+    ID_DEBUG_SUSPEND_TT     "Script anhalten"
+    ID_DEBUG_ADDWATCH_TT    "Watch hinzufügen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_EXPORT              "&Export"
+    IDS_IMPORT              "&Import"
+    IDS_NEUESMACRO          "&Neues Makro"
+    IDS_PROGRAMERROR        "Fehler bei Programmausführung"
+    IDS_CUSTOMIZE           "Anpassen"
+    IDS_LONGCLASSNAMECUSTOMIZE "Menüstruktur"
+    IDS_SAVEPROMPTSTORAGE   "Soll der modifizierte Script  '%s' gespeichert werden ?"
+    IDS_STORAGE_NAME_MACROSCRIPTS "Macroscripts"
+    IDS_STORAGE_NAME_MENUITEMS "Menuitems"
+    IDS_NOMACROSCRIPTS      "Kein Makroscript in Datenbank des Projektes"
+    IDS_RUNNINGTHREADS      "Achtung!  Es laufen noch '%s' Scripts ."
+    IDS_FILTERDEFAULTSCRIPT "' ""BeginAction()"" wird gerufen, bevor das erste\r\n'  Objekt verarbeitet werden soll\r\nFunction BeginAction() As Integer\r\n' Hier notwendige Initialisierungen durchführen\r\n\r\n\tBeginAction=1\r\nEnd Function\r\n\r\n'__________________________________\r\n\r\n' ""DoAction()"" wird für jedes der zu\r\n' verarbeitenden Objekte gerufen\r\nFunction DoAction (Obj As GeoObject) As Integer\r\n\r\n' Wenn das Objekt nicht in die Ausgabemenge\r\n' übernommen werden soll, dann den\r\n' Rückgabewert auf '0' setzen\r\n\tDoAction=1\r\nEnd Function\r\n\r\n'__________________________________\r\n\r\n' ""EndAction()"" wird nach der Verarbeitung des\r\n' letzten Objektes gerufen\r\nSub EndAction() \r\n' Hier notwendige Aufräumarbeiten durchführen\r\n\r\nEnd Sub\r\n"
+    IDS_STORAGE_NAME_OPERATESCRIPTS "OperateScripts"
+    IDS_OPERATE             "<Ohne Namen>"
+    IDS_LONGCLASSNAMEFILTERSCRIPT "FilterScript"
+    IDS_SELECTSCRIPTNAME    "Bitte ein vorhandenes Makro selektieren oder einen neuen Makronamen eingeben."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_REACHEDBOF          "Dateianfang erreicht"
+    IDS_RUNTIME_ERROR       "Laufzeitfehler %d in Zeile %d: %s"
+    IDS_COMPILEFORMAT       "Kompilierung zu %u%% abgeschlossen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_COMPILEERROR        "Makro konnte aufgrund eines Fehlers nicht kompiliert werden"
+    IDS_NOOBJECTS           "Es sind keine Objekte mehr vorhanden !"
+    IDS_HEX                 "Hexadezimale Anzeige"
+    IDS_DEZ                 "Dezimale Anzeige"
+    IDS_DEBISOPENYET        "Debugger wird erst beendet."
+    IDS_BEGINACTION         "BeginAction"
+    IDS_ENDACTION           "EndAction"
+    IDS_DOACTION            "DoAction"
+    IDS_NAMEREQUIRED        "Bitte Makronamen angeben ! "
+    IDS_BADENTRY            "Einsprungfunktion fehlerhaft !"
+    IDS_LOADSCRIPT          "BeginScript"
+    IDS_UNLOADSCRIPT        "EndScript"
+    IDS_LONGCLASSNAMEOBJFEATSCRIPT "ObjectFeatureScript"
+    IDS_STORAGE_NAME_OBJECTFEATURESCRIPTS "ObjectFeatureScripts"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_DEBUG_HEX            "Zeigt Variablen hexadezimal/dezimal an."
+    ID_DEBUG_MODIFYDLG      "Weist Variablen neuen Wert zu."
+    ID_DEBUG_GETHELPON      "Hilfe zu einem Suchschlüssel BasicScript SDK"
+    ID_DEBUG_EDITORHELP     "Hilfe zum Debugger/Editor"
+    ID_DEBUG_TRIASHELP      "Hilfe zur TRiAS®-Basicprogrammierung"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "bscript.rcv"
+#include "bscrext.rc"
+#include "azhelp.rc"
+#include "dd.rc"
+#include "dg.rc"
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

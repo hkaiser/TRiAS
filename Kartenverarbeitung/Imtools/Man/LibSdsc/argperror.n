@@ -1,0 +1,75 @@
+'\"t
+.TH ARGPERROR 3ARG "September 1991" "SDSC" "ARGUMENT PARSING"
+.SH NAME
+ArgPError, ArgQError, ArgErrNo  -  argument parsing package error messages
+.SH SYNOPSIS
+.if t \fB
+.nf
+#include "sdsc.h"
+
+extern int ArgErrNo;
+extern int ArgNErr;
+exter char *ArgErrList[ ];
+
+void ArgPError( leader )
+.in +0.5i
+char *leader;
+.in -0.5i
+
+char *ArgQError( )
+.fi
+.if t \fR
+.SH DESCRIPTION
+\fIArgPError\fR produces a short error message on \fIstderr\fR
+describing the last error encountered during a call to an argument parsing
+package function.
+.LP
+If \fIleader\fR is not a NULL pointer and does not point to an empty
+string, the string it points to is printed, followed by a colon and
+one space, followed by the error message and a NEWLINE.
+If \fIleader\fR is a NULL pointer or an empty string, just the error
+message and NEWLINE are printed.
+The leader string is typically the name of the program.
+.LP
+The error number is taken from the global variable \fIArgErrNo\fR,
+which is set when errors occur in argument parsing package routines but
+not cleared when non-erroneous calls are made.
+.LP
+To allow programs to display error message texts in other ways,
+\fIArgErrList\fR provides an array of error message strings.
+\fIArgErrNo\fR may be used as an index into this table to get the
+message string without the NEWLINE.
+.LP
+\fIArgNErr\fR is the number of error messages provided for in the table.
+\fIArgErrNo\fR should be checked against \fIArgNErr\fR prior to
+indexing into \fIArgErrList\fR because new error codes may be added
+to the system before they are available in the error message table.
+.LP
+\fIArgQError\fR may be used to query the error message list and return a
+pointer to the error text associated with the error value of \fIArgErrNo\fR.
+.SH RETURNS
+\fIArgPError\fR returns nothing.
+.LP
+\fIArgQError\fR returns the character string message for the current value
+of \fIArgErrNo\fR, or "Unknown error" if there is no message for the error
+number.
+.SH NOTES
+If \fIArgErrNo\fR is \fIARGESYS\fR, which indicates a system call error
+occurred, \fIArgPError\fR calls \fIperror\fR(3) to print the
+system call's error message text instead of the text for \fIARGESYS\fR and
+\fIArgQError\fR returns the error text associated with \fIerrno\fR.
+.SH "SEE ALSO"
+ArgFeedback(3ARG),
+ArgIntro(3ARG),
+ArgParse(3ARG),
+ArgRegister(3ARG),
+errno(2),
+perror(3)
+.br
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

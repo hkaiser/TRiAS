@@ -1,0 +1,132 @@
+
+
+
+IMCLTGRAYRAMP(3IM)     SDSC IMAGE LIBRARY      IMCLTGRAYRAMP(3IM)
+
+
+
+NAME
+     ImCltGrayRamp - fill a CLT with a grayscale ramp
+
+SYNOPSIS
+     #include "im.h"
+
+     ImClt *ImCltGrayRamp( srcClt, startIndex, endIndex, startGray,
+                              endGray, dstClt )
+          ImClt     *srcClt;
+          int  startIndex;
+          int  endIndex;
+          int  startGray;
+          int  endGray;
+          ImClt     *dstClt;
+
+
+DESCRIPTION
+     ImCltGrayRamp creates a grayscale ramp, a linear progression
+     of  grayscales,  from _s_t_a_r_t_G_r_a_y value to _e_n_d_G_r_a_y value.  The
+     valid range for both _s_t_a_r_t_G_r_a_y and _e_n_d_G_r_a_y is from 0 to 255.
+     _e_n_d_G_r_a_y value need not be larger than _s_t_a_r_t_G_r_a_y value.
+
+     The grayscale values are filled in from _s_t_a_r_t_I_n_d_e_x to _e_n_d_I_n_-
+     _d_e_x.  _e_n_d_I_n_d_e_x need not be larger than _s_t_a_r_t_I_n_d_e_x.
+
+     _s_r_c_C_l_t is the source CLT to be referenced.   _d_s_t_C_l_t  is  the
+     destination CLT to be returned.
+
+     _s_r_c_C_l_t = IMCLTNULL and _d_s_t_C_l_t = IMCLTNEW
+          A new _d_s_t_C_l_t is allocated  with  size  _s_t_a_r_t_I_n_d_e_x+1  or
+          _e_n_d_I_n_d_e_x+1  (whichever  is  larger)  and then grayscale
+          ramped.
+
+     _s_r_c_C_l_t = IMCLTNULL and _d_s_t_C_l_t points to a CLT
+          The _d_s_t_C_l_t is grayscale ramped.
+
+     _s_r_c_C_l_t points to a CLT and _d_s_t_C_l_t = IMCLTNEW
+          The _s_r_c_C_l_t is duplicated  into  _d_s_t_C_l_t  and  _d_s_t_C_l_t  is
+          grayscale ramped.
+
+     _s_r_c_C_l_t points to a CLT and _d_s_t_C_l_t points to a CLT
+          and _s_r_c_C_l_t == _d_s_t_C_l_t
+
+          The _d_s_t_C_l_t is grayscale ramped.
+
+     _s_r_c_C_l_t points to a CLT and _d_s_t_C_l_t points to a CLT
+          and _s_r_c_C_l_t != _d_s_t_C_l_t
+
+          As many CLT entries in _s_r_c_C_l_t that will fit into _d_s_t_C_l_t
+          are  copied  into  _d_s_t_C_l_t  and then _d_s_t_C_l_t is grayscale
+          ramped.
+
+
+
+
+SDSC              Last change: August 31, 1992                  1
+
+
+
+
+
+
+IMCLTGRAYRAMP(3IM)     SDSC IMAGE LIBRARY      IMCLTGRAYRAMP(3IM)
+
+
+
+NOTES
+     The _s_r_c_C_l_t and _d_s_t_C_l_t may be the same CLT without unpleasant
+     side effects.
+
+RETURNS
+     ImCltGrayRamp returns a pointer to the grayscale ramp filled
+     CLT or IMCLTNULL.
+
+SEE ALSO
+     ImIntro (3IM), ImErrNo  (3IM),  ImCltAlloc  (3IM),  ImCltDup
+     (3IM)
+
+AUTHORS
+     Dave Nadeau and Toan-Vinh Le
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2                 Last change: August 31, 1992               SDSC
+
+
+

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Copyright © 1991 - 2004, Hartmut Kaiser #HK020110 -->
+<!-- edited with XML Spy v3.5 NT (http://www.xmlspy.com) by Hartmut Kaiser -->
+<!ELEMENT CatalogFolder (CatalogFolder+ | CatalogNode+ | (CatalogFolder+, CatalogNode+))>
+<!ATTLIST CatalogFolder
+	Name CDATA #IMPLIED
+	Description CDATA #REQUIRED
+>
+<!ELEMENT CatalogNode EMPTY>
+<!ATTLIST CatalogNode
+	Name CDATA #REQUIRED
+	Description CDATA #REQUIRED
+>
+<!ELEMENT GeoComponentCatalog (CatalogFolder+)>
+<!ATTLIST GeoComponentCatalog
+	Version CDATA "1.0"
+>

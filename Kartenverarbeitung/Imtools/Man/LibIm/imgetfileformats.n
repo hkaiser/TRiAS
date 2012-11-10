@@ -1,0 +1,52 @@
+'\"et
+.if t .TH IMFILEQFORMAT 3IM "June 16, 1995" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMFILEQFORMAT 3IM "June 16, 1995" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImGetFileFormats - Get the table of file formats
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+typedef struct ImFileFormat
+{
+	char  **format_names;           
+	char  *format_help;            
+	char  *format_creator;
+	char  *format_readSupport;
+	char  *format_writeSupport;
+
+	ImFileMagic *format_magicMap;
+
+	int    format_readMultiVfb;
+	int    format_readPipe;
+	int    format_writeMultiVfb;
+	int    format_writePipe;
+
+	int  (*format_read)();
+	ImFileFormatReadMap *format_readMap;
+	ImFileFormatWriteMap *format_writeMap;
+}
+
+ImFileFormat	**ImGetFileFormats( void );
+
+.fi
+\fR
+.SH DESCRIPTION
+\fBImGetFileFormats\fR gets the master list of file formats.  This is a list
+of all of the image formats supported by the image library.
+
+The list is stored as an array of pointers to structures of type ImFileFormat.
+For information about the fields of this structure (and the substructures with 
+it), please consult the file im.h.
+.SH "SEE ALSO"
+\fBImIntro\fR (3IM),
+\fBImGetCompressSchemes\fR (3IM),
+.SH AUTHOR
+Brian Duggan
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@sdsc.edu\fR
+.br
+

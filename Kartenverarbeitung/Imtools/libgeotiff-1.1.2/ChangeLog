@@ -1,0 +1,103 @@
+Sun Feb 20 16:43:03 2000  Frank Warmerdam  <warmerda@gdal.velocet.ca>
+
+	* Prepare 1.1.2 release.
+
+Tue Jan  4 10:59:48 2000  Frank Warmerdam  <warmerda@gdal.velocet.ca>
+
+	* Fixed inclusion of geoparms in object file list at Derricks
+	  suggestion.
+
+	* Added --with-zip support to configure and makefiles at the 
+	  suggestion of Derrick Brashear.
+
+Fri Dec 10 13:24:21 1999  Frank Warmerdam  <warmerda@gdal.velocet.ca>
+
+	* Upgraded .csv and .c files to EPSG 4.4.
+
+	* Fixed bug setting the false northing for files with 
+	ProjCenterNorthingGeoKey set in GTIFGetDefn().
+
+	* Added "--with-incode-epsg" support to configure, added 
+	cpl_csv_incode.c and csv/*.c tables.
+
+Wed Sep 29 10:10:39 1999  Frank Warmerdam  <warmerda@gdal.velocet.ca>
+
+	* Upgraded CSV files to EPSG 4.3 from EPSG 4.2.  
+
+Fri Sep 17 10:53:52 1999  Frank Warmerdam  <warmerda@gdal.velocet.ca>
+
+	* Added ProjRectifiedGridAngleGeoKey(3096) and support for it's
+	  use with Oblique Mercator in geo_normalize.c.
+
+Thu Sep 16 17:22:55 1999  Frank Warmerdam  <warmerda@gdal.velocet.ca>
+
+	* Added support for pure tiepoints, and the transformation
+	matrix in GTIFImageToPCS(), and GTIFPCSToImage(). 
+
+Wed Sep 15 10:19:34 1999  Frank Warmerdam  <warmerda@gdal.velocet.ca>
+
+	* CT_TransvMercator_SouthOriented now CT_TransvMercator_SouthOrientated
+	  to match EPSG.  SouthOriented name remains as an alias.
+
+	* Fixed serious bug in geo_normalize.c with translation of
+	DD.MMSSsss values.  Return value was seriously off if any 
+	fraction of a second was included in the string.
+
+Tue Sep  7 15:57:47 1999  Frank Warmerdam  <warmerda@gdal.velocet.ca>
+
+	* Fixed count/tiepoint_count mixup in GTIFPCSToImage().  Thanks
+	  to Eric Brown of Universal Systems.
+
+Mon Jul 12 12:56:51 1999  Frank Warmerdam  <warmerda@gdal.velocet.ca>
+
+	* Made scale a parameter of CT_Stereographic.
+
+	* geotifcp modified to copy existing geotiff information by default.
+
+Tue May  4 09:25:12 1999  Frank Warmerdam  <warmerda@gdal.velocet.ca>
+
+	* Prepared Version 1.1.1 release.
+
+Mon May  3 14:10:30 1999  Frank Warmerdam  <warmerda@gdal.velocet.ca>
+
+	* Added corner coordinate reporting to listgeo, and made full
+	  report the default.
+
+	* Added geo_trans.c with image<->PCS transformations.
+
+	* Fixed serious bug with parsing DMSmmsss.ss coordinates from
+	  CSV files which could make many results wrong.
+
+	* Cleaned up warnings with gcc -Wall, and IRIX native compiler. 
+
+	* Added support for -Wall for GCC in when running configure. This
+	also resulted in the addition of aclocal.m4 to the dist.
+
+Wed Apr 28 14:12:25 1999  Frank Warmerdam  <warmerda@gdal.velocet.ca>
+
+	* Added geo_extra.c, for special handling of UTM and state plane 
+	map systems. 
+
+	* Changed to have api help inline with the code, and extracted with 
+	doxygen.
+
+Thu Mar 25 23:25:22 1999  Frank Warmerdam  <warmerda@gdal.velocet.ca>
+
+	* Added ChangeLog and LICENSE file to distribution.
+
+March 18
+	
+	* Added support for PROJ.4 in configure.  Added cover functions
+	for Proj.4 in geotiff_proj.c, added lat/long reporting to listgeo.c. 
+
+
+-- 1.1.0a Release (circa March 10, 1999) --
+
+	* This release is considered alpha (not release) quality. 
+	
+	* Includes new CSV files, ``geo_normalize'' support, and a new
+	configure script (using autoconf). 
+
+-- 1.02 Release (1995 or so) 	
+
+	

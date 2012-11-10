@@ -1,0 +1,25 @@
+HKCR
+{
+	TRiAS.Statistics.ObjectCountInORWnd.1 = s 'ObjectCountInORWnd Object'
+	{
+		CLSID = s '{B86C2D2C-308E-49DB-8447-23E38988CC98}'
+	}
+	TRiAS.Statistics.ObjectCountInORWnd = s 'ObjectCountInORWnd Object'
+	{
+		CLSID = s '{B86C2D2C-308E-49DB-8447-23E38988CC98}'
+		CurVer = s 'TRiAS.Statistics.ObjectCountInORWnd.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {B86C2D2C-308E-49DB-8447-23E38988CC98} = s 'ObjectCountInORWnd Object'
+		{
+			ProgID = s 'TRiAS.Statistics.ObjectCountInORWnd.1'
+			VersionIndependentProgID = s 'TRiAS.Statistics.ObjectCountInORWnd'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{CF461D81-EE47-11D2-9BE4-BAF620524153}'
+		}
+	}
+}

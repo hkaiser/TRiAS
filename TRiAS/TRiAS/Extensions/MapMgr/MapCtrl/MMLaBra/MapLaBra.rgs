@@ -1,0 +1,47 @@
+HKCR
+{
+	TRiAS.MapMgr.Import.LaBra.1 = s 'TRiAS - Import von Orthophotos Land Brandenburg'
+	{
+		CLSID = s '{21655002-EC75-11d4-A9F9-00104BAF20DA}'
+	}
+	TRiAS.MapMgr.Import.LaBra = s 'TRiAS - Import von Orthophotos Land Brandenburg'
+	{
+		CurVer = s 'TRiAS.MapMgr.Import.LaBra.1'
+	}
+
+	NoRemove CLSID
+	{
+		ForceRemove {21655002-EC75-11d4-A9F9-00104BAF20DA} = s 'TRiAS - Import von SA-Layer-Hintergrundrasterbildern'
+		{
+			ProgID = s 'TRiAS.MapMgr.Import.LaBra.1'
+			VersionIndependentProgID = s 'TRiAS.MapMgr.Import.LaBra'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}
+HKCU
+{
+	NoRemove Software 
+	{
+		NoRemove TRiAS 
+		{
+			NoRemove TRiAS 
+			{
+				NoRemove Extensions 
+				{
+					NoRemove TRiAS.MapMgr.Import.1
+					{
+						NoRemove ImportEngines
+						{
+							'{21655002-EC75-11d4-A9F9-00104BAF20DA}' = s ''
+						}
+					}
+				}
+			}
+		}
+	}
+}

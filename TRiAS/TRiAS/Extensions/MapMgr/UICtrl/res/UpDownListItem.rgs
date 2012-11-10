@@ -1,0 +1,17 @@
+HKCR {
+	TRiASUI.UpDownListItem.1 = s 'TRiAS® UserInterface - UpDownList Element' {
+		CLSID = s '{69E86FA5-E057-11D2-992D-00AA002A873B}'
+	}
+	TRiASUI.UpDownListItem = s 'TRiAS® UserInterface - UpDownList Element' {
+		CLSID = s '{69E86FA5-E057-11D2-992D-00AA002A873B}'
+	}
+	NoRemove CLSID {
+		ForceRemove {69E86FA5-E057-11D2-992D-00AA002A873B} = s 'TRiAS® UserInterface - UpDownList Element' {
+			ProgID = s 'TRiASUI.UpDownListItem.1'
+			VersionIndependentProgID = s 'TRiASUI.UpDownListItem'
+			InprocServer32 = s '%MODULE%' {
+				val ThreadingModel = s 'both'
+			}
+		}
+	}
+}

@@ -1,0 +1,99 @@
+#
+# GeoTIFF Library source for Makefile
+#
+
+!include <ntwin32.mak>
+
+DEPTH	= ..
+
+GEOTIFFDIR	= $(DEPTH)
+
+TOP = $(DEPTH)\\..
+TIFFDIR = $(TOP)\\libtiff
+PORT    = $(TOP)\\port
+LIBPORT = @LIBPORT@
+
+
+#
+# VERSION:	@VERSION@
+# DATE:		@DATE@
+# TARGET:	@TARGET@
+# CCOMPILER:	@CCOMPILER@
+#
+SHELL	= cmd
+NULL	=
+CC	= cl
+AR	= lib
+LINK	= link
+AROPTS	= 
+RANLIB	= 
+INSTALL	= 
+
+
+
+#
+IPATH	= -I. -I$(TOP) -I$(GEOTIFFDIR)  -I$(TIFFDIR)
+
+#
+CONF_LIBRARY=\
+	$(NULL)
+
+COPTS	= -nologo
+
+OPTIMIZER=-O2 -G5
+
+CFLAGS	= $(COPTS) $(OPTIMIZER) $(IPATH) $(CONF_LIBRARY)
+
+#
+SRCS	= \
+	$(NULL)
+OBJS	= \
+	makegeo.obj \
+	listgeo.obj \
+	geotifcp.obj \
+	$(NULL)
+
+# default - overridden from batch file.
+LIBS = $(GEOTIFFDIR)\\libgeotiff.lib $(TIFFDIR)\\libtiff.lib
+
+
+ALL=	makegeo.exe listgeo.exe geotifcp.exe
+
+
+all:	$(ALL)
+
+
+
+# We copy $(LIBS) to the current directory for the build.
+# I can't seem to make the linker recognize pathnames.
+# Although this is a kludge, it does work
+
+
+makegeo.exe: makegeo.obj  $(LIBS)
+	$(CC) -c $(CFLAGS) makegeo.c
+	$(LINK) $(COPTS) makegeo.obj $(LIBS) -out:makegeo.exe
+#	copy $(LIBS) .
+#	$(LINK) $(COPTS) makegeo.obj *.lib -out:makegeo.exe
+#	del /f /q *.lib
+
+geotifcp.exe: geotifcp.obj  $(LIBS)
+	$(CC) -c $(CFLAGS) $(PORT)\\getopt.c
+	$(CC) -c $(CFLAGS) geotifcp.c
+	$(LINK) $(COPTS) geotifcp.obj getopt.obj $(LIBS) -out:geotifcp.exe
+#	copy $(LIBS) .
+#	$(LINK) $(COPTS) geotifcp.obj getopt.obj *.lib -out:geotifcp.exe
+#	del /f /q *.lib
+
+listgeo.exe: listgeo.obj  $(LIBS)
+	$(CC) -c $(CFLAGS) listgeo.c
+	$(LINK) $(COPTS) listgeo.obj $(LIBS) -out:listgeo.exe
+#	copy $(LIBS) .
+#	$(LINK) $(COPTS) listgeo.obj *.lib -out:listgeo.exe
+#	del /f /q *.lib
+
+clean:
+	del /f $(ALL) $(OBJS) newgeo.tif *.lib
+
+clean_objs:
+	del /f $(OBJS) *.lib
+

@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiAS.ConvertGuid.1 = s 'ConvertGuid Class'
+	{
+		CLSID = s '{0237BF15-6F66-4C18-9D92-5C408C0492CE}'
+	}
+	TRiAS.ConvertGuid = s 'ConvertGuid Class'
+	{
+		CLSID = s '{0237BF15-6F66-4C18-9D92-5C408C0492CE}'
+		CurVer = s 'TRiAS.ConvertGuid.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {0237BF15-6F66-4C18-9D92-5C408C0492CE} = s 'ConvertGuid Class'
+		{
+			ProgID = s 'TRiAS.ConvertGuid.1'
+			VersionIndependentProgID = s 'TRiAS.ConvertGuid'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{06C1774B-EDF4-4872-B090-806AFA9D8EA7}'
+		}
+	}
+}

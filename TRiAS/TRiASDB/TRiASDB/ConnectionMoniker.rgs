@@ -1,0 +1,18 @@
+HKCR
+{
+	MkConnection = s 'TRiAS ConnectionMoniker Class'
+	{
+		CLSID = s '{41DA1350-0ECF-11D3-94D6-0080C786297B}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {41DA1350-0ECF-11D3-94D6-0080C786297B} = s 'TRiAS ConnectionMoniker Class'
+		{
+			ProgID = s 'MkConnection'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

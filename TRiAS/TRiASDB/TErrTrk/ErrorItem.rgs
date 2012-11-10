@@ -1,0 +1,24 @@
+HKCR 
+{
+	TRiAS.ErrorItem.1 = s 'TRiAS® Fehlerobjekt' 
+	{
+		CLSID = s '{40B81D35-940C-11D2-98B0-0060085FC1CE}'
+	}
+	TRiAS.ErrorItem = s 'TRiAS® Fehlerobjekt' 
+	{
+		CLSID = s '{40B81D35-940C-11D2-98B0-0060085FC1CE}'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {40B81D35-940C-11D2-98B0-0060085FC1CE} = s 'TRiAS® Fehlerobjekt' 
+		{
+			ProgID = s 'TRiAS.ErrorItem.1'
+			VersionIndependentProgID = s 'TRiAS.ErrorItem'
+			ToolboxBitmap32 = s '%MODULE%,1'
+			InprocServer32 = s '%MODULE%' 
+			{
+				val ThreadingModel = s 'both'
+			}
+		}
+	}
+}

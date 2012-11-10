@@ -1,0 +1,20 @@
+HKCR
+{
+	TRiASDB.TRiASSimpleGeoFeature.1 = s 'TRiASSimpleGeoFeature Class'
+	{
+		CLSID = s '{701CD5C5-FB01-11D1-863E-00600875138A}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {701CD5C5-FB01-11D1-863E-00600875138A} = s 'TRiASSimpleGeoFeature Class'
+		{
+			ProgID = s 'TRiASDB.TRiASSimpleGeoFeature.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{1CB3AB53-2E87-11D1-969D-00A024D6F582}'
+		}
+	}
+}

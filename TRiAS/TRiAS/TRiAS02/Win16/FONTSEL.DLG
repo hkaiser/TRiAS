@@ -1,0 +1,48 @@
+DLGINCLUDE RCDATA DISCARDABLE
+BEGIN
+    "FONTSEL.H\0"
+END
+
+FORMATDLGORD31 DIALOG 22, 46, 316, 185
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Schriftart"
+FONT 8, "Helv"
+BEGIN
+    LTEXT           "Schrift&art:", stc1, 6, 3, 40, 9
+    COMBOBOX        cmb1, 6, 14, 103, 55, CBS_SIMPLE | CBS_OWNERDRAWFIXED | 
+                    CBS_AUTOHSCROLL | CBS_SORT | CBS_HASSTRINGS | 
+                    CBS_NOINTEGRALHEIGHT | CBS_DISABLENOSCROLL | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Schrifts&til:", stc2, 117, 3, 44, 9
+    COMBOBOX        cmb2, 117, 14, 64, 55, CBS_SIMPLE | CBS_NOINTEGRALHEIGHT | 
+                    CBS_DISABLENOSCROLL | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Schriftgröße:", stc3, 188, 3, 43, 9
+    COMBOBOX        cmb3, 188, 14, 43, 55, CBS_SIMPLE | CBS_OWNERDRAWFIXED | 
+                    CBS_SORT | CBS_HASSTRINGS | CBS_NOINTEGRALHEIGHT | 
+                    CBS_DISABLENOSCROLL | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK", IDOK, 262, 6, 45, 14, WS_GROUP
+    PUSHBUTTON      "Abbrechen", IDCANCEL, 262, 23, 45, 14, WS_GROUP
+    PUSHBUTTON      "&Zuweisen", psh3, 262, 57, 45, 14, WS_GROUP
+    PUSHBUTTON      "&Hilfe", psh15, 262, 57, 45, 14, WS_GROUP
+    GROUPBOX        " Darstellung ", grp1, 6, 74, 103, 71, WS_GROUP
+    CONTROL         "&Durchgestrichen", chx1, "Button", BS_AUTOCHECKBOX | 
+                    WS_TABSTOP, 11, 87, 85, 10
+    CONTROL         "&Unterstrichen", chx2, "Button", BS_AUTOCHECKBOX, 11, 
+                    101, 85, 10
+    CONTROL         "Schrift&rahmen", IDCB_FONTFRAMED, "Button", 
+                    BS_AUTOCHECKBOX, 11, 114, 85, 10
+    CONTROL         "Farbe von &Bezugsobjekt", IDCB_FONTTRANSPARENT, 
+                    "Button", BS_AUTOCHECKBOX, 11, 128, 96, 10
+    LTEXT           "&Farbe:", stc4, 6, 151, 30, 9
+    COMBOBOX        cmb4, 6, 162, 103, 100, CBS_DROPDOWNLIST | 
+                    CBS_OWNERDRAWFIXED | CBS_AUTOHSCROLL | CBS_HASSTRINGS | 
+                    WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Dreh&winkel:", -1, 174, 151, 52, 9
+    EDITTEXT        IDE_FONTESCAPEMENT, 174, 163, 59, 12, ES_AUTOHSCROLL
+    LTEXT           "&Neigungswinkel:", IDT_FONTORIENTATION, 246, 151, 59, 9
+    EDITTEXT        IDE_FONTORIENTATION, 246, 163, 59, 12, ES_AUTOHSCROLL
+    GROUPBOX        " Muster ", grp2, 118, 74, 190, 49, WS_GROUP
+    CTEXT           "", stc6, 118, 126, 189, 20, SS_NOPREFIX | NOT WS_GROUP
+    CTEXT           "AaBbYyZz", stc5, 123, 83, 178, 36, SS_NOPREFIX | NOT 
+                    WS_VISIBLE
+END

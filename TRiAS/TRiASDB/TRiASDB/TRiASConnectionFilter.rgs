@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASDB.TRiASConnectionFilter.1 = s 'TRiASConnectionFilter Class'
+	{
+		CLSID = s '{52A74060-48AB-4FA0-A4DE-186A0C30FE4E}'
+	}
+	TRiASDB.TRiASConnectionFilter = s 'TRiASConnectionFilter Class'
+	{
+		CLSID = s '{52A74060-48AB-4FA0-A4DE-186A0C30FE4E}'
+		CurVer = s 'TRiASDB.TRiASConnectionFilter.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {52A74060-48AB-4FA0-A4DE-186A0C30FE4E} = s 'TRiASConnectionFilter Class'
+		{
+			ProgID = s 'TRiASDB.TRiASConnectionFilter.1'
+			VersionIndependentProgID = s 'TRiASDB.TRiASConnectionFilter'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{1CB3AB53-2E87-11D1-969D-00A024D6F582}'
+		}
+	}
+}

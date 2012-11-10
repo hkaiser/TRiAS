@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASDB.TRiASMIGeoFeature.1 = s 'TRiASMIGeoFeature Class'
+	{
+		CLSID = s '{94D106DF-72D1-4016-BAFA-EDE2135C3DD6}'
+	}
+	TRiASDB.TRiASMIGeoFeature = s 'TRiASMIGeoFeature Class'
+	{
+		CLSID = s '{94D106DF-72D1-4016-BAFA-EDE2135C3DD6}'
+		CurVer = s 'TRiASDB.TRiASMIGeoFeature.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {94D106DF-72D1-4016-BAFA-EDE2135C3DD6} = s 'TRiASMIGeoFeature Class'
+		{
+			ProgID = s 'TRiASDB.TRiASMIGeoFeature.1'
+			VersionIndependentProgID = s 'TRiASDB.TRiASMIGeoFeature'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{EE31A3CF-69DE-4628-91C8-01513D8B9A70}'
+		}
+	}
+}

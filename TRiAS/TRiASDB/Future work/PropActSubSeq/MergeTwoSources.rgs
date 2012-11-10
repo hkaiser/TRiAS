@@ -1,0 +1,39 @@
+HKCR
+{
+	TRiASEx.MergeTwoSources.1 = s 'MergeTwoSources Class'
+	{
+		CLSID = s '{B6C6B770-01F5-11D3-94CB-0080C786297B}'
+	}
+	TRiASEx.MergeTwoSources = s 'MergeTwoSources Class'
+	{
+		CLSID = s '{B6C6B770-01F5-11D3-94CB-0080C786297B}'
+		CurVer = s 'TRiASEx.MergeTwoSources.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {B6C6B770-01F5-11D3-94CB-0080C786297B} = s 'MergeTwoSources Class'
+		{
+			ProgID = s 'TRiASEx.MergeTwoSources.1'
+			VersionIndependentProgID = s 'TRiASEx.MergeTwoSources'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{83728720-01F3-11D3-94CB-0080C786297B}'
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.3
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiASEx.MergeTwoSources.1' = s '{B6C6B770-01F5-11D3-94CB-0080C786297B}'
+			}
+		}
+	}
+}

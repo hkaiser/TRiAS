@@ -1,0 +1,39 @@
+HKCR 
+{
+	TRiAS.ExportPropertyAction.1 = s 'ExportPropertyAction Class' 
+	{
+		CLSID = s '{65C6A760-FFB4-11D2-94C5-0080C786297B}'
+	}
+	TRiAS.ExportPropertyAction = s 'ExportPropertyAction Class' 
+	{
+		CLSID = s '{65C6A760-FFB4-11D2-94C5-0080C786297B}'
+		CurVer = s 'TRiAS.ExportPropertyAction.1'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {65C6A760-FFB4-11D2-94C5-0080C786297B} = s 'ExportPropertyAction Class' 
+		{
+			ProgID = s 'TRiAS.ExportPropertyAction.1'
+			VersionIndependentProgID = s 'TRiAS.ExportPropertyAction'
+			InprocServer32 = s '%MODULE%' 
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{BD1B0ED0-FFAF-11D2-94C3-0080C786297B}'
+			'Implemented Categories' 
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4 
+	{
+		NoRemove TRiASEx 
+		{
+			NoRemove PropertyActions 
+			{
+				ForceRemove 'TRiAS.ExportPropertyAction.1' = s '{65C6A760-FFB4-11D2-94C5-0080C786297B}'
+			}
+		}
+	}
+}

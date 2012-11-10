@@ -1,0 +1,576 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>amdb v.1.0 Demo</title>
+  </head>
+
+  <body>
+    
+<CENTER> <h1>amdb v.1.0 Demo</h1> </CENTER>
+
+This document will give you a quick tour of the features of amdb. To
+begin, first install <A HREF="install.html"> amdb v.1.0 </A>.
+Then proceed with the demo.
+
+<hr>
+
+<h2> Introduction </h2>
+
+Amdb is a design tool for access methods (AMs) implemented with
+libgist v.2.0. It includes debugging functionality for stepping
+through individual tree commands such as insert, search, and
+delete. Amdb also has tools for visualizing analysis metrics and
+inspecting the state of the index at various levels. In this version,
+the performance metrics are computed offline using
+<tt>gistcmdline</tt> which takes a query workload and an existing
+index as input. The metrics characterize the performance of each
+query, the tree structure, and the structure shaping methods:
+pickSplit() and penalty() of the implementation. These features enable
+an AM designer to set up "what if" scenarios for pinpointing
+implementation flaws, and analyze the workload performance of an AM to
+identify deficiencies in the design.
+
+<p> In this demo, we will show you how to use amdb by constructing and
+analyzing 2-dimensional R-trees. We will first show how to bulk-load
+indices with <tt>gistcmdline</tt>, and then show how to navigate and
+inspect their structure using amdb. Then we will show how to set
+breakpoints and step through tree commands.
+Finally, we will compare the range query performance of partially
+insertion loaded 2-dimensional AMs: an R-tree versus an R*-tree. We
+will show how to compute analysis metrics for a query workload
+presented to these trees using <tt>gistcmdline</tt>. These metrics can
+then be browsed and visualized in the context of the search tree using
+amdb.
+
+<p> This demo will require about 5 MB of scratch space. Moreover, the
+final analysis portion of the demo only has been tested on Sparc
+Solaris platforms since it requires the use of <A
+HREF="http://www-users.cs.umn.edu/~karypis/metis/hmetis/main.shtml">hMETIS</A>.
+
+<hr>
+
+<h2> Bulk-Loading an Index </h2>
+
+We begin by showing how to create a bulk-loaded R-tree using
+<tt>gistcmdline</tt>, a command-line driver program for creating and
+querying libgist indices as well as performing batch analysis
+operations on them.
+
+<p> First, we will need a data file containing the points we want to
+place in the leaf level of the R-tree. We have provided two example
+data files <tt>2d-uni-40000</tt> and <tt>2d-clust-2500</tt> in the
+<tt>amdb/doc/demo</tt> directory containing 40,000 uniformly
+distributed and 2,500 clustered (100 uniformly distributed centers
+each with 25 points clustered around them) 2-d point-value pairs
+respectively.  Each line of the file contains a single point-value
+pair formatted as <tt>"coor1 coor2 ..."  "value"</tt>. A sample from
+one of the files is shown below.
+
+<pre>
+...
+"7.80455 4.80426" "155"
+"5.36057 4.84116" "155"
+"10.4321 4.85839" "155"
+"9.1856 4.91932" "155"
+...
+</pre>
+
+<p> Make the driver program <tt>gistcmdline</tt> accessible from your
+PATH variable; it is located under <tt>libgist/src/cmdline</tt>.
+Start <tt>gistcmdline</tt> from the <tt>amdb/doc/demo</tt> directory
+and type <tt>help</tt>. It should provide a summary of the commands
+and libgist extensions <tt>gistcmdline</tt> supports.
+
+<p> The <tt>create</tt> command is used to create and bulk-load an
+index. Type (or run <tt>build-script</tt> in the <tt>amdb-demo</tt> directory,
+if you already know how to use <tt>gistcmdline</tt>)
+
+<pre>libgist> create rt-2-uni rt_point_ext 2d-uni-40000 1.0</pre>
+
+to create a point R-tree index, <tt>rt-2-uni</tt>, bulk-loaded with
+point-value pairs from the <tt>2d-uni-40000</tt> data file using 100%
+fill-factor for the leaf pages. The program returns to the standard
+output the point-value pairs loaded into the index. You can turn off
+this output by typing
+
+<pre>libgist> set echo 0 </pre>
+
+Likewise, create an R-tree and R*-tree index for the clustered
+distribution of points. These two indicies will be used in the
+analysis section of the demo.
+
+<pre>libgist> create rt-2-clust rt_point_ext 2d-clust-2500 1.0</pre>
+
+<pre>libgist> create rs-2-clust rstar_point_ext 2d-clust-2500 1.0 </pre>
+
+<p> Exit <tt>gistcmdline</tt> by typing <tt>quit</tt>.  The commands
+should have created three index files <tt>rt-2-uni</tt>,
+<tt>rt-2-clust</tt>, and <tt>rs-2-clust</tt> in the
+<tt>amdb/doc/demo</tt> directory.
+
+<p> The data items in the data files are sorted in the order the leaf
+level pages are to be filled. The bulk-loading routine simply scans
+the input file and places data items into leaf pages as they appear,
+creating internal pages as necessary. Carriage returns in the data
+file force the bulk-loading routine to begin filling a new leaf
+page. The leaf and internal pages are packed as close as possible to
+the specified fill-factor. The points in the example files are
+arranged so as to fill the leaf pages according to the STR technique
+[1] which partitions the data points into iso-oriented tiles.
+
+<p> Note, indices can be created in other ways as well. One can
+insertion load an index through <tt>gistcmdline</tt> or through
+<tt>amdb</tt>. Indices can be created by other programs which call the
+libgist library routines. Amdb can be used to inspect, debug, and
+analyze any index created with libgist.
+
+<hr>
+
+<h2>Inspecting and Debugging an Index </h2>
+
+Now that we have created some indices we can demonstrate some of the
+visualization and debugging features of amdb. These features are
+useful for browsing the structure and contents of a search tree on a
+variety of scales while the stepping through canonical AM commands.
+The visualization tools include a global summary of the tree, a
+structural view, and a visualization of the node contents. We begin
+with a demonstration of these views and then describe the debugging
+features.
+
+<p> Start amdb from <tt>amdb/src</tt> directory by typing <tt>gmake
+run</tt>. (Remember to have the LIBGISTHOME and LD_LIBRARY_PATH
+variables set correctly, see <A HREF="install.html"> installation </A>
+instructions). Amdb should appear containing an empty <b>Console</b>
+window. 
+
+<p> Open the R-tree filled with uniformly distributed 2-d points by
+selecting <b>Open</b> from the <b>File</b> menu, and selecting
+<tt>rt-2-uni</tt> in the file chooser. You will have to change
+directories and find the index file. Go up two levels by clicking
+twice on the <IMG SRC="amdb-demo-gifs/folder.gif" ALIGN=CENTER> icon. Then double
+click on the <tt>doc</tt> directory, double click on <tt>demo</tt>,
+and finally double click on <tt>rt-2-uni</tt>.
+
+<h3> Tree View </h3>
+
+<p> A window named <b>Tree View</b> should appear showing a white box
+labelel with a "1" representing the root node of the opened index (You
+may have to move the <b>Console</b> window). <b>Tree View</b> is a
+visualization tool for exploring the structure of the index. It allows
+you to navigate and examine various paths and subtrees of interest
+within an overwhelming high-fanout search tree.
+
+<p> Let's explore the index structure starting from the root
+node. Click on the root node. Clicking on a node "open"s it and
+displays a container below it, connected by a line, containing its
+children. The display should show the root node has two children,
+nodes 227 and 228. Each node is labeled with a number for
+reference. Click on node 227. Notice the container holding the
+children of node 227 has a scrollbar on top. Since node 227 has a high
+fan-out, not all of its children can be displayed at once given the
+screen space. Thus, the scrollbar can be used to scroll through the
+children of node 227. 
+
+<p> <IMG SRC="amdb-demo-gifs/treeview.gif" ALIGN=CENTER>
+
+<p> Clicking on an "open" node will close the subtree shown below
+it. Try clicking on the root node again. 
+
+<p> If nothing happens when you click on node, then that node is a
+leaf node. For example, node 2 is a leaf node. Play around with
+<b>Tree View</b> until you feel comfortable with its operation. Note
+<b>Tree View</b> is resizeable and scrollable in case the explored
+paths and subtrees cannot fit within the window.
+
+<h3> Node View and Contents </h3>
+
+<p> Once you have found an individual node of interest with <b>Tree
+View</b>, amdb allows you to visualize or dump its contents. Right
+click on node 3, and from the popup menu select <b>Node View</b>. A
+window should appear titled <b>Subtree View: 3 : all</b>. This window
+displays the points contained in node 3 and can be resized as
+desired. You can also view the contents of a subtree below a specific
+node. For example, right click on the root node, and select <b>Subtree
+View - 2</b>. A window tilted <b>Subtree View: 1 : 2</b> should appear
+showing the contents of all nodes in the subtree of height 2 from (and
+including) the root node and below. Thus, it shows the bounding
+rectangles of the children of nodes 1, 227, and 228. For further
+clarification of the items displayed in the subtree views, you can use
+the highlight options.
+
+<p> Right click on node 228, and select <b>Subtree View - 1</b> to see
+the contents of node 228. Again, right click on node 228, and select
+<b>Highlight Subtree - Subtree View: 1 : 2</b>. This should highlight
+all the bounding rectangles and data items within the nodes below (and
+including) node 228 that are rendered in the selected subtree view,
+<b>Subtree View: 1 : 2</b>. Note the items highlighted in <b>Subtree
+View: 1 : 2</b> are the bounding rectangle of node 228 and the
+contents of node 228, as shown in <b>Subtree View: 228 : 1</b>.
+
+<p> <IMG SRC="amdb-demo-gifs/highsub.gif" ALIGN=CENTER>
+
+<p> Middle clicking or right clicking and selecting <b>Highlight
+Path</b> on node 3 will highlight the path from the root to node 3. If
+any subtree view is displaying the bounding rectangle of a node along
+the highlighted path, then the rectangle within the view will be
+highlighted. Using the highlightling features, you can figure out
+which bounding rectangles correspond to which nodes. Play around with
+the <b>Subtree View</b> and highlight options until you feel
+comfortable with their operation.
+
+<i> <p> A word of caution is necessary concerning the <b>Subtree
+View</b> option. Currently, if the subtree visualized includes more
+than 30 nodes, refreshing the subtree view can become terribly slow
+causing amdb to appear to be hung. As a rule of thumb, do not open
+subtree views of depth higher than 1 or 2. </i>
+
+<p> <IMG SRC="amdb-demo-gifs/nodeview.gif">
+
+<p> With node view you can also visualize how the contents of a node
+might be separated when it splits. Right click on node 3 and select
+<b>Highlight Split</b>. In <b>Subtree View: 3: all</b>, data items
+will be highlighted to show the split. Such a visualization is
+immediately useful for debugging the pickSplit() method. The node and
+subtree views are user extensible so that they can be used for a
+variety of data types.
+
+<p> Finally, the <b>Node Contents</b> option gives a textual dump of
+the contents of a node. Right click on any node and select that
+option. Play around with these features until you feel comfortable.
+
+<h3>Global View</h3>
+
+Amdb also offers a global perspective on the index structure, called
+<b>Global View</b> to visualize the variation of a statistic across
+the tree as a whole. 
+
+<p> Select <B>Show Global View</b> from the <b>Navigate</b> menu in
+<b>Tree View</b>; then select <b>Tile All</b> from the <b>Align</b>
+menu. A window titled <b>Global View</b> should appear. It projects
+the entire tree onto a triangle whose base is adjustable via the
+slider at the top and whose height is adjusted by resizing the
+<b>Global View</b> window. Select <b>Slot Count</b> from the <b>Tree
+Stats</b> menu and adjust the slider to about 1/4 of the total. The
+slot counts of the nodes are depicted by color. (These colors can be
+changed by choosing <b>Choose Palette</b> from the <b>File</b> menu in
+<b>Tree View</b>. Extra palettes are in the
+<tt>libgist\etc\palette</tt> directory.)  The colors map to the
+relevant statistic according to the color scale on the left side of
+<b>Tree View</b>. You can click on an area of interest in the global
+view and a path to the closest node will be displayed in the tree
+view.
+
+<p> <IMG SRC="amdb-demo-gifs/globalview.gif" ALIGN=CENTER>
+
+<p> The utility of this view is best demonstrated when trying to
+visualize the analysis metrics, so we postpone a detailed discussion
+until later.
+
+<h3> Debugging Functionality </h3>
+
+Now that we have learned how to browse the tree structure, it will be
+useful when we want to observe the change of the index structure after
+issuing access method commands: insert, search, and delete. Amdb
+allows you execute these commands on a selected index and manually
+step through them with the aid of breakpoints on various node-oriented
+events.  Similar to a programming language debugger, these features
+allow a designer to setup scenarios and trace an operation to pinpoint
+flaws in an AM implementation. We now demonstrate how to use these
+features.
+
+<p> First, we will show how to issue AM commands with amdb by
+executing a nearest neighbor search on the R-tree which indexes the
+clustered distribution. Open the <tt>rt-2-uni</tt> index if it is not
+already opened. From the <b>Ops</b> menu select <b>Search</b>. In the
+dialog box that pops up, type <tt>~ p 46 46</tt> in the <b>Query</b>
+field and type <tt>10</tt> in the <b>Retrival Limit</b>.  This finds
+the 10 nearest neighbors of the point (46,46). The results will appear
+in the <b>Console</b> window. Similarly, you can insert into and
+delete from the index.
+
+<p> To suspend execution of a command and step through it we first
+need to set a breakpoint on some event. There are several types of
+node-oriented events that amdb generates. We will set a breakpoint on
+the traversal of the root and step through the search we executed
+above.
+
+<p> Go to the <b>Debug</b> menu and select <b>Breakpoints</b>. A
+dialog window should appear. Create a new breakpoint by selecting
+<b>New</b>; a new breakpoint with <b>ID</b>=0 should appear. The
+<b>Event</b> column specifies the event on which breakpoint is
+triggered, and the <b>Node</b> column associates the event with a
+particular node or all node if unspecified. Select <b>Node
+Traversal</b> in the <b>Event</b> column and type <b>1</b> in the
+<b>Node</b> column to set a breakpoint on the traversal of the
+root. Click <b>Ok</b> to register the new breakpoint. 
+
+<p> <IMG SRC="amdb-demo-gifs/breakpoint.gif">
+
+<p> Now reexecute the previous search to find 10 nearest neighbors of
+the point (46,46). The <b>Step</b> and <b>Continue</b> controls under
+the menu bar should be enabled, and the root node should be
+highlighted. <b>Step</b> allows you to move from event to event while
+<b>Continue</b> moves the search to the next breakpoint. <b>Step</b>
+through the search. <b>Tree View</b> should highlight the path to the
+current node and the <b>Console</b> window should give you a status of
+your progress. This search will visit the following nodes: 1, 227, 98,
+114, and 113.
+
+<p> Amdb conveniently permits breakpoints on many different
+node-oriented actions to avoid stepping through tediously long
+commands. Go to the breakpoint table once again and create a new
+breakpoint on an <b>Item Insertion</b> event (remember to hit
+<b>Ok</b>). Open a <b>Node Contents</b> and <b>Node View</b> window
+for node 3. From the <b>Ops</b> menu select <b>Insert</b> and type
+<tt>0.05 7.0</tt> in the <b>Key</b> field and <tt>1999</tt> in the
+<b>Data</b> field. Click on <b>Ok</b>.  This command will insert a new
+point (0.05, 7.0) located in the lower left hand corner of <b>Subtree
+View: 3 : all</b>. Using <b>Step</b> would trace the insertion step by
+step, but since we want to jump directly to that point, click
+<b>Continue</b>. This takes us directly to the next breakpoint event
+which is an insertion. The <b>Console</b> window will indicate that an
+item is ready to be inserted in node 3 and a path to it will be
+highlighted in <b>Tree View</b>. Use <b>Step</b> to complete the
+insertion, and note the node contents and node view for node 3 will
+reflect the change (a point in the lower left corner will appear in
+the node view).
+
+<p> <IMG SRC="amdb-demo-gifs/debug.gif">
+
+<p> These debugging and visualization features aid in finding bugs in
+the AM implementation, but offer little information into the
+performance characteristics of the AM desgin. Amdb analysis features
+provide such insight for a specific query workload.
+
+<hr>
+
+<h2> <IMG SRC="amdb-demo-gifs/warning.gif" WIDTH="107" HEIGHT="89"> Performance Analysis </h2>
+
+Amdb provides a breakdown of the I/Os required to perform a query
+workload into the performance relevant characteristics of an AM:
+clustering, utilization, and excess coverage. These metrics when
+projected onto the search tree using the visualization tools can help
+identify sources of deficiencies in the AM design. The analysis phase
+consists of two steps: computing the analysis metrics and browsing and
+examining the results in the context of the search tree. Since
+computing the analysis can be time consuming task, we perform this
+offline using <tt>gistcmdline</tt>. We then explain how to view the
+workload metrics with amdb.
+
+<h3> Creating an AM Workload Analysis</h3>
+
+We will collect the analysis statistics for a query workload presented
+to the R-tree and R*-tree containing the clustered distribution using
+<tt>gistcmdline</tt>. 
+
+<p> First, we need complete the construction of the R-trees by
+inserting 2,500 more points from the same distribution. We have
+provided two files <tt>2d-clust-ins.rt</tt> and
+<tt>2d-clust-ins.rs</tt> which contain commands to insert the extra
+2,500 points in <tt>rt-2-clust</tt> and <tt>rs-2-clust</tt>. Take a
+look at the files if you are curious. Then execute the following from
+the <tt>amdb/doc/demo</tt> directory.
+
+<pre> amdb/doc/demo> gistcmdline < 2d-clust-ins.rt </pre>
+<pre> amdb/doc/demo> gistcmdline < 2d-clust-ins.rs </pre>
+
+<p> To compute the analysis, we need a couple of input data files.
+First, we need a query workload. A sample workload can be found in
+<tt>2d-clust-queries</tt> in the <tt>amdb/doc/demo</tt> directory. It
+contains square containment queries centered on the points from the
+clustered distribution. For the analysis of the penalty() method,
+which guides the insertion routine for GiST trees, we need a set of
+candidate keys that could be inserted. The <tt>2d-100.keys</tt> file
+in the <tt>amdb/doc/demo</tt> directory contains an example of a
+hundred candidate keys.
+
+<p> The script files <tt>rt-clust-anl.scr</tt> and
+<tt>rs-clust-anl.scr</tt> contain a sequence of commands to
+<tt>gistcmdline</tt> which will create analyses for the respective
+search trees using the queries in <tt>2d-clust-queries</tt> and the
+keys in <tt>2d-100.keys</tt>. To compute some of the analysis metrics,
+<tt>gistcmdline</tt> requires the use of <A
+HREF="http://www-users.cs.umn.edu/~karypis/metis/hmetis/main.shtml">hMETIS</A>
+to generate an optimal clustering of data items withing leaf pages.
+Thus, before we do anything, make sure <tt>hmetis</tt> is accessible
+from the PATH variable. Then execute the following from the
+<tt>amdb/doc/demo</tt> directory.
+
+<pre> amdb/doc/demo> gistcmdline < rt-clust-anl.scr </pre>
+<pre> amdb/doc/demo> gistcmdline < rs-clust-anl.scr </pre>
+
+Each of these will take several minutes to compute. Once completed,
+two analysis files <tt>rt-2-clust-anl</tt> and <tt>rs-2-clust-anl</tt>
+will be created in the <tt>amdb/doc/demo</tt> directory. They contain
+a snapshot of the respective index at the time the analysis was
+generated, profiling information from the workload, and the analysis
+metrics.
+
+<h3> Analysis Metrics </h3>
+
+The analyses computed above assess the performance of an AM in terms
+of I/Os. There are three parts to each analysis. The workload metrics
+characterize the query workload and tree structure in terms of search
+tree performance factors. The second two parts, split and penalty
+metrics, assess the quality of the structure-shaping methods of the
+AM, pickSplit() and penalty(), which guide splits and insertions. We
+discuss each of these metrics in turn.
+
+<h4> Workload Metrics</h4>
+
+The workload metrics categorize the additional I/Os (as compared to
+the workload-optimal tree) needed to perform the query workload into
+losses due to factors which effect access method performance. The
+factors are clustering, utlization, and excess coverage of bounding
+predicates. The losses are computed for the entire workload and broken
+down for individual queries and individual nodes. Let's take a look at
+the workload metrics we computed the R-tree and the R*-tree.
+
+<p> Start amdb, if not already started, and select <b>Open
+Analysis</b> from the <b>Analysis</b> menu. Open the
+<tt>rt-2-clust-anl</tt> analysis for the R-tree. (Again you will have
+to go up two levels, and into the <tt>doc/demo</tt> directory). Start
+another amdb, and open the <tt>rs-2-clust-anl</tt> analysis for the
+R*-tree. In both amdb sessions, open the workload stats dialog by
+selecting <b>Workload Stats ...</b> from the <b>Analysis</b>
+menu. This dialog intially shows the parameters of the analysis we
+computed, the number of queries, the target utilization we specified
+(80%), etc. Click on the <b>Leaves</b> tab in both dialog boxes.
+
+<p> <IMG SRC="amdb-demo-gifs/wkld-rt.gif" ALIGN=CENTER> <IMG SRC="amdb-demo-gifs/wkld-rs.gif" ALIGN=CENTER>
+
+<p> The dialog boxes should look similar to the ones shown above. The
+left one contains the workload statistics for the R-tree and the right
+one is contains the statistics for the R*-tree. For the purposes of
+this demo, we will explain what some of the metrics to get an idea of
+their utility but we will spare you the details of every number shown.
+
+<p> The metrics currently shown are the aggregate measures for the
+entire query workload. Since the <b>Leaves</b> tab is selected, these
+metrics only consider the I/Os performed for the leaf level pages of
+the search tree. The left <b>I/Os</b>column indicates the number of
+I/Os for each of the categories, while the right <b>Overhead</b>
+column shows the ratio in comparison to the workload-optimal tree. The
+<b>Actual Clustering</b> category (bottom) inidicates the number of
+leaf level I/Os perfomed for the tree for the query workload. The
+<b>Optimal Clustering</b> indicates the number of I/Os required at the
+leaf level if the data items were optimally clustered into the leaf
+pages, i.e. it corresponds to an acheivable minimum. The optimal
+clustering is computed using hMETIS. The <b>Excess Coverage Loss</b>
+indicates the number of I/Os performed at the leaf level which
+returned no items. These empty accesses are due to the excess coverage
+of the bounding predicates (BPs) of the leaf pages. Note, the R-tree
+has a much higher excess coverage loss than the R*-tree indicating
+that the latter's BPs do a better job of describing the data in the
+leaf pages. Since both trees use MBRs for the BPs, this means that
+this advantage is simply due to better placement of data items into
+leaf pages leading to less overlap. That is, the R*-tree should have
+better clustering.
+
+<p> The remaining I/Os (actual - exc. cov.) are used to compute the
+clustering and utilization loss. The <b>Clustering Loss</b> is the
+number of additional I/Os performed over the optimal clustering, if
+the accessed pages had been packed to the target utilization of 80%.
+After removing the clustering loss, the remaining additional I/Os
+performed (actual - exc.cov - clust. loss - opt. clust), are due to
+under utilization of the leaf nodes; thus, it is the <b>Utilizaiton
+Loss</b>. The sum of the optimal clustering and the losses should add
+up to the actual I/Os performed. Note, the R*-tree does do a better
+job of clustering co-retrieved data items than the R-tree.
+
+<p> The <b>Internal/Totals</b> section shows the metrics for the
+internal levels of the search tree. We cannot compute the
+<b>Clustering Loss</b> for the internal levels, but the <b>Excess
+Coverage</b> and <b>Utilization</b> losses are shown.
+
+<p> The workload metrics are futher broken down for each node in the
+tree and for each query. To see the metrics projected onto the search
+tree, you simply need to select the appropriate metric from the
+options in <b>Display</b> list on the <b>Workload Statistics</b>
+dialog. Select <b>Excess Coverage Loss</b> from the <b>Display</b> tab
+for the R-tree. Now open up the <b>Global View</b> from the
+<b>Navigate Menu</b> in <b>Tree View</b> and select <b>Tile All</b>
+from the <b>Align</b> menu. In the global view, set the slider all the
+way to the right.
+
+<p> Notice that one leaf node has an unusually high excess coverage
+loss; it is colored white. Click on that area in the <b>Global
+View</b> and the <b>Tree View</b> will show a path to node 18. Open a
+node view on the root node (only one level). Notice, node 18 has high
+overlap with another bounding rectangle, which happens to be for node
+10. Open node views on node 18 and node 10. You will find that node 18
+has one outlier which makes its MBR large, empty, and overlapping with
+node 10, causing the high excess coverage loss. Play around with other
+metrics. The <b>Global View</b> in combination with the metrics dialog
+is useful for "drilling down" and finding causes of performance losses
+which may lead to insights into design flaws. 
+
+<p> <IMG SRC="amdb-demo-gifs/exc-loss.gif" ALIGN=CENTER>
+
+<p> The metrics can also be visualized on a per query basis by
+selecting the <b>Queries</b> radio button on the <b>Workload
+Statistics</b> dialog and selecting the appropriate query in the
+field. Once you are finished, select <b>Quit</b> to exit the dialog.
+
+<h4> Split and Penalty Metrics </h4>
+
+The split metrics assess the quality of the pickSplit() method. Each
+leaf page is split according to the pickSplit() method and compared
+with the optimal split in terms of the projected query workload. The
+projected workload is simply one which considers the queries which
+retrieve data items from the page in question. The improvement (or
+deterioration) in performance is recorded on a per leaf basis and
+summarized for all the leaves.
+
+<p>Select <b>Split Stats ...</b> from the <b>Analysis</b> menu for
+both the R-tree and the R*-tree. (<i> if that does not work, select
+<b>Workload Stats ...</b> and quit from the <b>Workload Statistics</b>
+dialog. Apologies for the bug.</i>) They should look similar to the
+following (R-tree on left and R*-tree on right).
+
+<p> <IMG SRC="amdb-demo-gifs/split-rt.gif" ALIGN=CENTER> <IMG SRC="amdb-demo-gifs/split-rs.gif" ALIGN=CENTER>
+
+<p> Notice the aggregate clustering loss for the R*-tree splits is
+much lower than that of the R-tree splits (and hence the higher
+success rate). This indicates that the pickSplit() method of the
+R*-tree is at least partially responsible for the improvement in
+clustering for the given query workload.
+
+<p> The penalty metrics assess the quality of the penalty() method.
+Each candidate key is inserted into the tree top-down and compared
+with the optimal insertion (again in the context of the query
+workload).  In terms of excess coverage, the optimal insertion is the
+one which results in no excess coverage, so the point of comparison is
+0 excess coverage. In terms of clustering loss, the optimal insertion
+is one which minimizes the added clustering loss.  Likewise, the
+difference in performance is recorded on a per candidate key basis and
+summarized for all leaves.
+
+<p> Select <b>Penalty Stats ...</b> from the <b>Analysis</b> menu for
+both the R-tree and the R*-tree. They should look similar to the
+following (R-tree on left and R*-tree on right).
+
+<p> <IMG SRC="amdb-demo-gifs/penalty-rt.gif" ALIGN=CENTER> <IMG SRC="amdb-demo-gifs/penalty-rs.gif" ALIGN=CENTER>
+
+<p> Notice, for the candidate key insertions, the clustering did not
+change much for either tree. However, the excess coverage loss is
+better for the R*-tree that the R-tree. This indicates the insertion
+guiding routine for R*-tree is better for the given workload/candidate
+key set combination.
+
+<hr>
+
+<p> You should now be familiar with the capabilities of amdb. More
+detailed descriptions of the features and metrics are available in the
+user manual. Finally, there is a paper available off the 
+ <A HREF="http://gist.cs.berkeley.edu">GiST</A> web site which justifies
+the basis of the analysis framework and explains how the analysis is
+computed.
+
+<CENTER>
+<HR WIDTH="100%"></CENTER>
+
+<P>Comments, questions and suggestions may be directed to <I><A HREF="mailto:gist@postgres.berkeley.edu">gist@postgres.berkeley.edu</A></I>
+<P><FONT SIZE=-2>Last modified: $Date: 2000/03/15 00:26:52 $ by $Author: mashah $.</FONT>
+  </body>
+</html>

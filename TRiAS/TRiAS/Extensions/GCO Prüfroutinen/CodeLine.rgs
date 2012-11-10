@@ -1,0 +1,39 @@
+HKCR
+{
+	TRiASEx.LineControl.1 = s 'CodeLinePropertyAction Class'
+	{
+		CLSID = s '{D2A96DE5-3EEC-491B-B35C-924660022503}'
+	}
+	TRiASEx.LineControl = s 'CodeLinePropertyAction Class'
+	{
+		CLSID = s '{D2A96DE5-3EEC-491B-B35C-924660022503}'
+		CurVer = s 'TRiASEx.LineControl.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {D2A96DE5-3EEC-491B-B35C-924660022503} = s 'CodeLinePropertyAction Class'
+		{
+			ProgID = s 'TRiASEx.LineControl.1'
+			VersionIndependentProgID = s 'TRiASEx.LineControl'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{46537618-3D6B-4E6A-B438-7EB64BF92E53}'
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiASEx.LineControl.1' = s '{D2A96DE5-3EEC-491B-B35C-924660022503}'
+			}
+		}
+	}
+}

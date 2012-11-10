@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASDB.FastdbFeature.1 = s 'FastdbFeature Class'
+	{
+		CLSID = s '{870C4AB6-583D-428C-B27F-5D22BCCFED49}'
+	}
+	TRiASDB.FastdbFeature = s 'FastdbFeature Class'
+	{
+		CLSID = s '{870C4AB6-583D-428C-B27F-5D22BCCFED49}'
+		CurVer = s 'TRiASDB.FastdbFeature.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {870C4AB6-583D-428C-B27F-5D22BCCFED49} = s 'FastdbFeature Class'
+		{
+			ProgID = s 'TRiASDB.FastdbFeature.1'
+			VersionIndependentProgID = s 'TRiASDB.FastdbFeature'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{AEF1A967-35C7-4E6E-8589-3869A8FA8598}'
+		}
+	}
+}

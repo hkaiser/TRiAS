@@ -1,0 +1,134 @@
+
+
+
+IMVFBSTAT(3IM)         SDSC IMAGE LIBRARY          IMVFBSTAT(3IM)
+
+
+
+NAME
+     ImVfbStat - compute image color statistics
+
+SYNOPSIS
+     #include "im.h"
+
+     float *ImVfbStat( vfb, fieldMask, stats )
+          ImVfb *vfb;
+          int fieldMask;
+          float stats[IMMAXNUMSTATS];
+
+
+DESCRIPTION
+     ImVfbData computes a variety of simple statistics on  pixels
+     in  the  _v_f_b.  Statistics are returned as an array of values
+     in _s_t_a_t_s, a pointer to which is returned by the function.
+
+     Statistics are computed on the single  field  of  the  image
+     selected by _f_i_e_l_d_M_a_s_k.  Legal values of _f_i_e_l_d_M_a_s_k include:
+
+          _f_i_e_l_d_M_a_s_k      Meaning
+8          _______________________________________________________
+          IMALPHA        Compute for the alpha field
+          IMMONO         Compute for the monochrome field
+          IMGRAY         Compute for the grayscale field
+          IMINDEX8       Compute for the index8 field
+          IMINDEX16      Compute for the index16 field
+8          _______________________________________________________
+          IMRED          Compute for the red field
+          IMGREEN        Compute for the green field
+          IMBLUE         Compute for the blue field
+8          _______________________________________________________
+          IMHUE          Compute for the virtual hue field
+          IMSATURATION   Compute for the virtual saturation field
+          IMINTENSITY    Compute for the virtual intensity field
+
+     Other VFB fields are currently not supported.
+
+     The image must have  the  field  selected  by  _f_i_e_l_d_M_a_s_k  or
+     ImVfbStat  will  return an error.  Statistics on HSI virtual
+     fields, however, may be computed for any RGB image.
+
+     ImVfbStat computes the following statistics and returns them
+     in the _s_t_a_t_s array:
+
+          Array Index   Meaning
+8          ___________________________________________
+          IMMAXIMUM     Maximum field value
+          IMMINIMUM     Minimum field value
+          IMUNIQUEVAL   Number of unique field values
+
+NOTES
+     Additional statistics are planned for the future.  Users  of
+     ImVfbStat  should  allocate  the  incomming  _s_t_a_t_s  array as
+
+
+
+SDSC              Last change: December 2, 1992                 1
+
+
+
+
+
+
+IMVFBSTAT(3IM)         SDSC IMAGE LIBRARY          IMVFBSTAT(3IM)
+
+
+
+     having at least IMMAXNUMSTATS entries in  order  to  support
+     future statistics and avoid core dumps.
+
+     Extensive color usage information  may  be  had  by  calling
+     ImVfbHist(3IM)  to  compute  a field histogram of the image.
+     See the ImVfbHist(3IM) man page for more details.
+
+SEE ALSO
+     imhist(1IM),  ImIntro(3IM),  ImErrNo(3IM),  ImVfbAlloc(3IM),
+     ImVfbHist(3IM), ImVfbQFields(3IM)
+
+AUTHOR
+     Chris Groening and Dave Nadeau
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2                 Last change: December 2, 1992              SDSC
+
+
+

@@ -1,0 +1,47 @@
+// TRiASXtension.idl: Base-Interfaces for TRiAS-extensions
+//
+
+#if !defined(_TRIASXTENSION_IDL)
+#define _TRIASXTENSION_IDL
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declarations
+interface DTRiASExtension;
+interface IInitDTRiASExtension;
+
+///////////////////////////////////////////////////////////////////////////////
+// TRiAS Extension
+interface DApplication;
+
+[
+	odl, 
+	object, 
+	uuid(079638D3-3123-101C-BB62-00AA0018497C),
+	helpstring("Eine TRiAS® Erweiterung."),
+	dual,
+	oleautomation
+]
+interface DTRiASExtension : IDispatch
+{
+	[id(3000), helpstring("Wird nach erfolgreichem Laden der Erweiterung gerufen.")] 
+		HRESULT LoadExtension ([in]DApplication *pIApp, [in, optional] VARIANT vDocDisp);
+	[id(3001), helpstring("Wird gerufen, um nachzufragen, ob die Erweiterung entladen werden darf.")] 
+		HRESULT UnloadingExtension ([in] VARIANT_BOOL fMayDeny, [out, retval] VARIANT_BOOL *pfUnload);
+	[id(3002), helpstring("Wird vor Entladen der Erweiterung gerufen.")] 
+		HRESULT UnloadExtension (void);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Initialisierung einer externen TRiAS® Erweiterung
+[
+	uuid(079638D6-3123-101C-BB62-00AA0018497C),
+	helpstring("Initialisierung einer externen TRiAS® Erweiterung."),
+	hidden
+]
+interface IInitDTRiASExtension : IUnknown
+{
+	HRESULT InitDTRiASExtension ([in] IUnknown *pIExt, [in] long hPr);
+	HRESULT InitDTRiASExtensionRegKey ([in] BSTR bstrRegKey, [in] long hPr);
+};
+
+#endif // _TRIASXTENSION_IDL

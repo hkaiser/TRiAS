@@ -1,0 +1,377 @@
+// PerfMon.idl : IDL source for PerfMon.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (PerfMon.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#include <idl/Collection.idl>
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declarations
+interface IPerfObject;
+interface IPerfObjects;
+interface IPerfCounterDefinition;
+interface IPerfCounterDefinitions;
+interface IPerfCounter;
+interface IPerfCollect;
+interface IPerfCounters;
+interface IPerfInstanceDefinition;
+interface IPerfInstanceDefinitions;
+interface IPerfContext;
+interface IPerfContextHelper;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+	[
+		object,
+		uuid(8FE61068-9A8D-11D2-9F08-006008447800),
+		dual,
+		helpstring("IPerfObject Interface"),
+		pointer_default(unique)
+	]
+	interface IPerfObject : IDispatch
+	{
+		typedef [public] DWORD DETAILLEVEL;		// PERF_DETAIL_...
+		typedef [public] DWORD COUNTERTYPE;		// PERF_COUNTER_...
+
+		[propget, id(DISPID_VALUE), helpstring("property Name")] HRESULT Name([out, retval] BSTR *pVal);
+		[propput, id(DISPID_VALUE), helpstring("property Name")] HRESULT Name([in] BSTR newVal);
+		[propget, id(2), helpstring("property ContextName")] HRESULT ContextName([out, retval] BSTR *pVal);
+		[propput, id(2), helpstring("property ContextName")] HRESULT ContextName([in] BSTR newVal);
+		[propget, id(3), helpstring("property Description")] HRESULT Description([out, retval] BSTR *pVal);
+		[propput, id(3), helpstring("property Description")] HRESULT Description([in] BSTR newVal);
+		[propget, id(4), helpstring("property HelpText")] HRESULT HelpText([out, retval] BSTR *pVal);
+		[propput, id(4), helpstring("property HelpText")] HRESULT HelpText([in] BSTR newVal);
+		[propget, id(5), helpstring("property BaseIndex")] HRESULT BaseIndex([out, retval] ULONG *pVal);
+
+		[propget, id(6), helpstring("property CounterDefs")] HRESULT CounterDefs([out, retval] IPerfCounterDefinitions * *pVal);
+		[propget, id(7), helpstring("property InstanceDefs")] HRESULT InstanceDefs([out, retval] IPerfInstanceDefinitions * *pVal);
+
+		[id(100), helpstring("method AddCounterDefinition")] HRESULT AddCounterDefinition([in] BSTR Name, [in] BSTR Desc, [in] BSTR HelpText, [in] DETAILLEVEL Detail, [in] LONG DefaultScale, [in] COUNTERTYPE Type);
+		[id(101), helpstring("method AddInstanceDefinition")] HRESULT AddInstanceDefinition([in] BSTR Name, [out, retval] IPerfInstanceDefinition **ppIInstanceDef);
+		[id(102), helpstring("method AddCounter")] HRESULT AddCounter([in] BSTR InstanceName, [in] IPerfCollect *Collect);
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+//
+	[
+		object,
+		uuid(46745266-9CBA-11D2-9F09-006008447800),
+		dual,
+		helpstring("IPerfObjects Interface"),
+		pointer_default(unique)
+	]
+	interface IPerfObjects : IDynamicCollection
+	{
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+//
+	[
+		object,
+		uuid(8FE6106C-9A8D-11D2-9F08-006008447800),
+		dual,
+		helpstring("IPerfCounterDefinition Interface"),
+		pointer_default(unique)
+	]
+	interface IPerfCounterDefinition : IDispatch
+	{
+		[propget, id(DISPID_VALUE), helpstring("property Name")] HRESULT Name([out, retval] BSTR *pVal);
+		[propput, id(DISPID_VALUE), helpstring("property Name")] HRESULT Name([in] BSTR newVal);
+		[propputref, id(1), helpstring("property TargetObject")] HRESULT TargetObject([in] IPerfObject * newVal);
+
+		[propget, id(2), helpstring("property Description")] HRESULT Description([out, retval] BSTR *pVal);
+		[propput, id(2), helpstring("property Description")] HRESULT Description([in] BSTR newVal);
+		[propget, id(3), helpstring("property HelpText")] HRESULT HelpText([out, retval] BSTR *pVal);
+		[propput, id(3), helpstring("property HelpText")] HRESULT HelpText([in] BSTR newVal);
+		[propget, id(4), helpstring("property DefaultScale")] HRESULT DefaultScale([out, retval] LONG *pVal);
+		[propput, id(4), helpstring("property DefaultScale")] HRESULT DefaultScale([in] LONG newVal);
+		[propget, id(5), helpstring("property DetailLevel")] HRESULT Detail([out, retval] DETAILLEVEL *pVal);
+		[propput, id(5), helpstring("property DetailLevel")] HRESULT Detail([in] DETAILLEVEL newVal);
+		[propget, id(6), helpstring("property CounterType")] HRESULT Type([out, retval] COUNTERTYPE *pVal);
+		[propput, id(6), helpstring("property CounterType")] HRESULT Type([in] COUNTERTYPE newVal);
+		[propget, id(7), helpstring("property BaseIndex")] HRESULT BaseIndex([out, retval] ULONG *pVal);
+		[propget, id(8), helpstring("property ContextName")] HRESULT ContextName([out, retval] BSTR *pVal);
+		[propput, id(8), helpstring("property ContextName")] HRESULT ContextName([in] BSTR newVal);
+
+		[id(100), helpstring("method CreateCounter")] HRESULT CreateCounter([out, retval] IPerfCounter **Counter);
+	};
+
+	[
+		object,
+		uuid(4674529E-9CBA-11D2-9F09-006008447800),
+		dual,
+		helpstring("IPerfCounterDefinitions Interface"),
+		pointer_default(unique)
+	]
+	interface IPerfCounterDefinitions : IDynamicCollection
+	{
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+//
+	[
+		object,
+		uuid(8FE61070-9A8D-11D2-9F08-006008447800),
+		dual,
+		helpstring("IPerfInstanceDefinition Interface"),
+		pointer_default(unique)
+	]
+	interface IPerfInstanceDefinition : IDispatch
+	{
+		[propget, id(DISPID_VALUE), helpstring("property Name")] HRESULT Name([out, retval] BSTR *pVal);
+		[propput, id(DISPID_VALUE), helpstring("property Name")] HRESULT Name([in] BSTR newVal);
+		[propputref, id(1), helpstring("property TargetObject")] HRESULT TargetObject([in] IPerfObject * newVal);
+
+		[propget, id(2), helpstring("property Counter")] HRESULT Counter([in] BSTR Name, [out, retval] IPerfCounter * *pVal);
+		[propget, id(3), helpstring("property Counters")] HRESULT Counters([out, retval] IPerfCounters * *pVal);
+		[propget, id(4), helpstring("property ContextName")] HRESULT ContextName([out, retval] BSTR *pVal);
+		[propput, id(4), helpstring("property ContextName")] HRESULT ContextName([in] BSTR newVal);
+	};
+
+	[
+		object,
+		uuid(467452A1-9CBA-11D2-9F09-006008447800),
+		dual,
+		helpstring("IPerfInstanceDefinitions Interface"),
+		pointer_default(unique)
+	]
+	interface IPerfInstanceDefinitions : IDynamicCollection
+	{
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+//
+	[
+		object,
+		uuid(8FE61073-9A8D-11D2-9F08-006008447800),
+		dual,
+		helpstring("IPerfCounter Interface"),
+		pointer_default(unique)
+	]
+	interface IPerfCounter : IDispatch
+	{
+		[propget, id(DISPID_VALUE), helpstring("property Name")] HRESULT Name([out, retval] BSTR *pVal);
+		[propput, id(DISPID_VALUE), helpstring("property Name")] HRESULT Name([in] BSTR newVal);
+		[propget, id(1), helpstring("property ContextName")] HRESULT ContextName([out, retval] BSTR *pVal);
+		[propput, id(1), helpstring("property ContextName")] HRESULT ContextName([in] BSTR newVal);
+		[propget, id(2), helpstring("property Value")] HRESULT Value([out, retval] VARIANT *pVal);
+		[propput, id(2), helpstring("property Value")] HRESULT Value([in] VARIANT newVal);
+		[propget, id(3), helpstring("property Type")] HRESULT Type([out, retval] COUNTERTYPE *pVal);
+		[propput, id(3), helpstring("property Type")] HRESULT Type([in] COUNTERTYPE newVal);
+
+		[id(100), helpstring("method Increment")] HRESULT Increment([in] LONG Delta);
+		[id(101), helpstring("method Step")] HRESULT Step();
+	};
+
+	[
+		object,
+		uuid(E039EDD4-A4DE-11D2-9595-006008447800),
+		dual,
+		helpstring("IPerfCollect Interface"),
+		pointer_default(unique)
+	]
+	interface IPerfCollect : IDispatch
+	{
+		[id(DISPID_VALUE), helpstring("method Collect")] HRESULT Collect ([out, retval] VARIANT *pVal);
+	};
+
+	[
+		object,
+		uuid(467452A5-9CBA-11D2-9F09-006008447800),
+		dual,
+		helpstring("IPerfCounters Interface"),
+		pointer_default(unique)
+	]
+	interface IPerfCounters : IDynamicCollection
+	{
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+//
+	[
+		object,
+		uuid(8FE61066-9A8D-11D2-9F08-006008447800),
+		dual,
+		helpstring("IPerfContext Interface"),
+		pointer_default(unique)
+	]
+	interface IPerfContext : IDispatch
+	{
+		typedef [public, v1_enum] enum tagPERFMONSTARTMODE {
+			PERFMONSTARTMODE_Unknown = 0,
+			PERFMONSTARTMODE_Normal = 1,
+			PERFMONSTARTMODE_Register = 2,
+			PERFMONSTARTMODE_UnRegister = 3,
+		} PERFMONSTARTMODE;
+
+		[propget, id(1), helpstring("property Locale")] HRESULT Locale([out, retval] LCID *pVal);
+		[propput, id(1), helpstring("property Locale")] HRESULT Locale([in] LCID newVal);
+		[propget, id(2), helpstring("property Objects")] HRESULT Objects([out, retval] IPerfObjects * *pVal);
+		[propget, id(3), helpstring("property Mode")] HRESULT Mode([out, retval] PERFMONSTARTMODE *pVal);
+
+		[id(100), helpstring("method Start")] HRESULT Start([in] PERFMONSTARTMODE Mode);
+		[id(101), helpstring("method Stop")] HRESULT Stop();
+		[id(102), helpstring("method Register")] HRESULT Register();
+		[id(103), helpstring("method UnRegister")] HRESULT UnRegister();
+		[id(104), helpstring("method AddPerformanceObject")] HRESULT AddPerformanceObject([in] BSTR Name, [in] BSTR Desc, [in] BSTR HelpText, [out, retval] IPerfObject **ppIObj);
+	};
+
+	[
+		object,
+		uuid(E039EDD8-A4DE-11D2-9595-006008447800),
+		helpstring("IPerfContextHelper Interface"),
+		pointer_default(unique)
+	]
+	interface IPerfContextHelper : IUnknown
+	{
+		[propget, id(1), helpstring("property BaseNameIndex")] HRESULT BaseNameIndex([out, retval] ULONG *pVal);
+		[propget, id(2), helpstring("property BaseHelpIndex")] HRESULT BaseHelpIndex([out, retval] ULONG *pVal);
+
+		[id(100), helpstring("method GetNextBaseIndex")] HRESULT GetNextBaseIndex([out, retval] ULONG *pVal);
+		[id(101), helpstring("method LockMemory")] HRESULT LockMemory([in] DWORD TimeOut);
+		[id(102), helpstring("method UnlockMemory")] HRESULT UnlockMemory();
+		[id(103), helpstring("method RegeneratePerfContext")] HRESULT RegeneratePerfData();
+		[id(104), helpstring("method UpdatePerfData")] HRESULT UpdatePerfData();
+	};
+
+[
+	uuid(8FE61057-9A8D-11D2-9F08-006008447800),
+	version(1.0),
+	helpstring("PerfMon 1.0 Type Library")
+]
+library PerfMon
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(8FE61067-9A8D-11D2-9F08-006008447800),
+		hidden, restricted,
+		helpstring("PerfContext Class")
+	]
+	coclass PerfContext
+	{
+		[default] interface IPerfContext;
+		[restricted] interface IPerfContextHelper;
+	};
+
+//
+	[
+		uuid(8FE61069-9A8D-11D2-9F08-006008447800),
+		hidden, restricted,
+		helpstring("PerfObject Class")
+	]
+	coclass PerfObject
+	{
+		[default] interface IPerfObject;
+	};
+	[
+		uuid(46745267-9CBA-11D2-9F09-006008447800),
+		hidden, restricted,
+		helpstring("PerfObjects Class")
+	]
+	coclass PerfObjects
+	{
+		[default] interface IPerfObjects;
+		interface IDynamicCollection;
+		interface IStaticCollection;
+	};
+
+//
+	[
+		uuid(8FE6106D-9A8D-11D2-9F08-006008447800),
+		hidden, restricted,
+		helpstring("PerfCounterDefinition Class")
+	]
+	coclass PerfCounterDefinition
+	{
+		[default] interface IPerfCounterDefinition;
+	};
+	[
+		uuid(E039EDDB-A4DE-11D2-9595-006008447800),
+		hidden, restricted,
+		helpstring("PerfCounterDefinitionCollect Class")
+	]
+	coclass PerfCounterDefinitionCollect
+	{
+		[default] interface IPerfCounterDefinition;
+	};
+	[
+		uuid(4674529F-9CBA-11D2-9F09-006008447800),
+		hidden, restricted,
+		helpstring("PerfCounterDefinitions Class")
+	]
+	coclass PerfCounterDefinitions
+	{
+		[default] interface IPerfCounterDefinitions;
+		interface IDynamicCollection;
+		interface IStaticCollection;
+	};
+
+//
+	[
+		uuid(8FE61071-9A8D-11D2-9F08-006008447800),
+		hidden, restricted,
+		helpstring("PerfInstanceDefinition Class")
+	]
+	coclass PerfInstanceDefinition
+	{
+		[default] interface IPerfInstanceDefinition;
+	};
+	[
+		uuid(467452A2-9CBA-11D2-9F09-006008447800),
+		hidden, restricted,
+		helpstring("PerfInstanceDefinitions Class")
+	]
+	coclass PerfInstanceDefinitions
+	{
+		[default] interface IPerfInstanceDefinitions;
+		interface IDynamicCollection;
+		interface IStaticCollection;
+	};
+
+//
+	[
+		uuid(C60C2AB3-9F42-11d2-9F09-006008447800),
+		hidden, restricted,
+		helpstring("PerfCounterInt32 Class")
+	]
+	coclass PerfCounterInt32
+	{
+		[default] interface IPerfCounter;
+	};
+	[
+		uuid(C60C2AB4-9F42-11d2-9F09-006008447800),
+		hidden, restricted,
+		helpstring("PerfCounterInt64 Class")
+	]
+	coclass PerfCounterInt64
+	{
+		[default] interface IPerfCounter;
+	};
+	[
+		uuid(E039EDDC-A4DE-11D2-9595-006008447800),
+		hidden, restricted,
+		helpstring("PerfCounterCollect Class")
+	]
+	coclass PerfCounterCollect
+	{
+		[default] interface IPerfCounter;
+	};
+
+	[
+		uuid(467452A6-9CBA-11D2-9F09-006008447800),
+		hidden, restricted,
+		helpstring("PerfCounters Class")
+	]
+	coclass PerfCounters
+	{
+		[default] interface IPerfCounters;
+		interface IDynamicCollection;
+		interface IStaticCollection;
+	};
+};

@@ -1,0 +1,180 @@
+'\"t
+.if t .TH IMVFBFILL 3IM "August 31, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY" 
+.if n .TH IMVFBFILL 3IM "August 31, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImVfbFill - fill part or all of a virtual frame buffer
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+ImVfb *ImVfbFill( srcVfb, srcXLeft, srcYTop, srcDx, srcDy,
+	fillField, fillStart, fillEnd, inOut, graduate, dstVfb )
+	ImVfb	*srcVfb;
+	int	srcXLeft;
+	int	srcYTop;
+	int	srcDx;
+	int	srcDy;
+	int	fillField;
+	float	fieldStart;
+	float	fieldEnd;
+	int	inOut;
+	int	graduate;
+	ImVfb	*dstVfb;    
+.fi
+\fR
+.SH DESCRIPTION
+\fBImVfbFill\fR fills one or more fields of \fIsrcVfb\fR, saving the
+result in \fIdstVfb\fR.
+.LP
+\fIsrcXLeft\fR and \fIsrcYTop\fR are the upper-left corner of a fill
+region \fIsrcDx\fR pixels wide and \fIsrcDy\fR pixels high.  Pixels
+within the region, or outside of the region will be filled based upon
+the value of \fIinOut\fR:
+.RS 0.5i
+.LP
+.TS
+l l.
+\fIinOut\fR	\fBMeaning\fR
+_
+\fBIMINSIDE\fR	Fill inside of the fill rectangle
+\fBIMOUTSIDE\fR	Fill outside of the fill rectangle
+.TE
+.RE
+.LP
+Pixels will be filled with a gradation, or ramp,
+of values between \fIfillStart\fR and \fIfillEnd\fR depending upon
+the value of \fIgraduate\fR:
+.RS 0.5i
+.LP
+.TS
+l l.
+\fIgraduate\fR	\fBMeaning\fR
+_
+\fBIMGRADNONE\fR	Constant fill with \fIfillStart\fR
+\fBIMGRADHORIZ\fR	Horizontal ramp from \fIfillStart\fR to \fIfillEnd\fR
+\fBIMGRADVERT\fR	Vertical ramp from \fIfillStart\fR to \fIfillEnd\fR
+.TE
+.RE
+.LP
+Horizontal graduated fill's ramp from \fIfillStart\fR at the left edge of
+the fill area, to \fIfillEnd\fR at the right edge.
+Vertical graduated fill's ramp from \fIfillStart\fR at the top edge of
+the fill area, to \fIfillEnd\fR at the bottom edge.
+.LP
+\fIfillStart\fR and \fIfillEnd\fR may have the same value.  \fIfillStart\fR
+need not be less than \fIfillEnd\fR.
+.LP
+\fIfillField\fR selects the pixel fields to be filled:
+.RS 0.5i
+.LP
+.TS
+l l.
+\fIfillField\fR	\fBMeaning\fR
+_
+\fBIMMONO\fR	Fill the \fBIMVFBMONO\fR field
+_
+\fBIMGRAY\fR	Fill the \fBIMVFBINDEX8\fR (\fBIMVFBGRAY\fR) field
+\fBIMINDEX8\fR	Fill the \fBIMVFBINDEX8\fR field
+\fBIMINDEX16\fR	Fill the \fBIMVFBINDEX16\fR field
+_
+\fBIMRED\fR	Fill the \fBIMVFBRGB\fR red field 
+\fBIMGREEN\fR	Fill the \fBIMVFBRGB\fR green field 
+\fBIMBLUE\fR	Fill the \fBIMVFBRGB\fR blue field 
+_
+\fBIMALPHA\fR	Fill the \fBIMVFBALPHA\fR field 
+\fBIMWPROT\fR	Fill the \fBIMVFBWPROT\fR field 
+\fBIMZ\fR	Fill the \fBIMVFBZ\fR field 
+\fBIMIDATA\fR	Fill the \fBIMVFBIDATA\fR field 
+\fBIMFDATA\fR	Fill the \fBIMVFBFDATA\fR field 
+_
+\fBIMHUE\fR	Fill the \fBIMVFBRGB\fR fields based upon hue
+\fBIMSATURATION\fR	Fill the \fBIMVFBRGB\fR fields based upon saturation
+\fBIMINTENSITY\fR	Fill the \fBIMVFBRGB\fR fields based upon intensity
+.TE
+.RE
+.LP
+The \fIsrcVfb\fR and \fIdstVfb\fR must have the field's in \fIfillField\fR,
+with the exception of \fBIMHUE\fR, \fBIMSATURATION\fR, and \fBIMINTENSITY\fR,
+which require that the \fIsrcVfb\fR and \fIdstVfb\fR have \fBIMVFBRGB\fR
+fields.
+.LP
+Fields in the source VFB not listed in \fIfillField\fR are copied to the
+destination VFB without modification.
+.LP
+Fields not in the fill region are copied to the
+destionation VFB without modification.
+.SH NOTES
+\fIdstVfb\fR may be the same VFB as \fIsrcVfb\fR without unpleasant
+side-effects.
+.LP
+If \fIdstVfb\fR is \fBIMVFBNEW\fR, a new VFB
+is created by \fBImVfbFill\fR.  The new \fIdstVfb\fR will have the
+same fields, dimensions, and initial contents as \fIsrcVfb\fR.
+.LP
+The rectangle defined by \fIsrcXLeft\fR, \fIsrcYTop\fR, \fIsrcDx\fR,
+and \fIsrcDy\fR will be prevented from extending beyond the bounds of
+the image.
+.LP
+Different pixel components have different types and different minimum
+and maximum values.
+.LP
+.RS 0.5i
+.TS
+l l l l.
+\fBValue	Type	Minimum	Maximum\fP
+_
+\fBred\fR	Integer	0	255
+\fBgreen\fR	Integer	0	255
+\fBblue\fR	Integer	0	255
+_
+\fBmonochrome\fR	Integer	0	1
+\fBindex 8\fR	Integer	0	255
+\fBindex 16\fR	Integer	0	65535
+_
+\fBhue\fR	Float	0.0	360.0
+\fBsaturation\fR	Float	0.0	1.0
+\fBintensity\fR	Float	0.0	1.0
+_
+\fBalpha\fR	Integer	0	255
+\fBwprot\fR	Integer	0	255
+\fBz-buffer\fR	Integer	0	maxint
+\fBidata\fR	Integer	any	any
+\fBfdata\fR	Float	any	any
+.TE
+.RE
+.SH RETURNS
+Upon success, \fBImVfbFill\fR returns a pointer to the destination VFB.
+Upon failure, \fBIMVFBNULL\fR is returned and \fBImErrNo\fR set to one of
+the following:
+.RS 0.5i
+.LP
+.TS
+l l.
+\fBIMEBADINOUT\fR	Bad value for \fIinOut\fR
+\fBIMEGRADUATION\fR	Bad value for \fIgraduate\fR
+\fBIMEHEIGHT\fR	Bad fill area height
+\fBIMEMALLOC\fR	Out of host memory; cannot malloc
+\fBIMENOVFB\fR	\fIsrcVfb\fR is \fBIMVFBNULL\fR
+\fBIMEWIDTH\fR	Bad fill area width
+.TE
+.RE
+.SH SEE ALSO
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBimadjust\fR (1IM),
+\fBimcomp\fR (1IM),
+\fBimdissolve\fR (1IM),
+\fBimfill\fR (1IM),
+\fBimpaste\fR (1IM),
+\fBImVfbAdjust\fR (3IM),
+\fBImVfbComp\fR (3IM),
+\fBImVfbMix\fR (3IM)
+.SH AUTHORS
+Chris Groening and Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

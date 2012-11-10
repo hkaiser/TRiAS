@@ -1,0 +1,153 @@
+TRiAS V5.10
+
+Known issues:
+- Finish extended legend configuration.
+- Finish saving and loading of object collections.
+- Drag&drop between two ORWnd's should incorporate only the two windows involved.
+- Implement document linking (extended bilder.ext).
+
+- Object oriented visualisation doesn't work for object collections with
+  more than 32000 objects (2^15-1).
+- ODBC search dialog doesn't work for the demo project.
+- Colored TIFF's which are to be visualised in grayscale don't print grayscale.
+
+
+V5.10.1510
+- Fixed problem with EDBS import, where unknown EDBS foils didn't get imported
+  under certain circumstances.
+
+V5.10.1509
+- Fixed a bug in the Basic interface, where GeoObject::GetObjectsInRect wrongly
+  handled the coordinates.
+- Added Lead Tools TIFF handling of raster images.
+
+Fri Dec 3 14:00:00 2004 (V5.10.1505)
+- Fixed another possible problem during printing of background images.
+- Fixed problems with printing backgrund images in Bitterfeld.
+- Finished the new Users Manual.
+- Fixed a serious bug in the database access code, which lead to trashed database
+  files (under rare circumstances).
+- Added the possibility to make color images transparent (just as monochrom images).
+  Note, that this was impemented for palettezised images only).
+- Applied the newest patch for the LeadTools Raster Imaging Toolkit.
+- Replaced drawing code for background TIF and BMP images with code based on the 
+  LeadToolkit (now all kinds of TIF and BMP related formats are supported correctly).
+- Corrected the installation to contain the new LeadTools DLL's needed for 
+  the image drawing code.
+- Fixed a problem in the topological relations module, which reported an illegal 
+  parameter for each analysed object.
+- Moved TRiAS-MapInfo dataserver to the newest version of the mitab library (V1.3.0).
+
+Tue Nov 16 11:10:22 2004 (V5.10.1502)
+- Added AreasToLines and LinesToAreas components.
+- Fixed a memory corruption bug, when TRiAS was started with a database name
+  not containing the *.ris file extension.
+- Fixed a bug, where menu entries in the ORMenu were truncated.
+- Fixed an error reporting bug in fakemfc.ext, when a datasource couldn't be
+  opened.
+- Added a new extension (loadablecommands.ext), updated build process and 
+  installation.
+- Moved the Loadable command menu command into a separate extension 
+  (loadablecommands.ext). Implemented the same command for the ORWnds.
+- Fixed a nasty bug in the new statistics extension, whichlead to crashs when opening
+  the object property tree.
+- Fixed a message handling bug for tree controls in the CommonView Framework libraries.
+- Tried to fix image painting problems in the karten.vmd module.
+- Fixed a bug in the searchwindow code, which reported a bad object type for a
+  window entry under certain circumstances.
+- Added statistics page for search windows.
+- Fixed a couple of build bugs, added automatical TRiAS Version string generation for
+  the build process (as an environment variable).
+
+Wed Nov 10 21:50:00 MET 2004 (V5.10.1496)
+- Fixed a header inconsistency, where the TRiASHP used another shapelib.h as
+  the underlying shapelib.lib.
+- Moved the complete development environment into a VMWare virtual machine.
+
+V5.10.1493
+- Changed the way, how topologigal relations are calculated for objects with
+  geometrical inconsistencies from write ptotected datasources. These are now
+  corrected on the fly, so that the analysis doesn't fail anymore for objects
+  with correctable inconsistencies.
+- Fixed a registration problem in BNA-import which occured on WindowsMe only.
+- Fixed a coordinate system loading problem, which occured on WindowsMe only.
+- Allowed to open very old TRiAS databases in read only mode.
+
+Wed Jun 9 21:08:23 WEDT 2004 (V5.10.1488)
+- Fixed a problem in Abstand::ShiftedLinePart, which calculated a negative smallest 
+  distance usable as the shift offset. Added shift forcing through, when an error 
+  handler is installed and returns EC_OKAY.
+- Fixed object count for non-TRiAS datasources.
+- Added BesD to the list of known datasource coordsystems.
+- Changed coordsystem initialisation to try to load from file first.
+- Refined error handling for shape datasource open errors.
+- Fixed a problem with geodetic coordinate systems (unit degree), when used as the
+  project coordinate system.
+- Fixed a bug, which prevented to correctly save the ODBC connection information, 
+  if the related object property was the ObjektName and it was subsequently 
+  renamed.
+- Fixed coordinate display for geodetical coordinates, when the project coordinate
+  system was set to use degrees.
+- Fixed several bugs in the ODBC-connectivity extension, ensuring the correct
+  existence of all related object properties.
+- Optimized ASC-import when requested to not import geometries.
+- Optimized creation of object windows, whenever several large object groups 
+  were to be put into one output window.
+
+Sun May 23 16:09:50 WEDT 2004 (V5.10.1484)
+- Statistical object properties were available only after opening first object
+  window.
+- Generate object properties had several problems, when only output of the 
+  cumulated values were requested.
+- After making dadasource name unique (while adding a new or existing datasource)
+  the Next button was grayed.
+- Wrong icon for ArcView datasources was shown in statistics window.
+- Fixed several problems with (un-)registering extensions introduced recently.
+
+Sun May  9 10:18:26  2004 (V5.10.1482)
+- Hidden PolyGIS-DAT Import and PolyGIS PMF/DAT export behind the corresponding 
+  license flag (GCO Produktion).
+- Renamed PolyGISBNA into AtlasGIS BNA :-).
+- PolyGIS image support is always enabled now :-).
+
+Sat May  8 18:56:14  2004
+- Fixed a problem in Toporel, which prevented the main toporel wizard to show.
+- Applied late fixes in GeoEdit, made by Wolfgang (fixes for CommonBorder).
+- Added CoordSysSelect for BNA data import too. 
+- Changed Toporel to show the second selection dialog for the ORWnd's only
+  if appropriate.
+- Fixed drag&drop between two ORWnd's. Changed corresponding menutexts to be
+  more instructive.
+- Fixed SelfromORWnd to force full reload of the PropertySequence if the
+  show state is changed from the last instantiation in the current context.
+
+Fri May 7 (V5.10.1480)
+- Added CoordSysSelect for data import.
+- Removed sound during startup dialog.
+- Added License warning, if user upgraded to V5.10 (needs new license key).
+
+Tue May  4 20:57:00  2004
+- Added ability to all import extensions to specify the coordinate system
+  for the imported geometry.
+- Added CoordSysSelect for data export.
+- Added permanently ObjPropSelect for data export (Version > 5.1).
+- Neue Lizenierungscodes für Version > 5.1. 
+- Fixed a bug, which prevented to show the correct icon for ArcView
+  datasource during data export.
+- Fixed a lot of license strings in different resources.
+
+Sun May  2 16:24:27  2004
+- Switched to Shapelib V1.2.10 and Proj.4 V4.4.7.
+
+Sat May  1 16:42:38  2004
+- Bug fixed in Topologische Relationen, welcher bewirkte, dass überlappende 
+  Objekte am linken und unteren Containerrand des Bezugobjektes als außerhalb
+  gefunden wurden.
+- Text Legende --> Zeichenerklärung in verschiedenen Resourcen.
+
+2003
+- Redone Topologische Relationen
+- Redone Raster Erzeugen
+- Added grabbing for geometry editing
+- Extended buffering to support negative buffer zones.
+

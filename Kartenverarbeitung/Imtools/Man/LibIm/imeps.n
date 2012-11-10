@@ -1,0 +1,228 @@
+'\"et
+.if t .TH IMEPS 3IM "August 19, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMEPS 3IM "August 19, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+imeps \- Adobe Encapsulated PostScript file translation
+.SH SYNOPSIS
+.nf
+\fB
+#include <stdio.h>
+#include "sdsc.h"
+#include "im.h"
+.sp 1
+int ImFileWrite( fd, "eps", flagsTable, dataTable )
+	int         fd;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileFWrite( fp, "eps", flagsTable, dataTable )
+	FILE       *fp;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+\fR
+.fi
+.SH DESCRIPTION
+Encapsulated PostScript color, grayscale, and black-and-white
+image files are used by a variety of PostScript tools in order to include
+PostScript diagrams and images within other documents.
+.SH "FILE RECOGNITION"
+Encapsulated PostScript files are recognized by the following filename
+suffixes:  .eps, .epi, .epsi, and .epsf.
+.SH NOTES
+SDSC image library support of Encapsulated PostScript does not require
+use of any windowing system libraries or PostScript interpreters,
+and contains no proprietary code.
+Encapsulated PostScript format handling 
+is available on any machine for which the SDSC image library is available.
+.LP
+PostScript is a reverse polish notation-style, FORTH-like programming
+language used to describe text and pictures to be rendered by a PostScript
+interpreter embedded within a laser printer (such as Apple's LaserWriter
+printers), windowing system (such as Sun's NeWS or NeXT's NeXTstep), or
+other display tool.
+The language contains numerous basic programming language constructs and
+lots of drawing operations.
+.LP
+PostScript was designed for ease of parsing, not ease
+of programming.  As a result, most people use PostScript
+as a "blackbox" file
+format that describes their picture.  It is left up to software, such
+as the SDSC image library, to figure out how to deal with PostScript.
+.LP
+Encapsulated PostScript (EPS) is a file format for
+the import and export of PostScript language files among applications.
+EPS files contain a PostScript program fragment that draws a diagram or
+renders an image when printed to a PostScript printer or displayed in a
+windowing system using a PostScript interpreter application.
+EPS files are intended to be used by applications that wish to embed complex
+PostScript drawings within non-PostScript data, such as a word processing
+document, or a spreadsheet.
+.LP
+EPS files may contain an optional grayscale "Preview image" of the
+same size and shape as the image rendered by the main PostScript program in
+the file.  The "Preview image" is used by non-PostScript applications to
+display to the user a rough approximation of the EPS file's image.  The user
+may position, orient, and scale the "Preview image" within the including
+document.  When the including application prints the full document, the
+EPS file's contents are substituted for the "Preview image".  The user's
+position, orient, and scale operations are applied to the EPS data and the
+completed PostScript file sent to the printer.
+.LP
+The EPS "Preview image" may be provided in a variety of ways:
+.RS 0.5i
+.LP
+.TS
+l l.
+not given	Simple EPS file.
+	No "Preview image".
+
+DVI image	Device-independent EPS file.
+	Grayscale bitmap "Preview image" in header.
+
+Metafile image	IBM PC EPS file.
+	MS Windows Metafile "Preview image" in header.
+
+PICT image	Mac EPS file.
+	PICT "Preview image" in resource fork.
+
+TIFF image	Portable EPS file.
+	TIFF "Preview image" in header.
+.TE
+.RE
+.LP
+EPS files with a device-independent bitmap as a "Preview image" are generally
+refered to as EPSI or EPI files.  Each of the other EPS file types are known as
+EPSF files.
+.LP
+Mac EPS files include a PICT image in the resource fork of the file.  Since
+non-Mac systems do not support the Mac notion of data and resource forks, it is
+not possible to generate Mac EPS files on anything but a Mac.
+.LP
+IBM PC EPS files include either a TIFF or MS Windows Metafile image in the
+header of the file.  However, inclusion of either image type prevents the
+EPS file from being sent directly to a PostScript laser printer for a quick
+printout.  IBM PC EPS files must first be included in a document and stripped
+of their "Preview image" headers before they may be printed.
+.LP
+Device-independent EPS files are straight PostScript.  The EPSI "Preview
+image" is included as a PostScript comment in the file's header.  This
+allows EPSI files to be sent directly to a PostScript laser printer without
+any extra processing.
+.LP
+Encapsulated PostScript support within the SDSC Image Library generates
+EPSI (device-independent) files.
+.SS "Reading Encapsulated PostScript files"
+Reading of Encapsulated PostScript is not supported by the SDSC image library.
+.LP
+Support for EPS file reading would require one of two approaches:  1. interpret
+the EPS file's PostScript, or 2. interpret the "Preview image" in the header.
+.LP
+Inclusion of a full PostScript language interpreter in order to read an EPS
+file would require a great deal of code.  This approach is not
+really practical.
+.LP
+Users needing to read in PostScript data should investigate
+PostScript interpreters, such as Sun Microsystem's NeWS window system
+and its image viewer \fBPageView\fR(1), or GNU's \fBGostScript\fR
+PostScript-clone interpreter.
+.LP
+Interpretation of an EPSI file's "Preview image" is not of much use within
+an imaging tool set.  EPSI file "Preview images" are strictly grayscale,
+regardless of possible color content in the EPSI file's actual PostScript
+image.  To claim to read EPSI files, yet only read the crude grayscale
+"Preview image" would be inappropriate.
+.SS "Writing Encapsulated PostScript files"
+The SDSC image library writes color, grayscale, or monochrome VFBs as
+EPSI Encapsulated PostScript files.
+In each case the generated Encapsulated PostScript consists
+of a header followed by the image data as ASCII hex numbers.  The choice of
+header and the format of the hex numbers
+depends upon the type of image being written.
+.LP
+\fBIMVFBMONO\fR VFBs are written with an Encapsulated PostScript header
+that renders
+the image in black-and-white on black-and-white or color devices.  Image
+data is written as two hex characters for each group of eight adjacent
+monochrome pixels (as required by the PostScript image operator).
+.LP
+\fBIMVFBINDEX8\fR VFBs without color lookup tables are written with a
+Encapsulated PostScript header that renders the image in shades of gray on 
+black-and-white or color devices.  Image data is written as two hex
+characters for each grayscale pixel (as required by the PostScript
+image operator).
+.LP
+\fBIMVFBINDEX8\fR VFBs with a color lookup table and \fBIMVFBRGB\fR VFBs
+are written with an Encapsulated PostScript
+header that renders the image in color on color devices and in shades of
+gray on black-and-white devices.  The PostScript header code checks the
+device's systemdict for support of the colorimage operator.  If
+the operator exists, the device supports color.  In both cases, image data
+is written as six hex characters at two characters each for the red, green,
+and blue color component of each pixel (as required by the PostScript
+colorimage operator).  On color devices, this color pixel data generates
+a color image.  On monochrome devices, the header code automatically
+converts the color
+pixel data to shades of gray as it is being rendered.
+This allows the same
+color PostScript file to be sent to color or black-and-white
+printers without any change to the file.
+.LP
+Other image library VFB types are converted to one of the above prior
+to being written out.  See the \fBImFileWrite\fR(3IM) \fBman\fP page for
+details.
+.LP
+Image data is always generated
+for pixels in left to right order, from the top of the image to the bottom.
+.LP
+In all cases a grayscale "Preview image" comment is placed at the top of
+the file.
+.LP
+Encapsulated PostScript generated by the SDSC image library conforms to
+Adobe's version 3.0 document structuring conventions.
+.LP
+\fIWarning:\fR  All PostScript laser 
+printers have a fixed amount of memory
+in which to buffer incoming data and build up the image prior to printing.  
+Large images converted to PostScript and then sent to a laser printer
+may exceed the buffering and image-building memory limitations of the printer.
+Results vary from printer to printer:  some lock up and require a
+reset, while others silently ignore the images and do not print anything.
+.SH ERRORS
+In addition to those listed for \fBImFileWrite\fR(3IM),
+Encapsulated PostScript file writing returns the following error codes: 
+.ne 2
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEMALLOC	Cannot allocate enough memory
+IMESYS	System call error in write operation
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH DOCUMENTATION
+\fIPostScript Language - Tutorial and Cookbook\fR, Adobe Systems Incorporated.
+.LP
+\fIPostScript Language - Reference Manual, Second Edition\fR,
+Adobe Systems Incorporated.
+.SH SEE ALSO
+\fBImIntro\fR(3IM),
+\fBImErrNo\fR(3IM),
+\fBimconv\fR(1IM),
+\fBimfile\fR(1IM),
+\fBimformats\fR(1IM),
+\fBimps\fR(3IM)
+.SH AUTHORS
+Dave Nadeau
+.br
+San Diego Supercomputer Center
+.LP
+Loren "Buck" Buchanan
+.br
+Naval Research Laboratory
+.br
+Kestrel Associates, Inc.
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

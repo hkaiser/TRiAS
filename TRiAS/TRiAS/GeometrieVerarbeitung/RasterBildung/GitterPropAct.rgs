@@ -1,0 +1,38 @@
+HKCR
+{
+	TRiASEx.GitterPropAct.1 = s 'Erzeugen von Gitterflächen und Gitterlinien'
+	{
+		CLSID = s '{C6C5A147-D18E-43AE-8AE9-BDF72144A70B}'
+	}
+	TRiASEx.GitterPropAct = s 'Erzeugen von Gitterflächen und Gitterlinien'
+	{
+		CLSID = s '{C6C5A147-D18E-43AE-8AE9-BDF72144A70B}'
+		CurVer = s 'TRiASEx.GitterPropAct.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {C6C5A147-D18E-43AE-8AE9-BDF72144A70B} = s 'Erzeugen von Gitterflächen und Gitterlinien'
+		{
+			ProgID = s 'TRiASEx.GitterPropAct.1'
+			VersionIndependentProgID = s 'TRiASEx.GitterPropAct'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiASEx.GitterPropAct.1' = s '{C6C5A147-D18E-43AE-8AE9-BDF72144A70B}'
+			}
+		}
+	}
+}

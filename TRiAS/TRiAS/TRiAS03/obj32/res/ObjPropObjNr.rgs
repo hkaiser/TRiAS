@@ -1,0 +1,24 @@
+HKCR 
+{
+	TRiASEx.ObjProp.ObjNr.1 = s 'ObjPropONr Class'
+	{
+		CLSID = s '{0E54C9E3-20DE-11CF-BA55-00AA0018497C}'
+	}
+	TRiASEx.ObjProp.ObjNr = s 'ObjPropONr Class'
+	{
+		CLSID = s '{0E54C9E3-20DE-11CF-BA55-00AA0018497C}'
+		CurVer = s 'TRiASEx.ObjProp.ObjNr.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {0E54C9E3-20DE-11CF-BA55-00AA0018497C} = s 'ObjPropONr Class'
+		{
+			ProgID = s 'TRiASEx.ObjProp.ObjNr.1'
+			VersionIndependentProgID = s 'TRiASEx.ObjProp.ObjNr'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

@@ -1,0 +1,61 @@
+///////////////////////////////////////////////////////////////////////////
+// @doc
+// @module TRiASXtensionSite.idl | Custom interfaces for TRiAS-XtensionSites
+
+#if !defined(_TRIASXTENSIONSITE_IDL__4F76AC34_98EF_11D1_BA12_080036D63803__INCLUDED_)
+#define _TRIASXTENSIONSITE_IDL__4F76AC34_98EF_11D1_BA12_080036D63803__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+
+///////////////////////////////////////////////////////////////////////////////
+// forward declarations
+interface ITriasXtensionSite;
+interface ITRiASServiceProvider;
+
+///////////////////////////////////////////////////////////////////////////////
+// Interfaces
+[
+	uuid(07963815-3123-101C-BB62-00AA0018497C),
+	helpstring("ITriasXtensionSite Interface"),
+	pointer_default(unique)
+]
+interface ITriasXtensionSite : IUnknown
+{
+	[
+		helpstring("Lädt eine TRiAS® Erweiterung und liefert das geforderte Interface.")
+	] 
+	HRESULT GetXtension(
+		[in] REFCLSID rClsID, 
+		[in] REFIID riid, [out, iid_is(riid)] void **ppvObject);
+	[
+		helpstring("Erzeugt ein internes TRiAS® Objekt.")
+	]
+	HRESULT CreateInstance(
+		[in] IUnknown *pUnkOuter, [in] REFCLSID rClsID, 
+		[in] REFIID riid, [out, iid_is(riid)] void **ppvObject);
+};
+
+[
+	uuid(4F76AC35-98EF-11D1-BA12-080036D63803),
+	helpstring("ITRiASServiceProvider Interface"),
+	pointer_default(unique)
+]
+interface ITRiASServiceProvider : IUnknown
+{
+#if !defined(_DEFINED_HPROJECT)
+#define _DEFINED_HPROJECT
+	cpp_quote("#if !defined(_DEFINED_HPROJECT)")
+	cpp_quote("#define _DEFINED_HPROJECT")
+		typedef [hidden] struct HPROJECT__ { int unused; } *HPROJECT;
+	cpp_quote("#endif // _DEFINED_HPROJECT")
+#endif // _DEFINED_HPROJECT
+
+	HRESULT DexExtensionProc (WPARAM wParam, LPARAM lParam); 
+	HRESULT DexExtensionProc2 (HPROJECT hPr, WPARAM wParam, LPARAM lParam); 
+	HRESULT DexNotificationProc (WPARAM wParam, LPARAM lParam, BOOL fPost); 
+	HRESULT DexDispatchProc (HWND hWnd, UINT uiMsg, WPARAM wParam, LPARAM lParam); 
+};
+
+#endif // !defined(_TRIASXTENSIONSITE_IDL__4F76AC34_98EF_11D1_BA12_080036D63803__INCLUDED_)

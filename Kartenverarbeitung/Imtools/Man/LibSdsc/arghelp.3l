@@ -1,0 +1,264 @@
+
+
+
+     AAAARRRRGGGGHHHHEEEELLLLPPPP((((3333AAAARRRRGGGG))))         SSSSDDDDSSSSCCCC ((((SSSSeeeepppptttteeeemmmmbbbbeeeerrrr 1111999999991111))))         AAAARRRRGGGGHHHHEEEELLLLPPPP((((3333AAAARRRRGGGG))))
+
+
+
+     NNNNAAAAMMMMEEEE
+          ArgHelp  -  output a short help message
+          ArgFullHelp  -  output a full-length help message
+
+     SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+          #include "sdsc.h"
+
+          int ArgHelp( )
+
+          int ArgFullHelp( )
+
+     DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+          _A_r_g_H_e_l_p and _A_r_g_F_u_l_l_H_e_l_p use information about the command as
+          passed into an earlier call to _A_r_g_P_a_r_s_e(_3_A_R_G).
+
+          _A_r_g_H_e_l_p is used by _A_r_g_P_a_r_s_e(3ARG) to display a help message
+          in response to the standard ----hhhheeeellllpppp option.  Similarly,
+          _A_r_g_F_u_l_l_H_e_l_p is used to display a help text in response to
+          the standard ----ffffuuuullllllllhhhheeeellllpppp option.  Users of the argument
+          parsing package may call each of these help routines
+          directly as well.
+
+          _A_r_g_H_e_l_p and _A_r_g_F_u_l_l_H_e_l_p each print to _s_t_d_e_r_r a standard help
+          message of the form:
+
+               Usage line
+               Copyright
+               First part of help text
+               Option list
+               Second part of help text
+
+          Exact content for each of these parts depends on character
+          string fields in the _A_r_g_C_o_m_m_a_n_d structure passed to
+          _A_r_g_P_a_r_s_e(3ARG).  _A_r_g_H_e_l_p and _A_r_g_F_u_l_l_H_e_l_p both display help
+          text in the same format but differ in the quantity of help
+          displayed.
+
+        UUUUssssaaaaggggeeee LLLLiiiinnnneeee
+          Typically, the usage line describes the commandline syntax.
+          Optional arguments are surrounded by square brackets ('[ ]')
+          and required arguments are left unaugmented.  _A_r_g_H_e_l_p and
+          _A_r_g_F_u_l_l_H_e_l_p both display a usage line of the form:
+
+               Usage is:  commandname options
+
+          _c_o_m_m_a_n_d_n_a_m_e is the name of the command as invoked by the
+          user (_a_r_g_v[_0]).  If the user typed a path to get to the
+          command, that same path is displayed in place of
+          _c_o_m_m_a_n_d_n_a_m_e.
+
+          The _o_p_t_i_o_n_s portion of the usage line is typically provided
+          by the argument parsing package user by setting the text
+
+
+
+     Page 1                                          (printed 6/30/95)
+
+
+
+
+
+
+     AAAARRRRGGGGHHHHEEEELLLLPPPP((((3333AAAARRRRGGGG))))         SSSSDDDDSSSSCCCC ((((SSSSeeeepppptttteeeemmmmbbbbeeeerrrr 1111999999991111))))         AAAARRRRGGGGHHHHEEEELLLLPPPP((((3333AAAARRRRGGGG))))
+
+
+
+          string _a_r_g__u_s_a_g_e field of the _A_r_g_C_o_m_m_a_n_d structure passed to
+          _A_r_g_P_a_r_s_e(3ARG).
+
+          If the _a_r_g__u_s_a_g_e field is a NULL string pointer, _A_r_g_H_e_l_p and
+          _A_r_g_F_u_l_l_H_e_l_p both generate the usage line automatically by
+          using the list of options in _A_r_g_O_p_t_i_o_n and _A_r_g_E_q_u_i_v
+          structures passed to _A_r_g_P_a_r_s_e(3ARG).  Automatic usage line
+          generation uses the following rules:
+
+                         Options with _A_R_G_F_R_E_Q_U_I_R_E_D set in _a_r_g__f_l_a_g_s
+               -arg_keyword                      Required keyword, no values
+               -arg_keyword arg_valuenames       Required keyword, with values
+               [-arg_keyword] arg_valuenames     Optional keyword, with values
+
+                              Options without _A_R_G_F_R_E_Q_U_I_R_E_D set
+               [-arg_keyword]                    Required keyword, no values
+               [-arg_keyword arg_valuenames]     Required keyword, with values
+               [[-arg_keyword] arg_valuenames]   Optional keyword, with values
+
+          Options with _A_R_G_F_H_I_D_D_E_N set in _a_r_g__f_l_a_g_s are not shown in
+          the usage line.
+
+          _A_r_g_H_e_l_p (but not _A_r_g_F_u_l_l_H_e_l_p) also omits display of options
+          with the _A_R_G_F_F_U_L_L_H_E_L_P flag set.  This allows package users
+          to designate options that should only be listed when the
+          user requests a full help listing.
+
+        CCCCooooppppyyyyrrrriiiigggghhhhtttt
+          The copyright line typically displays a copyright message
+          for the author of the command.  Both _A_r_g_H_e_l_p and _A_r_g_F_u_l_l_H_e_l_p
+          print the text string field _a_r_g__c_o_p_y_r_i_g_h_t from the
+          _A_r_g_C_o_m_m_a_n_d structure passed to _A_r_g_P_a_r_s_e(3ARG).  If this
+          field is a NULL string pointer, no copyright message is
+          displayed.
+
+        FFFFiiiirrrrsssstttt ppppaaaarrrrtttt ooooffff hhhheeeellllpppp tttteeeexxxxtttt
+          The first part of the help text typically describes the
+          purpose of the command in one or two sentences.
+
+          _A_r_g_H_e_l_p prints the text string field _a_r_g__h_e_l_p_1 in the
+          _A_r_g_C_o_m_m_a_n_d structure passed to _A_r_g_P_a_r_s_e(3ARG).  If _a_r_g__h_e_l_p_1
+          is a NULL string pointer, no first part of the help text is
+          displayed.
+
+          _A_r_g_F_u_l_l_H_e_l_p prints the text string field _a_r_g__f_u_l_l_h_e_l_p_1 in
+          the _A_r_g_C_o_m_m_a_n_d structure.  If _a_r_g__f_u_l_l_h_e_l_p_1 is a NULL string
+          pointer, then _A_r_g_F_u_l_l_H_e_l_p uses _a_r_g__h_e_l_p_1 instead.  If this
+          too is a NULL string pointer, no first part of the help text
+          is displayed.
+
+        OOOOppppttttiiiioooonnnn lllliiiisssstttt
+          The option list is a list of the command's options and their
+
+
+
+     Page 2                                          (printed 6/30/95)
+
+
+
+
+
+
+     AAAARRRRGGGGHHHHEEEELLLLPPPP((((3333AAAARRRRGGGG))))         SSSSDDDDSSSSCCCC ((((SSSSeeeepppptttteeeemmmmbbbbeeeerrrr 1111999999991111))))         AAAARRRRGGGGHHHHEEEELLLLPPPP((((3333AAAARRRRGGGG))))
+
+
+
+          usage.  The list is generated automatically by _A_r_g_H_e_l_p and
+          _A_r_g_F_u_l_l_H_e_l_p by using the list of _A_r_g_O_p_t_i_o_n and _A_r_g_E_q_u_i_v
+          structures passed to _A_r_g_P_a_r_s_e(3ARG).
+
+          The option list shows one line for each option in the
+          _A_r_g_O_p_t_i_o_n and _A_r_g_E_q_u_i_v lists, excluding those options (and
+          their equivalent keywords) with _A_R_G_F_H_I_D_D_E_N set in their
+          _a_r_g__f_l_a_g_s field.  _A_r_g_H_e_l_p (but not _A_r_g_F_u_l_l_H_e_l_p) further
+          excludes options (and their equivalent keywords) with the
+          _A_R_G_F_F_U_L_L_H_E_L_P flag set.
+
+          Each option list line is printed in the following format:
+
+               keyword valuenames          help
+
+          _k_e_y_w_o_r_d is the option's keyword, while _v_a_l_u_e_n_a_m_e_s is the
+          list of values that may follow the keyword.  Keyword names
+          are obtained from the _A_r_g_O_p_t_i_o_n and _A_r_g_E_q_u_i_v structures'
+          _a_r_g__k_e_y_w_o_r_d fields.  Value names are obtained from the
+          _A_r_g_O_p_t_i_o_n structure field _a_r_g__v_a_l_u_e_n_a_m_e_s.  If _a_r_g__v_a_l_u_e_n_a_m_e_s
+          is a NULL string pointer, no value names are printed.
+
+          _h_e_l_p is the _A_r_g_O_p_t_i_o_n's _a_r_g__h_e_l_p field giving an explanatory
+          help message of 40-characters or less.  The help text is
+          tabbed in to the 40th column and a carriage return added.
+          If the _a_r_g__k_e_y_w_o_r_d and _a_r_g__v_a_l_u_e_n_a_m_e_s portion takes more
+          than 36 characters, _h_e_l_p is printed on the following line.
+
+          Each option list line is indented 4 spaces to offset it from
+          the body of the help message.
+
+        SSSSeeeeccccoooonnnndddd ppppaaaarrrrtttt ooooffff hhhheeeellllpppp tttteeeexxxxtttt
+          The second part of the help text typically describes
+          exceptions, exclusions, and option relationships, and often
+          includes an example or two.
+
+          _A_r_g_H_e_l_p prints the text string field _a_r_g__h_e_l_p_2 in the
+          _A_r_g_C_o_m_m_a_n_d structure passed to _A_r_g_P_a_r_s_e(3ARG).  If _a_r_g__h_e_l_p_2
+          is a NULL string pointer, no second part of the help text is
+          displayed.
+
+          _A_r_g_F_u_l_l_H_e_l_p prints the text string field _a_r_g__f_u_l_l_h_e_l_p_2 in
+          the _A_r_g_C_o_m_m_a_n_d structure.  If _a_r_g__f_u_l_l_h_e_l_p_2 is a NULL string
+          pointer, then _A_r_g_F_u_l_l_H_e_l_p uses _a_r_g__h_e_l_p_2 instead.  If this
+          too is a NULL string pointer, no second part of the help
+          text is displayed.
+
+     RRRREEEETTTTUUUURRRRNNNNSSSS
+          _A_r_g_H_e_l_p and _A_r_g_F_u_l_l_H_e_l_p always succeed and return a 0.
+
+     NNNNOOOOTTTTEEEESSSS
+          The _A_r_g_C_o_m_m_a_n_d, _A_r_g_O_p_t_i_o_n, and _A_r_g_E_q_u_i_v structures are
+
+
+
+     Page 3                                          (printed 6/30/95)
+
+
+
+
+
+
+     AAAARRRRGGGGHHHHEEEELLLLPPPP((((3333AAAARRRRGGGG))))         SSSSDDDDSSSSCCCC ((((SSSSeeeepppptttteeeemmmmbbbbeeeerrrr 1111999999991111))))         AAAARRRRGGGGHHHHEEEELLLLPPPP((((3333AAAARRRRGGGG))))
+
+
+
+          described together with _A_r_g_P_a_r_s_e(3ARG) on its mmmmaaaannnn page.
+
+          Both _A_r_g_H_e_l_p and _A_r_g_F_u_l_l_H_e_l_p scan the first and second parts
+          of help text for the special string "%command" and replace
+          it with the name of the command, as invoked, but stripped of
+          its leading path information.  This allows help text to
+          refer to the command as the user calls it, rather than as
+          the author intended it.
+
+     SSSSEEEEEEEE AAAALLLLSSSSOOOO
+          ArgIntro(3ARG), ArgParse(3ARG), ArgVersion(3ARG)
+
+     AAAAUUUUTTTTHHHHOOOORRRRSSSS
+          Dave Nadeau
+          San Diego Supercomputer Center
+
+     CCCCOOOONNNNTTTTAAAACCCCTTTT
+          SDSC consultants, (619)534-5100, ccccoooonnnnssssuuuulllltttt@@@@yyyy1111....ssssddddsssscccc....eeeedddduuuu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Page 4                                          (printed 6/30/95)
+
+
+

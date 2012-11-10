@@ -1,0 +1,110 @@
+'\"t
+.if t .TH IMCLTQRED 3IM "August 19, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMCLTQRED 3IM "August 19, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImCltQRed - query the red component of a color in a color lookup table
+.br
+ImCltQGreen - query the green component of a color in a color lookup table
+.br
+ImCltQBlue - query the blue component of a color in a color lookup table
+.br
+ImCltSRed - set the red component of a color in a color lookup table
+.br
+ImCltSGreen - set the green component of a color in a color lookup table
+.br
+ImCltSBlue - set the blue component of a color in a color lookup table
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+int ImCltQRed( p )
+	ImCltPtr p ;
+
+int ImCltQGreen( p )
+	ImCltPtr p ;
+
+int ImCltQBlue( p )
+	ImCltPtr p ;
+
+void ImCltSRed( p, r )
+	ImCltPtr p ;
+	int r ;
+
+void ImCltSGreen( p, g )
+	ImCltPtr p ;
+	int g ;
+
+void ImCltSBlue( p, b )
+	ImCltPtr p ;
+	int b ;
+.fi
+\fR
+.SH DESCRIPTION
+These macros set and query color entry information
+for a color lookup table.
+.LP
+\fBImCltQRed\fR, \fBImVfbQGreen\fR, and \fBImVfbQBlue\fR query the red,
+green, and blue components of a color lookup table entry pointed to by \fIp\fR.
+The specific 8-bit color component is returned as the function's value.
+.LP
+\fBImCltSRed\fR, \fBImVfbSGreen\fR, and \fBImVfbSBlue\fR set the red,
+green, and blue components of a color lookup table entry pointed to by \fIp\fR.
+\fIr\fR, \fIg\fR, and \fIb\fR arguments are the 8-bit values to use to
+set the color component.
+.SH NOTES
+Color lookup table entry pointers may be obtained using
+.LP
+.ne 1.0i
+.if t .in +0.5i
+.if n .in +5
+.TS
+c c
+l l.
+Macro	Meaning
+_
+\fBImCltQPtr( c, i )\fR	Returns a pointer to a particular \fBImClt\fR entry
+
+\fBImCltQFirst( c )\fR	Returns a pointer to the first \fBImClt\fR entry
+\fBImCltQLast( c )\fR	Returns a pointer to the last \fBImClt\fR entry
+
+\fBImCltQNext( c, p )\fR	Returns a pointer to the next \fBImClt\fR entry
+\fBImCltQPrev( c, p )\fR	Returns a pointer to the previous \fBImClt\fR entry
+
+\fBImCltSInc( c, p )\fR	Same as \fBp = ImCltQNext( c, p )\fR
+\fBImCltSDec( c, p )\fR	Same as \fBp = ImCltQPrev( c, p )\fR
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+where \fIc\fR is the specific color lookup table, \fIi\fR is an entry
+number (first entry is entry number 0),
+and \fIp\fR is a pointer to a \fBImClt\fR entry.
+.LP
+Each of these are C macros.
+.SH RETURNS
+\fBImCltQRed\fR, \fBImVfbQGreen\fR, and \fBImVfbQBlue\fR each return an
+integer containing, in its lowest 8 bits, the color component queried.
+.LP
+\fBImCltSRed\fR, \fBImVfbSGreen\fR, and \fBImVfbSBlue\fR return nothing.
+.SH SEE ALSO
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBImVfbQBlue\fR (3IM),
+\fBImVfbQGray\fR (3IM),
+\fBImVfbQGreen\fR (3IM),
+\fBImVfbQGrey\fR (3IM),
+\fBImVfbQRed\fR (3IM),
+\fBImVfbSBlue\fR (3IM),
+\fBImVfbSGray\fR (3IM),
+\fBImVfbSGreen\fR (3IM),
+\fBImVfbSGrey\fR (3IM),
+\fBImVfbSRed\fR (3IM)
+.SH AUTHOR
+Mike Bailey
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

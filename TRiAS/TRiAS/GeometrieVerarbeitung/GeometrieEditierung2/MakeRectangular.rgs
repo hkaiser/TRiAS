@@ -1,0 +1,23 @@
+HKCR
+{
+	TRiAS.MakeRectangular.1 = s 'Fläche rechtwinklig machen'
+	{
+		CLSID = s '{71924706-40C2-11d1-9B1F-444553540000}'
+	}
+	TRiAS.MakeRectangular = s 'Fläche rechtwinklig machen'
+	{
+		CurVer = s 'TRiAS.MakeRectangular.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {71924706-40C2-11d1-9B1F-444553540000} = s 'Fläche rechtwinklig machen'
+		{
+			ProgID = s 'TRiAS.MakeRectangular.1'
+			VersionIndependentProgID = s 'TRiAS.MakeRectangular'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

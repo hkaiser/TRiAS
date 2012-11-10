@@ -1,0 +1,32 @@
+HKCR
+{
+	TRiASEx.RegardingOperations.1 = s 'Operationen von GeoObjekten mit Bezugsobjekten'
+	{
+		CLSID = s '{99E3CA10-03CB-11d3-8887-00104BAF1F6B}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {99E3CA10-03CB-11d3-8887-00104BAF1F6B} = s 'Operationen von GeoObjekten mit Bezugsobjekten'
+		{
+			ProgID = s 'TRiASEx.RegardingOperations.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove TRiASEx.RegardingOperations.1 = s '{99E3CA10-03CB-11d3-8887-00104BAF1F6B}'
+			}
+		}
+	}
+}

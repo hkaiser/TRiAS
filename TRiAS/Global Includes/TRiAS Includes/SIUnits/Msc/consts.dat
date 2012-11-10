@@ -1,0 +1,1298 @@
+#ifndef u
+  #error "SIunits/consts.dat unnecessarily included"
+#endif  // u
+
+
+// ----------------------------------------------------------------------
+//
+// consts.dat - provide units and constants of nature
+//
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\\
+//                                                                     \\
+// NOTICE:                                                             \\
+//   This file is part of "The SI Library of Unit-Based Computation."  \\
+//   See "doc/README" for copyright, license, and other information.   \\
+//                                                                     \\
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\\
+//
+// This is a data file, intended for dual use in declaring and defining
+// the named identifiers.  This centralizes all information and so
+// helps to ensure consistency and to simplify updates and additions.
+//
+// The syntax used herein is that of a (sigh!) macro, u, which is defined
+// so as to declare these names properly in one (header) file, yet
+// defined elsewhere (in a non-header) so as to instantiate (allocate
+// storage for and properly initialize) the objects named here.
+//
+// History:
+//   17-Apr-1998  WEB  Initial draft, inspired by CLHEP (v1.2) files
+//     SystemOfUnits.h and PhysicalConstants.h, originally provided by
+//     Geant4 (simulation toolkit for HEP) and authored by M.Maire (1996)
+//     as modified by E.Tcherniaev (1997); strong type-checking applied
+//     uniformly to all units and values; most values taken from the
+//     Particle Data Book: Phys. Rev. D, v 50, #3, part I (1 August
+//     1994), pp 1233-4
+//   19-Jun-1998  WEB  Additional units and values taken from Horvath,
+//     Ari L: Conversion Tables of Units in Science & Engineering. The
+//     Macmillan Press Ltd, 1986. ISBN 0-444-01150-1
+//   22-Jun-1998  WEB  Reorganized for easier scanning
+//   29-Jul-1998  WEB  Use d() macro only for abbreviations, not for
+//     synonymous definitions; simplify configuration to allow/disallow
+//     abbreviations
+//   31-Jul-1998  WEB  Removed conditional values
+//   12-Aug-1998  WEB  Perfected abbreviation usage; added more units
+//     from Horvath (inspired by Mathematica documentation)
+//   20-Oct-1998  WEB  Added units inspired by data file accompanying
+//     GNU units conversion program (Version 1.11) by Adrian Mariano
+//   26-Oct-1998  WEB  Added units and proofed against Rowlett, Russ:
+//     How Many?  A Dictionary of Units of Measurement, found at
+//     www.unc.edu/~rowlett/units/index.html
+//   09-Nov-1998  WEB  Added information from Klein, H Arthur: The World
+//     of Measurements. Simon and Schuster, 1974. SBN 671-21565-5
+//   11-Nov-1998  WEB  Reorganized to acknowledge the 1986 CODATA-
+//     recommended values of fundamental physical constants; also
+//     updated with information from Taylor, Barry N:  Guide for the Use
+//     of the International System of Units (SI).  NIST Special
+//     Publication 811, 1995 Edition
+//   20-Dec-1998  WEB  Added information from Dresner, Stephen: Units of
+//     Measurement.  Hastings House, Publishers, 1971.  SBN 8038 7496 0.
+//   26-Jan-1999  WEB  Added a few more data from Particle Data Book and
+//     corrected some minor typos
+//   28-Jan-1998  WEB  Replaced all uses of pure() by measuredIn() for
+//     correctness in non-standard models
+//
+// ----------------------------------------------------------------------
+
+
+
+// ======================================================================
+//
+// Local notational conveniences:
+//
+// ======================================================================
+
+
+#define per         /
+#define reciprocal  1.0 /
+#define sq(unit)    ( (unit) * (unit) )
+#define cub(unit)   ( (unit) * (unit) * (unit) )
+
+#define d(type,name,abbrev,value)       \
+                    u(type,name,value)	\
+                    a(type,abbrev,name)
+
+
+
+// ======================================================================
+//
+// Standard SI prefixes used to form multiples of SI units:
+//
+// ======================================================================
+
+
+d( Scalar, deka_ , da_, 1e+01 ) // deka (Greek) "ten"
+d( Scalar, hecto_, h_ , 1e+02 ) // hekaton (Greek) "hundred"
+d( Scalar, kilo_ , k_ , 1e+03 ) // chilioi (Greek) "thousand"
+
+u( Scalar, myria_,      1e+04 ) // myrioi (Greek) "10 000" (not SI)
+d( Scalar, mega_ , M_ , 1e+06 ) // megas (Greek) "large"
+d( Scalar, giga_ , G_ , 1e+09 ) // gigas (Greek) "giant"
+u( Scalar, beva_ ,      1e+09 )
+d( Scalar, tera_ , T_ , 1e+12 ) // teras (Greek) "monster"
+
+d( Scalar, peta_ , P_ , 1e+15 ) // pente (Greek) "five"
+d( Scalar, exa_  , E_ , 1e+18 ) // hex (Greek) "six"
+d( Scalar, zetta_, Z_ , 1e+21 ) // septem (Latin) "seven"
+
+d( Scalar, yotta_, Y_ , 1e+24 ) // octo (Latin or Greek) "eight"
+
+
+
+// ======================================================================
+//
+// Standard SI prefixes used to form sub-multiples of SI units:
+//
+// ======================================================================
+
+
+d( Scalar, deci_ , d_, 1e-01 ) // decimus (Latin) "tenth"
+d( Scalar, centi_, c_, 1e-02 ) // centum  (Latin) "hundred"
+d( Scalar, milli_, m_, 1e-03 ) // mille   (Latin) "thousand"
+
+d( Scalar, micro_, u_, 1e-06 ) // micro (Latin) or mikros (Greek) "small"
+d( Scalar, nano_ , n_, 1e-09 ) // nanus (Latin) or nanos  (Greek) "dwarf"
+d( Scalar, pico_ , p_, 1e-12 ) // pico (Spanish) "bit"
+
+d( Scalar, femto_, f_, 1e-15 ) // femten (Danish and Norwegian) "fifteen"
+d( Scalar, atto_ , a_, 1e-18 ) // atten (Danish and Norwegian) "eighteen"
+d( Scalar, zepto_, z_, 1e-21 ) // septem (Latin) "seven"
+
+d( Scalar, yocto_, y_, 1e-24 ) // octo (Latin or Greek) "eight"
+
+
+
+// ======================================================================
+//
+// Base (default) SI units
+// for the basic measurable quantities (dimensions):
+//
+// ======================================================================
+
+
+d( Length,            meter,    m,   WV::scale_(WV::dimLength)  )
+  // metrum (Latin) and metron (Greek) "measure"
+d( Mass,              kilogram, kg,  WV::scale_(WV::dimMass)    )
+d( Time,              second,   s,   WV::scale_(WV::dimTime)    )
+  // minuta secundam (Latin) "second small one"
+d( Current,           ampere,   A,   WV::scale_(WV::dimCurrent) )
+  // ---  honors Andre-Marie Ampere (1775-1836) of France
+d( Temperature,       kelvin,   K,   WV::scale_(WV::dimTemp)    )
+  // ---  honors William Thomson, 1st Baron Lord Kelvin (1824-1907) of England
+d( AmountOfSubstance, mole,     mol, WV::scale_(WV::dimSubst)   )
+d( LuminousIntensity, candela,  cd,  WV::scale_(WV::dimLI)      )
+
+
+
+// ======================================================================
+//
+// Supplementary SI units having special symbols:
+//
+// ======================================================================
+
+
+d( PlaneAngle,          radian,    rad, meter per meter                 )
+d( SolidAngle,          steradian, sr,  sq(meter) per sq(meter)         )
+
+
+
+// ======================================================================
+//
+// Derived SI units having special symbols:
+//
+// ======================================================================
+
+
+d( Frequency,           hertz,     Hz,  reciprocal second           )
+  // ---  honors Heinrich Rudolf Hertz (1857-1894) of Germany
+d( Force,               newton,    N,   meter * kg per sq(second)   )
+  // ---  honors Sir Isaac Newton (1642-1727) of England
+d( Pressure,            nt_pascal,    Pa,  newton per sq(meter)        )
+  // ---  honors Blaise Pascal (1623-1662) of France
+d( Energy,              joule,     J,   newton * meter              )
+  // ---  honors James Prescott Joule (1818-1889) of England
+d( Power,               watt,      W,   joule per second            )
+  // ---  honors James Watt (1736-1819) of Scotland
+d( ElectricCharge,      coulomb,   C,   ampere * second             )
+  // ---  honors Charles-Augustin de Coulomb (1736-1806) of France
+d( ElectricPotential,   volt,      V,   joule per coulomb           )
+  // ---  honors Count Alessandro Volta (1745-1827) of Italy
+u( ElectricResistance,  ohm,            volt per ampere             )
+  // ---  honors Georg Simon Ohm (1787-1854) of Germany
+d( ElectricConductance, siemens,   S,   reciprocal ohm              )
+  // ---  honors Ernst Werner von Siemens (1816-1892) or his brother
+  // ---  Sir William (Karl Wilhelm von) Siemens (1823-1883) of Germany (England)
+d( ElectricCapacitance, farad,     F,   coulomb per volt            )
+  // ---  honors Michael Faraday (1791-1867) of England
+d( MagneticFluxDensity, tesla,     T,   volt * second per sq(meter) )
+  // ---  honors Nikola Tesla (1856-1943) of Croatia (United States)
+d( MagneticFlux,        weber,     Wb,  volt * second               )
+  // ---  honors Wilhelm Eduard Weber (1804-1891) of Germany
+d( Inductance,          henry,     H,   weber per ampere            )
+  // ---  honors Joseph Henry (1797-1878) of the United States
+d( LuminousFlux,        lumen,     lm,  candela * steradian         )
+d( Illuminance,         lux,       lx,  lumen per sq(meter)         )
+d( Radioactivity,       becquerel, Bq,  reciprocal second           )
+  // ---  honors Antoine-Henri Becquerel (1852-1908) of France
+d( SpecificEnergy,      gray,      Gy,  joule per kilogram          )
+  // ---  honors Louis Harold Gray, F.R.S. (1905-1965) of England
+d( DoseEquivalent,      sievert,   Sv,  joule per kilogram          )
+
+
+
+// ======================================================================
+//
+// CODATA Task Group on Fundamental Constants 1986 recommended values:
+//
+// ======================================================================
+
+
+// -----  Mathematical constants:
+//
+u( Scalar, pi,     3.14159265358979323846 )
+u( Scalar, twopi,  2. * pi                )
+u( Scalar, halfpi, 0.5 * pi               )
+u( Scalar, pi2,    sq(pi)                 )
+
+u( Scalar, e,      2.7182818284590452354  )
+u( Scalar, gamma,  0.577215664901532861   )
+
+// -----  Universal, electromagnetic, atomic, and physico-chemical constants:
+//
+d( Velocity,       lightspeed,        c,   299792458. * meter per second )
+a( Velocity,                          c_0, c                             )
+d( SpecificEnergy, lightspeedsquared, c2,  sq(c)                         )
+
+d( Permeability, freespacepermeability, mu_0,      4e-7*pi * N per (A*A)  )
+u( Permeability, vacuumpermeability,               freespacepermeability  )
+d( Permittivity, freespacepermittivity, epsilon_0, reciprocal (mu_0 * c2) )
+u( Permittivity, vacuumpermittivity,               freespacepermittivity  )
+
+d( GravitationalConstant, gravitationconstant, G_N,
+      6.67259e-11*cub(m)/(kg*sq(s)) )
+u( GravitationalConstant, newtoniangravitationconstant, gravitationconstant       )
+
+d( Acceleration, standardgravity, gravity,  9.80665 * meter per sq(second) )
+u( Acceleration, gravitationalacceleration, standardgravity                )
+u( Acceleration, force,                     standardgravity                )
+u( Acceleration, fors,                      standardgravity                )
+
+d( Action, reducedplanck,  hBar, 1.05457266e-34 * joule * second )
+d( Action, planckconstant, h,    hBar * twopi                    )
+  // ---  both honor Max Karl Ernst Planck (1858-1947) of Germany
+
+d( Charge, elementarycharge, ePlus, 1.60217733e-19 * coulomb )
+u( Charge, positroncharge,          elementarycharge         )
+
+d( EnergyLength, electromagneticcoupling, elmCoupling,
+      sq(ePlus) / (4.*pi * epsilon_0 )  )
+
+d( MagneticFlux, magneticfluxquantum, Phi_0, h / (2.*ePlus) )
+
+d( Mass, electronrestmass, m_e,  9.1093897e-31 * kilogram )
+d( Mass, protonrestmass,   m_p,  1.6726231e-27 * kilogram )
+d( Mass, neutronrestmass,  m_n,  1.6749286e-27 * kilogram )
+d( Mass, deuteronmass,     m_d,  3.3435860e-27 * kilogram )
+d( Mass, muonmass,         m_mu, 1.8835327e-28 * kilogram )
+
+d( Scalar, finestructureconstant, alpha, elmCoupling / (hBar*c ) )
+
+d( WaveNumber, rydbergconstant, R_inf, m_e * c * sq(alpha) / (2.*h) )
+u( Energy,     rydbergenergy,          h * c * R_inf                )
+  // ---  both honor Janne Robert Rydberg (1854-1919) of Sweden
+
+d( ReciprocalMolarity, avogadroconstant,  N_A, 6.0221367e+23 per mole )
+  // ---  honors Amedeo Avogadro, conte di Quaregna (1776-1856) of Italy
+
+u( QuantityOfCharge, faradayconstant, /* F, */ N_A * ePlus )
+  // ---  honors Michael Faraday (1791-1867) of England
+
+d( MolarEntropy, molargasconstant, R, 8.314510 * joule per (mole*kelvin) )
+
+d( Entropy, boltzmannconstant, k, R / N_A )
+  // ---  honors Ludwig Boltzmann (1844-1906) of Austria
+
+d( StefanBoltzmannConstant, stefanboltzmannconstant, sigma,
+    pi2 * sq(sq(k)) / (60. * c2 * cub(hBar)) )
+
+d( Energy, electronvolt, eV, ePlus * volt )
+
+d( Mass, atomicmassunit, amu, kilogram / (kilo_*N_A*mole) )
+a( Mass, m_u,                 amu                         )
+d( Mass, dalton,         Da,  amu                         )
+  // ---  honors John Dalton (1766-1844) of England
+u( Mass, amu_chem,            1.66026e-27   * kilogram    )
+u( Mass, amu_phys,            1.65981e-27   * kilogram    )
+
+d( MagneticDipoleMoment, bohrmagneton,    mu_B, ePlus * hBar / (2. * m_e) )
+  // ---  honors Niels Henrik David Bohr (1885-1962) of Denmark
+d( MagneticDipoleMoment, nuclearmagneton, mu_N, ePlus * hBar / (2. * m_p) )
+
+d( Mass,   planckmass,   m_P, sqrt( hBar * c per G_N) )
+d( Length, plancklength, l_P, hBar / (m_P * c)        )
+d( Time,   plancktime,   t_P, l_P / c                 )
+  // ---  all three honor Max Karl Ernst Planck (1858-1947) of Germany
+
+d( Energy, hartree, E_h, 2. * R_inf * h * c )
+  // ---  honors Douglas Rayner Hartree (1897-1958) of England
+
+d( Length, classicalelectronradius, r_e, elmCoupling / (m_e*c2 ) )
+
+d( Length, comptonwavelength, lambdaBar_C, r_e / alpha )
+
+d( Length, bohrradius, a_0, lambdaBar_C / alpha )
+a( Length, a_inf,           bohrradius          )
+  // ---  both honor Niels Henrik David Bohr (1885-1962) of Denmark
+
+d( Area, thomsoncrosssection, sigma_e, 8.*pi * sq(r_e) / 3. )
+
+d( MagneticDipoleMoment, muonmagneticmoment,     mu_mu, 4.4904514  * joule per tesla )
+d( MagneticDipoleMoment, protonmagneticmoment,   mu_p,  1.41060761 * joule per tesla )
+d( MagneticDipoleMoment, neutronmagneticmoment,  mu_n,  0.96623707 * joule per tesla )
+d( MagneticDipoleMoment, deuteronmagneticmoment, mu_d,  0.43307375 * joule per tesla )
+
+u( Temperature,  standardtemperature, 273.15 * kelvin           )
+u( Temperature,  icepoint,            standardtemperature       )
+u( Temperature,  triplepoint,         standardtemperature       )
+u( Pressure,     standardpressure,    atmosphere                )
+u( MolarVolume,  idealgasvolume,      R * icepoint / atmosphere )
+
+d( ThermalDisplacement, wiendisplacementlawconstant, b, 2.897756e-3 * m * K )
+
+u( ReciprocalEnergySquared, fermicouplingconstant, 1.16639e-5 per sq(GeV) )
+d( EnergyVolume, fermiconstant, G_F, fermicouplingconstant * cub(hBar*c)  )
+  // ---  both honor Enrico Fermi (1901-1954) of Italy
+
+d( Mass, Wbosonmass,  m_W, 80.22  * GeV per c2 )
+d( Mass, Z0bosonmass, m_Z, 91.187 * GeV per c2 )
+
+d( Scalar, strongcouplingconstant, alpha_s_mZ, 0.116 )
+
+u( Scalar, sin2theta_W, 0.2319 )
+u( Angle,  theta_W,     0.50243 )  // asin(sqrt(sin2theta_W))
+
+
+
+// ======================================================================
+//
+// Selected dimensionless constants and units:
+//
+// ======================================================================
+
+
+// -----  Simple fractions:
+//
+
+u( Scalar, semi_, 0.5 )
+u( Scalar, hemi_, 0.5 )
+u( Scalar, demi_, 0.5 )
+u( Scalar, half_, 0.5 )
+
+u( Scalar, quarter_, 0.25 )
+
+// -----  Other simple numbers:
+//
+u( Scalar, one,         1.          )
+u( Scalar, dozen,       12.         )
+u( Scalar, score,       20.         ) // skor (Norse) "notch cut in a stick"
+u( Scalar, flock,       40.         )
+u( Scalar, gross,       sq(dozen)   )
+u( Scalar, bakersdozen, 13.         )
+u( Scalar, greatgross,  12. * gross )
+
+u( Scalar, quire,       25.         )
+u( Scalar, ream,        20. * quire ) // rizmah (Arabic) "bundle"
+
+u( Scalar, hundred,     100.        )
+u( Scalar, thousand,    1000.       )
+u( Scalar, million,     1000000.    )
+u( Scalar, googol,      1e+100      )
+
+// -----  US big numbers (17th century origin):
+//
+u( Scalar, billion,        1e+09  )
+u( Scalar, trillion,       1e+12  )
+u( Scalar, quadrillion,    1e+15  )
+u( Scalar, quintillion,    1e+18  )
+u( Scalar, sextillion,     1e+21  )
+u( Scalar, septillion,     1e+24  )
+u( Scalar, octillion,      1e+27  )
+u( Scalar, nonillion,      1e+30  )
+u( Scalar, decillion,      1e+33  )
+
+// -----  UK big numbers are successive powers of million (16th century):
+//
+u( Scalar, milliard,       billion                 )
+u( Scalar, brbillion,      million       * million )
+u( Scalar, brtrillion,     brbillion     * million )
+u( Scalar, brquadrillion,  brtrillion    * million )
+u( Scalar, brquintillion,  brquadrillion * million )
+u( Scalar, brsextillion,   brquintillion * million )
+u( Scalar, brseptillion,   brsextillion  * million )
+u( Scalar, broctillion,    brseptillion  * million )
+u( Scalar, brnonillion,    broctillion   * million )
+u( Scalar, brdecillion,    brnonillion   * million )
+
+// -----  Concentrations and proportions:
+//
+u( Scalar, percent,           reciprocal hundred  )
+u( Scalar, perthousand,       reciprocal thousand )
+d( Scalar, permillion,  ppm,  reciprocal million  )
+d( Scalar, perbillion,  ppb,  reciprocal billion  )
+d( Scalar, pertrillion, ppt,  reciprocal trillion )
+d( Scalar, proof,       prf,  reciprocal 200.     )
+u( Scalar, karat,     /*kt,*/ reciprocal 24.      )
+u( Scalar, caratgold,         karat               )
+u( Scalar, basispoint,        0.01 * percent      )
+u( Scalar, brix,              percent             )
+  // ---  honors Adolph F. Brix ( -1870) of Austria
+d( Scalar, fineness,    fine, 0.001               )
+u( Scalar, mill,              0.001               )
+
+// -----  PlaneAngle units:
+//
+u( PlaneAngle, centrad,           centi_ * radian )
+d( PlaneAngle, milliradian, mrad, milli_ * radian )
+
+d( PlaneAngle, revolution, rev, twopi  * radian )
+u( PlaneAngle, turn,            revolution      )
+d( PlaneAngle, circle,     cir, revolution      )
+
+d( PlaneAngle, degree,    deg,    circle / 360.   )
+d( PlaneAngle, arcdegree, arcdeg, degree          )
+d( PlaneAngle, arcminute, arcmin, arcdegree / 60. )
+d( PlaneAngle, arcsecond, arcsec, arcminute / 60. )
+
+u( PlaneAngle, rightangle, 90. * degree   )
+u( PlaneAngle, quadrant,   circle / 4.    )
+u( PlaneAngle, sextant,    circle / 6.    )
+u( PlaneAngle, sign,       circle / 12.   )
+u( PlaneAngle, dekan,      circle / 36.   )
+u( PlaneAngle, milangle,   circle / 6400. )
+
+d( PlaneAngle, grade, grd,       rightangle / 100.       )
+u( PlaneAngle, gon,              rightangle / 100.       )
+u( PlaneAngle, centesimalminute, grade / 100.            )
+u( PlaneAngle, centesimalsecond, centesimalminute / 100. )
+
+// -----  SolidAngle units:
+//
+u( SolidAngle, sphere,              4. * pi * steradian )
+u( SolidAngle, space,               4. * pi * steradian )
+u( SolidAngle, hemisphere,          hemi_ * sphere      )
+u( SolidAngle, octant,              sphere / 8.         )
+u( SolidAngle, sphericalrightangle, halfpi * steradian  )
+
+u( SolidAngle, squareDegree,        pi2 * steradian / sq(180.) )
+u( SolidAngle, squareMinute,        squareDegree    / sq(60.)  )
+u( SolidAngle, squareArcmin,        squareMinute               )
+u( SolidAngle, squareSecond,        squareMinute    / sq(60.)  )
+u( SolidAngle, squareArcsec,        squareSecond               )
+
+// -----  Computing units:
+//
+u( Scalar, bit,                1.            )
+u( Scalar, nybble,             4. * bit      )
+u( Scalar, byte,               8. * bit      )
+d( Scalar, kilobyte, Kbyte, 1024. * byte     )
+d( Scalar, megabyte, Mbyte, 1024. * kilobyte )
+a( Scalar, meg,             megabyte         )
+d( Scalar, gigabyte, Gbyte, 1024. * megabyte )
+a( Scalar, gig,             gigabyte         )
+d( Scalar, terabyte, Tbyte, 1024. * gigabyte )
+d( Scalar, petabyte, Pbyte, 1024. * terabyte )
+d( Scalar, exabyte,  Xbyte, 1024. * petabyte )
+
+
+
+// ======================================================================
+//
+// Selected single-dimension units:
+//
+// ======================================================================
+
+
+// -----  Linear measure (metric):
+//
+u( Length, metre,                              meter )
+u( Length, decameter,            deka_       * meter )
+d( Length, kilometer,        km, kilo_       * meter )
+u( Length, spat,                 tera_       * meter )
+
+d( Length, nauticalmile,     NM, 1852.       * meter )
+u( Length, geographicalmile,     nauticalmile        )
+u( Length, cable,                nauticalmile / 10.  )
+
+u( Length, braccio,              0.7         * meter )
+
+u( Length, decimeter,            deci_       * meter )
+d( Length, centimeter,       cm, centi_      * meter )
+d( Length, millimeter,       mm, milli_      * meter )
+u( Length, French,               millimeter / 3.     )
+u( Length, micrometer,           micro_      * meter )
+u( Length, micron,               micro_      * meter ) // meter / million
+d( Length, nanometer,        nm, nano_       * meter )
+u( Length, bicron,               pico_       * meter ) // meter / brbillion
+u( Length, stigma,               pico_       * meter )
+u( Length, fermi,                femto_      * meter )
+  // ---  honors Enrico Fermi (1901-1954) of Italy
+u( Length, angstrom,             1e-10       * meter )
+  // ---  honors Anders Jonas Angstrom (1814-1874) of Sweden
+u( Length, rowland,              angstrom            )
+  // ---  honors Henry Augustus Rowland (1848-1901) of the United States
+
+d( Length, Xunit,            Xu, 1.00202e-13 * meter )
+u( Length, siegbahn,             Xunit               )
+  // honors Karl Manne Georg Siegbahn (1886- ) of Sweden
+
+d( Length, astronomicalunit, AU,  1.4959787066e+11 * meter )
+a( Length,                   au,  astronomicalunit         )
+d( Length, parsec,           pc,  AU per arcsecond         )
+d( Length, megaparsec,       Mpc, mega_ * parsec           )
+
+
+// -----  Linear measure (English):
+//
+d( Length, inch,         in, 2.54   * centimeter )
+u( Length, caliber,          0.01   * inch       )
+u( Length, mil,              0.001  * inch       )
+u( Length, thou,             0.001  * inch       )
+u( Length, digit,            0.75   * inch       ) // digitus (Latin) finger
+u( Length, fingerbreadth,    0.875  * inch       )
+u( Length, barleycorn,       inch   / 3.         )
+u( Length, em,               inch   / 6.         )
+u( Length, pica,             inch   / 6.         )
+u( Length, point,            inch   / 72.        )
+
+u( Length, nail,             2.25   * inch       )
+u( Length, palm,             3.     * inch       )
+u( Length, hand,             4.     * inch       )
+u( Length, fingerlength,     4.5    * inch       )
+u( Length, span,             9.     * inch       )
+u( Length, USpalm,           9.     * inch       )
+u( Length, quarter,          9.     * inch       )
+u( Length, breadth,          9.     * inch       )
+d( Length, foot,         ft, 12.    * inch       )
+u( Length, engineerslink,    foot                )
+u( Length, ramsdenslink,     engineerslink       )
+u( Length, cubit,            18.    * inch       ) // cubitum (Latin) "elbow"
+u( Length, pace,             30.    * inch       )
+u( Length, USmilitarypace,   pace                )
+u( Length, USdoubletimepace, 36.    * inch       )
+u( Length, geometricpace,    5.     * foot       )
+d( Length, yard,         yd, 3.     * foot       )
+u( Length, goad,             4.5    * foot       )
+u( Length, thread,           4.5    * foot       )
+u( Length, standardguage,    4. * foot + 8.5 * inch )
+u( Length, engineerschain,   100.   * foot       )
+u( Length, ramsdenschain,    engineerschain      )
+u( Length, nauticalchain,    15.    * foot       )
+u( Length, bolt,             120.   * foot       )
+u( Length, skein,            360.   * foot       )
+d( Length, mile,         mi, 5280.  * foot       )
+  // milia passuum (Latin) "thousand paces"
+u( Length, seamile,          6000.  * foot       )
+u( Length, marathon,         26.*mile+385.*yard  )
+u( Length, spindle,          14400. * yard       )
+
+u( Scalar, USsurvey_,   1200./3937. * meter per foot )
+u( Length, fathom,      6.   * USsurvey_ * foot      )
+u( Length, rod,         16.5 * USsurvey_ * foot      )
+u( Length, pole,        rod                          )
+u( Length, perch,       rod                          )
+u( Length, link,        0.04 * rod                   )
+d( Length, chain,   ch, 4.   * rod                   )
+u( Length, furlong,     40.  * rod                   )
+u( Length, statutemile, USsurvey_ * mile             )
+u( Length, league,      3. * statutemile             )
+
+u( Length, surveychain,  chain )
+u( Length, gunterschain, chain )
+
+// -----  Quadratic measure (metric):
+//
+d( Area, squaremeter,      m2,  sq(     meter) )
+d( Area, squaremillimeter, mm2, sq(millimeter) )
+d( Area, squarecentimeter, cm2, sq(centimeter) )
+d( Area, squaredecimeter,  dm2, sq( decimeter) )
+d( Area, squarekilometer,  km2, sq( kilometer) )
+
+u( Area, are,     /*a,*/ sq(10. * meter) )
+d( Area, hectare,   ha,  hecto_ * are    )
+d( Area, centitare, ca,  centi_ * are    )
+
+u( Area, barn,             1e-28  * sq(meter) )
+d( Area, millibarn, mbarn, milli_ * barn      )
+u( Area, microbarn,        micro_ * barn      )
+u( Area, nanobarn,         nano_  * barn      )
+u( Area, shed,             1e-52  * sq(meter) )
+
+u( FluidFlowPermeability, darcy, 9.8692327e-13 * sq(meter) )
+  // ---  honors H. P. G. Darcy (1803-1858) of France
+
+// -----  Quadratic measure (English):
+//
+u( Area, acre,                160. * sq(rod)  )
+u( Area, rood,                0.25 * acre     )
+u( Area, section,             sq(statutemile) )
+u( Area, homestead,           0.25 * section  )
+u( Area, quartersection,      0.25 * section  )
+d( Area, township,       twp, 36.  * section  )
+
+// -----  Cubic measure (metric):
+//
+d( Volume, cubicMeter,      m3,    cub(meter)                )
+u( Volume, stere,                  cub(meter)                )
+  // stereos (Greek) "solid"
+d( Volume, cubicMillimeter, mm3,   cub(millimeter)           )
+d( Volume, cubicCentimeter, cm3,   cub(centimeter)           )
+u( Volume, cc,                     cub(centimeter)           )
+d( Volume, cubicKilometer,  km3,   cub(kilometer)            )
+d( Volume, liter,           L,     1e-3 * cub(meter)         )// litra (Latin)
+u( Volume, litre,                  liter                     )
+u( Volume, deciliter,              deci_  * liter            )
+d( Volume, centiliter,      cL,    centi_ * liter            )
+d( Volume, milliliter,      mL,    milli_ * liter            )
+u( Volume, oldliter,               1.000028 * cub(decimeter) )
+
+u( Volume, split,          200. * milliliter )
+u( Volume, magnum,         1.5 * liter       )
+u( Volume, immi,           1.5 * liter       )
+u( Volume, jeroboam,       2.  * magnum      )
+u( Volume, rehoboam,       3.  * magnum      )
+u( Volume, methuselah,     4.  * magnum      )
+u( Volume, salmanazar,     6.  * magnum      )
+u( Volume, balthazar,      8.  * magnum      )
+u( Volume, nebuchadnezzar, 10. * magnum      )
+
+// -----  Cubic measure (US, dry):
+//
+u( Volume, drypint,  /*pt,*/ 33.60 * cub(inch) )
+u( Volume, dryquart, /*qt,*/ 2.    * drypint   )
+u( Volume, drygallon,        4.    * dryquart  )
+d( Volume, peck,     pk,     8.    * dryquart  )
+d( Volume, bushel,   bu,     4.    * peck      )
+u( Volume, strike,           2.    * bushel    )
+u( Volume, sack,             3.    * bushel    )
+u( Volume, coomb,            4.    * bushel    )
+u( Volume, seam,             8.    * bushel    )
+d( Volume, chaldron, chd,    36.   * bushel    )
+u( Volume, wey,              40.   * bushel    )
+u( Volume, last,             80.   * bushel    )
+u( Volume, drybarrel,        210.  * drypint   )
+
+d( Volume, boardfoot, fbm, foot * foot * inch   )
+u( Volume, cordfoot,       4.*1.*4. * cub(foot) )
+u( Volume, cord,           4.*8.*4. * cub(foot) )
+u( Volume, faggot,         (3./pi)  * cub(foot) )
+
+u( Volume, acrefoot,       acre * USsurvey_ * foot )
+
+u( Volume, barrelbulk,     5.  * cub(foot)  )
+u( Volume, freightton,     8.  * barrelbulk )
+u( Volume, shippington,    freightton       )
+u( Volume, registerton,    20. * barrelbulk )
+
+// -----  Cubic measure (US, liquid):
+//
+d( Volume, gallon,          gal,  231. * cub(inch)  )
+  // galeta (Latin) "pailful"
+u( Volume, firkin,                9.   * gallon     )
+u( Volume, liquidbarrel,          3.5 * firkin      )
+d( Volume, petroleumbarrel, bbl,  42.  * gallon     )
+u( Volume, hogshead,              2. * liquidbarrel )
+u( Volume, pipe,                  2. * hogshead     )
+u( Volume, butt,                  2. * hogshead     )
+  // buttis (Latin) "a large cask"
+u( Volume, tun,                   2. * pipe         )
+
+u( Volume, fifth,             gallon / 5.      )
+u( Volume, pottle,            gallon / 2.      )
+d( Volume, quart,       qt,   pottle / 2.      )
+d( Volume, pint,        pt,   quart  / 2.      )
+u( Volume, cup,               pint   / 2.      )
+d( Volume, gill,        gi,   cup    / 2.      )
+u( Volume, noggin,            gill             )
+d( Volume, fluidounce,  floz, gill   / 4.      )
+u( Volume, jigger,            1.5 * fluidounce )
+d( Volume, tablespoon,  tbsp, fluidounce / 2.  )
+d( Volume, teaspoon,    tsp,  tablespoon / 3.  )
+u( Volume, coffeespoon,       teaspoon   / 2.  )
+d( Volume, dessertspoon, dsp, teaspoon   * 2.  )
+u( Volume, pinch,             teaspoon   / 8.  )
+u( Volume, dash,              pinch      / 2.  )
+d( Volume, fluidram,    fldr, fluidounce / 8.  )
+u( Volume, minim,    /*min,*/ fluidram   / 60. ) // minimus (Latin) "small"
+d( Volume, drop,        gtt,  minim            ) // gutta (Latin) "drop"
+
+a( Volume, CCF,               100. * cub(foot) )
+
+u( Volume, amagatvolume,      idealgasvolume * mole )
+  // --- honors Emile-Hilaire Amagat (1841-1915) of France
+
+// -----  Cubic measure (UK Imperial, dry and liquid)
+//
+u( Volume, UKgallon,       4.54609 * liter )
+u( Volume, imperialgallon, UKgallon        )
+u( Volume, canadiangallon, UKgallon        )
+
+u( Volume, UKpeck,     2.  * UKgallon )
+u( Volume, UKbarrel,   36. * UKgallon )
+u( Volume, UKbushel,   4.  * UKpeck   )
+u( Volume, UKquarter,  8.  * UKbushel )
+u( Volume, UKchaldron, 36. * UKbushel )
+
+u( Volume, UKquart,              UKgallon / 4. )
+u( Volume, UKpint,               UKquart /2.   )
+u( Volume, UKgill,               UKpint / 4.   )
+d( Volume, UKfluidounce, UKfloz, UKpint / 20.  )
+u( Volume, UKdram,               UKfloz / 8.   )
+u( Volume, UKminim,              UKdram / 60.  )
+
+
+// -----  Reciprocal length:
+//
+u( WaveNumber, kayser, reciprocal centimeter )
+  // ---  honors J. H. G. Kayser (1853-1940)
+u( WaveNumber, balmer, reciprocal centimeter )
+  // ---  honors Johann Jakob Balmer (1825-1898) of Switzerland
+u( WaveNumber, rydberg, reciprocal centimeter )
+  // ---  honors Janne Robert Rydberg (1854-1919) of Sweden
+  
+u( WaveNumber, permicron, reciprocal micron )  
+
+d( LensRefraction, diopter, dpt, reciprocal meter )
+u( LensRefraction, dioptre,      diopter          )
+
+// -----  Fuel utilization:
+//
+u( Mileage, mpg, mile per gallon )
+
+// -----  Mass measure (metric):
+//
+d( Mass, gramme,        gm,                gram )
+d( Mass, gram,          g,  milli_  *  kilogram )
+d( Mass, centigram,     cg, centi_  *      gram )
+d( Mass, milligram,     mg, milli_  *      gram )
+d( Mass, carat,         ct, 200.    * milligram )
+u( Mass, metriccarat,       carat               )
+u( Mass, metricgrain,       carat / 4.          )
+u( Mass, crith,             .089885 *      gram )
+u( Mass, metricounce,       25. * gram          )
+u( Mass, mounce,            metricounce         )
+u( Mass, metricslug,        gravity.measuredIn(m per s2) * kilogram )
+u( Mass, hyl,               metricslug          )
+
+a( Mass, key,                kilogram         )
+u( Mass, myriagram,          10.   * kilogram )
+d( Mass, quintal,       q,   100.  * kilogram )
+d( Mass, zentner,       Ztr, 50.   * kilogram )
+d( Mass, doppelzentner, Dz,  100.  * kilogram )
+u( Mass, metricton,          mega_ * gram     )
+u( Mass, millier,            metricton        )
+u( Mass, tonne,              metricton        )
+
+// -----  Mass measure (avoirdupois):
+//
+d( Mass, grain, gr, 6.479891e-5 * kilogram )
+d( Mass, pound, lb, 7000. * grain          ) // libra (Latin) "scale"
+d( Mass, ounce, oz, pound / 16.            ) // onza (old Italian) "ounce"
+d( Mass, dram,  dr, ounce / 16.            )
+
+u( Mass, avoirdupoispound, pound )
+u( Mass, avoirdupoisounce, ounce )
+u( Mass, avoirdupoisdram,  dram  )
+
+u( Mass, shorthundredweight,      100. * pound       )
+d( Mass, hundredweight,      cwt, shorthundredweight )
+d( Mass, cental,             cH,  shorthundredweight )
+u( Mass, ton,                     2000. * pound      )
+u( Mass, shortton,                ton                )
+
+u( Mass, clove,             7.      * pound )
+u( Mass, stone,             14.     * pound )
+u( Mass, longhundredweight, 112.    * pound )
+u( Mass, UKton,             2240.   * pound )
+u( Mass, longton,           UKton           )
+u( Mass, slug,              32.1740 * pound )
+u( Mass, geepound,          slug            )
+
+d( Mass, assayton, AT, 29.1667 * gram )
+u( Mass, UKassayton,   32.667  * gram )
+
+// -----  Mass measure (troy):
+//
+u( Mass, troygrain,        grain             )
+d( Mass, pennyweight, pwt, 24. * troygrain   )
+a( Mass, dwt,              pennyweight       )
+d( Mass, troyounce,   ozt, 20. * pennyweight )
+d( Mass, troypound,   lbt, 12. * troyounce   )
+
+u( Mass, jewelerspoint,    carat / 100.      )
+
+// -----  Mass measure (apothecaries'):
+//
+d( Mass, apothecariesgrain, apgr, grain                   )
+u( Mass, scruple,         /*s,*/  20. * apothecariesgrain )
+d( Mass, apothecariesdram,  apdr, 3.  * scruple           )
+d( Mass, apothecariesounce, apoz, 8.  * apothecariesdram  )
+d( Mass, apothecariespound, aplb, 12. * apothecariesounce ) // = troypound
+
+// -----  Time measure:
+//
+d( Time, millisecond, ms,  milli_ * second  )
+d( Time, microsecond, us,  micro_ * second  )
+d( Time, nanosecond,  ns,  nano_  * second  )
+d( Time, picosecond,  ps,  pico_  * second  )
+u( Time, shake,            1e-8   * second  )
+u( Time, svedberg,  /*S,*/ 0.1 * picosecond )
+  // ---  honors Theodor Svedberg (1884-1971) of Sweden
+
+d( Time, minute,     min, 60.   * second )
+  // minuta primam (Latin) "first small one"
+d( Time, hour,       hr,  60.   * minute ) // hora (ancient Greek) "season"
+d( Time, day,        da,  24.   * hour   )
+d( Time, week,       wk,  7.    * day    )
+u( Time, sennight,        7.    * day    )
+u( Time, fortnight,       14.   * day    ) // "fourteen nights"
+
+u( Time, lunarmonth,      29.5305555 * day     )
+u( Time, synodicmonth,    lunarmonth           )
+d( Time, calendaryear, a, 365.  * day          )
+u( Time, commonyear,      calendaryear         )
+u( Time, tropicalyear,    365.242198781 * day  )
+u( Time, solaryear,       tropicalyear         )
+d( Time, year,        yr, tropicalyear         )
+u( Time, lunaryear,       12. * lunarmonth     )
+u( Time, leapyear,        366.  * day          )
+u( Time, julianyear,      365.25 * day         )
+u( Time, gregorianyear,   365.2425 * day       )
+d( Time, month,       mo, year / 12.           )
+
+u( Time, olympiad,        4.    * year      )
+u( Time, decade,          10.   * year      )
+u( Time, century,         100.  * year      )
+u( Time, millenium,       1000. * year      )
+u( Time, saros,           223. * lunarmonth )
+
+u( Time, watch,            4. * hour  )
+u( Time, bell,             watch / 8. )
+
+u( Time, biennium,  2.   *  year )
+a( Time,        Ma, mega_ * year )
+a( Time,        Ga, giga_ * year )
+d( Time, aeon,  Ta, tera_ * year )
+
+u( Time, siderealsecond, 0.99726956  * second )
+u( Time, siderealminute, 60. * siderealsecond )
+u( Time, siderealhour,   60. * siderealminute )
+u( Time, siderealday,    24. * siderealhour   )
+u( Time, siderealmonth,  27.321661 * day      )
+u( Time, siderealyear,   3.155815e+7 * second )
+
+u( Time, blink, 1e-05      * day    )
+u( Time, ce,    0.01       * day    )
+u( Time, cron,  1e+06      * year   )
+
+d( TimeSquared, second2, s2, sq(second) )
+
+u( Frequency, cycle,                    hertz         )
+u( Frequency, vibration,                hertz         )
+d( Frequency, kilohertz,  kHz,  kilo_ * hertz         )
+d( Frequency, megahertz,  MHz,  mega_ * hertz         )
+d( Frequency, baudrate,   baud, bit per second        )
+  // ---  honors J. M. E. Baudot (1845-1903) of France
+u( Frequency, bps,              baudrate              )
+u( Frequency, rpm,              revolution per minute )
+u( Frequency, fresnel,          tera_ * hertz         )
+  // ---  honors Augustin Jean Fresnel (1788-1827) of France
+u( Frequency, pulsatance,       radian per second     )
+
+u( Frequency, perannum,         reciprocal year )
+d( Frequency, perdiem,    QD,   reciprocal day  ) // quaque diem (Latin)
+a( Frequency,             QH,   reciprocal hour ) // quaque hora (Latin)
+
+d( Activity, rutherford, Rd,  mega_ * becquerel   )
+  // ---  honors Ernest, 1st Baron Lord Rutherford (1871-1937) of England
+d( Activity, curie,      Ci,  3.7e+10 * becquerel )
+  // ---  honors Pierre Curie (1859-1906) of France
+  // ---  and Marie Sklodowska (1867-1934) Curie of Poland
+d( Activity, millicurie, mCi, milli_  * curie     )
+d( Activity, microcurie, uCi, micro_  * curie     )
+
+// -----  Current measure:
+//
+a( Current, amp,               ampere                     )
+u( Current, galvat,            ampere                     )
+  // ---  honors Luigi Galvani (1737-1798) of Italy
+d( Current, abampere,   abA,   10. * ampere               )
+a( Current, abamp,             abampere                   )
+d( Current, biot,       Bi,    abampere                   )
+  // ---  honors Jean-Baptiste Biot (1774-1862) of France
+d( Current, statampere, statA, 1e-1 * ampere / c.measuredIn(m per s) )
+d( Current, gilbert,    Gb,    (2.5 / pi) * ampere * turn )
+  // ---  honors William Gilbert (1540-1603) of England
+
+// -----  Temperature measure:
+//
+u( ReciprocalTemperature, mired, reciprocal (micro_ * kelvin) )
+
+// -----  AmountOfSubstance measure:
+//
+u( AmountOfSubstance, molecule,         reciprocal N_A   )
+d( AmountOfSubstance, poundmole, lbmol, 453.59237 * mole )
+
+// -----  LuminousIntensity measure:
+//
+u( LuminousIntensity, candle, candela         )
+u( LuminousIntensity, violle, 20.17 * candela )
+  // ---  honors Jules Violle (1841-1923) of France
+
+
+
+// ======================================================================
+//
+// Selected dimension-pair units:
+//
+// ======================================================================
+
+
+// -----  Length-Mass:
+//
+u( LineDensity, tex,    milligram per meter    )
+u( LineDensity, drex,   deci_ * tex            )
+u( LineDensity, denier, tex / 9.               )
+u( LineDensity, pli,    pound per inch         )
+u( LineDensity, poumar, mega_ * pound per yard )
+
+// -----  Length-Time:
+//
+u( Velocity, benz,     meter         per second  )
+u( Velocity, kine,     centimeter    per second  )
+d( Velocity, mach, M,  331.46 * meter per second )
+  // ---  honors Ernst Mach (1838-1916) of Austria
+u( Velocity, mph,      mile          per hour    )
+d( Velocity, knot, kt, nauticalmile  per hour    )
+
+d( Acceleration, Galileo, Gal, centimeter  per sq(second) )
+  // ---  honors Galileo Galilei (1564-1642) of Italy
+u( Acceleration, leo,          10. * meter per sq(second) )
+u( Acceleration, celo,         foot        per sq(second) )
+
+u( AccelerationChange, jerk, foot per cub(second) )
+
+u( SpecificEnergy, radiationdose, /*rad,*/ centi_ * gray    )
+d( DoseEquivalent, rem,           Rem,     centi_ * sievert )
+d( DoseEquivalent, millirem,      mRem,    milli_ * rem     )
+d( DoseEquivalent, microrem,      uRem,    micro_ * rem     )
+
+d( KinematicViscosity, stokes, St, sq(centimeter) per second ) // UK
+u( KinematicViscosity, stoke,      stokes                    ) // US
+  // ---  honors Sir George Gabriel Stokes (1819-1903) of England
+u( KinematicViscosity, lentor,     stokes                    )
+
+u( VolumeRateOfFlow, cusec, cub(foot ) per second )
+u( VolumeRateOfFlow, cumec, cub(meter) per second )
+
+u( RadioactiveConcentration, eman,  1.e-7  * curie per cub(meter) )
+u( RadioactiveConcentration, mache, 3.7e-7 * curie per cub(meter) )
+  // ---  honors H. Mache (1876-1954)
+
+// -----  Length-Current:
+//
+d( MagneticFieldStrength, oersted, Oe, gilbert per centimeter )
+  // ---  honors Hans Christian Oersted (1777-1851) of Denmark
+
+// -----  Length-AmountOfSubstance:
+//
+u( VolumeConcentration, molar, mole per liter )
+u( VolumeConcentration, amagatdensity, mole per amagatvolume )
+  // --- honors Emile-Hilaire Amagat (1841-1915) of France
+
+// -----  Length-LuminousIntensity:
+//
+d( Illuminance, phot,         ph,   lumen   per sq(cm)         )
+d( Illuminance, stilb,        sb,   candela per sq(centimeter) )
+d( Illuminance, apostilb,     asb,  candela per sq(meter) / pi )
+u( Illuminance, blondel,            candela per sq(meter) / pi )
+  // ---  honors A. Blondel (1863-1938)
+d( Illuminance, lambert,      Lb,   lumen   per sq(cm)         )
+  // ---  honors Johann Heinreich Lambert (1728-1777) of Germany
+d( Illuminance, millilambert, mLb,  milli_ * lambert           )
+u( Illuminance, nit,                candela per sq(meter)      )
+  // nitere (Latin) "to shine"
+u( Illuminance, nox,                0.001 * lux                )
+d( Illuminance, footcandle,   ftcd, lumen per sq(foot)         )
+
+// -----  Mass-Time:
+//
+u( EnergySurfaceDensity, langley, 41840. * joule per sq(meter) )
+  // ---  honors Samuel Pierpont Langley (1834-1906) of the United States
+
+d( SignalStrength, jansky, Jy, 1e-26 * watt per sq(meter) per hertz )
+  // ---  honors Karl Guthe Jansky (1905-1950) of the USA
+u( SignalStrength, fluxunit,   jansky                               )
+
+u( Metabolism, met, 58.15 * watt per sq(meter) )
+
+u( Irradiance, finsenunit, 1e+5 * watt per sq(meter) )
+  // ---  honors Niels Ryberg Finsen (1860-1904) of Denmark
+u( PowerAreaDensity, pyron, cal_IT per minute per sq(centimeter) )
+
+// -----  Mass-AmountOfSubstance:
+//
+u( MassConcentration, molal, mole per kilogram )
+
+// -----  Time-Current:
+//
+u( Charge, esu,                coulomb / 2.99792458e+9 )
+d( Charge, abcoulomb,   abC,   10. * coulomb           )
+d( Charge, statcoulomb, statC, statampere * second     )
+d( Charge, franklin,    Fr,    statcoulomb             )
+  // ---  honors Benjamin Franklin (1706-1790) of the United States
+
+// -----  Time-LuminousIntensity:
+//
+u( LuminousEnergy, talbot,  lumen * second )
+  // honors William Henry Fox Talbot (1800-1877) of England
+u( LuminousEnergy, lumberg, talbot )
+
+
+
+// ======================================================================
+//
+// Selected dimension-triple units:
+//
+// ======================================================================
+
+
+// -----  Length-Mass-Time:
+//
+u( Momentum, bole, gram * centimeter per second )
+
+d( Force, kilonewton, kN,  kilo_  * newton )
+d( Force, sthene,     sn,  kilonewton      ) // sthenos (Greek) "strength"
+u( Force, funal,           sthene          )
+d( Force, meganewton, MN,  mega_  * newton )
+d( Force, dyne,       dyn, 1.e-05 * newton ) // dynamis (Greek) "power"
+u( Force, crinal,          0.1    * newton )
+
+d( Force, gramforce,      gf,  gram      * gravity    )
+d( Force, kilogramforce,  kgf, kilogram  * gravity    )
+u( Force, pond,                gram      * gravity    )
+d( Force, kilopond,       kp,  kilogram  * gravity    )
+d( Force, ounceforce,     ozf, ounce     * gravity    )
+d( Force, poundforce,     lbf, pound     * gravity    )
+u( Force, kip,                 kilo_     * poundforce )
+u( Force, tonforce,            ton       * gravity    )
+u( Force, UKtonforce,          UKton     * gravity    )
+u( Force, metrictonforce,      metricton * gravity    )
+d( Force, poundal,        pdl, slug      * gravity    )
+
+u( Fluidity, rhe, 10. per nt_pascal per second )
+
+d( StressOpticalCoefficient, brewster, B, 1e-12 per nt_pascal )
+
+u( Action, planck, joule * second )
+  // ---  honors Max Karl Ernst Planck (1858-1947) of Germany
+
+d( Energy, kilojoule, kJ, kilo_ * joule )
+d( Energy, megajoule, MJ, mega_ * joule )
+d( Energy, gigajoule, GJ, giga_ * joule )
+
+u( Energy, erg, dyne * centimeter ) // ergon (Greek) "work"
+
+d( Energy, kiloelectronvolt, keV, kilo_ * electronvolt   )
+d( Energy, megaelectronvolt, MeV, mega_ * electronvolt   )
+d( Energy, gigaelectronvolt, GeV, giga_ * electronvolt   )
+d( Energy, teraelectronvolt, TeV, tera_ * electronvolt   )
+
+d( Energy, calorie_IT,   cal_IT,   4.1868    * joule ) // International Table
+d( Energy, calorie_th,   cal_th,   4.184     * joule ) // thermochemical
+d( Energy, calorie_15,   cal_15,   4.18580   * joule ) // 14.5 -> 15.5 degC
+d( Energy, calorie_20,   cal_20,   4.18190   * joule ) // 19.5 -> 20.5 degC
+d( Energy, calorie_mean, cal_mean, 4.19002   * joule ) // 0 -> 100 degC / 100
+
+d( Energy, calorie,      cal,      calorie_IT        ) // calor (Latin) "heat"
+u( Energy, thermcalorie,           calorie_th        )
+d( Energy, Calorie,      kcal,     kilo_ * calorie   )
+u( Energy, foodcalorie,            Calorie           )
+d( Energy, thermie,      th,       1e+6 * calorie_15 )
+u( Energy, duty,                   poundforce * foot )
+
+d( Heat, britishthermalunit, BTU, 1.055056e+3 * joule       )
+a( Heat, btu_IT,                  britishthermalunit        )
+u( Heat, therm,                   1.055e+8    * joule       )
+u( Heat, Q_unit,                  exa_ * britishthermalunit )
+d( Heat, frigorie,        fg,     kilo_ * calorie_15        )
+
+u( GasFlow, sccm, atmosphere * cub(centimeter) per minute )
+u( GasFlow, sccs, atmosphere * cub(centimeter) per second )
+u( GasFlow, scfh, atmosphere * cub(foot) per hour         )
+u( GasFlow, scfm, atmosphere * cub(foot) per minute       )
+u( GasFlow, slpm, atmosphere * liter per minute           )
+
+u( Power, poncelet,        100.  * watt )
+  // ---  honors Jean Victor Poncelet (1788-1867) of France
+d( Power, kilowatt, kW,    kilo_ * watt )
+d( Power, megawatt, MW,    mega_ * watt )
+d( Power, gigawatt, GW,    giga_ * watt ) // hurray, Marty McFly!
+u( Power, abwatt,          0.1 * micro_ * watt )
+d( Power, statwatt, statW, 1e-07 * watt )
+
+d( Power, horsepower,      hp, 550. * foot * pound * force per second    )
+u( Power, metrichorsepower,    75. * kilogram * force * meter per second )
+u( Power, electrichorsepower,  746.    * watt                            )
+u( Power, boilerhorsepower,    9809.50 * watt                            )
+u( Power, waterhorsepower,     746.043 * watt                            )
+u( Power, brhorsepower,        745.70  * watt                            )
+u( Power, donkeypower,         250.    * watt                            )
+
+u( Power, lusec,  milli_ * torr * liter per second )
+u( Power, clusec, centi_ * lusec                   )
+
+u( Pressure, bar,                       100. * kilo_ * nt_pascal )
+d( Pressure, kilobar,             kbar, kilo_ * bar             )
+d( Pressure, millibar,            mbar, milli_ * bar            )
+u( Pressure, vac,                       millibar                )
+d( Pressure, atmosphere,          atm,  101325. * nt_pascal     )
+d( Pressure, technicalatmosphere, at,   kgf per sq(centimeter)  )
+u( Pressure, tor,                       nt_pascal               )
+d( Pressure, torr,                Torr, atm / 760.              )
+  // ---  both honor Evangelista Torricelli (1608-1647) of Italy
+d( Pressure, barye,               ba,   dyn per sq(centimeter)  )
+u( Pressure, barie,                     barye                   )
+u( Pressure, barad,                     barye                   )
+u( Pressure, psi,                       poundforce per sq(inch) )
+u( Pressure, ksi,                       kip        per sq(inch) )
+d( Pressure, pieze,               pz,   sthene per sq(meter)    )
+  // piezein (Greek) "press"
+d( Pressure, centiHg,             cmHg, gravity * cm * 13595.1 * kg per m3 )
+d( Pressure, milliHg,             mmHg, gravity * mm * 13595.1 * kg per m3 )
+
+d( DynamicViscosity, poise,      P,  gram per centimeter per second   )
+d( DynamicViscosity, poiseuille, Pl, newton * second per sq(meter)    )
+  // ---  both honor Jean Louis Marie Poiseuille (1799-1869) of France
+u( DynamicViscosity, reyn,           poundforce * second per sq(inch) )
+  // ---  honors Osborne Reynolds (1842-1912) of Northern Ireland
+
+// -----  Length-Time-Current:
+//
+d( ElectricDipoleMoment, debye, D, 3.33564e-30 * coulomb * meter )
+  // ---  honors Peter Joseph Wilhelm Debye (1884-1966) of Holland
+  
+u( DipoleMomentPerArea, helmholtz, debye per sq(angstrom) )
+  // ---  honors Hermann Ludwig Ferdinand van Helmholtz (1821-1894) of Germany
+
+// -----  Length-Time-Temperature:
+//
+u( SpecificHeat, mayer, joule per gram per kelvin )
+  // ---  honors Julius Robert von Mayer (1814-1878) of Germany
+
+// -----  Mass-Time-Current:
+//
+d( MagneticFluxDensity, gauss,     Gs,    abvolt * second per sq(cm) )
+  // ---  honors Karl Friedrich Gauss (1777-1855) of Germany
+d( MagneticFluxDensity, kilogauss, kGs,   kilo_ * gauss              )
+d( MagneticFluxDensity, abtesla,   abT,   gauss                      )
+d( MagneticFluxDensity, stattesla, statT, 1e-2 * tesla / c.measuredIn(m per s) )
+
+u( Exposure, roentgen, /*R,*/ 2.58e-4 * coulomb per kilogram )
+u( Exposure, rontgen,         roentgen                       )
+  // ---  honors Wilhelm Konrad Roentgen (1845-1923) of Germany
+
+// -----  Mass-Time-Temperature:
+//
+
+u( ThermalInsulance, clo, 0.155 * sq(meter) * kelvin per watt )
+
+
+
+// ======================================================================
+//
+// Selected dimension-4tuple units:
+//
+// ======================================================================
+
+
+// -----  Length-Mass-Time-Current:
+//
+d( MagneticFlux, abweber,   abWb,   1e-8 * weber )
+d( MagneticFlux, statweber, statWb, 1e-6 * weber / c.measuredIn(m per s) )
+d( MagneticFlux, maxwell, Mx, abweber            )
+  // ---  honors James Clerk Maxwell (1831-1879) of Scotland
+u( MagneticFlux, unitpole,    4. * pi * maxwell  )
+u( MagneticFlux, kappline,    6000. * maxwell    )
+  // ---  named by and for Gilbert Kapp (1852-1922)
+
+d( Inductance, abhenry,   abH,   nano_ * henry )
+d( Inductance, stathenry, statH, 1e-5 * henry / sq(c.measuredIn(m per s)) )
+
+u( Elastance, daraf, reciprocal farad )
+
+d( Potential, kilovolt, kV, kilo_ * volt )
+d( Potential, megavolt, MV, mega_ * volt )
+u( Potential, crocodile,    megavolt     )
+
+d( Potential, abvolt,   abV,   10. * nano_ * volt )
+d( Potential, statvolt, statV, 1e-6 * volt / c.measuredIn(m per s) )
+
+u( Resistance, abohm,   nano_ * ohm )
+u( Resistance, statohm, 1e-5 * ohm / sq(c.measuredIn(m per s)) )
+
+u( ElectricResistivity, preece, 1e+13 * ohm * meter )
+  // honors Sir William Henry Preece (1834-1913) of Wales
+
+u( Reluctance, sturgeon, reciprocal henry )
+  // ---  honors William Sturgeon (1783-1850) of England
+
+u( Conductance, mho,                reciprocal ohm     ) // = siemens
+u( Conductance, abmho,              reciprocal abohm   )
+u( Conductance, statmho,            1.112646e-12 * mho )
+d( Conductance, absiemens,   abS,   giga_ * siemens    )
+d( Conductance, statsiemens, statS, 1e-5 * siemens / sq(c.measuredIn(m per s)) )
+
+d( Capacitance, millifarad, mF, milli_  * farad )
+d( Capacitance, microfarad, uF, micro_  * farad )
+d( Capacitance, nanofarad,  nF, nano_   * farad )
+d( Capacitance, picofarad,  pF, pico_   * farad )
+u( Capacitance, puff,           pico_   * farad )
+
+d( Capacitance, abfarad,   abF,   giga_ * farad     )
+d( Capacitance, statfarad, statF, 1e+5 * farad / sq(c.measuredIn(m per s)) )
+u( Capacitance, jar,              kilo_ * statfarad )
+
+
+// -----  Length-Mass-Time-Temperature:
+//
+d( Entropy, clausius, Cl, Calorie per kelvin )
+  // ---  honors Rudolf Julius Emanuel Clausius (1822-1888) of Germany
+
+u( ThermalCurrent, thermalampere, watt per kelvin )
+
+u( ThermalResistance, thermalohm, kelvin per watt )
+u( ThermalResistance, fourier,    kelvin per watt )
+  // ---  honors Jean Baptiste Joseph Fourier (1768-1830) of France
+
+
+
+// ======================================================================
+//
+// Selected dimension-5tuple units:
+//
+// ======================================================================
+
+
+// -----  Length-Mass-Time-Temperature-AmountOfSubstance:
+//
+u( MolarHeatCapacity, Clausius, joule per mole per kelvin )
+
+
+
+// ======================================================================
+//
+// Miscellaneous constants and units:
+//
+// ======================================================================
+
+
+d( Length, lightyear,   ly, lightspeed * julianyear )
+u( Length, lightminute,     lightspeed * minute     )
+u( Length, lightsecond,     lightspeed * second     )
+u( Length, hubble,          giga_ * lightyear       )
+  // ---  honors Edwin Powell Hubble (1889-1953) of the USA
+
+u( Density, kGasThreshold, cg per cm3  )
+
+d( Area, electroncrosssection, alpha_rcl2, alpha * sq(r_e) )
+
+u( EnergyArea, twopi_mc2_rcl2, twopi * r_e * r_e * m_e * c2  )
+
+u( LuminousEfficacy, luminousEfficacy540, 683. * watt per steradian per candela  )
+
+
+
+// ======================================================================
+//
+// Undo local notational conveniences:
+//
+// ======================================================================
+
+
+#undef  d
+#undef  cub
+#undef  sq
+#undef  reciprocal
+#undef  per
+
+
+// ----------------------------------------------------------------------

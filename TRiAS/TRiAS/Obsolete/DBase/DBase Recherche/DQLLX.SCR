@@ -1,0 +1,9 @@
+/yylval/                s/yylval/(*pyylval)/g
+/yyval/                 s/yyval/(*pyyval)/g
+/# define LEXDEBUG/     d
+/fprintf(yyout,/        s/fprintf(yyout,/printf(/
+/FILE \*/               d
+/# include <stdio.h>/   d
+s/printf(\"bad switch yylook %d\",nstr);/yyerror(\"Interner Fehler im LEX !\");/
+
+

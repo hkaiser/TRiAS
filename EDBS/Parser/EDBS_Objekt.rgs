@@ -1,0 +1,26 @@
+HKCR
+{
+	Edbs.OBJ_EDBS.1 = s 'OBJ_EDBS Class'
+	{
+		CLSID = s '{BA588FB8-4E26-11D3-8E0F-00105AF354F9}'
+	}
+	Edbs.OBJ_EDBS = s 'OBJ_EDBS Class'
+	{
+		CLSID = s '{BA588FB8-4E26-11D3-8E0F-00105AF354F9}'
+		CurVer = s 'Edbs.OBJ_EDBS.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {BA588FB8-4E26-11D3-8E0F-00105AF354F9} = s 'OBJ_EDBS Class'
+		{
+			ProgID = s 'Edbs.OBJ_EDBS.1'
+			VersionIndependentProgID = s 'Edbs.OBJ_EDBS'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{0F117331-4B39-11D3-8E0C-00105AF354F9}'
+		}
+	}
+}

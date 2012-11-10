@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASDB.$$safe_root$$.CursorProperty.1 = s '$$safe_root$$CursorProperty Class'
+	{
+		CLSID = s '{$$GUID_CURSORPROPERTY_OBJECT$$}'
+	}
+	TRiASDB.$$safe_root$$.CursorProperty = s '$$safe_root$$CursorProperty Class'
+	{
+		CLSID = s '{$$GUID_CURSORPROPERTY_OBJECT$$}'
+		Curver = s 'TRiASDB.$$safe_root$$.CursorProperty.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {$$GUID_CURSORPROPERTY_OBJECT$$} = s '$$safe_root$$CursorProperty Class'
+		{
+			ProgID = s 'TRiASDB.$$safe_root$$.CursorProperty.1'
+			VersionIndependentProgID = s 'TRiASDB.$$safe_root$$.CursorProperty'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{$$GUID_LIBID$$}'
+		}
+	}
+}

@@ -1,0 +1,170 @@
+'\"et
+.if t .TH IMPBM 3IM "August 19, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMPBM 3IM "August 19, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+impbm \- PBM+ suite PBM file translation
+.SH SYNOPSIS
+.nf
+\fB
+#include <stdio.h>
+#include "sdsc.h"
+#include "im.h"
+.sp 1
+int ImFileRead( fd, "pbm", flagsTable, dataTable )
+	int         fd;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileFRead( fp, "pbm", flagsTable, dataTable )
+	FILE         *fp;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileWrite( fd, "pbm", flagsTable, dataTable )
+	int         fd;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileFWrite( fp, "pbm", flagsTable, dataTable )
+	FILE         *fp;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+\fR
+.fi
+.SH DESCRIPTION
+\fBpbm\fR image files are used by various tools in Jef Poskanzer's PBM+
+tool suite.
+See the PBM documentation set for details on how to use these tools.
+.SH "FILE RECOGNITION"
+\fBpbm\fR files are recognized by the filename suffixes:  .pbm.  .pgm, .pnm, .rpbm, .rpgm, .rpnm, .rppm
+.SH NOTES
+SDSC image library support of the \fBpbm\fR format does not require
+use of the PBM+ libraries and tools.
+It does not contain proprietary code or any code from Jef Poskanzer's
+original PBM+ suite.  \fBpbm\fR format handling is available on any
+machine for which the SDSC image library is available. 
+.LP
+PBM (Portable Bit Map) started with support for 1-bit monochrome
+images.  Support was added for 8-bit grayscale images, and 24-bit
+rgb images/
+.LP
+The original file formats were ASCII.  To reduce the disk space
+required to store such files, three additional "raw" formats were defined.
+The raw formats stored the same information as their ASCII
+counterparts but in binary, reducing the disk space requirement by
+around 60%. 
+.LP
+The image library will create the ASCII version of this format when
+the compression type 'ASCII' is indicated.  Otherwise, we create the
+binary version.
+.LP
+Today the PBM+ suite contains six related file formats:
+.RS 0.5i
+.LP
+.TS
+l l.
+PBM	ASCII 1-bit bitmaps
+PGM	ASCII 8-bit grayscale pixel maps
+PPM	ASCII 24-bit RGB color pixel maps
+RPBM	Raw binary 1-bit bitmaps
+RPGM	Raw binary 8-bit grayscale pixel maps
+RPPM	Raw binary 24-bit RGB color pixel maps
+.TE
+.RE
+.LP
+The original PBM suite included several tools.  Some handled PBM
+files but not PGM or PPM.  Others handled PGM files, but not PBM or PPM.
+Then the newer PBM+ distribution introduced a set of tools that
+recognized all six file formats.  These tools generically referred to
+image files as PNM (Portable aNy Map) files.
+.LP
+The SDSC image library treats the six PBM+ file formats separately.
+This \fBman\fP page only discusses the PBM file format (ASCII
+monochrome).   The remaining file formats are disucussed in their own
+\fBman\fP pages.  
+.SS "Reading PBM image files"
+For compatibility with the PBM+ suite, the SDSC image library can read
+any of the PBM+ file formats when the \fBpbm\fP format name is used.
+PBM+ files are read in and mapped to VFBs as follows:
+.ne 4
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l l.
+\fBFile format	Depth/color	Mapped to VFB\fR	
+PBM	1-bit monochrome	\fBIMVFBMONO\fR without a CLT
+PGM	8-bit color index	\fBIMVFBINDEX8\fR without a CLT
+PPM	24-bit RGB	\fBIMVFBRGB\fR without a CLT
+RPBM	1-bit monochrome	\fBIMVFBMONO\fR without a CLT
+RPGM	8-bit color index	\fBIMVFBINDEX8\fR without a CLT
+RPPM	24-bit RGB	\fBIMVFBRGB\fR without a CLT
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+White space and comments (lines starting with # and extending to the
+end of the line) are ignored.  White space and comments are not
+allowed within the raw binary image body.  
+.SS "Writing PBM image files"
+The SDSC image library writes \fBIMVFBMONO\fR VFBs as \fBpbm\fR monochrome
+ASCII bitmap files.
+.LP
+\fBpbm\fR files support no compression schemes.
+.LP
+Other image library VFB types are converted to \fBIMVFBMONO\fR VFBs
+prior to being written out.  See the \fBImFileWrite\fR(3IM)
+\fBman\fP page for details.
+.SH ERRORS
+In addition to those listed for \fBImFileRead\fR(3IM),
+\fBpbm\fR file reading returns the following error codes: 
+.ne 4
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEMAGIC	Bad magic number in image file
+IMEMALLOC	Cannot allocate enough memory
+IMESYNTAX	Premature EOF
+IMESYS	System call error in read operation
+.TE
+.if t .in -0.5i
+.if n .in -5
+.LP
+In addition to those listed for \fBImFileWrite\fR(3IM),
+\fBpbm\fR file writing returns the following error codes: 
+.ne 2
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEMALLOC	Cannot allocate enough memory
+IMESYS	System call error in write operation
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH DOCUMENTATION
+\fBpbm\fP(5), \fBpgm\fP(5), and \fBppm\fP(5) from the PBM+ \fBman\fP
+page set. 
+.SH SEE ALSO
+\fBImIntro\fR(3IM),
+\fBImErrNo\fR(3IM),
+\fBimconv\fR(1IM),
+\fBimfile\fR(1IM),
+\fBimformats\fR(1IM),
+\fBimpgm\fR(3IM),
+\fBimpnm\fR(3IM),
+\fBimppm\fR(3IM),
+\fBimrpbm\fR(3IM),
+\fBimrpgm\fR(3IM),
+\fBimrpnm\fR(3IM),
+\fBimrppm\fR(3IM)
+.SH AUTHORS
+Dave Nadeau and Don Doering
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

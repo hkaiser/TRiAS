@@ -1,0 +1,104 @@
+'\"t
+.if t .TH IMVFBROLL 3IM "September 2, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY" 
+.if n .TH IMVFBROLL 3IM "September 2, 1992" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImVfbRoll - Roll a virtual frame buffer vertically and/or horizontally
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+ImVfb *ImVfbRoll( srcVfb, xPixels, yPixels, dstVfb )
+	ImVfb	*srcVfb ;
+	int	xPixels;
+	int	yPixels;
+	ImVfb	*dstVfb ;
+.fi
+\fR
+.SH DESCRIPTION
+\fBImVfbRoll\fR rolls a \fIsrcVfb\fR virtual frame buffer by \fIxPixels\fR in
+the X direction, and \fIyPixels\fR in the Y direction and stores the
+result in \fIdstVfb\fR.  A pointer to the rolled VFB is returned.
+.LP
+Rolling an image copies pixel (0,0) to pixel (\fIxPixels,yPixels\fR),
+pixel (1,0) to (\fIxPixels\fR+1,\fIyPixels\fR), and pixel (2,0) to
+(\fIxPixels\fR+2,\fIyPixels\fR), and so on.  Pixels that fall off the image
+edges wrap around to the opposite edge.  The effect is to slide an image
+horizontally and/or vertically, wrapping around in a cyclical fashion.
+.LP
+\fIdstVfb\fR is the VFB to contain the rolled image.
+If \fIdstVfb\fR is the constant \fBIMVFBNEW\fR, a new VFB is allocated 
+with the same size as \fIsrcVfb\fR.  A pointer to the new VFB is returned.
+.LP
+Otherwise, pixels in \fIsrcVfb\fR are rolled and copied
+into \fIdstVfb\fR.  \fIdstVfb\fR must have the same image fields and
+dimensions as \fIsrcVfb\fR.
+.LP
+Positive values of \fIxPixels\fR roll the image towards the right,
+negative values roll it towards the left.
+Likewise, positive values of \fIyPixels\fR roll the image towards the bottom,
+negative values roll it towards the top.
+.SH NOTES
+\fIsrcVfb\fR and \fIdstVfb\fR may be the same VFB without unpleasant
+side-effects.
+.LP
+Image rolling may be used for a variety of simple pan effects, such as
+cyclical backgrounds for cartoon chase sequence animations.
+.LP
+Image rolling may also be used in the processing of scanned or generated
+texture images prior to repeated side-by-side texture mapping, such as
+for grassy planes, carpetted areas, or brick or stone walls.  In each of these
+cases, the original texture image will be repeated over a large area
+with the left edge of one copy butting up against the right edge of the
+next copy, and the top edge of one copy butting up against
+the bottom edge of the next.
+In order to avoid obvious grid lines in texturing it is
+important that the left and right edges, and top and bottom edges of the
+texture match each other.  This may be done by bringing the image into a
+paint system and adjusting the pixels to make them match.
+.LP
+However, it is hard to visually match the left edge of an image with its
+right edge when those edges aren't next to each other.  \fBImVfbRoll\fR
+may be used to bring them next to each other.  Roll the image half the
+image's width and height.  This places the left-right and top-bottom edges
+next to each other in the middle of the image.  Now, bring the image into a
+paint system and smear the joining line.  The image will then be ready for
+seamless side-by-side texture mapping.
+.SH RETURNS
+Upon success, \fBImVfbRoll\fR returns a pointer to the destination Vfb.
+Upon failure, \fBIMVFBNULL\fR is returned and \fBImErrNo\fR set
+to one of the following:
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+\fBIMEFIELD\fR	\fIdstVfb\fR's fields aren't the same as the \fIsrcVfb\fR
+\fBIMEMALLOC\fR	Cannot allocate enough memory for the new Vfb
+\fBIMENOVFB\fR	\fIsrcVfb\fR is \fBIMVFBNULL\fR
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH SEE ALSO
+\fBImIntro\fR (3M),
+\fBImErrNo\fR (3M),
+\fBImCltRoll\fR (3IM),
+\fBimflip\fR (1IM),
+\fBimresize\fR (1IM),
+\fBimroll\fR (1IM),
+\fBimrotate\fR (1IM),
+\fBimshear\fR (1IM),
+\fBimscale\fR (1IM),
+\fBImVfbFlip\fR (3IM),
+\fBImVfbResize\fR (3IM),
+\fBImVfbRotate\fR (3IM),
+\fBImVfbXShear\fR (3IM),
+\fBImVfbYShear\fR (3IM)
+.SH AUTHORS
+Chris Groening and Dave Nadeau
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

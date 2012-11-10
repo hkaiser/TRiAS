@@ -1,0 +1,263 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "ver.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Deutsch (Deutschland) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_COVERNAME DIALOG DISCARDABLE  20, 20, 216, 166
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Covernamen prüfen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Objekt-&Klassen:",-1,3,3,60,8
+    LISTBOX         IDL_COVERNAME,4,13,209,109,LBS_SORT | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "&Covername:",-1,3,124,46,8
+    EDITTEXT        IDE_COVERNAME,3,134,208,12,ES_UPPERCASE | ES_AUTOHSCROLL | 
+                    ES_OEMCONVERT
+    PUSHBUTTON      "&Speichern",IDB_STORE,7,149,46,14,WS_GROUP
+    PUSHBUTTON      "&Hilfe",IDB_HELP,59,149,45,14,WS_DISABLED
+    PUSHBUTTON      "&Abbrechen",IDB_ABBRUCH,110,149,45,14
+    DEFPUSHBUTTON   "&OK",IDB_OK,161,149,47,14
+END
+
+IDD_MERKMALNAME DIALOG DISCARDABLE  20, 20, 216, 166
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Merkmalsnamen prüfen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Merkmalsliste:",-1,3,3,60,8
+    LISTBOX         IDL_MERKMALNAME,4,13,209,109,LBS_SORT | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Merkmals&name:",-1,3,124,64,8
+    EDITTEXT        IDE_MERKMALNAME,3,134,208,12,ES_UPPERCASE | 
+                    ES_AUTOHSCROLL | ES_OEMCONVERT
+    PUSHBUTTON      "&Speichern",IDB_STOREM,7,149,46,14,WS_GROUP
+    PUSHBUTTON      "&Hilfe",IDB_MERM_HELP,59,149,45,14,WS_DISABLED
+    PUSHBUTTON      "&Abbrechen",IDB_ABBRUCHM,110,149,45,14
+    DEFPUSHBUTTON   "&OK",IDB_OKM,161,149,47,14
+END
+
+IDD_PARAMS DIALOG DISCARDABLE  20, 20, 216, 193
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Optionale Parameter"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " Aus&gabeform ",IDC_STATIC,4,7,145,55
+    CONTROL         "Cover für &jede Objektklasse",IDB_MANYCOVERS,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,24,138,12
+    CONTROL         "&Vier Cover (Fläche, Linie, Punkt, Text)",IDB_FOURCOVER,
+                    "Button",BS_AUTORADIOBUTTON,7,40,138,10
+    LTEXT           "Bezugs&maßstab:",IDT_MASSTABTEXT,5,104,64,8
+    EDITTEXT        IDE_BEZUGSM,70,102,58,13,ES_AUTOHSCROLL
+    CONTROL         "&Labelpunkte für Flächen erzeugen",IDB_CREATELABELS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,119,135,10
+    CONTROL         "&Inseln zusätzlich ausgeben",IDB_INSEL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,5,135,135,10
+    GROUPBOX        " Beschreibung ",IDC_STATIC,4,150,205,39
+    LTEXT           "",IDT_DESCRIPTION,10,161,192,23,NOT WS_GROUP
+    PUSHBUTTON      "&Covernamen ...",IDB_COVERNAMES,154,112,55,14,WS_GROUP
+    PUSHBUTTON      "&Feldnamen ...",IDB_MERKMNAMES,154,129,55,14
+    DEFPUSHBUTTON   "&OK",IDOK,154,11,55,14,WS_GROUP
+    PUSHBUTTON      "&Hilfe",IDB_PARAMHELP,154,48,55,14,WS_DISABLED
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,154,27,55,14
+    GROUPBOX        " Komprimierungstyp ",IDC_STATIC,4,67,206,28
+    CONTROL         "unkomprimiert",IDC_COMPRNONE,"Button",
+                    BS_AUTORADIOBUTTON,7,79,68,10
+    CONTROL         "teilkomprimiert",IDC_COMPRPARTIAL,"Button",
+                    BS_AUTORADIOBUTTON,73,79,66,10
+    CONTROL         "komprimiert",IDC_COMPRFULL,"Button",BS_AUTORADIOBUTTON,
+                    140,79,62,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// 1084
+//
+
+BND_FORMAT              1084    MOVEABLE PURE   "BNDFORMT.DAT"
+TIC_FORMAT              1084    MOVEABLE PURE   "TICFORMT.DAT"
+PAT_FORMAT              1084    MOVEABLE PURE   "PATFORMT.DAT"
+AAT_FORMAT              1084    MOVEABLE PURE   "AATFORMT.DAT"
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""ver.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""triasarc.rcv""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_TRIASARCEXPORT      REGISTRY DISCARDABLE    "TRiASArcExport.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ARCHEAD             "ARC  2"
+    IDS_TXTHEAD             "TXT  2"
+    IDS_LABHEAD             "LAB  2"
+    IDS_COVERHEAD           "EXP  0"
+    IDS_COVERFOOT           "EOS"
+    IDS_INFOHEAD            "IFO  2"
+    IDS_INFOFOOT            "EOI"
+    IDS_TICEXT              ".TIC"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_EXISTERRTEXT        "Dateiname %s existiert bereits."
+    IDS_MERKM_NOT_CHECKED   "Die zu erzeugenden Feldnamen sind nicht eindeutig.\nBitte den Dialog ""Feldnamen ..."" aufrufen."
+    IDS_STORECAPT           "Speichern"
+    IDS_STOREFORMAT         "Dateinamen %s überschreiben ?"
+    IDS_PALHEAD             "PAL  2"
+    IDS_CNTHEAD             "CNT  2"
+    IDS_LABELEXT            "LAB"
+    IDS_CNTEXT              ".CNT"
+    IDS_WARNUNG             "Warnung"
+    IDS_COMMENT             "&type - "
+    IDS_INTERNID            "#"
+    IDS_USERID              "-ID"
+    IDS_MERKMAL             "Merkmal"
+    IDS_MERKMALKTEXT        "MK"
+    IDS_NOMERKMALNAME       "Ungültiger Merkmalsname !"
+    IDS_MERKEXISTTEXT       "Merkmalsname %s existiert bereits."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_BNDEXT              ".BND"
+    IDS_PATEXT              ".PAT"
+    IDS_AATEXT              ".AAT"
+    IDS_INFOKENNUNG         "XX"
+    IDS_EXPEXT              ".E00"
+    IDS_IMPORT              "&type importiere %s ...\r\nimport cover %s %s"
+    IDS_FOUR_COVER          "Alle Flächen, Linien, Punkte und  Texte werden in jeweils ein Cover exportiert."
+    IDS_MANY_COVER          "Alle Objekte einer Klasse werden in jeweils  ein Cover  exportiert."
+    IDS_BEZUGS_MASSTAB      "Mit Hilfe des  Bezugsmaßstabs werden die Höhen der Text-Objekte berechnet."
+    IDS_CREATE_LABELS       "Für alle Flächen werden Labelpunkte erzeugt."
+    IDS_CREATE_NO_LABELS    "Für Flächen werden keine Labelpunkte erzeugt."
+    IDS_ARIALTEXT           "Arial"
+    IDS_INSEL               "In Flächen enthaltene Inseln werden als separate Fläche mit dem ARC/INFO-User-ID 99999 exportiert."
+    IDS_IDTEXT              "Id"
+    IDS_OPERRTEXT           "Fehler beim Öffnen der Datei %s."
+    IDS_NOT_INSEL           "In Flächen enthaltene Inseln werden nicht als separate Fläche exportiert."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MSTOREFORMAT        "Merkmalsnamen %s überschreiben ?"
+    IDS_COVER_NOT_CHECKED   "Die Namen der zu erzeugenden Coverages sind nicht eindeutig.\nBitte den Dialog ""Covernamen ..."" aufrufen."
+    IDS_TEXT_TRUNC_WARN     "Die Länge von %ld Texten wurde auf 80 Zeichen gekürzt."
+    IDS_ERROR               "Fehler"
+    IDS_MERKMWARNGTYP       "Unbekannter Merkmalstyp !\nMerkmalskode: %ld."
+    IDS_OKNAME              "+"
+    IDS_NOTOKNAME           "-"
+    IDS_CNAMEEXIST          "%d Covernamen sind nicht einzigartig !"
+    IDS_MNAMEEXIST          "%d Merkmalsnamen sind nicht einzigartig !"
+    IDS_LABMAINEXT          ".PAM"
+    IDS_LABUNIEXT           ".PAU"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MERKMWARGATTR       "Fehlerhafte Merkmals-Attribute !\nMerkmalskode: %ld."
+    IDS_NOAREA              "Fehler in der Geometrie einer Fläche !\nObjektnummer: %ld."
+    IDS_NOLINE              "Fehler in der Geometrie einer Linie !\nObjektnummer: %ld."
+    IDS_NOPOINT             "Stützpunktanzahl ungleich 1 in Punktobjekt !\nObjektnummer: %ld."
+    IDS_NOTEXT              "Stützpunktanzahl ungleich 1 in Textobjekt !\nObjektnummer: %ld."
+    IDS_MERKMWARNGTYPX      "Unbekannter Merkmalstyp !\nMerkmalskode: %lx."
+    IDS_MERKMWARGATTRX      "Fehlerhafte Merkmals-Attribute !\nMerkmalskode: %lx."
+    IDS_NOMASSTAB           "Kein oder ungültiger Bezugsmaßstab !\n Texthöhen können nicht korrekt ermittelt werden."
+    IDS_IDENTWARNGTYP       "Unbekannter Objekttyp !\nObjektklasse: %s."
+    IDS_IDENTWARNGATTR      "Fehlerhafte Identifikator-Attribute !\nObjektklasse: %s."
+    IDS_TEXTOBJMKODE        "TextObjMCode"
+    IDS_POLYLAB             ".LAB"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_OBJCLASSNAME        "OBJKLASSE"
+    IDS_COMPR_NONE          "Keine Komprimierung der Daten im E00-File"
+    IDS_COMPR_PARTIAL       "Teilweise Komprimierung der Daten im E00-File."
+    IDS_COMPR_FULL          "Volle Komprimierung der Daten im E00-File."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PROJNAME            "TRiASArc"
+    IDS_DISPLAYNAME         "ARC/INFO-Austauschformat"
+    IDS_DEFEXT              "AML"
+    IDS_LONGCLASSNAME       "Export in das ARC/INFO Austauschformat"
+END
+
+#endif    // Deutsch (Deutschland) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "triasarc.rcv"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

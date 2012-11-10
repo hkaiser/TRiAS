@@ -1,0 +1,2457 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+// Generated Help ID header file
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "resource.hm"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 7, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\gak.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.deu\\afxres.rc""          // Standard components\r\n"
+    "#include ""l.deu\\afxprint.rc""        // printing/print preview resources\r\n"
+    "#include ""l.deu\\afxdb.rc""           // Database resources\r\n"
+    "#endif\r\n"
+    "#include ""defabout.dlg""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\idr_main.ico"
+IDR_GAKTYPE             ICON    DISCARDABLE     "RES\\gakDoc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP  MOVEABLE PURE   "res\\Toolbar.bmp"
+ARTNEUD                 BITMAP  DISCARDABLE     "res\\ARTNEUD.bmp"
+ARTNEUU                 BITMAP  DISCARDABLE     "res\\ARTNEUU.bmp"
+ARTNEUX                 BITMAP  DISCARDABLE     "res\\ARTNEUX.bmp"
+ARTNEUF                 BITMAP  DISCARDABLE     "res\\ARTNEUF.bmp"
+ARTDELU                 BITMAP  DISCARDABLE     "res\\artdelu.bmp"
+ARTDELD                 BITMAP  DISCARDABLE     "res\\artdeld.bmp"
+ARTDELX                 BITMAP  DISCARDABLE     "res\\artdelx.bmp"
+ARTDELF                 BITMAP  DISCARDABLE     "res\\artdelf.bmp"
+ARTCHAD                 BITMAP  DISCARDABLE     "res\\artchad.bmp"
+ARTCHAF                 BITMAP  DISCARDABLE     "res\\artchaf.bmp"
+ARTCHAU                 BITMAP  DISCARDABLE     "res\\artchau.bmp"
+ARTCHAX                 BITMAP  DISCARDABLE     "res\\artchax.bmp"
+IDB_IMAGE_LIST          BITMAP  DISCARDABLE     "res\\imageli.bmp"
+IDB_ERZBILANZ           BITMAP  DISCARDABLE     "res\\bitmap1.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      IDM_STAMMDATEN
+    BUTTON      IDM_ABFALL
+    BUTTON      IDM_LOOK_NR
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    SEPARATOR
+    BUTTON      ID_RECORD_FIRST
+    BUTTON      ID_RECORD_PREV
+    BUTTON      ID_RECORD_NEXT
+    BUTTON      ID_RECORD_LAST
+    SEPARATOR
+    BUTTON      IDM_NEW_REKORD
+    BUTTON      IDM_DELETE_REKORD
+    BUTTON      IDM_CHANGE_KEY
+    SEPARATOR
+    BUTTON      IDB_ABGLEICH
+    SEPARATOR
+    BUTTON      ID_APP_ABOUT
+    BUTTON      ID_CONTEXT_HELP
+    BUTTON      IDM_AKTBILANZ
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&Daten"
+    BEGIN
+        MENUITEM "&Erzeugerdaten\tStrg+E",      IDM_STAMMDATEN
+        MENUITEM "&Abfalldaten\tStrg+A",        IDM_ABFALL
+        MENUITEM "Datensätze s&uchen ...\tStrg+F", IDM_LOOK_NR
+        MENUITEM SEPARATOR
+        MENUITEM "Ab&frage auswählen ...\tStrg+W", IDM_RECHERCHE
+        MENUITEM SEPARATOR
+        MENUITEM "Datenbank &reparieren",       IDM_REPAIR_DATABASE
+        MENUITEM "Datenbank &komprimieren ...", IDM_COMPACT_DATABASE
+        MENUITEM "Datenbank-&Statistik ...",    IDM_STATISTIK
+        MENUITEM SEPARATOR
+        MENUITEM "Daten importieren ...",       IDM_IMPORT
+        MENUITEM "Daten e&xportieren ...",      IDM_EXPORT
+        MENUITEM SEPARATOR
+        MENUITEM "Drucker&einrichtung ...",     ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "&Beenden",                    ID_APP_EXIT
+    END
+    POPUP "&Ansicht"
+    BEGIN
+        MENUITEM "&Symbolleiste",               ID_VIEW_TOOLBAR
+        MENUITEM "S&tatusleiste",               ID_VIEW_STATUS_BAR
+    END
+    POPUP "A&bgleich"
+    BEGIN
+        MENUITEM "&Neuen Abgleich starten ...", IDM_NEW_ABGLEICH
+        MENUITEM "&Letzten Abgleich fortsetzen ...", IDM_LAST_ABGLEICH
+        MENUITEM SEPARATOR
+        MENUITEM "&Erzeugerliste anzeigen ...", IDM_DRUCK_ERZLISTE
+    END
+    POPUP "&ODBC"
+    BEGIN
+        MENUITEM "&Datenquelle einrichten ...", IDM_CONFIG_DSN
+        MENUITEM "&Referenz-Datenquelle einrichten ...", IDM_ODBC_ACESS
+        MENUITEM SEPARATOR
+        MENUITEM "&Administrator aufrufen ...", IDM_CALL_ADMIN
+    END
+    POPUP "&Hilfe"
+    BEGIN
+        MENUITEM "&Hilfethemen",                ID_HELP_FINDER, HELP
+        MENUITEM "Hilfe zu &Datenbankfehlern ...", IDM_HELP_DATABSE_ERRORS
+        , HELP
+        MENUITEM SEPARATOR
+        MENUITEM "Inf&o über BAB ...",          ID_APP_ABOUT, HELP
+    END
+END
+
+IDR_GAKTYPE MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&Daten"
+    BEGIN
+        MENUITEM "&Erzeugerdaten\tStrg+E",      IDM_STAMMDATEN
+        MENUITEM "&Abfalldaten\tStrg+A",        IDM_ABFALL
+        MENUITEM "Datensätze s&uchen ...\tStrg+F", IDM_LOOK_NR
+        MENUITEM SEPARATOR
+        MENUITEM "Bilanz des aktuellen Erzeugers", IDM_AKTBILANZ
+        MENUITEM SEPARATOR
+        MENUITEM "&Drucken...\tStrg+P",         ID_FILE_PRINT
+        MENUITEM "Sei&tenansicht",              ID_FILE_PRINT_PREVIEW
+        MENUITEM "Drucker&einrichtung...",      ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "&Beenden",                    ID_APP_EXIT
+    END
+    POPUP "&Bearbeiten"
+    BEGIN
+        MENUITEM "&Rückgängig\tStrg+Z",         ID_EDIT_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "&Ausschneiden\tStrg+X",       ID_EDIT_CUT
+        MENUITEM "E&infügen\tStrg+V",           ID_EDIT_PASTE
+        MENUITEM "&Kopieren\tStrg+C",           ID_EDIT_COPY
+    END
+    POPUP "Daten&satz"
+    BEGIN
+        MENUITEM "&Erster Datensatz",           ID_RECORD_FIRST
+        MENUITEM "&Vorheriger Datensatz",       ID_RECORD_PREV
+        MENUITEM "&Nächster Datensatz",         ID_RECORD_NEXT
+        MENUITEM "&Letzter Datensatz",          ID_RECORD_LAST
+        MENUITEM SEPARATOR
+        MENUITEM "Ne&uer Datensatz",            IDM_NEW_REKORD
+        MENUITEM "Datensatz l&öschen",          IDM_DELETE_REKORD
+        MENUITEM "Schlüssel &ändern",           IDM_CHANGE_KEY
+        MENUITEM SEPARATOR
+        MENUITEM "Buchmarke &setzen",           IDM_SET_BOOKMARK
+        MENUITEM "Buchmarke &anspringen",       IDM_GOTO_BOOKMARK
+    END
+    POPUP "&Ansicht"
+    BEGIN
+        MENUITEM "&Symbolleiste",               ID_VIEW_TOOLBAR
+        MENUITEM "S&tatusleiste",               ID_VIEW_STATUS_BAR
+    END
+    POPUP "&Fenster"
+    BEGIN
+        MENUITEM "&Untereinander",              ID_WINDOW_TILE_HORZ
+        MENUITEM "&Nebeneinander",              ID_WINDOW_TILE_VERT
+        MENUITEM "Über&lappend",                ID_WINDOW_CASCADE
+        MENUITEM "&Symbole anordnen",           ID_WINDOW_ARRANGE
+    END
+    POPUP "Abgleich des aktuellen Erzeugers"
+    BEGIN
+        MENUITEM "... mit den zuletzt benutzten Einstellungen", 
+                                                IDM_ABGLEICH_AKT
+        MENUITEM "... mit neuen Einstellungen", IDM_ABGLEICH_AKTNEW
+    END
+    POPUP "&Hilfe"
+    BEGIN
+        MENUITEM "&Hilfethemen",                ID_HELP_FINDER
+        MENUITEM "Hilfe zu &Datenbankfehlern ...", IDM_HELP_DATABSE_ERRORS
+        MENUITEM SEPARATOR
+        MENUITEM "Inf&o über BAB ...",          ID_APP_ABOUT
+    END
+END
+
+IDM_POPUP MENU DISCARDABLE 
+BEGIN
+    POPUP "_POPUP"
+    BEGIN
+        MENUITEM "&Rückgängig",                 IDM_BACK
+        MENUITEM SEPARATOR
+        MENUITEM "&Ausschneiden",               IDM_CUT
+        MENUITEM "&Kopieren",                   IDM_COPY
+        MENUITEM "&Einfügen",                   IDM_INSERT
+        MENUITEM "&Löschen",                    IDM_DELETE
+        MENUITEM SEPARATOR
+        MENUITEM "Alles &markieren",            IDM_SELECT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE 
+BEGIN
+    "A",            IDM_ABFALL,             VIRTKEY, CONTROL, NOINVERT
+    "B",            IDM_AKTBILANZ,          VIRTKEY, CONTROL, NOINVERT
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    "E",            IDM_STAMMDATEN,         VIRTKEY, CONTROL, NOINVERT
+    "F",            IDM_LOOK_NR,            VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
+    VK_F1,          ID_HELP,                VIRTKEY, NOINVERT
+    VK_F1,          ID_CONTEXT_HELP,        VIRTKEY, SHIFT, NOINVERT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    "W",            IDM_RECHERCHE,          VIRTKEY, CONTROL, NOINVERT
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_AFI DIALOG DISCARDABLE  0, 0, 154, 101
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Bereich auswählen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "&AfI auswählen:",IDB_AFIS,"Button",BS_AUTORADIOBUTTON,5,
+                    5,90,10
+    COMBOBOX        IDC_AFIS,11,17,85,75,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,5,35,90,1
+    CONTROL         "&Kreis auswählen:",IDB_KREISE,"Button",
+                    BS_AUTORADIOBUTTON,5,40,90,10
+    COMBOBOX        IDC_KREISE,11,52,85,70,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         " &Nur Sonderabfälle",IDB_SONDER_ABF,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,5,75,95,10
+    DEFPUSHBUTTON   "&OK",IDOK,100,17,50,14,WS_DISABLED | WS_GROUP
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,100,32,50,14,NOT WS_TABSTOP
+    CONTROL         " Nur noch nicht &exportierte Datensätze",
+                    IDC_ONLYNOTEXPORTED,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,5,86,145,10
+END
+
+IDD_EXPORT_RESULT DIALOG DISCARDABLE  0, 0, 180, 92
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Ergebnis des Datenexports"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&OK",IDOK,62,70,55,14
+    RTEXT           "Exportierte Erzeugerdatensätze:",IDC_STATIC,0,10,120,10
+    RTEXT           "Exportierte Abfalldatensätze:",IDC_STATIC,0,25,120,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,5,41,172,1
+    RTEXT           "Exportierte Datensätze insgesamt:",IDC_STATIC,0,50,120,
+                    8
+    LTEXT           "",IDC_ERZ_CNT,125,10,35,8
+    LTEXT           "",IDC_ABF_CNT,125,25,35,8
+    LTEXT           "",IDC_SUM_CNT,125,50,35,8
+END
+
+IDD_EXPORT_TABLES DIALOG DISCARDABLE  0, 0, 185, 53
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Tabellen auswählen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " Export ",IDC_STATIC,5,5,115,40
+    CONTROL         " &Abfälle (Bilanzen)",IDB_ABFAELLE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,10,17,95,10
+    CONTROL         " &Erzeuger (Stammdaten)",IDB_ERZEUGER,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,10,30,90,10
+    DEFPUSHBUTTON   "&OK",IDOK,125,10,55,14,WS_GROUP
+    PUSHBUTTON      "A&bbrechen",IDCANCEL,125,26,55,14,NOT WS_TABSTOP
+END
+
+IDD_RECHERCHESTATUS DIALOG DISCARDABLE  20, 20, 195, 72
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CAPTION | 
+    WS_SYSMENU
+FONT 8, "MS Sans Serif"
+BEGIN
+    CTEXT           "",IDT_ACTIONTEXT,5,8,185,11
+    DEFPUSHBUTTON   "&Abbrechen",IDCANCEL,70,49,55,16
+    CONTROL         "Progress1",IDT_PROGRESS,"msctls_progress32",WS_BORDER,5,
+                    28,186,15
+END
+
+IDD_GAK_FORM DIALOG DISCARDABLE  0, 0, 64, 37
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+END
+
+IDD_ANFALLSTELLE DIALOG DISCARDABLE  0, 0, 276, 160
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Anfallstelle"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "&Anfallstelle:",IDC_STATIC,0,6,45,8
+    EDITTEXT        IDE_ANFALLSTELLE,50,7,225,14,ES_AUTOHSCROLL
+    RTEXT           "&Zur Anfall-\nstelle:",IDC_STATIC,0,27,45,15
+    EDITTEXT        IDE_BETRIEB,50,28,225,14,ES_AUTOHSCROLL
+    RTEXT           "&Straße:",IDC_STATIC,0,49,45,8
+    EDITTEXT        IDE_STRASSE,50,49,130,14,ES_AUTOHSCROLL
+    RTEXT           "&Hausnr./\nPostfach:",IDC_STATIC,185,48,35,15
+    EDITTEXT        IDE_HNR,225,49,50,14,ES_AUTOHSCROLL
+    RTEXT           "&PLZ:",IDC_STATIC,0,70,45,8
+    EDITTEXT        IDE_PLZ,50,70,50,14,ES_AUTOHSCROLL | ES_NUMBER
+    RTEXT           "&Ort:",IDC_STATIC,105,70,15,10
+    EDITTEXT        IDE_ORT,125,70,132,14,ES_AUTOHSCROLL | ES_READONLY | NOT 
+                    WS_TABSTOP
+    DEFPUSHBUTTON   "...",IDB_CHANGE,259,70,16,14
+    RTEXT           "&Gemeinde-\nkennzahl:",IDC_STATIC,0,90,45,20
+    EDITTEXT        IDE_GKZ,50,91,50,14,ES_AUTOHSCROLL | ES_READONLY | NOT 
+                    WS_TABSTOP
+    RTEXT           "&Kreiskürzel:",IDC_STATIC,157,91,45,8
+    EDITTEXT        IDE_KREIS_KUERZEL,207,92,50,14,ES_UPPERCASE | 
+                    ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
+    RTEXT           "&Bemerkungen:",IDC_STATIC,0,112,45,22
+    EDITTEXT        IDE_COMMENT,50,112,225,41,ES_MULTILINE | WS_VSCROLL
+END
+
+IDD_FIRMA DIALOG DISCARDABLE  0, 0, 276, 160
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Firma"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "&Firma/\nKörperschaft:",IDC_STATIC,3,3,45,18
+    EDITTEXT        IDE_FIRMA,53,4,220,14,ES_AUTOHSCROLL
+    RTEXT           "&Straße:",IDC_STATIC,3,23,45,8
+    EDITTEXT        IDE_STRASSE,53,22,130,14,ES_AUTOHSCROLL
+    RTEXT           "&Hausnr./\nPostfach:",IDC_STATIC,188,21,30,16
+    EDITTEXT        IDE_HNR,223,22,50,14,ES_AUTOHSCROLL
+    RTEXT           "&PLZ:",IDC_STATIC,3,42,45,8
+    EDITTEXT        IDE_PLZ,53,40,50,14,ES_AUTOHSCROLL | ES_NUMBER
+    RTEXT           "&Ort:",IDC_STATIC,108,41,25,8
+    EDITTEXT        IDE_ORT,138,40,135,14,ES_AUTOHSCROLL
+    RTEXT           "Adresse von Anfallstelle",IDC_STATIC,113,61,95,8
+    DEFPUSHBUTTON   "&Übernehmen",IDB_GET_ADDRESS,213,58,60,14
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,8,77,265,1
+    RTEXT           "&Ansprech-\npartner:",IDC_STATIC,3,83,45,18
+    EDITTEXT        IDE_PARTNER,53,84,220,14,ES_AUTOHSCROLL
+    RTEXT           "&Telefon:",IDC_STATIC,3,103,45,8
+    EDITTEXT        IDE_TELEFON,53,103,75,14,ES_AUTOHSCROLL
+    RTEXT           "Tele&fax:",IDC_STATIC,148,103,45,8
+    EDITTEXT        IDE_TELEFAX,198,103,75,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,8,124,265,1
+    RTEXT           "&Betreiber-Nr.:",IDC_STATIC,3,130,45,8
+    EDITTEXT        IDE_BETREIBER_NR,53,131,75,14,ES_AUTOHSCROLL
+    RTEXT           "B&ilanz-Nr.:",IDC_STATIC,148,130,45,8
+    EDITTEXT        IDE_BILANZ_NR,198,130,75,14,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_TABSTOP
+    CONTROL         "&Unterschrift auf Erhebungsbogen vorhanden",
+                    IDB_UNTERSCHRIFT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    53,148,220,10
+END
+
+IDD_ENTSORGUNG DIALOG DISCARDABLE  0, 0, 276, 160
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "BImSchG"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "&Anlage ist nach BImSchG, Nr.:",IDC_STATIC,5,20,60,27
+    EDITTEXT        IDE_BIMSCH_NUMMER,70,20,45,14,ES_AUTOHSCROLL
+    RTEXT           "&Spalte:",IDC_STATIC,120,20,35,8
+    COMBOBOX        IDC_SPALTE,160,20,30,45,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Anlagen-&Nr. nach\nBImSchG-\nGenehmigung:",IDC_STATIC,5,
+                    50,59,34
+    EDITTEXT        IDE_BIMSCH_NUMMERG,70,50,120,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,4,88,271,1
+    CONTROL         "An&zeige gemäß §11 NachwV liegt vor",IDB_LIEGT_VOR,
+                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,70,110,
+                    175,10
+    RTEXT           "An&trags-Nr.:",IDC_STATIC,5,125,60,8
+    EDITTEXT        IDE_ANUMMER,70,125,90,14,ES_AUTOHSCROLL | WS_GROUP
+    LTEXT           "des Anhangs zur\n4. BImSchV genehmigt.",IDC_STATIC,195,
+                    20,75,25
+END
+
+IDD_BRANCHE DIALOG DISCARDABLE  0, 0, 276, 160
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Branche"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "...",IDB_CHANGE,117,50,16,14
+    RTEXT           "Branchen-&Nr:",IDC_STATIC,0,50,60,8
+    EDITTEXT        IDE_NUMMER,65,50,50,14,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_TABSTOP
+    RTEXT           "&Bezeichnung:",IDC_STATIC,0,75,60,8
+    EDITTEXT        IDE_NAME,65,75,205,30,ES_MULTILINE | ES_READONLY | 
+                    WS_VSCROLL | NOT WS_TABSTOP
+END
+
+IDD_ANSPRECH DIALOG DISCARDABLE  0, 0, 276, 160
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Ansprechpartner"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " &Ansprechpartner für Anfallstelle ",IDC_STATIC,4,6,267,
+                    73
+    RTEXT           "&Name:",IDC_STATIC,12,19,60,8
+    EDITTEXT        IDE_NAME,75,19,115,14,ES_AUTOHSCROLL | WS_GROUP
+    RTEXT           "&Telefon:",IDC_STATIC,12,39,60,8
+    EDITTEXT        IDE_TELEFON,75,39,75,14,ES_AUTOHSCROLL
+    RTEXT           "Tele&fax:",IDC_STATIC,155,39,30,8
+    EDITTEXT        IDE_TELEFAX,190,39,75,14,ES_AUTOHSCROLL
+    RTEXT           "F&unktion:",IDC_STATIC,12,60,60,8
+    EDITTEXT        IDE_FUNKTION,75,59,115,14,ES_AUTOHSCROLL
+    GROUPBOX        " &Betriebsbeauftragter für Abfall der Anfallstelle ",
+                    IDC_STATIC,5,87,267,66
+    RTEXT           "Na&me:",IDC_STATIC,12,104,60,8
+    EDITTEXT        IDE_BB_NAME,75,103,115,14,ES_AUTOHSCROLL | WS_GROUP
+    RTEXT           "Te&lefon:",IDC_STATIC,12,128,60,8
+    EDITTEXT        IDE_BB_TELEFON,75,128,75,14,ES_AUTOHSCROLL
+    RTEXT           "Telefa&x:",IDC_STATIC,155,128,30,8
+    EDITTEXT        IDE_BB_TELEFAX,190,128,75,14,ES_AUTOHSCROLL
+END
+
+IDD_SEL_NUMMER DIALOGEX 0, 0, 211, 183
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Suche &Name:",IDC_STATIC,5,5,95,8
+    EDITTEXT        IDE_SEARCH,5,15,134,14,ES_AUTOHSCROLL,0,HIDE_SEARCH
+    LTEXT           "Suche N&ummer:",IDC_STATIC,144,5,67,8
+    EDITTEXT        IDE_SEARCH_NUMBER,143,15,62,14,ES_AUTOHSCROLL,0,
+                    HIDE_SEARCH_NUMBER
+    LTEXT           "&Vorhandene Einträge (%ld):",IDC_CNT,5,35,130,8
+    CONTROL         "List2",IDC_SELECT,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,5,45,200,115,0,
+                    HIDC_SELECT
+    CONTROL         "Im &Hintergrund speichern",IDB_STORE_DATA,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,5,165,95,10,0,
+                    HIDB_STORE_DATA
+    DEFPUSHBUTTON   "&OK",IDOK,104,165,50,14
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,156,165,50,14,NOT WS_TABSTOP
+END
+
+IDD_USER_NAME DIALOGEX 0, 0, 135, 74
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Systeminformationen eingeben"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CTEXT           "Bitte einen für jeden Programmstart",IDC_STATIC,0,5,135,
+                    8
+    CTEXT           "eindeutigen &Nutzernamen eingeben:",IDC_STATIC,0,15,135,
+                    8
+    EDITTEXT        IDE_USER_NAME,7,31,120,14,ES_UPPERCASE | ES_AUTOHSCROLL,
+                    0,HIDE_USER_NAME
+    DEFPUSHBUTTON   "&OK",IDOK,7,52,55,14,WS_DISABLED
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,73,52,55,14
+END
+
+IDD_LOOK_NR DIALOGEX 0, 0, 124, 149
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Erzeuger suchen"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Bitte &Nummern-Maske eingeben,",IDC_STATIC,5,5,105,8
+    LTEXT           "z.B.: 'P021':",IDC_STATIC,5,15,105,8
+    EDITTEXT        IDE_NUMBER,5,27,114,14,ES_UPPERCASE | ES_AUTOHSCROLL,0,
+                    HIDE_NUMBER
+    GROUPBOX        " &Suche Nummern: ",IDC_STATIC,5,47,115,77
+    CONTROL         "&Maske",IDB_LIKE,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,10,59,105,10,0,HIDB_LIKE
+    CONTROL         "&größer oder gleich",IDB_GR_EQ,"Button",
+                    BS_AUTORADIOBUTTON,10,69,105,10,0,HIDB_GR_EQ
+    CONTROL         "g&rößer",IDB_GR,"Button",BS_AUTORADIOBUTTON,10,79,105,
+                    10,0,HIDB_GR
+    CONTROL         "g&leich",IDB_EQ,"Button",BS_AUTORADIOBUTTON,10,89,105,
+                    10,0,HIDB_EQ
+    CONTROL         "kl&einer",IDB_LESS,"Button",BS_AUTORADIOBUTTON,10,99,
+                    105,10,0,HIDB_LESS
+    CONTROL         "kleiner &oder gleich",IDB_LESS_EQ,"Button",
+                    BS_AUTORADIOBUTTON,10,109,105,10,0,HIDB_LESS_EQ
+    DEFPUSHBUTTON   "&OK",IDOK,5,131,55,14,WS_DISABLED
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,65,131,55,14
+END
+
+IDD_SEARCH_RESULT DIALOGEX 0, 0, 137, 149
+STYLE DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Ergebnis der Suche"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "&Suche Erzeugernummer:",IDC_STATIC,5,5,120,8
+    EDITTEXT        IDE_FERZNR,5,16,68,14,ES_UPPERCASE | ES_AUTOHSCROLL,0,
+                    HIDE_FERZNR
+    LTEXT           "",IDC_FOUND,5,37,120,8
+    LISTBOX         IDL_NUMMERN,5,47,68,95,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
+                    WS_TABSTOP,0,HIDL_NUMMERN
+    DEFPUSHBUTTON   "&Erzeuger ...",IDB_STAMM,78,97,55,14,WS_DISABLED,0,
+                    HIDB_STAMM
+    PUSHBUTTON      "&Abfälle ...",IDB_ABFAELLE,78,113,55,14,WS_DISABLED | 
+                    NOT WS_TABSTOP,0,HIDB_ABFAELLE
+    PUSHBUTTON      "&Beenden",IDOK,78,129,55,14,NOT WS_TABSTOP
+END
+
+IDD_CHANGE_ERZ_NR DIALOGEX 0, 0, 142, 142
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "&Erzeugernummer eingeben:",IDC_STATIC,5,4,130,9
+    EDITTEXT        IDE_NUMMER,5,15,70,14,ES_UPPERCASE | ES_AUTOHSCROLL,0,
+                    HIDE_NUMMER
+    LTEXT           "&Vergebene Erzeugernummern (%ld):",IDS_INFOTEXT,5,36,
+                    130,8
+    LISTBOX         IDL_NUMMERN_ERZ,5,48,70,90,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP,0,HIDL_NUMMERN_ERZ
+    DEFPUSHBUTTON   "&OK",IDOK,82,108,55,14,WS_DISABLED
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,82,124,55,14,NOT WS_TABSTOP
+END
+
+IDD_COMPACT_DATABASE DIALOGEX 0, 0, 198, 138
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        " &Zu erstellendene Datenbank: ",IDC_STATIC,4,5,190,47
+    PUSHBUTTON      "...",IDB_FILE_NAME,174,17,16,14,0,0,HIDB_FILE_NAME
+    EDITTEXT        IDE_FILENAME,10,17,162,14,ES_AUTOHSCROLL | ES_READONLY,0,
+                    HIDE_FILENAME
+    CONTROL         "Als &neue Datenbank verwenden",IDB_AS_NEW,"Button",
+                    BS_AUTOCHECKBOX,10,36,130,10,0,HIDB_AS_NEW
+    GROUPBOX        " Ausgabe&format ",IDC_STATIC,4,58,125,75
+    CONTROL         "MDB-Version 1.&0",IDB_VERSION10,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,14,73,66,10,0,
+                    HIDB_VERSION10
+    CONTROL         "MDB-Version &1.1",IDB_VERSION11,"Button",
+                    BS_AUTORADIOBUTTON,14,88,66,10,0,HIDB_VERSION11
+    CONTROL         "MDB-Version &2.0",IDB_VERSION20,"Button",
+                    BS_AUTORADIOBUTTON,14,103,66,10,0,HIDB_VERSION20
+    CONTROL         "MDB-Version &3.0",IDB_VERSION30,"Button",
+                    BS_AUTORADIOBUTTON,14,118,66,10,0,HIDB_VERSION30
+    DEFPUSHBUTTON   "&OK",IDOK,137,103,55,14
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,137,119,55,14,NOT WS_TABSTOP
+END
+
+IDD_ABFAELLE DIALOG DISCARDABLE  0, 0, 276, 160
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Abfallarten"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "",IDS_ARTEN_INFO,3,5,58,8
+    LISTBOX         IDL_ABFALLART,2,16,58,103,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Sonderabfall:",IDC_STATIC,2,123,41,8
+    LTEXT           "",IDS_SONDER_ABFALL,45,123,17,8,NOT WS_GROUP
+    CONTROL         "ARTNEU",IDB_ARTNEU,"Button",BS_OWNERDRAW | WS_GROUP | 
+                    WS_TABSTOP,2,139,19,14
+    CONTROL         "ARTDEL",IDB_ARTDEL,"Button",BS_OWNERDRAW,22,139,19,14
+    CONTROL         "ARTCHA",IDB_ARTCHA,"Button",BS_OWNERDRAW,43,139,19,14
+    LTEXT           "Be&zeichnung nach LAGA-Katalog:",IDC_STATIC,65,5,203,8
+    EDITTEXT        IDE_ABFART,65,15,208,14,ES_MULTILINE | ES_READONLY | NOT 
+                    WS_TABSTOP
+    LTEXT           "&Betriebsinterne Bezeichnung:",IDC_STATIC,65,34,100,8
+    EDITTEXT        IDE_INTERNE_BEZ,65,44,146,14,ES_AUTOHSCROLL
+    LTEXT           "&EAK-Nummer:",IDC_STATIC,215,34,58,8
+    EDITTEXT        IDE_EAK_NR,215,44,58,14,ES_AUTOHSCROLL
+    LTEXT           "&Verbringungs-\nCode:",IDC_STATIC,65,65,47,15
+    EDITTEXT        IDE_VERBRINGUNG,112,65,36,14,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_TABSTOP
+    DEFPUSHBUTTON   "...",IDB_CHANGE,150,65,16,14
+    RTEXT           "&Nr. des\nNachweises:",IDC_STATIC,171,65,40,15
+    EDITTEXT        IDE_NACHWEIS_NR,215,65,58,14,ES_AUTOHSCROLL
+    LTEXT           "&Dichte [t/m³]:",IDC_STATIC,65,85,47,8,NOT WS_GROUP
+    EDITTEXT        IDE_DICHTE,111,85,55,14,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_TABSTOP
+    RTEXT           "Ver&fahren:",IDC_STATIC,177,85,35,8
+    EDITTEXT        IDE_VERFAHREN,215,85,21,14,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_TABSTOP
+    PUSHBUTTON      "...",IDB_CHANGE_VERF,238,85,16,14
+    LTEXT           "&Menge [t]:",IDC_STATIC,65,105,47,8
+    EDITTEXT        IDE_MENGET,111,105,55,14,ES_AUTOHSCROLL
+    RTEXT           "Men&ge [m³]:",IDC_STATIC,171,105,40,8
+    EDITTEXT        IDE_MENGEM,215,105,58,14,ES_AUTOHSCROLL
+    CONTROL         "&Vorbehandlung",IDB_VORBEHANDLUNG,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,174,124,99,10
+    LTEXT           "Bemer&kungen:",IDC_STATIC,65,128,72,8
+    EDITTEXT        IDE_COMMENT,65,138,208,20,ES_MULTILINE | WS_VSCROLL
+END
+
+IDD_TRANSPORTEUR DIALOG DISCARDABLE  0, 0, 276, 160
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Transporteur"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "&Transporteur-Nr.:",IDC_STATIC,0,9,75,8
+    EDITTEXT        IDE_NUMMER,79,9,50,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "...",IDB_CHANGE,131,9,16,14
+    CONTROL         "&Eigentransport",IDB_EIGENTRANSPORT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,154,9,107,10
+    RTEXT           "&Firma:",IDC_STATIC,19,28,56,8
+    EDITTEXT        IDE_NAME,79,28,184,24,ES_MULTILINE | ES_READONLY | 
+                    WS_VSCROLL | NOT WS_TABSTOP
+    RTEXT           "&Straße:",IDC_STATIC,19,55,56,8
+    EDITTEXT        IDE_STRASSE,79,55,184,14,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_TABSTOP
+    RTEXT           "&Ort:",IDC_STATIC,19,75,56,8
+    EDITTEXT        IDE_ORT,79,75,184,14,ES_AUTOHSCROLL | ES_READONLY | NOT 
+                    WS_TABSTOP
+    RTEXT           "&PLZ:",IDC_STATIC,20,96,56,8
+    EDITTEXT        IDE_PLZ,79,95,50,14,ES_AUTOHSCROLL | ES_READONLY | 
+                    ES_NUMBER | NOT WS_TABSTOP
+    RTEXT           "Abweichungen \nbzw. &Bemerkungen:",IDC_STATIC,7,108,68,
+                    30
+    EDITTEXT        IDE_BEMERKUNGEN,79,112,184,38,ES_MULTILINE | WS_VSCROLL
+END
+
+IDD_FELDINFO DIALOG DISCARDABLE  50, 0, 146, 99
+STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",IDC_FELDINFO,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,0,0,146,99
+END
+
+IDD_ENTSORGER DIALOG DISCARDABLE  0, 0, 276, 183
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Entsorgungsanlage"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "&Entsorger-Nr.:",IDC_STATIC,2,3,47,11
+    EDITTEXT        IDE_NUMMER,52,3,50,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "...",IDB_CHANGE,104,3,16,14
+    CONTROL         "E&igenentsorgung",IDB_EIGEN,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,124,3,65,10
+    RTEXT           "&Firma:",IDC_STATIC,0,21,47,8
+    EDITTEXT        IDE_NAME,52,21,223,14,ES_READONLY | NOT WS_TABSTOP
+    RTEXT           "Entsorgungs-\n&anlage:",IDC_STATIC,0,36,47,17
+    EDITTEXT        IDE_ART,52,37,223,14,ES_AUTOHSCROLL | ES_READONLY | NOT 
+                    WS_TABSTOP
+    RTEXT           "&Straße:",IDC_STATIC,0,53,47,8
+    EDITTEXT        IDE_STRASSE,52,53,223,14,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_TABSTOP
+    RTEXT           "&PLZ:",IDC_STATIC,0,69,47,8
+    EDITTEXT        IDE_PLZ,52,69,45,14,ES_AUTOHSCROLL | ES_READONLY | 
+                    ES_NUMBER | NOT WS_TABSTOP
+    RTEXT           "&Ort:",IDC_STATIC,102,69,20,8
+    EDITTEXT        IDE_ORT,127,69,148,14,ES_AUTOHSCROLL | ES_READONLY | NOT 
+                    WS_TABSTOP
+    RTEXT           "Ansprech-\npa&rtner:",IDC_STATIC,0,86,47,18
+    EDITTEXT        IDE_PARTNER,52,87,190,14,ES_AUTOHSCROLL | WS_GROUP
+    RTEXT           "&Telefon:",IDC_STATIC,0,104,47,8
+    EDITTEXT        IDE_TELEFON,52,104,75,14,ES_AUTOHSCROLL
+    RTEXT           "Telefa&x:",IDC_STATIC,136,104,25,8
+    EDITTEXT        IDE_TELEFAX,167,104,75,14,ES_AUTOHSCROLL
+    CONTROL         "Freistellung nach §13 Nach&wV",IDB_FREI,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,52,122,114,10
+    RTEXT           "Freistellun&gs-Nr:",IDC_STATIC,168,122,59,8
+    EDITTEXT        IDE_FREI_NR,231,122,43,14,ES_AUTOHSCROLL
+    RTEXT           "&Bemerkungen:",IDC_STATIC,0,140,47,8
+    EDITTEXT        IDE_BEMERKUNGEN,52,139,223,19,ES_MULTILINE | WS_VSCROLL
+    PUSHBUTTON      "&Kopieren",IDC_COPYCLIPBOARD,219,162,50,14
+END
+
+IDD_QUERY_SELECT DIALOGEX 0, 0, 299, 226
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Abfrage auswählen"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "",IDS_INFO,5,4,171,8
+    CONTROL         "List1",IDC_QUERIES,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,5,15,236,147,0,
+                    HIDC_QUERIES
+    CONTROL         "",IDB_STANDARD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    162,165,78,10,0,HIDB_STANDARD
+    GROUPBOX        " Art der Au&sführung ",IDC_STATIC,5,175,236,47
+    CONTROL         "&Datenblatt erstellen",IDB_DATENBLATT,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,10,186,225,10,
+                    0,HIDB_DATENBLATT
+    CONTROL         "&Erzeugerliste erstellen (Die Abfrage muß das Feld 'Nummer'",
+                    IDB_QUERY_LISTE,"Button",BS_AUTORADIOBUTTON,10,197,224,
+                    10,0,HIDB_QUERY_LISTE
+    LTEXT           "selektieren, z.B.: SELECT NUMMER FROM ...)",
+                    IDS_SELECT_INFO,20,208,214,8
+    PUSHBUTTON      "&Neu ...",IDB_NEU,246,15,50,14,WS_GROUP,0,HIDB_NEU
+    PUSHBUTTON      "&Ändern ...",IDB_AENDERN,246,31,50,14,NOT WS_TABSTOP,0,
+                    HIDB_AENDERN
+    PUSHBUTTON      "&Löschen",IDB_DELETE,246,47,50,14,NOT WS_TABSTOP,0,
+                    HIDB_DELETE
+    PUSHBUTTON      "&Importieren ...",IDB_IMPORT,246,63,50,14,NOT 
+                    WS_TABSTOP,0,HIDB_IMPORT
+    DEFPUSHBUTTON   "Aus&führen",IDOK,246,192,50,14,WS_GROUP,0,HIDOK
+    PUSHBUTTON      "&Beenden",IDCANCEL,246,208,50,14,NOT WS_TABSTOP
+END
+
+IDD_QUERY_DEF DIALOGEX 0, 0, 320, 230
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "&Name der Abfrage:",IDC_STATIC,5,5,71,8
+    EDITTEXT        IDE_NAME,5,16,180,14,ES_AUTOHSCROLL,0,HIDE_NAME
+    CONTROL         "",IDB_QUERY_ART,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    110,32,74,10,0,HIDB_QUERY_ART
+    LTEXT           "Abfrage &modifizieren:",IDC_STATIC,5,36,94,8
+    EDITTEXT        IDE_SQL,5,46,180,125,ES_MULTILINE | ES_WANTRETURN | 
+                    WS_VSCROLL | WS_HSCROLL,0,HIDE_SQL
+    PUSHBUTTON      "&Prüfen",IDB_CHECK,83,174,50,14,WS_DISABLED | NOT 
+                    WS_TABSTOP,0,HIDB_CHECK
+    PUSHBUTTON      "&Zurück",IDB_ED_BACK,135,174,50,14,WS_DISABLED | NOT 
+                    WS_TABSTOP,0,HIDB_ED_BACK
+    LTEXT           "",IDC_TABLES,189,5,57,8
+    LISTBOX         IDL_TABLES,189,16,69,72,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,0,HIDL_TABLES
+    LTEXT           "&Felder:",IDC_FIELDS,189,94,68,8
+    LISTBOX         IDL_FIELDS,189,105,69,83,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,0,HIDL_FIELDS
+    LTEXT           "",IDC_FUNCTIONS,262,5,55,8
+    LISTBOX         IDL_FUNCTIONS,262,16,55,72,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,0,HIDL_FUNCTIONS
+    LTEXT           "",IDC_OPERATORS,262,94,55,8
+    LISTBOX         IDL_OPERATORS,262,105,55,83,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,0,HIDL_OPERATORS
+    DEFPUSHBUTTON   "&OK",IDOK,262,196,50,14,WS_GROUP
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,262,212,50,14
+    LTEXT           "&Beschreibung:",IDC_STATIC,5,188,74,8
+    EDITTEXT        IDE_DESCRPITION,5,198,180,28,ES_MULTILINE | ES_READONLY | 
+                    WS_VSCROLL | NOT WS_TABSTOP,0,HIDE_DESCRPITION
+END
+
+IDD_QUERY_PARAM DIALOG DISCARDABLE  0, 0, 187, 67
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Parameter eingeben"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "",IDS_TYPE,5,7,178,8
+    LTEXT           "",IDS_INFOTEXT,5,19,178,8
+    EDITTEXT        IDE_PARAM,5,31,179,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "&OK",IDOK,81,48,50,14,WS_DISABLED
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,134,48,50,14
+END
+
+IDD_QUERY_RESULT DIALOGEX 0, 0, 300, 226
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "",IDS_FOUND,5,5,172,8
+    CONTROL         "List1",IDC_QUERY_LIST,"SysListView32",LVS_REPORT | 
+                    WS_BORDER | WS_TABSTOP,5,16,290,153,0,HIDC_QUERY_LIST
+    CONTROL         "&Alle Datensätze in Zwischenablage kopieren",IDB_ALLE,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,11,
+                    174,209,10,0,HIDB_ALLE
+    CONTROL         "Alle Datensätze in neue &Tabelle kopieren",IDB_TABLE,
+                    "Button",BS_AUTORADIOBUTTON,11,185,209,10,0,HIDB_TABLE
+    CONTROL         "&Nur selektierte Datensätze in Zwischenablage kopieren",
+                    IDB_ONLY_SELECTED,"Button",BS_AUTORADIOBUTTON,11,195,209,
+                    10,0,HIDB_ONLY_SELECTED
+    CONTROL         "&Mit Feldnamen",IDB_FELDNAMEN,"Button",BS_AUTOCHECKBOX,
+                    11,207,209,10,0,HIDB_FELDNAMEN
+    PUSHBUTTON      "&Kopieren",IDB_COPY,245,192,50,14,WS_GROUP,0,HIDB_COPY
+    DEFPUSHBUTTON   "&Beenden",IDOK,245,208,50,14
+END
+
+IDD_INPUT_TABLE_NAME DIALOG DISCARDABLE  0, 0, 185, 82
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Tabellenamen eingeben"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Bitte geben Sie den Namen der Tabelle ein:",IDC_STATIC,
+                    5,5,175,8
+    EDITTEXT        IDE_NAME,5,15,175,14,ES_AUTOHSCROLL
+    LTEXT           "&Tabelle in dieser Datenbank erzeugen:",IDC_STATIC,5,35,
+                    175,8
+    EDITTEXT        IDE_DATABASE,5,45,158,14,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_TABSTOP
+    PUSHBUTTON      "...",IDB_SELECT_DB,165,45,16,14
+    DEFPUSHBUTTON   "&OK",IDOK,35,64,55,14,WS_DISABLED
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,95,64,55,14
+END
+
+IDD_IMPORT_INPUT DIALOG DISCARDABLE  0, 0, 210, 154
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Eingabetabelle auswählen (Quelle)"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " T&abellentyp festlegen",IDC_STATIC,3,2,130,68
+    CONTROL         "A&bfälle",IDB_ABFALL,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,10,12,57,10
+    CONTROL         "&Erzeuger",IDB_ERZEUGER,"Button",BS_AUTORADIOBUTTON,10,
+                    23,56,10
+    CONTROL         "B&ranchen",IDB_BRANCH,"Button",BS_AUTORADIOBUTTON,10,34,
+                    55,10
+    CONTROL         "Ab&fallarten",IDB_ABFALL_ARTEN,"Button",
+                    BS_AUTORADIOBUTTON,10,45,55,10
+    CONTROL         "Tran&sporteure",IDB_TRANSPORTEURE,"Button",
+                    BS_AUTORADIOBUTTON,10,55,56,10
+    CONTROL         "Ents&orger",IDB_ENTSORGER,"Button",BS_AUTORADIOBUTTON,
+                    68,12,61,10
+    CONTROL         "&Gemeinden",IDB_GEMEINDEN,"Button",BS_AUTORADIOBUTTON,
+                    68,23,61,10
+    CONTROL         "&Kreise",IDB_KREISE,"Button",BS_AUTORADIOBUTTON,68,34,
+                    61,10
+    CONTROL         "&Verbringung",IDB_VERBRINGUNG,"Button",
+                    BS_AUTORADIOBUTTON,68,45,61,10
+    CONTROL         "Verfa&hren",IDB_VERFAHREN,"Button",BS_AUTORADIOBUTTON,
+                    68,55,45,10
+    GROUPBOX        " &Datenbank auswählen",IDC_STATIC,3,73,130,80
+    CONTROL         "&MDB-Tabelle",IDB_MDB_TABLE,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,10,84,118,10
+    CONTROL         "M&DB-Tabelle (altes Format)",IDB_OLD_VERSION,"Button",
+                    BS_AUTORADIOBUTTON,10,96,118,10
+    CONTROL         "&FoxPro-Tabelle",IDB_FOX_TABLE,"Button",
+                    BS_AUTORADIOBUTTON,10,108,118,10
+    CONTROL         "Fo&xPro-Tabelle (altes Format)",IDB_OLD_VERSION_FOX,
+                    "Button",BS_AUTORADIOBUTTON,10,120,118,10
+    EDITTEXT        IDE_PATH,10,133,100,14,ES_AUTOHSCROLL | ES_READONLY | 
+                    WS_GROUP | NOT WS_TABSTOP
+    DEFPUSHBUTTON   "...",IDB_CHANGE,112,133,16,14
+    LTEXT           "Tabe&lle auswählen:",IDC_STATIC,136,5,64,8
+    LISTBOX         IDL_TABLES,136,15,72,138,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_OUTPUT_TABLE DIALOG DISCARDABLE  0, 0, 210, 154
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Ausgabetabelle auswählen (Ziel)"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "",IDS_INFO,5,5,151,8
+    LISTBOX         IDL_TABLES,5,15,100,89,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Au&sgabe in neue Tabelle:",IDC_STATIC,5,109,112,8
+    EDITTEXT        IDE_TABLE_NAME,5,119,100,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "&Erzeugen",IDB_CREATE,108,119,50,14,WS_DISABLED
+    CONTROL         "&Tabelle für weitere Eingaben/Recherchen verwenden ",
+                    IDB_AS_NEW,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,139,
+                    199,10
+END
+
+IDD_RECORDS_SELECT DIALOG DISCARDABLE  0, 0, 210, 154
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Importparamter festlegen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " &Datensätze importieren ",IDC_STATIC,5,5,199,68
+    CONTROL         "&Alle Datensätze",IDB_ALL_RECORDS,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,12,20,186,10
+    CONTROL         "Nur Datensätze &mit vorhandener Referenz",
+                    IDB_ONLY_REFERENZ,"Button",BS_AUTORADIOBUTTON,12,36,186,
+                    10
+    CONTROL         "Nur Datensätze &ohne vorhandene Referenz",
+                    IDB_ONLY_NOT_REFERENZ,"Button",BS_AUTORADIOBUTTON,12,52,
+                    186,10
+    GROUPBOX        "Datensätze a&ktualisieren ",IDC_STATIC,5,80,199,68
+    CONTROL         "Automatisch aktualisieren über Inde&x-Suche",
+                    IDB_ALWAYS_INDEX,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
+                    WS_TABSTOP,12,96,186,10
+    CONTROL         "Automatisch aktualisieren über &sequentielle Suche",
+                    IDB_ALWAYS_MOD,"Button",BS_AUTORADIOBUTTON,12,112,186,10
+    CONTROL         "&Nicht aktualisieren - als neue Datensätze importieren",
+                    IDB_NEVER_MOD,"Button",BS_AUTORADIOBUTTON,12,127,186,10
+END
+
+IDD_IMPORT_SUM DIALOG DISCARDABLE  0, 0, 210, 154
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Anzeige der Nutzereingaben"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "Tabellenart:",IDC_STATIC,0,7,80,8
+    LTEXT           "",IDS_TABLE_INFO,86,7,124,8
+    RTEXT           "Eingabe-Datenbank:",IDC_STATIC,0,21,80,8
+    LTEXT           "",IDS_INPUT_DATABASE,86,21,124,8
+    RTEXT           "Eingabe-Tabelle:",IDC_STATIC,0,35,80,8
+    LTEXT           "",IDS_INPUT_TABLE,86,35,124,8
+    RTEXT           "Ausgabe-Datenbank:",IDC_STATIC,0,49,80,8
+    LTEXT           "",IDS_OUTPUT_DATABASE,86,49,124,8
+    RTEXT           "Ausgabe-Tabelle:",IDC_STATIC,1,63,80,8
+    LTEXT           "",IDS_OUTPUT_TABLE,86,63,124,8
+    LTEXT           "",IDS_SELECTED,5,76,202,18
+    LTEXT           "",IDS_ACTUAL,5,102,202,18
+    LTEXT           "",IDS_AS_NEW_TABLE,5,128,202,8
+    LTEXT           "Wählen Sie ""Weiter"", um den Import zu starten.",
+                    IDC_STATIC,5,142,196,8
+END
+
+IDD_DO_IMPORT DIALOG DISCARDABLE  0, 0, 210, 154
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Import ausführen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Der Import wird momentan ausgeführt.",IDC_STATIC,5,15,
+                    193,8
+    LTEXT           "Der Vorgang kann einige Minuten dauern.",IDC_STATIC,5,
+                    30,199,8
+    LTEXT           "",IDS_AKTION,5,130,201,8
+    CONTROL         "Progress1",IDC_PROGRESS,"msctls_progress32",WS_BORDER,5,
+                    140,201,11
+END
+
+IDD_IMPORT_RESULT DIALOG DISCARDABLE  0, 0, 210, 154
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Ergebnisse des Imports"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "Aktualisierte Datensätze:",IDC_STATIC,5,10,122,8
+    LTEXT           "",IDS_ACT_CNT,132,10,58,8
+    RTEXT           "Neu importiete Datensätze:",IDC_STATIC,5,27,122,8
+    LTEXT           "",IDS_NEW_CNT,132,27,58,8
+    RTEXT           "Fehler beim Aktualisieren:",IDC_STATIC,5,44,122,8
+    LTEXT           "",IDS_ACT_ERR_CNT,132,44,58,8
+    RTEXT           "Fehler beim 'Neu'-Import:",IDC_STATIC,5,61,122,8
+    LTEXT           "",IDS_NEW_ERR_CNT,132,61,58,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,4,78,204,1
+    RTEXT           "Summe der importierten Datensätze:",IDC_STATIC,5,87,122,
+                    8
+    LTEXT           "",IDS_SUM_CNT,132,87,58,8
+    RTEXT           "Summe der aufgetretenen Fehler:",IDC_STATIC,5,104,122,8
+    LTEXT           "",IDS_SUM_ERR_CNT,132,104,58,8
+    PUSHBUTTON      "&Fehler-Hilfe aufrufen",IDB_ERROR_HELP,132,121,74,14,
+                    NOT WS_TABSTOP
+    PUSHBUTTON      "&Protokoll anzeigen",IDB_SHOW_PROTOKOLL,132,137,74,14
+END
+
+IDD_IMPORT_QUERY DIALOGEX 50, 0, 202, 164
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "&Abfrage(n) auswählen:",IDC_STATIC,6,7,98,8
+    LISTBOX         IDL_QUERIES,5,18,192,123,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    LBS_EXTENDEDSEL | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,0,
+                    HIDL_QUERIES
+    CONTROL         "",IDB_SELECT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,
+                    146,78,10,0,HIDB_SELECT
+    DEFPUSHBUTTON   "&Importieren",IDOK,95,146,50,14,WS_DISABLED | WS_GROUP
+    PUSHBUTTON      "&Beenden",IDCANCEL,148,146,50,14,NOT WS_TABSTOP
+END
+
+IDD_STATISTIK DIALOGEX 0, 0, 300, 212
+STYLE WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_CONTEXTHELP
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "Tree1",IDT_TABLES,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | 
+                    TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,0,0,80,212,0,
+                    HIDT_TABLES
+    CONTROL         "List1",IDC_TABLES,"SysListView32",LVS_REPORT | 
+                    WS_BORDER | WS_TABSTOP,80,0,220,212,0,HIDC_TABLES
+END
+
+IDD_BETREIBER DIALOG DISCARDABLE  0, 0, 276, 160
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Abfallentsorger"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "Betreiber-&Nr:",IDC_STATIC,3,52,60,8
+    EDITTEXT        IDE_NUMMER,68,52,50,14,ES_AUTOHSCROLL
+    RTEXT           "&Bemerkungen:",IDC_STATIC,3,77,60,8
+    EDITTEXT        IDE_NAME,68,77,205,30,ES_MULTILINE | WS_VSCROLL
+END
+
+IDD_BRANCHE_PARAM DIALOG DISCARDABLE  0, 0, 210, 157
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Branche eingeben"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "&Nummer der Branche, die in den eingegebenen Stellen von links beginnend übereinstimmen muß:",
+                    IDC_STATIC,3,58,124,25
+    EDITTEXT        IDE_NUMMER,132,69,50,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "...",IDB_CHANGE,184,69,16,14
+    LTEXT           "&Bezeichnung:",IDC_STATIC,20,89,47,8
+    EDITTEXT        IDE_NAME,20,100,180,30,ES_MULTILINE | ES_READONLY | 
+                    WS_VSCROLL | NOT WS_TABSTOP
+    CONTROL         " &Alle",IDB_ALLE,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,20,27,95,10
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,10,47,190,1
+END
+
+IDD_ERZEUGER_PARAM DIALOG DISCARDABLE  0, 0, 210, 157
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Erzeuger auswählen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "&Nummer des Erzeugers, für den die Abfrage durchgeführt werden soll:",
+                    IDC_STATIC,10,47,114,18
+    EDITTEXT        IDE_ERZ_NR,127,49,55,14,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_TABSTOP
+    DEFPUSHBUTTON   " ...",IDB_ERZEUGER,184,49,16,14
+    LTEXT           "Firma:",IDC_STATIC,15,70,75,8
+    EDITTEXT        IDE_FIRMA,15,80,184,25,ES_MULTILINE | ES_READONLY | 
+                    WS_VSCROLL | NOT WS_TABSTOP
+END
+
+IDD_GEBIET_PARAM DIALOG DISCARDABLE  0, 0, 210, 154
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Gemeinde/Kreis eingeben"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         " &Alle Gemeinden/Kreise",IDB_ALLE_GEMEINDEN,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,10,20,136,10
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,5,38,200,1
+    RTEXT           "&Kennzahl der Gemeinde/Kreis, die in den eingegebenen Stellen von links beginnend übereinstimmen muß:",
+                    IDC_STATIC,5,50,85,45,NOT WS_GROUP
+    EDITTEXT        IDE_GKZ,95,81,55,14,ES_AUTOHSCROLL | ES_NUMBER | 
+                    WS_GROUP
+    DEFPUSHBUTTON   "Ge&meinde ...",IDB_GEMEINDE_SEL,152,81,53,14,WS_GROUP
+    PUSHBUTTON      "&Kreis ...",IDB_KREIS_SEL,152,96,53,14,NOT WS_TABSTOP
+    RTEXT           "Gemeinde/Kreis:",IDC_STATIC,20,119,70,8
+    LTEXT           "",IDT_GEMEINDE,95,119,110,22,NOT WS_GROUP
+END
+
+IDD_ABFALL_PARAM DIALOG DISCARDABLE  0, 0, 210, 154
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Abfälle auswählen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         " &Nur Sonderabfälle",IDB_ONLY_SONDER_ABF,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,15,3,116,12
+    GROUPBOX        " Abfallarten ",IDC_STATIC,5,18,202,130
+    CONTROL         " &Alle",IDB_ALL_ABF,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,15,29,95,10
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,10,42,190,1
+    LTEXT           "Nummer der Abfallart, die in den eingegebenen Stellen von links beginnend übereinstimmen muß:",
+                    IDC_STATIC,15,49,104,27
+    EDITTEXT        IDE_ABFART,120,62,56,14,ES_AUTOHSCROLL | ES_NUMBER | 
+                    WS_GROUP
+    DEFPUSHBUTTON   " ...",IDB_SELECT,178,62,16,14,WS_GROUP
+    LTEXT           "Bezeichnung:",IDC_STATIC,15,79,70,8
+    EDITTEXT        IDE_ABF_BEZ,15,89,179,20,ES_MULTILINE | ES_READONLY | 
+                    WS_VSCROLL | NOT WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,10,116,190,1
+    RTEXT           "Minimale Menge der Summe aller Abfälle eines Erzeugers [t]:",
+                    IDC_STATIC,15,123,101,18
+    EDITTEXT        IDE_MENGE,120,127,57,14,ES_AUTOHSCROLL | WS_GROUP
+END
+
+IDD_RESULT_PARAM DIALOG DISCARDABLE  0, 0, 210, 154
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Eingaben anzeigen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "",IDT_QUERY_NAME,5,5,200,8
+    EDITTEXT        IDE_RESULT,5,15,200,135,ES_MULTILINE | ES_AUTOHSCROLL | 
+                    ES_READONLY | ES_WANTRETURN | WS_VSCROLL | NOT 
+                    WS_TABSTOP
+END
+
+IDD_ENTSORGER1 DIALOG DISCARDABLE  0, 0, 262, 162
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Entsorgungsanlage"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDE_NUMMER,79,9,50,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "...",IDB_CHANGE,131,9,16,14
+    LTEXT           "Abweichungen \nbzw. &Bemerkungen:",IDC_STATIC,7,35,68,
+                    30
+    EDITTEXT        IDE_BEMERKUNGEN,79,34,176,98,ES_MULTILINE | WS_VSCROLL
+    LTEXT           "&Entsorger-Nr.:",IDC_STATIC,7,11,47,11
+    EDITTEXT        IDE_NAME,229,40,6,12,ES_READONLY | NOT WS_VISIBLE | 
+                    WS_DISABLED | NOT WS_TABSTOP
+    PUSHBUTTON      "&Kopieren",IDC_COPYCLIPBOARD,205,141,50,14
+END
+
+IDD_ABFART_PARAMS DIALOG DISCARDABLE  0, 0, 405, 254
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDE_ABFALLART,60,0,60,12,ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDE_ENSN_NR,60,13,60,12,ES_AUTOHSCROLL
+    EDITTEXT        IDE_MENGE2,175,12,60,13,ES_AUTOHSCROLL
+    EDITTEXT        IDE_TRANSPORTEUR,60,39,60,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_SELECTBEFOERD,120,39,15,14
+    EDITTEXT        IDE_ENTSORGER,60,130,60,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_SELECTENTSORG,120,130,15,14
+    EDITTEXT        IDE_RD_VERFAHREN,60,221,60,13,ES_AUTOHSCROLL
+    EDITTEXT        IDE_PRIO,60,235,60,14,ES_AUTOHSCROLL | ES_NUMBER
+    DEFPUSHBUTTON   "&OK",IDOK,290,239,50,14,WS_DISABLED | WS_GROUP
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,345,239,50,14,NOT WS_TABSTOP
+    RTEXT           "&EN/SN-Nr.:",IDC_STATIC,0,14,57,8
+    RTEXT           "&Menge [t]:",IDC_STATIC,125,14,47,8
+    RTEXT           "&R/D-Verfahren:",IDC_STATIC,0,223,57,8
+    RTEXT           "&Priorität:",IDC_STATIC,0,235,57,8
+    RTEXT           "Abfallart:",IDC_STATIC,0,0,57,8
+    LTEXT           "",IDC_ABFALLBEZ,175,0,220,12,SS_CENTERIMAGE | SS_SUNKEN
+    LTEXT           "",IDC_BEFOERDNAME,175,39,220,12,SS_CENTERIMAGE | 
+                    SS_SUNKEN
+    LTEXT           "",IDC_BEFOERDORT,175,52,220,12,SS_CENTERIMAGE | 
+                    SS_SUNKEN
+    LTEXT           "",IDC_BEFOERDSTR,175,65,220,12,SS_CENTERIMAGE | 
+                    SS_SUNKEN
+    LTEXT           "",IDC_ENTSORGNAME,175,130,220,12,SS_CENTERIMAGE | 
+                    SS_SUNKEN
+    LTEXT           "",IDC_ENTSORGORT,175,156,220,12,SS_CENTERIMAGE | 
+                    SS_SUNKEN
+    LTEXT           "",IDC_ENTSORGSTR,175,169,220,12,SS_CENTERIMAGE | 
+                    SS_SUNKEN
+    GROUPBOX        "Beförderer",IDC_STATIC,10,26,390,88
+    GROUPBOX        "Entsorger",IDC_STATIC,10,117,390,99
+    RTEXT           "Nr:",IDC_STATIC,45,39,10,13,SS_CENTERIMAGE
+    RTEXT           "Name:",IDC_STATIC,145,39,25,12,SS_CENTERIMAGE
+    RTEXT           "Ort:",IDC_STATIC,145,52,25,12,SS_CENTERIMAGE
+    RTEXT           "Strasse:",IDC_STATIC,145,65,25,12,SS_CENTERIMAGE
+    RTEXT           "Nr:",IDC_STATIC,45,131,10,13,SS_CENTERIMAGE
+    RTEXT           "Name:",IDC_STATIC,145,130,25,12,SS_CENTERIMAGE
+    RTEXT           "Ort:",IDC_STATIC,145,157,25,12,SS_CENTERIMAGE
+    RTEXT           "Strasse:",IDC_STATIC,145,169,25,12,SS_CENTERIMAGE
+    LTEXT           "",IDC_ENTSORGANLAGE,175,143,220,12,SS_CENTERIMAGE | 
+                    SS_SUNKEN
+    RTEXT           "Anlage:",IDC_STATIC,145,144,25,12,SS_CENTERIMAGE
+    EDITTEXT        IDC_BEFOERDKOMMENTAR,60,78,335,26,ES_MULTILINE | 
+                    ES_READONLY | WS_VSCROLL
+    EDITTEXT        IDC_ENTSORGKOMMENTAR,60,182,335,26,ES_MULTILINE | 
+                    ES_READONLY | WS_VSCROLL
+    RTEXT           "Bemerkung:",IDC_STATIC,11,78,44,13,SS_CENTERIMAGE
+    RTEXT           "Bemerkung:",IDC_STATIC,11,182,44,13,SS_CENTERIMAGE
+END
+
+IDD_DOABGLEICH DIALOGEX 0, 0, 360, 279
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Abgleich durchführen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Abfälle aus &Vorjahres-Bilanz-Tabelle (nur zum Vergleich):",
+                    IDC_STATIC,5,28,210,8
+    CONTROL         "List1",IDL_ABFALL_VJN,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_NOSORTHEADER | WS_DISABLED | 
+                    WS_TABSTOP,5,39,350,54
+    LTEXT           "Abfälle aus &Bilanz-Tabelle:",IDC_STATIC,5,100,210,8
+    CONTROL         "List3",IDL_ABFALLN,"SysListView32",LVS_REPORT | 
+                    LVS_NOSORTHEADER | WS_DISABLED | WS_TABSTOP,5,108,350,54
+    LTEXT           "Abfälle aus &Referenz-Tabelle:",IDC_STATIC,5,168,210,8
+    CONTROL         "List4",IDL_BGSN,"SysListView32",LVS_REPORT | 
+                    LVS_NOSORTHEADER | WS_DISABLED | WS_TABSTOP,5,179,350,54
+    LTEXT           "Bereit.",IDT_AKTION,5,239,350,8,NOT WS_GROUP,0,
+                    HIDT_AKTION
+    CONTROL         "Progress1",IDT_PROGRESS2,"msctls_progress32",WS_BORDER,
+                    5,250,350,10
+    DEFPUSHBUTTON   "&Starten",IDOK,5,262,55,14,WS_GROUP,0,HIDOK
+    PUSHBUTTON      "&Verwerfen",IDB_ESCAPE,64,262,55,14,WS_DISABLED | NOT 
+                    WS_TABSTOP,0,HIDB_ESCAPE
+    PUSHBUTTON      "&In Liste",IDB_INLISTE,123,262,55,14,WS_DISABLED | NOT 
+                    WS_TABSTOP,0,HIDB_INLISTE
+    PUSHBUTTON      "&Hilfe",ID_HELP,182,262,55,14,NOT WS_VISIBLE | 
+                    WS_DISABLED | NOT WS_TABSTOP,0,HID_HELP
+    PUSHBUTTON      "&Erzeuger-Info",IDB_ERZ_INFO,241,262,55,14,WS_DISABLED | 
+                    NOT WS_TABSTOP
+    PUSHBUTTON      "A&bbrechen",IDCANCEL,300,262,55,14,NOT WS_TABSTOP,0,
+                    HIDCANCEL
+    PUSHBUTTON      "&Weiter",IDB_WEITER,182,262,55,14,WS_DISABLED | NOT 
+                    WS_TABSTOP
+    LTEXT           "Anfallstelle",IDC_STATIC,5,0,55,9,SS_CENTERIMAGE
+    LTEXT           "Branche",IDC_STATIC,5,12,55,9,SS_CENTERIMAGE
+    LTEXT           ":",IDC_STATIC,67,0,8,9,SS_CENTERIMAGE
+    LTEXT           ":",IDC_STATIC,67,12,8,9,SS_CENTERIMAGE
+    LTEXT           "",IDC_ANFALLSTELLE,75,0,275,9,SS_CENTERIMAGE | 
+                    SS_SUNKEN
+    LTEXT           "",IDC_BRANCHENNUMMER,75,12,275,9,SS_CENTERIMAGE | 
+                    SS_SUNKEN
+END
+
+IDD_DOKONTROLLE DIALOGEX 0, 0, 360, 279
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Datenkontrolle durchführen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Abfälle aus &Bilanz-Tabelle:",IDC_STATIC,5,28,210,8
+    CONTROL         "List3",IDL_ABFALLN,"SysListView32",LVS_REPORT | 
+                    LVS_NOSORTHEADER | WS_DISABLED | WS_TABSTOP,5,39,350,54
+    LTEXT           "Abfälle aus &Referenz-Tabelle:",IDC_STATIC,5,100,210,8
+    CONTROL         "List4",IDL_BGSN,"SysListView32",LVS_REPORT | 
+                    LVS_NOSORTHEADER | WS_DISABLED | WS_TABSTOP,5,108,350,54
+    LTEXT           "Abfälle aus &Ausgabe-Tabelle:",IDC_STATIC,5,168,210,8
+    CONTROL         "List1",IDL_ABFALL_VJN,"SysListView32",LVS_REPORT | 
+                    LVS_NOSORTHEADER | WS_DISABLED | WS_TABSTOP,5,179,350,54
+    LTEXT           "Bereit.",IDT_AKTION,5,240,350,8,NOT WS_GROUP,0,
+                    HIDT_AKTION
+    CONTROL         "Progress1",IDT_PROGRESS2,"msctls_progress32",WS_BORDER,
+                    5,250,350,10
+    DEFPUSHBUTTON   "&Starten",IDOK,5,262,55,14,WS_GROUP,0,HIDOK
+    PUSHBUTTON      "&Weiter",IDB_ESCAPE,64,262,55,14,WS_DISABLED | NOT 
+                    WS_TABSTOP,0,HIDB_ESCAPE
+    PUSHBUTTON      "&Löschen",IDB_INLISTE,123,262,55,14,WS_DISABLED | NOT 
+                    WS_TABSTOP,0,HIDB_INLISTE
+    PUSHBUTTON      "&Hilfe",ID_HELP,182,262,55,14,NOT WS_TABSTOP,0,HID_HELP
+    PUSHBUTTON      "&Erzeuger-Info",IDB_ERZ_INFO,241,262,55,14,WS_DISABLED | 
+                    NOT WS_TABSTOP
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,300,262,55,14,NOT WS_TABSTOP,0,
+                    HIDCANCEL
+    LTEXT           "Anfallstelle",IDC_STATIC,5,0,55,9,SS_CENTERIMAGE
+    LTEXT           "Branche",IDC_STATIC,5,12,55,9,SS_CENTERIMAGE
+    LTEXT           ":",IDC_STATIC,67,0,8,9,SS_CENTERIMAGE
+    LTEXT           ":",IDC_STATIC,67,12,8,9,SS_CENTERIMAGE
+    LTEXT           "",IDC_ANFALLSTELLE,75,0,275,9,SS_CENTERIMAGE | 
+                    SS_SUNKEN
+    LTEXT           "",IDC_BRANCHENNUMMER,75,12,275,9,SS_CENTERIMAGE | 
+                    SS_SUNKEN
+    PUSHBUTTON      "",IDB_WEITER,185,265,50,14,NOT WS_VISIBLE | WS_DISABLED
+END
+
+IDD_ERZ_INFO DIALOG DISCARDABLE  0, 0, 282, 137
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Erzeuger: %s"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Weiter",IDOK,115,120,55,14
+    RTEXT           "Branchen-Nr. (NACE):",IDC_STATIC,5,12,85,8
+    LTEXT           "",IDT_BRANCHE,95,12,180,9,SS_SUNKEN
+    RTEXT           "Anfallstelle:",IDC_STATIC,5,25,85,8
+    LTEXT           "",IDT_ANF_STELLE,95,25,180,9,SS_SUNKEN
+    RTEXT           "Ort der Anfallstelle:",IDC_STATIC,5,48,85,8
+    LTEXT           "",IDT_ANF_ORT,95,48,180,9,SS_SUNKEN
+    RTEXT           "Straße:",IDC_STATIC,5,36,85,8
+    RTEXT           "Telefon:",IDC_STATIC,5,72,85,8
+    RTEXT           "Telefax:",IDC_STATIC,5,84,85,8
+    LTEXT           "",IDT_PARTNER,95,60,180,9,SS_SUNKEN
+    LTEXT           "",IDT_TEL,95,72,180,9,SS_SUNKEN
+    LTEXT           "",IDT_FAX,95,84,180,9,SS_SUNKEN
+    RTEXT           "Firmenname:",IDC_STATIC,5,96,85,8
+    LTEXT           "",IDT_FIRMA,95,96,180,9,SS_SUNKEN
+    LTEXT           "",IDT_STRASSE,95,36,180,9,SS_SUNKEN
+    RTEXT           "Ansprechpartner:",IDC_STATIC,5,60,85,8
+END
+
+IDD_PARAMS DIALOGEX 0, 0, 309, 211
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Abgleichparameter eingeben"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        " Tabellen auswählen ",IDC_STATIC,5,5,205,90
+    LTEXT           "&Erzeuger-Tabelle:",IDC_STATIC,10,15,90,8
+    COMBOBOX        IDC_ERZEUGER_TABLE,10,25,95,73,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Bilanz-Tabelle:",IDC_STATIC,110,15,85,8
+    COMBOBOX        IDC_ABFALL_TABLE,110,25,95,73,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Vorjahres-Tabelle:",IDC_STATIC,10,40,85,8
+    COMBOBOX        IDC_VJABFALL_TABLE,10,50,95,73,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Referenz-Tabelle:",IDC_STATIC,110,40,95,8
+    COMBOBOX        IDC_BGS_TABLE,110,50,95,70,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Ausgabe-Tabelle:",IDC_STATIC,10,65,80,8
+    EDITTEXT        IDE_OUTPUT_DB,10,75,78,13,ES_AUTOHSCROLL | ES_READONLY | 
+                    WS_DISABLED,0,HIDE_OUTPUT_DB
+    PUSHBUTTON      " ...",IDB_OUTPUT_DB,90,75,15,13,0,0,HIDB_OUTPUT_DB
+    GROUPBOX        " Modus auswählen ",IDC_STATIC,215,5,90,90
+    CONTROL         " A&bgleich",IDB_ABGLEICH,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,230,25,70,10
+    CONTROL         " Kontrolle und\n Datenvervoll-\n ständigung",
+                    IDB_KONTROLLE,"Button",BS_AUTORADIOBUTTON | BS_MULTILINE,
+                    230,43,69,39
+    GROUPBOX        " Parameter festlegen",IDC_STATIC,5,100,205,105
+    LTEXT           "Priorität der Referenzdatensätze:",IDC_STATIC,10,110,
+                    145,8
+    CONTROL         " RD &1",IDB_RD1,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
+                    WS_TABSTOP,160,110,40,10
+    CONTROL         " RD &2 + 3",IDB_RD2,"Button",BS_AUTORADIOBUTTON,160,120,
+                    46,10
+    CONTROL         " A&lle",IDB_RD3,"Button",BS_AUTORADIOBUTTON,160,130,29,
+                    10
+    LTEXT           "&Minimale Menge eines Datensatzes [t]:",IDC_STATIC,10,
+                    145,122,8
+    EDITTEXT        IDE_MENGE_REC,160,145,45,13,ES_AUTOHSCROLL,0,
+                    HIDE_MENGE_REC
+    LTEXT           "M&inimale Gesamtmenge eines Erzeugers [t]:",IDC_STATIC,
+                    10,160,150,8
+    EDITTEXT        IDE_MENGE2,160,160,45,13,ES_AUTOHSCROLL,0,HIDE_MENGE2
+    CONTROL         "&Nur Sonderabfälle abgleichen",IDB_SONDERABFALL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,10,175,150,10,0,
+                    HIDB_SONDERABFALL
+    CONTROL         "Er&zeugerliste anlegen:",IDB_CREATE_ERZLISTE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,10,190,85,10,0,
+                    HIDB_CREATE_ERZLISTE
+    LTEXT           "",IDT_ERZLISTE,100,190,105,8,0,0,HIDT_ERZLISTE
+    GROUPBOX        " Er&zeuger/Abfall ",IDC_STATIC,215,100,90,50
+    EDITTEXT        IDE_ERZ_NUMMER,220,115,45,13,ES_AUTOHSCROLL,0,
+                    HIDE_ERZ_NUMMER
+    EDITTEXT        IDE_ASN,265,115,35,13,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDB_ERZ_NR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,220,
+                    130,80,10
+    PUSHBUTTON      "&Starten",IDOK,250,160,55,14,WS_DISABLED | WS_GROUP,0,
+                    HIDOK
+    PUSHBUTTON      "&Hilfe",ID_HELP,250,176,55,14,NOT WS_TABSTOP
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,250,192,55,14,NOT WS_TABSTOP,0,
+                    HIDCANCEL
+END
+
+IDD_REPORT_TABLE DIALOG DISCARDABLE  0, 0, 350, 197
+STYLE DS_CENTER | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | 
+    WS_THICKFRAME
+CAPTION "Erzeugerliste: %s"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",IDC_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_NOSORTHEADER | WS_BORDER | 
+                    WS_TABSTOP,0,0,350,180
+    PUSHBUTTON      "&Drucken",IDC_ERZLISTDRUCK,239,182,50,14
+    DEFPUSHBUTTON   "&OK",IDOK,299,182,50,14
+    CONTROL         "",IDC_PLACEHOLDER,"Static",SS_GRAYFRAME | NOT 
+                    WS_VISIBLE,1,180,349,16
+    PUSHBUTTON      "&Druckvorschau",IDC_ERZLISTDRUCKVOR,170,182,60,14,NOT 
+                    WS_VISIBLE | WS_DISABLED
+END
+
+IDD_RESULT DIALOG DISCARDABLE  0, 0, 308, 71
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Ergebnis %s"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "Anzahl abzugleichender Erzeuger/Abfallgruppen:",
+                    IDC_STATIC,5,10,190,8
+    LTEXT           "0",IDT_ABGL_CNT,201,10,36,8
+    RTEXT           "Anzahl übernommener/geänderter Abfalldatensätze:",
+                    IDC_STATIC,5,25,190,8
+    LTEXT           "0",IDT_UEBERN_CNT,201,25,36,8
+    RTEXT           "Anzahl ausgelassener Abfalldatensätze:",IDC_STATIC,5,40,
+                    190,8
+    LTEXT           "0",IDT_ESC_CNT,201,40,36,8
+    RTEXT           "Anzahl ""In Liste"" übernommener Abfalldatensätze:",
+                    IDT_DELETED_REC,5,55,190,8
+    LTEXT           "0",IDT_INLISTE_DEL_CNT,201,55,36,8
+    DEFPUSHBUTTON   "&OK",IDOK,245,10,60,14,WS_GROUP
+    PUSHBUTTON      "&Liste anzeigen",IDB_OUTPUT_ERZLISTE,245,25,60,14,NOT 
+                    WS_TABSTOP
+END
+
+IDD_SELECT_TABLE DIALOG DISCARDABLE  0, 0, 179, 134
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Gewählte Tabelle:",IDC_STATIC,5,5,95,8
+    EDITTEXT        IDE_TABLE,5,15,112,14,ES_AUTOHSCROLL
+    LTEXT           "&Vorhandene Tabellen:",IDC_STATIC,5,35,95,8
+    LISTBOX         IDL_LIST_TABLES,5,45,112,85,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
+                    WS_TABSTOP
+    DEFPUSHBUTTON   "&OK",IDOK,122,15,53,14,WS_GROUP
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,122,31,53,14,NOT WS_TABSTOP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_GAK_FORM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 57
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 30
+    END
+
+    IDD_ANFALLSTELLE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 269
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 153
+    END
+
+    IDD_FIRMA, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 269
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 153
+    END
+
+    IDD_ENTSORGUNG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 269
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 153
+    END
+
+    IDD_BRANCHE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 269
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 153
+    END
+
+    IDD_ANSPRECH, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 269
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 153
+    END
+
+    IDD_SEL_NUMMER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 204
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 176
+    END
+
+    IDD_USER_NAME, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 128
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 67
+    END
+
+    IDD_LOOK_NR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 117
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 142
+    END
+
+    IDD_SEARCH_RESULT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 130
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 142
+    END
+
+    IDD_CHANGE_ERZ_NR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 135
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 135
+    END
+
+    IDD_COMPACT_DATABASE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 191
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 131
+    END
+
+    IDD_ABFAELLE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 273
+        VERTGUIDE, 65
+        VERTGUIDE, 112
+        VERTGUIDE, 166
+        VERTGUIDE, 211
+        VERTGUIDE, 215
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 153
+    END
+
+    IDD_TRANSPORTEUR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 269
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 153
+    END
+
+    IDD_FELDINFO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 139
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 92
+    END
+
+    IDD_ENTSORGER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 269
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 176
+    END
+
+    IDD_QUERY_SELECT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 292
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 219
+    END
+
+    IDD_QUERY_DEF, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 313
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 223
+    END
+
+    IDD_QUERY_PARAM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 60
+    END
+
+    IDD_QUERY_RESULT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 293
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 219
+    END
+
+    IDD_INPUT_TABLE_NAME, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 178
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 75
+    END
+
+    IDD_IMPORT_INPUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 203
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 147
+    END
+
+    IDD_OUTPUT_TABLE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 203
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 147
+    END
+
+    IDD_RECORDS_SELECT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 203
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 147
+    END
+
+    IDD_IMPORT_SUM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 203
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 147
+    END
+
+    IDD_DO_IMPORT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 203
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 147
+    END
+
+    IDD_IMPORT_RESULT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 203
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 147
+    END
+
+    IDD_IMPORT_QUERY, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 195
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 157
+    END
+
+    IDD_STATISTIK, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 293
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 205
+    END
+
+    IDD_BETREIBER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 269
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 153
+    END
+
+    IDD_BRANCHE_PARAM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 203
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 150
+    END
+
+    IDD_ERZEUGER_PARAM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 203
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 150
+    END
+
+    IDD_GEBIET_PARAM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 203
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 147
+    END
+
+    IDD_ABFALL_PARAM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 207
+        VERTGUIDE, 15
+        VERTGUIDE, 194
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 147
+    END
+
+    IDD_RESULT_PARAM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 203
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 147
+    END
+
+    IDD_ENTSORGER1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 255
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 155
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_ENTSORGUNG DLGINIT
+BEGIN
+    IDC_SPALTE, 0x403, 2, 0
+0x0020, 
+    IDC_SPALTE, 0x403, 2, 0
+0x0031, 
+    IDC_SPALTE, 0x403, 2, 0
+0x0032, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// 102
+//
+
+IDS_CREATE_TABLE        102     MOVEABLE PURE   "CREATETA.QRT"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDP_FAILED_OPEN_DATABASE "Die Datenbank kann nicht geöffnet werden."
+    IDM_STATISTIK           "Öffnet Dialog zur Datenbank-Statistik."
+    IDM_HELP_DATABSE_ERRORS "Listet die Hilfethemen zu Datenbankfehlern auf."
+END
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "Betriebliche Abfallbilanz (BAB)"
+    IDR_GAKTYPE             "\nGak\nGak\n\n\nGak.Document\nGak Document"
+END
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "BAB"
+    AFX_IDS_IDLEMESSAGE     "Drücken Sie F1, um Hilfe zu erhalten."
+    AFX_IDS_HELPMODEMESSAGE "Wählen Sie das Objekt, zu dem Sie Hilfe wünschen."
+    IDS_DSNGLEICH           "DSN="
+    IDS_ODBCINI             "odbc.ini"
+    IDS_DSNSECTION          "ODBC Data Sources"
+    IDS_DEFAULT_DIR         "DBQ"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_INDICATOR_EXT        "ER"
+    ID_INDICATOR_CAPS       "UF"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "RF"
+    ID_INDICATOR_OVR        "ÜB"
+    ID_INDICATOR_REC        "MA"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_PAGE_SETUP      "Ändert die Druckoptionen.\nSeite einrichten"
+    ID_FILE_PRINT_SETUP     "Ändert den Drucker und die Druckoptionen.\nDruckereinrichtung"
+    ID_FILE_PRINT           "Druckt den Inhalt des aktuellen Datensatzes.\nDrucken"
+    ID_FILE_PRINT_PREVIEW   "Zeigt ganze Seiten an.\nSeitenansicht"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_APP_ABOUT            "Zeigt Programm-Informationen, Versionsnummer und Copyright an.\nInfo"
+    ID_APP_EXIT             "Verläßt die Anwendung.\nBeenden"
+    ID_HELP_INDEX           "Öffnet die Hilfefunktion.\nHilfethemen"
+    ID_HELP_FINDER          "Listet die Hilfethemen auf.\nHilfethemen"
+    ID_HELP_USING           "Zeigt Anweisungen zum Umgang mit der Hilfe an.\nHilfe"
+    ID_CONTEXT_HELP         "Zeigt Hilfe zu angeklickten Schaltflächen, Menüs und Fenstern an.\nHilfe"
+    ID_HELP                 "Zeigt Hilfe zum aktuellen Vorgang oder Befehl an.\nHilfe"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_NEXT_PANE            "Wechselt zum nächsten Fensterausschnitt.\nNächster Ausschnitt"
+    ID_PREV_PANE            "Springt zum vorherigen Fensterausschnitt zurück.\nVorheriger Ausschnitt"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_WINDOW_ARRANGE       "Ordnet die Symbole im unteren Bereich des Fensters an.\nSymbole anordnen"
+    ID_WINDOW_CASCADE       "Ordnet die Fenster überlappend an.\nÜberlappende Fenster"
+    ID_WINDOW_TILE_HORZ     "Ordnet die Fenster nebeneinander an.\nFenster nebeneinander"
+    ID_WINDOW_TILE_VERT     "Ordnet die Fenster nebeneinander an.\nFenster nebeneinander"
+    ID_WINDOW_SPLIT         "Teilt das aktive Fenster in Ausschnitte.\nTeilen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Löscht die Markierung.\nLöschen"
+    ID_EDIT_CLEAR_ALL       "Löscht alles.\nAlles löschen"
+    ID_EDIT_COPY            "Kopiert die Markierung und überträgt sie in die Zwischenablage.\nKopieren"
+    ID_EDIT_CUT             "Entfernt die Markierung und überträgt sie in die Zwischenablage.\nAusschneiden"
+    ID_EDIT_FIND            "Sucht den angegebenen Text.\nSuchen"
+    ID_EDIT_PASTE           "Fügt den Inhalt der Zwischenablage ein.\nEinfügen"
+    ID_EDIT_REPEAT          "Wiederholt die letzte Aktion.\nWiederholen"
+    ID_EDIT_REPLACE         "Ersetzt einen bestimmten Text durch einen anderen.\nErsetzen"
+    ID_EDIT_UNDO            "Macht die letzte Aktion rückgängig.\nRückgängig"
+    ID_EDIT_REDO            "Wiederholt die vorher rückgängig gemachte Aktion.\nWiederherstellen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Blendet die Symbolleiste ein oder aus.\nSymbolleiste ein-/ausschalten"
+    ID_VIEW_STATUS_BAR      "Blendet die Statusleiste ein oder aus.\nStatusleiste ein-/ausschalten"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_RECORD_FIRST         "Springt zum ersten Datensatz.\nErster Datensatz"
+    ID_RECORD_LAST          "Springt zum letzten Datensatz.\nLetzter Datensatz"
+    ID_RECORD_NEXT          "Geht zum nächsten Datensatz.\nNächster Datensatz"
+    ID_RECORD_PREV          "Geht zum vorherigen Datensatz zurück.\nVorheriger Datensatz"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Ändert die Fenstergröße."
+    AFX_IDS_SCMOVE          "Ändert die Position des Fensters."
+    AFX_IDS_SCMINIMIZE      "Verkleinert das Fenster zu einem Symbol."
+    AFX_IDS_SCMAXIMIZE      "Vergrößert das Fenster zu voller Größe."
+    AFX_IDS_SCNEXTWINDOW    "Wechselt zum nächsten Fenster."
+    AFX_IDS_SCPREVWINDOW    "Wechselt zum vorherigen Fenster."
+    AFX_IDS_SCCLOSE         "Schließt das aktive Fenster."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Stellt das Fenster in seiner normalen Größe wieder her."
+    AFX_IDS_SCTASKLIST      "Aktiviert die Task-Liste."
+    IDM_NEW_ABGLEICH        "Startet ein neuen Abgleich"
+    IDS_FOXPRO_DSN          "Bilanzdaten"
+    IDS_MDB_DSN             "Referenzdaten"
+    IDS_NOMEMORY            "Es ist kein dynamischer Speicher mehr verfügbar !"
+    IDS_FILE_ERROR          "Fehler beim Zugriff auf eine Datei !"
+    AFX_IDS_MDICHILD        "Aktiviert dieses Fenster."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_PREVIEW_CLOSE   "Beendet die Seitenansicht.\nSeitenansicht beenden"
+    IDS_ERZNR_BRBRG_FORMAT  "Die Erzeugernummer muß immer mit einem '%1' beginnen !"
+    IDS_ERZNR_BRBRG         "P"
+    IDS_SIZEORG             "SizeOrg"
+    IDS_SIZEORG_FORMAT      "%d,%d,%d,%d"
+    IDS_BILANZ_ERZ_KENNUNG  "BIP 97"
+    IDS_ERZ_NOT_FOUND       "Der Erzeuger '%1' wurde nicht gefunden !\nDer zuletzt bearbeitete Erzeugerdatensatz wird angezeigt."
+    IDS_ABF_NOT_FOUND       "Der Erzeuger '%1' hat keine Abfalldaten !\nDie Abfalldaten des zuletzt bearbeiteten Erzeugers werden angezeigt."
+    IDS_PREPARE_DISK        "Bitte Datenträger vorbereiten (ggf. leere Diskette einlegen) !"
+    IDS_RUECK_OUT_CAPTION   "Datenbank kopieren nach:"
+    IDS_DIFF_NAMES          "Datei kann nicht auf sich selbst kopiert werden !"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDM_STAMMDATEN          "Zeigt Erzeugerdaten an.\nErzeugerdaten"
+    IDM_LOOK_NR             "Öffnet Dialog für die Suche von Erzeugern.\nErzeuger suchen"
+    IDS_EINGABE_STD         "Erzeugerdaten: %1"
+    IDM_ABFALL              "Zeigt Abfalldaten an.\nAbfalldaten"
+    IDS_NAME                "Name"
+    IDM_NEW_REKORD          "Neuen Datensatz hinzufügen.\nDatensatz hinzufügen"
+    IDM_DELETE_REKORD       "Aktuellen Datensatz löschen.\nDatensatz löschen"
+    IDM_CHANGE_KEY          "Aktuelle Erzeugernummer ändern.\nErzeugernummer ändern"
+    IDM_SET_BOOKMARK        "&Buchmarke auf aktuellen Datensatz setzen.\nBuchmarke setzen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDM_GOTO_BOOKMARK       "Datensatz mit Buchmarke anspringen.\nBuchmarke anspringen"
+    IDS_NUMMER_EXIST        "Diese Erzeugerummer ist bereits vergeben !"
+    IDS_GEMEINDE_CAPTION    "Gemeinde auswählen"
+    IDS_BR_TABLE_NAME       "Bilanz des aktuellen Erzeugers\nBilanz des aktuellen Erzeugers"
+    IDS_GEM_TABLE_NAME      "Abgleich für den aktuellen Datensatz durchführen.\nAbgleich für den aktuellen Datensatz durchführen"
+    IDS_OUTPUT_TABLE_INFO   "'%1'-Tabelle auswählen:"
+    IDM_AKTBILANZ_2         "Bilanz des aktuellen Erzeugers\nBilanz des aktuellen Erzeugers"
+    IDS_SELECT_AUSWAHL      "SELECT Name,Nummer  FROM [%1] ORDER BY Name"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_FIND_NUMMER         "Nummer = '%1'"
+    IDS_CHANGE_NR           "Erzeugernummer ändern"
+    IDM_COMPACT_DATABASE    "Öffnet Dialog zum Komprimiren der aktuellen Datenbank."
+    IDS_REC_USED            "Die geforderten Daten werden z.Z. durch den Nutzer '%1' bearbeitet !"
+    IDS_ERZ_PRIM_INDEX      "Nummer"
+    IDS_NO_REC_FOUND        "Es wurde kein Erzeuger gefunden !"
+    IDS_ENTER_NR            "Erzeugernummer eingeben"
+    IDS_FOUND_RESULT        "Gefundene Nummern"
+    IDS_SELECT_NUMBER       "SELECT Nummer FROM [%1]  WHERE %2 ORDER BY Nummer"
+    IDS_GREATER_EQUAL       ">="
+    IDS_GREATER             ">"
+    IDS_EQUAL               "="
+    IDS_LESS_EQUAL          "<="
+    IDS_LESS                "<"
+    IDS_WHERE_KLAUSEL       "Nummer %1 '%2'"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LIKE                "LIKE"
+    IDS_NO_DRECORD_FOUND    "Datensatz nicht gefunden !"
+    IDS_NUMMER              "Nummer"
+    IDS_BRANCHE_CAPTION     "Branche auswählen"
+    IDS_CONFIG_SECTION      "Config"
+    IDS_DATEN_ENTRY         "Daten"
+    IDS_ST_NUMMER_INDEX     "Nummer"
+    IDS_COMPACT_DATABASE    "Datenbank komprimieren: %1%2"
+    IDS_DATABASE_EXTENSION  "MDB"
+    IDS_DIFF_DATABASE       "Datenbank kann nicht in sich selbst komprimiert werden !"
+    IDS_MDB_FILTER          "Microsoft-Datenbank (*.mdb)|*.mdb||"
+    IDM_REPAIR_DATABASE     "Aktuelle Datenbank reparieren."
+    IDM_RECHERCHE           "Öffnet Dialog zur Auswahl einer Abfrage."
+    IDS_PAGE_HEADER         "Seite 1: %1 - %2"
+    IDS_NO_PRINT_ENGINE     "Die zum Drucken erforderlichen Dateien wurden nicht gefunden !"
+    IDS_ERZEUGER_FORMULAR   "\nAngaben zur Anfallstelle\n\r\nAnfallstelle: %s\nBetrieb: %s\nStraße: %s\nHausnummer: %s\nOrtsname: %s\nGemeindekennzahl: %s\nPostleitzahl: %s\nTelefon: %s\nTelefax: %s\nAnzahl Beschäftigte: %d\n\nAngaben zur Firma\n\r\nFirmenname: %s\nStraße: %s\nHausnummer: %s\nOrtsname: %s\nPostleitzahl: %s\n\nAngaben zur Branche\n\r\nBranchennummer: %s\nBranchenname: %s\n\nAngaben zum Anprechpartner\n\r\nName: %s\nTelefon: %s\nTelefax: %s\n\nAngaben zur Entsorgungsanlage\n\r\nEntsorgungsnummer: %s\nEntsorgungsart: %s\n\nSysteminformationen\n\r\nErfassungsdatum: %s\nÄnderungsdatum: %s\nNutzername: %s\n"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABF_TABLE_ENTRY     "AbfallTabelle"
+    IDS_ABF_TABLE_NAME      "Abfaelle"
+    IDS_ABFALL_INDEX        "Nummer"
+    IDS_ERZ_TABLE_NAME      "Erzeuger"
+    IDS_ERZ_TABLE_ENTRY     "ErzeugerTabelle"
+    IDS_ABFALL_DATEN_CAPT   "Abfalldaten: %1"
+    IDS_ABFALL_FORMULAR     "\nAngaben zur Abfallart\n\r\nAbfallnummer: %s\nAbfallname: %s\nSonderabfall: %s\nVorbehandlung: %s\nMenge in Kubikmeter: %s\nMenge in Tonnen: %s\n\nAngaben zum Transporteur\n\r\nTransporteurnummer: %s\nFirmenname: %s\nStraße: %s\nOrtsname: %s\nPostleitzahl: %s\n\nAngaben zum Entsorger\n\r\nEntsorgernummer: %s\nFirmenname: %s\nStraße: %s\nOrtsname: %s\nPostleitzahl: %s\nEntsorgungsart: %s\nVerwertung als Abfall: %s\nEVN-Nummer: %s\n\nSysteminformationen\n\r\nErfassungsdatum: %s\nÄnderungsdatum: %s\nNutzername: %s\n"
+    IDS_KEINE               "<nicht vorhanden>"
+    IDS_SELECT_NUMMER_WW    "SELECT Nummer FROM [%1] ORDER BY Nummer"
+    IDS_DELETE_ERZ          "Wollen Sie die Daten des Erzeugers '%1' wirklich löschen ?"
+    IDS_REPAIR_DATABASE     "Die aktuelle Datenbank wird repariert ..."
+    IDS_COMPACT_DATASE      "Die aktuelle Datenbank wird komprimiert ..."
+    IDS_SELECT_FELDINFO     "SELECT * from [%1] WHERE Nummer = '%2'"
+    IDS_FELDNAME            "Feldname"
+    IDS_ABFART_CAPTION      "Abfallart auswählen"
+    IDS_ABFART_TABLE_NAME   "Abfallarten"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_FELDINHALT          "Feldinhalt"
+    IDS_SEL_ABF_ARTEN       "SELECT Name, Nummer, Dichte, Sonderabfall FROM [%1] ORDER BY Name"
+    IDS_JA                  "Ja"
+    IDS_NEIN                "Nein"
+    IDS_TR_TABLE_NAME       "Transporteure"
+    IDS_TRANSP_CAPTION      "Transporteur auswählen"
+    IDS_SELBST              "_selbst"
+    IDS_TRANSP_SELECT       "SELECT Nummer,Name,Ortsname,Postleitzahl,Strasse FROM [%1]  %2 ORDER BY Name"
+    IDS_ENTS_SELECT         "SELECT Nummer,Name,Ortsname,Postleitzahl,Strasse,Anlage FROM [%1] %2 ORDER BY Name"
+    IDS_ENTS_TABLE_NAME     "Entsorger"
+    IDS_ENTS_CAPTION        "Entsorger auswählen"
+    IDS_ABF_CAPT_FORMAT     "%1/%2"
+    IDS_DELETE_ABFALL       "Wollen Sie die Abfalldaten '%1' wirklich löschen ?"
+    IDS_SELECT_NR           "Erzeugernummer auswählen"
+    IDS_NUMMER_NOT_EXIST    "Diese Erzeugerummer ist noch nicht vergeben !"
+    IDS_DELETE_ABFGR        "Wollen Sie die Abfälle des Erzeugers '%1' wirklich löschen ?"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_INFO_SECTION        "Info"
+    IDS_INFO_FUER           "Fuer"
+    IDS_INFO_LIZENS         "Lizens"
+    IDS_CONFIG_ONLY_VALID_TRANS "NurGueltigeTransporteure"
+    IDS_TRANS_WHERE         "WHERE (Befristet > #%1#) "
+    IDS_ENTS_WHERE          "WHERE NOT Zurueck"
+    IDS_CONFIG_ONLY_VALID_ENTS "NurGueltigeEntsorger"
+    IDS_DATE_FORMAT         "%d/%m/%y"
+    IDS_QUERY_SELECTION     "Selektieren von Datensätzen"
+    IDS_QUERY_ACTION        "Manipulieren von Datensätzen"
+    IDS_QUERY_CROSSTAB      "Spreadsheet-Format-Datensätze liefern"
+    IDS_QUERY_DELETE        "Löschen von Datensätzen"
+    IDS_QUERY_UPDATE        "Ändern von Datensätzen"
+    IDS_QUERY_APPEND        "Anhängen von Datensätzen"
+    IDS_QUERY_MAKE_TABLE    "Tabelle erzeugen"
+    IDS_QUERY_DDL           "Strukur einer Tabelle ändern"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_QUERY_PASS_THR      "Weitergabe der SQL-Anweisung"
+    IDS_QUERY_UNION         "Vereinigung von Datensätzen mehrerer Tabellen"
+    IDS_QUERY_UNKNOWN       "<unbekannter Typ>"
+    IDS_QUERY_NAME          "Name"
+    IDS_QUERY_TYPE          "Typ"
+    IDS_QUERY_AEND          "Änderbar"
+    IDS_QUERY_RETREC        "Liefert Datensätze"
+    IDS_QUERY_SQLST         "SQL-Anweisung"
+    IDS_DATETIME_FORMAT     "%d.%m.%Y, %H:%M:%S"
+    IDS_DELETE_QUERY        "Wollen Sie die Abfrage '%1' wirklich löschen ?"
+    IDS_NEW_QUERY           "Neue Abfrage erstellen"
+    IDS_MODIFY_QUERY        "Abfrage modifizieren"
+    IDS_UNKN_QUERY          "Der Typ der Abfrage ist unbekannt oder wird nicht unterstützt.\nDie Abfrage kann nicht ausgeführt werden !"
+    IDS_DORECHERCHE         "Führe Abfrage '%1' durch ..."
+    IDS_QUERY_PARAM_INFO    "Bitte Parameter '%1' eingeben:"
+    IDS_TYPE_PARAM          "Datentyp: %1"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_TEXT                "Text"
+    IDS_BOOLEAN             "Bool"
+    IDS_BYTE                "Byte"
+    IDS_ERROR_HELP_FILE_NAME "msjeterr.hlp"
+    IDS_WAEHRUNG            "Währung"
+    IDS_LOOK_ERZEUGER       "Suche Erzeuger in Erzeugertabelle ..."
+    IDS_DATUM               "Zeit/Datum"
+    IDS_QUERY_TEMP          "Ergebnis der temporären Abfrage"
+    IDS_QUERY_RES_CAPTION   "Ergebnis der Abfrage '%1'"
+    IDS_QUERY_RESULT_FOUND  "Gefundene Datensätze (%1):"
+    IDS_SATZ                "Satz"
+    IDS_NO_REC_FOUND_QUERY  "Es wurden keine Datensätze für die Abfrage '%1' gefunden !"
+    IDS_CLIPB_ERROR         "Fehler beim Öffnen oder Kopieren der Daten in die Zwischenablage !"
+    IDS_CHECK_SELECT        "SELECT Nummer"
+    IDS_NUMMER_QUERY        "Die Abfrage selektiert möglicherweise nicht das Feld 'Nummer'.\nAbfrage trotzdem ausführen ?"
+    IDS_UNKNOWN_DATA_TYPE   "Der Datentyp des Feldes '%1' ist unbekannt !"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MEMO                "Memo"
+    IDS_DABASE_ERROR_FORMAT "Datenbankfehler %ld: ""%s"""
+    IDS_FIELD_INFO          "Datentyp: %1, Länge: %2"
+    IDS_TABLE_INFO          "Tabelle '%1' wurde ausgewählt ..."
+    IDS_BRACKETS            "[%1]"
+    IDS_TABLE_COUNT         "&Tabellen (%1):"
+    IDS_FIELD_COUNT         "&Felder  (%1):"
+    IDS_FUNCTION_COUNT      "F&unktionen (%1):"
+    IDS_OPERA_COUNT         "O&peratoren (%1):"
+    IDS_COPY_IN_TABLE       "Kopiere Daten in Tabelle '%1' ..."
+    IDS_COPY_TOCL           "Kopiere Daten in die Zwischanablage ..."
+    IDS_INIT_QUERY_RESULT   "Erzeuge Datenblatt ..."
+    IDS_BEREIT              "Bereit."
+    IDM_IMPORT              "Öffnet Dialog zum Datenimport."
+    IDS_FOXPRO_EXTENSION    "DBF"
+    IDS_FOXPRO_FILTER       "FoxPro-Datenbank (*.dbf)|*.dbf||"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_FOXPRO_CONNECT      "FoxPro 2.5;"
+    IDS_SELECT_ALL          "SELECT * FROM [%1]"
+    IDS_AND_KLAUSEL         "AND Name = '%1'"
+    IDS_NO_VALID_STRUCTUR   "Die gewählte Tabelle hat nicht die Struktur einer '%1'-Tabelle:\n%2"
+    IDS_DATABASE_NAME       "c:\\gak\\daten\\gak.mdb"
+    IDS_GEM_TABLE_ENTRY     "GemeindenTabelle"
+    IDS_BR_TABLE_ENTRY      "BranchenTabelle"
+    IDS_ABFART_TABLE_ENTRY  "AbfallArtenTabelle"
+    IDS_TRANSP_TABLE_ENTRY  "TransporteureTabelle"
+    IDS_ENTS_TABLE_ENTRY    "EntsorgerTabelle"
+    IDS_ABFA_INDEX_NAME     "Nummer"
+    IDS_BRANCHEN_DDL        "CREATE TABLE [%s] (\nNummer TEXT (10) CONSTRAINT Nummer PRIMARY KEY,\nName TEXT (140) );"
+    IDS_GEMEINDEN_DDL       "CREATE TABLE [%s] (\nName TEXT(50),\nNummer TEXT(10) CONSTRAINT Nummer PRIMARY KEY,\nAmtsnummer TEXT(10),\nPostleitzahl TEXT(5),\nBevölkerungsanzahl DOUBLE,\nBevölkerungsdichte DOUBLE,\nFläche DOUBLE);"
+    IDS_ABFALL_DDL          "CREATE TABLE [%s] (Nummer TEXT (10),Abfallnummer TEXT (10),Transporteurnummer TEXT (10),Entsorgernummer TEXT (10),Vorbehandlung TEXT(1),Menge_t  DOUBLE,Verbringungscode TEXT(10),Abfallbezeichnung TEXT(80),Betreibernummer TEXT(10),Eigentransport BIT,Entsorgungsverfahren TEXT(5),Eigenentsorgung BIT,Entsorgungspartner TEXT(30),Entsorgungstelefon TEXT(20),Entsorgungstelefax TEXT(20),Entsorgungsfreistellung BIT, Freistellungsnummer TEXT(20), Betreiberbemerkungen MEMO,Transporteurbemerkungen MEMO,Entsorgerbemerkungen MEMO,Bemerkungen MEMO,Erfassungsdatum DATE,Aenderungsdatum DATE,ro BIT,user TEXT(20),EAKNummer TEXT(10),Nachweisnummer TEXT(20), Exportiert TEXT(1));"
+    IDS_ERZEUGER_DDL        "CREATE TABLE [%s] (Nummer TEXT (10) CONSTRAINT Nummer PRIMARY KEY,Anfallstelle TEXT(80),Betriebsstaette TEXT(80),Strasse TEXT(80),Hausnummer TEXT(10),Postleitzahl TEXT(5),Ortsname TEXT(50),Gemeindekennzahl TEXT(10),Ansprechpartner TEXT(30),Partnerfunktion TEXT(30),Partnertelefon TEXT(20),Partnertelefax TEXT(20),Branchennummer TEXT(10),Firmenname TEXT(80),Firmenstrasse TEXT(80),Firmenhausnummer TEXT(10),Firmenpostleitzahl TEXT(5),Firmenortsname TEXT(50),Firmentelefon TEXT(20),Firmentelefax TEXT(20),Firmenansprechpartner TEXT(30),Bimschnummer TEXT(5),Bimschspalte TEXT(1),Bimschgenehmigungsnummer TEXT(30),Betreibernummer TEXT(20),Bilanznummer TEXT(20),Betriebsbeauftragter TEXT(30),Betriebsbeauftragtennummer LONG,Betriebsbeauftragtentelefon TEXT(20),Betriebsbeauftragtentelefax TEXT(20),Anzeigenachweisverordnung BIT,Antragsnummer TEXT(20),Bemerkungen MEMO,Erfassungsdatum DATE,Aenderungsdatum DATE,ro BIT,user TEXT(20),  Exportiert TEXT(1),EDV TEXT(3),EDVsonstige TEXT(40),Unterschrift BIT);"
+    IDS_ABFALLARTEN_DDL     "CREATE TABLE [%s] (\nNummer TEXT (10) CONSTRAINT Nummer PRIMARY KEY,\nName TEXT (128),\nSonderabfall BIT,\nDichte REAL);"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ENTSORGER_DDL       "CREATE TABLE [%s] (Nummer TEXT (10) CONSTRAINT Nummer PRIMARY KEY,\nName TEXT (80),\nAnlage TEXT (80),\nAnlagenart TEXT (30),\nStrasse TEXT(80),\nOrtsname TEXT(50),\nPostleitzahl TEXT(5),\nErteilt DATE,\nZurueck BIT);"
+    IDS_TRANSPORTEURE_DDL   "CREATE TABLE [%s] (\nNummer TEXT (10) CONSTRAINT Nummer PRIMARY KEY,\nName TEXT (80),\nStrasse TEXT(80),\nOrtsname TEXT(50),\nPostleitzahl TEXT(5),\nTelefon TEXT(20),\nErteilt DATE,\nBefristet DATE);"
+    IDS_CREATE_INDEX_DDL    "CREATE INDEX [%2] ON [%1] ([%2])"
+    IDS_DISALLOW_NULL       "WITH DISALLOW NULL"
+    IDS_IMPORT_ALL_RECORDS  "Es werden alle Datensätze importiert."
+    IDS_IMPORT_ONLY_REF     "Es wurden nur Datensätze mit vorhandener Referenz\nin die Ausgabetabelle importiert."
+    IDS_IMPORT_WITHOUT_REF  "Es werden nur Datensätze importiert, die noch keine Referenz\nin der Ausgabetabelle besitzen."
+    IDS_ACTUAL_AUTOMATIC    "Die Aktualisierung der Datensätze in der Ausgabetabelle\nerfolgt automatisch über sequentielle Suche."
+    IDS_DATABASE_CONNECT    "DATABASE=%1"
+    IDS_ACTUAL_NEVER        "Die Datensätze werden an das aktuelle Ende der\nAusgabetabelle angefügt."
+    IDS_DIFF_IN_OUT_TABLE   "Eingabe- und Ausgabetabelle müssen verschieden sein !"
+    IDS_BEENDEN             "&Beenden"
+    IDS_GET_RECORD_COUNT    "Bestimme Anzahl der Datensätze in der Eingabetabelle ..."
+    IDS_SELECT_COUNT        "SELECT Count(*) FROM [%1]"
+    IDS_DO_IMPORT           "Führe Import der Datensätze durch ..."
+    IDS_SEARCH_FIELD        "LTRIM ([%1].[%2])"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ERR_EXT             ".prt"
+    IDS_IMPORT_HEAD         "Protokoll für den Import der Tabelle '%1' vom %2\n"
+    IDS_REPORT_ERR_FORMAT   "Fehler %ld beim Import des %ld. Datensatzes: "
+    IDS_EMPTY_INPUT_TABLE   "Die gewählte Eingabetabelle '%1' enthält keine Datensätze !"
+    IDS_EDIT_COMMAND        "write %1"
+    IDS_UPDATE_IMPORT_CNT   "%1 Datensätze wurden geändert.\n"
+    IDS_NEW_IMPORT_CNT      "%1 Datensätze wurden neu importiert.\n"
+    IDS_UPDATE_IMPORT_ERRCNT "%1 Datensätze konnten nicht geändert werden.\n"
+    IDS_APPEND_IMPORT_ERRCNT 
+                            "%1 Datensätz konnten nicht neu importiert werden.\n"
+    IDS_SUMME_IMPORT_CNT    "%1 Datensätze wurden insgesamt geändert bzw. neu importiert.\n"
+    IDS_SUMME_IMPORT_ERRCNT "%1 Fehler sind insgesamt während des Imports aufgetreten.\n"
+    IDS_ABFRAGEN            "Abfragen"
+    IDS_AUTOMATIC_INDEX     "Die Aktualisierung der Datensätze in der Ausgabetabelle\nerfolgt automatisch über Index-Suche."
+    IDS_TABLE_NOT_FOUND     "Die Datenbank/Tabelle '%1' wurde nicht gefunden !\nÜberprüfen Sie bitte die Einstellungen in der Datei 'GAK.INI'."
+    IDS_ABF_TABLE_NAME_DESCR "Abfall"
+    IDS_TABLE_ENTRY         "%1Tabelle"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ENTRY_FORMAT        """%1"""
+    IDS_FIND_DICHTE         "[%1] = '%2'"
+    IDS_SELECT_DICHTEART    "SELECT Nrabfart, Dichte FROM [GAKINART]"
+    IDS_TEXT_ALL_SELECT     "Alle au&swählen"
+    IDS_TEXT_NO_SELECT      "Keine au&swählen"
+    IDS_IMP_QUERY_CAPTION   "Abfragen aus '%1' importieren"
+    IDS_NO_QUERIES          "Die Datenbank '%1' enthält keine Abfragen !"
+    IDS_DIFF_IN_OUT_DB      "Eingabe- und Ausgabedatenbank müssen verschieden sein !"
+    IDS_QUERY_INFO          "&Vorhandene Abfragen (%1):"
+    IDS_STAT_CAPT_FORMAT    "Datenbank-Statistik für Nutzer '%1'"
+    IDS_INTEGER             "Integer"
+    IDS_LONG_INTEGER        "Long Integer"
+    IDS_TABELLEN            "Tabellen"
+    IDS_FELDER              "Felder"
+    IDS_INDICES             "Indizes"
+    IDS_RELATIONS           "Beziehungen"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_AS_NEW_TABLE        "Die Ausgabetabelle wird für Eingaben/Recherchen verwendet."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ALLE                "alle"
+    IDS_ONLY_VALIDS         "nur gültige"
+    IDS_ARTEN_INFO          "&Abfallarten (%d):"
+    IDM_CALL_ADMIN          "Ruft den ODBC-Administrator auf.\nODBC-Admininstrator aufrufen"
+    IDM_CONFIG_DSN          "Öffnet Dialog zum Einrichten der ODBC-Datenquelle.\nDatenquelle einrichten"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_SINGLE              "Single"
+    IDS_DOUBLE              "Double"
+    IDS_LONG_BINARY         "Long Binary"
+    IDS_GUID                "GUID"
+    IDS_POSITION            "Position"
+    IDS_COLLECTION_FORMAT   "%s (%d)"
+    IDS_STANDARD_QUEYRIES   "Standardabfragen"
+    IDS_BILANZ_QUERIES      "Bilanzenabfragen"
+    IDS_STANDARD_QUEYRY     "Standardabfrage"
+    IDS_BILANZ_QUERY        "Bilanzabfrage"
+    IDS_UNKNOWN_QUERY_PARAM "Unbekannter Abfrageparameter !"
+    IDS_INI_ENTRIES         "INI-Einträge"
+    IDS_ENTSORGER           "Entsorger"
+    IDS_TRANSP              "Transporteure"
+    IDS_KREISE_DDL          "CREATE TABLE [%s] (Nummer TEXT(10) CONSTRAINT Nummer PRIMARY KEY,Name TEXT (50),Kuerzel TEXT(5) );"
+    IDS_KUERZEL             "Kuerzel"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_REPORT_FFORMAT      "%1.rpt"
+    IDS_DSN_GAK             "GAK32"
+    IDS_CONFIG_DSN          "Die ODBC-Einstellungen sind unvollständig oder stimmen\nnicht mit dem Datenbankeintrag in der INI-Datei überein\nund müssen korrigiert werden !"
+    IDS_VERBR_TABLE_ENTRY   "VerbringungsTabelle"
+    IDS_VERBR_TABLE_NAME    "Verbringung"
+    IDS_VERBRC_CAPTION      "Verbringungs-Code auswählen"
+    IDS_KREISE_TABLE_ENTRY  "KreiseTabelle"
+    IDS_KREISE_TABLE_NAME   "Kreise"
+    IDS_VERBRINGUNG_DDL     "CREATE TABLE [%s] (Nummer TEXT (10) CONSTRAINT Nummer PRIMARY KEY,Name TEXT (255)) ;"
+    IDS_VERFAHREN_TABLE_ENTRY "VerfahrenTabelle"
+    IDS_VERFAHREN_TABLE_NAME "Verfahren"
+    IDS_VERFAHREN_DDL       "CREATE TABLE [%s] (\nNummer TEXT (5) CONSTRAINT Nummer PRIMARY KEY,\nName TEXT (80) ,\nBemerkungen TEXT(255));"
+    IDS_VERFAHREN_CAPTION   "Beseitigungs/Verwertungs-Verfahren auswählen"
+    IDS_COMPACT_CAPTION     "Zu erstellende Datenbank eingeben"
+    IDS_SELECT_DB_CAPTION   "Datenbank auswählen"
+    IDS_BOOL_VALUES         "(1 oder 0)"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDM_EXPORT              "Öffnet Dialog zum Datenexport."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PREPARE_EXPORT      "Datenrückgabe wird vorbereitet ..."
+    IDS_NO_RECORDS          "Keine Datensätze vorhanden !"
+    IDS_EXPORT_TABLES       "Tabellen exportieren"
+    IDS_EXPORT_TABLE_FORMAT "Exportiere Datensätze der Tabelle '%1' ..."
+    IDS_DELETE_TABLE        "DROP TABLE [%1]"
+    IDS_ERZEUGER_PARAM      "prmErzeugernummer"
+    IDS_QUERY_PARAM_TITLE   "Abfrage: %1"
+    IDS_DATE_VALUES         "(TT.MM.JJ)"
+    IDS_BRANCHE_PARAM       "prmBranchennummer"
+    IDS_GEMEINDE_PARAM      "prmGemeindekennzahl"
+    IDS_ALLE_GEMEINDEN_PARAM "prmAlleGemeinden"
+    IDS_KREIS_PARAM         "prmKreis"
+    IDS_ALLE_KREISE_PARAM   "prmAlleKreise"
+    IDS_KREIS_CAPTION       "Kreis auswählen"
+    IDS_ABF_ART_PARAM       "prmAbfallart"
+    IDS_ALLE_ABF_ART_PARAM  "prmAlleAbfallarten"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ONLY_SONDER_ABF_PARAM "prmNurSonderabfälle"
+    IDS_MENGE_PARAM         "prmMengenschwelle"
+    IDS_OR                  " OR "
+    IDS_ALLE_BRANCHEN_PARAM "prmAlleBranchen"
+    IDS_SELECT_AFIS         "SELECT DISTINCT AfI FROM %1"
+    IDS_SELECT_AFI          "Afi = '%1'"
+    IDS_SELECT_NAME         "Name = '%1'"
+    IDS_WHERE_GKZ           "(Gemeindekennzahl LIKE '%1*')"
+    IDS_FIELD_NOT_FOUND     "Das Feld '%1' ist in der Tabelle nicht vorhanden."
+    IDS_FIELD_NO_TYPE       "Das Feld '%1' hat nicht den richtigen Datentyp."
+    IDS_FIELD_NO_LEN        "Das Feld '%1' hat nicht die geforderte Länge (%2)."
+    IDS_TABLE_OUT_CAPTION   "Tabelle kopieren nach:"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_SELECT_ABFART       "SELECT Nummer,Sonderabfall,Dichte FROM %1"
+    IDS_BILANZEN_SELECT     "SELECT Nummer,Abfallnummer,Transporteurnummer,Entsorgernummer,Menge_t,Nachweisnummer,Entsorgungsverfahren,Prioritaet,Bearbeitet FROM %1"
+    IDS_TABLE_EXIST         "Die Tabelle %1 existiert bereits !\nSoll die Tabelle überschrieben werden ?"
+    IDS_UEBERNEHMEN         "&Übernehmen"
+    IDS_CREATE_OUTPUT_TABLE "Öffne Ausgabetabelle ..."
+    IDS_READ_ABFART_TABLE   "Öffne Abfallarten-Tabelle ..."
+    IDS_READ_ABFALL_TABLE   "Öffne Bilanz-Tabelle ..."
+    IDS_READ_ABFALLBGS_TABLE "Öffne Referenz-Tabelle ..."
+    IDS_READ_ERZ_TABLE      "Öffne Erzeugertabelle ..."
+    IDS_CREATE_TABLE_TEXT   "CREATE TABLE %1 %2"
+    IDS_INDEX_REGNR         "CREATE INDEX Nummer ON %1 (Nummer ASC);"
+    IDS_INDEX_ABFART        "CREATE INDEX Abfallnummer ON %1 (Abfallnummer ASC);"
+    IDS_JA2                 "Ja"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NEIN2               "Nein"
+    IDS_OUTPUT_RECORDS      "Ausgeben der Abfälle des Erzeugers %1 ..."
+    IDS_ABBRUCH             "Abgleich abbrechen ?"
+    IDS_BEREIT2             "Bereit."
+    IDS_ABFART_TABLE        "Abfallarten"
+    IDS_ERZEUGER_CAPTION    "Erzeugernummer/Abfallart: %1/%2"
+    IDS_SEARCH_NEXT_ERZ     "Prüfe Abfall '%2' des Erzeugers '%1' ..."
+    IDS_SEARCH_CAPTION      "Abgleich durchführen"
+    IDS_ABFART_CAPTION2     "Abfallart: %1"
+    IDS_DELETE_TABLE2       "DROP TABLE %1"
+    IDS_CREATE_ERZLISTE     "Öffne Erzeugerliste ..."
+    IDS_CREATE_ERZLISTE_TABLE 
+                            "(Nummer TEXT(10),Anfallstelle TEXT(80),Ortsname TEXT(50),Ansprechpartner TEXT(30),Partnertelefon TEXT(20),Partnertelefax TEXT(20),Abfallnummer TEXT(10),Transporteurnummer TEXT(10),Entsorgernummer TEXT(10),Menge DOUBLE,Sonderabfall BIT,Bilanzdaten BIT, Bearbeitet BIT, Branchennummer TEXT(10),Verfahren TEXT(3), Prioritaet TEXT(1),Nachweisnummer TEXT(20));"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_SELECT_ERZSET       "SELECT DISTINCT Nummer FROM %1"
+    IDS_LISTE_OHNE          "SELECT Bearbeitet FROM [%1] WHERE (Nummer=?) AND (Abfallnummer=?)"
+    IDS_ERZ_LISTE           "SELECT Nummer,Anfallstelle,Ortsname,Ansprechpartner,Partnertelefon,Partnertelefax, Branchennummer FROM %1 WHERE (Nummer=?)"
+    IDS_LISTE_LISTE         "SELECT Nummer,Anfallstelle,Ortsname,Ansprechpartner,Partnertelefon,Partnertelefax,Bearbeitet,Branchennummer FROM %1 WHERE (Nummer=?) AND (Abfallnummer=?)"
+    IDS_ERZLISTE_SELECT     "SELECT * FROM %1 WHERE NOT Bearbeitet ORDER BY Nummer,Abfallnummer"
+    IDS_ERZLISTE_TXT        "ERZLISTE.TXT"
+    IDS_FILE_NOT_FOUND      "Eine Datei wurde nicht gefunden !"
+    IDS_TOO_MANY_OPEN_FILES "Die maximale Anzahl offener Dateien wurde überschritten !\nErhöhen Sie den Wert der in der Datei config.sys unter FILES angegebenen Zahl."
+    IDS_ASSESS_DENIED       "Der Zugriff auf eine Datei wurde verweigert !"
+    IDS_REMOVE_CURRENT_DIR  "Das aktuelle Verzeichnis kann nicht gelöscht werden !"
+    IDS_DIRECTORY_FULL      "Die Festplatte oder das aktuelle Verzeichnis sind voll !"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_HARD_IO             "Während des Zugriffs auf eine Datei ist ein Hardwarefehler aufgetreten !"
+    IDS_LOCK_VIOLATION      "Beim Zugriff auf eine verriegelte Datei ist ein Fehler aufgetreten !"
+    IDS_INTERNAL_ERROR      "Ein interner Fehler ist aufgetreten !"
+    IDS_ERZ_TABLE_ERROR     "Die Tabelle %1 ist keine Erzeugertabelle !"
+    IDS_BILANZ_TABLE_ERROR  "Die Tabelle %1 ist keine Bilanztabelle !"
+    IDS_BGS_TABLE_ERROR     "Die Tabelle %1 ist keine Referenztabelle !"
+    IDS_ERZLISTE_TABLE_ERROR "Die Tabelle %1 ist keine Erzeugerliste !"
+    IDS_ABFARTEN_TABLE_ERROR "Die Tabelle %1 ist keine Abfallartentabelle !"
+    IDS_NO_LIST_RECORDS     "Die Erzeugerliste %1 enthält keine nicht bearbeiteten Datensätze !"
+    IDS_SAVE_STATUS         "Einstellungen des Abgleichs speichern ?"
+    IDS_CONFIG              "CONFIG"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ERZEUGER_KEY        "Erzeugertabelle"
+    IDS_BILANZ_KEY          "Bilanztabelle"
+    IDS_BGS_KEY             "Referenztabelle"
+    IDS_OUTPUT_KEY          "Ausgabetabelle"
+    IDS_ERZLIST_KEY         "Erzeugerliste"
+    IDS_ERZNAME_KEY         "Erzeuger"
+    IDS_ONLY_SONDER_ABFALL_KEY "NurSonderAbfaelle"
+    IDS_MENGEN_SCHWELLE_KEY "Mengenschwelle"
+    IDS_DSNGLEICH2          "DSN="
+    IDS_ODBCINI2            "odbc.ini"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DSNSECTION2         "ODBC Data Sources"
+    IDS_DEFAULT_DIR2        "DBQ"
+    IDS_CREATE_ACCESSDSN    "Die ODBC-Datenquelle für den Zugriff auf die Referenzdaten  ist nicht vorhanden !"
+    IDS_CREATE_FOXDSN       "Die ODBC-Datenquelle für den Zugriff auf die Bilanzdaten  ist nicht vorhanden !"
+    IDS_ERZLISTE_SEL        "Erzeugerliste auswählen"
+    IDS_SELECT_OUTPUT_TABLE "Ausgabetabelle auswählen"
+    IDS_PRIO_FIELDNAME      "Prioritaet"
+    IDS_BEARBEITET_FIELDNAME "Bearbeitet"
+    IDS_ALTER_TABLE         "ALTER TABLE [%1] ADD %2"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_BILANZ_KEY_VJ       "BilanztabelleVorjahr"
+    IDS_PRIO_KEY            "Prioritaet"
+    IDS_MODUS_KEY           "Modus"
+    IDS_MENGEN_SCHWELLE_KEY_REC "SatzMengenschwelle"
+    IDS_START_TEXT1         "Mit Eintrag beginnen"
+    IDS_START_TEXT2         "Nur diesen Eintrag"
+    IDS_DELETE_RECS         "Anzahl gelöschter Datensätze:"
+    IDS_NUMMER_FILTER       "([%1].Nummer >= '%2')"
+    IDS_NOT_BEARBEITET      "(Bearbeitet=FALSE)"
+    IDS_FILTER_PRIO123      "(Prioritaet IN ('1','2','3'))"
+    IDS_FILTER_PRIO23       "(Prioritaet IN ('2','3'))"
+    IDS_NUMMER_FILTER_EQ    "([%1].Nummer = '%2')"
+    IDS_MENGEN_FILTER       "(Menge_t >= %.2lf)"
+    IDS_SORT_ERZNR_ASN      "[%1].Nummer, [%1].Abfallnummer ASC"
+    IDS_NO_RECORDS_FOUND    "Es sind keine abzugleichenden Datensätze vorhanden !"
+    IDS_READ_ABFALLVJ_TABLE "Öffne Vorjahres-Bilanz-Tabelle ..."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NUMMER2             "Nummer"
+    IDS_ERZ_NUMMER_FILTER   "(Nummer=?)"
+    IDS_ASN_NR              "Abfallschluesselnummer"
+    IDS_ABF_NR              "Abfallnummer"
+    IDS_ERZSTATUS_KEY       "ErzeugerStatus"
+    IDS_ERZNR_FILTER        "Erzeugernummer=?"
+    IDS_SELECT_SET_ABGL     "SELECT DISTINCT  [%1].Nummer, [%1].Abfallnummer FROM Abfallarten INNER JOIN ([%2] INNER JOIN [%1] ON [%2].Nummer = [%1].Nummer) ON Abfallarten.Nummer = [%1].Abfallnummer"
+    IDS_NOT_BEARBEITET_PARAM "([%1].Bearbeitet=FALSE)"
+    IDS_ONLY_SONDER_ABFALL  "(Abfallarten.Sonderabfall=TRUE)"
+    IDS_SELECT_SET_ABGL1    "SELECT DISTINCT  [%1].Nummer, [%1].Abfallnummer FROM Abfallarten INNER JOIN [%1] ON Abfallarten.Nummer = [%1].Abfallnummer"
+    IDS_ERZ_ASN_FILTER      "(Nummer=?) AND (Abfallnummer=?)"
+    IDS_BGS_ERZ_ASN_FILTER  "(Erzeugernummer=?) AND (Abfallschluesselnummer=?)"
+    IDS_ERZ_NOT_FOUND2      "Die Angaben zum Erzeuger '%1' wurden nicht gefunden !"
+    IDS_MENGE_BGS_FILTER    "(Menge >= %.2lf)"
+    IDS_OUTPUT_SET          "SELECT Nummer, Abfallnummer,Transporteurnummer,Entsorgernummer,Menge_t,Entsorgungsverfahren,Erfassungsdatum,Nachweisnummer,Prioritaet,Bearbeitet  FROM [%1]"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DATEN_ABGLEICH      "des Datenabgleichs"
+    IDS_DATEN_KONTROLLE     "der Datenkontrolle"
+    IDS_ERZEUGER_SELECT     "SELECT Nummer, Abfallnummer,Transporteurnummer,Entsorgernummer,Menge_t,Entsorgungsverfahren,Nachweisnummer,Prioritaet,Bearbeitet,Transporteurbemerkungen,Entsorgerbemerkungen  FROM [%1]"
+    IDS_ASN_KEY             "Abfallnummer"
+    IDS_ONLY_THIS_ERZ_KEY   "NurErzeugerAbfall"
+    IDS_ERZEUGER_NOT_FOUND  "Die Angaben zum Erzeuger '%1' wurden nicht gefunden !"
+    IDS_READ_ABFALL_TABLEVJ "Öffne Vorjahres-Bilanz-Tabelle ..."
+    IDS_MENGE_FROM_LISTE    "([%s].Menge >= %.2lf)"
+    IDS_MENGE_FROM_BILANZ   "([%s].Menge_t >= %.2lf)"
+    IDS_FILTER_ERZNZ_BILANZ "([%s].Nummer %s '%s')"
+    IDS_FILTER_ASN_BILANZ   "([%s].Abfallnummer >= '%s')"
+    IDS_NO_ABGL_RECORDS     "Es sind keine abzugleichenden Datensätze vorhanden !"
+    IDS_NO_KONTRL_RECORDS   "Es sind keine zu kontrollierenden Datensätze vorhanden !"
+    IDS_ABBRUCH_KONTROLLE   "Datenkontrolle abbrechen ?"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CONTROL_CAPTION     "Datenkontrolle durchführen"
+    IDS_DELETE_RECORDS      "Lösche Datensätze ..."
+    IDS_SAVE_STATUS_C       "Einstellungen der Datenkontrolle speichern ?"
+    IDS_ERZ_NR_FILTER       "Nummer=?"
+    IDS_ERZB_NR_FILTER      "Erzeugernummer=?"
+    IDS_BGS_ERZABF_TABLE    "bgstemp"
+    IDS_CREATE_TEMP_TABLE   "Erzeuge temporäre Tabelle ...."
+    IDS_CREATE_BGS_TABEL    "CREATE TABLE %1 (Nummer TEXT (10), Abfallnummer TEXT(10)); "
+    IDS_SEARCH_ERZ          "Suche Erzeuger '%1' ..."
+    IDS_NOT_FOUND           "Erzeuger/Abfallschlüssel-Nummer wurde nicht gefunden !"
+    IDS_MENU_COPY           "&Kopieren"
+    IDS_CLIPB_ERROR2        "Fehler beim Öffnen oder Kopieren der Daten in die Zwischenablage !"
+    IDS_ERZNR_ASN_FILTER    "(Nummer = '%1') AND (Abfallnummer = '%2')"
+    IDS_DELETE_FROM         "DELETE FROM [%1] WHERE %2"
+    IDS_UPDATE_KLAUSEL      "UPDATE %1 SET Bearbeitet=TRUE WHERE %2"
+    IDS_ERZNR_ASNB_FILTER   "(Erzeugernummer = '%1') AND (Abfallschluesselnummer = '%2')"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDB_ABGLEICH            "Abgleich starten"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE 7, 1
+#pragma code_page(1252)
+#endif
+#include "res\gak.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.deu\afxres.rc"          // Standard components
+#include "l.deu\afxprint.rc"        // printing/print preview resources
+#include "l.deu\afxdb.rc"           // Database resources
+#endif
+#include "defabout.dlg"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

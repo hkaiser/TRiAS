@@ -1,0 +1,201 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Deutsch (Deutschland) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 7, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\GPSImportW.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.deu\\afxres.rc""          // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\GPSImportW.ico"
+146                     ICON    DISCARDABLE     "res\\ico146.ico"
+264                     ICON    DISCARDABLE     "res\\ico264.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_COPYDLKW_DIALOG DIALOGEX 0, 0, 276, 94
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Erstellen des Garmin File Formates"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Auswahl der &Quelldateien",IDC_STATIC,4,4,141,8
+    EDITTEXT        IDC_SOURCEDIR,4,13,268,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Auswahl des &Zielverzeichnisses:",IDC_STATIC,4,32,141,8
+    EDITTEXT        IDC_DESTINATIONDIR,4,42,268,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "Bereits %%d verarbeitet.",IDC_PROMPT,4,71,135,8
+    CONTROL         "Progress1",IDC_COPYPROGRESS,"msctls_progress32",
+                    PBS_SMOOTH,4,84,136,6
+    DEFPUSHBUTTON   "&Erstellen",IDOK,154,76,55,14
+    PUSHBUTTON      "&Beenden",IDC_CLOSE,217,76,55,14
+END
+
+1536 DIALOG DISCARDABLE  109, 35, 204, 135
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Öffnen"
+FONT 8, "Helv"
+BEGIN
+    LTEXT           "File &Name:",1090,267,0,76,10
+    EDITTEXT        1152,267,10,90,12,ES_AUTOHSCROLL | ES_OEMCONVERT
+    LISTBOX         1120,267,26,90,68,LBS_SORT | LBS_OWNERDRAWFIXED | 
+                    LBS_HASSTRINGS | LBS_DISABLENOSCROLL | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "&Verzeichnisse:",-1,6,6,92,9
+    LTEXT           "",1088,6,18,128,9,SS_NOPREFIX
+    LISTBOX         1121,6,30,127,70,LBS_SORT | LBS_OWNERDRAWFIXED | 
+                    LBS_HASSTRINGS | LBS_DISABLENOSCROLL | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "List Files of &Type:",1089,267,98,90,9
+    COMBOBOX        1136,267,108,90,36,CBS_DROPDOWNLIST | CBS_AUTOHSCROLL | 
+                    WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Laufwerke:",1091,6,104,92,9
+    COMBOBOX        1137,6,114,127,68,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | 
+                    CBS_AUTOHSCROLL | CBS_SORT | CBS_HASSTRINGS | WS_BORDER | 
+                    WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,143,6,55,14,WS_GROUP
+    PUSHBUTTON      "Abbrechen",IDCANCEL,143,24,55,14,WS_GROUP
+    PUSHBUTTON      "&Help",1038,143,46,55,14,WS_GROUP
+    CONTROL         "&Schreibschutz",1040,"Button",BS_AUTOCHECKBOX | 
+                    WS_GROUP | WS_TABSTOP,138,68,60,12
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_COPYDLKW_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 4
+        RIGHTMARGIN, 272
+        TOPMARGIN, 4
+        BOTTOMMARGIN, 90
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDP_OLE_INIT_FAILED     "Fehler bei der OLE-Initialisierung. Überprüfen Sie, ob die OLE-Bibliotheken in der richtigen Version vorliegen."
+    IDS_ABOUTBOX            "Inf&o über GPSImport ..."
+    IDS_DDX_GF_EDIT_TEXT    "..."
+    IDS_DDX_GFLDR_TT_MODIFY "Verzeichnis auswählen"
+    IDS_SELECTSOURCEDIR     "Auswahl der Eingabedateien"
+    IDS_SELECTDESTINATIONDIR "Auswahl des Zielbasisverzeichnisses"
+    IDS_COPY                "&Erstellen"
+    IDS_CANCEL              "&Abbrechen"
+    IDS_ASKTOCANCEL         "Das Erstellen wird abgebrochen!"
+    IDS_STATUSPROMPT        "Bereits %d%% der Dateien verarbeitet"
+    IDS_COPYERROR           "Die Datei %s konnte nicht verarbeitet werden.\nGemeldeter Fehler: %s (Fehlercode: %08x). "
+    IDS_GARMINFILETYP       "Route"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DDX_GF_OK           "OK"
+    IDS_DDX_GF_OVERWRITE_PROMPT 
+                            """%1\nDiese Datei existiert bereits.\nSoll diese Datei überschrieben werden ?"""
+    IDS_DDX_GF_TT_MODIFY    "Datei auswählen."
+    IDS_CLOSE               "Beenden"
+END
+
+#endif    // Deutsch (Deutschland) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE 7, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\GPSImportW.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.deu\afxres.rc"          // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

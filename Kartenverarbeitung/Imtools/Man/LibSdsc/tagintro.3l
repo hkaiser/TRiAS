@@ -1,0 +1,303 @@
+
+
+
+     TTTTAAAAGGGGIIIINNNNTTTTRRRROOOO((((3333TTTTAAAAGGGG))))          SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))           TTTTAAAAGGGGIIIINNNNTTTTRRRROOOO((((3333TTTTAAAAGGGG))))
+
+
+
+     NNNNAAAAMMMMEEEE
+          TagIntro  -  general information on the tag table package
+
+     SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+          #include "sdsc.h"
+
+     DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+          The tag table package creates and manipulates a generic
+          data-holding data structure known as a "tag table."  Each
+          entry in the table is a tag-value pair.  The tag is a NULL-
+          terminated character string label of arbitrary length and
+          content.  The value is any of the standard C types.
+          Multiple entries may have the same tag.
+
+          Entries are ordered in two ways:  linearly and as a direct-
+          access hash table.  Linear ordering allows a tag table to be
+          searched from start to finish in the order in which it was
+          created (or later edited).  Hash table ordering allows a tag
+          table to be queried directly, such as to search for the Nth
+          occurrence of an entry with tag "hello world".
+
+          Tag tables may be used in any application that keeps track
+          of a list of related but differently typed items, such as
+          images, lookup tables, label strings, dates, host names,
+          arrays of science data, and so on.  Any of the items may not
+          occur or may occur more than once.  Tag tables are
+          extensively used by the SDSC image manipulation library
+          'libim' (see _I_m_I_n_t_r_o(3IM)).
+
+     GGGGOOOOAAAALLLLSSSS
+          The tag table package was designed to:
+
+          +o Accept any C type as a value.
+
+          +o Be flexible and easy to use.
+
+          +o Provide a variety of ways of accessing the list of tags
+            and values.
+
+          +o Provide quick linear and direct access searching methods.
+
+     AAAALLLLLLLLOOOOCCCCAAAATTTTIIIINNNNGGGG AAAANNNNDDDD FFFFRRRREEEEEEEEIIIINNNNGGGG TTTTAAAAGGGG TTTTAAAABBBBLLLLEEEESSSS
+          An empty tag table is allocated with a call to:
+
+            TagTable *tagTable;
+             ...
+            tagTable = TagTableAlloc( );
+
+
+          A tag table can be freed with a call to:
+
+            TagTable *tagTable;
+
+
+
+     Page 1                                          (printed 6/30/95)
+
+
+
+
+
+
+     TTTTAAAAGGGGIIIINNNNTTTTRRRROOOO((((3333TTTTAAAAGGGG))))          SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))           TTTTAAAAGGGGIIIINNNNTTTTRRRROOOO((((3333TTTTAAAAGGGG))))
+
+
+
+             ...
+            TagTableFree( tagTable );
+
+
+     AAAALLLLLLLLOOOOCCCCAAAATTTTIIIINNNNGGGG AAAANNNNDDDD FFFFRRRREEEEEEEEIIIINNNNGGGG TTTTAAAAGGGG EEEENNNNTTTTRRRRIIIIEEEESSSS
+          Entries for tag tables are created before they are added
+          into a table.  Tag table entries may be allocated with a
+          call to:
+
+            TagEntry *tagEntry;
+             ...
+            tagEntry = TagEntryAlloc( tag, type, pValue );
+
+
+          where _t_a_g is the tag string for the entry, _t_y_p_e is the C
+          type for the value, and _p_V_a_l_u_e is a pointer to the value to
+          copy into the entry.
+
+          Note that _p_V_a_l_u_e is not the value itself but a pointer to
+          it.  For example, the following code creates two table
+          entries, one for the tag "image name" and its string value,
+          and the other for the tag "gamma" and its floating point
+          gamma-correction factor:
+
+            TagEntry *tagEntry1;
+            TagEntry *tagEntry2;
+            char *stringValue;
+            float floatValue;
+             ...
+            stringValue = "SDSC Logo";
+            tagEntry1   = TagEntryAlloc( "image name", POINTER, &stringValue );
+            floatValue  = 2.8;
+            tagEntry2   = TagEntryAlloc( "gamma", FLOAT, &floatValue );
+
+
+          To create an entry holding a string, a pointer to a string
+          must be passed.  The type in this case is _P_O_I_N_T_E_R.  If _C_H_A_R
+          was used instead, only the low-order byte of _s_t_r_i_n_g_V_a_l_u_e is
+          stored in the entry, instead of the entire pointer value of
+          _s_t_r_i_n_g_V_a_l_u_e (4 bytes on most hosts).
+
+          When a tag entry is not needed (is not a part of any
+          existing tag table), it may be freed using:
+
+            TagEntry *tagEntry;
+             ...
+            TagEntryFree( tagEntry );
+
+
+     QQQQUUUUEEEERRRRYYYYIIIINNNNGGGG AAAATTTTTTTTRRRRIIIIBBBBUUUUTTTTEEEESSSS OOOOFFFF AAAA TTTTAAAAGGGG EEEENNNNTTTTRRRRYYYY
+          Information in a tag table entry may be QQQQueried by:
+
+
+
+
+     Page 2                                          (printed 6/30/95)
+
+
+
+
+
+
+     TTTTAAAAGGGGIIIINNNNTTTTRRRROOOO((((3333TTTTAAAAGGGG))))          SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))           TTTTAAAAGGGGIIIINNNNTTTTRRRROOOO((((3333TTTTAAAAGGGG))))
+
+
+
+8       _________________________________________________________________
+              Call                            Meaning
+8       _________________________________________________________________
+        TagEntryQNthEntry   Query the entry number for an entry
+        TagEntryQNthOccur   Query the tag occurrence count for an entry
+        TagEntryQTag        Query the tag for an entry
+        TagEntryQType       Query the value type for an entry
+        TagEntryQValue      Query the value for an entry
+8       _________________________________________________________________
+7       |7|7|7|7|7|7|
+
+
+
+
+
+                                                                        |7|7|7|7|7|7|
+
+
+
+
+
+
+
+     EEEEDDDDIIIITTTTIIIINNNNGGGG AAAA TTTTAAAAGGGG TTTTAAAABBBBLLLLEEEE
+          After allocated, a tag-table entry may be appended to a tag
+          table, inserted into it, or used to replace an entry already
+          in the table.  Tag-table entries already in the table may be
+          deleted and copied.
+
+8             _____________________________________________________
+                 Call                     Meaning
+8             _____________________________________________________
+              TagAppend    Append a tag entry to a tag table
+              TagCopy      Copy a tag table to another tag table
+              TagDelete    Delete a tag entry from a tag table
+              TagInsert    Insert a tag entry into a tag table
+              TagReplace   Replace a tag entry within a tag table
+8             _____________________________________________________
+7             |7|7|7|7|7|7|
+
+
+
+
+
+                                                                  |7|7|7|7|7|7|
+
+
+
+
+
+
+
+     SSSSEEEEAAAARRRRCCCCHHHHIIIINNNNGGGG AAAA TTTTAAAAGGGG TTTTAAAABBBBLLLLEEEE
+          Tag table entries in a table may be looked for by searching
+          the table linearly (in edit order) or directly (by tag
+          string):
+
+8     _______________________________________________________________________
+          Call                              Meaning
+8     _______________________________________________________________________
+      TagQDirect     Query a tag table to find an entry with a given tag
+      TagQLinear     Query a tag table to find an entry at a given location
+      TagQNEntries   Query the number of entries in a tag table
+8     _______________________________________________________________________
+7     |7|7|7|7|
+
+
+
+                                                                            |7|7|7|7|
+
+
+
+
+
+     RRRREEEETTTTUUUURRRRNNNNSSSS
+          All tag-table package calls that can return errors do so by
+          returning -1 or NULL pointer on failure and 0, valid number,
+          or valid pointer on success (per UNIX system call
+          convention).  The global variable _T_a_g_E_r_r_N_o is set to an
+          error code describing the error (also per UNIX convention).
+          The error text associated with the error code may be
+          retrieved from the global _T_a_g_E_r_r_L_i_s_t by array lookup from
+          _T_a_g_Q_E_r_r_o_r(3TAG) by a routine call or printed to _s_t_d_e_r_r using
+          _T_a_g_P_E_r_r_o_r(3TAG).
+
+     SSSSUUUUMMMMMMMMAAAARRRRYYYY OOOOFFFF TTTTAAAAGGGG TTTTAAAABBBBLLLLEEEE RRRROOOOUUUUTTTTIIIINNNNEEEESSSS
+          TagEntry *   TagEntryAlloc( tag, type, pValue )
+          TagEntry *   TagEntryDup( tagEntry )
+          void         TagEntryFree( tagEntry )
+          int          TagEntryQNthEntry( tagEntry )
+
+9
+
+
+     Page 3                                          (printed 6/30/95)
+
+
+
+
+
+
+     TTTTAAAAGGGGIIIINNNNTTTTRRRROOOO((((3333TTTTAAAAGGGG))))          SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))           TTTTAAAAGGGGIIIINNNNTTTTRRRROOOO((((3333TTTTAAAAGGGG))))
+
+
+
+          int          TagEntryQNthOccur( tagEntry )
+          char *       TagEntryQTag( tagEntry )
+          int          TagEntryQType( tagEntry )
+          int          TagEntryQValue( tagEntry, pValue )
+          void         TagPError( leader )
+          char *       TagQError( )
+          TagTable *   TagTableAlloc( )
+          int          TagTableAppend( tagTable, tagEntry )
+          int          TagTableDelete( tagTable, nthEntry )
+          void         TagTableFree( tagTable )
+          int          TagTableInsert( tagTable, afterNthEntry, tagEntry )
+          TagEntry *   TagTableQDirect( tagTable, tag, nthOccur )
+          TagEntry *   TagTableQLinear( tagTable, nthEntry )
+          int          TagTableQNEntry( tagTable, tag )
+          int          TagTableReplace( tagTable, nthEntry, tagEntry )
+
+     SSSSEEEEEEEE AAAALLLLSSSSOOOO
+          errno(2), ImIntro(3IM), perror(3), TagEntryAlloc(3TAG),
+          TagEntryDup(3TAG), TagEntryFree(3TAG),
+          TagEntryQNthEntry(3TAG), TagEntryQNthOccur(3TAG),
+          TagEntryQTag(3TAG), TagEntryQType(3TAG),
+          TagEntryQValue(3TAG), TagPError(3TAG), TagQError(3TAG),
+          TagTableAlloc(3TAG), TagTableAppend(3TAG),
+          TagTableDelete(3TAG), TagTableFree(3TAG),
+          TagTableInsert(3TAG), TagTableQDirect(3TAG),
+          TagTableQLinear(3TAG), TagTableQNEntry(3TAG),
+          TagTableReplace(3TAG)
+
+     AAAAUUUUTTTTHHHHOOOORRRRSSSS
+          Dave Nadeau
+          San Diego Supercomputer Center
+
+     CCCCOOOONNNNTTTTAAAACCCCTTTT
+          SDSC consultants, (619)534-5100, ccccoooonnnnssssuuuulllltttt@@@@yyyy1111....ssssddddsssscccc....eeeedddduuuu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Page 4                                          (printed 6/30/95)
+
+
+

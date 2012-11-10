@@ -1,0 +1,42 @@
+// SabisTmplate.idl : IDL source for SabisTmplate.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (SabisTmplate.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+	[
+		object,
+		uuid(B58E66FF-2262-40B1-BA8F-60272C869D72),
+		dual,
+		helpstring("IMainApplication Interface"),
+		pointer_default(unique)
+	]
+	interface IMainApplication : IDispatch
+	{
+
+	};
+
+[
+	uuid(50AEB956-2406-4181-A38A-CFF94B983D35),
+	version(1.0),
+	helpstring("SabisTmplate 1.0 Type Library")
+]
+library SabisTemplate
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+	importlib("SABIS_typelib.tlb");
+
+	[
+		uuid(D17E111D-AACC-4C75-AEB3-ADA1F73E1C3F),
+		helpstring("KoppelTemplate Class")
+	]
+	coclass KoppelTemplate
+	{
+		[default] interface IMainApplication;
+		interface MainApplicationLink;
+	};
+};

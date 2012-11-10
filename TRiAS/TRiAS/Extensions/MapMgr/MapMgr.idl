@@ -1,0 +1,63 @@
+// MapMgr.idl : IDL source for MapMgr.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (MapMgr.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+//#include "TRiASInterfaces.idl"
+
+	[
+		object,
+		uuid(2CD725F2-0382-11D2-8F5A-0060085FC1CE),
+		dual,
+		helpstring("IMapImport Interface"),
+		pointer_default(unique)
+	]
+	interface IMapImport : IDispatch
+	{
+	};
+	
+
+[
+	uuid(2CD725E3-0382-11D2-8F5A-0060085FC1CE),
+	version(1.0),
+	helpstring("MapMgr 1.0 Type Library")
+]
+library MAPMGRLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		object,
+		uuid(B6A2F4A8-1AF7-11D2-8F7D-0060085FC1CE),
+		dual,
+		helpstring("IPictHolder Interface"),
+		pointer_default(unique)
+	]
+	interface IPictHolder : IDispatch
+	{
+		HRESULT OpenPictureFile([in] BSTR strPicture);
+		HRESULT Close( );
+	};
+
+	[
+		uuid(2CD725F3-0382-11D2-8F5A-0060085FC1CE),
+		helpstring("MapImport Class")
+	]
+	coclass MapImport
+	{
+		[default] interface IMapImport;
+	};
+
+	[
+		uuid(B6A2F4A9-1AF7-11D2-8F7D-0060085FC1CE),
+		helpstring("PictHolder Class")
+	]
+	coclass PictHolder
+	{
+		[default] interface IPictHolder;
+	};
+};

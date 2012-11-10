@@ -1,0 +1,286 @@
+// IDL-Beschreibung des raumbezogenen Zugriffs
+//
+
+// This file will not be processed by the MIDL tool to
+// produce the type library (Raumzugriff.tlb) and marshalling code.
+
+
+cpp_quote("//+-------------------------------------------------------------------------")
+cpp_quote("//")
+cpp_quote("//  TRiAS Extension")
+cpp_quote("//  Schneller raumbezogener Zugriff")
+cpp_quote("//")
+cpp_quote("//  Interfacebeschreibung")
+cpp_quote("//")
+cpp_quote("//--------------------------------------------------------------------------")
+cpp_quote("")
+cpp_quote("")
+
+// import standard OLE-Interfaces
+import "oaidl.idl";
+
+cpp_quote("")
+cpp_quote("")
+cpp_quote("//+-------------------------------------------------------------------------")
+cpp_quote("//")
+cpp_quote("//  ISpatialTreeQuery")
+cpp_quote("//")
+cpp_quote("//  Interface zur Parametrisierung des raumbezogenen Zugriffes")
+cpp_quote("//")
+cpp_quote("//--------------------------------------------------------------------------")
+cpp_quote("")
+cpp_quote("")
+
+	[
+		object,
+		uuid(F583B369-D840-11d0-96A1-0060971A13B6),
+		dual,
+		helpstring("ISpatialTreeQuery"),
+		pointer_default(unique)
+	]
+
+	interface ISpatialTreeQuery : IDispatch
+	{
+		//	Dimension
+		[id(1), helpstring("Set the border of a specific dimension.")]
+			HRESULT SetBorder([in] ULONG dim,[in] VARIANT amin,[in] VARIANT amax);
+		[id(2), helpstring("Get the border of a specific dimension.")]
+			HRESULT GetBorder([in] ULONG dim,[out] VARIANT* pmin,[out] VARIANT* pmax);
+		[id(2), helpstring("Get the border of a specific dimension.")]
+			HRESULT AddDim([in] VARIANT amin,[in] VARIANT amax,[in] VARTYPE vt);
+	};
+
+cpp_quote("")
+cpp_quote("")
+cpp_quote("//+-------------------------------------------------------------------------")
+cpp_quote("//")
+cpp_quote("//  ISpatialTreeCallback")
+cpp_quote("//")
+cpp_quote("//  Interface zur Feinselektion bei der Durchführung des raumbezogenen Zugriffes")
+cpp_quote("//")
+cpp_quote("//--------------------------------------------------------------------------")
+cpp_quote("")
+cpp_quote("")
+	[
+		object,
+		uuid(F583B364-D840-11d0-96A1-0060971A13B6),
+		dual,
+		helpstring("ISpatialTreeCallback"),
+		pointer_default(unique)
+	]
+
+	interface ISpatialTreeCallback : IDispatch
+	{
+		//	Accept
+		[id(1), helpstring("Tests an object to took into answer.")]
+			HRESULT Accept([in] IDispatch* pICallback);
+	};
+
+cpp_quote("")
+cpp_quote("")
+cpp_quote("//+-------------------------------------------------------------------------")
+cpp_quote("//")
+cpp_quote("//  ISpatialTreeInit")
+cpp_quote("//")
+cpp_quote("//  Interface zur Initialisierung des raumbezogenen Zugriffes")
+cpp_quote("//")
+cpp_quote("//--------------------------------------------------------------------------")
+cpp_quote("")
+cpp_quote("")
+
+	[
+		object,
+		uuid(F583B361-D840-11d0-96A1-0060971A13B6),
+		dual,
+		helpstring("ISpatialTreeInit"),
+		pointer_default(unique)
+	]
+
+	interface ISpatialTreeInit : IDispatch
+	{
+		//	Dimension
+		[propput, id(1), helpstring("Add a dimension by DISPID's of amin,max-functions to the tree.")]
+			HRESULT AddDimension([in] DISPID amin,[in] DISPID amax,[in] VARTYPE comptype,[out] int* pIndex);
+
+		//	SiteInterface
+		[propput, id(2), helpstring("Set the SiteInterface of the tree.")]
+			HRESULT SiteInterface([in] IUnknown* pSiteInterface);
+	};
+
+cpp_quote("")
+cpp_quote("")
+cpp_quote("//+-------------------------------------------------------------------------")
+cpp_quote("//")
+cpp_quote("//  ITestObjekt")
+cpp_quote("//")
+cpp_quote("//  Interface für TestObjekte")
+cpp_quote("//")
+cpp_quote("//--------------------------------------------------------------------------")
+cpp_quote("")
+cpp_quote("")
+
+	[
+		object,
+		uuid(F583B36E-D840-11d0-96A1-0060971A13B6),
+		dual,
+		helpstring("ITestObjekt"),
+		pointer_default(unique)
+	]
+	interface ITestObjekt : IDispatch
+	{
+		// put
+		[id(1), helpstring("First dimension.")]
+			HRESULT put_xmin([in] VARIANT amin);
+
+		[id(2), helpstring("First dimension.")]
+			HRESULT put_xmax([in] VARIANT amax);
+
+		// get
+		[id(3), helpstring("First dimension.")]
+			HRESULT get_xmin([out] VARIANT* pmin);
+
+		[id(4), helpstring("First dimension.")]
+			HRESULT get_xmax([out] VARIANT* pmax);
+	};
+
+cpp_quote("")
+cpp_quote("")
+cpp_quote("//+-------------------------------------------------------------------------")
+cpp_quote("//")
+cpp_quote("//  ISpatialTree")
+cpp_quote("//")
+cpp_quote("//  Interface zur Durchführung des raumbezogenen Zugriffes")
+cpp_quote("//")
+cpp_quote("//--------------------------------------------------------------------------")
+cpp_quote("")
+cpp_quote("")
+
+	[
+		object,
+		uuid(F583B362-D840-11d0-96A1-0060971A13B6),
+		dual,
+		helpstring("ISpatialTree"),
+		pointer_default(unique)
+	]
+
+	interface ISpatialTree : IDispatch
+	{
+	//	basics
+		[id(1), helpstring("Inserts a SpatialObject into the tree.")] 
+			HRESULT Insert([in] IDispatch* pnewObj,[in] ULONG ObjNr);
+
+		[id(3), helpstring("Removes a SpatialObject (identified by the ObjNr) from the tree.")] 
+			HRESULT DeletebyNr([in] ULONG ObjNr);
+
+	//	statistics
+		[propget, id(10), helpstring("Returns the number of objects in the tree.")]
+	 		HRESULT Count([out, retval] ULONG* pCount);
+
+		[propget, id(11), helpstring("Returns the container of objects in the tree.")] 
+		 	HRESULT Container([out, retval] ISpatialTreeQuery** ppIQuestion);
+
+		[propget, id(12), helpstring("Returns the dimension of the tree.")] 
+		 	HRESULT Dimension([out, retval] ULONG* pDim);
+
+		[propget, id(13), helpstring("Returns the DISPID's und VARTYPES belonging to a dimension of the tree.")] 
+		 	HRESULT DimensionIDs([in] ULONG Dim,[out] DISPID* pmin,[out] DISPID* pmax,[out] VARTYPE* comptype);
+
+		[id(14), helpstring("Rebalance the tree.")] 
+		 	HRESULT Optimize();
+
+	//	question
+		[id(15), helpstring("Returns all intersected Objects.")] 
+	 		HRESULT Intersection([in] ISpatialTreeQuery* pIQuestion,[in] ISpatialTreeCallback* pICallback,[out] IEnumUnknown** ppReturn);
+
+		[id(16), helpstring("Returns all contained Objects.")] 
+		 	HRESULT Containment ([in] ISpatialTreeQuery* pIQuestion,[in] ISpatialTreeCallback* pICallback,[out] IEnumUnknown** ppReturn);
+	};
+
+
+cpp_quote("")
+cpp_quote("")
+cpp_quote("//+-------------------------------------------------------------------------")
+cpp_quote("//")
+cpp_quote("//  Raumzugriff")
+cpp_quote("//")
+cpp_quote("//  Definition der Bibliothek")
+cpp_quote("//")
+cpp_quote("//--------------------------------------------------------------------------")
+cpp_quote("")
+cpp_quote("")
+
+[
+	uuid(F583B36F-D840-11d0-96A1-0060971A13B6),
+	version(1.0),
+	helpstring("Raumzugriff Library"),
+]
+library RAUMZUGRIFFLib
+{
+	importlib("stdole32.tlb");
+	
+	cpp_quote("")
+	cpp_quote("")
+	cpp_quote("//+-------------------------------------------------------------------------")
+	cpp_quote("//")
+	cpp_quote("//  CSpatialTreeQuery")
+	cpp_quote("//")
+	cpp_quote("//  Abfrageobjekt für den raumbezogenen Zugriff")
+	cpp_quote("//")
+	cpp_quote("//--------------------------------------------------------------------------")
+	cpp_quote("")
+	cpp_quote("")
+
+	[
+		uuid(F583B368-D840-11d0-96A1-0060971A13B6),
+		helpstring("Class for spatial access")
+	] 
+	coclass CSpatialTreeQuery
+	{ 
+	    [default] interface ISpatialTreeQuery;
+	    interface IPersistStream;
+	};
+
+	cpp_quote("")
+	cpp_quote("")
+	cpp_quote("//+-------------------------------------------------------------------------")
+	cpp_quote("//")
+	cpp_quote("//  CSpatialTree")
+	cpp_quote("//")
+	cpp_quote("//  Objekt für den raumbezogenen Zugriff")
+	cpp_quote("//")
+	cpp_quote("//--------------------------------------------------------------------------")
+	cpp_quote("")
+	cpp_quote("")
+
+	[
+		uuid(F583B360-D840-11d0-96A1-0060971A13B6),
+		helpstring("Class for spatial access")
+	]
+	coclass CSpatialTree
+	{ 
+	    [default] interface ISpatialTreeInit;
+	    interface ISpatialTree;
+	    interface IPersistStream;
+	}; 
+
+	cpp_quote("")
+	cpp_quote("")
+	cpp_quote("//+-------------------------------------------------------------------------")
+	cpp_quote("//")
+	cpp_quote("//  CTestObjekt")
+	cpp_quote("//")
+	cpp_quote("//  Objekt für den raumbezogenen Zugriff")
+	cpp_quote("//")
+	cpp_quote("//--------------------------------------------------------------------------")
+	cpp_quote("")
+	cpp_quote("")
+
+	[
+		uuid(F583B36D-D840-11d0-96A1-0060971A13B6),
+		helpstring("Class for spatial access testing")
+	]
+	coclass CTestObjekt
+	{ 
+	    [default] interface ITestObjekt;
+	}; 
+} //end of library

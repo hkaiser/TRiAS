@@ -1,0 +1,46 @@
+'\"t
+.if t .TH IMVFBQNBYTES 3IM "August 25, 1992" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY" 
+.if n .TH IMVFBQNBYTES 3IM "August 25, 1992" "SDSC" "SDSC IMAGE
+LIBRARY" 
+.SH NAME
+ImVfbQNBytes - Query the number of bytes per pixel being stored in a virtual frame buffer
+.br
+ImVfbQWidth - Query the width of a virtual frame buffer
+.br
+ImVfbQHeight - Query the height of a virtual frame buffer
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+int ImVfbQNBytes( srcVfb )
+	ImVfb *srcVfb ;
+
+int ImVfbQWidth( srcVfb )
+	ImVfb *srcVfb ;
+
+int ImVfbQHeight( srcVfb )
+	ImVfb *srcVfb ;
+.fi
+\fR
+.SH DESCRIPTION
+\fBImVfbQNBytes\fR returns the number of bytes per pixel used by the
+\fIsrcVfb\fR.
+.LP
+\fBImVfbQWidth\fR returns the width of the \fIsrcVfb\fR in pixels.
+.LP
+\fBImVfbQHeight\fR returns the height of the \fIsrcVfb\fR in pixels.
+.SH NOTES
+All are C macros.
+.SH SEE ALSO
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBImVfbAlloc\fR (3IM)
+.SH AUTHOR
+Mike Bailey
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

@@ -1,0 +1,65 @@
+# Erzeuge DBASEEXT-DLL für TRIAS /C8-Version
+# J. Benkenstein, 11.4.1993
+
+!include "$(TRIASINCLUDE)/triasver.mak"
+
+NAME = ODBCEXT
+
+# Generierungsdatum (yymmdd) und Version
+VERSION = 3
+RELEASE = 00
+BUILD = 070
+DATE = 040603
+
+COPYRIGHT = JB$(DATE)
+
+PNAME = $(TRIAS_PNAME)
+PADDRESS = $(TRIAS_PADDRESS)
+
+DLLDEST = $(TRIASDIR_D)  # DLL-Ziel-Pfad
+DEF = $(NAME).def
+STUB = rights
+RIGHTS = $(STUB).exe
+ASM = masm
+LINK = link16.exe
+REPLACE = ersetz
+
+# Versionskontrolle -----------------------------------------------------------
+
+# alle versionsabhängien Dateien löschen
+new:
+	@del $(DEF) > nul
+	@del $(NAME).rcv > nul
+	@del vers32.h > nul
+
+# nur Versionsabhängigkeiten auflösen
+formake: $(NAME).rcv $(DEF) vers32.h 
+
+# ModulDefinitionsDatei mit allen Exporten generieren
+$(DEF):  $(NAME).tpl makefile
+        ersetz \
+			$(VERSION) \
+			$(RELEASE) \
+			$(BUILD) \
+			$(COPYRIGHT) \
+				$(NAME).tpl $(DEF)
+
+vers32.h:    version.tpl makefile
+        ersetz \
+			$(VERSION) \
+			$(RELEASE) \
+				version.tpl vers32.h
+
+# Personalisierungsinformation
+$(NAME).rcv: $(NAME)v.tpl makefile
+	ersetz $(VERSION) \
+		$(RELEASE) \
+		$(BUILD) \
+		$(COPYRIGHT) \
+		$(PNAME) \
+		$(PADDRESS) \
+		$(TRIAS_VERSION) \
+		$(TRIAS_RELEASE) \
+		$(COMPANYNAME) \
+			$(NAME)v.tpl $(NAME).rcv
+	

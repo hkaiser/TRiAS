@@ -1,0 +1,266 @@
+
+
+
+IMVFBALLOC(3IM)        SDSC IMAGE LIBRARY         IMVFBALLOC(3IM)
+
+
+
+NAME
+     ImVfbAlloc - Allocate a virtual frame buffer
+
+SYNOPSIS
+     #include "im.h"
+
+     ImVfb *ImVfbAlloc( width, height, fields )
+          int width, height ;
+          int fields ;
+
+
+DESCRIPTION
+     ImVfbAlloc allocates a virtual frame buffer  and  returns  a
+     pointer to the new Vfb.
+
+     _w_i_d_t_h and _h_e_i_g_h_t are the x and y  dimensions,  respectively,
+     of the desired Vfb.
+
+     _f_i_e_l_d_s is a bitmask that specifies what items of information
+     need to be stored in each pixel.  _f_i_e_l_d_s is formed by or'ing
+     together one or more of:
+
+            Constant                     Meaning
+8          _______________________________________________________
+          IMVFBRGB       Store red, green, blue values (0-255)
+          IMVFBALPHA     Store an alpha value (0-255)
+          IMVFBINDEX8    Store a color index (0-255)
+          IMVFBWPROT     Store a write protection (0 or non-zero)
+          IMVFBINDEX16   Store a color index (full integer)
+          IMVFBMONO      Store a monochrome (on/off) value
+          IMVFBZ         Store a z-value (full integer)
+          IMVFBIDATA     Store an integer data value
+          IMVFBFDATA     Store a floating-point data value
+
+NOTES
+     Information about a particular virtual frame buffer  can  be
+     Set with:
+
+                Call                            Meaning
+8          ________________________________________________________________
+          ImVfbSClt( v, c )   Set (assign) a color lookup table to the Vfb
+
+     Information about a particular virtual frame buffer  can  be
+     Queried by:
+
+               Call                         Meaning
+8          __________________________________________________________
+          ImVfbQWidth(v)    Return the number of columns
+          ImVfbQHeight(v)   Return the number of rows
+          ImVfbQFields(v)   Return the fields mask
+          ImVfbQNBytes(v)   Return the number of bytes per pixel
+          ImVfbQClt(v)      Return a pointer to a color lookup table
+
+9
+
+
+SDSC              Last change: August 25, 1992                  1
+
+
+
+
+
+
+IMVFBALLOC(3IM)        SDSC IMAGE LIBRARY         IMVFBALLOC(3IM)
+
+
+
+     Frame buffer information can be allocated on a per-pixel  or
+     a  per-plane  basis. The per-pixel basis is better to reduce
+     paging. The per-plane basis reduces overall storage.  For  a
+     per-pixel allocation, one might call:
+
+       v = ImVfbAlloc( 1280, 1024, IMVFBRGB | IMVFBZ );
+
+    For a per-plane allocation, one might call:
+
+      vc = ImVfbAlloc( 1280, 1024, IMVFBRGB );
+      vz = ImVfbAlloc( 1280, 1024, IMVFBZ );
+
+
+     Per-pixel storage is a packed array of values.  The  storage
+     convention  assumes  that the top row is row #0 and the left
+     column is column #0. Pixels are stored  like  C-language  2D
+     arrays:  left-to-right  across  the  row.  Values can be Set
+     into a particular pixel (pointed  to  by  a  pixel  pointer)
+     within a particular virtual frame buffer by:
+
+                   Call                           Meaning
+8          _______________________________________________________________
+          ImVfbSRed(v,p,r)         Red (byte)
+          ImVfbSGreen(v,p,g)       Green (byte)
+          ImVfbSBlue(v,p,b)        Blue (byte)
+          ImVfbSAlpha(v,p,a)       Alpha-value (byte)
+          ImVfbSIndex8(v,p,i8)     Color index (byte)
+          ImVfbSIndex16(v,p,i32)   Color index (integer)
+          ImVfbSMono(v,p,m)        Monochromatic value (zero or non-zero)
+          ImVfbSIndex(v,p,i)       ImVfbSIndex8 or ImVfbSIndex16
+          ImVfbSZ(v,p,z)           Z-value (integer)
+          ImVfbSGray(v,p,g)        Gray scale (byte)
+          ImVfbSGrey(v,p,g)        Gray scale (byte)
+          ImVfbSFData(v,p,f)       Floating-point data value
+          ImVfbSIData(v,p,i)       Integer data value
+
+     Various values can be Queried within  a  particular  virtual
+     frame buffer by:
+
+                 Call                         Meaning
+8          ___________________________________________________________
+          ImVfbQRed(v,p)       Red (byte)
+          ImVfbQGreen(v,p)     Green (byte)
+          ImVfbQBlue(v,p)      Blue (byte)
+          ImVfbQAlpha(v,p)     Alpha-value (byte)
+          ImVfbQIndex8(v,p)    Color index (byte)
+          ImVfbQIndex16(v,p)   Color index (integer)
+          ImVfbQMono(v,p,m)    Monochromatic value (zero or non-zero)
+          ImVfbQIndex(v,p)     ImVfbQIndex8 or ImVfbQIndex16
+          ImVfbQZ(v,p)         Z-value (integer)
+          ImVfbQGray(v,p)      Gray scale (byte)
+          ImVfbQGrey(v,p)      Gray scale (byte)
+          ImVfbQFData(v,p)     Floating-point data value
+
+
+
+2                 Last change: August 25, 1992               SDSC
+
+
+
+
+
+
+IMVFBALLOC(3IM)        SDSC IMAGE LIBRARY         IMVFBALLOC(3IM)
+
+
+
+          ImVfbQIData(v,p)     Integer data value
+
+     Pixel pointer values can be Queried and Set by:
+
+                Call                           Meaning
+8          _______________________________________________________________
+          ImVfbQPtr(v,r,c)   Return a pointer to a particular pixel
+          ImVfbQFirst(v)     Return a pointer to the first (UL) pixel
+          ImVfbQLast(v)      Return a pointer to the last (LR) pixel
+          ImVfbQLeft(v,p)    Return a pointer to a pixel one column left
+          ImVfbQRight(v,p)   Return a pointer to a pixel one column right
+          ImVfbQUp(v,p)      Return a pointer to a pixel one row up
+          ImVfbQDown(v,p)    Return a pointer to a pixel one row down
+          ImVfbQNext(v,p)    Same as ImVfbQRight(v,p)
+          ImVfbQPrev(v,p)    Same as ImVfbQLeft(v,p)
+          ImVfbSInc(v,p)     Same as p = ImVfbQRight(v,p)
+          ImVfbSDec(v,p)     Same as p = ImVfbQLeft(v,p)
+
+     The pixel just to the ImVfbQRight of the right-most pixel in
+     a  scanline is the left-most pixel in the next scanline. The
+     pixel just to the ImVfbQLeft of the  left-most  pixel  in  a
+     scanline  is  the  last  pixel  in the previous scanline. No
+     automatic wraparound occurs between the last pixel  and  the
+     first pixel in the framebuffer.
+
+RETURNS
+     An error causes IMVFBNULL to be returned and  the  value  of
+     ImErrNo to be set to one of the following:
+
+
+          IMEMALLOC     Cannot allocate enough memory for the new Vfb
+          IMENOFIELDS   The _f_i_e_l_d_s mask is zero
+
+SEE ALSO
+     ImIntro (3IM), ImErrNo (3IM), ImVfbAdjust  (3IM),  ImVfbComp
+     (3IM),  ImVfbCopy  (3IM),  ImVfbDup  (3IM), ImVfbFill (3IM),
+     ImVfbFlip (3IM), ImVfbFree (3IM), ImVfbHist (3IM),  ImVfbMix
+     (3IM), ImVfbQAlpha (3IM), ImVfbQBlue (3IM), ImVfbQClt (3IM),
+     ImVfbQDown (3IM),  ImVfbQFData  (3IM),  ImVfbQFields  (3IM),
+     ImVfbQFirst  (3IM),  ImVfbQGray  (3IM),  ImVfbQGreen  (3IM),
+     ImVfbQGrey (3IM),  ImVfbQHeight  (3IM),  ImVfbQIData  (3IM),
+     ImVfbQIndex16  (3IM),  ImVfbQIndex8 (3IM), ImVfbQLast (3IM),
+     ImVfbQLeft  (3IM),  ImVfbQNBytes  (3IM),  ImVfbQNext  (3IM),
+     ImVfbQPrev   (3IM),   ImVfbQPtr   (3IM),   ImVfbQRed  (3IM),
+     ImVfbQRight  (3IM),  ImVfbQUp  (3IM),   ImVfbQWidth   (3IM),
+     ImVfbQZ   (3IM),   ImVfbQResize   (3IM),  ImVfbQRoll  (3IM),
+     ImVfbSAlpha  (3IM),  ImVfbSBlue  (3IM),   ImVfbSClt   (3IM),
+     ImVfbSDec   (3IM),   ImVfbSFData  (3IM),  ImVfbSGray  (3IM),
+     ImVfbSGreen  (3IM),  ImVfbSGrey  (3IM),  ImVfbSIData  (3IM),
+     ImVfbSInc  (3IM),  ImVfbSIndex16  (3IM), ImVfbSIndex8 (3IM),
+     ImVfbSMono (3IM), ImVfbSRed (3IM), ImVfbStat (3IM),  ImVfbSZ
+     (3IM),  ImVfbToGray  (3IM),  ImVfbToGrey (3IM), ImVfbToIndex
+     (3IM),   ImVfbToIndex16    (3IM),    ImVfbToIndex8    (3IM),
+
+
+
+SDSC              Last change: August 25, 1992                  3
+
+
+9
+
+
+IMVFBALLOC(3IM)        SDSC IMAGE LIBRARY         IMVFBALLOC(3IM)
+
+
+
+     ImVfbToMono  (3IM),  ImVfbToRGB  (3IM),  ImVfbXShear  (3IM),
+     ImVfbYShear (3IM),
+
+AUTHOR
+     Mike Bailey
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4                 Last change: August 25, 1992               SDSC
+
+
+

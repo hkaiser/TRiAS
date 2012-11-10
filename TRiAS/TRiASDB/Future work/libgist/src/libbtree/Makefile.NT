@@ -1,0 +1,38 @@
+# 	Makefile for libgist, Windows platform
+# 	$Header: /usr/local/devel/GiST/libgist/src/libbtree/Makefile.NT,v 1.3 2000/03/17 23:02:50 mashah Exp $
+
+GISTHOME = ../..
+
+DEST = $(GISTHOME)/lib
+
+LIBRARY = $(DEST)/libbtree.lib
+
+SRCS = gist_btree.cc \
+	gist_ubtree.cc
+       
+OBJS = $(SRCS:.cc=.obj)
+
+# change the following lines to reflect local paths
+TOOLS32  = c:\progra~1\DevStudio\VC
+cc32 = $(TOOLS32)\bin\cl
+rc32 = $(TOOLS32)\bin\rc
+link32 = $(TOOLS32)\bin\link
+CPP = $(cc32)
+CFLAGS = /ML /nologo /W3 /D LIBGIST /D WIN32 /O2 /c /I$(TOOLS32)\include /I..\libgist
+CC = $(cc32)
+LIB32=$(TOOLS32)\bin\link.exe -lib
+LIB32_FLAGS=/nologo /out:"$(LIBRARY)"
+
+.SUFFIXES : .cc
+
+.cc.obj:
+	$(CPP) $(CFLAGS) /Fo$@ /Tp$<
+
+.c.obj:
+	$(CPP) $(CFLAGS) -Fo$@ /Tc$<
+
+$(LIBRARY): $(OBJS)
+	$(LIB32) $(LIB32_FLAGS) $(DEF_FLAGS) $(OBJS)
+
+clean:
+	rm *.obj

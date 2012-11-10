@@ -1,0 +1,41 @@
+HKCR
+{
+	TRiASEx.SaveObjectCollection.1 = s 'SaveObjectCollection Class'
+	{
+		CLSID = s '{56BEA165-EE80-4F91-A84C-B003F59910DF}'
+	}
+	TRiASEx.SaveObjectCollection = s 'SaveObjectCollection Class'
+	{
+		CLSID = s '{56BEA165-EE80-4F91-A84C-B003F59910DF}'
+		CurVer = s 'TRiASEx.SaveObjectCollection.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {56BEA165-EE80-4F91-A84C-B003F59910DF} = s 'SaveObjectCollection Class'
+		{
+			ProgID = s 'TRiASEx.SaveObjectCollection.1'
+			VersionIndependentProgID = s 'TRiASEx.SaveObjectCollection'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{9D3E9D35-471A-40BC-B8DC-DA0AE93BBCBD}'
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiASEx.SaveObjectCollection.1' = s '{56BEA165-EE80-4F91-A84C-B003F59910DF}'
+			}
+		}
+	}
+    ForceRemove .toc = s tocfile
+    ForceRemove tocfile = s 'TRiAS® Objektmenge'
+}

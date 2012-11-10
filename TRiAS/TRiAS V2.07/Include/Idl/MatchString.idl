@@ -1,0 +1,36 @@
+///////////////////////////////////////////////////////////////////////////////
+// Interface für Objekte, die beim Suchen von Texten helfen
+
+// forward declarations
+interface DMatchString;
+
+cpp_quote("#ifndef _MATCHSTRING_DEFINED")
+cpp_quote("#define _MATCHSTRING_DEFINED")
+[
+	object,
+	uuid(079638B4-3123-101C-BB62-00AA0018497C),
+	dual, oleautomation,
+	helpstring("DMatchString Interface"),
+	pointer_default(unique)
+]
+interface DMatchString : IDispatch
+{
+	import "oaidl.idl";
+
+	[id(200)] HRESULT MatchString (
+		[in] BSTR StringToMatch, 
+		[out, retval] int *Matched);
+	[id(201), propput] HRESULT MatchText (
+		[in] BSTR MatchingString);
+	[id(201), propget] HRESULT MatchText (
+		[out, retval] BSTR *MatchingString);
+	[id(202), propput] HRESULT MatchCase (
+		[in] VARIANT_BOOL MatchCase);
+	[id(202), propget] HRESULT MatchCase (
+		[out, retval] VARIANT_BOOL *MatchCase);
+	[id(203), propput] HRESULT NegateMatch (
+		[in] VARIANT_BOOL NegateMatch);
+	[id(203), propget] HRESULT NegateMatch (
+		[out, retval] VARIANT_BOOL *NegateMatch);
+};
+cpp_quote("#endif // _MATCHSTRING_DEFINED")

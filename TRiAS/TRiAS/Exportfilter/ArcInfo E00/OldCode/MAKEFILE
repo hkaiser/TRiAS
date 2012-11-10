@@ -1,0 +1,90 @@
+# Makefile für Export-Filter für ArcInfo-Export
+# Windows/DLL-Version
+# MSVC V8.0c (Windows)
+
+.SUFFIXES: 
+.SUFFIXES: .cxx .obj .rc .res .c
+
+COPY = 1
+DEBUG = 1
+NAME = TRIASARC
+
+# Generierungsdatum (yymmdd) und Version
+DATE = 980105
+VERSION = 1
+RELEASE = 04
+BUILD = 051
+COPYRIGHT = JB$(DATE)
+
+PNAME = "Version für den internen Gebrauch"
+PADDRESS = "uve GmbH Fernerkundungszentrum Potsdam"
+
+LIBD = e:\triasdev.mvc\lib32
+WINDIR = c:\trias.mvc\trias
+
+MAP = $(NAME).map
+LINK = f:\c8\bin\link
+ASM = masm
+
+STUB = rights
+
+OUTDLL = $(NAME).flt
+DEF = $(NAME).def
+RIGHTS = $(STUB).exe
+
+!include "triasarc.mak"
+
+copy:
+!IF $(COPY)
+    copy $(NAME).dll $(WINDIR)\$(OUTDLL)
+!ENDIF
+
+# Versionskontrolle -----------------------------------------------------------
+$(STUB).exe:    $(STUB).asm
+	masm rights;
+        $(LINK) /KNOWEAS rights;
+
+# alle versionsabhängien Datein löschen
+new:
+        del $(DEF) > nul
+        del $(STUB).asm > nul
+        del $(NAME).rcv > nul
+       
+# nur Versionsabhängigkeiten auflösen
+formake: $(NAME).tpl $(STUB).exe $(NAME).rcv $(DEF)
+       
+
+# ModulDefinitionsDatei mit allen Exporten generieren
+$(DEF): $(NAME).tpl # export.awk $(MAP)
+	ersetz $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) $(NAME).tpl $(DEF)
+#        awk -f export.awk $(NAME).map >> $(DEF)
+
+$(STUB).asm:    $(STUB).tpl 
+	ersetz $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) $(STUB).tpl $(STUB).asm
+
+# Personalisierungsinformation
+$(NAME).rcv:    triasarv.tpl
+	ersetz $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) @A @B triasarv.tpl tmp.rcv
+	ersetz $(PNAME) $(PADDRESS) tmp.rcv $(NAME).rcv
+	@del tmp.rcv > nul
+	
+# archivieren ---------------------------------------------------------------
+store:  
+	@echo off
+	del *.bak
+	del *.dmp
+	del *.tmp
+	del *.zip
+	del *.sym
+	del *.sts
+	del *.lst
+	del *.aps
+	del *.pch
+	del *.bnd
+	del *.pdb
+	del *.sbr
+	del *.bsc
+        del *.lib
+        zip -m -x*.ncb $(NAME)
+	
+

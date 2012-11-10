@@ -1,0 +1,42 @@
+HKCR
+{
+	.ebs
+	{
+		TRiASSelfRegister = s 'TRiAS.RegisterEbs.1'
+	}
+	.ebc 
+	{
+		TRiASSelfRegister = s 'TRiAS.RegisterEbs.1'
+	}
+	.ebt 
+	{
+		TRiASSelfRegister = s 'TRiAS.RegisterEbs.1'
+	}
+	TRiAS.RegisterEbs.1 = s 'Registrieren von Basic-Scripten als TRiAS Zusatzmodule'
+	{
+		CLSID = s '{07963841-3123-101C-BB62-00AA0018497C}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {07963841-3123-101C-BB62-00AA0018497C} = s 'Registrieren von Basic-Scripten als TRiAS Zusatzmodule'
+		{
+			ProgID = s 'TRiAS.RegisterEbs.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079638C5-3123-101C-BB62-00AA0018497C}
+			}
+			'Implemented Categories'
+			{
+				{079639C5-3123-101C-BB62-00AA0018497C}
+			}
+			HandledExtensions = s '.ebs,.ebc,.ebt'
+			{
+				val Filter = s 'Makroscripte (*.ebs, *.ebc, *.ebt)|*.ebs;*.ebc;*.ebt'
+			}
+		}
+	}
+}

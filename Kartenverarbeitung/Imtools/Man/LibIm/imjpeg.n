@@ -1,0 +1,93 @@
+'\"et
+.if t .TH IMJPEG 3IM "June 16, 1995" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY" 
+.if n .TH IMJPEG 3IM "June 16, 1995" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+imjpeg \- Joint Photographic Expert Group (JPEG) Image File Format
+.SH SYNOPSIS
+.nf
+\fB
+#include <stdio.h>
+#include "sdsc.h"
+#include "im.h"
+.sp 1
+int ImFileRead( fd, "jpeg", flagsTable, dataTable )
+	int         fd;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileFRead( fp, "jpeg", flagsTable, dataTable )
+	FILE         *fp;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileWrite( fd, "jpeg", flagsTable, dataTable )
+	int         fd;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+.sp 1
+int ImFileFWrite( fp, "jpeg", flagsTable, dataTable )
+	FILE         *fp;
+	TagTable   *flagsTable;
+	TagTable   *dataTable;
+\fR
+.fi
+.SH DESCRIPTION
+\fBjpeg\fR is a File Format developed by the Joint Photographic
+Expert Group.  
+.LP
+The SDSC Image Library is capable of interfacing with the
+Independent Jpeg Group's JPEG library.  Please see the 
+installation documentataion for instructions about obtaining
+this library, and configuring the SDSC image library to
+make use of it.
+.SH "FILE RECOGNITION"
+\fBjpeg\fR files are recognized by the following filename
+suffixes: .jpeg, .jpg, .jfif
+.SH NOTES
+\fBjpeg\fR files use an extremely space efficient compression scheme
+to store files.  The compression scheme is, however, "lossy".  This means
+if you convert to a jpeg and back, the values of the pixels in your
+image may be different from the original image.  If this concerns you, 
+you can specify the quality of the picture (i.e. to control how lossy
+the compression is) by using the "-outquality" option on the command line
+or by passing an "image compression quality request" in the flags table.
+For more detailed information about the relationship between the quality
+value and the lossiness of the compression, please refer to the IJG's
+library documentation.
+.SS "Reading JPEG image files"
+The SDSC image library is capable of reading 
+JPEG's which are 8-bit color indexed
+or 24-bit RGB.  JPEG files are always encoded with the Discrete Cosine 
+Transform.
+.SS "Writing TIFF image files"
+The SDSC is library is capable of reading JPEG's which are 8-bit color indexed
+or 24-bit RGB.  JPEG files are always encoded with the Discrete Cosine 
+Transform.
+.SH ERRORS
+In addition to those listed for \fBImFileRead\fR(3IM),
+the following values for ImErrNo can also occur:
+.ne 4
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMEOUTOFRANGE	The quality request was not between 1 and 100.
+IMEUNKNOWN	An error occured within the IJG library.
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH DOCUMENTATION
+.SH SEE ALSO
+\fBImIntro\fR(3IM),
+\fBImErrNo\fR(3IM),
+\fBimconv\fR(1IM),
+\fBimfile\fR(1IM),
+\fBimformats\fR(1IM),
+.SH AUTHOR
+Brian Duggan
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br

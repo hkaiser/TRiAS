@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASQL.AggregateFunction.1 = s 'AggregateFunction Class'
+	{
+		CLSID = s '{E604568B-27F8-11D3-8580-00104B8CC00A}'
+	}
+	TRiASQL.AggregateFunction = s 'AggregateFunction Class'
+	{
+		CLSID = s '{E604568B-27F8-11D3-8580-00104B8CC00A}'
+		CurVer = s 'TRiASQL.AggregateFunction.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {E604568B-27F8-11D3-8580-00104B8CC00A} = s 'AggregateFunction Class'
+		{
+			ProgID = s 'TRiASQL.AggregateFunction.1'
+			VersionIndependentProgID = s 'TRiASQL.AggregateFunction'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{62ECE770-EC1D-4680-9A37-B5CD0BF0C1BC}'
+		}
+	}
+}

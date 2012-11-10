@@ -1,0 +1,24 @@
+HKCR
+{
+	TRiAS.MkVBGeoComponent.1 = s 'Moniker für VB-Geokomponente'
+	{
+		CLSID = s '{76E385A4-F3D0-452F-9259-D3394062FD33}'
+	}
+	TRiAS.MkVBGeoComponent = s 'Moniker für VB-Geokomponente'
+	{
+		CLSID = s '{76E385A4-F3D0-452F-9259-D3394062FD33}'
+		CurVer = s 'TRiAS.MkVBGeoComponent.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {76E385A4-F3D0-452F-9259-D3394062FD33} = s 'Moniker für VB-Geokomponente'
+		{
+			ProgID = s 'TRiAS.MkVBGeoComponent.1'
+			VersionIndependentProgID = s 'TRiASEx.VBGeoComponent'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

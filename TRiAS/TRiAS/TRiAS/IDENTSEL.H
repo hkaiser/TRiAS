@@ -1,0 +1,15 @@
+#define  IDL_LISTSEL	702
+#define  IDB_SELALL	706
+#define  IDB_SELCANCEL	704
+#define  IDB_SELHELP	705
+#define  IDB_SELOK	703
+#define  IDB_NEWSIGHT	707
+#define  IDB_DELSIGHT	709
+#define  IDB_STANDARD	710
+#define IDB_ACTVISINFO              701
+#define IDENTSELEKTION              59
+#define IDB_CLIPPOBJ                711
+#define IDE_CLIPPOBJ                712
+#define IDE_IDENTSELMASSTAB         713
+#define IDCB_RENAMEVIEW             714
+#define IDC_NEWSIGHT                708

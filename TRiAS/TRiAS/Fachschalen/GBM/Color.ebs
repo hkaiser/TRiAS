@@ -1,0 +1,255 @@
+Option Explicit
+
+'globale Variablen
+Private docGD As GeoDocument
+Private MyObj As GeoObject
+Private gFlag As Long
+
+Declare Sub RecherchierteObjekte( objsBO As GeoObjects, strClsIdent As String )
+
+'Titel der MessageBoxen
+Const strBoxTitel = "Farbe schattieren"
+
+' "BeginScript()" wird vor Script-Abarbeitung gerufen
+Sub BeginScript()
+	Set docGD = GetActiveDocument()
+
+	Dim RechObjs As GeoObjects
+
+	Set RechObjs = docGD.CreateGeoObjectsCollection()
+	RecherchierteObjekte RechObjs, "Grundstück"
+	If ( RechObjs.Count <> 1 ) Then
+		If ( RechObjs.Count = 0 ) Then
+			MsgBox "Kein Grundstück ausgewählt!", ebCritical, strBoxTitel
+		Else
+			MsgBox "Mehr als ein Grundstück ausgewählt!", ebCritical, strBoxTitel
+		End If
+		Exit Sub
+	Else
+		Set MyObj = RechObjs.Item( 1 )
+	End If
+End Sub
+
+'__________________________________
+
+Sub Main()
+
+	Dim rgb As Long
+	
+	Dim aviAVis As AreaVisInfo
+	Dim gebAVis As AreaVisInfo
+	Dim color As New DoubleColor
+	Dim color1 As New DoubleColor
+	Dim ret As Long
+	Dim value As Double
+	Dim sight As String
+
+	sight = docGD.ActiveViewName
+	Set aviAVis = MyObj.GetAreaVisInfo( sight )
+	If (aviAVis Is Not Nothing) Then
+
+		rgb = aviAVis.BkColor
+'		color.InitRGB RED( rgb ), GREEN( rgb ), BLUE( rgb )
+		color.RGB = rgb
+'		value = color.Hue
+'		value = color.Saturation
+		value = color.Brightness
+		If value > 0.5 Then
+			value = value * 0.95
+		Else
+			value = value * 1.05
+		End If
+'		color.Hue = value
+'		color.Saturation = value
+		color.Brightness = value
+		aviAVis.BkColor = color.RGB
+
+'		aviAVis.MainColor = color.RGB
+		MyObj.SetVisInfo aviAVis, sight
+	End If
+
+	Dim gebObj As GeoObjects
+	Dim Xmin As Double
+	Dim Xmax As Double
+	Dim Ymin As Double
+	Dim Ymax As Double
+	Dim ObjType%, rel%
+	Dim Cls As GeoClass
+
+	Dim view As GeoView
+	Set view = docGD.GetView( sight )
+
+	if gFlag > 1 Then
+	' Nach Hervorhebung der Grundstücke, nun noch die Dachteilflächen oder
+	' Gebäude hervorheben!
+		Set Cls = view.GetClass( "Dachteilfläche", OT_AREA )
+		If Cls Is Nothing  Then
+		' Keine Dachteilflächen sichtbar, dann die Gebäude!
+			Set Cls = view.GetClass( "Gebäude", OT_AREA )
+		End If
+
+		If Cls Is Nothing  Then
+		' Auch keine Gebäude, dann war's das schon!
+			Exit Sub
+		End If
+
+		Dim Obj As GeoObject
+		If MyObj.ObjType = OT_Area Then
+			ObjType% = MyObj.GetGeometryRect (Xmin,Ymin,Xmax,Ymax)
+			If ObjType% <> OBJTYPE_Unknown Then
+				Set gebObj = cls.GetObjectsInRect (Xmin,Ymin,Xmax,Ymax)
+				If gebObj Is Not Nothing Then
+					If gebObj.Count > 0 Then
+'======================
+' Gebäude einfärben!!
+	For Each Obj In gebObj
+		If Obj.ObjType = OT_Area Then
+'Rückgabewert kann sein: innerhalb (0), außerhalb (1), inner/außerhalb (2) oder unklar (3)
+			rel% = MyObj.TopRelation (obj)
+			If rel% = 0 Then
+	Set gebAVis = Obj.GetAreaVisInfo( sight )
+	If (gebAVis Is Not Nothing) Then
+
+'		rgb = aviAVis.BkColor
+'		color1.InitRGB 255, 152, 152
+		color1.Red = 1.0
+		color1.Green = 0.5
+		color1.Blue = 0.5
+''		color.RGB = rgb
+''		value = color.Hue
+''		value = color.Saturation
+'		value = color.Brightness
+'		If value > 0.5 Then
+'			value = value * 0.95
+'		Else
+'			value = value * 1.05
+'		End If
+''		color.Hue = value
+''		color.Saturation = value
+'		color.Brightness = value
+'		gebAVis.BkColor = color1.RGB
+		gebAVis.BkColor = color1.RGB
+
+'		aviAVis.MainColor = color.RGB
+		Obj.SetVisInfo gebAVis, sight
+	End If
+			End If
+		End If
+	Next Obj
+'======================
+					End If
+				End If
+			End If 
+		End If
+	End If
+
+End Sub 
+
+Sub Start( ByVal strObjNr As String, ByVal strFlag As String )
+	Set docGD = GetActiveDocument()
+
+	Dim onr As Long
+	Dim sight As String
+
+	sight = docGD.ActiveViewName
+	onr = strObjNr
+	gFlag = Val( strFlag )
+
+	Set MyObj = docGD.GetObject( onr )
+
+	Dim gebObj As GeoObjects
+	Dim Xmin As Double
+	Dim Xmax As Double
+	Dim Ymin As Double
+	Dim Ymax As Double
+	Dim ObjType%, rel%
+	Dim Cls As GeoClass
+	Dim Obj As GeoObject
+	Dim view As GeoView
+
+	If gFlag > 0 Then
+		Main
+	Else
+		MyObj.ResetVisinfo sight
+
+	Set view = docGD.GetView( sight )
+
+	If gFlag = 0 Then
+	' Nach Hervorhebung der Grundstücke, nun noch die Dachteilflächen oder
+	' Gebäude hervorheben!
+		Set Cls = view.GetClass( "Dachteilfläche", OT_AREA )
+		If Cls Is Nothing  Then
+		' Keine Dachteilflächen sichtbar, dann die Gebäude!
+			Set Cls = view.GetClass( "Gebäude", OT_AREA )
+		End If
+
+		If Cls Is Nothing  Then
+		' Auch keine Gebäude, dann war's das schon!
+			Exit Sub
+		End If
+
+		If MyObj.ObjType = OT_Area Then
+			ObjType% = MyObj.GetGeometryRect (Xmin,Ymin,Xmax,Ymax)
+			If ObjType% <> OBJTYPE_Unknown Then
+				Set gebObj = cls.GetObjectsInRect (Xmin,Ymin,Xmax,Ymax)
+				If gebObj Is Not Nothing Then
+					If gebObj.Count > 0 Then
+'======================
+' Alle Flächen entfärben!!
+	For Each Obj In gebObj
+		If Obj.ObjType = OT_Area Then
+'Rückgabewert kann sein: innerhalb (0), außerhalb (1), inner/außerhalb (2) oder unklar (3)
+			rel% = MyObj.TopRelation (obj)
+			If rel% = 0 Then
+				Obj.ResetVisinfo sight
+			End If
+		End If
+	Next Obj
+'======================
+					End If
+				End If
+			End If 
+		End If
+	End If
+	End If
+
+'	docGD.Rebuild
+End Sub
+
+'__________________________________
+
+' "EndScript()" wird nach Beendigung der Script-Abarbeitung gerufen
+Sub EndScript()
+' Hier notwendige Aufräumarbeiten durchführen
+	
+End Sub
+
+'__________________________________
+
+' "OnDocumentToClose()" wird nach dem Schließen des Projektes gerufen
+Sub OnDocumentToClose (Doc As GeoDocument)
+' Hier sollte der laufende Script angehalten werden
+	SetBreakScript(true)
+
+End Sub
+
+'Recherchierte Flächen der Objektklasse objsBO aufsammeln
+Sub RecherchierteObjekte( objsBO As GeoObjects, strClsIdent As String )
+	Dim objsRWin As GeoObjectWins   'Recherchefenster
+	Set objsRWin = docGD.GetGeoObjectWins()
+	Dim objsRechObj As GeoObjects
+	Dim objRWin As GeoObjectWin
+Dim objDummy As GeoObject
+
+	For Each objRWin In objsRWin	'alle geöffneten Recherchefenster abfragen
+		Set objsRechObj = objRWin.GetSelectedObjects()
+		Dim objRO As GeoObject
+		For Each objRO In objsRechObj
+			If ( objRO.ObjClass.Name$ = strClsIdent ) And _
+				objRO.ObjType = OT_Area Then	'auch OT_Point, OT_Line, OT_Text
+				Set objDummy = objsBO.Add( objRO )	'recherchierte objsGO-Objekte sammeln
+			End If
+		Next objRO
+	Next objRWin
+End Sub 'RecherchierteObjekte
+ 

@@ -1,0 +1,166 @@
+///////////////////////////////////////////////////////////////////////////
+// @doc 
+// @module CTFInterfaces.idl | Description goes here
+
+#if !defined(_CTFINTERFACES_IDL__EB9C0A43_CE13_11D1_85E3_00600875138A__INCLUDED_)
+#define _CTFINTERFACES_IDL__EB9C0A43_CE13_11D1_85E3_00600875138A__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+
+///////////////////////////////////////////////////////////////////////////////
+// interfaces
+interface ICoordTransform;
+interface ICoordTransformInit;
+interface ICTFExContext;
+
+///////////////////////////////////////////////////////////////////////////////
+// interfaces
+    [
+      odl,
+      uuid(CE361C90-B00C-11CF-ABEF-08003601B769),
+      hidden,
+      dual,
+      nonextensible,
+      oleautomation,
+	  local
+    ]
+    interface _DGMPoint : IDispatch {
+	import "oaidl.idl";
+
+        [id(0x00000001), propget, helpcontext(0x00007e22)]
+        HRESULT _stdcall X([out, retval] double* returnValue);
+        [id(0x00000001), propput, helpcontext(0x00007e22)]
+        HRESULT _stdcall X([in] double returnValue);
+        [id(0x00000002), propget, helpcontext(0x00007e2c)]
+        HRESULT _stdcall Y([out, retval] double* returnValue);
+        [id(0x00000002), propput, helpcontext(0x00007e2c)]
+        HRESULT _stdcall Y([in] double returnValue);
+        [id(0x00000003), propget, helpcontext(0x00007e36)]
+        HRESULT _stdcall Z([out, retval] double* returnValue);
+        [id(0x00000003), propput, helpcontext(0x00007e36)]
+        HRESULT _stdcall Z([in] double returnValue);
+        [id(0x60020006), restricted, hidden]
+        HRESULT _stdcall GetPoint([out] double* Point);
+        [id(0x60020007), restricted, hidden]
+        HRESULT _stdcall SetPoint([in] double* Point);
+    };
+
+    [
+      odl,
+      uuid(4DBFC540-B33E-11CF-ABEF-08003601B769),
+      hidden,
+      dual,
+      nonextensible,
+      oleautomation,
+	  local
+    ]
+    interface _DGMPoints : IDispatch {
+        [id(0x00000001), propget, helpcontext(0x00007db4)]
+        HRESULT _stdcall Count([out, retval] long* returnValue);
+        [id(0xfffffffc), propget, restricted, hidden]
+        HRESULT _stdcall NewEnum([out, retval] IUnknown** returnValue);
+        [id(00000000), helpcontext(0x00007d82)]
+        HRESULT _stdcall Item(
+                        [in] VARIANT index, 
+                        [out, retval] _DGMPoint** returnValue);
+        [id(0x00000002), helpcontext(0x00007d64)]
+        HRESULT _stdcall Add(
+                        [in] _DGMPoint* Point, 
+                        [in, optional] VARIANT index);
+        [id(0x00000003), helpcontext(0x00007d8c)]
+        HRESULT _stdcall Remove([in] VARIANT index);
+        [id(0x00000005), restricted, hidden]
+        HRESULT _stdcall GetPoint(
+                        [in] long index, 
+                        [out] double* Point);
+        [id(0x00000004), restricted, hidden]
+        HRESULT _stdcall SetPoint(
+                        [in] long index, 
+                        [in] double* Point);
+    };
+
+	[
+		object,
+		uuid(0BDC3C18-503F-11D1-96F0-00A024D6F582),
+		dual,
+		helpstring("ICoordTransform Interface"),
+		pointer_default(unique)
+	]
+	interface ICoordTransform : IDispatch
+	{
+		typedef [public] enum _tagTRANSDIRECTION
+		{
+			TRANSDIRECTION_FORWARD = 0,
+			TRANSDIRECTION_INVERSE = 1,
+			TRANSDIRECTION_IGNORED = 2,
+		} TRANSDIRECTION;
+
+		[propget, id(0), helpstring("Liefert die Beschreibung der aktuell eingestellten Koordinatentransformation.")] HRESULT Description([out, retval] BSTR *pVal);
+		[propget, id(1), helpstring("Liefert die AspectRatio für den vorgegebenen Bereich.")] HRESULT AspectRatio([in] _DGMPoint *Point1, [in] _DGMPoint *Point2, [out, retval] double *pVal);
+		[propget, id(2), helpstring("Liefert, ob das Bezugs-Koordinatensystem metrisch ist.")] HRESULT IsMetric([out, retval] VARIANT_BOOL *pVal);
+		[propget, id(3), helpstring("Liefert, ob diese Koordinatentransformation parametrisierbar ist.")] HRESULT CanConfig([out, retval] VARIANT_BOOL *pVal);
+
+		[id(100), helpstring("Transformiert einen Punkt.")] HRESULT Transform([in] _DGMPoint *Point, TRANSDIRECTION Dir);
+		[id(101), helpstring("Transformiert alle Punkte der Sammlung.")] HRESULT TransformColl([in] _DGMPoints *Points, TRANSDIRECTION Dir);
+		[id(102), helpstring("Transformiert einen Punkt mit gegebenen Transformations-Parametern.")] HRESULT TransformEx ([in] _DGMPoint *Point, [in] TRANSDIRECTION Dir, [in] IDispatch *Param);
+		[id(103), helpstring("Transformiert alle Punkte der Sammlung mit gegebenen Transformations-Parametern.")] HRESULT TransformCollEx([in] _DGMPoints *Points, [in] TRANSDIRECTION Dir, [in] IDispatch *Param);
+
+		[id(104), helpstring("Überführt einen Punkt ins/vom Bezugskoordinatensystem.")] HRESULT Native([in] _DGMPoint *Point, TRANSDIRECTION Dir);
+		[id(105), helpstring("Überführt alle Punkte der Sammlung ins/vom Bezugskoordinatensystem.")] HRESULT NativeColl([in] _DGMPoints *Points, TRANSDIRECTION Dir);
+		[id(106), helpstring("Überführt einen Punkt ins/vom Bezugskoordinatensystem mit gegebenen Transformations-Parametern.")] HRESULT NativeEx([in] _DGMPoint *Point, [in] TRANSDIRECTION Dir, [in] IDispatch *Param);
+		[id(107), helpstring("Überführt alle Punkte der Sammlung ins/vom Bezugskoordinatensystem mit gegebenen Transformations-Parametern.")] HRESULT NativeCollEx([in] _DGMPoints *Points, [in] TRANSDIRECTION Dir, [in] IDispatch *Param);
+
+		[id(108), helpstring("Liefert die Transformations-Parameter eines Punktes.")] HRESULT TransformParameter([in] _DGMPoint *Point, [in] TRANSDIRECTION Dir, [out, retval] IDispatch **pVal);
+		[id(109), helpstring("Gibt die Transformations-Parameter frei.")] HRESULT FreeTransformParameter([in] TRANSDIRECTION Dir, [in] IDispatch *pDisp);
+		[id(110), helpstring("Liefert die Überführungs-Parameter eines Punktes.")] HRESULT NativeParameter([in] _DGMPoint *Point, [in] TRANSDIRECTION Dir, [out, retval] IDispatch * *pVal);
+		[id(111), helpstring("Gibt die Überführungs-Parameter frei.")] HRESULT FreeNativeParameter([in] TRANSDIRECTION Dir, [in] IDispatch *pIDisp);
+
+		[id(112), helpstring("Berechnet den Abstand zweier Punkte.")] HRESULT Distance([in] _DGMPoint *Point1, [in] _DGMPoint *Point2, [out, retval] _DGMPoint **pDist);
+		[id(113), helpstring("Liefert einen Punkt, der den vorgegebenen Abstand vom ersten Punkt hat.")] HRESULT DistancePoint([in] _DGMPoint *Point, [in] _DGMPoint *Delta, [out, retval] _DGMPoint **pVal);
+		[id(114), helpstring("Liefert den Punkt als Zeichenketten.")] HRESULT ToStrings([in] _DGMPoint *Point, [out] BSTR *XStr, [out] BSTR *YStr, [out] BSTR *ZStr);
+		[id(115), helpstring("Erzeugt den Punkt aus Zeichenketten.")] HRESULT ToPoint([in] BSTR XStr, [in] BSTR YStr, [in] BSTR ZStr, [out, retval] _DGMPoint **Point);
+
+		[propget, id(116), helpstring("Liefert ein vernünftiges umschließendes Rechteck.")] HRESULT Envelope([out, retval] IDispatch **Rect);
+
+		[id(117), helpstring("Berechnet den Abstand zweier Punkte.")] HRESULT DistanceEx([in] _DGMPoint *Point1, [in] _DGMPoint *Point2, [out] _DGMPoint **pDist, [out, retval] double *Dist);
+
+	// #HK020305
+		[id(118), helpstring("Transformiert einen Punkt mit gegebenen Transformations-Parametern.")] HRESULT TransformEx2 ([in] _DGMPoint *Point, [in] TRANSDIRECTION Dir, [in] IUnknown *pICS);
+		[id(119), helpstring("Transformiert alle Punkte der Sammlung mit gegebenen Transformations-Parametern.")] HRESULT TransformCollEx2([in] _DGMPoints *Points, [in] TRANSDIRECTION Dir, [in] IUnknown *pICS);
+
+	// #HK021219
+		[propget, id(4), helpstring("Liefert die zugrundeliegende CoordTransformPipe")] HRESULT CoordTransformPipe ([out, retval] IDispatch **CoordTransPipe);
+	};
+
+	[
+		object,
+		uuid(0BDC3C1B-503F-11d1-96F0-00A024D6F582),
+		helpstring("ICoordTransformInit Interface"),
+		pointer_default(unique)
+	]
+	interface ICoordTransformInit : IUnknown
+	{
+		[helpstring("Initialisierung dieses Transformationsobjektes")] HRESULT InitCoordTransform(IUnknown *Props);
+		[helpstring("Reinitialisierung dieses Transformationsobjektes")] HRESULT ReInitCoordTransform(IUnknown *Props);
+		[helpstring("Terminierung dieses Transformationsobjektes")] HRESULT TermCoordTransform();
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// zusätzliche Interfaces
+	[
+		object,
+		uuid(5FA91F05-A839-11D1-A060-0060975566B4),
+		dual,
+		helpstring("ICTFExContext Interface"),
+		pointer_default(unique)
+	]
+	interface ICTFExContext : IDispatch
+	{
+		[propget, id(0), helpstring("Liefert die Beschreibung dieses Koordinatentransformations-Kontextes.")] HRESULT Description([out, retval] BSTR *pVal);
+		[propget, id(1), helpstring("Liefert den zum Kontext gehörenden Meridian.")] HRESULT Meridian([out, retval] int *pVal);
+		[propput, id(1), helpstring("Setzt den Meridian des Kontextes.")] HRESULT Meridian([in] int newVal);
+	};
+
+#endif // !defined(_CTFINTERFACES_IDL__EB9C0A43_CE13_11D1_85E3_00600875138A__INCLUDED_)

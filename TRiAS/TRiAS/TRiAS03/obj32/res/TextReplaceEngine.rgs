@@ -1,0 +1,39 @@
+HKCR
+{
+	TRiASEx.TextReplaceEngine.1 = s 'Suchen und Ersetzen in Objekteigenschaften'
+	{
+		CLSID = s '{F6BE912A-BE20-4ABE-8B22-025B7FEA9822}'
+	}
+	TRiASEx.TextReplaceEngine = s 'Suchen und Ersetzen in Objekteigenschaften'
+	{
+		CLSID = s '{F6BE912A-BE20-4ABE-8B22-025B7FEA9822}'
+		CurVer = s 'TRiASEx.TextReplaceEngine.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {F6BE912A-BE20-4ABE-8B22-025B7FEA9822} = s 'Suchen und Ersetzen in Objekteigenschaften'
+		{
+			ProgID = s 'TRiASEx.TextReplaceEngine.1'
+			VersionIndependentProgID = s 'TRiASEx.TextReplaceEngine'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{FE6EDBE9-C934-433F-B93E-E6CDE78383DC}'
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiASEx.TextReplaceEngine.1' = s '{F6BE912A-BE20-4ABE-8B22-025B7FEA9822}'
+			}
+		}
+	}
+}

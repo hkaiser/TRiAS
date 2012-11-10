@@ -1,0 +1,40 @@
+'\"et
+.if t .TH IMFILEQFORMAT 3IM "June 16, 1995" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMFILEQFORMAT 3IM "June 16, 1995" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImGetCompressSchemes - Get the table of compression schemes
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+typedef struct ImCompressScheme
+{
+	char **compress_suffixes;
+	char *compress_name;
+	ImFileMagic* compress_magic_numbers;
+	int  (*compress_decode)();
+	int  (*compress_encode)();
+} ImCompressScheme;
+
+ImCompressScheme** ImGetCompressSchemes( void );
+
+.fi
+\fR
+.SH DESCRIPTION
+\fBImGetCompressSchemes\fR gets the master list of compression schemes.  This 
+is a list of the various compression schemes supported.
+
+The list is stored as a null terminated array of pointers to structures of type
+ImCompressScheme.  For information about the fields of this structure (and the 
+substructures with it), please consult the file im.h.
+.SH "SEE ALSO"
+\fBImGetFileFormats\fR (3IM),
+.SH AUTHOR
+Brian Duggan
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@sdsc.edu\fR
+.br
+

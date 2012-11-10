@@ -1,0 +1,396 @@
+
+
+
+     AAAARRRRGGGGIIIINNNNTTTTRRRROOOO((((3333AAAARRRRGGGG))))        SSSSDDDDSSSSCCCC ((((SSSSeeeepppptttteeeemmmmbbbbeeeerrrr 1111999999991111))))        AAAARRRRGGGGIIIINNNNTTTTRRRROOOO((((3333AAAARRRRGGGG))))
+
+
+
+     NNNNAAAAMMMMEEEE
+          ArgIntro  -  information on the argument parsing package
+
+     SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+          #include "sdsc.h"
+
+     DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+          One of the larger hassles in writing a new command is
+          writing code to parse its command-line.  Such code is rarely
+          standardized, which often leads to a radiacally different
+          command-line look-and-feel for different tools.
+
+          The argument parsing package is a set of data structures and
+          subroutines to handle command-line argument parsing.  The
+          package is flexible, quick and easy to use, and supports the
+          prevailing UNIX conventions for command-line arguments.
+
+          The main routine in the argument parsing package is
+          _A_r_g_P_a_r_s_e(3ARG).  _A_r_g_P_a_r_s_e(3ARG) takes a set of C structures
+          providing three sets of information:
+
+               +o General command information, such as its name, its
+                 version, and its help message text.
+
+               +o Option details giving option keyword names and
+                 attributes.
+
+               +o Equivalent keyword names for alternate names and
+                 abbreviations for selected keywords.
+
+          Using this information and the command line _a_r_g_c and _a_r_g_v
+          variables, _A_r_g_P_a_r_s_e(3ARG) breaks down the command line and
+          groups values with options.  In the process, the standard
+          options ----ffffeeeeeeeeddddbbbbaaaacccckkkk, ----hhhheeeellllpppp, ----ffffuuuullllllllhhhheeeellllpppp, ----rrrreeeeggggiiiisssstttteeeerrrr, and ----vvvveeeerrrrssssiiiioooonnnn
+          are handled automatically.
+
+     GGGGOOOOAAAALLLLSSSS
+          In addition to being easy to use and portable among UNIX
+          systems, the argument parsing package was designed with the
+          following:
+
+          +o Options consisting of a single keyword and no values
+            following it (such as ----vvvveeeerrrrbbbboooosssseeee).
+
+          +o Options consisting of a single keyword and one or more
+            integer, floating point, or string values following it
+            (such as ----iiiinnnnffffiiiilllleeee ffffiiiilllleeeennnnaaaammmmeeee or ----xxxxrrrroooottttaaaatttteeee 44445555....0000).
+
+          +o Options consisting of one or more values that are not
+            preceded by a keyword.  Such options are termed as having
+            an "implied keyword."
+
+
+
+
+     Page 1                                          (printed 6/30/95)
+
+
+
+
+
+
+     AAAARRRRGGGGIIIINNNNTTTTRRRROOOO((((3333AAAARRRRGGGG))))        SSSSDDDDSSSSCCCC ((((SSSSeeeepppptttteeeemmmmbbbbeeeerrrr 1111999999991111))))        AAAARRRRGGGGIIIINNNNTTTTRRRROOOO((((3333AAAARRRRGGGG))))
+
+
+
+          +o Abbreviation-by-unique-truncation of keywords so that
+            "-infile" and "-in" are equally acceptable input from a
+            user.
+
+          +o Integer and floating-point range values, where a value is
+            really two numbers indicating a set of numbers like 4444----8888
+            (four through eight).
+
+          +o Standard options such as ----hhhheeeellllpppp.
+
+     PPPPAAAARRRRSSSSIIIINNNNGGGG TTTTHHHHEEEE CCCCOOOOMMMMMMMMAAAANNNNDDDDLLLLIIIINNNNEEEE
+          _A_r_g_P_a_r_s_e(3ARG) takes as arguments C structures describing
+          the command-line options acceptable to the program and the
+          _a_r_g_c and _a_r_g_v arguments to _m_a_i_n.
+
+               int argc;
+               char *argv[ ];
+               int nopt, nequiv;
+               ArgCommand cmnd = { ... };
+               ArgOption opt[ ] = { ... };
+               ArgEquiv equiv[ ] = { ... };
+
+               ArgParse( argc, argv, &cmnd, nopt, &opt, nequiv, &equiv );
+
+          _c_m_n_d is an _A_r_g_C_o_m_m_a_n_d structure that describes basic
+          attributes of the command, such as its name, its current
+          version number, and some help message text printed by the
+          package when the user gives ----hhhheeeellllpppp.
+
+          _o_p_t is a pointer to the first element of an array of _n_o_p_t
+          _A_r_g_O_p_t_i_o_n structures, each one describing one possible
+          option that the command can accept.  Information in _o_p_t
+          includes the option's keyword name, the number of values
+          that are expected to follow it, their type (integer, float,
+          string), and help message text on the option.
+
+          _e_q_u_i_v is a pointer to the first element of an array of
+          _n_e_q_u_i_v _A_r_g_E_q_u_i_v structures, each one describing an alternate
+          keyword name for one of the options in the _o_p_t array.
+
+          The commandline in _a_r_g_v is parsed and matched against the
+          known options for the command.  The keywords and values
+          found are stored into an internal data structure that then
+          may be queried using the other calls of the argument parsing
+          package.
+
+     QQQQUUUUEEEERRRRYYYYIIIINNNNGGGG TTTTHHHHEEEE OOOOCCCCCCCCUUUURRRRRRRREEEENNNNCCCCEEEE OOOOFFFF OOOOPPPPTTTTIIIIOOOONNNNSSSS OOOONNNN TTTTHHHHEEEE CCCCOOOOMMMMMMMMAAAANNNNDDDDLLLLIIIINNNNEEEE
+          After parsing the commandline, the argument parsing package
+          can be queried to see if an option occurred, how many times
+          it occurred, and what values where given for each
+          occurrence.
+
+
+
+
+     Page 2                                          (printed 6/30/95)
+
+
+
+
+
+
+     AAAARRRRGGGGIIIINNNNTTTTRRRROOOO((((3333AAAARRRRGGGG))))        SSSSDDDDSSSSCCCC ((((SSSSeeeepppptttteeeemmmmbbbbeeeerrrr 1111999999991111))))        AAAARRRRGGGGIIIINNNNTTTTRRRROOOO((((3333AAAARRRRGGGG))))
+
+
+
+               int noccur, nvalue;
+               ArgValue *value;
+
+               noccur = ArgQNOccur( "infiles" );
+               nvalue = ArgQNValue( "infiles", noccur );
+               value = ArgQValue( "infiles", noccur, nvalue );
+
+          _A_r_g_Q_N_O_c_c_u_r(3ARG) takes the keyword of an option and returns
+          the number of times that option occurred on the commandline.
+
+          _A_r_g_Q_N_V_a_l_u_e(3ARG) takes the keyword of an option and which
+          occurrence is being queried and returns the number of values
+          associated with that occurrence of that option.  In the
+          following command, the option "list" occurs twice.  The
+          first occurrence has three values, while the second has
+          four.
+
+               mycommand -list 1 2 3 -thing -list 4 8 10 12
+
+          _A_r_g_Q_V_a_l_u_e(3ARG) takes the keyword, occurrence number, and
+          value for that occurrence, and returns a pointer to an
+          _A_r_g_V_a_l_u_e structure.  The structure primarily contains a
+          union of the various types of values supported by the
+          package:  integer, float, string, integer range, and float
+          range.
+
+          Using the above "list" option and commandline, code to
+          collect the list integers into an array would be as follows:
+
+               int i, j, k;
+               int noccur, nvalue;
+               int list[MAXLIST];
+
+               noccur = ArgQNOccur( "list" );
+               for ( k = i = 0; i < noccur; i++ )
+               {
+                    nvalue = ArgQNValue( "list", i );
+                    for ( j = 0; j < nvalue; j++ )
+                         list[k++] = ArgQValue( "list", i, j )->arg_i;
+               }
+
+     QQQQUUUUEEEERRRRYYYYIIIINNNNGGGG TTTTHHHHEEEE OOOORRRRDDDDEEEERRRR OOOOFFFF OOOOPPPPTTTTIIIIOOOONNNNSSSS OOOONNNN TTTTHHHHEEEE CCCCOOOOMMMMMMMMAAAANNNNDDDDLLLLIIIINNNNEEEE
+          The order of options on the commandline is sometimes
+          important and is maintained in the package's internal data
+          structures.  To walk the list of options in commandline
+          order, _A_r_g_Q_N_O_p_t(3ARG) and _A_r_g_Q_O_p_t(3ARG) are provided:
+
+               int nopt, noccur;
+               char *keyword;
+
+               nopt = ArgQNOpt( );
+               keyword = ArgQOpt( nopt, &noccur );
+
+
+
+     Page 3                                          (printed 6/30/95)
+
+
+
+
+
+
+     AAAARRRRGGGGIIIINNNNTTTTRRRROOOO((((3333AAAARRRRGGGG))))        SSSSDDDDSSSSCCCC ((((SSSSeeeepppptttteeeemmmmbbbbeeeerrrr 1111999999991111))))        AAAARRRRGGGGIIIINNNNTTTTRRRROOOO((((3333AAAARRRRGGGG))))
+
+
+
+          _A_r_g_Q_N_O_p_t(3ARG) queries the number of options that were given
+          on the commandline.  An option is a keyword and zero or more
+          following values or one or more values with an implied
+          (optional) keyword.
+
+          _A_r_g_Q_O_p_t(3ARG) takes a commandline order option number (e.g.,
+          give me the 3rd option on the commandline) and returns the
+          keyword for that option and what occurrence it is of that
+          type of option (e.g., it's the 2nd occurrence of "list").
+
+          Typical code to walk the commandline would read:
+
+               int i, j, k;
+               int nopt, noccur, nvalue;
+               char *keyword;
+               int list[MAXLIST];
+
+               nopt = ArgQNOpt( );
+               for ( k = i = 0; i < nopt; i++ )
+               {
+                    keyword = ArgQOpt( nopt, &noccur );
+                    if ( strcmp( keyword, "list" ) == 0 )
+                    {
+                         nvalue = ArgQNValue( "list", noccur );
+                         for ( j = 0; j < nvalue; j++ )
+                              list[k++] = ArgQValue( "list", i, j )->arg_i;
+                    }
+                    ...
+               }
+
+          Occasionally it is necessary to determine where a particular
+          occurrence of an option is on the commandline.  This may be
+          done using _A_r_g_Q_O_c_c_u_r_O_p_t(3ARG):
+
+               int nopt, noccur;
+               char *keyword;
+
+               nopt = ArgQOccurOpt( keyword, noccur );
+
+          _A_r_g_Q_O_c_c_u_r_O_p_t(3ARG) takes the keyword of an option and which
+          occurrence is being queried and returns the position of that
+          option occurrence on the commandline.
+
+     GGGGEEEENNNNEEEERRRRAAAATTTTIIIINNNNGGGG HHHHEEEELLLLPPPP AAAANNNNDDDD VVVVEEEERRRRSSSSIIIIOOOONNNN TTTTEEEEXXXXTTTT
+          _A_r_g_P_a_r_s_e(3ARG) automatically generates a help message in
+          response to the ----hhhheeeellllpppp and ----ffffuuuullllllllhhhheeeellllpppp options, and generates a
+          version number message in response to the ----vvvveeeerrrrssssiiiioooonnnn option.
+          Both the help and version number messages may be generated
+          directly by the program by calling _A_r_g_H_e_l_p(3ARG),
+          _A_r_g_F_u_l_l_H_e_l_p(3ARG), and _A_r_g_V_e_r_s_i_o_n(3ARG):
+
+
+
+
+
+     Page 4                                          (printed 6/30/95)
+
+
+
+
+
+
+     AAAARRRRGGGGIIIINNNNTTTTRRRROOOO((((3333AAAARRRRGGGG))))        SSSSDDDDSSSSCCCC ((((SSSSeeeepppptttteeeemmmmbbbbeeeerrrr 1111999999991111))))        AAAARRRRGGGGIIIINNNNTTTTRRRROOOO((((3333AAAARRRRGGGG))))
+
+
+
+               ArgHelp( );
+               ArgFullHelp( );
+               ArgVersion( );
+
+     GGGGEEEENNNNEEEERRRRAAAATTTTIIIINNNNGGGG FFFFEEEEEEEEDDDDBBBBAAAACCCCKKKK AAAANNNNDDDD RRRREEEEGGGGIIIISSSSTTTTRRRRAAAATTTTIIIIOOOONNNN FFFFOOOORRRRMMMMSSSS
+          _A_r_g_P_a_r_s_e(3ARG) automatically generates feedback (bug report)
+          and user registration forms to files in response to the
+          ----ffffeeeeeeeeddddbbbbaaaacccckkkk and ----rrrreeeeggggiiiisssstttteeeerrrr options.  Both of these forms may be
+          generated directly by the program by calling
+          _A_r_g_F_e_e_d_b_a_c_k(3ARG) and _A_r_g_R_e_g_i_s_t_e_r(3ARG):
+
+               ArgFeedback( );
+               ArgRegister( );
+
+     RRRREEEETTTTUUUURRRRNNNNSSSS
+          All argument parsing package calls that can return errors do
+          so by returning -1 or NULL pointers on failure and 0 or a
+          valid pointer on success (per UNIX system call convention).
+          The global variable _A_r_g_E_r_r_N_o is set to an error code
+          describing the error (also per UNIX convention).  The error
+          text associated with the error code may be retrieved from
+          the global _A_r_g_E_r_r_L_i_s_t or printed to _s_t_d_e_r_r using
+          _A_r_g_P_E_r_r_o_r(3ARG).
+
+     SSSSUUUUMMMMMMMMAAAARRRRYYYY OOOOFFFF AAAARRRRGGGGUUUUMMMMEEEENNNNTTTT PPPPAAAARRRRSSSSIIIINNNNGGGG RRRROOOOUUUUTTTTIIIINNNNEEEESSSS
+          int          ArgFeedback( )
+          int          ArgFullHelp( )
+          int          ArgHelp( )
+          int          ArgParse( argc, argv, cmnd, noptions, options, nequiv, equiv )
+          void         ArgPError( leader )
+          char *       ArgQError( )
+          int          ArgQNOccur( keyword )
+          int          ArgQNOpt( )
+          int          ArgQOccurOpt( keyword, noccur )
+          char *       ArgQOpt( nopt, noccur )
+          int          ArgQNValue( keyword, noccur )
+          ArgValue *   ArgQValue( keyword, noccur, nvalue )
+          int          ArgRegister( )
+          int          ArgVersion( )
+
+     SSSSEEEEEEEE AAAALLLLSSSSOOOO
+          ArgFeedback(3ARG), ArgFullHelp(3ARG), ArgHelp(3ARG),
+          ArgIntro(3ARG), ArgParse(3ARG), ArgPError(3ARG),
+          ArgQError(3ARG), ArgQNOccur(3ARG), ArgQNOpt(3ARG),
+          ArgQOccurOpt(3ARG), ArgQOpt(3ARG), ArgQNValue(3ARG),
+          ArgQValue(3ARG), ArgRegister(3ARG), ArgVersion(3ARG),
+          errno(2), perror(3)
+
+     AAAAUUUUTTTTHHHHOOOORRRRSSSS
+          Dave Nadeau
+          San Diego Supercomputer Center
+
+
+
+
+     Page 5                                          (printed 6/30/95)
+
+
+
+
+
+
+     AAAARRRRGGGGIIIINNNNTTTTRRRROOOO((((3333AAAARRRRGGGG))))        SSSSDDDDSSSSCCCC ((((SSSSeeeepppptttteeeemmmmbbbbeeeerrrr 1111999999991111))))        AAAARRRRGGGGIIIINNNNTTTTRRRROOOO((((3333AAAARRRRGGGG))))
+
+
+
+     CCCCOOOONNNNTTTTAAAACCCCTTTT
+          SDSC consultants, (619)534-5100, ccccoooonnnnssssuuuulllltttt@@@@yyyy1111....ssssddddsssscccc....eeeedddduuuu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Page 6                                          (printed 6/30/95)
+
+
+

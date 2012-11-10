@@ -1,0 +1,371 @@
+/* Datenbank - GeoDB-Deklaration für DIRIS						*/
+/* File: RIS.DBS												*/
+/* Version für Compound-Documents 								*/
+
+/* V5.00.00.011: Textobjekte mit Key 							*/
+/* V5.00.00.013: VMO mit Key, MKL mit Zähler der Rückverweise	*/
+
+database ris [2048] extension ris {
+/* VersionsNummer */
+	version 5.00.00.013;
+
+/* Kantenliste */
+        data file "Kanten"			contains kal;
+/* Stützpunktliste */
+        data file "Stützpunkte"		contains spl;
+/* Knotenpunktliste */
+        data file "Knotenpunkte"	contains kpl, pol;
+/* Maschenliste */
+        data file "Maschen"			contains mal;
+/* Kantenfolgeliste */
+        data file "Kantenfolge"		contains kfk, kfm;
+/* Geometrie - Objekt */
+        data file "GeometrieObjekt"	contains vgo, vzo;
+/* Objektliste */
+        data file "Objekte"			contains obl;
+/* Objekt - Geometrie */
+        data file "ObjektGeometrie"	contains vol, voa;
+/* Objekt - Merkmale */
+        data file "ObjektMerkmal"	contains vom, mi;
+/* Merkmalsliste */
+        data file "Merkmale"		contains mkl;
+/* Merkmale - Objekt */	
+        data file "MerkmalObjekt"	contains vmo, kvmo;
+/* Objekt - Relationen */
+        data file "ObjektRelation"	contains vor;
+/* Relationsliste */
+        data file "Relationen"		contains rel;
+/* Identifikatorliste */
+        data file "Identifikatoren"	contains idl;
+/* Identifikator - Objekt */
+        data file "IdentObjekt"		contains vio;
+/* Relationsattribut - Relation */
+        data file "RelAttribute"	contains vre;
+
+/* Gegenüberstellung von Relation und Gegenrelation */
+        data file "RelationsArt"	contains ral;
+/* Textdatei */
+        data file "Textmerkmale"	contains kdbt, fdbt;
+
+/* Key - Dateien für den Einstieg in die Datenbank */
+/*         Geometriezugriff */
+        htree key files "HTreeKey1" and "HTreeKey2" contain kcont, mcont;
+        qtree key files "QTreeKey1" and "QTreeKey2" contain kpkrd;
+/*         Merkmalsinformation */
+        btree key file "MerkmalKey"	contains mk;            
+/*         Identifikator */
+        btree key file "IdentKey"	contains idn;           
+/*         Relationsart */
+        btree key file "RelationsKey"	contains rat;
+
+/*         DB-Headerfile */ 
+        data file "Header"			contains head, fhead;
+        btree key file "HeaderKey"	contains hdidn;
+
+/* 	   Dateien für SichtInformationen */
+        data file "Sichten" 		contains Sicht;
+	data file "Visualisierung"	contains PAttribs, LAttribs, 
+										 FAttribs, TAttribs;
+	btree key file "SichtKey" 	contains SichtName;
+
+/* 	Datei für ObjektSatzErweiterungen */
+	data file "Objekte2" 		contains RelTyp;
+
+/*	Schlüssel für Textmerkmale */
+	btree key file "TextKey"	contains info;
+
+/* Schlüssel für VMO: Rückverkettung Merkmal->Objekt */
+	btree key file "VMOKey"		contains mkonky;
+
+/* Basisinformationen */
+	record kal {    /* Kantenliste */
+		long zap;       /* Anfangspunkt */
+		long zep;       /* Endpunkt */
+		long zlm;       /* linke Masche */
+		long zrm;       /* rechte Masche */
+		long zkvgo;     /* Verweis auf Objekte */
+		long zksp;      /* Verweis auf Stützpunkte */
+		long asp;       /* Anzahl der Stützpunkte */
+		long wi;        /* Winkel */
+		key struct {    /* Kantencontainer */
+			long kxmin;
+			long kxmax;
+			long kymin;
+			long kymax;
+		} kcont;
+	}
+	record kpl {    /* Knotenpunktliste */
+		long zkpvgo;    /* Verweis auf Objekte */
+		long zkpkfk;    /* Verweis auf kfk */
+		struct {        /* Knotenpunktkoordinate */
+			long kpx;
+			long kpy;
+		} pkrd;
+		long zkpma;
+	}
+	record spl {    /* Stützpunktliste */
+		long spx;       /* Punktkoordinate */
+		long spy;
+		long znsp;      /* next spl */
+	}
+	record mal {    /* Maschenliste */
+		long zmkfm;     /* Verweis auf Kantenfolgeliste-Masche */
+		long zmvgo;     /* Verweis auf Objekte */
+		key struct {    /* Maschenkontainer */
+			long mxmin;
+			long mxmax;
+			long mymin;
+			long mymax;
+		} mcont;
+		long zmvzo;
+	}
+	record kfk {    /* Kantenfolgeliste für Kanten */
+		long zkfkk;     /* Verweis auf Kantenliste */
+		long znkfk;     /* next kfk */
+	}
+	record kfm {    /* Kantenfolgeliste für Maschen */
+		long zkfmk;     /* Verweis auf Kantenliste */
+		long znkfm;     /* next kfm */
+	}
+	record obl {    /* Objektliste */
+		long zovor;     /* Verweis auf Relationen */
+		long zoid;      /* Verweis auf Identifikatorliste */
+		long zovom;     /* Verweis auf Merkmale */
+		long zokp;      /* Knotenpunkte */
+		long zovol;     /* Kantenliste */
+		long zovoma;    /* Maschenliste */
+/* Die RelationsMaske enthält Informationen über sämtliche Relationen, die
+   dieses Objekt mit anseren Objekten besitzt.
+	Bit 0:	Objekt ist Teil von Komplexobjekt
+	Bit 1:	Objekt ist Komplexobjekt
+	Bit 2:	Objekt besitzt gleichrangige Relation
+	Bit 3:	Objekt besitzt BegleitObjekt
+	Bit 4:	Objekt ist BegleitObjekt
+ */
+		char rmaske;	/* Relationsmaske */
+/* Das folgende Byte dient zur erweiterten Objektbeschreibung
+	Bit 0:	Objekt ist TextObjekt
+	Bit 1:  Objekt ist abhängiges TextObjekt
+	Bit 2:	Objekt ist SachObjekt
+ */
+		char status;	/* Objektbeschreibung */ 
+	}
+	record rel {    /* Relationenliste */
+		long zrera;     /* Verweis auf Relationsattribut */
+		long zol1;      /* erstes Objekt */
+		long zol2;      /* zweites Objekt */
+	}
+	record idl {    /* Identifikatorliste */
+		unique key long idn;   /* Identifikator */
+		long zvio;      /* Verweis auf Objekte */
+		long zMerki;	/* Zeiger in MerkmalsKette */
+		long zRelid;	/* Zeiger in RelationsSatz (RelTyp) */
+	}
+	record mkl {	/* Merkmalsliste */
+		unique key long mk;		/* Merkmal */
+		long typ;		/* Merkmalstyp */
+		long zmkvmo;	/* Verweis auf Objekte */
+		long onrcnt;	/* Zähler der Objektverweise, ab V5.00.00.013 */
+	}
+	record mi {		/* Merkmalsinformation */
+		long znmi;      /* next mi */
+		long mw[2];     /* Merkmalswerte */
+	}
+	record fdbt {		/* Folgesatz eines Textmerkmales */
+		char infof[44];	/* weiter Text */
+		long zndbtf;	/* weiter TextSatz */
+	}
+
+/* Verbindungsinformationen */
+	record vgo {	/* Geometrie -> Objekt */
+		long zvgoo;     /* Verweis auf Objektliste */
+		long znvgo;     /* next vgo */
+	}
+	record vzo {	/* Verweis auf innere Objekte einer Masche */
+		long zvzoo;     /* Verweis auf Objektliste */
+		long znvzo;     /* next vzo */
+	}
+	record vol {	/* Objekt -> Kante */
+		long zvolk;     /* Verweis auf Kantenliste */
+		long znvol;     /* next vol */
+	}
+	record voa {	/* Objekt -> Masche */
+		long zvomam;    /* Verweis auf Maschenliste */
+		long znvoma;    /* next vof */
+	}
+	record vom {	/* Objekt -> Merkmal */
+		long zvommk;    /* Verweis auf Merkmalsliste */
+		long znmk;      /* next Merkmal */
+		long zvommi;    /* Verweis auf Merkmalsinfo */
+		long zvomo;	/* Verweis zurück zum Objekt */
+	}
+	record vmo {	/* Merkmal -> Objekte */
+	/* der folgende Zeiger kann entweder in die OBL, die IDL oder die
+	   SICHT zeigen, je nachdem, ob es sich um ein Merkmal eines Objektes, 
+	   eines Identifikators oder einer Sicht handelt. Die ältesten
+	   Bits dieses Zeigers verschlüsseln diese Dateien: 
+			00 - OBL, also kompatibel zu bisherigem
+			01 - IDL	und
+			10 - SICHT
+	 */
+		long zvmoo;		/* Verweis auf Objektliste */
+		long znvmo;		/* next vmo */
+	}
+	record vor {	/* Objekt -> Relation */
+		long zvorel;	/* Verweis auf Relationsliste */
+		long znvor;		/* next vor */
+	}
+	record vio {	/* Identifikator -> Objekt */
+		long zvioo;		/* Verweis auf Objektliste */
+		long znvio;		/* next vio */
+	}
+	record vre {    /* Verbindung Relationsart - Relationen */
+		long zvrere;    /* Verweis auf Relationsliste */
+		long znvre;     /* next vre */
+	}
+	record ral {
+		unique key long rat;    /* Relationsattribut */
+		long zravre;            /* Verbindung zurück zu Relationen */
+		short maske;		/* Relationsmaske */
+	}               
+
+	record pol {    /* Knotenpunktliste -- Einzelobjekte */
+		long zpvgo;     /* Verweis auf Objekte */
+		long zpkfk;     /* Verweis auf kfk */
+		key struct {    /* Knotenpunktkoordinate */
+			long px;
+			long py;
+		} kpkrd;
+		long zpma;
+	}
+
+	record head {   /* DB-Headerfile */
+		unique key long hdidn[4];       /* Suchschlüssel */
+		char text[64];          /* Text */
+		long zntext;            /* nächster Satz */
+	}
+	record fhead {  /* DB-Headerfile, Fortsetzungssatz */
+		char textf[80];         /* Text */
+		long ztextf;            /* nächster Satz */
+	}
+
+/* SatzStrukturen für SichtInformationen */
+	record Sicht {  /* eine Sicht der Datenbasis */
+		unique key char SichtName[40];     /* Name der Sicht */
+		short IDNum;    /* Anzahl der IdentifikatorSätze im Set */
+		short IDSet;    /* Zeiger auf Id-Liste */
+		short ONNum;    /* Anzahl der ON-Sätze im Set */
+		short ONSet;    /* Zeiger auf ObjektListe */
+		long ObjRgn;	/* Objekt, welches ClippingRgn ist */
+		long zMerkm;	/* Zeiger in MerkmalsKette */
+		long zRelat;	/* Zeiger in RelationsSatz (RelTyp) */
+	}
+	record PAttribs { /* Element der VisInfo-Liste */
+	/* SetInformationen */
+		long PTarget;   /* Identifikator/ON */
+		short nPSet;    /* nächstes ListenElement */
+	/* allgemeine Attribute */
+		short PPrio;    /* Zeichenpriorität */
+		short PStyle;   /* Darstellungsart */
+		long PColor;    /* Punktfarbe */
+	/* Satzkennung */
+		char PFlag;		/* Kennung jetzt nur noch 1 Byte (5.00.00.011) */
+		char PAttrEx;	/* zusätzliche Atribute */
+	/* punktspezifische Attribute */
+		short SizeX;    /* Größe X */
+		short SizeY;    /* Größe Y */
+	/* Name des PunktSymboles */
+		char PName[32];
+	}
+	record LAttribs { /* Element der VisType-Liste */
+	/* SetInformationen */
+		long LTarget;   /* Identifikator/ON */
+		short LnSet;    /* nächstes ListenElement */
+	/* allgemeine Attribute */
+		short LPrio;    /* Zeichenpriorität */
+		short LStyle;   /* Darstellungsart */
+		long LColor;    /* Linienfarbe */
+	/* Satzkennung */
+		char LFlag;		/* Kennung jetzt nur noch 1 Byte (5.00.00.011) */
+		char LAttrEx;	/* zusätzliche Atribute */
+	/* linienspezifische Attribute */
+		short Width;    /* StrichStärke */
+		short LDummy;
+	/* Name der LinienSignatur */
+		char LName[32];
+	}
+	record FAttribs { /* Element der VisType-Liste */
+	/* SetInformationen */
+		long FTarget;   /* Identifikator/ON */
+		short FnSet;    /* nächstes ListenElement */
+	/* allgemeine Attribute */
+		short FPrio;    /* Zeichenpriorität */
+		short FStyle;   /* Darstellungsart */
+		long FColor;    /* FüllFarbe */
+	/* Satzkennung */
+		char FFlag;		/* Kennung jetzt nur noch 1 Byte (5.00.00.011) */
+		char FAttrEx;	/* zusätzliche Atribute */
+	/* flächenspezifische Attribute */
+		long BColor;    /* RandFarbe */
+	/* Name des Füllmusters */
+		char FName[32];
+	}
+
+/* Objektsatzerweiterung für Relationen */
+	record RelTyp {
+		long zhrel;	/* Liste der horizontalen Relationen */
+		long zvrelo;	/* Liste der vertikalen Rel's nach oben */
+		long zvrelu;	/* Liste der vertikalen Rel's nach unten */
+		long zbrela;	/* Zeiger auf Begleitobjekt */
+		long zbrelp;	/* Zeiger auf Vater des Begleitobjektes */
+	}
+
+/* VisualisierungsInfo für SchriftObjekte */
+	record TAttribs { /* Element der VisType-Liste */
+	/* SetInformationen */
+		long TTarget;   /* Identifikator/ON */
+		short TnSet;    /* nächstes ListenElement */
+	/* allgemeine Attribute */
+		short TPrio;    /* Zeichenpriorität */
+		short TStyle;   /* Darstellungsart */
+		long TColor;    /* FüllFarbe */
+	/* Satzkennung */
+		char TFlag;		/* Kennung jetzt nur noch 1 Byte (5.00.00.011) */
+		char TAttrEx;	/* zusätzliche Atribute */
+	/* Textspezifische Attribute */
+		char TSizeX;	/* Fontgröße */
+		char TSizeY;
+		char TType;		/* FontTyp */
+		char TRot;		/* DrehWinkel in 2ø-Schritten */
+	/* FontName */
+		char TName[32];	/* konkreter gewünschter Font */
+	}
+
+/* Textmerkmale, erster Satz */
+	record kdbt {
+		long lLen;		/* Textlänge */
+		long zmivom;	/* Verweis zum zugehörigen VerbindungsSatz */
+		key char info[36];	/* 1. Textsatz */
+		long zndbt;     /* Zeiger auf nächsten Satz */
+	}
+	record kvmo {	/* Merkmal -> Objekte (jetzt mit _key_), s. vmo */
+	/* Der folgende Zeiger (zvmook) kann entweder in die OBL, die IDL oder 
+	   die SICHT zeigen, je nachdem, ob es sich um ein Merkmal eines Objektes, 
+	   eines Identifikators oder einer Sicht handelt. Die ältesten
+	   Bits dieses Zeigers verschlüsseln diese Dateien: 
+			00 - OBL, also kompatibel zu bisherigem
+			01 - IDL	und
+			10 - SICHT
+	 */
+	/* Rückverkettung und Key sind notwendig, damit das herauslösen schneller
+	   geht als bisher (viele Objekte --> lange VMO!)
+	 */
+		long znvmok;			/* next vmo */
+		long zpvmok;			/* previous vmo, ab V5.00.00.013 */
+		unique key struct {
+			long zvmook;	/* Verweis auf Targetliste, _key_ ab V5.00.00.013 */
+			long zmcode;	/* Zugehöriger MCode, ab V5.00.00.013 */
+		} mkonky;
+	}
+}
+

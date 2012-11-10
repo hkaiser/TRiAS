@@ -1,0 +1,440 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "trias323.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include <windows.h>
+#include <commctrl.h>
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "ver.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "trias323.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include <windows.h>\r\n"
+    "#include <commctrl.h>\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""ver.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""trias323.rcv""\r\n"
+    "\r\n"
+	"\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_STATUSDLG DIALOG DISCARDABLE  50, 50, 250, 62
+STYLE DS_MODALFRAME | WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN |
+    WS_CAPTION | WS_SYSMENU
+CAPTION "Status of active Imports"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON	    "Cancel",IDCANCEL,187,39,55,14
+    CONTROL	    "",IDPB_STATUS,"msctls_progress32",0x1,10,40,171,8
+    LTEXT	    "Process project information",IDT_PERCENT,10,
+		    24,233,9
+    LTEXT	    "%s",IDT_FILENAME,36,13,146,9
+    LTEXT	    "Object %ld",IDT_OBJECTNUMBER,189,13,53,9
+    LTEXT	    "Remaining time:",IDT_TIMETEXT,10,49,68,8
+    RTEXT	    "",IDT_TIME,99,50,81,8
+    LTEXT	    "File: ",IDT_FILE,10,13,22,8
+END
+
+IDD_DESTOBJWND_WIZ DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX	    " Show created objects in research window",
+		    IDC_STATIC,1,1,272,104,WS_GROUP
+    CONTROL	    "&Create new research window",IDC_CREATENEWOBJWND,
+	            "Button",BS_AUTORADIOBUTTON | WS_TABSTOP,8,14,198,10 CONTROL	
+                    "&Select old research window:",
+	            IDC_SELECTOBJWND,"Button",BS_AUTORADIOBUTTON,8,26,189,10 
+    LISTBOX	    IDC_LISTOBJWND,17,40,252,60,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL |
+                    WS_TABSTOP
+    GROUPBOX	    " Select objects ",IDC_STATIC,1,107,273,29,WS_GROUP
+    CONTROL	    "Retain old selection",IDC_RETAINSELECTION,
+	            "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,119,125,10
+    CONTROL	    "&Select new objects",IDC_SELECTNEW,"Button",
+		    BS_AUTOCHECKBOX | WS_TABSTOP,147,119,120,10
+END
+
+IDD_OBJECTROP_WIZ DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Select object property on which consolidation of objects in groups will be based:",
+		    IDC_STATIC,2,5,175,23
+    CONTROL	    "Generic2",IDC_OBJPROPS,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP |
+                    TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,1,34,182,105
+    GROUPBOX	    " Selection criteria",IDC_STATIC,189,30,85,109
+    CONTROL	    "&Existence",IDC_EXISTS,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,196,47,61,10
+    CONTROL	    "&Equality",IDC_EQUAL,"Button",BS_AUTORADIOBUTTON,196,
+		    60,61,10
+END
+
+IDD_SELECTOBJWND_WIZ DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT	    "&Select projects by research windows:",
+		    IDC_STATIC,1,0,165,10
+    LISTBOX	    IDC_LISTOBJWND,1,12,211,60,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL |
+                    WS_TABSTOP
+    PUSHBUTTON	    "Select all",IDC_SELECTALL,220,58,55,14
+    GROUPBOX	    " Selection criteria",IDC_STATIC,1,108,273,32,WS_GROUP
+    CONTROL	    "&Selected objects",IDC_SELECTEDOBJECTS,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,103,122,80,10
+    CONTROL	    "All objects",IDC_ALLOBJECTS,"Button",
+                    BS_AUTORADIOBUTTON,212,122,58,10
+    CONTROL	    "Activated objects",IDC_ACTIVATED,"Button",
+		    BS_AUTORADIOBUTTON,7,122,72,10
+END
+
+IDD_SELECTREL_WIZ DIALOG DISCARDABLE  0, 0, 276, 140 
+STYLE DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT	   "&Select desired relation for consolidation of all objects of a group:",
+		   IDC_STATIC,2,5,133,27
+    CONTROL	   "Generic1",IDC_LISTRELATIONS,"SysListView32",LVS_REPORT | 
+                   LVS_SINGLESEL | LVS_SORTASCENDING | LVS_SHAREIMAGELISTS |
+                   LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,1,34,134,105
+    LTEXT	   "Select object class of new complex objects:",
+		   IDC_STATIC,140,5,132,27
+    CONTROL	   "Generic1",IDC_LISTIDENTS,"SysListView32",LVS_REPORT | 
+                   LVS_SINGLESEL | LVS_SORTASCENDING | LVS_SHAREIMAGELISTS |
+                   LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,137,34,137,105
+END
+
+IDD_SELECTIDS_WIZ DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE DS_3DLOOK | DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT	   "Select objects by class and type:",
+		   IDC_STATIC,1,0,175,8
+    CONTROL	   "Generic1",IDC_LISTIDENTS,"SysListView32",LVS_REPORT | 
+                   LVS_SHAREIMAGELISTS | LVS_ALIGNLEFT | LVS_NOSORTHEADER |
+                   WS_BORDER | WS_TABSTOP,1,12,212,128
+    PUSHBUTTON	   "&Select all",IDB_SELALLCLASSES,220,126,55,14
+END
+
+IDD_MODIFYIDS_WIZ DIALOG DISCARDABLE  0, 0, 276, 140
+STYLE DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT	   "&Select new object class:",IDC_STATIC,1,0,106,8
+    CONTROL	   "Generic1",IDC_LISTDESTIDENTS,"SysListView32",LVS_REPORT | 
+                   LVS_SINGLESEL | LVS_SORTASCENDING | LVS_SHAREIMAGELISTS |
+                   LVS_ALIGNLEFT | LVS_NOSORTHEADER | WS_BORDER |
+                   WS_TABSTOP,1,12,211,115
+    CONTROL	   "&Add object class to active view",
+                   IDC_ADDTOVIEW,"Button",BS_AUTOCHECKBOX | WS_GROUP |
+                   WS_TABSTOP,1,130,157,10
+    PUSHBUTTON	   "&Define ...",IDC_DEFINENEW,220,113,55,14,WS_GROUP
+END
+
+IDD_TEXTSEARCHENGINE_CFG DIALOG DISCARDABLE  0, 0, 250, 134
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "TODO: layout TRiAS property page",IDC_STATIC,69,63,112,
+		8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_PLFT_SMALL	    BITMAP  DISCARDABLE     "res\\plft.bmp"
+IDB_PLFT_LARGE	    BITMAP  DISCARDABLE     "res\\plft_lar.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_SELECTOBJWND_WIZ, DIALOG
+    BEGIN
+	VERTGUIDE, 212
+	HORZGUIDE, 12
+	HORZGUIDE, 72
+    END
+    IDD_SELECTIDS_WIZ, DIALOG
+    BEGIN
+	VERTGUIDE, 212
+	VERTGUIDE, 220
+	HORZGUIDE, 8
+	HORZGUIDE, 12
+	HORZGUIDE, 132
+    END
+    
+
+    IDD_MODIFYIDS_WIZ, DIALOG
+    BEGIN
+	LEFTMARGIN, 1
+	VERTGUIDE, 212
+	HORZGUIDE, 8
+	HORZGUIDE, 12
+	HORZGUIDE, 127
+    END
+	
+    IDD_TEXTSEARCHENGINE_CFG, DIALOG
+    BEGIN
+	LEFTMARGIN, 4
+	RIGHTMARGIN, 246
+	TOPMARGIN, 4
+	BOTTOMMARGIN, 130
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// TYPELIB
+//
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDR_TYPELIB$(_DEBUG)    TYPELIB DISCARDABLE     "..\\Debug4\\register.tlb"
+#else
+IDR_TYPELIB             TYPELIB DISCARDABLE     "..\\Debug4\\register.tlb"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(NDEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDR_TYPELIB$(NDEBUG)    TYPELIB DISCARDABLE     "..\\Release\\typelib.tlb"
+#else
+IDR_TYPELIB             TYPELIB DISCARDABLE     "..\\Release\\typelib.tlb"
+#endif
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_REGISTRYHELPER      REGISTRY DISCARDABLE    "res\\Register.rgs"
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDR_TEXTSEARCHENGINE$(_DEBUG) REGISTRY DISCARDABLE    "res\\TextSearchEngine.rgs"
+#else
+IDR_TEXTSEARCHENGINE    REGISTRY DISCARDABLE    "res\\TextSearchEngine.rgs"
+#endif
+#endif
+IDR_PROPINFO_IDENTOTYP  REGISTRY DISCARDABLE    "res\\SelIdPrp.rgs"
+IDR_PROPINFO_MODIDENT   REGISTRY DISCARDABLE    "res\\ModIdPrp.rgs"
+IDR_PROPINFO_OBJWND     REGISTRY DISCARDABLE    "res\\SelObWnd.rgs"
+IDR_PROPINFO_PROPSEQUENCE REGISTRY DISCARDABLE    "res\\PropSeq.rgs"
+IDR_PROPINFO_ORWNDDEST  REGISTRY DISCARDABLE    "res\\DstObWnd.rgs"
+IDR_ENUMOBJECTSBYNMUMBER REGISTRY DISCARDABLE    "res\\EnumONr.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_GLOBALUNDOLIST      "Global Undo list"
+    IDS_GLOBALREDOLIST	    "Global Redo list"
+    IDS_UNDOCREATEFEATURE   "Create feature|Create %s feature on object no.. %ld"
+    IDS_UNDOEDITFEATURE	    "Edit feature|Edit %s feature on object no.. %ld"
+    IDS_UNDODELETEFEATURE   "Delete feature|Delete %s feature on object no.. %ld"
+    IDS_UNDODELETETEXT	    "Delete text object|Delete text object (Object %ld)"
+    IDS_UNDOCREATETEXT	    "Create text object|Create text object(%s)"
+    IDS_UNDODELETERELATION  "Delete relation|Delete relation(code: %ld, type %d, objects %ld and %ld)"
+    IDS_UNDOCREATERELATION  "Create relation|Create relation(code: %ld, type %d, objects %ld und %ld)"
+    IDS_DELETEOBJHWND	    "Delete object in research window|Delete object %ld in research window"
+    IDS_UNDODELETEOBJECT    "Delete object|Delete object %ld "
+    IDS_UNDOMODIFYOBJECT    "Modify object|Modify object%ld "
+    IDS_FILETEMPLATE	    "File: "
+    IDS_UNDOCREATEPBDDATA   "Create description entry|Create unknown description entry(Target: %s)"
+    IDS_UNDOCREATEPBDDATA2  "Create identificator description|Create identificator description(Identificator: %s)"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UNDOCREATEPBDDATA3  "Create feature description|Create feature description (feature code: %s)"
+    IDS_UNDOCREATEPBDDATA4  "Create relation description|Create relation description(Relation code: %s)"
+    IDS_UNDODELETEPBDDATA   "Delete description entry|Delete unknown description entry (Target: %s)"
+    IDS_UNDODELETEPBDDATA2  "Delete identificator description|Delete identificator description(Identificator: %s)"
+    IDS_UNDODELETEPBDDATA3  "Delete feature description|Delete feature description(feature code: %s)"
+    IDS_UNDODELETEPBDDATA4  "Delete relation description|Delete relation description(Relation code: %s)"
+    IDS_UNDOEDITPBDDATA	    "Edit description entry|Edit unknown description entry(Target: %s)"
+    IDS_UNDOEDITPBDDATA2    "Edit identificator description|Edit identificator description (Identificator: %s)"
+    IDS_UNDOEDITPBDDATA3    "Edit feature description|Edit feature description (Feature code: %s)"
+   IDS_UNDOEDITPBDDATA4	    "Edit relation description|Edit relation description (Relation code: %s)"
+    IDS_HEADERIDENT	    "Identificator"
+    IDS_HEADERDESC	    "Description"
+    IDS_UNDOVISINFO	    "Modify display parameters|Modify display parameters (Identificator %s)"
+    IDS_UNDOMODIDENT	    "Modify object class|Modify object class of object no.. %ld"
+    IDS_GENERRORCAP	    "Research: general error"
+    IDS_ADDERROR	    "Unable to load '%s' research module."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_QUERYCONTINUE       "\r\nDo you want to continue the operation ?"
+    IDS_PROPINFO_IDENTOTYP  "Select objects by class and type"
+    IDS_HELPDESC_IDENTOTYP  "Assembles all objects of a given class with a given type.."
+    IDS_PROPGROUPNAME	    "TRiAS® (allgemein)"
+    IDS_PROPINFO_MODIDENT   "Modify class of objects"
+    IDS_HELPDESC_MODIDENT   "Modifies the class of all objects passed."
+    IDS_UNDOMODIDENTS	    "Modify identificator"
+    IDS_PROPINFO_OBJWND	    "Select object from research window"
+    IDS_HELPDESC_OBJWND	    "Assembles objects from one or several research windows."
+    IDS_HELPDESC_PROPSEQUENCE 
+	                    "Summarizes several property functions and creates a new property function."
+    IDS_PROPINFO_PROPSEQUENCE "Action sequence of property functions."
+    IDS_ENUMOBJECTSBYNMUMBER "Enumerator for TRiAS GeoObjects"
+    IDS_PROPINFO_ORWNDDEST   "Show object in a research window" 
+    IDS_HELPDESC_ORWNDDEST   "Shows all objects passed in an object research window."
+    IDS_NEWOBJCAPTION	     "Result of research"
+	IDS_TEXTSEARCHENGINE_DESC "General text research"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_REGISTRAR_DESC	      "TRiAS Registry Helper 1.0 Object"
+    IDS_NOT_IN_MAP	      "Value not found in variable map."
+    IDS_UNEXPECTED_EOS	      "Unexpected end of stream encountered."
+    IDS_VALUE_SET_FAILED      "Failed to set key value."
+    IDS_RECURSE_DELETE_FAILED 
+	                      "Recursive delete of a key failed."
+    IDS_EXPECTING_EQUAL	"Expecting = for other"
+    IDS_CREATE_KEY_FAILED     "Create key failed."
+    IDS_DELETE_KEY_FAILED     "Delete on key failed."
+    IDS_OPEN_KEY_FAILED	      "Open on key failed."
+    IDS_CLOSE_KEY_FAILED      "Close on key failed."
+    IDS_UNABLE_TO_COERCE      "Unable to change type."
+    IDS_BAD_HKEY	      "Invalid root key provided."
+    IDS_MISSING_OPENKEY_TOKEN "Expected to find a{."
+    IDS_CONVERT_FAILED	      "Failed to convert replacement to specified value."
+    IDS_TYPE_NOT_SUPPORTED    "Specified type is not supported"
+    IDS_COULD_NOT_CONCAT      "Can Not concatenate string."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_COMPOUND_KEY	      "Could not perform action on compound key (a Key that contains a \\.)."
+    IDS_INVALID_MAPKEY	      "Invalid space character contained in map key."
+    IDS_UNSUPPORTED_VT	      "Variant Type supplied is not supported."
+    IDS_VALUE_GET_FAILED      "Failed to get key value."
+    IDS_VALUE_TOO_LARGE	      "The value to be read exceeded the 1k limit. Please use replacement variables."
+    IDS_MISSING_VALUE_DELIMETER "Missing "" in value."
+    IDS_DATA_NOT_BYTE_ALIGNED "Binary data not BYTE aligned."
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_REGISTRAR_DESC      "TRiAS Registry Helper 1.0 Object"
+    IDS_NOT_IN_MAP	    "Value Not found in variable map"
+    IDS_UNEXPECTED_EOS	    "Unexpected End Of Stream encountered."
+    IDS_VALUE_SET_FAILED    "Failed to set key value"
+    IDS_RECURSE_DELETE_FAILED "Recurse Delete Key failed"
+    IDS_EXPECTING_EQUAL	    "Expecting = for other"
+    IDS_CREATE_KEY_FAILED   "Create Key Failed"
+    IDS_DELETE_KEY_FAILED   "Delete on Key Failed"
+    IDS_OPEN_KEY_FAILED	    "Open on Key Failed"
+    IDS_CLOSE_KEY_FAILED    "Close on Key Failed"
+    IDS_UNABLE_TO_COERCE    "Unable to change type "
+    IDS_BAD_HKEY	    "Invalid root hKey provided"
+    IDS_MISSING_OPENKEY_TOKEN "Expected to find a {" 
+    IDS_CONVERT_FAILED	    "Failed to convert replacement to desired type."
+    IDS_TYPE_NOT_SUPPORTED  "Specified Type not supported"
+    IDS_COULD_NOT_CONCAT	"Can Not concatenate strings"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_COMPOUND_KEY	    "Could not perform action on compound key (a Key that contains a \\.)"
+    IDS_INVALID_MAPKEY	    "Invalid space character contained in Map Key."
+    IDS_UNSUPPORTED_VT	    "Variant Type supplied  is not supported."
+    IDS_VALUE_GET_FAILED    "Failed to get key value."
+    IDS_VALUE_TOO_LARGE	    "The value being read exceeded the 1k limit. If you need to use larger values use replacement variables."
+    IDS_MISSING_VALUE_DELIMETER "Missing "" in value "
+    IDS_DATA_NOT_BYTE_ALIGNED "Binary Data Not BYTE Aligned"
+END
+
+#endif    // English (U.S.) resources 
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "trias323.rcv"
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED

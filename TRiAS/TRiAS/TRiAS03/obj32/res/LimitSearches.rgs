@@ -1,0 +1,38 @@
+HKCR
+{
+	TRiASEx.LimitSearches.1 = s 'LimitSearches Class'
+	{
+		CLSID = s '{07BC2DFA-98C4-404D-AAFF-0729E301A32B}'
+	}
+	TRiASEx.LimitSearches = s 'LimitSearches Class'
+	{
+		CLSID = s '{07BC2DFA-98C4-404D-AAFF-0729E301A32B}'
+		CurVer = s 'TRiASEx.LimitSearches.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {07BC2DFA-98C4-404D-AAFF-0729E301A32B} = s 'LimitSearches Class'
+		{
+			ProgID = s 'TRiASEx.LimitSearches.1'
+			VersionIndependentProgID = s 'TRiASEx.LimitSearches'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.4
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove 'TRiASEx.LimitSearches.1' = s '{07BC2DFA-98C4-404D-AAFF-0729E301A32B}'
+			}
+		}
+	}
+}

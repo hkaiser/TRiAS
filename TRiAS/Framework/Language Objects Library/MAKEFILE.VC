@@ -1,0 +1,198 @@
+
+##############################################################################
+#
+#    Copyright (c) 1992-98, Compiler Resources, Inc.
+#
+#    FILENAME:           makefile.vc
+#
+#                        **  Microsoft Visual C++ 8.0 version -- 32 bit **
+#
+#    FILE DESCRIPTION:   builds the precompiled Language Objects Library
+#
+#    MODIFICATION HISTORY:
+#
+#     05/11/98   bz      Added yy_bktrk, yy_psrsk, yy_rdstk, yy_ref, yy_memen.
+#                        These are additional files for Rev 2.3 feature parser 
+#                        memento and mismatched UNION size error detection.
+#     06/12/95   cc      Changed to .vc suffix for 32 bit version.
+#     12/06/93   bz      Changed to build one pre-compiled yy_lol.lib which
+#                        contains small, readable, and fast lexing/parsing.
+#                        Removed main related compile as it is now part of
+#                        the application makefile only.
+#     07/21/93   bz      Removed yy_psr1-6.cpp as they are now merged into
+#                        yy_psr.cpp.  Likewise for yy_lex1-4.cpp.  Also
+#                        yy_main.cpp still exists but it is no longer compiled
+#                        into the LOL.
+#     06/11/93   bz      Removed getc library as it is now built into all
+#                        libraries as an input class in yy_inpge.  Also
+#                        added yy_inp, yy_inpfi, and yy_inpst for the Revision
+#                        2.0 native C++ rewrite of the input (file) object.
+#                        Also changed directory name from c7 to c8 to reflect
+#                        compiler upgrade.
+#     04/05/93   bz      Added yy_loc.cpp, and yy_errst.cpp.
+#     02/26/93   bz      Updated for Revision 2.0 native C++ rewrite of
+#                        symbol table and symbol objects.  Removed yy_sym1,
+#                        yy_sym2, yy_sym3, yy_hash, yy_lkp, and yy_lkpk as 
+#                        they are now all merged into yy_sym.cxx.
+#     10/30/92   bz      Initial coding.
+#
+##############################################################################
+
+#
+#  change "YY_MYDIR" to point to your current working directory
+#
+
+YY_MYDIR=.
+YY_MYLIB=$(YY_MYDIR)\lib.vc
+YY_MYINC=$(YY_MYDIR)\inc.vc
+
+#
+#  change "YXXDIR" or "YY_LIB" and "YY_INC" to point to the yxx sources
+#
+
+YXXDIR=\yxx
+YY_LIB=$(YXXDIR)\lib.vc
+YY_INC=$(YXXDIR)\inc.vc
+
+#
+#  change "YXX", "YY_ETBL", and "YY_STBL" to point to the yxx executables
+#
+
+YXX=yxx
+YY_ETBL=yy_etbl
+YY_STBL=yy_stbl
+
+#
+#  Compilation options.
+#
+
+DEFINES= -Dyy_assert_disable_ 
+INCLUDES= -I$(YY_MYDIR) -I$(YY_MYINC) -I$(YY_INC)
+ARFLAGS=
+RANLIBFLAGS= 
+CXXFLAGS= /c /GB /Od /W3 /Za $(DEFINES) $(INCLUDES)
+DBG_CXXFLAGS= /Zi $(CXXFLAGS)
+PROF_CXXFLAGS= $(CXXFLAGS)
+CXX=cl
+
+#
+#   System commands
+#
+
+AR=LIB
+ECHO=type
+CD=cd
+CP=copy
+MAKE=nmake
+MV=ren
+RM=del
+DEL=del
+GREP=#
+MKDIR=mkdir
+TOUCH=touch
+RANLIB=#
+
+#
+#  List the files in the Yacc++ Language Objects Library 
+#
+
+OBJECTS=$(YY_LIB)\yy_asrt.obj \
+    $(YY_LIB)\yy_ast.obj \
+    $(YY_LIB)\yy_bktrk.obj \
+    $(YY_LIB)\yy_buf.obj \
+    $(YY_LIB)\yy_cmd.obj \
+    $(YY_LIB)\yy_err.obj \
+    $(YY_LIB)\yy_errst.obj \
+    $(YY_LIB)\yy_help.obj \
+    $(YY_LIB)\yy_inp.obj \
+    $(YY_LIB)\yy_inpfi.obj \
+    $(YY_LIB)\yy_inpge.obj \
+    $(YY_LIB)\yy_inpst.obj \
+    $(YY_LIB)\yy_lex.obj \
+    $(YY_LIB)\yy_lexfa.obj \
+    $(YY_LIB)\yy_lexle.obj \
+    $(YY_LIB)\yy_lexrd.obj \
+    $(YY_LIB)\yy_lexsm.obj \
+    $(YY_LIB)\yy_loc.obj \
+    $(YY_LIB)\yy_memen.obj \
+    $(YY_LIB)\yy_psr.obj \
+    $(YY_LIB)\yy_psrfa.obj \
+    $(YY_LIB)\yy_psrmm.obj \
+    $(YY_LIB)\yy_psrrd.obj \
+    $(YY_LIB)\yy_psrsk.obj \
+    $(YY_LIB)\yy_psrsm.obj \
+    $(YY_LIB)\yy_rdcsk.obj \
+    $(YY_LIB)\yy_ref.obj \
+    $(YY_LIB)\yy_signc.obj \
+    $(YY_LIB)\yy_sym.obj
+
+SOURCES=$(OBJECTS:.obj=.cpp)
+
+#
+#  Dependency rules.
+#
+
+.cpp.obj: 
+    echo $(CXXFLAGS) >$*.OPT
+    $(CXX) /Fo$@ @$*.OPT $*.CPP >$*.ERR
+    TYPE $*.ERR
+
+#
+#  Rules for building the pre-compiled library "yy_lol.lib"
+#
+#  Note:  all varieties (fast, readable, small) are contained in this
+#         pre-compiled library.  At Rev 2.0, there are no longer distinct
+#         yy_small.lib, yy_fast.lib, yy_rdbl.lib pre-compiled libraries.
+#
+
+all: 
+    $(MAKE) yy_lol.lib
+
+clean:
+    -$(RM) *.obj
+    -$(RM) *.bak
+    -$(RM) *.err
+    -$(RM) *.opt
+
+yy_lol.lib: $(OBJECTS)
+    -$(RM) $@
+    -$(AR) /out:$@ $(ARFLAGS) $(YY_LIB)\yy_asrt.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_ast.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_bktrk.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_buf.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_cmd.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_err.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_errst.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_help.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_inp.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_inpfi.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_inpge.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_inpst.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_lex.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_lexfa.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_lexle.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_lexrd.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_lexsm.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_loc.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_memen.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_psr.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_psrfa.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_psrmm.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_psrrd.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_psrsk.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_psrsm.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_rdcsk.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_ref.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_signc.obj
+    -$(AR) $@ $(ARFLAGS) $(YY_LIB)\yy_sym.obj
+    -$(MAKE) clean
+
+#
+#  Rebuilds the compiled error message header file "yy_err.tbl"
+#  when there is a change to the ascii text error message file "yy_errs".
+#
+
+yy_err.tbl:  yy_errs
+    $(YY_ETBL) yy_errs
+
+# end of makefile

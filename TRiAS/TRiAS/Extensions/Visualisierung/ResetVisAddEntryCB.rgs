@@ -1,0 +1,25 @@
+HKCR
+{
+	VisObj.ResetVisAddEntryCB.1 = s 'ResetVisAddEntryCB Class'
+	{
+		CLSID = s '{A4FAE30B-E5A3-11D2-9BD9-586A20524153}'
+	}
+	VisObj.ResetVisAddEntryCB = s 'ResetVisAddEntryCB Class'
+	{
+		CLSID = s '{A4FAE30B-E5A3-11D2-9BD9-586A20524153}'
+		CurVer = s 'VisObj.ResetVisAddEntryCB.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {A4FAE30B-E5A3-11D2-9BD9-586A20524153} = s 'ResetVisAddEntryCB Class'
+		{
+			ProgID = s 'VisObj.ResetVisAddEntryCB.1'
+			VersionIndependentProgID = s 'VisObj.ResetVisAddEntryCB'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{A4FAE2FE-E5A3-11D2-9BD9-586A20524153}'
+		}
+	}
+}

@@ -1,0 +1,54 @@
+// DynQuery.idl : IDL source for DynQuery.ext
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (DynQuery.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+	
+#include "EnumONr.idl"
+#include "VisInfoInterfaces.idl"
+
+	[
+		object,
+		uuid(079638E7-3123-101C-BB62-00AA0018497C),
+		helpstring("IDynQueryObjEnums Interface"),
+		pointer_default(unique)
+	]
+	interface IDynQueryObjEnums : IUnknown
+	{
+		[helpstring("Hinzufügen einer neuen Objektliste zu dieser Ansicht.")] HRESULT Insert([in] BSTR pcName, [in] IEnumObjectsByNumber *pIObjs, [in] DVisInfo *pIVis);
+		[helpstring("Löschen einer Objektliste dieser Ansicht.")] HRESULT Erase([in] BSTR bstrName);
+		[helpstring("Wiederauffinden der ersten Objektliste, in der das gegebene Objekt enthalten ist.")] HRESULT Find([in] long lONr, [in, out] BSTR *pbstrName, [in, out] DVisInfo **ppIVis);
+		[helpstring("Wiederauffinden einer Objektliste über den zugeordneten PseudoIdent.")] HRESULT ClassFromIdent([in] long lIdent, [out, retval] BSTR *pbstrOKS);
+		[helpstring("Abfrage des zu einer Objektliste gehörigen PseudoIdents.")] HRESULT IdentFromClass([in] BSTR bstrOKS, [out, retval] long *plIdent);
+		[helpstring("Abfragen aller Pseudoidents der Objektlisten dieser Ansicht.")] HRESULT EnumIdents([out] IUnknown **ppIIdents);
+
+		[propget, helpstring("Name der zugehörigen Ansicht.")] HRESULT ViewName([out, retval] BSTR *pVal);
+		[propput, helpstring("Name der zugehörigen Ansicht.")] HRESULT ViewName([in] BSTR newVal);
+	};
+
+
+
+[
+	uuid(079638E6-3123-101C-BB62-00AA0018497C),
+	version(1.0),
+	helpstring("Verwaltung dynamischer Abfragen 1.0 Type Library")
+]
+library DynQueryLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(079638E5-3123-101C-BB62-00AA0018497C),
+		helpstring("DynQueryObjEnums Class")
+	]
+	coclass DynQueryObjEnums
+	{
+		[default] interface IDynQueryObjEnums;
+		interface IPersistStreamInit;
+	};
+
+};

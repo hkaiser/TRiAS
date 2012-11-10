@@ -1,0 +1,13 @@
+#define IDE_IMPORTFILE              307
+#define IDR_RGB                     309
+#define IDR_IMPORTHSB               308
+#define IDCB_IMPORTDEFAULTVIEW      306
+#define IMPORTVISINFODLG            300
+#define IDB_IMPORTFILESELECT        301
+#define IDCB_IMPORTOBJVISINFO       302
+#define IDR_AUTOSELECT              303
+#define IDCB_IMPORTVIEWFEATURES     304
+#define IDR_IMPORTRGB               305
+#define IDCB_DELETEVIEWS            310
+#define IDB_SELECTALLIMPVIEWS       311
+#define IDL_IMPORTVIEWS             312

@@ -1,0 +1,132 @@
+
+
+
+IMTIFF(3IM)            SDSC IMAGE LIBRARY             IMTIFF(3IM)
+
+
+
+NAME
+     imtiff - Aldus and Microsoft TIFF (Tagged Image File Format)
+     translation
+
+SYNOPSIS
+     #include <stdio.h>
+     #include "sdsc.h"
+     #include "im.h"
+
+     int ImFileRead( fd, "tiff", flagsTable, dataTable )
+          int         fd;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileFRead( fp, "tiff", flagsTable, dataTable )
+          FILE         *fp;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileWrite( fd, "tiff", flagsTable, dataTable )
+          int         fd;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileFWrite( fp, "tiff", flagsTable, dataTable )
+          FILE         *fp;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+
+DESCRIPTION
+     tiff is a generic Tagged  Image  File  Format  developed  by
+     Aldus  and Microsoft in conjunction with leading scanner and
+     printer manufacturers.  tiff files may  contain  images  and
+     miscellaneous  other image-related items.  Such files may be
+     created and manipulated by a variety of  Tagged  Image  File
+     Format  tools.   See the Tagged Image File Format documenta-
+     tion for details on how to use these tools.
+
+     The SDSC Image Library is capable of  interfacing  with  Sam
+     Leffler's  TIFF  library, in order to read a wide variety of
+     TIFF files.  If, for some reason, you are unable  to  obtain
+     or  install  the  TIFF  library,  the Image Library is still
+     capable of reading a smaller  subset  of  TIFF's.   See  the
+     installation  documentation for instructions for configuring
+     the image library to use the TIFF library.
+
+FILE RECOGNITION
+     tiff files are recognized by  the  following  filename  suf-
+     fixes: .tiff and .tif.
+
+
+
+
+
+SDSC               Last change: June 16, 1995                   1
+
+
+
+
+
+
+IMTIFF(3IM)            SDSC IMAGE LIBRARY             IMTIFF(3IM)
+
+
+
+NOTES
+  Reading TIFF image files
+     The Image Library is capable of reading an enormous combina-
+     tion  of  TIFF's that are scanline interleaved, plane inter-
+     leaved, grouped by tiles, grouped  by  scanlines,  and  with
+     varying  depths of channels.  For a complete list of what is
+     supported, please use the imformats command.
+
+     The Image Library is NOT capable of reading TIFF's that  use
+     the YCBCR photometric interpretation.
+
+  Writing TIFF image files
+     The Image Library is capable of reading an enormous combina-
+     tion  of  TIFF's that are scanline interleaved, plane inter-
+     leaved, grouped by tiles, grouped  by  scanlines,  and  with
+     varying  depths of channels.  For a complete list of what is
+     supported, please use the imformats command.
+
+ERRORS
+     In addition to those listed for ImFileRead(3IM), Aldus  tiff
+     file reading returns the following error codes:
+
+          IMEUNSUPPORTED   This Tiff variant is not supported.
+
+DOCUMENTATION
+SEE ALSO
+     ImIntro(3IM),   ImErrNo(3IM),   imconv(1IM),    imfile(1IM),
+     imformats(1IM), immpnt(3IM), impict(3IM)
+
+AUTHOR
+     Brian Duggan, T. Todd Elvins
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2                  Last change: June 16, 1995                SDSC
+
+
+

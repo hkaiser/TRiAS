@@ -1,0 +1,23 @@
+HKCR
+{
+	TRiAS.ObjectMove.1 = s 'Verschieben und Kopieren von Objekten'
+	{
+		CLSID = s '{71924709-40C2-11d1-9B1F-444553540000}'
+	}
+	TRiAS.ObjectMove = s 'Verschieben und Kopieren von Objekten'
+	{
+		CurVer = s 'TRiAS.ObjectMove.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {71924709-40C2-11d1-9B1F-444553540000} = s 'Verschieben und Kopieren von Objekten'
+		{
+			ProgID = s 'TRiAS.ObjectMove.1'
+			VersionIndependentProgID = s 'TRiAS.ObjectMove'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

@@ -1,0 +1,100 @@
+'\"et
+.if t .TH IMFILEQFORMAT 3IM "June 16, 1995" "San Diego Supercomputer Center" "SDSC IMAGE LIBRARY"
+.if n .TH IMFILEQFORMAT 3IM "June 16, 1995" "SDSC" "SDSC IMAGE LIBRARY"
+.SH NAME
+ImFileQFormat, ImFileQFFormat - query file's image format
+.SH SYNOPSIS
+\fB
+.nf
+#include "im.h"
+
+char *ImFileQFormat( fd, fileName )
+	int fd;
+	char *fileName;
+
+char *ImFileQFFormat( fp, fileName )
+	FILE *fp;
+	char *fileName;
+
+ImFileFormat** ImFileFindFormat(name)
+	char* name;
+
+char *ImFileQCompression( fd, fileName )
+	int fd;
+	char *fileName;
+
+char *ImFileQFCompression( fp, fileName )
+	FILE *fp;
+	char *fileName;
+
+ImCompressScheme *ImFileFindCompressionScheme(name)
+	char* name;
+
+.fi
+\fR
+.SH DESCRIPTION
+\fBImFileQFormat\fR and \fBImFileQFFormat\fR determine the image file format
+in use by the stream selected by \fIfd\fR or \fIfp\fR, respectively.
+The name of the format is returned.
+.br
+\fBImFileFindFormat\fR returns a pointer to a pointer to the file format
+structure corresponding to \fIname\fR.   If \fIname\fR is not in the 
+format table, then it returns NULL.
+.LP
+\fBImFileQCompression\fR and \fBImFileQFCompression\fR determine the compression
+scheme (if any) in use by the stream selected by \fIfd\fR or \fIfp\fR, 
+respectively.  If the stream is compressed, the name of the scheme is returned.
+Otherwise, NULL is returned.
+.br
+\fBImFileFindCompressionScheme\fR returns a pointer to an entry in the
+compression scheme table corresponding to \fIname\fR.
+.SH NOTES
+If the stream is a pipe or device, or a file opened for writing,
+the stream is left untouched with no
+data read in.  The input's image file format is determined by matching the
+\fIfileName\fR extension (characters after the last "." in name) against a list
+of formats supported by the image library.  If no match is found, a NULL
+character string is returned by both functions.
+.LP
+If the stream is a file opened for reading, data is read in and checked against
+a list of magic numbers for schemes supported by the image library.  If no
+match is found, the \fIfileName\fR extension is checked, as above.  If no
+match is found here either, a NULL character string is returned by both
+functions.  In any case, the stream is reset to point to the first byte of
+the file.
+.LP
+If a match is found, a character pointer to the
+name of the matched image file format is returned
+as the function's value.  The returned pointer points to internal table
+space that should not be modified by the user.
+.SH RETURNS
+Upon success, the name of the format used by the stream is returned.
+On failure, a NULL character pointer is returned and \IImErrNo\fR set to
+.LP
+.if t .in +0.5i
+.if n .in +5
+.TS
+l l.
+IMESYS	System call error
+IMEFORMATUNKNOWN	Unknown image file format
+.TE
+.if t .in -0.5i
+.if n .in -5
+.SH "SEE ALSO"
+\fBImIntro\fR (3IM),
+\fBImErrNo\fR (3IM),
+\fBImFileFormatEquivs\fR (3IM),
+\fBImFileFormatOptions\fR (3IM),
+\fBImFileFRead\fR (3IM),
+\fBImFileFWrite\fR (3IM),
+\fBImFileQNFormat\fR (3IM),
+\fBImFileRead\fR (3IM),
+\fBImFileWrite\fR (3IM)
+.SH AUTHOR
+Dave Nadeau, Brian Duggan
+.br
+San Diego Supercomputer Center
+.SH CONTACT
+SDSC consultants, (619)534-5100, \fBconsult@y1.sdsc.edu\fR
+.br
+

@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASCS.TRiASCSLineGeometry.1 = s 'TRiASCSLineGeometry Class'
+	{
+		CLSID = s '{96D754A4-A21F-11D1-A050-0060975566B4}'
+	}
+	TRiASCS.TRiASCSLineGeometry = s 'TRiASCSLineGeometry Class'
+	{
+		CLSID = s '{96D754A4-A21F-11D1-A050-0060975566B4}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {96D754A4-A21F-11D1-A050-0060975566B4} = s 'TRiASCSLineGeometry Class'
+		{
+			ProgID = s 'TRiASCS.TRiASCSLineGeometry.1'
+			VersionIndependendProgID = s 'TRiASCS.TRiASCSLineGeometry'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Both'
+			}
+			'TypeLib' = s '{6A0120C3-70C6-11D1-974B-00A024D6F582}'
+			'Version' = s '1.0'
+		}
+	}
+}

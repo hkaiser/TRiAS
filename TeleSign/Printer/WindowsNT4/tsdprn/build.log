@@ -1,0 +1,68 @@
+BUILD: d:\ddk\build.dat(2): corrupt database (Directory error)
+BUILD: Computing Include file dependencies:
+BUILD: c:\programme\microsoft visual studio\vc98\include\dtchelp.h(50): last line incomplete
+BUILD: c:\programme\microsoft visual studio\vc98\include\exchinst.h(478): last line incomplete
+BUILD: c:\programme\microsoft visual studio\vc98\include\ipxtfflt.h(71): last line incomplete
+BUILD: c:\programme\microsoft visual studio\vc98\include\packet.h(63): last line incomplete
+BUILD: c:\programme\microsoft visual studio\vc98\include\protocol.h(39): last line incomplete
+BUILD: c:\programme\microsoft visual studio\vc98\include\rmfacade.h(170): last line incomplete
+BUILD: c:\programme\microsoft visual studio\vc98\include\rnderr.h(11): last line incomplete
+BUILD: c:\programme\microsoft visual studio\vc98\include\sdperr.h(67): last line incomplete
+BUILD: c:\programme\microsoft visual studio\vc98\include\snanls.h(141): last line incomplete
+BUILD: c:\programme\microsoft visual studio\vc98\include\sporder.h(78): last line incomplete
+BUILD: c:\programme\microsoft visual studio\vc98\include\wrpguid.h(42): last line incomplete
+BUILD: c:\programme\microsoft visual studio\vc98\atl\include\atlsnap.h(1638): last line incomplete
+BUILD: d:\mstools\include\ws2atm.h(440): last line incomplete
+BUILD: Examining d:\projekte\telesign\printer\winnt4\tsdprn directory for files to compile.
+Compiling d:\projekte\telesign\printer\winnt4\tsdprn directory ********************
+'nmake.exe /c BUILDMSG=Stop. -i NTTEST= UMTEST= NOLINK=1 NOPASS0=1 386=1'
+	rc -l 409 -z "MS Sans Serif,Helv/MS Shell Dlg"  -r -fo obj\i386\tsdprn.tmp -D_X86_=1 -Di386=1  -DSTD_CALL -DCONDITION_HANDLING=1 -DNT_UP=1  -DNT_INST=0 -DWIN32=100 -D_NT1X_=100 -DWINNT=1 -D_WIN32_WINNT=0x0400    -DWIN32_LEAN_AND_MEAN=1 -DDEVL=1 -DFPO=1    -DNDEBUG -D_IDWBUILD  -I..\..\inc -Id:\ddk\inc -Id:\ddk\inc -Id:\ddk\inc .\tsdprn.rc
+	lib -out:d:\ddk\Lib\i386\free\tsdprn.lib @C:\TEMP\nma00152.
+Microsoft (R) Library Manager Version 6.00.8168
+Copyright (C) Microsoft Corp 1992-1998. All rights reserved.
+
+-debugtype:cv 
+-IGNORE:4001,4037,4039,4065,4070,4078,4087,4089,4096 
+-nodefaultlib 
+-machine:i386 
+-def:tsdprn.def 
+obj\i386\tsdprn.res 
+obj\i386\modinit.obj 
+tsdprn.def : warning LNK4017: PROTMODE-Anweisung wird von der Zielplattform nicht unterstuetzt; ignoriert
+   Bibliothek d:\ddk\Lib\i386\free\tsdprn.lib und Objekt d:\ddk\Lib\i386\free\tsdprn.exp wird erstellt
+
+Stop. 
+Linking d:\projekte\telesign\printer\winnt4\tsdprn directory ********************
+'nmake.exe /c BUILDMSG=Stop. -i LINKONLY=1 NOPASS0=1 NTTEST= UMTEST= MAKEDLL=1 386=1'
+	link -out:d:\ddk\Lib\i386\free\tsdprn.dll -machine:i386 @C:\TEMP\nma00139.
+Microsoft (R) Incremental Linker Version 6.00.8168
+Copyright (C) Microsoft Corp 1992-1998. All rights reserved.
+
+-MERGE:_PAGE=PAGE 
+-MERGE:_TEXT=.text 
+-SECTION:INIT,d 
+-OPT:REF 
+-INCREMENTAL:NO 
+-FORCE:MULTIPLE 
+-RELEASE 
+-FULLBUILD 
+-IGNORE:4001,4037,4039,4065,4070,4078,4087,4089,4096 
+-NODEFAULTLIB 
+-debug:notmapped,MINIMAL 
+-debugtype:coff 
+-version:4.00 
+-osversion:4.00 
+-PDB:NONE 
+-MERGE:.rdata=.text 
+-dll 
+-optidata 
+-base:0x20000000 
+-subsystem:native,4.00 
+-noentry 
+d:\ddk\Lib\i386\free\tsdprn.exp 
+obj\i386\tsdprn.res 
+obj\i386\modinit.obj 
+d:\ddk\lib\i386\free\ntdll.lib 
+libc.lib 
+
+Stop. 

@@ -1,0 +1,261 @@
+# -*- makefile -*-
+# Makefile for Windows with MinGW
+
+OBJS = class.o compiler.o database.o hashtab.o file.o symtab.o ttree.o \
+	cursor.o query.o wwwapi.o w32sock.o sync.o localcli.o
+
+CLI_OBJS = cli.o w32sock.o 
+
+INCS = fastdb.h stdtp.h class.h database.h cursor.h reference.h wwwapi.h \
+	array.h file.h hashtab.h ttree.h sync.h query.h datetime.h 
+
+STDLIBS =  -lwsock32
+
+VERSION=2
+FASTDB_LIB = libfastdb.a 
+CLI_LIB = libcli.a
+
+EXES.exe = subsql forcerecovery.exe
+FASTDB_LIBS=$(FASTDB_LIB)
+CLI_LIBS=$(CLI_LIB)
+
+EXAMPLES = guess.exe testdb.exe testleak.exe testjoin.exe testddl.exe testperf.exe testsync.exe testiref.exe testtrav.exe testidx.exe clitest.exe testraw.exe localclitest.exe 
+
+WEB_EXAMPLES = cgistub.exe bugdb.exe clidb.exe
+
+CC = g++
+
+# Possible FastDB compile time parameters (-Dxxx should be added to DEFS macro):
+# 1. USE_LOCALE_SETTING - use C locale for string comparison operations
+# 2. DEBUG - debug level
+#    - DEBUG_NODE - disable any checking and tracing (except asserts)
+#    - DEBUG_CHECK - disable trace message
+#    - DEBUG_TRACE - enable trace messages 
+# 3. SECURE_SERVER - enable authentication for remote logins: keep user/password table, 
+#                    check password for remote logins
+# 4. USE_QUEUE_MANAGER - use queue manager for internal HTTP server. This manager will manage pool
+#    of threads assigned for client connections. Otherwise all requests will be executed sequnetially
+#    in the main loop.
+# 5. FASTDB_DLL - create gigabase.dll
+# 6. THROW_EXCEPTION_ON_ERROR - throw C++ exception in case of database error 
+#    instead of abort(). Do not forgot to specify -GX option if using exceptions.
+# 7. IGNORE_CASE - perform all string comparisons as case insensitive
+# 8. USE_STD_STRING - support of std:;string type for class fields
+# 9. AUTOINCREMENT_SUPPORT support autoincrement fields (database built with this flag will be 
+#    incompatible with database built without it)
+# 10. CLONE_INDENTIFIERS - do not storef addresses of string constants in symbol table.
+#     This option is needed if DLL library using GigaBASE can be unloaded.
+# 11. DISKLESS_CONFIGURATION - only in-memory temporary database
+#
+# 12. USE_POSIX_API use POSIX sem_* sempahores and mmap 
+#     instead of SysV semaphores and shared memory
+#
+
+#DEFS =-DTHROW_EXCEPTION_ON_ERROR -DUSE_QUEUE_MANAGER
+DEFS = -DUSE_QUEUE_MANAGER -DUSE_LOCALE_SETTINGS 
+
+#CFLAGS = $(TFLAGS) -c -Wall -O5 -g
+
+CFLAGS = -c -Wall -O0 -g $(DEFS)
+#CFLAGS = -c -Wall -O0 -DDEBUG=DEBUG_TRACE -g $(DEFS)
+
+
+LD = $(CC)
+LDFLAGS = -g
+
+AR = ar
+ARFLAGS = -cru
+
+RANLIB = ranlib
+
+all: static bins
+
+static: $(FASTDB_LIB) $(CLI_LIB) 
+
+bins: $(EXES) $(EXAMPLES) 
+
+www: $(FASTDB_SHARED) $(WEB_EXAMPLES)
+
+
+class.o: class.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) class.cpp
+
+compiler.o: compiler.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) compiler.cpp
+
+query.o: query.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) query.cpp
+
+database.o: database.cpp compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) database.cpp
+
+localcli.o: localcli.cpp compiler.h compiler.d symtab.h localcli.h $(INCS)
+	$(CC) $(CFLAGS) localcli.cpp
+
+cursor.o: cursor.cpp compiler.h compiler.d $(INCS)
+	$(CC) $(CFLAGS) cursor.cpp
+
+hashtab.o: hashtab.cpp $(INCS)
+	$(CC) $(CFLAGS) hashtab.cpp
+
+file.o: file.cpp $(INCS)
+	$(CC) $(CFLAGS) file.cpp
+
+sync.o: sync.cpp $(INCS)
+	$(CC) $(CFLAGS) sync.cpp
+
+symtab.o: symtab.cpp symtab.h $(INCS)
+	$(CC) $(CFLAGS) symtab.cpp
+
+ttree.o: ttree.cpp $(INCS)
+	$(CC) $(CFLAGS) ttree.cpp
+
+wwwapi.o: wwwapi.cpp wwwapi.h sockio.h stdtp.h
+	$(CC) $(CFLAGS) wwwapi.cpp
+
+w32sock.o: w32sock.cpp w32sock.h sockio.h stdtp.h
+	$(CC) $(CFLAGS) w32sock.cpp
+
+cli.o: cli.cpp cli.h cliproto.h
+	$(CC) $(CFLAGS) cli.cpp
+
+$(FASTDB_LIB): $(OBJS)
+	rm -f $(FASTDB_LIB)
+	$(AR) $(ARFLAGS) $(FASTDB_LIB) $(OBJS)
+	$(RANLIB) $(FASTDB_LIB)
+
+$(CLI_LIB): $(CLI_OBJS)
+	rm -f $(CLI_LIB)
+	$(AR) $(ARFLAGS) $(CLI_LIB) $(CLI_OBJS)
+	$(RANLIB) $(CLI_LIB)
+
+clitest.o: clitest.c cli.h
+	$(CC) $(CFLAGS) clitest.c
+
+clitest.exe: clitest.o $(CLI_LIB)
+	$(LD) $(LDFLAGS) -o clitest.exe clitest.o $(CLI_LIBS) $(STDLIBS) $(SOCKLIBS)
+
+localclitest.exe: clitest.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o localclitest.exe clitest.o $(FASTDB_LIBS) $(STDLIBS)
+
+subsql.o: subsql.cpp subsql.h compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) subsql.cpp
+
+ifdef NO_PTHREADS
+subsql.exe: subsql.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o subsql.exe subsql.o $(FASTDB_LIBS) $(STDLIBS) $(SOCKLIBS)
+else
+server.o: server.cpp server.h cli.h cliproto.h subsql.h compiler.h compiler.d symtab.h $(INCS)
+	$(CC) $(CFLAGS) server.cpp
+
+subsql.exe: subsql.o server.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o subsql.exe subsql.o server.o $(FASTDB_LIBS) $(STDLIBS) $(SOCKLIBS)
+endif
+
+bugdb.o: bugdb.cpp bugdb.h $(INCS)
+	$(CC) $(CFLAGS) bugdb.cpp
+
+bugdb.exe: bugdb.o  $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o bugdb.exe bugdb.o $(FASTDB_LIBS) $(STDLIBS) $(SOCKLIBS)
+
+clidb.o: clidb.cpp clidb.h $(INCS)
+	$(CC) $(CFLAGS) clidb.cpp
+
+clidb.exe: clidb.o  $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o clidb.exe clidb.o $(FASTDB_LIBS) $(STDLIBS) $(SOCKLIBS)
+
+cgistub.o: cgistub.cpp stdtp.h sockio.h
+	$(CC) $(CFLAGS) cgistub.cpp 
+
+cgistub.exe: cgistub.o
+	$(LD) $(LDFLAGS) -o cgistub.exe cgistub.o $(FASTDB_LIBS) $(STDLIBS) $(SOCKLIBS)
+
+
+forcerecovery.o: forcerecovery.cpp database.h
+	$(CC) $(CFLAGS) forcerecovery.cpp 
+
+forcerecovery.exe: forcerecovery.o
+	$(LD) $(LDFLAGS)  -o forcerecovery.exe forcerecovery.o
+
+
+guess.o: guess.cpp $(INCS)
+	$(CC) $(CFLAGS) guess.cpp 
+
+guess.exe: guess.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o guess.exe guess.o $(FASTDB_LIBS) $(STDLIBS)
+
+testdb.o: testdb.cpp $(INCS)
+	$(CC) $(CFLAGS) testdb.cpp 
+
+testdb.exe: testdb.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o testdb.exe testdb.o $(FASTDB_LIBS) $(STDLIBS)
+
+testraw.o: testraw.cpp $(INCS)
+	$(CC) $(CFLAGS) testraw.cpp 
+
+testraw.exe: testraw.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o testraw.exe testraw.o $(FASTDB_LIBS) $(STDLIBS)
+
+testleak.o: testleak.cpp $(INCS)
+	$(CC) $(CFLAGS) testleak.cpp 
+
+testleak.exe: testleak.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o testleak.exe testleak.o $(FASTDB_LIBS) $(STDLIBS)
+
+testjoin.o: testjoin.cpp $(INCS)
+	$(CC) $(CFLAGS) testjoin.cpp 
+
+testjoin.exe: testjoin.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o testjoin.exe testjoin.o $(FASTDB_LIBS) $(STDLIBS)
+
+testddl.o: testddl.cpp $(INCS)
+	$(CC) $(CFLAGS) testddl.cpp 
+
+testddl.exe: testddl.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o testddl.exe testddl.o $(FASTDB_LIBS) $(STDLIBS)
+
+testperf.o: testperf.cpp $(INCS)
+	$(CC) $(CFLAGS) testperf.cpp 
+
+testperf.exe: testperf.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o testperf.exe testperf.o $(FASTDB_LIBS) $(STDLIBS)
+
+testidx.o: testidx.cpp $(INCS)
+	$(CC) $(CFLAGS) testidx.cpp 
+
+testidx.exe: testidx.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o testidx.exe testidx.o $(FASTDB_LIBS) $(STDLIBS)
+
+testsync.o: testsync.cpp $(INCS)
+	$(CC) $(CFLAGS) testsync.cpp 
+
+testsync.exe: testsync.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o testsync.exe testsync.o $(FASTDB_LIBS) $(STDLIBS)
+
+testiref.o: testiref.cpp $(INCS)
+	$(CC) $(CFLAGS) testiref.cpp 
+
+testiref.exe: testiref.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o testiref.exe testiref.o $(FASTDB_LIBS) $(STDLIBS)
+
+testtrav.o: testtrav.cpp $(INCS)
+	$(CC) $(CFLAGS) testtrav.cpp 
+
+testtrav.exe: testtrav.o $(FASTDB_LIB)
+	$(LD) $(LDFLAGS) -o testtrav.exe testtrav.o $(FASTDB_LIBS) $(STDLIBS)
+
+
+cleanobj:
+	-del *.o
+	-del javacli/*.class 
+	-del *.jar 
+	-del *.class  
+
+cleandbs:
+	-del *.fdb
+
+
+clean: cleanobj cleandbs
+	-del *.a
+	-del *.exe
+

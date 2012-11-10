@@ -1,0 +1,58 @@
+// register.idl : IDL source for register.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (register.tlb) and marshalling code.
+
+	[
+		object,
+		uuid(CC118C81-B379-11CF-84E3-00AA0021F337),
+		dual,
+		helpstring("IRegistrar Interface"),
+		pointer_default(unique)
+	]
+	interface IRegistrar : IDispatch
+	{
+		import "oaidl.idl";
+//////////////////////////////////////////////////////////
+// Script based methods
+//////////////////////////////////////////////////////////
+		[id(100)] HRESULT AddReplacement([in] BSTR key, [in] BSTR item);
+		[id(101)] HRESULT ClearReplacements();
+		[id(102)] HRESULT ResourceRegister([in] BSTR resFileName, [in] VARIANT ID, [in] VARIANT type);
+		[id(103)] HRESULT ResourceUnregister([in] BSTR resFileName, [in] VARIANT ID, [in] VARIANT type);
+		[id(104)] HRESULT FileRegister([in] BSTR fileName);
+		[id(105)] HRESULT FileUnregister([in] BSTR fileName);
+		[id(106)] HRESULT StringRegister([in] BSTR data);
+		[id(107)] HRESULT StringUnregister([in] BSTR data);
+//////////////////////////////////////////////////////////
+// Key based methods
+//////////////////////////////////////////////////////////
+		[id(108)] HRESULT AddKey([in] BSTR keyName);
+		[id(109)] HRESULT DeleteKey([in] BSTR keyName);
+		[id(110)] HRESULT AddKeyValue([in] BSTR keyName, [in] BSTR valueName,[in] VARIANT value);
+		[id(111)] HRESULT GetKeyValue([in] BSTR keyName, [in] BSTR valueName,[out, retval] VARIANT* value);
+		[id(112)] HRESULT SetKeyValue([in] BSTR keyName, [in] BSTR valueName,[in] VARIANT value);
+	};
+
+
+
+[
+	uuid(CC118C80-B379-11CF-84E3-00AA0021F337),
+	version(1.0),
+	helpstring("register 1.0 Type Library")
+]
+library REGISTERLib
+{
+	importlib("stdole32.tlb");
+
+	[
+		uuid(CC118C85-B379-11CF-84E3-00AA0021F337),
+		helpstring("Registrar Class")
+	]
+	coclass Registrar
+	{
+		[default] interface IRegistrar;
+	};
+
+};

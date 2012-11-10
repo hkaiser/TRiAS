@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASCs.DistanceService.1 = s 'TRiASCSDistanceService Class'
+	{
+		CLSID = s '{4F4DF03D-3863-4808-8606-4F7513033066}'
+	}
+	TRiASCs.DistanceService = s 'TRiASCSDistanceService Class'
+	{
+		CLSID = s '{4F4DF03D-3863-4808-8606-4F7513033066}'
+		CurVer = s 'TRiASCs.DistanceService.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {4F4DF03D-3863-4808-8606-4F7513033066} = s 'TRiASCSDistanceService Class'
+		{
+			ProgID = s 'TRiASCs.DistanceService.1'
+			VersionIndependentProgID = s 'TRiASCs.DistanceService'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{2DF06A03-E3EF-11D1-8F3E-0060085FC1CE}'
+		}
+	}
+}

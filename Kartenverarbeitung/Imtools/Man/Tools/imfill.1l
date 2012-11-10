@@ -1,0 +1,335 @@
+
+
+
+IMFILL(1IM)                IMAGE TOOLS                IMFILL(1IM)
+
+
+
+NAME
+     imfill  -  fills pixels in part or all of an image
+
+SYNOPSIS
+     imfill [_o_p_t_i_o_n_s] [_i_n_f_i_l_e_n_a_m_e] _o_u_t_f_i_l_e_n_a_m_e
+
+DESCRIPTION
+     imfill fills an area of each image in the input file with  a
+     color  or  alpha  value and stores the results to the output
+     file.  The input and output image file formats may  be  dif-
+     ferent.
+
+     If no input file is  given,  imfill  creates  a  new  image,
+     filled  as  directed,  and  stores  the result in the output
+     file.
+
+OPTIONS
+     imfill has a  variety  of  options  in  the  following  five
+     categories:
+
+          File Selection     What input and output files to use
+          Format Selection   What image file format to use
+          Format Control     What variant of a file format to generate
+          Standard           Standard generic options on all SDSC tools
+          Filling            How the image will be filled
+
+     _F_i_l_e _S_e_l_e_c_t_i_o_n, _F_o_r_m_a_t _S_e_l_e_c_t_i_o_n, _F_o_r_m_a_t _C_o_n_t_r_o_l, and  _S_t_a_n_-
+     _d_a_r_d options are common to all SDSC image tools and are dis-
+     cussed in depth in the man page for imconv(1IM).
+
+     All options can be abbreviated to the first few unique char-
+     acters.
+
+  Filling Options
+     The region of the input image to be filled is defined by six
+     arguments:
+
+          -xposition _x   Left edge of region
+          -yposition _y   Top edge of position
+          -xsize _w       Width of region
+          -ysize _h       Height of region
+          -inside        Fill the inside of the region (default)
+          -outside       Fill the outside of the region
+
+     -xposition and -yposition specify the fill  region  position
+     and  are  constrained  to  be within the bounds of the input
+     image. Both -xposition and -yposition default to a value  of
+     0, where (0,0) is the upper-left corner of the image.
+
+     -xsize and -ysize give the size of the fill region  and  are
+     constrained to fit within the bounds of the input image.  If
+     these options are not given, the fill region defaults  to  a
+
+
+
+SDSC               Last change: June 27, 1995                   1
+
+
+
+
+
+
+IMFILL(1IM)                IMAGE TOOLS                IMFILL(1IM)
+
+
+
+     rectangle  whose  upper  left  corner  is  at the given fill
+     region position, and which extends to the right  and  bottom
+     edges of the input image.
+
+     -inside and -outside select whether pixels inside or outside
+     the  fill  region  are to be filled.  -inside is the default
+     and causes the specified rectangular area of the image to be
+     filled.   Pixels  outside  of  this area are copied from the
+     input image to the output image.  -outside instead fills the
+     area  outside of the fill rectangle.  Pixels inside the fill
+     area are copied from the input image to the output image.
+
+     Fill values are selected using one or more of the  following
+     fill options:
+
+          Option              Fill each pixel's
+8          _________________________________________
+          -red _r_a_n_g_e          red component
+          -green _r_a_n_g_e        green component
+          -blue _r_a_n_g_e         blue component
+8          _________________________________________
+          -mono _r_a_n_g_e         monochrome component
+          -index _r_a_n_g_e        color index component
+8          _________________________________________
+          -hue _r_a_n_g_e          hue component
+          -saturation _r_a_n_g_e   saturation component
+          -intensity _r_a_n_g_e    intensity component
+8          _________________________________________
+          -alpha _r_a_n_g_e        alpha compoent
+
+     Multiple fill options may be given, as long as color  spaces
+     are  not  mixed.   For  instance,  -index  for filling color
+     indexes is incompatible with -red for filling the  red  com-
+     ponent  of  RGB triplets.  Likewise, -hue for filling pixels
+     based upon an HSI color space hue value is incompatible with
+     -blue for filling with blue in the RGB color space.  See the
+     imintro(3IM) man page for a description of the RGB  and  HSI
+     color spaces.
+
+     If imfill is directed to fill  the  alpha  component  of  an
+     image  that does not have an alpha channel, an alpha channel
+     is created and initialized to 0s (transparent).
+
+     If imfill is directed to fill a pixel  component  that  does
+     not exist in the input image (except for alpha), an error is
+     reported.
+
+     Input image components not selected for filling  by  a  fill
+     option  are  copied  to  the  output  image  untouched.  For
+     instance, an image's alpha plane may be initialized  to  255
+     (opaque)  without affecting RGB or color index components of
+     pixels.  Likewise, an image's RGB red channel may be  filled
+     without its green and blue components being affected.
+
+
+
+
+2                  Last change: June 27, 1995                SDSC
+
+
+
+
+
+
+IMFILL(1IM)                IMAGE TOOLS                IMFILL(1IM)
+
+
+
+     Each of the fill options can accept  an  argument  giving  a
+     single  value, or range of values with which to fill.  Value
+     _r_a_n_g_e syntax takes any one of the following forms:
+
+          _r_a_n_g_e   Fill with values of
+8          ____________________________________________________________
+          _n       _n only.
+          _n-      _n through the maximum legal value for the component.
+          _n-_m     _n through _m.
+
+     There is no space between _n, the dash, and _m.  _n need not be
+     a value less than _m.
+
+     When filling with a single value, the entire fill region  is
+     set to the same value.
+
+     When a range of fill values are given, such as -red 0-255 or
+     -intensity  0.6-0.2,  the  fill region will be filled with a
+     gradation, or ramp, as selected by  the  -graduate  option's
+     argument:
+
+          option                 Meaning
+8          ____________________________________________________________
+          -graduate none         Fill with a constant value
+          -graduate horizontal   Fill with a horizontal ramp (default)
+          -graduate vertical     Fill with a vertical ramp
+
+     none, horizontal, and vertical may each  be  abbreviated  to
+     the fewest unique letters.
+
+     The horizontal ramp for a graduated  fill  starts  from  the
+     first  fill value at the left edge of the fill area and goes
+     to the second fill value at the right  edge.   The  vertical
+     ramp  for a graduated fill goes from the first fill value at
+     the top edge of the fill area to the second  fill  value  at
+     the bottom edge.
+
+NOTES
+     Error messages are reported to stderr.
+
+     For notes regarding  file  format  conversion  and  standard
+     image tool options, see the man page for imconv(1IM).
+
+     If the output file format cannot support the storage  of  an
+     alpha  channel  (many  cannot), any alpha channel created or
+     filled by imfill will be silently discarded when the  output
+     file is written. imformats(1IM) may be used to review a list
+     of file format attributes in order to choose an  image  file
+     format that supports alpha channel storage.
+
+     With no fill options, the actions of imfill default  to  the
+     same  as  the SDSC image format conversion tool imconv(1IM),
+     but they take a little longer.
+
+
+
+SDSC               Last change: June 27, 1995                   3
+
+
+
+
+
+
+IMFILL(1IM)                IMAGE TOOLS                IMFILL(1IM)
+
+
+
+     imfill is useful for filling rectangular areas of images  to
+     a  constant or ramped color.  To change only selected pixels
+     of an image, such as all black pixels, or  all  pixels  with
+     saturation  values  over 0.8, use the pixel value adjustment
+     tool imadjust(1IM).
+
+     Different pixel components have  different  types  and  dif-
+     ferent minimum and maximum values.
+
+          Value         Type      Minimum   Maximum
+8          ______________________________________________
+          -red          Integer   0         255
+          -green        Integer   0         255
+          -blue         Integer   0         255
+8          ______________________________________________
+          -mono         Integer   0         1
+          -index        Integer   0         255 or 65535
+8          ______________________________________________
+          -hue          Float     0.0       360.0
+          -saturation   Float     0.0       1.0
+          -intensity    Float     0.0       1.0
+8          ______________________________________________
+          -alpha        Integer   0         255
+
+EXAMPLES
+     Create a 640 x 480 RGB Sun raster file filled with black:
+
+          imfill -xsize 640 -ysize 480 -red 0 -green  0  -blue  0
+          rgbblack.ras
+
+     Add an alpha channel to an Alias PIX image, initialize it to
+     255s, and save it to an HDF file:
+
+          imfill image.pix -alpha 255 image_alpha.hdf
+
+     Fill a rectangle in a Sun raster file with white, and  store
+     the result as a Silicon Graphics RGB file:
+
+          imfill map.ras mapwhite.rgb -xposition 50 -yposition 50
+          -xsize 50 -ysize 50 -red 255 -blue 255 -green 255
+
+     Fill outside the rectangle instead of inside it:
+
+          imfill map.ras mapwhite.rgb -xposition 50 -yposition 50
+          -xsize 50 -ysize 50 -red 255 -blue 255 -green 255 -out-
+          side
+
+     Create a new image with a horizontal ramp shading from  blue
+     to red:
+
+          imfill -xsize 200 -ysize 200 -red 20-120  -blue  150-50
+          purple.rgb
+
+
+
+
+
+4                  Last change: June 27, 1995                SDSC
+
+
+
+
+
+
+IMFILL(1IM)                IMAGE TOOLS                IMFILL(1IM)
+
+
+
+     Create a new image with a vertical ramp  shading  from  dark
+     grey to light grey:
+
+          imfill -xsize 200 -ysize 200 -intensity .2-.6 -graduate
+          vertical grey.rgb
+
+     Fill an image with  a  ramp  in  hue,  while  leaving  pixel
+     saturation  and  intensity  the  same  (this  creates a neat
+     effect!):
+
+          imfill face.rgb -hue 0.0-360.0 colorface.rgb
+
+     Fill a portion of a color indexed Sun raster file image with
+     index  values of 0 (often set to black), and save the result
+     as an RGB Sun raster file:
+
+          imfill -xpos 10 -ypos 20 -xsize 100 -ysize 12 -index  0
+          -outrgb in.ras out.ras
+
+     Fill a Silicon Graphics RGB image file with a ramp in green,
+     then save the image as a color index Sun raster file:
+
+          imfill    rgbimage.rgb    -green    0-255     -outindex
+          indeximage.ras
+
+SEE ALSO
+     imadjust (1IM), imcomp (1IM),  imdissolve  (1IM),  ImVfbFill
+     (3IM)
+
+     For information on SDSC's image library, see imintro(3IM).
+
+AUTHORS
+     Chris Groening, Dave Nadeau, Brian Duggan
+     San Diego Supercomputer Center
+
+     See the individual file format man pages for the authors  of
+     the  underlying  format  read  and write code.  The names of
+     these man pages begin with the letters "im," followed by the
+     format  name.  For example, the name of the TIFF man page is
+     imtiff.  To display it, enter man imtiff.
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+SDSC               Last change: June 27, 1995                   5
+
+
+

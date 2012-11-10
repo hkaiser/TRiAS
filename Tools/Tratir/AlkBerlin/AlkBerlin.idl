@@ -1,0 +1,47 @@
+// AlkBerlin.idl : IDL source for AlkBerlin.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (AlkBerlin.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+	[
+		object,
+		uuid(F2ACEC43-4D87-11D2-9EC8-006008447800),
+		dual,
+		helpstring("IExtendedDataConversion Interface"),
+		pointer_default(unique)
+	]
+	interface IExtendedDataConversion : IDispatch
+	{
+		[propput, id(1), helpstring("property ConfigFile")] HRESULT ConfigFile([in] BSTR newVal);
+		[id(101), helpstring("method PreOutputHeader")] HRESULT PreOutputHeader([in] SAFEARRAY(BSTR) psaParams, [in, out] BSTR *pbstrHeader, [out, retval] VARIANT_BOOL *pfOutput);
+		[id(102), helpstring("method PostOutputHeader")] HRESULT PostOutputHeader([out, retval] BSTR *pbstrHeader);
+		[id(103), helpstring("method PreOutputObjectStart")] HRESULT PreOutputObjectStart([in] LONG lCnt, [in] SAFEARRAY(BSTR) psaParams, [in, out] BSTR *pbstrStart, [out, retval]VARIANT_BOOL *pfOutput);
+		[id(104), helpstring("method PostOutputObjectStart")] HRESULT PostOutputObjectStart([in] LONG lCnt, [out, retval] BSTR *pbstrStart);
+		[id(105), helpstring("method PreOutputAttribute")] HRESULT PreOutputAttribute([in, out] LONG *plMCode, [in, out] BSTR *pbstrAttribute, [out, retval] VARIANT_BOOL *pfOutput);
+		[id(106), helpstring("method PostOutputAttribute")] HRESULT PostOutputAttribute([in] LONG lMCode, [out, retval] BSTR *pbstrOutput);
+		[id(107), helpstring("method PreOutputTrailer")] HRESULT PreOutputTrailer([in, out] BSTR *pbstrTrailer, [out, retval] VARIANT_BOOL *pfOutput);
+		[id(108), helpstring("method PostOutputtraile")] HRESULT PostOutputTrailer([out, retval] BSTR *pbstrTrailer);
+	};
+[
+	uuid(F2ACEC34-4D87-11D2-9EC8-006008447800),
+	version(1.0),
+	helpstring("AlkBerlin 1.0 Type Library")
+]
+library ALKBERLINLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(F2ACEC44-4D87-11D2-9EC8-006008447800),
+		helpstring("ExtendedDataConversion Class")
+	]
+	coclass AlkBerlin
+	{
+		[default] interface IExtendedDataConversion;
+	};
+};

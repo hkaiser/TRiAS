@@ -1,0 +1,266 @@
+
+
+
+IMROTATE(1IM)              IMAGE TOOLS              IMROTATE(1IM)
+
+
+
+NAME
+     imrotate  -  rotate an image
+
+SYNOPSIS
+     imrotate [_o_p_t_i_o_n_s] _i_n_f_i_l_e_n_a_m_e _o_u_t_f_i_l_e_n_a_m_e
+
+DESCRIPTION
+     imrotate reads each image in the  input  file,  rotates  it,
+     then  writes  it  to  the output file.  The input and output
+     image file formats may be different.
+
+OPTIONS
+     imrotate has a variety of  options  in  the  following  five
+     categories:
+
+          File Selection     What input and output files to use
+          Format Selection   What image file format to use
+          Format Control     What variant of a file format to generate
+          Standard           Standard generic options on all SDSC tools
+          Rotation           How the image should be rotated
+          Filling            How to fill in blank corners in the rotated image
+
+     _F_i_l_e _S_e_l_e_c_t_i_o_n, _F_o_r_m_a_t _S_e_l_e_c_t_i_o_n, _F_o_r_m_a_t _C_o_n_t_r_o_l, and  _S_t_a_n_-
+     _d_a_r_d options are common to all SDSC image tools and are dis-
+     cussed in depth in the man page for imconv(1IM).
+
+     All options can be abbreviated to the first few unique char-
+     acters.
+
+  Rotation Options
+     -rotate _d_e_g_r_e_e_s
+          The -rotate option selects the  number  of  degrees  by
+          which  to rotate the image.  Degree values may be posi-
+          tive or negative  floating  point  angles.   Using  the
+          right-hand  rule,  positive  values  rotate  the  image
+          counter-clockwise  while  negative  values  rotate  the
+          image clockwise.
+
+          If -rotate is not given, imrotate does not  rotate  the
+          image  at  all  and its actions default to an expensive
+          copy of the image from the input  file  to  the  output
+          file.
+
+  Filling Options
+     Rotating  an  image  creates  a  non-axis-aligned  rectangle
+     (image  edges are diagonal rather than horizontal and verti-
+     cal).  Pixel storage, however,  must  be  into  axis-aligned
+     rectangles  (horizontal and vertical edges only).  So, imro-
+     tate copies the  rotated  image  into  a  larger  background
+     axis-aligned  rectangle  and stores the result to the output
+     file.
+
+
+
+
+SDSC               Last change: June 27, 1995                   1
+
+
+
+
+
+
+IMROTATE(1IM)              IMAGE TOOLS              IMROTATE(1IM)
+
+
+
+     The placement of the rotated image into a  background  axis-
+     aligned  rectangular  image leaves the four triangular image
+     corners empty.  These empty corners may be filled in using a
+     variety of fill options similar to those found on imfill.
+
+     Fill options allow specific image channels to be filled with
+     single values or a range of values in a horizontal or verti-
+     cal gradient.
+
+     Fill values are selected using one or more of the  following
+     fill options:
+
+          Option              Fill each pixel's
+8          _________________________________________
+          -red _r_a_n_g_e          red component
+          -green _r_a_n_g_e        green component
+          -blue _r_a_n_g_e         blue component
+8          _________________________________________
+          -mono _r_a_n_g_e         monochrome component
+          -index _r_a_n_g_e        color index component
+8          _________________________________________
+          -hue _r_a_n_g_e          hue component
+          -saturation _r_a_n_g_e   saturation component
+          -intensity _r_a_n_g_e    intensity component
+8          _________________________________________
+          -alpha _r_a_n_g_e        alpha compoent
+
+     Multiple fill options may be given, as long as color  spaces
+     are  not  mixed.   For  instance,  -index  for filling color
+     indexes is incompatible with -red for filling the  red  com-
+     ponent  of  RGB triplets.  Likewise, -hue for filling pixels
+     based upon an HSI color space hue value is incompatible with
+     -blue for filling with blue in the RGB color space.  See the
+     imintro(3IM) man page for a description of the RGB  and  HSI
+     color spaces.
+
+     If imrotate is directed to fill the alpha  component  of  an
+     image  that does not have an alpha channel, an alpha channel
+     is created and initialized to 0s (transparent).
+
+     If imrotate is directed to fill a pixel component that  does
+     not exist in the input image (except for alpha), an error is
+     reported.
+
+     Input image components not selected for filling  by  a  fill
+     option are initialized to zeroes.
+
+     Each of the fill options can accept  an  argument  giving  a
+     single  value, or range of values with which to fill.  Value
+     _r_a_n_g_e syntax takes any one of the following forms:
+
+          _r_a_n_g_e   Fill with values of
+8          ____________________________________________________________
+          _n       _n only.
+          _n-      _n through the maximum legal value for the component.
+
+
+
+2                  Last change: June 27, 1995                SDSC
+
+
+9
+
+
+IMROTATE(1IM)              IMAGE TOOLS              IMROTATE(1IM)
+
+
+
+          _n-_m     _n through _m.
+
+     There is no space between _n, the dash, and _m.  _n need not be
+     a value less than _m.
+
+     When filling with a  single  value,  the  entire  background
+     rectnagle is set to the same value.
+
+     When a range of fill values are given, such as -red 0-255 or
+     -intensity  0.6-0.2,  the  fill region will be filled with a
+     gradation, or ramp, as selected by  the  -graduate  option's
+     argument:
+
+          option                 Meaning
+8          ____________________________________________________________
+          -graduate none         Fill with a constant value
+          -graduate horizontal   Fill with a horizontal ramp (default)
+          -graduate vertical     Fill with a vertical ramp
+
+     none, horizontal, and vertical may each  be  abbreviated  to
+     the fewest unique letters.
+
+     The horizontal ramp for a graduated  fill  starts  from  the
+     first  fill  value at the left edge of the image and goes to
+     the second fill value at the right edge.  The vertical  ramp
+     for  a  graduated fill goes from the first fill value at the
+     top edge of the image to the second fill value at the bottom
+     edge.
+
+NOTES
+     imrotate's fill options may used for a variety  of  effects.
+     In  the  simplest  case, the fill options may be set to fill
+     the image corners with a color that matches  the  background
+     color of the rotated image.
+
+     In a more complex use of imrotate's fill options, the  back-
+     ground  corners  may  be  set  to  transparent alpha channel
+     values.  Then, using  the  Image  Tools  digital  compositor
+     imcomp(1IM),  the  rotated  image  can  be composited onto a
+     background image of arbitrary complexity.
+
+     For notes regarding  file  format  conversion  and  standard
+     image tool options, see the man page on imconv(1IM).
+
+     Error messages are reported to stderr.
+
+EXAMPLES
+     Rotate an image 170 degrees:
+     imrotate image.rgb -rotate 170 rotated_image.rgb
+
+     Rotate an image 45 dgrees and fill the corners  with  bright
+     red and alpha of 128:
+9
+
+
+SDSC               Last change: June 27, 1995                   3
+
+
+
+
+
+
+IMROTATE(1IM)              IMAGE TOOLS              IMROTATE(1IM)
+
+
+
+          imrotate image.ras  -rotate  45  -red  255  -alpha  128
+          rotated.ras
+
+     Rotate an image -60 degrees and fill with a hue of 120.0,  a
+     saturation of 1.0, and an intensity of 0.5:
+
+          imrotate image.ras -rotate -60 -hue 120 -sat 1.0 -inten
+          0.5 rotated.ras
+
+SEE ALSO
+     imcopy(1IM),   imflip(1IM),    imroll(1IM),    imshear(1IM),
+     imscale(1IM),       ImVfbRotate(3IM),      ImVfbXShear(3IM),
+     ImVfbYShear(3IM)
+
+     For information on SDSC's image library, see imintro(3IM).
+
+AUTHOR
+     Dave Nadeau
+     San Diego Supercomputer Center
+
+     See the individual file format man pages for the authors  of
+     the  underlying  format  read  and write code.  The names of
+     these man pages begin with the letters "im" followed by  the
+     format  name.  For example, the name of the TIFF man page is
+     imtiff.  To display it, enter man imtiff.
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4                  Last change: June 27, 1995                SDSC
+
+
+

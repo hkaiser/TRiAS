@@ -1,0 +1,286 @@
+// Created by Microsoft (R) C/C++ Compiler Version 12.00.8964.0 (eec6cd8d).
+//
+// d:\triasdev.mvc\gmobjects\_debug\Mapview.tlh
+//
+// C++ source equivalent of Win32 type library tlb/Mapview.tlb
+// compiler-generated file created 10/10/02 at 22:51:29 - DO NOT EDIT!
+
+//
+// Cross-referenced type libraries:
+//
+//  #import "D:\PROGRA~1\GEOMED~1\Program\PView.tlb"
+//  #import "D:\TRIASDEV.MVC\INCLUDE\GMOBJECTS\TLB\PCSS.tlb"
+//
+
+#pragma once
+#pragma pack(push, 8)
+
+#include <comdef.h>
+
+//
+// Forward references and typedefs
+//
+
+struct __declspec(uuid("47e3fd0e-88a2-11cf-a17b-08003606e802"))
+/* dispinterface */ _DMapview;
+struct __declspec(uuid("47e3fd0f-88a2-11cf-a17b-08003606e802"))
+/* dispinterface */ _DMapviewEvents;
+struct /* coclass */ GMMapView;
+
+//
+// Smart pointer typedef declarations
+//
+
+_COM_SMARTPTR_TYPEDEF(_DMapview, __uuidof(IDispatch));
+_COM_SMARTPTR_TYPEDEF(_DMapviewEvents, __uuidof(IDispatch));
+
+//
+// Type library items
+//
+    const long gmwHighlightOnly = 1;
+    const long gmwHighlightAndCenter = 2;
+    const long gmwHighlightAndFit = 3;
+    const long gmwAnyWindowActive = 1;
+    const long gmwThisWindowNotActive = 2;
+    const long gmmvctCrossHair = 106;
+    const long gmmvctCrossHairZeroTolerance = 170;
+    const long gmmvctCrossHairOnEndPoint = 173;
+    const long gmmvctCrossHairOnElement = 167;
+    const long gmmvctCrossHairOnVertex = 168;
+    const long gmmvctNWArrow = 126;
+    const long gmmvctNWArrowWithEllipsis = 146;
+    const long gmmvctNWArrowOnEndPoint = 176;
+    const long gmmvctNWArrowOnElement = 175;
+    const long gmmvctNWArrowOnVertex = 174;
+    const long gmmvctPan = 171;
+    const long gmmvctRotate = 169;
+    const long gmmvctZoomIn = 177;
+    const long gmmvctZoomOut = 178;
+    const long gmmvctCustomCursor = 99;
+    const long gmmvctCrossHairOnCorner = 180;
+    const long gmmvctCrossHairOnMidPoint = 181;
+    const long gmmvctCrossHairOnOrigin = 182;
+    const long gmmvctRasterOpenSymbol = 183;
+    const long gmmvctRasterClosedSymbol = 184;
+    const long gmmvctRasterIntersection = 185;
+    const long gmmvctRasterEndPoint = 186;
+    const long gmmvctRasterCorner = 187;
+    const long gmmvctRasterCenter = 188;
+
+struct __declspec(uuid("47e3fd0e-88a2-11cf-a17b-08003606e802"))
+_DMapview : IDispatch
+{
+    //
+    // Property data
+    //
+
+    __declspec(property(get=GetZoomFactor,put=PutZoomFactor))
+    double ZoomFactor;
+    __declspec(property(get=GetDisplayScale,put=PutDisplayScale))
+    double DisplayScale;
+    __declspec(property(get=GetLegend,put=PutLegend))
+    struct DGMLegend * Legend;
+    __declspec(property(get=GetParent,put=PutParent))
+    IDispatch * Parent;
+    __declspec(property(get=GetCoordSystemsMgr,put=PutCoordSystemsMgr))
+    struct DGMCoordSystemsMgr * CoordSystemsMgr;
+    __declspec(property(get=GetDispatch,put=PutDispatch))
+    IDispatch * Dispatch;
+    __declspec(property(get=GetHighlightedObjects,put=PutHighlightedObjects))
+    struct _DGMDisplayedObjects * HighlightedObjects;
+    __declspec(property(get=GetMapViewSelectedObjects,put=PutMapViewSelectedObjects))
+    struct _DGMDisplayedObjects * MapViewSelectedObjects;
+    __declspec(property(get=GetHighlightColor,put=PutHighlightColor))
+    long HighlightColor;
+    __declspec(property(get=GetSelectColor,put=PutSelectColor))
+    long SelectColor;
+    __declspec(property(get=GetBackgroundColor,put=PutBackgroundColor))
+    long BackgroundColor;
+    __declspec(property(get=GetHWnd,put=PutHWnd))
+    long HWnd;
+    __declspec(property(get=GetConsumedEvent,put=PutConsumedEvent))
+    VARIANT_BOOL ConsumedEvent;
+    __declspec(property(get=GetSelectBehavior,put=PutSelectBehavior))
+    long SelectBehavior;
+    __declspec(property(get=GetSelectBehaviorZoomFactor,put=PutSelectBehaviorZoomFactor))
+    double SelectBehaviorZoomFactor;
+    __declspec(property(get=GetSelectBehaviorConditions,put=PutSelectBehaviorConditions))
+    long SelectBehaviorConditions;
+    __declspec(property(get=GetDefaultZ,put=PutDefaultZ))
+    double DefaultZ;
+    __declspec(property(get=GetMousePointer,put=PutMousePointer))
+    long MousePointer;
+    __declspec(property(get=GetLocateTolerance,put=PutLocateTolerance))
+    long LocateTolerance;
+    __declspec(property(get=GetCustomCursorFilename,put=PutCustomCursorFilename))
+    BSTR CustomCursorFilename;
+    __declspec(property(get=GetPreserveMapScaleWhenResizing,put=PutPreserveMapScaleWhenResizing))
+    VARIANT_BOOL PreserveMapScaleWhenResizing;
+    __declspec(property(get=GetRotation,put=PutRotation))
+    double Rotation;
+
+    //
+    // Wrapper methods for error-handling
+    //
+
+    // Methods:
+    long Fit ( );
+    long ZoomArea (
+        double x1,
+        double y1,
+        double z1,
+        double x2,
+        double y2,
+        double z2 );
+    long Zoom (
+        VARIANT_BOOL bZoomOut,
+        VARIANT_BOOL bZoomOnCntrPoint,
+        double zoomPointX,
+        double zoomPointY,
+        double zoomPointZ,
+        const VARIANT & bMoveToCenter = vtMissing );
+    long Pan (
+        double deltaX,
+        double deltaY,
+        double deltaZ );
+    long Center (
+        double x,
+        double y,
+        double z );
+    long Rotate (
+        double angle );
+    long GetRange (
+        double * x1,
+        double * y1,
+        double * z1,
+        double * x2,
+        double * y2,
+        double * z2 );
+    long WindowToWorld (
+        long windowX,
+        long windowY,
+        double * worldX,
+        double * worldY,
+        double * worldZ );
+    long WorldToWindow (
+        double worldX,
+        double worldY,
+        double worldZ,
+        long * windowX,
+        long * windowY );
+    long GetViewMatrix (
+        double * transX,
+        double * transY,
+        double * scaling );
+    long PreviousView ( );
+    long Refresh (
+        const VARIANT & bRedrawAll = vtMissing );
+    long BeginDynamic ( );
+    long EndDynamic ( );
+    long FitSelectedObjects (
+        const VARIANT & ZoomFactor = vtMissing );
+    long CenterSelectedObjects ( );
+    long BroadcastWorldPoint (
+        long nMsg,
+        long nMetaKeyFlag,
+        double worldX,
+        double worldY,
+        double worldZ,
+        const VARIANT & bMoveCursor = vtMissing );
+    long ExecutePrint (
+        const VARIANT & preferenceSet = vtMissing,
+        const VARIANT & scaleBar = vtMissing,
+        const VARIANT & northArrow = vtMissing,
+        const VARIANT & outFile = vtMissing,
+        const VARIANT & interruptDialog = vtMissing );
+    long ZoomRectangle (
+        double x1,
+        double y1,
+        double z1,
+        double x2,
+        double y2,
+        double z2,
+        double x3,
+        double y3,
+        double z3,
+        double x4,
+        double y4,
+        double z4 );
+    long WindowDistanceToWorldDistance (
+        double dWindowDistance,
+        double * dWorldDistance );
+    long WorldDistanceToWindowDistance (
+        double dWorldDistance,
+        double * dWindowDistance );
+    HRESULT AboutBox ( );
+
+    // Properties:
+    double GetZoomFactor ( );
+    void PutZoomFactor ( double _val );
+    double GetDisplayScale ( );
+    void PutDisplayScale ( double _val );
+    struct DGMLegend * GetLegend ( );
+    void PutLegend ( struct DGMLegend * _val );
+    IDispatch * GetParent ( );
+    void PutParent ( IDispatch * _val );
+    struct DGMCoordSystemsMgr * GetCoordSystemsMgr ( );
+    void PutCoordSystemsMgr ( struct DGMCoordSystemsMgr * _val );
+    IDispatch * GetDispatch ( );
+    void PutDispatch ( IDispatch * _val );
+    struct _DGMDisplayedObjects * GetHighlightedObjects ( );
+    void PutHighlightedObjects ( struct _DGMDisplayedObjects * _val );
+    struct _DGMDisplayedObjects * GetMapViewSelectedObjects ( );
+    void PutMapViewSelectedObjects ( struct _DGMDisplayedObjects * _val );
+    long GetHighlightColor ( );
+    void PutHighlightColor ( long _val );
+    long GetSelectColor ( );
+    void PutSelectColor ( long _val );
+    long GetBackgroundColor ( );
+    void PutBackgroundColor ( long _val );
+    long GetHWnd ( );
+    void PutHWnd ( long _val );
+    VARIANT_BOOL GetConsumedEvent ( );
+    void PutConsumedEvent ( VARIANT_BOOL _val );
+    long GetSelectBehavior ( );
+    void PutSelectBehavior ( long _val );
+    double GetSelectBehaviorZoomFactor ( );
+    void PutSelectBehaviorZoomFactor ( double _val );
+    long GetSelectBehaviorConditions ( );
+    void PutSelectBehaviorConditions ( long _val );
+    double GetDefaultZ ( );
+    void PutDefaultZ ( double _val );
+    long GetMousePointer ( );
+    void PutMousePointer ( long _val );
+    long GetLocateTolerance ( );
+    void PutLocateTolerance ( long _val );
+    BSTR GetCustomCursorFilename ( );
+    void PutCustomCursorFilename ( BSTR _val );
+    VARIANT_BOOL GetPreserveMapScaleWhenResizing ( );
+    void PutPreserveMapScaleWhenResizing ( VARIANT_BOOL _val );
+    double GetRotation ( );
+    void PutRotation ( double _val );
+};
+
+struct __declspec(uuid("47e3fd0f-88a2-11cf-a17b-08003606e802"))
+_DMapviewEvents : IDispatch
+{};
+
+struct __declspec(uuid("47e3fd0d-88a2-11cf-a17b-08003606e802"))
+GMMapView;
+    // [ default ] dispinterface _DMapview
+    // [ default, source ] dispinterface _DMapviewEvents
+
+//
+// Named GUID constants initializations
+//
+
+extern "C" const GUID __declspec(selectany) LIBID_MapviewLib =
+    {0x47e3fd10,0x88a2,0x11cf,{0xa1,0x7b,0x08,0x00,0x36,0x06,0xe8,0x02}};
+extern "C" const GUID __declspec(selectany) DIID__DMapview =
+    {0x47e3fd0e,0x88a2,0x11cf,{0xa1,0x7b,0x08,0x00,0x36,0x06,0xe8,0x02}};
+extern "C" const GUID __declspec(selectany) DIID__DMapviewEvents =
+    {0x47e3fd0f,0x88a2,0x11cf,{0xa1,0x7b,0x08,0x00,0x36,0x06,0xe8,0x02}};
+extern "C" const GUID __declspec(selectany) CLSID_GMMapView =
+    {0x47e3fd0d,0x88a2,0x11cf,{0xa1,0x7b,0x08,0x00,0x36,0x06,0xe8,0x02}};
+
+#pragma pack(pop)

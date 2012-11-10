@@ -1,0 +1,58 @@
+// TErrTrk.idl : IDL source for TErrTrk.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (TErrTrk.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#include "TErrTrk.ver"
+
+[ object,
+	uuid(82198CF1-436B-11D2-8FB3-0060085FC1CE),
+	dual,
+	helpstring("IErrorStack Interface"),
+	pointer_default(unique)
+] interface IErrorStack : IDispatch {
+	[id(1), helpstring("legt ein Errorobjekt im Stack ab")] HRESULT Push(IUnknown *pIError);
+	[propget, id(2), helpstring("liefert die Anzahl Fehlerobjekte im Stack")] HRESULT Count([out,retval] ULONG* pItems);
+	[id(3), helpstring("method Clear")] HRESULT Clear();
+	[id(DISPID_NEWENUM), helpstring("method _newEnum")] HRESULT _newEnum([out,retval] IUnknown **ppIEnum);
+};
+	
+[
+	object,
+	uuid(40B81D34-940C-11D2-98B0-0060085FC1CE),
+	dual,
+	helpstring("IErrorItem Interface"),
+	pointer_default(unique)
+] interface IErrorItem : IDispatch {
+	[propget, id(1)] HRESULT Source([out,retval] BSTR* strSource);
+	[propget, id(2)] HRESULT Description([out,retval] BSTR* strSource);
+	[propget, id(3)] HRESULT HelpFile([out,retval] BSTR* strSource);
+	[propget, id(4)] HRESULT HelpContext([out,retval] DWORD* dwContext);
+	[propget, id(5)] HRESULT GUID([out,retval] BSTR* strGUID);
+	[id(6), helpstring("method CloneFrom")] HRESULT CloneFrom([in] IUnknown* pErrInfo);
+};
+
+[ uuid(82198CE3-436B-11D2-8FB3-0060085FC1CE),
+	version(TYPELIB_TErrTrk_VERSION),
+	helpstring(TYPELIB_TErrTrk_HELPSTRING)
+] library TERRTRKLib {
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[ uuid(82198CF2-436B-11D2-8FB3-0060085FC1CE),
+		helpstring("ErrorStack Class")
+	] coclass ErrorStack {
+		[default] interface IErrorStack;
+	};
+	
+	[ uuid(40B81D35-940C-11D2-98B0-0060085FC1CE),
+		helpstring("ErrorItem Class")
+	] coclass ErrorItem {
+		[default] interface IErrorItem;
+	};
+
+};

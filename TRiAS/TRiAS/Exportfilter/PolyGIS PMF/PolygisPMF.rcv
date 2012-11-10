@@ -1,0 +1,161 @@
+
+#if !defined(LANGUAGE_0x0407) && !defined(LANGUAGE_0x0409)
+#pragma message("Undefined Language-ID, defaulting to LANGUAGE_0x0407")
+#define LANGUAGE_0x0407
+#endif
+
+////////////////////////////////////////////////////////////////////////////
+// Hier steht die aktuelle Modulversion als Stringressource. Sie ist an den
+// Resource-ID der Message-Tabelle gekoppelt (Wert ist per Definition 1, s.o.).
+//	1 ==> Versionsnummer dieses Moduls
+//	2 ==> Kurzname dieses Moduls
+//	3 ==> TRiAS-Buildnummer; nur mit dieser wird zusammengespielt ;-)
+
+#ifdef RC_INVOKED
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+	1 "1.0.191"
+	2 "PolygisPMF"
+	3 "5.10.1505"
+END
+
+////////////////////////////////////////////////////////////////////////////
+// Support für länderspezifische Ressourcen
+
+#ifdef LANGUAGE_0x0407
+	LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+	1 11 "res\\MSG00407.bin"
+	1 TYPELIB "PolygisPMF.tlb"
+	#pragma code_page(1252)
+#elif defined(LANGUAGE_0x0409)
+	LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+	1 11 "res\\MSG00409.bin"
+	1 TYPELIB "PolygisPMF.tlb"
+	#pragma code_page(1252)
+#else
+	#error "You must define a correct Language-ID"
+#endif
+#endif // RC_INVOKED
+
+#ifndef VS_FF_DEBUG
+////////////////////////////////////////////////////////////////////////////
+// In winver.h sind die notwendigen Konstantendefinitionen enthalten
+#include <winver.h>
+#endif
+
+//////////////////////////////////////////////////////////////////////////////////
+// Produkt-Spezifische Informationen
+
+#define VER_FILEVERSION_STR     "1.0.191\0"
+#define VER_FILEVERSION          1,0,0,191
+
+#define VER_PRODUCTVERSION_STR  "5.10\0"
+#define VER_PRODUCTVERSION      5,10,0,0
+
+#if	defined(_DEBUG)
+	#define VER_DEBUG                   VS_FF_DEBUG
+	#define VER_PRERELEASE              0
+	#define VER_PRIVATEBUILD            VS_FF_PRIVATEBUILD
+#elif defined(NDEBUG)
+	#define VER_DEBUG                   0
+	#define VER_PRERELEASE              0
+	#define VER_PRIVATEBUILD            0
+#else
+	#error "You must define one of _DEBUG, NDEBUG"
+#endif
+
+#define VER_FILEFLAGSMASK    VS_FFI_FILEFLAGSMASK
+#define VER_FILEFLAGS        (VER_PRIVATEBUILD|VER_PRERELEASE|VER_DEBUG|VS_FF_SPECIALBUILD)
+
+#define VER_FILEOS           VOS_DOS_WINDOWS32
+
+//////////////////////////////////////////////////////////////////////////////////
+// Sprachspezifische Informationen
+
+#ifdef LANGUAGE_0x0407
+	#define VER_COMPANYNAME_STR  		"Hartmut Kaiser\0"
+	#define VER_LEGALCOPYRIGHT_STR		"Copyright© Hartmut Kaiser 1999-2003\0"
+	#define VER_PRODUCTNAME_STR			"TRiAS® - Territoriales Raumbezogenes Informations- und Abfragesystem\0"
+	#define VER_LEGALTRADEMARKS_STR		"TRiAS® ist ein eingetragenes Warenzeichen von Hartmut Kaiser.\0"
+	#define	VER_BLOCKTYPE				"040704E4"			// Deutsch und multilinguale CodePage
+	#define	VER_TRANSLATION				"Translation", 0x407, 1252
+	#if defined(_DEBUG)
+		#define VER_SPECIALBUILD_STR	"TRiAS® Exportfilter - PolyGIS - PMF, Version für den allgemeinen Gebrauch (Debug), ©  ,#KK040510 1999-2003\0"
+	#elif defined(NDEBUG)
+		#define VER_SPECIALBUILD_STR	"TRiAS® Exportfilter - PolyGIS - PMF, ©  ,#KK040510 1999-2003\0"
+	#else
+		#error "You must define one of _DEBUG, NDEBUG"
+	#endif
+#elif defined(LANGUAGE_0x0409)
+	#define VER_COMPANYNAME_STR  		"Hartmut Kaiser\0"
+	#define VER_LEGALCOPYRIGHT_STR		"Copyright© Hartmut Kaiser 1999-2003\0"
+	#define	VER_PRODUCTNAME_STR			"TRiAS® - Territorial Spatial Information and Querysystem\0"
+	#define VER_LEGALTRADEMARKS_STR		"TRiAS® is a registered Trademark of Hartmut Kaiser.\0"
+	#define	VER_BLOCKTYPE				"040904E4"			// Englische und multilinguale CodePage
+	#define	VER_TRANSLATION				"Translation", 0x409, 1252
+	#if defined(_DEBUG)
+		#define VER_SPECIALBUILD_STR	"TRiAS® Exportfilter - PolyGIS - PMF, Version for internal use (Debug), ©  ,#KK040510 1999-2003\0"
+	#elif defined(NDEBUG)
+		#define VER_SPECIALBUILD_STR	"TRiAS® Exportfilter - PolyGIS - PMF, ©  ,#KK040510 1999-2003\0"
+	#else
+		#error "You must define one of _DEBUG, NDEBUG"
+	#endif
+#else
+	#error "You must define a correct Language-ID"
+#endif
+
+//////////////////////////////////////////////////////////////////////////////////
+// Datei-Spezifische Informationen
+
+#define VER_FILETYPE                VFT_DLL
+
+#define VER_FILESUBTYPE             VFT2_UNKNOWN
+#define VER_FILEDESCRIPTION_STR		"TRiAS®, Exportfilter - PolyGIS - PMF\0"
+#define VER_INTERNALNAME_STR		"PolygisPMF\0"
+#define VER_ORIGINALFILENAME_STR	"PolygisPMF.DLL\0"
+
+// Die eigentliche VersionsStruktur -------------------------------------------
+#ifdef RC_INVOKED
+	VS_VERSION_INFO	VERSIONINFO
+	FILEVERSION		VER_FILEVERSION
+	PRODUCTVERSION  VER_PRODUCTVERSION
+	FILEFLAGSMASK   VER_FILEFLAGSMASK
+	FILEFLAGS       VER_FILEFLAGS
+	FILEOS          VER_FILEOS
+	FILETYPE        VER_FILETYPE
+	FILESUBTYPE     VER_FILESUBTYPE
+
+	BEGIN
+		BLOCK "StringFileInfo"
+		BEGIN
+			BLOCK VER_BLOCKTYPE
+			BEGIN
+				VALUE "CompanyName",		VER_COMPANYNAME_STR
+				VALUE "FileDescription",	VER_FILEDESCRIPTION_STR
+				VALUE "FileVersion",		VER_FILEVERSION_STR
+				VALUE "InternalName",    	VER_INTERNALNAME_STR
+				VALUE "LegalCopyright",		VER_LEGALCOPYRIGHT_STR
+				VALUE "OriginalFileName",	VER_ORIGINALFILENAME_STR
+				VALUE "LegalTrademarks",	VER_LEGALTRADEMARKS_STR
+ 				VALUE "ProductName",		VER_PRODUCTNAME_STR
+				VALUE "ProductVersion",		VER_PRODUCTVERSION_STR
+				// Hier sollten zusätzliche Informationen für lokale Versionen 
+				// enthalten sein.
+				VALUE "SpecialBuild",		VER_SPECIALBUILD_STR
+	#if !defined(NO_COMOBJECT)
+				VALUE "OleSelfRegister\0", "\0"
+				VALUE "TRiASSelfRegister\0", "\0"
+	#endif
+	#if defined(_USE_PERFMON_COUNTERS)
+				VALUE "PerfMonSelfRegister\0", "\0"
+	#endif
+			END
+		END
+		BLOCK "VarFileInfo"
+		BEGIN
+			VALUE VER_TRANSLATION
+		END
+	END
+#endif // RC_INVOKED

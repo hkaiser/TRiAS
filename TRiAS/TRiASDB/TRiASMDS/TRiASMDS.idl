@@ -1,0 +1,247 @@
+///////////////////////////////////////////////////////////////////////////////
+//@doc
+//@module TRiASMDS.IDL | Definitionen und Konstanten für TRiAS - Metadatenservice
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#include "ValueEvents.idl"
+
+#include "TRiASMDS.ver"
+#define STDINTERFACE(help)	pointer_default(unique), helpstring(help)
+
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRiASMDS
+// @interface ITRiASMDSStringColl | Resultat einer Suche im Metadatenservice
+// @group Methoden und Eigenschaften von <i ITRiASMDSStringColl>
+// @index | ITRiASMDSStringColl
+// @normal ITRiASMDSStringColl ist eine Enumeration von Strings die als Ergebnis
+//		einer der Abfragen <om ITRiASMDSMap.SearchKeys> oder <om ITRiASMDSMap.SearchValues>
+//		entsteht.
+[ object
+	, uuid(E9F87454-5845-11D2-8FCA-0060085FC1CE)
+	, dual
+	, STDINTERFACE("ITRiASMDSStringColl Interface"),
+] interface ITRiASMDSStringColl : IDispatch {
+	// @doc METHOD TRiASMDS ITRiASMDSStringColl
+	// @method HRESULT | ITRiASMDSStringColl | _NewEnum | 
+	//		liefert einen neuen Enumerator für die Sammlung
+	[id(DISPID_NEWENUM), helpstring("_NewEnum")] HRESULT _NewEnum(
+		[out,retval] IUnknown** pStrings		// @parm Zeiger auf IEnumString
+	);
+	// @doc METHOD TRiASMDS ITRiASMDSStringColl
+	// @method HRESULT | ITRiASMDSStringColl | Add | 
+	//		fügt der Sammlung einen String hinzu
+	[id(1), helpstring("Fügt der Aufzählung ein Element hinzu")] HRESULT Add(
+		BSTR strNewVal						// @parm hinzuzufügender String
+	);
+};
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRiASMDS
+// @interface ITRiASMDSMap | Setzen / Suchen von Werten im Metadatenservice
+// @group Methoden und Eigenschaften von <i ITRiASMDSMap>
+// @index | ITRiASMDSMap
+// @normal ITRiASMDSMap verwaltet Einträge in der Metadatentabelle. 
+//		Mittels der Metadatentabelle können TRiAS-DB-Datenquellen eine Zuordnung
+//		von Objektklassenschlüssel zu Kurz-/Langtext und umgekehrt verwalten.
+//		Diese Zuordnung ist wichtig da TRiAS intern mit Objektklassenschlüsseln
+//		arbeitet und eine Möglichkeit bestehen muß einen Begriff wie z.B. "Autobahn"
+//		auf einen solchen Schlüssel abzubilden. Die Metadatenmap wird persistent
+//		an der Datenquelle gespeichert so daß sie einem entsprechenden Datenserver
+//		bei jeder Wiederherstellung der Verbindung zur Verfügung steht.
+[ object
+	, uuid(82B90D01-577B-11D2-8FC9-0060085FC1CE)
+	, dual
+//	, pointer_default(ptr), helpstring("ITRiASMDSMap Interface")
+		, STDINTERFACE("ITRiASMDSMap Interface")
+] 
+interface ITRiASMDSMap : IDispatch 
+{
+	///////////////////////////////////////////////////////////////////////////////
+	// Achtung!! in MDSSEARCHMODE Bit 31 nicht besetzen; das geht in VB schief ;-)
+	// der Kumpel kennt nämlich keine unsigned Datentypen.
+	///////////////////////////////////////////////////////////////////////////////
+	// @doc ENUM TRiASMDS
+	// @enum MDSSEARCHMODE | MDSSEARCHMODE
+	// @normal Die Suchmodi werden als ODER-Verknüpfung an <om ITRiASMDSMap.Search>
+	//		übergeben.
+	enum MDSSEARCHMODE {
+		mdsSM_Compare	= 0x00000001L,	// @emem Suchen mit exaktem Zeichenvergleich
+		mdsSM_RegExp	= 0x00000002L,	// @emem Übergebener Suchstring ist regulärer Ausdruck
+		mdsSM_NoCase	= 0x00008000L,	// @emem Groß/Kleinschreibung wird nicht beachtet
+		mdsSM_SrchKey	= 0x00010000L,	// @emem Suchen im Schlüsselfeld
+		mdsSM_SrchShort	= 0x00020000L,	// @emem Suchen im Kurztext
+		mdsSM_SrchLong	= 0x00040000L,	// @emem Suchen im Langtext
+		mdsSM_SrchName	= 0x00080000L,	// @emem Suchen im Namen
+		mdsSM_ModeMask	= 0x00000003L,	// @emem Maske für mögliche Suchmodi
+		mdsSM_ItemMask	= 0x000f0000L,	// @emem Maske für mögliche Suchelemente
+	};
+
+	// @doc METHOD TRiASMDS ITRiASMDSMap
+	// @property IUnknown** ppIEnum | ITRiASMDSMap | _NewEnum | 
+	//		liefert einen Enumerator über alle Einträge in der Map
+	[id(DISPID_NEWENUM), helpstring("method _NewEnum")] HRESULT _NewEnum([out,retval] IUnknown **ppIEnum);
+	// @doc METHOD TRiASMDS ITRiASMDSMap
+	// @method HRESULT | ITRiASMDSMap | SetAt | 
+	//		Setzt ein bestimmtes Schlüssel / Wert - Paar in der Metadatentabelle.
+	// @rdesc
+	//	<cv S_OK>
+	[id(1), helpstring("setzt ein Schlüssel / Wert - Paar")] HRESULT SetAt(
+		[in] BSTR strKey					// @parm Objektklassenschlüssel
+		, [in] BSTR strName					// @parm Name
+		, [in] BSTR strValue				// @parm Kurzbeschreibung
+		, [in] BSTR strDescription			// @parm optionale Langbeschreibung
+		, [in] VARIANT vCustomData			// @parm nutzerdefinierte Daten
+	);
+	// @doc METHOD TRiASMDS ITRiASMDSMap
+	// @method HRESULT | ITRiASMDSMap | GetAt | 
+	//		Liefert den zu einem konkreten Schüssel gehörenden Wert.
+	// @rdesc
+	//	<cv S_OK>
+	//	<nl><cv S_FALSE> Der Schlüssel kann nicht gefunden werden
+	[id(2), helpstring("liefert den zum konkreten Schlüssel gehörenden Wert")] HRESULT GetAt(
+		[in] BSTR strKey					// @parm Objektklassenschlüssel
+		, [in, out, ptr] BSTR *pbstrName			// @parm Name
+		, [in, out, ptr] BSTR *pbstrValue			// @parm Kurzbeschreibung
+		, [in, out, ptr] BSTR *pbstrDescription		// @parm Langbeschreibung
+		, [in, out, ptr] VARIANT *vCustomData		// @parm nutzerdefinierte Daten
+	);
+	// @doc METHOD TRiASMDS ITRiASMDSMap
+	// @method HRESULT | ITRiASMDSMap | RemoveAt | 
+	//		Löscht einen bestimmten Schlüssel und dessen zugehörigen Wert aus der Tabelle.
+	// @rdesc
+	//	<cv S_OK>
+	//	<nl><cv S_FALSE> Der Schlüssel kann nicht gefunden werden
+	[id(3), helpstring("löscht einen Schlüsselwert")] HRESULT RemoveAt(
+		[in] BSTR strKey					// @parm Objektklassenschlüssel
+	);
+	// @doc METHOD TRiASMDS ITRiASMDSMap
+	// @method HRESULT | ITRiASMDSMap | Search | 
+	//		Sucht die zum angegebenen Wert gehörenden Schlüssel. Die Suche kann durch den Parameter
+	//		lSearchMode beeinflußt werden. mdsSM_Compare sucht nach dem exakten Auftreten des Wertes
+	//		und liefert alle zugehörigen Schlüssel. mdsSM_RegExp nimmt an, daß der übergebene Suchstring
+	//		ein regulärer Ausdruck ist und sucht alle zu diesem Ausdruck passenden Schlüssel.
+	//		mdsSM_NoCase ignoriert Groß/Kleinschreibung.
+	//	@head3 siehe auch |
+	//		<l Setzen / Suchen von Schlüsseln / Werten>
+	// @devnote Die Suchmodi sind als ODER-Verknüpfung anzugeben wobei bei (mdsSM_Compare \| mdsSM_RegExp)
+	//		mdsSM_Compare den Vorrang hat (es wird also nur exakt gesucht).
+	// @rdesc
+	//	<cv S_OK>
+	//	<nl><cv S_FALSE> Keine Schlüssel entsprechend der Vorgabe gefunden.
+	// @except 
+	//	<cv MAP_E_INVALIDSEARCHITEM> Angabe in welchem der Elemente (OKS, Kurztext, Langtext) gesucht werden soll fehlt.
+	//	<cv MAP_E_INVALIDSEARCHMODE> Angabe mit welcher Methode (Exakt, reg. Expr., groß/klein ) gesucht werden soll fehlt.
+		[id(4), helpstring("sucht alle zu diesem Wert gehörenden Schlüssel")] HRESULT Search(
+		[in] BSTR strValue					// @parm Zeichenkette nach der gesucht werden soll
+		, [in, defaultvalue(mdsSM_Compare|mdsSM_SrchShort)] long lSearchMode	// @parm Suchmodus
+		, [out, retval] ITRiASMDSStringColl** ppIValues					// @parm Zeiger auf Ergebnis
+	);
+	// @doc METHOD TRiASMDS ITRiASMDSMap
+	// @method HRESULT | ITRiASMDSMap | Clear |
+	// @normal
+	//		Löscht sämliche Einträge.
+	[id(6), helpstring("method Clear")] HRESULT Clear(
+	);
+};
+	
+///////////////////////////////////////////////////////////////////////////////
+// @doc INTERFACE TRiASMDS
+// @interface ITRiASMDSKey | Anpassen der Repräsentation von Objektklassenschlüsseln
+// @group Methoden und Eigenschaften von <i ITRiASMDSKey>
+// @index | ITRiASMDSKey
+[ object
+	, uuid(0F4DBAD4-B5D2-11D2-98E3-0060085FC1CE)
+	, dual
+	, STDINTERFACE("ITRiASMDSKey Interface")
+] interface ITRiASMDSKey : IDispatch {
+	// @doc METHOD TRiASMDS ITRiASMDSKey
+	// @method HRESULT | ITRiASMDSKey | SplitOKS | 
+	// @normal SplitOKS versucht aus einer übergebenen Zeichenkette einen gültigen
+	//		Objektklassenschlüssel sowie ggf. einen Kurznamen zu erzeugen. Gültige 
+	//		Darstellungsformen für Objektklassenschlüssel sind:
+	//		<nl>"[OKS]"
+	//		<nl>"OKS:Kurzname"
+	//		<nl>"[OKS]Kurzname"
+	//		<nl>wobei OKS eine Hexadezimalzahl repräsentiert.
+	//	@head3 Beispiel |
+	//		<l Extrahieren eines Objektklassenschlüssels>
+	// @except 
+	//	<cv KEY_E_NOOBJECTKEY> Die übergebene Zeichenkette
+	//		ist kein gültiger Objektklassenschlüssel
+	[id(1), helpstring("Aufsplitten eines OKS in seine Bestandteile")] HRESULT SplitOKS(
+		[in] BSTR strPossibleOKS									// @parm zu untersuchende Zeichenkette
+		, [in,out/*,optional,defaultvalue(NULL)*/] BSTR* pbstrAppendix	// @parm ggf. angegebener Kurzname
+		, [out,retval] BSTR* strOKS									// @parm ermittelter OKS
+	);
+	// @doc METHOD TRiASMDS ITRiASMDSKey
+	// @method HRESULT | ITRiASMDSKey | FormatOKS | 
+	// @normal FormatOKS erzeugt aus dem übergebenen Objektklassenschlüssel sowie
+	//		sowie dem ggf. angegebenen Kurznamen einen gültigen Objektklassenschlüssel
+	//		in der Form: 
+	//		<nl>[OKS]
+	//		<nl>bzw: [OKS]:Kurzname
+	// @normal Der Objektklassenschlüssel wird als VARIANT übergeben und kann die Typen
+	//		VT_I1...4, VT_UI1...4, VT_BSTR annehmen. Wenn der Typ VT_BSTR angegeben ist
+	//		sind die Formen "[OKS]" bzw. auch "OKS" möglich, wobei OKS wieder eine
+	//		Hexadezimalzahl repräsentieren muß.
+	// @except 
+	//	<cv E_INVALIDARG> Ungültiger VARIANT-Typ
+	//	<cv KEY_E_NOHEXDIGITS> Die übergebene Zeichenkette
+	//		enthält Zeichen die nicht als Hexadezimalwerte interpretiert werden können
+	[id(2), helpstring("Formatieren eines Objektklassenschlüssels")] HRESULT FormatOKS(
+		[in] VARIANT vOKS										// @parm der Objektklassenschlüssel
+		, [in/*,optional,defaultvalue(NULL)*/] BSTR strShortname	// @parm der Kurzname
+		, [out,retval] BSTR* strFormattedOKS					// @parm der formatierte Objektklassenschlüssel
+	);
+};
+	
+[ 
+	uuid(82B90CF4-577B-11D2-8FC9-0060085FC1CE),
+	version(TYPELIB_TRiASMDS_VERSION),
+	helpstring(TYPELIB_TRiASMDS_HELPSTRING)
+] 
+library TRiASMDS 
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	enum TRIASMDS_VERSIONS {
+		TYPELIB_TRIASMDS_VERSION_MAJOR = TYPELIB_TRiASMDS_VERSION_MAJOR,
+		TYPELIB_TRIASMDS_VERSION_MINOR = TYPELIB_TRiASMDS_VERSION_MINOR,
+	};
+
+	typedef [public, v1_enum] enum MDSSEARCHMODE MDSSEARCHMODE;
+
+	///////////////////////////////////////////////////////////////////////////////
+	// @doc OBJECT TRiASMDS
+	// @object TRiASMDSMap | Map von Objektklassenschlüsseln
+	// @head3 Interfaces |
+	// <i ITRiASMDSMap>
+	[ uuid(82B90D02-577B-11D2-8FC9-0060085FC1CE),
+		helpstring("TRiAS MDSMap - Mapping von Objektklassenschlüsseln")
+	] coclass TRiASMDSMap {
+		[default, source] interface ITRiASValueEvents;
+		[default] interface ITRiASMDSMap;
+	};
+	///////////////////////////////////////////////////////////////////////////////
+	// @doc OBJECT TRiASMDS
+	// @object TRiASMDSStringColl | Suchergebnis in der TRiASMDSMap
+	// @head3 Interfaces |
+	// <i ITRiASMDSStringColl>
+	[ uuid(E9F87455-5845-11D2-8FCA-0060085FC1CE),
+		helpstring("TRiAS MDSStringColl - Suchergebnis in Objektklassenschlüsseln")
+	] coclass TRiASMDSStringColl {
+		[default] interface ITRiASMDSStringColl;
+	};
+	///////////////////////////////////////////////////////////////////////////////
+	// @doc OBJECT TRiASMDS
+	// @object TRiASMDSKey | Konvertierung und Anpassung von Objektklassenschlüsseln
+	// @head3 Interfaces |
+	// <i ITRiASMDSKey>
+	[ uuid(0F4DBAD5-B5D2-11D2-98E3-0060085FC1CE),
+		helpstring("TRiAS MDSKey - Änderung der Repräsentation von Objektklassenschlüsseln")
+	] coclass TRiASMDSKey {
+		[default] interface ITRiASMDSKey;
+	};
+};

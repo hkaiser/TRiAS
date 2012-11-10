@@ -1,0 +1,19 @@
+HKCR
+{
+	PerfMon.PerfObject.1 = s 'PerfObject Class'
+	{
+		CLSID = s '{8FE61069-9A8D-11D2-9F08-006008447800}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {8FE61069-9A8D-11D2-9F08-006008447800} = s 'PerfObject Class'
+		{
+			ProgID = s 'PerfMon.PerfObject.1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

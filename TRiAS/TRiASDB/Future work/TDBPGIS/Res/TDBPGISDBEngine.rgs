@@ -1,0 +1,30 @@
+HKCR
+{
+	TRiASDB.PolyGIS.DBEngine.1 = s 'PolyGISDBEngine Class'
+	{
+		CLSID = s '{D822D537-13FF-42E9-8786-8A924C945371}'
+	}
+	TRiASDB.PolyGIS.DBEngine = s 'PolyGISDBEngine Class'
+	{
+		CLSID = s '{D822D537-13FF-42E9-8786-8A924C945371}'
+		CurVer = s 'TRiASDB.PolyGIS.DBEngine.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove '{D822D537-13FF-42E9-8786-8A924C945371}' = s 'PolyGISDBEngine Class'
+		{
+			ProgID = s 'TRiASDB.PolyGIS.DBEngine.1'
+			VersionIndependentProgID = s 'TRiASDB.PolyGIS.DBEngine'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C6-3123-101C-BB62-00AA0018497C}
+			}
+			'TypeLib' = s '{E4CF961A-5184-4761-BCE1-DF29E60BB905}'
+		}
+	}
+}

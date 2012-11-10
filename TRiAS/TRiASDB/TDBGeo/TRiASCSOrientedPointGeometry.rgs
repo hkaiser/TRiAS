@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiASCS.TRiASCSOrientedPointGeometry.1 = s 'TRiASCSOrientedPointGeometry Class'
+	{
+		CLSID = s '{1369BDE5-2567-11D2-9EA2-006008447800}'
+	}
+	TRiASCS.TRiASCSOrientedPointGeometry = s 'TRiASCSOrientedPointGeometry Class'
+	{
+		CurVer = s 'TRiASCS.TRiASCSOrientedPointGeometry'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {1369BDE5-2567-11D2-9EA2-006008447800} = s 'TRiASCSOrientedPointGeometry Class'
+		{
+			ProgID = s 'TRiASCS.TRiASCSOrientedPointGeometry.1'
+			VersionIndependentProgID = s 'TRiASCS.TRiASCSOrientedPointGeometry'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{6A0120C3-70C6-11D1-974B-00A024D6F582}'
+			'Version' = s '1.0'
+		}
+	}
+}

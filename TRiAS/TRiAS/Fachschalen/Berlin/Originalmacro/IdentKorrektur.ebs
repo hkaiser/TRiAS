@@ -1,0 +1,194 @@
+' -----------------------------------------------------------------------------
+' $DESCRIPTION: Alle Objekte einer Selektionsmenge vereinigen
+' -----------------------------------------------------------------------------
+'	'GrundstückeNummerieren.ebs'	TRiAS-MakroErweiterung
+' -----------------------------------------------------------------------------
+'	(c)	FEZ Potsdam GmbH, 23. September 1998, H.Kaiser
+' -----------------------------------------------------------------------------
+'	Sucht Grundstücke mit doppelter Grundstücksnummer.
+'	Spezielle Makroerweiterung für das Berlin (GBM)-Projekt.
+' -----------------------------------------------------------------------------
+
+Option Explicit
+Const strBoxTitel = "Korrektur und Abgleich doppelter ID-Nummern"
+' -----------------------------------------------------------------------------
+' Globale Variablen
+Private docGD As GeoDocument		' aktuelles Projekt
+
+' ToolBar und ToolBarKnopf
+Private tbK As Toolbar
+Private tbbDoIt As ToolbarButton
+
+Private Status As StatusIndicator 
+
+' -----------------------------------------------------------------------------
+' Beschreibungs-Strings
+Const NL = Chr$(13) + Chr$(10)		' Zeilenwechsel
+Const strToolSearch As String = "Grundstücke aktualisieren"
+Const strToolSearchLong As String = "Suchen von Grundstücken mit gleicher IdentNummer"
+
+' -----------------------------------------------------------------------------
+' Deklaration aller verwendeten Routinen
+Declare Private Function AddTool (Tools As ToolBar, iNum As Integer, strName As String, _
+	PictID As Integer, strDesc As String, iState As Integer, iStyle As Integer) As ToolBarButton
+
+Declare Private Sub EnableButtons()
+Declare Private Sub DisableButtons()
+
+' -----------------------------------------------------------------------------
+' "BeginScript()" wird immer vor der Script-Abarbeitung gerufen
+Sub BeginScript()
+
+Dim tbKLoc As ToolBar
+Dim Style As Long
+
+	Set docGD = GetActiveDocument()
+
+	Style = TOOLBARSTYLE_BorderAny Or TOOLBARSTYLE_Border3d Or _
+			TOOLBARSTYLE_AlignTop Or TOOLBARSTYLE_Tooltips Or _
+			TOOLBARSTYLE_FlyBy  Or TOOLBARSTYLE_SizeDynamic
+	Set tbKLoc = TRiAS.AddToolBar ("Grundstücke nummerieren", Style)
+																					   
+' 1. Reihe der Knöpfe
+	Set tbbDoIt = AddTool (tbKLoc, 0, "Suchen", Tool42, _
+			strToolSearchLong + NL + strToolSearch, BUTTONSTATE_Enabled, BUTTONSTYLE_Button)
+
+	tbKLoc.DockState = DOCKSTATE_DockedTop	' rechts andocken
+	tbKLoc.Visible = 1
+
+	Set tbK = tbKLoc
+
+End Sub
+
+' -----------------------------------------------------------------------------
+' "Main()" ist der eigentliche Startpunkt des Makroscriptes 
+Sub Main()
+' Dieser Script muß auch nach Main() aktiv bleiben
+	SetBreakScript (False)
+
+' Testen, ob bereits ein Projekt geöffnet ist, dann Knöpfe aktivieren
+	If (docGD Is Nothing) Then
+		DisableButtons
+	End If
+
+End Sub 
+
+' -----------------------------------------------------------------------------
+' "EndScript()" wird immer nach Beendigung der Script-Abarbeitung gerufen
+Sub EndScript()
+' ToolBar ausblenden
+	If (tbK Is Not Nothing) Then
+		tbK.Visible = False
+	End If
+
+' alle Objekte freigeben
+	Set tbbDoIt = Nothing
+	If (tbK Is Not Nothing) Then
+		tbK.Remove		' ToolBar selbst freigeben
+	End If
+	Set tbK = Nothing
+
+	Set docGD = Nothing
+
+' Jetzt wird der Script wirklich abgebrochen
+	SetBreakScript (True)
+End Sub
+
+' -----------------------------------------------------------------------------
+' "OnDocumentToClose()" wird bei Schließen des aktuellen Projektes gerufen
+Sub OnDocumentToClose (Doc As GeoDocument)
+	DisableButtons		' Knöpfe passivieren
+	Set docGD = Nothing
+End Sub
+
+' "OnDocumentOpened()" wird bei Öffnen eines Projektes gerufen
+Sub OnDocumentOpened (Doc As GeoDocument)
+	Set docGD = GetActiveDocument()
+	If (docGD Is Not Nothing) Then
+		EnableButtons		' Knöpfe aktivieren
+	End If
+End Sub
+
+' -----------------------------------------------------------------------------
+' Hier gehts los
+Const strSelectIdent As String = "TRiASEx.SelectIdentObjTyp.1"
+Const strSelectFromORWnd As String = "TRiASEx.SelectFromObjectWindow.1"
+Const strClassify As String = "TRiASEx.ClassifyByObjProp.1"
+Const strCopyObjects As String = "TRiASEx.CopyObjects.1"
+Const strUnionObjects As String = "TRiASEx.UnionObjects.1"
+Const strModifyIdent As String = "TRiASEx.ModifyIdent.1"
+Const strFilterScript As String = "TRiASEx.FilterScript.1"
+Const strShowInORWnd As String = "TRiASEx.ShowInObjectWindow.1"
+
+Const strNoShow As String = "NoShow=1"
+
+Sub Suchen_Click()
+Dim Wins As GeoObjectWins
+Dim fORWnd As Boolean
+
+	fORWnd = True
+	Set Wins = docGD.GetGeoObjectWins()
+	If (Wins Is Nothing) Then
+		fORWnd = False
+	ElseIf (Wins.Count = 0) Then
+		fORWnd = False
+	End If
+
+' Operation durchführen
+Dim Seq As New PropertySequence
+
+	Seq.Description = strToolSearchLong
+	If (fORWnd = True) Then
+		Seq.AddAction strSelectFromORWnd, strNoShow
+	Else
+		Seq.AddAction strSelectIdent, strNoShow + ";Select=[1124]:4"
+	End If
+	Seq.AddAction strClassify, strNoShow + ";ClassifyBy=Identifikationsnummer;UseAll=0"
+	Seq.AddAction strFilterScript, "IdentKorrektur"
+
+'	Seq.AddAction strShowInORWnd
+
+	Seq.DoActions
+
+
+	Beep
+	MsgBox "Und tschüß!", ebInformation, strBoxTitel
+
+End Sub
+
+' -----------------------------------------------------------------------------
+' Hinzufügen eines Knopfes zur Toolbar
+Private Function AddTool (Tools As ToolBar, iNum As Integer, strName As String, _
+	PictID As Integer, strDesc As String, iState As Integer, iStyle As Integer) _
+	As ToolBarButton
+
+Dim P As Image
+Dim TB As New ToolBarButton
+
+	Set P = LoadResPicture (PictID, vbResBitmap)
+	If (P Is Not Nothing) Then
+		TB.Name$ = StrName
+		TB.HelpText$ = strDesc
+		TB.State = iState
+		TB.Style = iStyle
+		TB.AttachImage P
+		TB.CmdID = PictID	' CommandID ist PictID (eindeutig ?!)
+
+		Tools.InsertButton iNum, TB
+		Set AddTool = TB
+	Else
+		Set AddTool = Nothing
+	End If
+End Function
+
+' -----------------------------------------------------------------------------
+' Sonstiges 
+Private Sub EnableButtons ()
+	tbbDoIt.State = BUTTONSTATE_Enabled Or BUTTONSTATE_NoKickIdle
+End Sub
+
+Private Sub DisableButtons ()
+	tbbDoIt.State = BUTTONSTATE_Disabled Or BUTTONSTATE_NoKickIdle
+End Sub
+
+    

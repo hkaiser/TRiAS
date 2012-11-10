@@ -1,0 +1,259 @@
+REGEDIT4
+
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems]
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Ohne Koordinatentransformation
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\TRiAS.CoordDefault.1]
+@="Allgemeine Koordinatensysteme"
+"Toolbar32"=dword:00000000
+
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\TRiAS.CoordDefault.1\Nutzerkoordinatensystem]
+@="Beliebiges rechtwinkliges Koordinatensystem (ohne Maßhaltigkeit)"
+"CoordPrecision"=dword:00000000
+"CoordScaling"="1.0"
+
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\TRiAS.CoordDefault.1\Nutzerkoordinatensystem [m]]
+@="Beliebiges rechtwinkliges Koordinatensystem [Meterkoordinaten]"
+"CoordPrecision"=dword:00000002
+"CoordScaling"="1.0"
+"Koeff11"="1.0"
+
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\TRiAS.CoordDefault.1\Nutzerkoordinatensystem [dm]]
+@="Beliebiges rechtwinkliges Koordinatensystem [Dezimeterkoordinaten]"
+"CoordPrecision"=dword:00000003
+"CoordScaling"="10.0"
+"Koeff11"="1.0"
+
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\TRiAS.CoordDefault.1\Nutzerkoordinatensystem [cm]]
+@="Beliebiges rechtwinkliges Koordinatensystem [Zentimeterkoordinaten]"
+"CoordPrecision"=dword:00000003
+"CoordScaling"="100.0"
+"Koeff11"="1.0"
+
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\TRiAS.CoordDefault.1\Nutzerkoordinatensystem [mm]]
+@="Beliebiges rechtwinkliges Koordinatensystem [Millimeterkoordinaten]"
+"CoordPrecision"=dword:00000003
+"CoordScaling"="1000.0"
+"Koeff11"="1.0"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Geodätische Koordinatensysteme
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\Geodetic]
+@="Geodätische Koordinatensysteme"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Geodätisch/Bessel Koordinatensysteme
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\Geodetic\TRiAS.CoordGeodBessel.1]
+@="Bessel-Ellipsoid [System 40/83]"
+"Toolbar32"=dword:00000001
+
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\Geodetic\TRiAS.CoordGeodBessel.1\Anzeige Gauß-Krüger 3°]
+@="Geodätisch (Bessel-Ellipsoid [System 40/83]), Koordinatenanzeige in Gauß-Krüger, Streifenbreite 3°"
+"CoordTransform"="BEGEOD"
+"CoordMeridian"="Autoselect"
+"CoordStrBreite"=dword:00000003
+"CoordPrecision"=dword:00000000
+"CoordScaling"="1.0"
+"ShowGKCoords"=dword:00000002
+"Koeff11"="0.001"
+"Koeff12"="0.0"
+"Koeff21"="0.0"
+"Koeff22"="0.001"
+"OffsetX"="0.0"
+"OffsetY"="180000.0"
+
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\Geodetic\TRiAS.CoordGeodBessel.1\Anzeige Gauß-Krüger 6°]
+@="Geodätisch (Bessel-Ellipsoid [System 40/83]), Koordinatenanzeige in Gauß-Krüger, Streifenbreite 6°"
+"CoordTransform"="BEGEOD"
+"CoordMeridian"="Autoselect"
+"CoordStrBreite"=dword:00000006
+"CoordPrecision"=dword:00000000
+"CoordScaling"="1.0"
+"ShowGKCoords"=dword:00000002
+"Koeff11"="0.001"
+"Koeff12"="0.0"
+"Koeff21"="0.0"
+"Koeff22"="0.001"
+"OffsetX"="0.0"
+"OffsetY"="180000.0"
+
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\Geodetic\TRiAS.CoordGeodBessel.1\Anzeige geodätischer Koordinaten]
+@="Geodätisch (Bessel-Ellipsoid [System 40/83]), Koordinatenanzeige geodätisch (Grad, Minute, Sekunde)"
+"CoordTransform"="BEGEOD"
+"CoordMeridian"="Autoselect"
+"CoordStrBreite"=dword:00000003
+"CoordPrecision"=dword:00000000
+"CoordScaling"="1.0"
+"ShowGKCoords"=dword:00000000
+"Koeff11"="0.001"
+"Koeff12"="0.0"
+"Koeff21"="0.0"
+"Koeff22"="0.001"
+"OffsetX"="0.0"
+"OffsetY"="180000.0"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Geodätisch/Krassovsky Koordinatensysteme
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\Geodetic\TRiAS.CoordGeodKrass.1]
+@="Krassovsky-Ellipsoid [System 42/83]"
+"Toolbar32"=dword:00000001
+
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\Geodetic\TRiAS.CoordGeodKrass.1\Anzeige Gauß-Krüger 3°]
+@="Geodätisch (Krassovsky-Ellipsoid [System 42/83]), Koordinatenanzeige in Gauß-Krüger, Streifenbreite 3°"
+"CoordTransform"="KRGEOD"
+"CoordMeridian"="Autoselect"
+"CoordStrBreite"=dword:00000003
+"CoordPrecision"=dword:00000000
+"CoordScaling"="1.0"
+"ShowGKCoords"=dword:00000002
+"Koeff11"="0.001"
+"Koeff12"="0.0"
+"Koeff21"="0.0"
+"Koeff22"="0.001"
+"OffsetX"="0.0"
+"OffsetY"="180000.0"
+
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\Geodetic\TRiAS.CoordGeodKrass.1\Anzeige Gauß-Krüger 6°]
+@="Geodätisch (Krassovsky-Ellipsoid [System 42/83]), Koordinatenanzeige in Gauß-Krüger, Streifenbreite 6°"
+"CoordTransform"="KRGEOD"
+"CoordMeridian"="Autoselect"
+"CoordStrBreite"=dword:00000006
+"CoordPrecision"=dword:00000000
+"CoordScaling"="1.0"
+"ShowGKCoords"=dword:00000002
+"Koeff11"="0.001"
+"Koeff12"="0.0"
+"Koeff21"="0.0"
+"Koeff22"="0.001"
+"OffsetX"="0.0"
+"OffsetY"="180000.0"
+
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\Geodetic\TRiAS.CoordGeodKrass.1\Anzeige geodätischer Koordinaten]
+@="Geodätisch (Krassovsky-Ellipsoid [System 42/83]), Koordinatenanzeige geodätisch (Grad, Minute, Sekunde)"
+"CoordTransform"="KRGEOD"
+"CoordMeridian"="Autoselect"
+"CoordStrBreite"=dword:00000006
+"CoordPrecision"=dword:00000000
+"CoordScaling"="1.0"
+"ShowGKCoords"=dword:00000000
+"Koeff11"="0.001"
+"Koeff12"="0.0"
+"Koeff21"="0.0"
+"Koeff22"="0.001"
+"OffsetX"="0.0"
+"OffsetY"="180000.0"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Gauß-Krüger Koordinatensysteme
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\TransMercator]
+@="Gauß-Krüger Koordinatensysteme"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Gauß-Krüger/Bessel Koordinatensysteme
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\TransMercator\TRiAS.CoordGKBessel.1]
+@="Bessel-Ellipsoid [System 40/83]"
+"Toolbar32"=dword:00000002
+
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\TransMercator\TRiAS.CoordGKBessel.1\Gauß-Krüger (15°/3°)]
+@="Gauß-Krüger (Bessel-Ellipsoid [System 40/83]), Mittelmeridian 15°, Streifenbreite 3°"
+"CoordTransform"="BESSELGK"
+"CoordMeridian"=dword:0000000f
+"CoordStrBreite"=dword:00000003
+"CoordPrecision"=dword:00000000
+"CoordScaling"="1.0"
+"ShowGKCoords"=dword:00000000
+"CoordMeridianV"="AutoSelect"
+"OffsetX"="5000000.0"
+"OffsetY"="5000000.0"
+"Koeff11"="0.01"
+"Koeff12"="0.0"
+"Koeff21"="0.0"
+"Koeff22"="0.01"
+
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\TransMercator\TRiAS.CoordGKBessel.1\Gauß-Krüger (12°/3°)]
+@="Gauß-Krüger (Bessel-Ellipsoid [System 40/83]), Mittelmeridian 12°, Streifenbreite 3°"
+"CoordTransform"="BESSELGK"
+"CoordMeridian"=dword:0000000c
+"CoordStrBreite"=dword:00000003
+"CoordPrecision"=dword:00000000
+"CoordScaling"="1.0"
+"ShowGKCoords"=dword:00000000
+"CoordMeridianV"="AutoSelect"
+"OffsetX"="4000000.0"
+"OffsetY"="5000000.0"
+"Koeff11"="0.01"
+"Koeff12"="0.0"
+"Koeff21"="0.0"
+"Koeff22"="0.01"
+
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\TransMercator\TRiAS.CoordGKBessel.1\Gauß-Krüger (9°/3°)]
+@="Gauß-Krüger (Bessel-Ellipsoid [System 40/83]), Mittelmeridian 9°, Streifenbreite 3°"
+"CoordTransform"="BESSELGK"
+"CoordMeridian"=dword:00000009
+"CoordStrBreite"=dword:00000003
+"CoordPrecision"=dword:00000000
+"CoordScaling"="1.0"
+"ShowGKCoords"=dword:00000000
+"CoordMeridianV"="AutoSelect"
+"OffsetX"="3000000.0"
+"OffsetY"="5000000.0"
+"Koeff11"="0.01"
+"Koeff12"="0.0"
+"Koeff21"="0.0"
+"Koeff22"="0.01"
+
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\TransMercator\TRiAS.CoordGKBessel.1\Gauß-Krüger (6°/3°)]
+@="Gauß-Krüger (Bessel-Ellipsoid [System 40/83]), Mittelmeridian 6°, Streifenbreite 3°"
+"CoordTransform"="BESSELGK"
+"CoordMeridian"=dword:00000006
+"CoordStrBreite"=dword:00000003
+"CoordPrecision"=dword:00000000
+"CoordScaling"="1.0"
+"ShowGKCoords"=dword:00000000
+"CoordMeridianV"="AutoSelect"
+"OffsetX"="2000000.0"
+"OffsetY"="5000000.0"
+"Koeff11"="0.01"
+"Koeff12"="0.0"
+"Koeff21"="0.0"
+"Koeff22"="0.01"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Gauß-Krüger/Krassovsky Koordinatensysteme
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\TransMercator\TRiAS.CoordGKKrass.1]
+@="Krassovsky-Ellipsoid [System 42/83]"
+"Toolbar32"=dword:00000002
+
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\TransMercator\TRiAS.CoordGKKrass.1\Gauß-Krüger (9°/6°)]
+@="Gauß-Krüger (Krassovsky-Ellipsoid [System 42/83]), Mittelmeridian 9°, Streifenbreite 6°"
+"CoordTransform"="KRASSGK"
+"CoordMeridian"=dword:00000009
+"CoordStrBreite"=dword:00000006
+"CoordPrecision"=dword:00000000
+"CoordScaling"="1.0"
+"ShowGKCoords"=dword:00000000
+"CoordMeridianV"="AutoSelect"
+"OffsetX"="2000000.0"
+"OffsetY"="5000000.0"
+"Koeff11"="0.01"
+"Koeff12"="0.0"
+"Koeff21"="0.0"
+"Koeff22"="0.01"
+
+[HKEY_CURRENT_USER\Software\uve\TRiAS\CoordSystems\TransMercator\TRiAS.CoordGKKrass.1\Gauß-Krüger (15°/6°)]
+@="Gauß-Krüger (Krassovsky-Ellipsoid [System 42/83]), Mittelmeridian 15°, Streifenbreite 6°"
+"CoordTransform"="KRASSGK"
+"CoordMeridian"=dword:0000000f
+"CoordStrBreite"=dword:00000006
+"CoordPrecision"=dword:00000000
+"CoordScaling"="1.0"
+"ShowGKCoords"=dword:00000000
+"CoordMeridianV"="AutoSelect"
+"OffsetX"="3000000.0"
+"OffsetY"="5000000.0"
+"Koeff11"="0.01"
+"Koeff12"="0.0"
+"Koeff21"="0.0"
+"Koeff22"="0.01"
+

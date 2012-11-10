@@ -1,0 +1,38 @@
+HKCR
+{
+	TRiASEx.GeoOperatOptions.1 = s 'Optionen für Geometrieoperationen'
+	{
+		CLSID = s '{59C660D0-06E1-11d3-8889-00104BAF1F6B}'
+
+	}
+	TRiASEx.GeoOperatOptions = s 'Optionen für Geometrieoperationen'
+	{
+		CurVer = s 'TRiASEx.GeoOperatOptions.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {59C660D0-06E1-11d3-8889-00104BAF1F6B} = s 'Optionen für Geometrieoperationen'
+		{
+			ProgID = s 'TRiASEx.GeoOperatOptions.1'
+			VersionIndependentProgID = s 'TRiASEx.GeoOperatOptions'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C4-3123-101C-BB62-00AA0018497C}
+			}
+		}
+	}
+	NoRemove TRiAS.Application.2
+	{
+		NoRemove TRiASEx
+		{
+			NoRemove PropertyActions
+			{
+				ForceRemove TRiASEx.GeoOperatOptions.1 = s '{59C660D0-06E1-11d3-8889-00104BAF1F6B}'
+			}
+		}
+	}
+}

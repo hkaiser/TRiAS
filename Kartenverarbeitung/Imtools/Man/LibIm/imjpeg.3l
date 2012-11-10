@@ -1,0 +1,132 @@
+
+
+
+IMJPEG(3IM)            SDSC IMAGE LIBRARY             IMJPEG(3IM)
+
+
+
+NAME
+     imjpeg - Joint Photographic Expert Group (JPEG)  Image  File
+     Format
+
+SYNOPSIS
+     #include <stdio.h>
+     #include "sdsc.h"
+     #include "im.h"
+
+     int ImFileRead( fd, "jpeg", flagsTable, dataTable )
+          int         fd;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileFRead( fp, "jpeg", flagsTable, dataTable )
+          FILE         *fp;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileWrite( fd, "jpeg", flagsTable, dataTable )
+          int         fd;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+     int ImFileFWrite( fp, "jpeg", flagsTable, dataTable )
+          FILE         *fp;
+          TagTable   *flagsTable;
+          TagTable   *dataTable;
+
+
+DESCRIPTION
+     jpeg is a File Format developed by  the  Joint  Photographic
+     Expert Group.
+
+     The SDSC Image Library is capable of  interfacing  with  the
+     Independent  Jpeg  Group's  JPEG  library.   Please  see the
+     installation documentataion for instructions about obtaining
+     this library, and configuring the SDSC image library to make
+     use of it.
+
+FILE RECOGNITION
+     jpeg files are recognized by  the  following  filename  suf-
+     fixes: .jpeg, .jpg, .jfif
+
+NOTES
+     jpeg files use  an  extremely  space  efficient  compression
+     scheme  to store files.  The compression scheme is, however,
+     "lossy".  This means if you convert to a jpeg and back,  the
+     values of the pixels in your image may be different from the
+     original image.  If this concerns you, you can  specify  the
+     quality  of  the  picture  (i.e.  to  control  how lossy the
+     compression is) by using the  "-outquality"  option  on  the
+
+
+
+SDSC               Last change: June 16, 1995                   1
+
+
+
+
+
+
+IMJPEG(3IM)            SDSC IMAGE LIBRARY             IMJPEG(3IM)
+
+
+
+     command  line  or  by  passing an "image compression quality
+     request" in the flags table.  For more detailed  information
+     about  the  relationship  between  the quality value and the
+     lossiness of the compression,  please  refer  to  the  IJG's
+     library documentation.
+
+  Reading JPEG image files
+     The SDSC image library is capable of  reading  JPEG's  which
+     are  8-bit  color  indexed  or  24-bit  RGB.  JPEG files are
+     always encoded with the Discrete Cosine Transform.
+
+  Writing TIFF image files
+     The SDSC is library is capable of reading JPEG's  which  are
+     8-bit  color  indexed  or 24-bit RGB.  JPEG files are always
+     encoded with the Discrete Cosine Transform.
+
+ERRORS
+     In addition to those listed for ImFileRead(3IM), the follow-
+     ing values for ImErrNo can also occur:
+
+          IMEOUTOFRANGE   The quality request was not between 1 and 100.
+          IMEUNKNOWN      An error occured within the IJG library.
+
+DOCUMENTATION
+SEE ALSO
+     ImIntro(3IM),   ImErrNo(3IM),   imconv(1IM),    imfile(1IM),
+     imformats(1IM),
+
+AUTHOR
+     Brian Duggan
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2                  Last change: June 16, 1995                SDSC
+
+
+

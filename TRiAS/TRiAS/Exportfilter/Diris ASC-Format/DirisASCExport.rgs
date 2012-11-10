@@ -1,0 +1,49 @@
+HKCR 
+{
+	TRiAS.DirisASCExport.1 = s 'TRiAS Export in das TRiAS-ASC Format' 
+	{
+		CLSID = s '{B8006844-06EF-11D3-995A-0060085FC1CE}'
+	}
+	TRiAS.DirisASCExport = s 'TRiAS Export in das TRiAS-ASC Format' 
+	{
+		CLSID = s '{B8006844-06EF-11D3-995A-0060085FC1CE}'
+		CurVer = s 'TRiAS.DirisASCExport.1'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {B8006844-06EF-11D3-995A-0060085FC1CE} = s 'TRiAS Export in das TRiAS-ASC Format' 
+		{
+			ProgID = s 'TRiAS.DirisASCExport.1'
+			VersionIndependentProgID = s 'TRiAS.DirisASCExport'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%' 
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{EC9D9D10-06E9-11d3-995A-0060085FC1CE}'
+		}
+	}
+}
+
+HKCU 
+{ 
+	NoRemove Software 
+	{ 
+		TRiAS 
+		{ 
+			TRiAS 
+			{ 
+				Extensions 
+				{ 
+					TRiAS.Export.1 
+					{ 
+						Engines 
+						{
+							ForceRemove {B8006844-06EF-11D3-995A-0060085FC1CE} = s 'TRiAS-ASC Export'
+						} 
+					} 
+				} 
+			} 
+		} 
+	} 
+}

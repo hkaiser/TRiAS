@@ -1,0 +1,18 @@
+HKCR
+{
+	TRiAS.FakeTRiASLockFeature.1 = s 'Implementation für TRiASLockFeature'
+	{
+		CLSID = s '{26A3BD85-6D09-11D2-9EE7-006008447800}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {26A3BD85-6D09-11D2-9EE7-006008447800} = s 'Implementation für TRiASLockFeature'
+		{
+			ProgID = s 'TRiASEx.FakeTRiASLockFeature.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

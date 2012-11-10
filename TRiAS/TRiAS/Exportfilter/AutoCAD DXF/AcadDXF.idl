@@ -1,0 +1,26 @@
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#include "AcadDxf.ver"
+
+#define STDINTERFACE(help)	object, dual, pointer_default(unique), helpstring(help)
+
+[ uuid(119B30E1-1DC0-11d3-9973-0060085FC1CE)
+	, version(TYPELIB_AcadDXF_VERSION)
+	, helpstring(TYPELIB_AcadDXF_HELPSTRING)
+] library AcadDXFExport {
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[ uuid(119B30E2-1DC0-11d3-9973-0060085FC1CE)
+		, STDINTERFACE("IAcadDXFExport Interface")
+	] interface IAcadDXFExport : IDispatch {
+	};
+
+	[ uuid(119B30E3-1DC0-11d3-9973-0060085FC1CE)
+		, helpstring("AcadDXFExport Class")
+	] coclass AcadDXFExport {
+		[default] interface IAcadDXFExport;
+	};
+};

@@ -1,0 +1,26 @@
+HKCR
+{
+	TRiAS.SABiSTabChildWindowCallback.1 = s 'SABiSTabChildWindowCallback Class'
+	{
+		CLSID = s '{D2ECA49F-666B-4D14-9112-451144F01412}'
+	}
+	TRiAS.SABiSTabChildWindowCallback = s 'SABiSTabChildWindowCallback Class'
+	{
+		CLSID = s '{D2ECA49F-666B-4D14-9112-451144F01412}'
+		CurVer = s 'TRiAS.SABiSTabChildWindowCallback.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {D2ECA49F-666B-4D14-9112-451144F01412} = s 'SABiSTabChildWindowCallback Class'
+		{
+			ProgID = s 'TRiAS.SABiSTabChildWindowCallback.1'
+			VersionIndependentProgID = s 'TRiAS.SABiSTabChildWindowCallback'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{139DED23-68CD-11D2-8CBD-006097A8F384}'
+		}
+	}
+}

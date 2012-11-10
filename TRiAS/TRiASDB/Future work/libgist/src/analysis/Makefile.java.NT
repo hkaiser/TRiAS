@@ -1,0 +1,20 @@
+# 	Makefile for libgist, Windows platform
+# 	$$
+
+include ..\Makefile.inc.java.NT
+
+SRCS = Workload.java  \
+	QueryStats.java \
+	WkldStatsDlg.java \
+	AnalysisInfo.java \
+	SplitStatsDlg.java \
+	SplitStats.java \
+	PenaltyStatsDlg.java \
+	PenaltyStats.java
+
+CLASSES = $(SRCS:.java=.class)
+
+all: $(CLASSES)
+
+clean:
+	del *.class *~

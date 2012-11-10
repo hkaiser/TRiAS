@@ -1,0 +1,132 @@
+
+
+
+IMPERROR(3IM)          SDSC IMAGE LIBRARY           IMPERROR(3IM)
+
+
+
+NAME
+     ImPError - print an  error  message  from  a  virtual  frame
+     buffer routine
+     ImQError - query the error message  for  the  current  error
+     number
+     ImErrNo - give the error number that  came  from  a  virtual
+     frame buffer routine
+
+SYNOPSIS
+     #include "im.h"
+
+     extern int ImErrNo ;
+     extern int ImNErr ;
+     extern char *ImErrList[ ] ;
+
+     void ImPError( str )
+          char *str ;
+
+     char *ImQError( )
+
+
+DESCRIPTION
+     ImPError produces a short message on stderr  describing  the
+     last  error  encountered during a call to an IM package pro-
+     cedure.  The argument string _s_t_r is printed  first,  then  a
+     colon  and  a blank, then the message and a new line.  To be
+     of most use, the argument string should include the name  of
+     the  program  or routine that incurred the error.  The error
+     number is taken from the external variable ImErrNo, which is
+     set when IM errors occur, but not cleared when non-erroneous
+     calls are made.
+
+     To simplify variant formatting of messages,  the  vector  of
+     message  strings  ImErrList is provided; ImErrNo can be used
+     as an index into  this  table  to  get  the  message  string
+     without  the newline.  ImNErr is the number of messages pro-
+     vided for in the table; it should  be  checked  because  new
+     error  codes  might  be  added to the system before they are
+     added to the table.
+
+     ImQError may be used to query the  error  message  list  and
+     return a pointer to the error text associated with the error
+     value of ImErrNo.
+
+EXAMPLE
+     ImPError  should  be  called  when  an  error  condition  is
+     detected  upon  return  from  an  IM  routine.  For example:
+     ReadFb() {      ImVfb *srcVfb ;
+      ...       srcVfb = ImVfbAlloc( 1280,  1024,  IMVFBRGB  )  ;
+          if(  srcVfb  ==  IMVFBNULL )      {           ImPError(
+     "ReadFb" ) ;           exit( 1 ) ;      }
+      ...  }
+
+
+
+SDSC              Last change: August 25, 1992                  1
+
+
+
+
+
+
+IMPERROR(3IM)          SDSC IMAGE LIBRARY           IMPERROR(3IM)
+
+
+
+RETURNS
+     ImPError returns nothing.
+
+     ImQError  returns  the  character  string  message  for  the
+     current  value of ImErrNo, or "Unknown error" if there is no
+     message for the error number.
+
+NOTES
+     If  ImErrNo  is  IMESYS,  indicating  a  system  call  error
+     occurred,  ImPError  calls  perror(3)  to  print  the system
+     call's error message instead of IMESYS, and ImQError returns
+     the error text associated with errno.
+
+SEE ALSO
+     ImIntro (3IM), ImErrNo (3IM), errno (2), perror (3)
+
+AUTHOR
+     Dave Nadeau
+     San Diego Supercomputer Center
+
+CONTACT
+     SDSC consultants, (619)534-5100, consult@y1.sdsc.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2                 Last change: August 25, 1992               SDSC
+
+
+

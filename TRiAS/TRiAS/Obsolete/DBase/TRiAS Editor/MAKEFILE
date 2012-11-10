@@ -1,0 +1,47 @@
+# Projekt TRIASED
+
+# Generierungsdatum (yymmdd) und Version
+DATE=980105
+VERSION = 1
+RELEASE = 30
+BUILD = 033
+COPYRIGHT = JB$(DATE)
+
+PADDRESS = "uve GmbH Fernerkundungszentrum Potsdam"
+PNAME = "Version für den internen Gebrauch"
+
+COPY = 1
+DEST = c:\trias\trias
+DEBUG = 0
+NAME = triased
+PROJ = $(NAME).exe
+
+!include triased.mak
+
+# Kopieren
+copy:
+!IF $(COPY)
+   copy $(NAME).exe $(DEST)
+!ENDIF
+
+# Versionskontrolle -----------------------------------------------------------
+new:
+	@del defabout.dlg > nul
+
+formake: defabout.dlg
+
+defabout.dlg:   defabout.tpl
+	ersetz $(VERSION) $(RELEASE) $(BUILD) $(COPYRIGHT) @A @B defabout.tpl tmp.src
+	ersetz $(PADDRESS) $(PNAME) tmp.src defabout.dlg
+	@del tmp.src > nul
+
+#----------------------------------------------------------------------------
+# Archivieren
+store:
+    @del *.bak
+    @del *.map
+    @del *.sts
+    @del *.pch
+    zip -m $(NAME)
+
+

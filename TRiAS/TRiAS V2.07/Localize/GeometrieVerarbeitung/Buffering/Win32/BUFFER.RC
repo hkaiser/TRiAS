@@ -1,0 +1,156 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "buffera.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resstrg.h"
+#include "buffer.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_BUFFER DIALOG DISCARDABLE  163, 57, 228, 192
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Objektpufferung"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " Pufferparameter ",IDC_STATIC,4,5,157,58,WS_GROUP
+    LTEXT           "&Breite (in Meter):",IDC_STATIC,10,17,62,8,NOT WS_GROUP
+    EDITTEXT        IDE_BUFBREITE,78,15,41,12,ES_AUTOHSCROLL
+    LTEXT           "An&zahl:",IDC_STATIC,10,32,62,8,NOT WS_GROUP
+    EDITTEXT        IDE_BUFANZAHL,78,30,41,12,ES_AUTOHSCROLL
+    LTEXT           "&Genauigkeit:",IDC_STATIC,10,47,63,8,NOT WS_GROUP
+    EDITTEXT        IDE_BUFTOLERANZ,78,45,41,12,ES_AUTOHSCROLL
+    GROUPBOX        " Eigenschaften der erzeugten Puffer ",IDC_STATIC,4,68,
+                    157,120,WS_GROUP
+    CONTROL         "  &Echter Puffer",IDR_PUFFER,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,10,80,104,10
+    CONTROL         "  Kreispuffer um &Mittelpunkt",IDR_KREIS,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,10,91,101,10
+    GROUPBOX        "",IDC_STATIC,10,120,143,5,WS_GROUP
+    CONTROL         "  &Temporäre Abspeicherung",IDR_TEMPORAER,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,10,131,112,10
+    CONTROL         "  &Permanente Abspeicherung",IDR_PERMANENT,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,10,142,112,10
+    LTEXT           "Objekt&klasse für Puffer:",IDC_STATIC,10,159,81,8
+    COMBOBOX        IDL_IDENTIFIKATOR,10,170,147,112,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "&OK",IDOK,168,9,55,14,WS_GROUP
+    PUSHBUTTON      "&Abbrechen",IDCANCEL,168,31,55,14,WS_GROUP
+    CONTROL         "  &Ringförmiger Pufferbereich",IDC_CHECK1,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,10,108,103,10
+    PUSHBUTTON      "",IDC_BUTTON1,10,123,147,27,WS_DISABLED | NOT 
+                    WS_TABSTOP
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "buffera.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""resstrg.h""\r\n"
+    "#include ""buffer.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""buffer.rcv""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Objektpufferung"
+    IDS_GEOREIN             "TRiAS.Bereinigung.1"
+    IDS_PUFFER              "%d. Puffer"
+    IDS_KREIS               "%d. Kreis"
+    IDS_BUFERZEUGEN         "&Puffer erzeugen ..."
+    IDS_BUFLOESCHEN         "P&uffer löschen"
+    IDS_BUFFERCNT           "Vom %d. Puffer wurden schon aufgebaut:"
+    IDS_NOMARK              "Puffer kann nicht gebildet werden, da kein Objekt markiert ist."
+    IDS_GEOFEHL             "Das Objekt %ld enthält einen Geometriefehler.\r\nDeshalb kann der Puffer nicht gebildet werden."
+    IDS_PUFFER_CAPTION      "Pufferung geometrischer Objekte"
+    IDS_STATUS_STAND        "Es wurden bereits %ld%% bearbeitet"
+    IDS_BEARB_OBJEKT        "Objekt: %ld"
+    IDS_DELOBJECTS          "Objekte löschen"
+    IDS_DELETE_STATUS       "Es wurden bereits %ld%% der Objekte gelöscht"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UNIQUEIDENT         "Unique Ident    "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXEXTENSIONPROC    "DEXEXTENSIONPROC"
+    IDS_DEXXEXTENSIONPROC   "DEXXEXTENSIONPROC"
+    IDS_DEXNOTIFICATIONPROC "DEXNOTIFICATIONPROCEX"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "buffer.rcv"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

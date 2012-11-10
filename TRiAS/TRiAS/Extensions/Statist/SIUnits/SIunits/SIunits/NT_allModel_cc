@@ -1,0 +1,87 @@
+// ----------------------------------------------------------------------
+//
+// NT_allModel_cc -- provide definition code common to all models
+//
+// NT version -- No template usage, and fixes for VC++    
+//
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\\
+//                                                                     \\
+// NOTICE:                                                             \\
+//   This file is part of "The SI Library of Unit-Based Computation."  \\
+//   See "doc/README" for copyright, license, and other information.   \\
+//                                                                     \\
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\\
+//
+// History:
+//   20-Jan-1999  MF   Initial version identical to allModel_cc
+//   22-Jan-1999  MF   Modified initialization list for periodictable
+//						to use constructor of Element instead of {i, w}
+//					   Modified element instantiation to use = form of
+//						initialization (VC++ did not like ())
+//   22-Jan-1999  MF   Modified the places where nested namespaces were
+//						specified like a::b::x.  This causes an internal
+//						compiler error.  Replacing these with 
+//						  namespace a { namespace b { and then use x }}
+//						appears to cure the problem.
+//	 25-Jan-1999  MF   Modifications repairing problems with sqrt being
+//						confused with sqrt(DimensionedQUantity)
+//
+// ----------------------------------------------------------------------
+
+
+using namespace si;
+using namespace si::abbreviations;
+using namespace si::elements;
+
+// -----  Define the standard units and constants:
+//
+
+#define WV wv
+#define u( type, name, value )								\
+ namespace si {												\
+     const type name = DimensionedQuantity (value) ;		\
+ }
+#define a( type, abbr, value )								\
+ namespace si {												\
+  namespace abbreviations {									\
+     const type abbr = DimensionedQuantity (value) ;		\
+  }															\
+ }
+#include "consts.dat"
+#undef a
+#undef u
+#undef WV
+
+
+
+// -----  Define elements' data:
+//
+// .....  First, the entire periodic table, as an array
+// .....  named periodictable[] indexed by an element's atomic number:
+//
+
+namespace si {
+ namespace elements {
+  const Element periodictable[] = {
+      Element ( 0,     AtomicWeight(  0  * g/mole) )
+  #define e( atnum, abbr, name, atwt )	\
+    , Element ( atnum, AtomicWeight(atwt * g/mole) )
+  #include "elements.dat"
+  #undef e
+  };  // periodictable
+ }
+}
+
+//
+// .....  Now, two per-element synonyms for periodictable[] so that,
+// .....  e.g., both hydrogen and element1 refer to periodictable[1]:
+//
+#define e( atnum, abbr, name, atwt )							\
+  namespace si {												\
+    namespace elements {										\
+     const Element &	name = periodictable[atnum] ;			\
+     const Element & element ## atnum = periodictable[atnum];	\
+	}															\
+  }
+#include "elements.dat"
+#undef e

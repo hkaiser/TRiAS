@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Copyright © 1991 - 2004, Hartmut Kaiser, #HK011011 -->
+<!-- edited with XML Spy v3.5 NT (http://www.xmlspy.com) by Hartmut Kaiser (GEOPunkt GmbH, NL Potsdam) -->
+<!-- GeoComponentSequence -->
+<!ELEMENT GeoComponentSequence (Name?, Description?, SaveAs?, (LoadInfo | GeoComponent+))>
+<!ATTLIST GeoComponentSequence
+	Version CDATA "1.0"
+	Type (Property | Sequence) "Sequence"
+	ProgID (TRiASEx.PropertySequence.1 | TRiASEx.PropertyChoice.1 | TRiASEx.JoinPropertyActions.1 | TRiASEx.SplitPropertyActions.1 | TRiASEx.StatisticObjectProperty.1) "TRiASEx.PropertySequence.1"
+	Flags CDATA #IMPLIED
+	MayFail (0 | 1) "0"
+>
+<!ELEMENT Name (#PCDATA)>
+<!ELEMENT Description (#PCDATA)>
+<!ELEMENT SaveAs (#PCDATA)>
+<!-- GeoComponent -->
+<!ELEMENT GeoComponent (Name?, (LoadInfo? | InitInfo? | GeoComponent*))>
+<!ATTLIST GeoComponent
+	ProgID (TRiAS.ExportPropertyAction.1 | TRiASEx.AddAsObjectClass.1 | TRiASEx.AreasBuilding.1 | TRiASEx.ClassifyByObjProp.1 | TRiASEx.CopyObjects.2 | TRiASEx.DeleteObjectProperty.1 | TRiASEx.DeleteObjects.1 | TRiASEx.DoppelteGeometrie.1 | TRiASEx.FilterScript.1 | TRiASEx.GenerateLabels.1 | TRiASEx.GenerateObjectProperties.1 | TRiASEx.GeoOperatOptions.1 | TRiASEx.GeometrieVerschnitt.1 | TRiASEx.ImportDataPropAct.1 | TRiASEx.JoinPropertyActions.1 | TRiASEx.LinesSplitting.1 | TRiASEx.LinienVerfolgung.1 | TRiASEx.MeshGeneration.1 | TRiASEx.ModifyIdent.1 | TRiASEx.ObjSetsOperations.1 | TRiASEx.Objektstatistik.1 | TRiASEx.PropertyChoice.1 | TRiASEx.PropertyOperation.1 | TRiASEx.PropertySequence.1 | TRiASEx.RegardingOperations.1 | TRiASEx.RemoveFromObjectClass.1 | TRiASEx.SelectFromObjectWindow.1 | TRiASEx.SelectIdentObjTyp.1 | TRiASEx.SelectObjectsDatasource.1 | TRiASEx.SelectStatistValue.1 | TRiASEx.ShowInObjectWindow.1 | TRiASEx.SplitPropertyActions.1 | TRiASEx.TextReplaceEngine.1 | TRiASEx.TextSearchEngine.1 | TRiASEx.UnionObjectsEx.1 | TRiASEx.WhereKlausel.1) #REQUIRED
+	Type (Action | Sequence) "Action"
+	Load (Direct | Registry) "Direct"
+	Level CDATA "0"
+>
+<!-- LoadInfo -->
+<!ELEMENT LoadInfo (ErrorInfo?)>
+<!ATTLIST LoadInfo
+	RegistryRoot (HKCR | HKCU | HKLM) "HKCR"
+	RegistryPath CDATA #IMPLIED
+>
+<!-- InitInfo -->
+<!ELEMENT InitInfo (#PCDATA)>
+<!ATTLIST InitInfo
+	NoShow (0 | 1) #IMPLIED
+	Name CDATA #IMPLIED
+	CheckMode (0 | 1) #IMPLIED
+	Checked (0 | 1) #IMPLIED
+	CopyMode (0 | 1) #IMPLIED
+	ShowConnections (0 | 1) #IMPLIED
+	DataSource CDATA #IMPLIED
+	ModifyTo CDATA #IMPLIED
+	AddToView (0 | 1) #IMPLIED
+	AddToClass CDATA #IMPLIED
+	ClassifyBy CDATA #IMPLIED
+	UseAll (0 | 1) #IMPLIED
+	IgnoreCase (0 | 1) #IMPLIED
+	CountMatch CDATA #IMPLIED
+	ObjProp CDATA #IMPLIED
+	Direct CDATA #IMPLIED
+	Dependend (0 | 1) #IMPLIED
+	Delete (0 | 1) #IMPLIED
+	Dynamic (0 | 1) #IMPLIED
+	Rotate (0 | 1) #IMPLIED
+	DeleteTarget (0 | 1) #IMPLIED
+	DoNotMove (0 | 1) #IMPLIED
+	ExistentOnly (0 | 1) #IMPLIED
+	ProgID CDATA #IMPLIED
+	Files CDATA #IMPLIED
+	Flags CDATA #IMPLIED
+	ShowErrors (0 | 1) #IMPLIED
+	DeleteSrcObjs (0 | 1) #IMPLIED
+	MarkSrcObjs (0 | 1) #IMPLIED
+	CopySrcObjs (0 | 1) #IMPLIED
+	Operation (A_Or_B | A_And_B | A_And_NotB | NotA_And_B) #IMPLIED
+	SelectFrom (Document | DataSource) #IMPLIED
+	Select CDATA #IMPLIED
+	HideTypes CDATA #IMPLIED
+	SelectObjs (All | Activated | Selected) #IMPLIED
+	CloseWhenReady (0 | 1) #IMPLIED
+	ShowConfigAlways (0 | 1) #IMPLIED
+>
+<!-- ErrorInfo -->
+<!ELEMENT ErrorInfo (Caption, Prompt)>
+<!ATTLIST ErrorInfo
+	ExpandName (0 | 1) "1"
+>
+<!ELEMENT Caption (#PCDATA)>
+<!ELEMENT Prompt (#PCDATA)>

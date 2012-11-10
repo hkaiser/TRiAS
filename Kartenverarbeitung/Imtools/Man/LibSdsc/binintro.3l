@@ -1,0 +1,330 @@
+
+
+
+     BBBBIIIINNNNIIIINNNNTTTTRRRROOOO((((3333BBBBIIIINNNN))))          SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))           BBBBIIIINNNNIIIINNNNTTTTRRRROOOO((((3333BBBBIIIINNNN))))
+
+
+
+     NNNNAAAAMMMMEEEE
+          BinIntro  -  general information on the binary I/O package
+
+     SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+          #include "sdsc.h"
+
+     DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+          Binary data files and streams are a compact and speedy way
+          to store and transfer data.  The binary format of a value
+          can take fewer bytes to store than using the equivalent
+          ASCII format.  For instance, the number "32767" takes 16
+          bits to represent on a 2's compliment integer machine.  When
+          written to a binary file or stream, the number can be stored
+          in 2 bytes.  The same number written to an ASCII file or
+          stream requires 5 bytes:  "3", "2", "7", "6", and "7".
+
+          While the UNIX _r_e_a_d(2) and _w_r_i_t_e(2) calls support reading
+          and writing binary data, they do not create binary files
+          that can be read in again on a machine with a different byte
+          order or larger or smaller word size (or at least not
+          without additional programmer effort).  The calls in the
+          binary I/O package provide a portable means of reading and
+          writing these and other binary files and streams.
+          Application code that calls _B_i_n_R_e_a_d to read in an array of
+          32-bit integers from a binary file remains unchanged whether
+          being compiled for a SPARCstation, a VAX running VMS, or a
+          CRAY X-MP.  Differences in byte ordering, word sizes,
+          floating point formats, and structure field padding are
+          handled by the binary I/O package.
+
+     GGGGOOOOAAAALLLLSSSS
+          The binary I/O package was designed to do the following:
+
+          +o Read binary files written by programs not using the binary
+            I/O package.
+
+          +o Write binary files readable by programs not using the
+            binary I/O package.
+
+          +o Be portable among machines with widely different word
+            sizes and floating point formats.  The package must be as
+            independent of variations in UNIXes.
+
+          +o Intuit the host's attributes, such as byte order and
+            floating point format without the programmer having to
+            state them explicitly.
+
+          +o Read and write integers of any number of bytes with
+            appropriate zero-padding, sign-extension, and byte
+            swapping taking place.
+
+          +o Read and write floating-point values of a variety of
+
+
+
+     Page 1                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNIIIINNNNTTTTRRRROOOO((((3333BBBBIIIINNNN))))          SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))           BBBBIIIINNNNIIIINNNNTTTTRRRROOOO((((3333BBBBIIIINNNN))))
+
+
+
+            standard formats and sizeswith appropriate format
+            conversions and byte swapping taking place.
+
+          +o Read and write structures with structure padding
+            considerations handled automatically as data is read in to
+            and written out of host struct's.
+
+          +o Read and write arrays of data to reduce the subroutine
+            calling overhead when dealing with large sets of data.
+
+          +o Equally access files and streams referenced by file
+            descriptors and file pointers.
+
+          +o Easy to add support for additional basic types and
+            floating point formats.
+
+     SSSSEEEELLLLEEEECCCCTTTTIIIINNNNGGGG FFFFIIIILLLLEEEE AAAATTTTTTTTRRRRIIIIBBBBUUUUTTTTEEEESSSS
+          Before any reading or writing operations take place, the
+          programmer must indicate the byte order and floating point
+          format used by data in the file.  The byte order defaults to
+          MBF (Most-significant Byte First) and the floating point
+          format to IEEE.
+
+               BinByteOrder( BINMBF );
+               BinFloatFormat( BINIEEE );
+
+          The byte order and floating point format selections apply to
+          all read and write operations until superseded by additional
+          calls to _B_i_n_B_y_t_e_O_r_d_e_r(3BIN) and _B_i_n_F_l_o_a_t_F_o_r_m_a_t(3BIN).  The
+          current byte order and floating point format selections may
+          be queried using _B_i_n_Q_B_y_t_e_O_r_d_e_r(3BIN) and
+          _B_i_n_Q_F_l_o_a_t_F_o_r_m_a_t(3BIN):
+
+               order = BinQByteOrder( );
+               format = BinQFloatFormat( );
+
+     RRRREEEEAAAADDDDIIIINNNNGGGG AAAANNNNDDDD WWWWRRRRIIIITTTTIIIINNNNGGGG AAAARRRRRRRRAAAAYYYYSSSS
+          Arrays of data may be read and written all at once using
+          _B_i_n_R_e_a_d(3BIN), _B_i_n_F_R_e_a_d(3BIN), _B_i_n_S_R_e_a_d(3BIN),
+          _B_i_n_W_r_i_t_e(3BIN), _B_i_n_F_W_r_i_t_e(3BIN), and _B_i_n_S_W_r_i_t_e(3BIN):
+
+               int fd;
+               FILE *fp;
+               int array[LOTS];
+
+               BinRead( fd, array, INT, 4, LOTS );
+               BinFRead( fp, array, INT, 4, LOTS );
+               BinSRead( data, array, INT, 4, LOTS );
+               BinWrite( fd, array, INT, 4, LOTS );
+               BinFWrite( fp, array, INT, 4, LOTS );
+               BinSWrite( data, array, INT, 4, LOTS );
+
+
+
+
+     Page 2                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNIIIINNNNTTTTRRRROOOO((((3333BBBBIIIINNNN))))          SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))           BBBBIIIINNNNIIIINNNNTTTTRRRROOOO((((3333BBBBIIIINNNN))))
+
+
+
+          To read and write, five pieces of information must be given:
+          the file descriptor or pointer for the file, a pointer to
+          the first element in the array, the type of the array as
+          declared on the host, the number of bytes occupied by one
+          element when in the file, and the number of elements to read
+          or write.
+
+          The type argument informs the binary I/O package of how the
+          slot size in the array so that it can correctly move from
+          element to element during the read or write.  It also
+          informs the package if the type is a signed integer,
+          unsigned integer, or a float.  Signed integers require
+          sign-extension checks, while unsigned integers require zero
+          padding.  Floating point values require floating point
+          format conversion.
+
+          The number of bytes an item occupies in the file informs the
+          binary I/O package how to truncate, zero pad, sign extend,
+          or float format convert the data as it is read in or written
+          out.
+
+     RRRREEEEAAAADDDDIIIINNNNGGGG AAAANNNNDDDD WWWWRRRRIIIITTTTIIIINNNNGGGG SSSSTTTTRRRRUUUUCCCCTTTTUUUURRRREEEESSSS
+          C struct's may be read and written at one time using
+          _B_i_n_R_e_a_d_S_t_r_u_c_t(3BIN), _B_i_n_F_R_e_a_d_S_t_r_u_c_t(3BIN),
+          _B_i_n_S_R_e_a_d_S_t_r_u_c_t(3BIN), _B_i_n_W_r_i_t_e_S_t_r_u_c_t(3BIN),
+          _B_i_n_W_r_i_t_e_S_t_r_u_c_t(3BIN), and _B_i_n_S_W_r_i_t_e_S_t_r_u_c_t(3BIN):
+
+               int fd;
+               FILE *fp;
+               struct myStruct
+               {
+                    char my_chars[NUMCHARS];
+                    int my_integers[NUMINTS];
+                    float my_floats[NUMFLOATS];
+               } myStruct;
+               BinField myStructFields[] =
+               {
+                    CHAR, 4, NUMCHARS,
+                    INT, 4, NUMINTS,
+                    FLOAT, 4, NUMFLOATS,
+                    0, 0, 0
+               };
+
+               BinReadStruct( fd, &myStruct, myStructFields );
+               BinFReadStruct( fp, &myStruct, myStructFields );
+               BinSReadStruct( data, &myStruct, myStructFields );
+               BinWriteStruct( fd, &myStruct, myStructFields );
+               BinFWriteStruct( fp, &myStruct, myStructFields );
+               BinSWriteStruct( data, &myStruct, myStructFields );
+
+          To read and write structures, the type of each field, the
+          number of bytes that field's type occupies in the file, and
+
+
+
+     Page 3                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNIIIINNNNTTTTRRRROOOO((((3333BBBBIIIINNNN))))          SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))           BBBBIIIINNNNIIIINNNNTTTTRRRROOOO((((3333BBBBIIIINNNN))))
+
+
+
+          the number of such concequetive items are each placed in an
+          array of _B_i_n_F_i_e_l_d field information structures.  Each entry
+          in the structure describes one struct field.  A pointer to
+          the structure and a pointer to the first element in the
+          _B_i_n_F_i_e_l_d array are passed to the read and write structure
+          calls.
+
+          In a C structure like the following:
+
+               struct thing
+               {
+                    char byte;
+                    int  integer;
+               };
+
+          there may or may not be empty storage space between the _b_y_t_e
+          field and the _i_n_t_e_g_e_r field.  Some CPUs can only access
+          integers or floats at word boundaries.  On such CPUs the
+          address of the _i_n_t_e_g_e_r field in the above structure must be
+          advanced to the next legal boundary.  On a SPARC processor,
+          _i_n_t's must be aligned to 4-byte boundaries, forcing the
+          addition of 3 padding bytes between the _b_y_t_e and _i_n_t_e_g_e_r
+          fields in the structure above.  On a VAX running VMS the C
+          compiler does not require _i_n_t's to be at any boundary so
+          there'd be no padding bytes added in the above structure.
+
+          The structure read and write calls handle such structure
+          pading automatically.
+
+     EEEERRRRRRRROOOORRRR HHHHAAAANNNNDDDDLLLLIIIINNNNGGGG
+          All binary I/O package routines check all of their incoming
+          arguments for correctness before doing any read or write
+          operations.  However, errors such as integer truncation and
+          floating point overflow and underflow can only be reported
+          as data is read in or written out.  Such errors are reported
+          by invoking an error handling function nominated using
+          _B_i_n_E_r_r_o_r_H_a_n_d_l_e_r(3BIN):
+
+               BinErrorHandler( myHandler );
+
+          The handler function notes that a data error occurred, then
+          returns.  The default handler nominated by the package
+          prints a warning message to _s_t_d_e_r_r when data errors occur.
+
+     MMMMAAAACCCCHHHHIIIINNNNEEEE QQQQUUUUEEEERRRRIIIIEEEESSSS
+          The attributes of the host may be queried from the binary
+          I/O package by calling _B_i_n_Q_M_a_c_h_i_n_e(3BIN).
+
+               BinQMachineInfo *info;
+
+               info = BinQMachine( );
+
+
+
+
+     Page 4                                          (printed 6/30/95)
+
+
+
+
+
+
+     BBBBIIIINNNNIIIINNNNTTTTRRRROOOO((((3333BBBBIIIINNNN))))          SSSSDDDDSSSSCCCC ((((JJJJuuuullllyyyy 1111999999990000))))           BBBBIIIINNNNIIIINNNNTTTTRRRROOOO((((3333BBBBIIIINNNN))))
+
+
+
+          The _B_i_n_Q_M_a_c_h_i_n_e_I_n_f_o structure includes information on the
+          host's byte order and floating-point format and the sizes
+          and resolutions of all its types.  The structure also
+          contains the names for the host's vendor, machine type, CPU
+          type, and operating system type.  This kind of information
+          is most useful for debugging print statements and logging.
+
+     RRRREEEETTTTUUUURRRRNNNNSSSS
+          All binary I/O package calls that can return errors do so by
+          returning -1 on failure and 0 on success (per UNIX system
+          call convention).  The global variable _B_i_n_E_r_r_N_o is set to an
+          error code describing the error (also per UNIX convention).
+          The error text associated with the error code may be
+          retrieved from the global _B_i_n_E_r_r_L_i_s_t or printed to _s_t_d_e_r_r
+          using _B_i_n_P_E_r_r_o_r(3BIN).
+
+     SSSSUUUUMMMMMMMMAAAARRRRYYYY OOOOFFFF BBBBIIIINNNNAAAARRRRYYYY IIII////OOOO RRRROOOOUUUUTTTTIIIINNNNEEEESSSS
+          int                BinByteOrder( order )
+          void               BinErrorHandler( func )
+          int                BinFRead( fp, buf, type, nbytes, count )
+          int                BinFReadStruct( fp, structure, fields )
+          int                BinFWrite( fp, buf, type, nbytes, count )
+          int                BinFWriteStruct( fp, structure, fields )
+          int                BinFloatFormat( format )
+          int                BinPError( leader )
+          int                BinQByteOrder( )
+          int                BinQError( )
+          int                BinQFloatFormat( )
+          BinMachineInfo *   BinQMachine( )
+          int                BinRead( fd, buf, type, nbytes, count )
+          int                BinReadStruct( fd, structure, fields )
+          int                BinSRead( data, buf, type, nbytes, count )
+          int                BinSWrite( data, buf, type, nbytes, count )
+          int                BinWrite( fd, buf, type, nbytes, count )
+          int                BinWriteStruct( fd, structure, fields )
+
+     SSSSEEEEEEEE AAAALLLLSSSSOOOO
+          BinByteOrder(3BIN), BinErrorHandler(3BIN), BinFRead(3BIN),
+          BinFReadStruct(3BIN), BinFWrite(3BIN),
+          BinFWriteStruct(3BIN), BinFloatFormat(3BIN),
+          BinPError(3BIN), BinQByteOrder(3BIN), BinQError(3BIN),
+          BinQFloatFormat(3BIN), BinQMachine(3BIN), BinRead(3BIN),
+          BinReadStruct(3BIN), BinSRead(3BIN), BinSWrite(3BIN),
+          BinWrite(3BIN), BinWriteStruct(3BIN), errno(3), perror(3)
+
+     AAAAUUUUTTTTHHHHOOOORRRRSSSS
+          Dave Nadeau
+          San Diego Supercomputer Center
+
+     CCCCOOOONNNNTTTTAAAACCCCTTTT
+          SDSC consultants, (619)534-5100, ccccoooonnnnssssuuuulllltttt@@@@yyyy1111....ssssddddsssscccc....eeeedddduuuu
+
+
+
+
+     Page 5                                          (printed 6/30/95)
+
+
+

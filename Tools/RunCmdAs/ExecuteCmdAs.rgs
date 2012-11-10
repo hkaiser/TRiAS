@@ -1,0 +1,24 @@
+HKCR
+{
+	RunCmdAs.ExecuteCmdAs.1 = s 'ExecuteCmdAs Class'
+	{
+		CLSID = s '{ACB178DC-0C11-4054-B53A-F07909367099}'
+	}
+	RunCmdAs.ExecuteCmdAs = s 'ExecuteCmdAs Class'
+	{
+		CLSID = s '{ACB178DC-0C11-4054-B53A-F07909367099}'
+		CurVer = s 'RunCmdAs.ExecuteCmdAs.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {ACB178DC-0C11-4054-B53A-F07909367099} = s 'ExecuteCmdAs Class'
+		{
+			ProgID = s 'RunCmdAs.ExecuteCmdAs.1'
+			VersionIndependentProgID = s 'RunCmdAs.ExecuteCmdAs'
+			ForceRemove 'Programmable'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '{BF5C2D52-B704-40E7-ACAB-B3BF9738EFC7}'
+			'TypeLib' = s '{2F1D0E80-CD28-45F5-AE4A-9B248493FADF}'
+		}
+	}
+}

@@ -1,0 +1,30 @@
+HKCR
+{
+	TRiASDB.TRiASHPDBEngine.1 = s 'TRiASHPDBEngine Class'
+	{
+		CLSID = s '{4597A774-90C5-4D8E-927E-B9CDA8C4EB2A}'
+	}
+	TRiASDB.TRiASHPDBEngine = s 'TRiASHPDBEngine Class'
+	{
+		CLSID = s '{4597A774-90C5-4D8E-927E-B9CDA8C4EB2A}'
+		CurVer = s 'TRiASDB.TRiASHPDBEngine.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove '{4597A774-90C5-4D8E-927E-B9CDA8C4EB2A}' = s 'TRiASHPDBEngine Class'
+		{
+			ProgID = s 'TRiASDB.TRiASHPDBEngine.1'
+			VersionIndependentProgID = s 'TRiASDB.TRiASHPDBEngine'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'Implemented Categories'
+			{
+				{079639C6-3123-101C-BB62-00AA0018497C}
+			}
+			'TypeLib' = s '{D582400D-E1C2-4C19-A504-4AE47EAE46DF}'
+		}
+	}
+}

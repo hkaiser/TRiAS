@@ -1,0 +1,112 @@
+HKCR { 
+	TRiASEx.CTFBesselGKExt.1 = s 'Koordinatentransformation (Bessel Gauß/Krüger) Property Page'
+	{
+		CLSID = s '{07963829-3123-101C-BB62-00AA0018497C}'
+	}
+	NoRemove CLSID 
+	{
+		ForceRemove {07963829-3123-101C-BB62-00AA0018497C} = s 'Koordinatentransformation (Bessel Gauß/Krüger) Property Page'
+		{
+			val AppID = s '{8DE4E3C2-4D53-101B-AAE1-E7E7E7E7E7E7}'
+			ProgID = s 'TRiASEx.CTFBesselGKExt.1'
+			InprocServer32 = s %MODULE%
+			{
+				val ThreadingModel = s 'apartment'
+			}
+		}
+	}
+	NoRemove TRiAS.Application.2 { NoRemove TRiASEx { NoRemove PropertySheetHandlers 
+	{
+		NoRemove Coordinates
+		{
+			ForceRemove TRiASEx.CTFBesselGKExt.1 = s '{07963829-3123-101C-BB62-00AA0018497C}'
+		}
+	} }	}
+	NoRemove TRiAS.Document.2 { NoRemove TRiASEx { NoRemove PropertySheetHandlers 
+	{
+		NoRemove Coordinates
+	} }	}
+}
+
+HKCU { NoRemove Software { NoRemove uve { NoRemove TRiAS 
+{
+	NoRemove TRiAS.Document.2 { NoRemove TRiASEx { NoRemove PropertySheetHandlers 
+	{
+		NoRemove Coordinates
+	} } }
+	NoRemove CoordSystems 
+	{
+		TransMercator = s 'Gauß-Krüger Koordinatensysteme'
+		{
+			TRiAS.CoordGKBessel.1 = s 'Bessel-Ellipsoid [System 40/83]'
+			{
+				Val Toolbar32 = d 2
+				'Gauß-Krüger (15°/3°)' = s 'Gauß-Krüger (Bessel-Ellipsoid [System 40/83]), Mittelmeridian 15°, Streifenbreite 3°'
+				{
+					Val CoordTransform = s 'BESSELGK'
+					Val CoordMeridian = d 15
+					Val CoordStrBreite = d 3
+					Val CoordPrecision = d 0
+					Val CoordScaling = s '1.0'
+					Val ShowGKCoords = d 0
+					Val CoordMeridianV = s 'AutoSelect'
+					Val OffsetX = s '5000000.0'
+					Val OffsetY = s '5000000.0'
+					Val Koeff11 = s '0.01'
+					Val Koeff12 = s '0.0'
+					Val Koeff21 = s '0.0'
+					Val Koeff22 = s '0.01'
+				}
+				'Gauß-Krüger (12°/3°)' = s 'Gauß-Krüger (Bessel-Ellipsoid [System 40/83]), Mittelmeridian 12°, Streifenbreite 3°'
+				{
+					Val CoordTransform = s 'BESSELGK'
+					Val CoordMeridian = d 12
+					Val CoordStrBreite = d 3
+					Val CoordPrecision = d 0
+					Val CoordScaling = s '1.0'
+					Val ShowGKCoords = d 0
+					Val CoordMeridianV = s 'AutoSelect'
+					Val OffsetX = s '4000000.0'
+					Val OffsetY = s '5000000.0'
+					Val Koeff11 = s '0.01'
+					Val Koeff12 = s '0.0'
+					Val Koeff21 = s '0.0'
+					Val Koeff22 = s '0.01'
+				}
+				'Gauß-Krüger (9°/3°)' = s 'Gauß-Krüger (Bessel-Ellipsoid [System 40/83]), Mittelmeridian 9°, Streifenbreite 3°'
+				{
+					Val CoordTransform = s 'BESSELGK'
+					Val CoordMeridian = d 9
+					Val CoordStrBreite = d 3
+					Val CoordPrecision = d 0
+					Val CoordScaling = s '1.0'
+					Val ShowGKCoords = d 0
+					Val CoordMeridianV = s 'AutoSelect'
+					Val OffsetX = s '3000000.0'
+					Val OffsetY = s '5000000.0'
+					Val Koeff11 = s '0.01'
+					Val Koeff12 = s '0.0'
+					Val Koeff21 = s '0.0'
+					Val Koeff22 = s '0.01'
+				}
+				'Gauß-Krüger (6°/3°)' = s 'Gauß-Krüger (Bessel-Ellipsoid [System 40/83]), Mittelmeridian 6°, Streifenbreite 3°'
+				{
+					Val CoordTransform = s 'BESSELGK'
+					Val CoordMeridian = d 6
+					Val CoordStrBreite = d 3
+					Val CoordPrecision = d 0
+					Val CoordScaling = s '1.0'
+					Val ShowGKCoords = d 0
+					Val CoordMeridianV = s 'AutoSelect'
+					Val OffsetX = s '2000000.0'
+					Val OffsetY = s '5000000.0'
+					Val Koeff11 = s '0.01'
+					Val Koeff12 = s '0.0'
+					Val Koeff21 = s '0.0'
+					Val Koeff22 = s '0.01'
+				}
+			}
+		}
+	} 
+} } } }
+

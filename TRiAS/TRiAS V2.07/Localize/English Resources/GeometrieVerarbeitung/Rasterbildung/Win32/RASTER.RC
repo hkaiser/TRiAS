@@ -1,0 +1,163 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "rastera.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resstrg.h"
+#include "raster.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialogue
+//
+
+IDD_RASTERERZEUGUNG DIALOG DISCARDABLE  103, 22, 240, 273
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Grid creation"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " Selection ",-1,6,6,227,69,WS_GROUP
+    LTEXT           "Coordinates",-1,13,23,40,8,NOT WS_GROUP
+    LTEXT           "Easting",-1,65,23,41,8,NOT WS_GROUP
+    LTEXT           "Northing",-1,131,23,36,8,NOT WS_GROUP
+    LTEXT           "Top left:",-1,13,39,41,8,NOT WS_GROUP
+    EDITTEXT        IDE_RECHTSWERTOBEN,65,37,51,12,ES_AUTOHSCROLL
+    LTEXT           ",",-1,122,41,6,8,NOT WS_GROUP
+    EDITTEXT        IDE_HOCHWERTOBEN,131,37,52,12,ES_AUTOHSCROLL
+    LTEXT           "Bottom right:",-1,13,58,48,8,NOT WS_GROUP
+    EDITTEXT        IDE_RECHTSWERTUNTEN,65,55,51,12,ES_AUTOHSCROLL
+    LTEXT           ",",-1,122,57,5,8,NOT WS_GROUP
+    EDITTEXT        IDE_HOCHWERTUNTEN,131,55,52,12,ES_AUTOHSCROLL
+    GROUPBOX        " Grid parameter ",-1,6,82,166,66,WS_GROUP
+    LTEXT           "Grid &x (in meters):",-1,14,97,68,8,NOT WS_GROUP
+    EDITTEXT        IDE_WAAGERECHT,103,95,36,12,ES_AUTOHSCROLL
+    LTEXT           "Grid &y (in meters):",-1,15,115,66,8,NOT WS_GROUP
+    EDITTEXT        IDE_SENKRECHT,103,113,36,12,ES_AUTOHSCROLL
+    LTEXT           "Rotation angle (in degrees):",-1,14,132,86,8,NOT WS_GROUP
+    EDITTEXT        IDE_WINKEL,103,131,36,12,ES_AUTOHSCROLL
+    GROUPBOX        " Properties of the created grids ",-1,6,156,166,112,
+                    WS_GROUP
+    CONTROL         "  &Area grid",IDR_FLAECHE,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,14,169,89,10
+    CONTROL         "  &Line grid",IDR_LINIE,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,14,182,89,10
+    GROUPBOX        "",-1,14,195,149,5,WS_GROUP
+    CONTROL         "  &Save temporarily",IDR_TEMPORAER,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,14,204,101,10
+    CONTROL         "  &Save permanently",IDR_PERMANENT,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,14,217,102,10
+    LTEXT           "Object class for grid:",-1,15,236,80,8
+    COMBOBOX        IDL_IDENTIFIKATOR,15,248,150,139,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "&OK",IDOK,183,87,51,14,WS_GROUP
+    PUSHBUTTON      "&Cancel",IDCANCEL,183,112,51,14,WS_GROUP
+    PUSHBUTTON      "",IDC_BUTTON1,14,199,149,27,WS_DISABLED | NOT 
+                    WS_TABSTOP
+END
+
+IDD_RASTPROZENT DIALOG DISCARDABLE  22, 28, 132, 73
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Grid creation"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Build-up of grid:",-1,5,10,124,8
+    CONTROL         "%3d%%",IDG_RASTERSTATUS,"GaugeBox32",0x2,5,26,121,14
+    DEFPUSHBUTTON   "&Cancel",IDCANCEL,41,52,48,14
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "rastera.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""resstrg.h""\r\n"
+    "#include ""raster.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""raster.rcv""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXMESSAGE          "TriasExtensionMessage"
+    IDS_QNFYMESSAGE         "TriasRegisterNotification"
+    IDS_DEXXMESSAGE         "TriasCPPExtensionMessage"
+    IDS_QNFYUNREGMESSAGE    "TriasUnRegisterNotification"
+    IDS_NOTIFICATION        "TriasNotification"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LONGCLASSNAME       "Grid creation"
+    IDS_RASTER              "&Create grid ..."
+    IDS_LOESCHEN            "Delete grid"
+    IDS_RASTERUIDENT        "GRID_%ld"
+    IDS_GEOFEHL             "There is a geometric error in the grid object.\r\nCannot test if the individual grid areas cover this object."
+    IDS_NORASTER            "No grid created."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEXEXTENSIONPROC    "DEXEXTENSIONPROC"
+    IDS_DEXXEXTENSIONPROC   "DEXXEXTENSIONPROC"
+    IDS_DEXNOTIFICATIONPROC "DEXNOTIFICATIONPROCEX"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "raster.rcv"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
